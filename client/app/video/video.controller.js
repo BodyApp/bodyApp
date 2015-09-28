@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bodyApp')
+angular.module('bodyAppApp')
   .controller('ConsumerVideoCtrl', function ($scope, $http) {
   	var maxCALLERS = 10;
 		var numVideoOBJS = maxCALLERS+1;

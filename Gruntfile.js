@@ -527,7 +527,7 @@ module.exports = function (grunt) {
         'env:all',
         'concurrent:server',
         'injector',
-        'wiredep',
+        // 'wiredep',
         'autoprefixer',
         'concurrent:debug'
       ]);
@@ -538,7 +538,7 @@ module.exports = function (grunt) {
       'env:all',
       'concurrent:server',
       'injector',
-      'wiredep',
+      // 'wiredep',
       'autoprefixer',
       'express:dev',
       'wait',
@@ -579,7 +579,7 @@ module.exports = function (grunt) {
         'env:test',
         'concurrent:test',
         'injector',
-        'wiredep',
+        // 'wiredep',
         'autoprefixer',
         'express:dev',
         'protractor'
@@ -596,7 +596,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'concurrent:dist',
     'injector',
-    'wiredep',
+    // 'wiredep',
     'useminPrepare',
     'autoprefixer',
     'ngtemplates',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bodyApp')
+angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('consumerVideo', {
