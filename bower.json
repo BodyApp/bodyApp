@@ -15,7 +15,9 @@
     "angular-socket-io": "~0.6.0",
     "angular-ui-router": "~0.2.15",
     "socket.io-client" : "0.9.0",
-    "easyrtc": "*"
+    "easyrtc": "*",
+    "firebase": "*",
+    "angularfire": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

@@ -1,0 +1,56 @@
+/* checkbox - each time slot */
+.time-slot               {  }
+
+/* hide the checkbox itself - the label will be styled */
+.time-slot input     { 
+  display:none; 
+}
+
+/* default styling for our labels */
+.time-slot label     { 
+  padding:10px; 
+  width: 100px;
+  color:#FFF; 
+  cursor:pointer; 
+  background:#EEE; 
+  border-radius:5px; 
+  transition:0.3s ease all;
+}
+
+/* if the label is checked */
+.time-slot input:checked ~ label { 
+  background:#88BCBC; 
+  cursor:not-allowed;
+  animation:flashBooked 0.5s ease; 
+}
+
+/* if the label is not checked */
+.time-slot input:not(:checked) ~ label { 
+  background:#6AB074; 
+  animation:flashAvailable 0.5s ease; 
+}
+
+/* if the label is unavailable */
+.time-slot input:disabled:not(:checked) ~ label { 
+  background:#f2dede; 
+  cursor:not-allowed;
+  animation:flashUnavailable 0.5s ease; 
+}
+
+/* animation for the time slot to flash green */
+@keyframes flashAvailable {
+  0%, 100%  { background:#6AB074; transform:scale(1); }
+  50%       { background:rgb(119, 218, 78); transform:scale(1.5); }
+}
+
+/* animation for the time slot to flash blue */
+@keyframes flashBooked {
+  0%, 100%  { background:#88BCBC; transform:scale(1); }
+  50%       { background:#1E6767; transform:scale(1.5); }
+}
+
+/* animation for the time slot to flash red */
+@keyframes flashUnavailable {
+  0%, 100%  { background:#f2dede; transform:scale(1); }
+  50%       { background:#F99090; transform:scale(1.5); }
+}

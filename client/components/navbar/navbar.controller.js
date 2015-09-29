@@ -13,6 +13,10 @@ angular.module('bodyAppApp')
     {
       'title': 'Lead Class',
       'link': '/trainervideo'
+    },
+    {
+      'title': 'Schedule',
+      'link': '/schedule'
     }
     ];
 

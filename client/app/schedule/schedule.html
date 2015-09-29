@@ -1,0 +1,31 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="page-header text-center">       
+  <h1>Schedule Class</h1>        
+</div>
+
+<div class="row times">
+    
+  <div class="col-xs-1 text-center" ng-repeat="day in days">
+            
+    <h3>{{ day.name }}</h3>
+    
+    <div class="time-slot" ng-repeat="slot in day.slots">     
+
+      <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.booked" ng-disabled="slot.booked || slot.unavailable">
+      <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} unavailable" ng-model="slot.unavailable" ng-disabled="slot.unavailable"> -->
+
+      <label for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
+        <span ng-if="slot.booked && !slot.unavailable">Booked</span>
+        <span ng-if="slot.unavailable">Class Full</span>
+        <span ng-if="!slot.booked && !slot.unavailable">Available</span>
+      </label>
+
+    </div>
+  </div>       
+    
+</div>
+
+<!-- <p class="text-center">    
+    <a href="#" class="btn btn-primary" ng-click="reset()">Reset</a>
+  </p> -->
