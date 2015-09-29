@@ -8,10 +8,11 @@
 
   <div class="row times">
     <div class = "col-xs-1 col-md-2 col-lg-2" ></div>
-    <div class="col-xs-3 col-md-3 col-lg-1 text-center" ng-repeat="day in days">
+    <div class="col-xs-3 col-md-3 col-lg-1 text-center columnStyle" ng-repeat="day in days">
               
-      <h3>{{ day.name }}</h3>
-      <h4>{{ day.date }}</h4>
+      <h3 ng-show="day.isToday">Today</h3>
+      <h3 ng-hide="day.isToday">{{ day.name }}</h3>
+      <h4>{{ day.formattedDate }}</h4>
       
       <div class="time-slot" ng-repeat="slot in day.slots">     
 
@@ -22,6 +23,7 @@
           <span ng-if="slot.booked && !slot.unavailable">Booked</span>
           <span ng-if="slot.unavailable">Class Full</span>
           <span ng-if="!slot.booked && !slot.unavailable">Available</span>
+          <br><span class="trainerName">{{slot.trainer}}</span>
         </label>
 
       </div>
