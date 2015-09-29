@@ -29,7 +29,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'body-app-secret'
+    session: process.env.Session_Secret || "bodyAppTestSecret"
   },
 
   // List of user roles

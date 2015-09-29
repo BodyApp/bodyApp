@@ -13,4 +13,4 @@ angular.module('bodyAppApp')
         templateUrl: 'app/video/trainer_video.html',
         controller: 'TrainerVideoCtrl'
       });
-  });
+  })

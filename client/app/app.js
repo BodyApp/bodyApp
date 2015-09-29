@@ -43,6 +43,12 @@ angular.module('bodyAppApp', [
   })
 
   .run(function ($rootScope, $location, Auth) {
+    // Stops the webRTC connection when not in video mode
+    $rootScope.$on("$locationChangeStart",function(event, next, current){
+      if (easyrtc.webSocket) {
+          easyrtc.disconnect();
+      }
+    });
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
