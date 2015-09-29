@@ -1,5 +1,7 @@
 /* checkbox - each time slot */
-.time-slot               {  }
+.time-slot               { 
+
+ }
 
 /* hide the checkbox itself - the label will be styled */
 .time-slot input     { 
@@ -7,9 +9,9 @@
 }
 
 /* default styling for our labels */
-.time-slot label     { 
+.time-slot label     {
   padding:10px; 
-  width: 100px;
+  width: 85px;
   color:#FFF; 
   cursor:pointer; 
   background:#EEE; 
@@ -17,24 +19,24 @@
   transition:0.3s ease all;
 }
 
-/* if the label is checked */
+/* if the label is checked - blue */
 .time-slot input:checked ~ label { 
   background:#88BCBC; 
   cursor:not-allowed;
-  animation:flashBooked 0.5s ease; 
+  animation:flashBooked 1.0s ease; 
 }
 
-/* if the label is not checked */
+/* if the label is not checked - green */
 .time-slot input:not(:checked) ~ label { 
   background:#6AB074; 
   animation:flashAvailable 0.5s ease; 
 }
 
-/* if the label is unavailable */
+/* if the label is unavailable - red */
 .time-slot input:disabled:not(:checked) ~ label { 
   background:#f2dede; 
   cursor:not-allowed;
-  animation:flashUnavailable 0.5s ease; 
+  animation:flashUnavailable 1.0s ease; 
 }
 
 /* animation for the time slot to flash green */

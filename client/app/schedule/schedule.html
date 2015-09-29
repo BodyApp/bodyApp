@@ -1,29 +1,32 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="page-header text-center">       
-  <h1>Schedule Class</h1>        
-</div>
+<div class = "container">
+  <div class="page-header text-center">       
+    <h1>Schedule Class</h1>        
+  </div>
 
-<div class="row times">
-    
-  <div class="col-xs-1 text-center" ng-repeat="day in days">
-            
-    <h3>{{ day.name }}</h3>
-    
-    <div class="time-slot" ng-repeat="slot in day.slots">     
 
-      <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.booked" ng-disabled="slot.booked || slot.unavailable">
-      <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} unavailable" ng-model="slot.unavailable" ng-disabled="slot.unavailable"> -->
+  <div class="row times">
+    <div class = "col-xs-1 col-md-2 col-lg-2" ></div>
+    <div class="col-xs-3 col-md-3 col-lg-1 text-center" ng-repeat="day in days">
+              
+      <h3>{{ day.name }}</h3>
+      
+      <div class="time-slot" ng-repeat="slot in day.slots">     
 
-      <label for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
-        <span ng-if="slot.booked && !slot.unavailable">Booked</span>
-        <span ng-if="slot.unavailable">Class Full</span>
-        <span ng-if="!slot.booked && !slot.unavailable">Available</span>
-      </label>
+        <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.booked" ng-disabled="slot.booked || slot.unavailable">
+        <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} unavailable" ng-model="slot.unavailable" ng-disabled="slot.unavailable"> -->
 
-    </div>
-  </div>       
-    
+        <label for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
+          <span ng-if="slot.booked && !slot.unavailable">Booked</span>
+          <span ng-if="slot.unavailable">Class Full</span>
+          <span ng-if="!slot.booked && !slot.unavailable">Available</span>
+        </label>
+
+      </div>
+    </div>       
+      
+  </div>
 </div>
 
 <!-- <p class="text-center">    
