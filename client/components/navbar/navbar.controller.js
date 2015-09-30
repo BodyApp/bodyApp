@@ -5,15 +5,16 @@ angular.module('bodyAppApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    },
-    {
-      'title': 'Join Class',
-      'link': '/consumervideo'
-    },
-    {
-      'title': 'Lead Class',
-      'link': '/trainervideo'
-    },
+    }
+    // ,
+    // {
+    //   'title': 'Join Class',
+    //   'link': '/consumervideo'
+    // },
+    // {
+    //   'title': 'Lead Class',
+    //   'link': '/trainervideo'
+    // },
     // {
     //   'title': 'Schedule',
     //   'link': '/schedule'

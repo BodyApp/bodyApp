@@ -3,7 +3,7 @@
 angular.module('bodyAppApp')
   .controller('SettingsCtrl', function ($scope, User, Auth) {
     $scope.errors = {};
-
+    $scope.editingCreditCardInfo = false;
     $scope.changePassword = function(form) {
       $scope.submitted = true;
       if(form.$valid) {
@@ -18,4 +18,9 @@ angular.module('bodyAppApp')
         });
       }
 		};
+    $scope.saveCreditCardToken = function(code, result) {
+      console.log(code)
+      console.log(result)
+
+    }
   });
