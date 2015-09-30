@@ -5,7 +5,7 @@ angular.module('bodyAppApp')
     $stateProvider
       .state('schedule', {
         url: '/schedule',
-        templateUrl: 'app/schedule/schedule.html',
-        controller: 'ScheduleCtrl'
+        templateUrl: 'app/schedule/consumerSchedule.html',
+        controller: 'ConsumerScheduleCtrl'
       });
   })

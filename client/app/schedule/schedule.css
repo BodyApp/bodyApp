@@ -17,6 +17,7 @@
 .time-slot label     {
   padding:10px; 
   width: 85px;
+  height: 80px;
   color:#FFF; 
   cursor:pointer; 
   background:#EEE; 
@@ -24,8 +25,13 @@
   transition:0.3s ease all;
 }
 
-.trainerName {
+#trainerName {
   font-size: 10px;
+  /*word-wrap: break-word;*/
+  /*white-space: none*/
+  margin: 2px;
+  line-height: 2px;
+  padding: 2px;
 }
 
 /* if the label is checked - blue */
