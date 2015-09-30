@@ -54,7 +54,7 @@ angular.module('bodyAppApp')
         name: 'Sun',
         dayOfWeek: sunDayWeek,
         // isToday: todayDayOfWeek == sunDayWeek,
-        date: sunDate.getTime(),
+        // date: sunDate.getTime(),
         formattedDate: getDayFormatter(sunDayWeek),
         slots: {
           0800: {
@@ -101,7 +101,7 @@ angular.module('bodyAppApp')
         name: 'Mon',
         dayOfWeek: monDayWeek,
         // isToday: todayDayOfWeek == monDayWeek,
-        date: monDate.getTime(),
+        // date: monDate.getTime(),
         formattedDate: getDayFormatter(monDayWeek),
         slots: {
           0800: {
@@ -149,7 +149,7 @@ angular.module('bodyAppApp')
         name: 'Tues',
         dayOfWeek: tuesDayWeek,
         // isToday: todayDayOfWeek == tuesDayWeek,
-        date: tuesDate.getTime(),
+        // date: tuesDate.getTime(),
         formattedDate:  getDayFormatter(tuesDayWeek),
         slots: {
           0800: {
@@ -196,7 +196,7 @@ angular.module('bodyAppApp')
         name: 'Wed',
         dayOfWeek: wedDayWeek,
         // isToday: todayDayOfWeek == wedDayWeek,
-        date: wedDate.getTime(),
+        // date: wedDate.getTime(),
         formattedDate: getDayFormatter(wedDayWeek),
         slots: {
           0800: {
@@ -243,7 +243,7 @@ angular.module('bodyAppApp')
         name: 'Thurs',
         dayOfWeek: thursDayWeek,
         // isToday: todayDayOfWeek == thursDayWeek,
-        date: thursDate.getTime(),
+        // date: thursDate.getTime(),
         formattedDate: getDayFormatter(thursDayWeek),
         slots: {
           0800: {
@@ -290,7 +290,7 @@ angular.module('bodyAppApp')
         name: 'Fri',
         dayOfWeek: friDayWeek,
         // isToday: todayDayOfWeek == friDayWeek,
-        date: friDate.getTime(),
+        // date: friDate.getTime(),
         formattedDate: getDayFormatter(friDayWeek),
         slots: {
           0800: {
@@ -337,7 +337,7 @@ angular.module('bodyAppApp')
         name: 'Sat',
         dayOfWeek: satDayWeek,
         // isToday: todayDayOfWeek == satDayWeek,
-        date: satDate.getTime(),
+        // date: satDate.getTime(),
         formattedDate: getDayFormatter(satDayWeek),
         slots: {
           0800: {
