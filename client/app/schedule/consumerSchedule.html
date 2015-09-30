@@ -23,7 +23,9 @@
           <span ng-if="slot.bookedUsers[currentUser._id]">Booked</span>
           <span ng-if="slot.unavailable && !slot.bookedUsers[currentUser._id]">Class Full</span>
           <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.unavailable">Available</span>
-          <br><span id="trainerName">{{slot.trainer}}</span>
+          <br>
+          <div id="trainerName">Level One</div>
+          <div id="trainerName">{{slot.trainer}}</div>
         </label>
 
       </div>

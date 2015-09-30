@@ -15,9 +15,10 @@
 
 /* default styling for our labels */
 .time-slot label     {
-  padding:10px; 
-  width: 85px;
-  height: 80px;
+  padding:5px; 
+  width: 80px;
+  height: 75px;
+  font-size: 13px;
   color:#FFF; 
   cursor:pointer; 
   background:#EEE; 
@@ -29,45 +30,45 @@
   font-size: 10px;
   /*word-wrap: break-word;*/
   /*white-space: none*/
-  margin: 2px;
-  line-height: 2px;
-  padding: 2px;
+  /*margin: 2px;*/
+  line-height: 15px;
+  /*padding: 2px;*/
 }
 
 /* if the label is checked - blue */
 .time-slot input:checked ~ label { 
-  background:#88BCBC; 
+  background:#5ED5D5; 
   cursor:not-allowed;
   animation:flashBooked 1.0s ease; 
 }
 
 /* if the label is not checked - green */
 .time-slot input:not(:checked) ~ label { 
-  background:#6AB074; 
+  background:#BCDDDD; 
   animation:flashAvailable 0.5s ease; 
 }
 
 /* if the label is unavailable - red */
 .time-slot input:disabled:not(:checked) ~ label { 
-  background:#f2dede; 
+  background:#C8D1E5; 
   cursor:not-allowed;
   animation:flashUnavailable 1.0s ease; 
 }
 
 /* animation for the time slot to flash green */
 @keyframes flashAvailable {
-  0%, 100%  { background:#6AB074; transform:scale(1); }
-  50%       { background:rgb(119, 218, 78); transform:scale(1.5); }
+  0%, 100%  { background:#BCDDDD; transform:scale(1); }
+  50%       { background:#E8F5F5; transform:scale(1.5); }
 }
 
 /* animation for the time slot to flash blue */
 @keyframes flashBooked {
-  0%, 100%  { background:#88BCBC; transform:scale(1); }
-  50%       { background:#1E6767; transform:scale(1.5); }
+  0%, 100%  { background:#5ED5D5; transform:scale(1); }
+  50%       { background:#BCDDDD; transform:scale(1.5); }
 }
 
 /* animation for the time slot to flash red */
 @keyframes flashUnavailable {
-  0%, 100%  { background:#f2dede; transform:scale(1); }
-  50%       { background:#F99090; transform:scale(1.5); }
+  0%, 100%  { background:#97A5C8; transform:scale(1); }
+  50%       { background:#445A8D; transform:scale(1.5); }
 }
