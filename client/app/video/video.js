@@ -6,11 +6,13 @@ angular.module('bodyAppApp')
       .state('consumerVideo', {
         url: '/consumervideo',
         templateUrl: 'app/video/consumer_video.html',
-        controller: 'ConsumerVideoCtrl'
+        controller: 'ConsumerVideoCtrl',
+        authenticate: true
       })
       .state('trainerVideo', {
         url: '/trainervideo',
         templateUrl: 'app/video/trainer_video.html',
-        controller: 'TrainerVideoCtrl'
+        controller: 'TrainerVideoCtrl',
+        authenticate: true
       });
   })
