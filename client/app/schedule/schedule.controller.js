@@ -43,7 +43,7 @@ angular.module('bodyAppApp')
     // $scope.days
 
     // three way data binding
-    Schedule("weekOf9272015").$bindTo($scope, 'days');
+    Schedule("weekOf9272015").$bindTo($scope, 'days')
 
     // $scope.bookClass = function(day, slot) {
     //   // if (syncObject[day].slots[slot].bookedUsers == nil) {

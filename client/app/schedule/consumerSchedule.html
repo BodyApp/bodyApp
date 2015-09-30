@@ -20,8 +20,8 @@
         <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} unavailable" ng-model="slot.unavailable" ng-disabled="slot.unavailable"> -->
 
         <label for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
-          <span ng-if="slot.bookedUsers[currentUser._id] && !slot.unavailable">Booked</span>
-          <span ng-if="slot.unavailable">Class Full</span>
+          <span ng-if="slot.bookedUsers[currentUser._id]">Booked</span>
+          <span ng-if="slot.unavailable && !slot.bookedUsers[currentUser._id]">Class Full</span>
           <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.unavailable">Available</span>
           <br><span id="trainerName">{{slot.trainer}}</span>
         </label>
