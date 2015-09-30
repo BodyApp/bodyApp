@@ -9,6 +9,6 @@ angular.module('bodyAppApp')
     console.log(currentUser)
     $scope.currentUser = currentUser;
 
-    Schedule("weekOf9272015").$bindTo($scope, 'days')
+    Schedule("weekof9272015").$bindTo($scope, 'days')
 });
 

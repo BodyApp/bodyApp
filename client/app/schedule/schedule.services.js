@@ -19,15 +19,15 @@ angular.module('bodyAppApp')
 			    for (var day in currentWeek) {
 			    	for (var slot in currentWeek[day].slots) {
 				      if (currentWeek[day].dayOfWeek < todayDayOfWeek) {
-			        	weekRef.child(day).child("slots").child(slot).update({unavailable: true})
+			        	weekRef.child(day).child("slots").child(slot).update({past: true})
 				      }
 				      if (currentWeek[day].dayOfWeek == todayDayOfWeek) {
 			          if (slot <= todayDate.getHours()*100) {
-			            weekRef.child(day).child("slots").child(slot).update({unavailable: true})
+			            weekRef.child(day).child("slots").child(slot).update({past: true})
 			          } 
 				      }
 				      if (currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= 8) {
-		            weekRef.child(day).child("slots").child(slot).update({unavailable: true})
+		            weekRef.child(day).child("slots").child(slot).update({classFull: true})
 				      }
 				    }
 			    }

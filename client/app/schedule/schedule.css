@@ -35,40 +35,43 @@
   /*padding: 2px;*/
 }
 
-/* if the label is checked - blue */
+/* if the label is booked */
 .time-slot input:checked ~ label { 
   background:#5ED5D5; 
   cursor:not-allowed;
   animation:flashBooked 1.0s ease; 
 }
 
-/* if the label is not checked - green */
+/* if the label is available */
 .time-slot input:not(:checked) ~ label { 
   background:#BCDDDD; 
-  animation:flashAvailable 0.5s ease; 
+  animation:flashAvailable 1.0s ease; 
 }
 
-/* if the label is unavailable - red */
+/* if the label is past or full */
 .time-slot input:disabled:not(:checked) ~ label { 
   background:#C8D1E5; 
   cursor:not-allowed;
   animation:flashUnavailable 1.0s ease; 
 }
 
-/* animation for the time slot to flash green */
+/* animation for the time slot for available */
 @keyframes flashAvailable {
-  0%, 100%  { background:#BCDDDD; transform:scale(1); }
-  50%       { background:#E8F5F5; transform:scale(1.5); }
+  0%    { background:#BCDDDD; transform:scale(1); }
+  50%   { background:#5ED5D5; transform:scale(1.25); }
+  100%  { background:#BCDDDD; transform:scale(1); }
 }
 
-/* animation for the time slot to flash blue */
+/* animation for the time slot for booked */
 @keyframes flashBooked {
-  0%, 100%  { background:#5ED5D5; transform:scale(1); }
-  50%       { background:#BCDDDD; transform:scale(1.5); }
+  0%    { background:#BCDDDD; transform:scale(1); }
+  50%   { background:#1DAAAA; transform:scale(1.25); }
+  100%  { background:#5ED5D5; transform:scale(1); }
 }
 
-/* animation for the time slot to flash red */
+/* animation for the time slot for past or full */
 @keyframes flashUnavailable {
-  0%, 100%  { background:#97A5C8; transform:scale(1); }
-  50%       { background:#445A8D; transform:scale(1.5); }
+  0%    { background:#BCDDDD; transform:scale(1); }
+  50%   { background:#445A8D; transform:scale(1.25); }
+  100%  { background:#C8D1E5; transform:scale(1); }
 }
