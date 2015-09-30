@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope) {
+  .controller('ConsumerVideoCtrl', function ($scope, Auth) {
   	$scope.$on('$locationChangeStart', function( event ) {
 	    easyrtc.disconnect()
 		});
+
   	var maxCALLERS = 10;
 		// var numVideoOBJS = maxCALLERS+1;
 		// var boxUsed = [false, false, false, false, false, false, false, false, false];
@@ -13,6 +14,8 @@ angular.module('bodyAppApp')
 		// var layout;
 
 		easyrtc.dontAddCloseButtons(true);
+
+		var currentUser = Auth.getCurrentUser();
 
 		var _init = function() {
 	  	// console.log('got here')
@@ -24,9 +27,12 @@ angular.module('bodyAppApp')
 	        function(){       // success callback
 	            var selfVideo = document.getElementById('box1');
 	            easyrtc.setVideoObjectSrc(selfVideo, easyrtc.getLocalStream());
-	            easyrtc.setUsername('consumer');
+	            easyrtc.setUsername(currentUser._id.toString());
+	            console.log(currentUser._id.toString())
 	            easyrtc.connect('easyrtc.multiparty', loginSuccess);
 	            document.getElementById(getIdOfBox(1)).style.visibility = 'visible'; //This is the box for this user
+	        }, function() { //Failure callback
+	        	alert("Body App can't access your video camera.  Please make sure your browser is allowing Body App to access your camera and microphone by clicking permissions in the address bar above.")
 	        }
 	    );
 

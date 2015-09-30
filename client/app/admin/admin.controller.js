@@ -226,8 +226,8 @@ angular.module('bodyAppApp')
             spots: 8,
             spotsTaken: 0,
           },
-          1725: {
-            time: '5:25pm',
+          1815: {
+            time: '6:15pm',
             booked: false,
             trainer: "Mendelson",
             classFull: false,
