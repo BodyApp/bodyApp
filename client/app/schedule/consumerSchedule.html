@@ -5,11 +5,11 @@
     <h1>Schedule Class</h1>        
   </div>
 
-
   <div class="row times">
+    <div class = "col-xs-4 col-md-5 col-lg-5" ></div>
+    <input type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked> Only show available classes<br>
     <div class = "col-xs-1 col-md-2 col-lg-2" ></div>
-    <div class="col-xs-3 col-md-3 col-lg-1 text-center columnStyle" ng-repeat="day in days">
-              
+    <div class="col-xs-3 col-md-3 col-lg-1 text-center columnStyle" ng-repeat="day in days">        
       <h3 ng-show="day.isToday">Today</h3>
       <h3 ng-hide="day.isToday">{{ day.name }}</h3>
       <h4>{{ day.formattedDate }}</h4>
@@ -19,7 +19,7 @@
         <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past">
         <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->
 
-        <label for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
+        <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
           <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
           <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
           <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
