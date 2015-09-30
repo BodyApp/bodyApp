@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $firebaseObject, Auth, Schedule) {
+  .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule) {
     var todayDate = new Date();
     var todayDayOfWeek = todayDate.getDay();
 
@@ -9,6 +9,9 @@ angular.module('bodyAppApp')
     var currentUserEmail = currentUser.email
     console.log(currentUser)
     $scope.currentUser = currentUser;
+    // if (currentUser.role == null) {
+    //     $location.path('/login');
+    // }
     
     var dd = todayDate.getDate();
     var mm = todayDate.getMonth();

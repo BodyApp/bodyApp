@@ -14,10 +14,10 @@ angular.module('bodyAppApp')
       'title': 'Lead Class',
       'link': '/trainervideo'
     },
-    {
-      'title': 'Schedule',
-      'link': '/schedule'
-    }
+    // {
+    //   'title': 'Schedule',
+    //   'link': '/schedule'
+    // }
     ];
 
     $scope.isCollapsed = true;

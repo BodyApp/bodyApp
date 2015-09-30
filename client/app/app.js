@@ -43,7 +43,7 @@ angular.module('bodyAppApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $state, Auth) {
     // Stops the webRTC connection when not in video mode
     $rootScope.$on("$locationChangeStart",function(event, next, current){
       if (easyrtc.webSocket) {
@@ -55,7 +55,7 @@ angular.module('bodyAppApp', [
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           event.preventDefault();
-          $location.path('/login');
+          $state.go('login');
         }
       });
     });
