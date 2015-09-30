@@ -1,67 +1,62 @@
 angular.module('bodyAppApp')
-  .factory('Schedule', ["$firebaseObject", 
-  	function($firebaseObject) {
-  		return function(week) {
-  			// connect to firebase 
-		    var ref = new Firebase("https://bodyapp.firebaseio.com/");  
-		    var weekRef = ref.child(week);
-		    var currentWeek;
+  .factory('Schedule', function($firebaseObject) {
+  	
+  	var service = {};
+  	var currentUser;
+  	service.classInNext30Mins;
+  	service.userHasClassNow = false;
 
-		    weekRef.on("value", function(snapshot) {
-		    	currentWeek = snapshot.val();
-		    	checkDates(currentWeek)
-		    })
-
-		    var todayDate = new Date();
-		    var todayDayOfWeek = todayDate.getDay();
-
-		    function checkDates(currentWeek) {
-			    for (var day in currentWeek) {
-			    	for (var slot in currentWeek[day].slots) {
-				      if (currentWeek[day].dayOfWeek < todayDayOfWeek) {
-			        	weekRef.child(day).child("slots").child(slot).update({past: true})
-				      }
-				      if (currentWeek[day].dayOfWeek == todayDayOfWeek) {
-			          if (slot <= todayDate.getHours()*100) {
-			            weekRef.child(day).child("slots").child(slot).update({past: true})
-			          } 
-				      }
-				      if (currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= 8) {
-		            weekRef.child(day).child("slots").child(slot).update({classFull: true})
-				      }
-				    }
-			    }
-			  }
-
-		    //Makes slots in the past unavailable
-		   //  function checkDates(currentWeek) {
-			  //   for (var day in currentWeek) {
-			  //     if (currentWeek[day].dayOfWeek < todayDayOfWeek) {
-			  //       for (var slot in currentWeek[day].slots) {
-			  //       	weekRef.child(day).child("slots").child(slot).update({unavailable: true})
-			  //         // currentWeek[day].slots[slot].unavailable = true;
-			  //       }
-			  //     }
-			  //     //Makes slots earlier today unavailable
-			  //     if (currentWeek[day].dayOfWeek == todayDayOfWeek) {
-			  //       for (var slot in currentWeek[day].slots) {
-			  //         if (slot <= todayDate.getHours()*100) {
-			  //           // currentWeek[day].slots[slot].unavailable = true;
-			  //           weekRef.child(day).child("slots").child(slot).update({unavailable: true})
-			  //         }
-			  //       } 
-			  //     }
-			  //     if (currentWeek[day].dayOfWeek == todayDayOfWeek) {
-			  //       for (var slot in currentWeek[day].slots) {
-			  //         if (slot <= todayDate.getHours()*100) {
-			  //           // currentWeek[day].slots[slot].unavailable = true;
-			  //           weekRef.child(day).child("slots").child(slot).update({unavailable: true})
-			  //         }
-			  //       } 
-			  //     }
-			  //   }
-			  // }
-  			return $firebaseObject(weekRef)
-  		}
+  	service.setCurrentUser = function(user) {
+  		currentUser = user
   	}
-  ])
+
+  	service.returnClassInNext30Mins = function(){
+  		return service.classInNext30Mins;
+  	}
+
+  	service.returnUserHasClassNow = function() {
+  		return service.userHasClassNow;	
+  	}
+
+  	service.setFirebaseObject = function(weekRef) {
+	    var ref = new Firebase("https://bodyapp.firebaseio.com/");  
+	    var weekRef = ref.child(weekRef);
+
+	    weekRef.on("value", function(snapshot) {
+	    	checkDates(snapshot.val(), weekRef);
+	    })
+
+			return $firebaseObject(weekRef);
+  	}
+
+  	function checkDates(currentWeek, weekRef) {
+  		var todayDate = new Date();
+	    var todayDayOfWeek = todayDate.getDay();
+
+	    for (var day in currentWeek) {
+	    	for (var slot in currentWeek[day].slots) {
+		      if (currentWeek[day].dayOfWeek < todayDayOfWeek) {
+	        	weekRef.child(day).child("slots").child(slot).update({past: true})
+		      }
+		      if (currentWeek[day].dayOfWeek == todayDayOfWeek) {
+		      	//Adds 15 minutes of leeway for signing up for class
+	          if (slot <= (todayDate.getHours()-0.25)*100) {
+	            weekRef.child(day).child("slots").child(slot).update({past: true})
+	            //Is it time for one of your classes?!  Can join 15 minutes before or up to 15 minutes into class
+	          } else if ((slot - todayDate.getHours()*100 <= 15 || slot - todayDate.getHours()*100 >= -15) && currentWeek[day].slots[slot].bookedUsers && currentWeek[day].slots[slot].bookedUsers[currentUser._id]) {
+	          	service.classInNext30Mins = currentWeek[day].slots[slot]
+	          	service.userHasClassNow = true;
+			      } else {
+			      	service.classInNext30Mins = null
+			      	service.userHasClassNow = false
+			      }
+		      }
+		      if (currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= 8) {
+            weekRef.child(day).child("slots").child(slot).update({classFull: true})
+		      }
+		    }
+	    }
+	  }
+
+  	return service
+  })
