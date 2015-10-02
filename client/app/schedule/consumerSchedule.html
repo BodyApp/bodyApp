@@ -1,179 +1,135 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-            <div class="container">
-                <div class="row">
-                  <div class="col-md-3 page-sidebar-left">
-                  <!--left sidebar-->
-                    <h3 class="uppercase text-center mb8 mt8">Daily Wod</h3>
-                    <h5 id="blue" class="text-center bold mb0"><i>WINTER IS COMING</i></h5>
-                    <h5 class="text-center mb32"><i>Wednesday Sep 30</i></h5>
+<div class="container">
+    <div class="row">
+      <div class="col-md-3 page-sidebar-left">
+      <!--left sidebar-->
+        <h3 class="uppercase text-center mb8 mt8">Daily Wod</h3>
+        <h5 id="blue" class="text-center bold mb0"><i>WINTER IS COMING</i></h5>
+        <h5 class="text-center mb32"><i>Wednesday Sep 30</i></h5>
 
-                    <!--WOD tabs-->
-                            <div class="tabbed-content button-tabs text-center">
-                                <ul class="tabs">
-                                    <li class="active">
-                                        <div class="tab-title">
-                                            <span>Lvl 1</span>
-                                        </div>
-                                        
-                                    </li>
-                                    <li class="">
-                                        <div class="tab-title">
-                                            <span>Lvl 2</span>
-                                        </div>
-                                        
-                                    </li>
-                                    <li class="">
-                                        <div class="tab-title">
-                                            <span>Lvl 3</span>
-                                        </div>
-                                        
-                                    </li>
-                                </ul>
-                            <ul class="content"><li class="active"><div class="tab-content">
-                                            <!--Strength movements-->
-                                            <h5 class="bold uppercase mb16">Strength</h5>
-                                            <p id="dark-text">Yoga Pushups 12-12-12-12</p>
-                                            
-                                            <!--WOD movements-->
-                                            <h5 class="bold uppercase mb8">Workout</h5>
-                                            <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                                            <p id="dark-text" class="mb0">8 Air Squats</p>
-                                            <p id="dark-text" class="mb0">15 Burpees</p>
-                                            <p id="dark-text" class="mb0">10 V-Ups</p>
-                                        </div></li><li class=""><div class="tab-content">
-                                            <!--Strength movements-->
-                                            <h5 class="bold uppercase mb16">Strength</h5>
-                                            <p id="dark-text">Power Snatch 12-12-12-12</p>
-                                            
-                                            <!--WOD movements-->
-                                            <h5 class="bold uppercase mb8">Workout</h5>
-                                            <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                                            <p id="dark-text" class="mb0">12 Air Squats</p>
-                                            <p id="dark-text" class="mb0">25 Burpees</p>
-                                            <p id="dark-text" class="mb0">10 V-Ups</p>
-                                        </div></li><li class=""><div class="tab-content">
-                                            <!--Strength movements-->
-                                            <h5 class="bold uppercase mb16">Strength</h5>
-                                            <p id="dark-text">Power Snatch 12-12-12-12</p>
-                                            
-                                            <!--WOD movements-->
-                                            <h5 class="bold uppercase mb8">Workout</h5>
-                                            <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                                            <p id="dark-text" class="mb0">12 Air Squats</p>
-                                            <p id="dark-text" class="mb0">25 Burpees</p>
-                                            <p id="dark-text" class="mb0">10 V-Ups</p>
-                                        </div></li></ul></div>
-                            <!--end of button tabs-->
-                  </div>
-                  <!--end of left sidebar-->
-
-                  <div class="col-md-9">
-                    <!--reserved classes-->
-                    <div class="your-classes col-md-12">
-                      <h3 class="uppercase text-center mb16">Your Classes</h3>
-                      <div class="reservations">
-                          <table class="reservations-table">
-                            <tbody><tr>
-                              <td><span id="dark-text">Intro Class Today Sep 28 at 5pm EST</span></td>
-                              <td><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
-                            </tr>
-                            <tr>
-                              <td><span id="dark-text">Lvl 1 Class Thu Oct 01 at 5pm EST</span></td>
-                              <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
-                            </tr>
-                            <tr>
-                              <td><span id="dark-text">Lvl 1 Class Fri Oct 02 at 5pm EST</span></td>
-                              <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
-                            </tr>                                                       
-                          </tbody></table>
-                      </div>
-                    </div>
-                    <!--end of reserved classes-->
-
-                    <!--schedule-->
-                    <div class="col-md-12">
-                      <h3 class="uppercase text-center mt32">Class Schedule</h3>
-                      <label class = "col-xs-12 col-sm-12 col-md-12 col-lg-12 showAvailableClassesLabel">
-                        <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
-                        <span style = "color:black">Only show available classes</span>
-                      </label>
-                      <div class="row times container-fluid">
-                        <!-- <div class = "col-xs-4 col-md-5 col-lg-5" ></div> -->
-                        
-                        <div class = "col-xs-0 col-sm-1 col-md-3 col-lg-2" ></div>
-                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center columnStyle column" ng-repeat="day in days">        
-                          <!-- <h3 ng-show="day.isToday">Today</h3> -->
-                          <h4 class = "dateTitles" ng-hide="day.isToday">{{ day.name }}</h4>
-                          <h5 class = "dateTitles">{{ day.formattedDate }}</h5>
-                          
-                          <div class="time-slot" ng-repeat="slot in day.slots">     
-
-                            <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past">
-                            <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->  
-
-                            <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
-                              <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
-                              <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
-                              <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
-                              <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past">Available</span>
-                              <br>
-                              <div id="trainerName">Level One</div>
-                              <div id="trainerName">{{slot.trainer}}</div>
-                            </label>
-
-                          </div>
-                        </div>       
-                          
-                      </div>
-                    </div>
-
-                    </div>
-                    <!--end of schedule-->
-                  </div>
-                </div>
-            </div>
-
-
-
-<!-- <div class = "container">
-  <div class="page-header text-center">       
-    <button class="btn btn-lg btn-primary" ng-show = "userHasClassNow" ng-click = "goToConsumerVideo()">
-        Join Your {{userClassToJoin.time}} Class with {{userClassToJoin.trainer}} Now!
-      </button>
-    <h1>Schedule Class</h1>        
-  </div>
-
-  <div class="row times">
-    <div class = "col-xs-4 col-md-5 col-lg-5" ></div>
-    <input type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked> Only show available classes<br>
-    <div class = "col-xs-1 col-md-2 col-lg-2" ></div>
-    <div class="col-xs-3 col-md-3 col-lg-1 text-center columnStyle" ng-repeat="day in days">        
-      <h3 ng-show="day.isToday">Today</h3>
-      <h3 ng-hide="day.isToday">{{ day.name }}</h3>
-      <h4>{{ day.formattedDate }}</h4>
-      
-      <div class="time-slot" ng-repeat="slot in day.slots">     
-
-        <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past"> -->
-        <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->
-
-        <!-- <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
-          <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
-          <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
-          <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
-          <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past">Available</span>
-          <br>
-          <div id="trainerName">Level One</div>
-          <div id="trainerName">{{slot.trainer}}</div>
-        </label>
-
+        <!--WOD tabs-->
+                <div class="tabbed-content button-tabs text-center">
+                    <ul class="tabs">
+                        <li class="active">
+                            <div class="tab-title">
+                                <span>Lvl 1</span>
+                            </div>
+                            
+                        </li>
+                        <li class="">
+                            <div class="tab-title">
+                                <span>Lvl 2</span>
+                            </div>
+                            
+                        </li>
+                        <li class="">
+                            <div class="tab-title">
+                                <span>Lvl 3</span>
+                            </div>
+                            
+                        </li>
+                    </ul>
+                <ul class="content"><li class="active"><div class="tab-content">
+                                <!--Strength movements-->
+                                <h5 class="bold uppercase mb16">Strength</h5>
+                                <p id="dark-text">Yoga Pushups 12-12-12-12</p>
+                                
+                                <!--WOD movements-->
+                                <h5 class="bold uppercase mb8">Workout</h5>
+                                <h6 class="mb16"><i>3 Rounds for Time</i></h6>
+                                <p id="dark-text" class="mb0">8 Air Squats</p>
+                                <p id="dark-text" class="mb0">15 Burpees</p>
+                                <p id="dark-text" class="mb0">10 V-Ups</p>
+                            </div></li><li class=""><div class="tab-content">
+                                <!--Strength movements-->
+                                <h5 class="bold uppercase mb16">Strength</h5>
+                                <p id="dark-text">Power Snatch 12-12-12-12</p>
+                                
+                                <!--WOD movements-->
+                                <h5 class="bold uppercase mb8">Workout</h5>
+                                <h6 class="mb16"><i>3 Rounds for Time</i></h6>
+                                <p id="dark-text" class="mb0">12 Air Squats</p>
+                                <p id="dark-text" class="mb0">25 Burpees</p>
+                                <p id="dark-text" class="mb0">10 V-Ups</p>
+                            </div></li><li class=""><div class="tab-content">
+                                <!--Strength movements-->
+                                <h5 class="bold uppercase mb16">Strength</h5>
+                                <p id="dark-text">Power Snatch 12-12-12-12</p>
+                                
+                                <!--WOD movements-->
+                                <h5 class="bold uppercase mb8">Workout</h5>
+                                <h6 class="mb16"><i>3 Rounds for Time</i></h6>
+                                <p id="dark-text" class="mb0">12 Air Squats</p>
+                                <p id="dark-text" class="mb0">25 Burpees</p>
+                                <p id="dark-text" class="mb0">10 V-Ups</p>
+                            </div></li></ul></div>
+                <!--end of button tabs-->
       </div>
-    </div>       
-      
-  </div>
-</div> -->
+      <!--end of left sidebar-->
 
-<!-- <p class="text-center">    
-    <a href="#" class="btn btn-primary" ng-click="reset()">Reset</a>
-  </p> -->
+      <div class="col-md-9">
+        <!--reserved classes-->
+        <div class="your-classes col-md-12">
+          <h3 class="uppercase text-center mb16">Your Classes</h3>
+          <div class="reservations">
+              <table class="reservations-table">
+                <tbody><tr>
+                  <td><span id="dark-text">Intro Class Today Sep 28 at 5pm EST</span></td>
+                  <td><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
+                </tr>
+                <tr>
+                  <td><span id="dark-text">Lvl 1 Class Thu Oct 01 at 5pm EST</span></td>
+                  <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
+                </tr>
+                <tr>
+                  <td><span id="dark-text">Lvl 1 Class Fri Oct 02 at 5pm EST</span></td>
+                  <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
+                </tr>                                                       
+              </tbody></table>
+          </div>
+        </div>
+        <!--end of reserved classes-->
+
+        <!--schedule-->
+        <div class="col-md-12">
+          <h3 class="uppercase text-center mt32">Class Schedule</h3>
+          <label class = "col-xs-12 col-sm-12 col-md-12 col-lg-12 showAvailableClassesLabel">
+            <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
+            <span style = "color:black">Only show available classes</span>
+          </label>
+          <div class="row times container-fluid">
+            <!-- <div class = "col-xs-4 col-md-5 col-lg-5" ></div> -->
+            
+            <div class = "col-xs-0 col-sm-1 col-md-3 col-lg-2" ></div>
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center columnStyle column" ng-repeat="day in days">        
+              <!-- <h3 ng-show="day.isToday">Today</h3> -->
+              <h4 class = "dateTitles" ng-hide="day.isToday">{{ day.name }}</h4>
+              <h5 class = "dateTitles">{{ day.formattedDate }}</h5>
+              
+              <div class="time-slot" ng-repeat="slot in day.slots">     
+
+                <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past">
+                <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->  
+
+                <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
+                  <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
+                  <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
+                  <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
+                  <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past">Available</span>
+                  <br>
+                  <div id="trainerName">Level One</div>
+                  <div id="trainerName">{{slot.trainer}}</div>
+                </label>
+
+              </div>
+            </div>       
+              
+          </div>
+        </div>
+
+        </div>
+        <!--end of schedule-->
+      </div>
+    </div>
+</div>
