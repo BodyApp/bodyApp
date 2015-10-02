@@ -17,8 +17,14 @@ label.showAvailableClassesLabel {
   margin-bottom: 20px;
 }
 
-h4.dateTitles, h5.dateTitles {
+h4.dateTitles {
+  line-height: 10px;
+  margin-left:10px;
+}
+
+h5.dateTitles {
   line-height: 0px;
+  margin-left:10px;
 }
 
 /* default styling for our labels */
@@ -42,6 +48,11 @@ h4.dateTitles, h5.dateTitles {
   /*margin: 2px;*/
   line-height: 15px;
   /*padding: 2px;*/
+}
+
+#scheduleColumn {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 /* if the label is booked */
