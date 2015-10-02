@@ -1,0 +1,125 @@
+/****** PLACE YOUR CUSTOM STYLES HERE ******/
+.background-trans {
+	background: rgba(13,28,69,0.85);
+	border: 1px solid #ffffff;
+	padding: 4%;
+}
+
+#orange {
+	color: #FF6700;
+}
+
+#blue {
+	color: #0D1C45;
+}
+
+.trainer-circle-image, .user-circle-image, .world-wod-image, .user-wod-image {
+	background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    border: 10px solid #CCCCCC;
+}
+
+.user-circle-image, .world-wod-image, .user-wod-image {
+	width: 100px;
+	height: 100px;
+	border: 5px solid #CCCCCC;
+	float: left;
+}
+
+.world-wod-image, .user-wod-image {
+	width: 50px;
+	height: 50px;
+	border: 1px solid #CCCCCC;
+}
+
+.edit-photo {
+	padding: 34px 0 0 20px;
+	float: left;
+}
+
+.user-name {
+	float: left;
+	margin: 25px 0 0 25px;
+}
+
+.world-name-wod, .user-name-wod {
+	float: left;
+	margin: 0 0 0 15px;
+	font-size: 12px;
+	line-height: 15px;
+	max-width: 70%;
+}
+
+.user-name-wod {
+	font-size: 16px;
+	line-height: 18px;
+
+}
+
+.user-list li, .user-list-wod li, .world-list-wod li {
+	height: 100px;
+	width: 260px;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.user-list-wod li {
+	height: 70px;
+	margin: 0 0 30px 22%;
+	width: 65%;
+}
+
+.world-list-wod li {
+	height: 50px;
+	margin-bottom: 20px;
+}
+
+#dark-text {
+	color: #1f1f1f !important;
+}
+
+.page-sidebar-left {
+	border-right: 1px solid #ccc;
+}
+
+.your-classes {
+	background: #f5f5f5;
+	padding: 10px;
+}
+
+.reservations {
+	padding-left: 25%;
+}
+
+.reservations-table {
+	margin-bottom: 0px !important;
+}
+
+.class-info {
+	padding: 4px 0 0 0;
+}
+
+.reserved-class {
+	min-width: 100px;
+}
+
+.start-class {
+	background: #FF6700 !important;
+	border: none;
+}
+
+.text-input-half {
+	width: 49% !important;
+}
+
+.settings-title {
+	width: 1800px;
+}
+
+.post-workout-results {
+	height: 300px !important;
+	padding-bottom: 250px;
+}

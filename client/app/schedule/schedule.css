@@ -13,17 +13,26 @@
 
 }
 
+label.showAvailableClassesLabel {
+  margin-bottom: 20px;
+}
+
+h4.dateTitles, h5.dateTitles {
+  line-height: 0px;
+}
+
 /* default styling for our labels */
 .time-slot label     {
   padding:5px; 
-  width: 80px;
-  height: 75px;
-  font-size: 13px;
+  width: 70px;
+  height: 70px;
+  font-size: 11px;
   color:#FFF; 
   cursor:pointer; 
   background:#EEE; 
   border-radius:5px; 
   transition:0.3s ease all;
+  line-height: 15px;
 }
 
 #trainerName {

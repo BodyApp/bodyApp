@@ -146,7 +146,7 @@ angular.module('bodyAppApp')
 
       var c = 
       {
-        name: 'Tues',
+        name: 'Tue',
         dayOfWeek: tuesDayWeek,
         // isToday: todayDayOfWeek == tuesDayWeek,
         // date: tuesDate.getTime(),
@@ -240,7 +240,7 @@ angular.module('bodyAppApp')
 
       var e = 
       {
-        name: 'Thurs',
+        name: 'Thu',
         dayOfWeek: thursDayWeek,
         // isToday: todayDayOfWeek == thursDayWeek,
         // date: thursDate.getTime(),
