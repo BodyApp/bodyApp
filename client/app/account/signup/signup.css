@@ -1,0 +1,30 @@
+.datefield { 
+    display: inline; 
+    padding: 0.3em; 
+    border: inset 1px #CCC; 
+    background: #FFF; 
+    border-radius: 4px;
+    color: #666;
+}
+
+.datefield * { 
+    display: inline-block;
+}
+
+.datefield input { 
+    width: 2.1em; 
+    padding: 0 0.1em; 
+    border: none; 
+    font-size: 95%; 
+    background: none;
+    color: #000;            
+}
+
+.datefield input#year { width:2.5em; }
+.datefield input:focus { outline:none; }
+
+#birthdayDatefield { 
+    float: left; 
+    display: block; 
+    width: 6em; 
+}

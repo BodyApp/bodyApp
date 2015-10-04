@@ -7,12 +7,12 @@ angular.module('bodyAppApp')
 
     $scope.register = function(form) {
       $scope.submitted = true;
-
       if(form.$valid) {
         Auth.createUser({
           firstName: $scope.user.firstName,
           lastName: $scope.user.lastName,
           nickname: $scope.user.nickname,
+          birthday: $scope.user.birthday,
           email: $scope.user.email,
           gender: $scope.user.gender,
           password: $scope.user.password

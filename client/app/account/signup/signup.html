@@ -136,27 +136,32 @@
               </p>
               <input id="dark-text" type="password" name="password" ng-model= "user.password" ng-minlength="3" placeholder="Password" required mongoose-error/>
             </div>
-              <!-- <p id="dark-text" class="mt8 mb8">Date of Birth:</p>
-              <input id="dark-text" class="text-input-third" type="text" placeholder="Month" />
-              <input id="dark-text" class="text-input-fifth" type="text" placeholder="Day" />
-              <input id="dark-text" class="text-input-fifth" type="text" placeholder="Year" /><br> -->
-              <div ng-class="{ 'has-success': form.password.$valid && submitted, 'has-error': form.password.$invalid && submitted }">
-                <p class="help-block" ng-show="form.gender.$error.required && submitted">
+            <div class = "datefield" ng-class="{ 'has-success': form.birthday.$valid && submitted, 'has-error': form.birthday.$invalid && submitted }">
+              <p class="help-block" ng-show="form.birthday.$error.required && submitted">
+                We need your birthdate!
+              </p>
+              <label id = "birthdayDatefield" for="day">Birthday:</label>
+              <input name="birthday" ng-model="user.birthday.day" id="day" type="tel" maxlength="2" placeholder="DD" required/> /
+              <input name="birthday" ng-model="user.birthday.month" id="month" type="tel" maxlength="2" placeholder="MM" required/> /
+              <input name="birthday" ng-model="user.birthday.year" id="year" type="tel" maxlength="4" placeholder="YYYY" required/>
+            </div>  
+            <div ng-class="{ 'has-success': form.gender.$valid && submitted, 'has-error': form.gender.$invalid && submitted }">
+              <p class="help-block" ng-show="form.gender.$error.required && submitted">
                 We understand that sometimes it's tough to choose.  Please make a decision!
               </p>
-                <input type="radio" name="gender" ng-model="user.gender" value="male" required><span id="dark-text">&nbsp;&nbsp;Male&nbsp;&nbsp;</span><input type="radio" name="gender" value="female" ng-model="user.gender" required><span id="dark-text">&nbsp;&nbsp;Female&nbsp;&nbsp;</span><br>
-              </div>
-              <div class="mt24 mb24 text-center">
-                <span id="dark-text">By clicking sign up you agree to BODY's <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</span>
-              </div>
-              <!-- <input type="submit" value="Update Settings" /> -->
-              <button class=" col-xs-12 btn btn-inverse btn-lg btn-login" type="submit">
-                Sign up
-              </button>
+              <input type="radio" name="gender" ng-model="user.gender" value="male" required><span id="dark-text">&nbsp;&nbsp;Male&nbsp;&nbsp;</span><input type="radio" name="gender" value="female" ng-model="user.gender" required><span id="dark-text">&nbsp;&nbsp;Female&nbsp;&nbsp;</span><br>
+            </div>
+            <div class="mt24 mb24 text-center">
+              <span id="dark-text">By clicking sign up you agree to BODY's <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</span>
+            </div>
+            <!-- <input type="submit" value="Update Settings" /> -->
+            <button class=" col-xs-12 btn btn-inverse btn-lg btn-login" type="submit">
+              Sign up
+            </button>
           </form>
-              <div class="mt16 text-center">
-                <span id="dark-text">Already have an account? <a href="/login">Log in</a>.</span>
-              </div>                                                    
+            <div class="mt16 text-center">
+              <span id="dark-text">Already have an account? <a href="/login">Log in</a>.</span>
+            </div>                                                    
       </div>
       <div class="col-md-3"></div>
     </div>
