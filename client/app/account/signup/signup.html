@@ -128,8 +128,7 @@
               <input id="dark-text" type="text" name="email" ng-model= "user.email" placeholder="Email" required mongoose-error/>
             </div>
             <div ng-class="{ 'has-success': form.password.$valid && submitted, 'has-error': form.password.$invalid && submitted }">
-              <p class="help-block"
-                 ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
+              <p class="help-block" ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
                 Password must be at least 3 characters.
               </p>
               <p class="help-block" ng-show="form.password.$error.mongoose">
@@ -141,7 +140,12 @@
               <input id="dark-text" class="text-input-third" type="text" placeholder="Month" />
               <input id="dark-text" class="text-input-fifth" type="text" placeholder="Day" />
               <input id="dark-text" class="text-input-fifth" type="text" placeholder="Year" /><br> -->
-              <!-- <input type="radio" name="sex"><span id="dark-text">&nbsp;&nbsp;Male&nbsp;&nbsp;</span><input type="radio" name="sex"><span id="dark-text">&nbsp;&nbsp;Female&nbsp;&nbsp;</span><br> -->
+              <div ng-class="{ 'has-success': form.password.$valid && submitted, 'has-error': form.password.$invalid && submitted }">
+                <p class="help-block" ng-show="form.gender.$error.required && submitted">
+                We understand that sometimes it's tough to choose.  Please make a decision!
+              </p>
+                <input type="radio" name="gender" ng-model="user.gender" value="male" required><span id="dark-text">&nbsp;&nbsp;Male&nbsp;&nbsp;</span><input type="radio" name="gender" value="female" ng-model="user.gender" required><span id="dark-text">&nbsp;&nbsp;Female&nbsp;&nbsp;</span><br>
+              </div>
               <div class="mt24 mb24 text-center">
                 <span id="dark-text">By clicking sign up you agree to BODY's <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</span>
               </div>

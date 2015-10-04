@@ -10,8 +10,11 @@ angular.module('bodyAppApp')
 
       if(form.$valid) {
         Auth.createUser({
-          name: $scope.user.name,
+          firstName: $scope.user.firstName,
+          lastName: $scope.user.lastName,
+          nickname: $scope.user.nickname,
           email: $scope.user.email,
+          gender: $scope.user.gender,
           password: $scope.user.password
         })
         .then( function() {
