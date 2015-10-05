@@ -85,7 +85,7 @@
           <h3 class="uppercase text-center mb16">Your Classes</h3>
           <div class="reservations">
               <table class="reservations-table" ng-repeat="day in days">
-                <tbody ng-repeat="slot in day.slots" ng-show="slot.bookedUsers[currentUser._id]">
+                <tbody ng-repeat="slot in day.slots" ng-show="slot.bookedUsers[currentUser._id] && !slot.past">
                   <tr>
                     <td><span id="dark-text" ng-if="slot.bookedUsers[currentUser._id]">Lvl 1 Class {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span></td>
                     <td ng-if = "canJoinClass(slot)"><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
