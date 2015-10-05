@@ -109,6 +109,19 @@ angular.module('bodyAppApp')
               $log.info('Modal dismissed at: ' + new Date());
             });
         };
+
+        $scope.firstActive;
+        $scope.secondActive;
+        $scope.thirdActive;
+
+        $scope.hoverTab = function(tab) {
+            switch (tab) {
+                case 'first': $scope.firstActive = true; $scope.secondActive = false; $scope.thirdActive = false;
+                case 'second': $scope.firstActive = false; $scope.secondActive = true; $scope.thirdActive = false;
+                case 'third': $scope.firstActive = false; $scope.secondActive = false; $scope.thirdActive = true;
+                default: break
+            }
+        }
     })
 
     //Currently unused

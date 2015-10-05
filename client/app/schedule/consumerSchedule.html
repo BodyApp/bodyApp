@@ -10,27 +10,29 @@
 
         <!--WOD tabs-->
                 <div class="tabbed-content button-tabs text-center">
-                    <ul class="tabs">
-                        <li class="active">
+                    <ul class="tabs" ng-init = "firstActive = true">
+                        <li ng-class="{active: firstActive}" ng-mouseover = "firstActive = true; secondActive = false; thirdActive = false">
                             <div class="tab-title">
                                 <span>Lvl 1</span>
                             </div>
                             
                         </li>
-                        <li class="">
+                        <li ng-class="{active: secondActive}" ng-mouseover = "firstActive = false; secondActive = true; thirdActive = false">
                             <div class="tab-title">
                                 <span>Lvl 2</span>
                             </div>
                             
                         </li>
-                        <li class="">
+                        <li ng-class="{active: thirdActive}" ng-mouseover = "firstActive = false; secondActive = false; thirdActive = true">
                             <div class="tab-title">
                                 <span>Lvl 3</span>
                             </div>
                             
                         </li>
                     </ul>
-                <ul class="content"><li class="active"><div class="tab-content">
+                <ul class="content">
+                  <li ng-class="{active: firstActive}">
+                    <div class="tab-content">
                                 <!--Strength movements-->
                                 <h5 class="bold uppercase mb16">Strength</h5>
                                 <p id="dark-text">Yoga Pushups 12-12-12-12</p>
@@ -41,7 +43,10 @@
                                 <p id="dark-text" class="mb0">8 Air Squats</p>
                                 <p id="dark-text" class="mb0">15 Burpees</p>
                                 <p id="dark-text" class="mb0">10 V-Ups</p>
-                            </div></li><li class=""><div class="tab-content">
+                    </div>
+                  </li>
+                  <li ng-class="{active: secondActive}">
+                    <div class="tab-content">
                                 <!--Strength movements-->
                                 <h5 class="bold uppercase mb16">Strength</h5>
                                 <p id="dark-text">Power Snatch 12-12-12-12</p>
@@ -52,7 +57,10 @@
                                 <p id="dark-text" class="mb0">12 Air Squats</p>
                                 <p id="dark-text" class="mb0">25 Burpees</p>
                                 <p id="dark-text" class="mb0">10 V-Ups</p>
-                            </div></li><li class=""><div class="tab-content">
+                    </div>
+                  </li>
+                  <li ng-class="{active: thirdActive}">
+                    <div class="tab-content">
                                 <!--Strength movements-->
                                 <h5 class="bold uppercase mb16">Strength</h5>
                                 <p id="dark-text">Power Snatch 12-12-12-12</p>
@@ -63,7 +71,10 @@
                                 <p id="dark-text" class="mb0">12 Air Squats</p>
                                 <p id="dark-text" class="mb0">25 Burpees</p>
                                 <p id="dark-text" class="mb0">10 V-Ups</p>
-                            </div></li></ul></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
                 <!--end of button tabs-->
       </div>
       <!--end of left sidebar-->
@@ -121,7 +132,7 @@
                   <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
                   <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past">Available</span>
                   <br>
-                  <div id="trainerName">Level One</div>
+                  <div id="trainerName">Lvl 1</div>
                   <div id="trainerName">{{slot.trainer}}</div>
                 </label>
 
