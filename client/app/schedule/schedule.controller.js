@@ -12,6 +12,8 @@ angular.module('bodyAppApp')
         $scope.userClassToJoin = Schedule.classInNext30Mins;
         $scope.userHasClassNow = false;
 
+        $scope.myBookedClasses;
+
         //Prompts user to join class when within 15 minutes of class
         $scope.$watch(function () { return Schedule.classInNext30Mins; },
             function (value) {
@@ -29,7 +31,6 @@ angular.module('bodyAppApp')
         $scope.goToConsumerVideo = function() {
             $location.path('/consumervideo')
         }
-
 
         $scope.openBookingConfirmation = function (slot) {
             var modalInstance = $modal.open({

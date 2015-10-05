@@ -48,362 +48,423 @@ angular.module('bodyAppApp')
       var satDate = new Date();
       satDate.setDate(todayDate.getDate() + satDayWeek - todayDayOfWeek); 
 
-      var a = 
-      {
+    var a = {
         name: 'Sun',
         dayOfWeek: sunDayWeek,
-        // isToday: todayDayOfWeek == sunDayWeek,
-        // date: sunDate.getTime(),
+        // isToday: todayDayOfWeek == satDayWeek,
+        // date: satDate.getTime(),
         formattedDate: getDayFormatter(sunDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: sunDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1100: {
-            time: '11:00am',
-            date: sunDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            date: sunDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          2000: {
-            time: '8:00pm',
-            date: sunDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
-      };
-      
-      var b = 
-      {
-        name: 'Mon',
-        dayOfWeek: monDayWeek,
-        // isToday: todayDayOfWeek == monDayWeek,
-        // date: monDate.getTime(),
-        formattedDate: getDayFormatter(monDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: monDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-
-          },
-          1100: {
-            time: '11:00am',
-            date: monDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            date: monDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          2000: {
-            time: '8:00pm',
-            date: monDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
-      };
-
-      var c = 
-      {
-        name: 'Tue',
-        dayOfWeek: tuesDayWeek,
-        // isToday: todayDayOfWeek == tuesDayWeek,
-        // date: tuesDate.getTime(),
-        formattedDate:  getDayFormatter(tuesDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: tuesDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1100: {
-            time: '11:00am',
-            booked: false,
-            date: tuesDate.getTime(),
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            booked: false,
-            date: tuesDate.getTime(),
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          2000: {
-            time: '8:00pm',
-            booked: false,
-            date: tuesDate.getTime(),
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
-      };
-
-      var d =
-      {
-        name: 'Wed',
-        dayOfWeek: wedDayWeek,
-        // isToday: todayDayOfWeek == wedDayWeek,
-        // date: wedDate.getTime(),
-        formattedDate: getDayFormatter(wedDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: wedDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1100: {
-            time: '11:00am',
-            date: wedDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            date: wedDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1815: {
-            time: '6:15pm',
-            date: wedDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
-      };
-
-      var e = 
-      {
-        name: 'Thu',
-        dayOfWeek: thursDayWeek,
-        // isToday: todayDayOfWeek == thursDayWeek,
-        // date: thursDate.getTime(),
-        formattedDate: getDayFormatter(thursDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: thursDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1100: {
-            time: '11:00am',
-            date: thursDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            date: thursDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          2000: {
-            time: '8:00pm',
-            date: thursDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
-      };
-
-      var f = 
-      {
-        name: 'Fri',
-        dayOfWeek: friDayWeek,
-        // isToday: todayDayOfWeek == friDayWeek,
-        // date: friDate.getTime(),
-        formattedDate: getDayFormatter(friDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: friDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1100: {
-            time: '11:00am',
-            date: friDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            date: friDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          2000: {
-            time: '8:00pm',
-            date: friDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
+        slots: {}
       }
 
-      var g =
+      var dateSetter = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate(), 8, 0, 0).getTime()
+      a.slots[dateSetter] = 
       {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate(), 11, 0, 0).getTime()
+      a.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate(), 16, 0, 0).getTime()
+      a.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate(), 20, 0, 0).getTime()
+      a.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var b = {
+        name: 'Mon',
+        dayOfWeek: monDayWeek,
+        formattedDate: getDayFormatter(monDayWeek),
+        slots: {}
+      }
+
+      var dateSetter = new Date(monDate.getFullYear(), monDate.getMonth(), monDate.getDate(), 8, 0, 0).getTime()
+      b.slots[dateSetter] = 
+      {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(monDate.getFullYear(), monDate.getMonth(), monDate.getDate(), 11, 0, 0).getTime()
+      b.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(monDate.getFullYear(), monDate.getMonth(), monDate.getDate(), 16, 0, 0).getTime()
+      b.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(monDate.getFullYear(), monDate.getMonth(), monDate.getDate(), 20, 0, 0).getTime()
+      b.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var c = {
+        name: 'Tue',
+        dayOfWeek: tuesDayWeek,
+        formattedDate: getDayFormatter(tuesDayWeek),
+        slots: {}
+      }
+
+      var dateSetter = new Date(tuesDate.getFullYear(), tuesDate.getMonth(), tuesDate.getDate(), 8, 0, 0).getTime()
+      c.slots[dateSetter] = 
+      {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(tuesDate.getFullYear(), tuesDate.getMonth(), tuesDate.getDate(), 11, 0, 0).getTime()
+      c.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(tuesDate.getFullYear(), tuesDate.getMonth(), tuesDate.getDate(), 16, 0, 0).getTime()
+      c.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(tuesDate.getFullYear(), tuesDate.getMonth(), tuesDate.getDate(), 20, 0, 0).getTime()
+      c.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var d = {
+        name: 'Wed',
+        dayOfWeek: wedDayWeek,
+        // isToday: todayDayOfWeek == satDayWeek,
+        // date: satDate.getTime(),
+        formattedDate: getDayFormatter(wedDayWeek),
+        slots: {}
+      }
+
+      var dateSetter = new Date(wedDate.getFullYear(), wedDate.getMonth(), wedDate.getDate(), 8, 0, 0).getTime()
+      d.slots[dateSetter] = 
+      {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(wedDate.getFullYear(), wedDate.getMonth(), wedDate.getDate(), 11, 0, 0).getTime()
+      d.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(wedDate.getFullYear(), wedDate.getMonth(), wedDate.getDate(), 16, 0, 0).getTime()
+      d.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(wedDate.getFullYear(), wedDate.getMonth(), wedDate.getDate(), 20, 0, 0).getTime()
+      d.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var e = {
+        name: 'Thu',
+        dayOfWeek: thursDayWeek,
+        formattedDate: getDayFormatter(thursDayWeek),
+        slots: {}
+      }
+
+      var dateSetter = new Date(thursDate.getFullYear(), thursDate.getMonth(), thursDate.getDate(), 8, 0, 0).getTime()
+      e.slots[dateSetter] = 
+      {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(thursDate.getFullYear(), thursDate.getMonth(), thursDate.getDate(), 11, 0, 0).getTime()
+      e.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(thursDate.getFullYear(), thursDate.getMonth(), thursDate.getDate(), 16, 0, 0).getTime()
+      e.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(thursDate.getFullYear(), thursDate.getMonth(), thursDate.getDate(), 20, 0, 0).getTime()
+      e.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var f = {
+        name: 'Fri',
+        dayOfWeek: friDayWeek,
+        formattedDate: getDayFormatter(friDayWeek),
+        slots: {}
+      }
+
+      var dateSetter = new Date(friDate.getFullYear(), friDate.getMonth(), friDate.getDate(), 8, 0, 0).getTime()
+      f.slots[dateSetter] = 
+      {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(friDate.getFullYear(), friDate.getMonth(), friDate.getDate(), 11, 0, 0).getTime()
+      f.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(friDate.getFullYear(), friDate.getMonth(), friDate.getDate(), 16, 0, 0).getTime()
+      f.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(friDate.getFullYear(), friDate.getMonth(), friDate.getDate(), 20, 0, 0).getTime()
+      f.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var g = {
         name: 'Sat',
         dayOfWeek: satDayWeek,
         // isToday: todayDayOfWeek == satDayWeek,
         // date: satDate.getTime(),
         formattedDate: getDayFormatter(satDayWeek),
-        slots: {
-          0800: {
-            time: '8:00am',
-            date: satDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1100: {
-            time: '11:00am',
-            date: satDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          1600: {
-            time: '4:00pm',
-            date: satDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          },
-          2000: {
-            time: '8:00pm',
-            date: satDate.getTime(),
-            booked: false,
-            trainer: "Mendelson",
-            classFull: false,
-            past: false,
-            spots: 8,
-            spotsTaken: 0,
-          }
-        }
+        slots: {}
+      }
+
+      var dateSetter = new Date(satDate.getFullYear(), satDate.getMonth(), satDate.getDate(), 8, 0, 0).getTime()
+      g.slots[dateSetter] = 
+      {
+        time: '8:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+      
+      var dateSetter = new Date(satDate.getFullYear(), satDate.getMonth(), satDate.getDate(), 11, 0, 0).getTime()
+      g.slots[dateSetter] = 
+      {
+        time: '11:00am',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(satDate.getFullYear(), satDate.getMonth(), satDate.getDate(), 16, 0, 0).getTime()
+      g.slots[dateSetter] = 
+      {
+        time: '4:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
+      }
+
+      var dateSetter = new Date(satDate.getFullYear(), satDate.getMonth(), satDate.getDate(), 20, 0, 0).getTime()
+      g.slots[dateSetter] = 
+      {
+        time: '8:00pm',
+        date: dateSetter,
+        booked: false,
+        trainer: "Mendelson",
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0,
       }
 
       syncObject[sunDate.getTime()] = a

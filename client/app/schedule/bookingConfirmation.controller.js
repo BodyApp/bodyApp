@@ -4,9 +4,17 @@ angular.module('bodyAppApp')
     .controller('BookingConfirmationCtrl', function ($scope, Auth, Schedule, slot, $modalInstance) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
-        
-        $scope.classTime = slot.time
+    
         var date = new Date(slot.date)
+        
+        if (date.getHours() == 12) {
+            $scope.classTime = date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "pm"
+        } else if (date.getHours() == 24) {
+            $scope.classTime = date.getHours()-12 +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "am"
+        } else {
+            $scope.classTime = ((date.getHours() < 13)? date.getHours() : date.getHours()-12) +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + ((date.getHours() < 13)? "am" : "pm")
+        } 
+        
         $scope.day = date.getDate()
         
         // $scope.dayOfWeek;

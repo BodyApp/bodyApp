@@ -73,20 +73,22 @@
         <div class="your-classes col-md-12">
           <h3 class="uppercase text-center mb16">Your Classes</h3>
           <div class="reservations">
-              <table class="reservations-table">
-                <tbody><tr>
-                  <td><span id="dark-text">Intro Class Today Sep 28 at 5pm EST</span></td>
-                  <td><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
-                </tr>
-                <tr>
+              <table class="reservations-table" ng-repeat="day in days">
+                <tbody ng-repeat="slot in day.slots" ng-show="slot.bookedUsers[currentUser._id]">
+                  <tr>
+                    <td><span id="dark-text">{{slot.time}}</span></td>
+                    <td><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
+                  </tr>
+                <!-- <tr>
                   <td><span id="dark-text">Lvl 1 Class Thu Oct 01 at 5pm EST</span></td>
                   <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
                 </tr>
                 <tr>
                   <td><span id="dark-text">Lvl 1 Class Fri Oct 02 at 5pm EST</span></td>
                   <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
-                </tr>                                                       
-              </tbody></table>
+                </tr> -->                                                       
+              </tbody>
+            </table>
           </div>
         </div>
         <!--end of reserved classes-->
