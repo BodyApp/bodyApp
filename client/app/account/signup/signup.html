@@ -140,10 +140,13 @@
               <p class="help-block" ng-show="form.birthday.$error.required && submitted">
                 We need your birthdate!
               </p>
+              <p class="help-block" ng-show="form.birthday.$valid && submitted">
+                Please enter a valid birthday.
+              </p>
               <label id = "birthdayDatefield" for="day">Birthday:</label>
-              <input name="birthday" ng-model="user.birthday.day" id="day" type="tel" maxlength="2" placeholder="DD" required/> /
-              <input name="birthday" ng-model="user.birthday.month" id="month" type="tel" maxlength="2" placeholder="MM" required/> /
-              <input name="birthday" ng-model="user.birthday.year" id="year" type="tel" maxlength="4" placeholder="YYYY" required/>
+              <input name="birthday" ng-model="user.birthday.day" min = "1" max = "31" id="day" type="tel" maxlength="2" placeholder="DD" required/> /
+              <input name="birthday" ng-model="user.birthday.month" id="month" min = "1" max = "12" type="tel" maxlength="2" placeholder="MM" required/> /
+              <input name="birthday" ng-model="user.birthday.year" id="year" min = "1900" max = "2015" type="tel" maxlength="4" placeholder="YYYY" required/>
             </div>  
             <div ng-class="{ 'has-success': form.gender.$valid && submitted, 'has-error': form.gender.$invalid && submitted }">
               <p class="help-block" ng-show="form.gender.$error.required && submitted">

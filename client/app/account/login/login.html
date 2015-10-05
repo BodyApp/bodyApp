@@ -2,11 +2,51 @@
 
 <div class="container">
   <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 mt24">
+          <form class="form" name="form" ng-submit="login(form)" novalidate>
+            
+            <div>
+              <!-- <label>Email</label> -->
+              <input id="dark-text" type="text" name="email" class="form-control" ng-model="user.email" placeholder="Email" required>
+            </div>
+
+            <div>
+              <!-- <label>Password</label> -->
+              <input id="dark-text" type="password" name="password" class="form-control" ng-model="user.password" placeholder="Password" required>
+            </div>
+
+            <div class="form-group has-error">
+              <p class="help-block" ng-show="form.email.$error.required && form.password.$error.required && submitted">
+                 Please enter your email and password.
+              </p>
+              <p class="help-block" ng-show="form.email.$error.email && submitted">
+                 Please enter a valid email.
+              </p>
+
+              <p class="help-block">{{ errors.other }}</p>
+            </div>
+            <div>
+              <button class="btn btn-inverse btn-lg btn-login col-xs-12" type="submit">
+                Login
+              </button>
+            </div>
+          </form>
+          <div class="mt16 text-center">
+            <span id="dark-text">Need to Sign Up? <a href="/signup">Sign Up</a>.</span>
+          </div>                                                    
+      </div>
+      <!-- <div class="col-md-3"></div> -->
+    </div>
+</div>
+
+
+  <!-- <div class="row">
     <div class="col-sm-12">
-      <h1>Login</h1>
+      <h1>Login</h1> -->
       <!-- <p>Accounts are reset on server restart from <code>server/config/seed.js</code>. Default account is <code>test@test.com</code> / <code>test</code></p> -->
       <!-- <p>Admin account is <code>admin@admin.com</code> / <code>admin</code></p> -->
-    </div>
+    <!-- </div>
     <div class="col-sm-12">
       <form class="form" name="form" ng-submit="login(form)" novalidate>
 
@@ -14,9 +54,9 @@
           <label>Email</label>
 
           <input type="email" name="email" class="form-control" ng-model="user.email" required>
-        </div>
+        </div> -->
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Password</label>
 
           <input type="password" name="password" class="form-control" ng-model="user.password" required>
@@ -40,7 +80,7 @@
           <a class="btn btn-default btn-lg btn-register" href="/signup">
             Register
           </a>
-        </div>
+        </div> -->
 
         <!-- <hr> -->
 <!--         <div>
