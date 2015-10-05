@@ -32,7 +32,7 @@
 <div class="nav-bar" style="margin-bottom: 40px;"ng-controller="NavbarCtrl">
   <div class="module left">
       <a href="index.html">
-          <img class="logo logo-dark" alt="Body" src="../assets/images/BodyLogo_blue_small.png">
+          <img class="logo logo-dark" ng-style="logoStyle" alt="Body" ng-mouseover="hover(this); logoStyle={'background-color':'#0D1C45'}" ng-mouseleave = "unhover(this);" ng-src={{imageSrc}}>
       </a>
   </div>
   <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
@@ -58,4 +58,4 @@
       </div>
   </div>
                 
-            </div>
+</div>

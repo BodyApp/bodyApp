@@ -26,6 +26,19 @@ angular.module('bodyAppApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
+    $scope.logoStyle = {"background-color": "white"};
+    $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
+
+    $scope.hover = function(element) {
+      $scope.imageSrc = "../assets/images/BodyLogo_white_small.png";
+      // $scope.logoStyle = {"background-color": "black"};
+    }
+
+    $scope.unhover = function(element) {
+      $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png";
+      $scope.logoStyle = {"background-color": "white"};
+    }
+
     $scope.logout = function() {
       Auth.logout();
       $location.path('/login');
