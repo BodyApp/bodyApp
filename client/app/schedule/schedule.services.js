@@ -43,7 +43,7 @@ angular.module('bodyAppApp')
 	          if (slot <= (todayDate.getTime() - 15*60*1000)) {
 	            weekRef.child(day).child("slots").child(slot).update({past: true})
 	            //Is it time for one of your classes?!  Can join 15 minutes before or up to 15 minutes into class
-	          } else if ((slot - (todayDate.getTime() - 15*60*1000) <= 15 || slot - todayDate.getHours()*100 >= -15) && currentWeek[day].slots[slot].bookedUsers && currentWeek[day].slots[slot].bookedUsers[currentUser._id]) {
+	          } else if ((slot - (todayDate.getTime() - 15*60*1000) <= 15 || slot - todayDate.getTime() >= -15*60*1000) && currentWeek[day].slots[slot].bookedUsers && currentWeek[day].slots[slot].bookedUsers[currentUser._id]) {
 	          	service.classInNext30Mins = currentWeek[day].slots[slot]
 	          	service.userHasClassNow = true;
 			      } else {

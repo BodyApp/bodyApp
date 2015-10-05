@@ -76,8 +76,9 @@
               <table class="reservations-table" ng-repeat="day in days">
                 <tbody ng-repeat="slot in day.slots" ng-show="slot.bookedUsers[currentUser._id]">
                   <tr>
-                    <td><span id="dark-text">{{slot.time}}</span></td>
-                    <td><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
+                    <td><span id="dark-text" ng-if="slot.bookedUsers[currentUser._id]">Lvl 1 Class {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span></td>
+                    <td ng-if = "canJoinClass(slot)"><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
+                    <td ng-if = "!canJoinClass(slot)"><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
                   </tr>
                 <!-- <tr>
                   <td><span id="dark-text">Lvl 1 Class Thu Oct 01 at 5pm EST</span></td>
