@@ -58,6 +58,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: sunDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -67,6 +68,7 @@ angular.module('bodyAppApp')
           },
           1100: {
             time: '11:00am',
+            date: sunDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -76,6 +78,7 @@ angular.module('bodyAppApp')
           },
           1600: {
             time: '4:00pm',
+            date: sunDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -85,6 +88,7 @@ angular.module('bodyAppApp')
           },
           2000: {
             time: '8:00pm',
+            date: sunDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -105,6 +109,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: monDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -115,6 +120,7 @@ angular.module('bodyAppApp')
           },
           1100: {
             time: '11:00am',
+            date: monDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -124,6 +130,7 @@ angular.module('bodyAppApp')
           },
           1600: {
             time: '4:00pm',
+            date: monDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -133,6 +140,7 @@ angular.module('bodyAppApp')
           },
           2000: {
             time: '8:00pm',
+            date: monDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -204,6 +212,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: wedDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -213,6 +222,7 @@ angular.module('bodyAppApp')
           },
           1100: {
             time: '11:00am',
+            date: wedDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -222,6 +232,7 @@ angular.module('bodyAppApp')
           },
           1600: {
             time: '4:00pm',
+            date: wedDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -231,6 +242,7 @@ angular.module('bodyAppApp')
           },
           1815: {
             time: '6:15pm',
+            date: wedDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -251,6 +263,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: thursDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -260,6 +273,7 @@ angular.module('bodyAppApp')
           },
           1100: {
             time: '11:00am',
+            date: thursDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -269,6 +283,7 @@ angular.module('bodyAppApp')
           },
           1600: {
             time: '4:00pm',
+            date: thursDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -278,6 +293,7 @@ angular.module('bodyAppApp')
           },
           2000: {
             time: '8:00pm',
+            date: thursDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -298,6 +314,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: friDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -307,6 +324,7 @@ angular.module('bodyAppApp')
           },
           1100: {
             time: '11:00am',
+            date: friDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -316,6 +334,7 @@ angular.module('bodyAppApp')
           },
           1600: {
             time: '4:00pm',
+            date: friDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -325,6 +344,7 @@ angular.module('bodyAppApp')
           },
           2000: {
             time: '8:00pm',
+            date: friDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -345,6 +365,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: satDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -354,6 +375,7 @@ angular.module('bodyAppApp')
           },
           1100: {
             time: '11:00am',
+            date: satDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -363,6 +385,7 @@ angular.module('bodyAppApp')
           },
           1600: {
             time: '4:00pm',
+            date: satDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -372,6 +395,7 @@ angular.module('bodyAppApp')
           },
           2000: {
             time: '8:00pm',
+            date: satDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,

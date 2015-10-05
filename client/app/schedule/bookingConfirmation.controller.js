@@ -8,8 +8,8 @@ angular.module('bodyAppApp')
         $scope.classTime = slot.time
         var date = new Date(slot.date)
         $scope.day = date.getDate()
-        $scope.month = date.getMonth()
-        $scope.dayOfWeek;
+        
+        // $scope.dayOfWeek;
         
         switch (date.getDay()) {
             case 0: $scope.dayOfWeek = "Sunday"; break;
@@ -22,4 +22,19 @@ angular.module('bodyAppApp')
             default: break;
         }
 
+        var month = new Array();
+        month[1] = "Jan";
+        month[2] = "Feb";
+        month[3] = "Mar";
+        month[4] = "Apr";
+        month[5] = "May";
+        month[6] = "Jun";
+        month[7] = "Jul";
+        month[8] = "Aug";
+        month[9] = "Sept";
+        month[10] = "Oct";
+        month[11] = "Nov";
+        month[12] = "Dec";
+
+        $scope.month = month[date.getMonth()]
     })
