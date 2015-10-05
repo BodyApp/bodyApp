@@ -35,7 +35,6 @@ angular.module('bodyAppApp')
 
       var sunDate = new Date();
       sunDate.setDate(todayDate.getDate() + sunDayWeek - todayDayOfWeek);
-      console.log(sunDate.toJSON())
       var monDate = new Date();
       monDate.setDate(todayDate.getDate() + monDayWeek - todayDayOfWeek);
       var tuesDate = new Date();
@@ -154,6 +153,7 @@ angular.module('bodyAppApp')
         slots: {
           0800: {
             time: '8:00am',
+            date: tuesDate.getTime(),
             booked: false,
             trainer: "Mendelson",
             classFull: false,
@@ -164,6 +164,7 @@ angular.module('bodyAppApp')
           1100: {
             time: '11:00am',
             booked: false,
+            date: tuesDate.getTime(),
             trainer: "Mendelson",
             classFull: false,
             past: false,
@@ -173,6 +174,7 @@ angular.module('bodyAppApp')
           1600: {
             time: '4:00pm',
             booked: false,
+            date: tuesDate.getTime(),
             trainer: "Mendelson",
             classFull: false,
             past: false,
@@ -182,6 +184,7 @@ angular.module('bodyAppApp')
           2000: {
             time: '8:00pm',
             booked: false,
+            date: tuesDate.getTime(),
             trainer: "Mendelson",
             classFull: false,
             past: false,

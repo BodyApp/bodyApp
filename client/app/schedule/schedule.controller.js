@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)
@@ -29,6 +29,27 @@ angular.module('bodyAppApp')
         $scope.goToConsumerVideo = function() {
             $location.path('/consumervideo')
         }
+
+
+        $scope.openBookingConfirmation = function (slot) {
+            var modalInstance = $modal.open({
+              animation: true,
+              templateUrl: 'app/schedule/bookingConfirmation.html',
+              controller: 'BookingConfirmationCtrl',
+              // size: size,
+              resolve: {
+                slot: function () {
+                  return slot;
+                }
+              }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+              $scope.selected = selectedItem;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
     })
 
     //Currently unused

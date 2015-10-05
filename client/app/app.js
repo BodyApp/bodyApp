@@ -7,7 +7,7 @@ angular.module('bodyAppApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'firebase'
+  'firebase',
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
