@@ -6,6 +6,12 @@ angular.module('bodyAppApp')
         $scope.currentUser = currentUser;
     
         var date = new Date(slot.date)
+        // $scope.calendarDateSetter = "20150704T210000"
+        // $scope.calendarDateSetterEnd = "20150704T220000"
+        //Formatting for calendar appointment setting
+        $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+date.getMonth()+1:date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+date.getMonth()+1:date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+1+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        $scope.scheduledClass = slot
         
         if (date.getHours() == 12) {
             $scope.classTime = date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "pm"

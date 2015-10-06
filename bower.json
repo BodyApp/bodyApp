@@ -18,7 +18,10 @@
     "socket.io-client" : "0.9.0",
     "easyrtc": "*",
     "firebase": "*",
-    "angularfire": "*"
+    "angularfire": "*",
+    "angular-addtocalendar": "*",
+    "ics.js": "~0.1.3",
+    "FileSaver": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

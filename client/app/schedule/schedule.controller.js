@@ -74,7 +74,7 @@ angular.module('bodyAppApp')
             month[12] = "Dec";
 
             formatted.month = month[newDate.getMonth()]    
-            console.log(formatted);       
+            // console.log(formatted);       
             return formatted;
         }
 
