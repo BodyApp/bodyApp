@@ -106,6 +106,10 @@
 	width: 110px;
 }
 
+.join-class {
+	width: 150px;
+}
+
 .hovering {
 	background: #5E6E99 !important;
 	border: none;
