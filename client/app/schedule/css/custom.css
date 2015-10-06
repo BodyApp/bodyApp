@@ -91,7 +91,7 @@
 }
 
 .reservations {
-	padding-left: 25%;
+	padding-left: 15%;
 }
 
 .reservations-table {
@@ -103,11 +103,21 @@
 }
 
 .reserved-class {
-	min-width: 100px;
+	width: 110px;
+}
+
+.hovering {
+	background: #5E6E99 !important;
+	border: none;
 }
 
 .start-class {
 	background: #FF6700 !important;
+	border: none;
+}
+
+.startClassHovering {
+	background: #D45600 !important;
 	border: none;
 }
 

@@ -33,44 +33,44 @@
                 <ul class="content">
                   <li ng-class="{active: firstActive}">
                     <div class="tab-content">
-                                <!--Strength movements-->
-                                <h5 class="bold uppercase mb16">Strength</h5>
-                                <p id="dark-text">Yoga Pushups 12-12-12-12</p>
-                                
-                                <!--WOD movements-->
-                                <h5 class="bold uppercase mb8">Workout</h5>
-                                <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                                <p id="dark-text" class="mb0">8 Air Squats</p>
-                                <p id="dark-text" class="mb0">15 Burpees</p>
-                                <p id="dark-text" class="mb0">10 V-Ups</p>
+                      <!--Strength movements-->
+                      <h5 class="bold uppercase mb16">Strength</h5>
+                      <p id="dark-text">Yoga Pushups 12-12-12-12</p>
+                      
+                      <!--WOD movements-->
+                      <h5 class="bold uppercase mb8">Workout</h5>
+                      <h6 class="mb16"><i>3 Rounds for Time</i></h6>
+                      <p id="dark-text" class="mb0">8 Air Squats</p>
+                      <p id="dark-text" class="mb0">15 Burpees</p>
+                      <p id="dark-text" class="mb0">10 V-Ups</p>
                     </div>
                   </li>
                   <li ng-class="{active: secondActive}">
                     <div class="tab-content">
-                                <!--Strength movements-->
-                                <h5 class="bold uppercase mb16">Strength</h5>
-                                <p id="dark-text">Power Snatch 12-12-12-12</p>
-                                
-                                <!--WOD movements-->
-                                <h5 class="bold uppercase mb8">Workout</h5>
-                                <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                                <p id="dark-text" class="mb0">12 Air Squats</p>
-                                <p id="dark-text" class="mb0">25 Burpees</p>
-                                <p id="dark-text" class="mb0">10 V-Ups</p>
+                      <!--Strength movements-->
+                      <h5 class="bold uppercase mb16">Strength</h5>
+                      <p id="dark-text">Power Snatch 12-12-12-12</p>
+                      
+                      <!--WOD movements-->
+                      <h5 class="bold uppercase mb8">Workout</h5>
+                      <h6 class="mb16"><i>3 Rounds for Time</i></h6>
+                      <p id="dark-text" class="mb0">12 Air Squats</p>
+                      <p id="dark-text" class="mb0">25 Burpees</p>
+                      <p id="dark-text" class="mb0">10 V-Ups</p>
                     </div>
                   </li>
                   <li ng-class="{active: thirdActive}">
                     <div class="tab-content">
-                                <!--Strength movements-->
-                                <h5 class="bold uppercase mb16">Strength</h5>
-                                <p id="dark-text">Power Snatch 12-12-12-12</p>
-                                
-                                <!--WOD movements-->
-                                <h5 class="bold uppercase mb8">Workout</h5>
-                                <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                                <p id="dark-text" class="mb0">12 Air Squats</p>
-                                <p id="dark-text" class="mb0">25 Burpees</p>
-                                <p id="dark-text" class="mb0">10 V-Ups</p>
+                      <!--Strength movements-->
+                      <h5 class="bold uppercase mb16">Strength</h5>
+                      <p id="dark-text">Power Snatch 12-12-12-12</p>
+                      
+                      <!--WOD movements-->
+                      <h5 class="bold uppercase mb8">Workout</h5>
+                      <h6 class="mb16"><i>3 Rounds for Time</i></h6>
+                      <p id="dark-text" class="mb0">12 Air Squats</p>
+                      <p id="dark-text" class="mb0">25 Burpees</p>
+                      <p id="dark-text" class="mb0">10 V-Ups</p>
                     </div>
                   </li>
                 </ul>
@@ -86,19 +86,17 @@
           <div class="reservations">
               <table class="reservations-table" ng-repeat="day in days">
                 <tbody ng-repeat="slot in day.slots" ng-show="slot.bookedUsers[currentUser._id] && !slot.past">
-                  <tr>
-                    <td><span id="dark-text" ng-if="slot.bookedUsers[currentUser._id]">Lvl 1 Class {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span></td>
-                    <td ng-if = "canJoinClass(slot)"><a class="btn btn-filled btn-sm reserved-class start-class" href="#">JOIN NOW</a></td>
-                    <td ng-if = "!canJoinClass(slot)"><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
+                  <tr ng-if="slot.bookedUsers[currentUser._id]">
+                    <td class = "col-md-9">
+                      <span id="dark-text" >Lvl 1 {{slot.trainer}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
+                    </td>
+                    <td class = "col-md-3" ng-if = "canJoinClass(slot)">
+                      <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">JOIN NOW</a>
+                    </td>
+                    <td class = "col-md-3" ng-if = "!canJoinClass(slot)">
+                      <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a>
+                    </td>
                   </tr>
-                <!-- <tr>
-                  <td><span id="dark-text">Lvl 1 Class Thu Oct 01 at 5pm EST</span></td>
-                  <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
-                </tr>
-                <tr>
-                  <td><span id="dark-text">Lvl 1 Class Fri Oct 02 at 5pm EST</span></td>
-                  <td><a class="btn btn-filled btn-sm reserved-class" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a></td>
-                </tr> -->                                                       
               </tbody>
             </table>
           </div>
