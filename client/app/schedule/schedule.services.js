@@ -5,6 +5,7 @@ angular.module('bodyAppApp')
   	var currentUser;
   	service.classInNext30Mins;
   	service.userHasClassNow = false;
+  	service.classUserJustJoined;
 
   	service.setCurrentUser = function(user) {
   		currentUser = user
@@ -16,6 +17,10 @@ angular.module('bodyAppApp')
 
   	service.returnUserHasClassNow = function() {
   		return service.userHasClassNow;	
+  	}
+
+  	service.setClassUserJustJoined = function(classJoined) {
+  		service.classUserJustJoined = classJoined
   	}
 
   	service.setFirebaseObject = function(weekRef) {

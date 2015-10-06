@@ -14,5 +14,11 @@ angular.module('bodyAppApp')
         templateUrl: 'app/video/trainer_video.html',
         controller: 'TrainerVideoCtrl',
         authenticate: true
+      })
+      .state('classStarting', {
+        url: '/classstarting',
+        templateUrl: 'app/video/classStarting.html',
+        controller: 'ClassStartingCtrl',
+        authenticate: true
       });
   })

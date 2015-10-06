@@ -122,6 +122,10 @@ angular.module('bodyAppApp')
                 default: break
             }
         }
+
+        $scope.setClassUserJustJoined = function(classJoined) {
+            Schedule.setClassUserJustJoined(classJoined);
+        }
     })
 
     //Currently unused
