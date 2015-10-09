@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)

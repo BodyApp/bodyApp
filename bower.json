@@ -21,7 +21,8 @@
     "angularfire": "*",
     "angular-addtocalendar": "*",
     "ics.js": "~0.1.3",
-    "FileSaver": "*"
+    "FileSaver": "*",
+    "jstz": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

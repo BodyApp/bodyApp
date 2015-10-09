@@ -5,23 +5,23 @@
             <h4 class="lead mb12" style = "color: #ffffff;"><i>{{dayOfWeek}}, {{month}} {{day}} at {{classTime}} ET</i></h4>
         </div>
     </div>
-    <div class = "row">
+    <div class = "row mb32">
     	<div class = "col-sm-4"></div>
-    	
 			<addtocalendar
 			    start-date= "{{calendarDateSetter}}"
 			    end-date="{{calendarDateSetterEnd}}"
 			    title="Body App Class"
 			    location="http://getbodyapp.com/schedule"
+			    timezone="{{timeZone}}"
 			    class-name="btn btn-sm btn-default dropdown-toggle"
 			    description="Get fired up!  You've got a Body Class reserved."
-			    btn-text="Add to calendar"
+			    btn-text="Add to calendar"			    
 			></addtocalendar>
 		</div>
     <div class="row">
     	<div class="col-md-1"></div>
         <div class="col-md-10 text-center">
-            <p>We’ve sent you an email confirming your reservation information as well as a unique URL which you can use to join the class. If you have any questions, check our <a href="#" style = "color: #FF6700;">FAQ page</a> or shoot us an email at <a href="#" style = "color: #FF6700;">support@getbodyapp.com</a>.</p>
+            <p>Please add the class to your calendar by clicking above.  It includes a unique URL, which you can use to join the class. If you have any questions, check our <a href="#" style = "color: #FF6700;">FAQ page</a> or shoot us an email at <a href="#" style = "color: #FF6700;">support@getbodyapp.com</a>.</p>
         </div>
         <div class="col-md-1"></div>
     </div>
