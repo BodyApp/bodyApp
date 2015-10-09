@@ -1681,7 +1681,9 @@ textarea {
 input[type="text"],
 textarea,
 select,
-input[type="password"] {
+input[type="password"],
+.textInput,
+input[type="signupText"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -1708,7 +1710,9 @@ input[type="password"] {
   cursor: default;
 }
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+.textInput,
+input[type="signupText"] {
   background: #f5f5f5;
   border: none;
   width: 100%;
@@ -1731,7 +1735,9 @@ input.transparent {
   color: #fff !important	;
 }
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+.textInput,
+input[type="signupText"]:focus {
   outline: 1px solid #ccc;
 }
 textarea {
