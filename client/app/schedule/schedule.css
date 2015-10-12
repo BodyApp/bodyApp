@@ -56,14 +56,14 @@ h5.dateTitles {
 
 /* if the label is booked */
 .time-slot input:checked ~ label { 
-  background:#5ED5D5; 
+  background:#0D1C45; 
   cursor:not-allowed;
   animation:flashBooked 1.0s ease; 
 }
 
 /* if the label is available */
 .time-slot input:not(:checked) ~ label { 
-  background:#BCDDDD; 
+  background:#8C98B9; 
   animation:flashAvailable 1.0s ease; 
 }
 
@@ -76,21 +76,21 @@ h5.dateTitles {
 
 /* animation for the time slot for available */
 @keyframes flashAvailable {
-  0%    { background:#BCDDDD; transform:scale(1); }
-  50%   { background:#5ED5D5; transform:scale(1.25); }
-  100%  { background:#BCDDDD; transform:scale(1); }
+  0%    { background:#8C98B9; transform:scale(1); }
+  50%   { background:#0D1C45; transform:scale(1.25); }
+  100%  { background:#8C98B9; transform:scale(1); }
 }
 
 /* animation for the time slot for booked */
 @keyframes flashBooked {
-  0%    { background:#BCDDDD; transform:scale(1); }
-  50%   { background:#1DAAAA; transform:scale(1.25); }
-  100%  { background:#5ED5D5; transform:scale(1); }
+  0%    { background:#8C98B9; transform:scale(1); }
+  50%   { background:#5E6E99; transform:scale(1.25); }
+  100%  { background:#0D1C45; transform:scale(1); }
 }
 
 /* animation for the time slot for past or full */
 @keyframes flashUnavailable {
-  0%    { background:#BCDDDD; transform:scale(1); }
-  50%   { background:#445A8D; transform:scale(1.25); }
+  0%    { background:#8C98B9; transform:scale(1); }
+  50%   { background:#5E6E99; transform:scale(1.25); }
   100%  { background:#C8D1E5; transform:scale(1); }
 }

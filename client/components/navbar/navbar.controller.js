@@ -25,6 +25,7 @@ angular.module('bodyAppApp')
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
+    console.log($scope.getCurrentUser())
 
     $scope.logoStyle = {"background-color": "white"};
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
