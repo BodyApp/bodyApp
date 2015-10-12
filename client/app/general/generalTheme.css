@@ -757,6 +757,7 @@ footer.bg-dark li,
   height: 50px;
   line-height: 46px;
   min-width: 200px;
+  padding: 0 10px;
 }
 .btn-icon.btn-lg {
   width: 50px;
@@ -778,6 +779,7 @@ footer.bg-dark li,
   font-size: 11px;
   line-height: 27px;
   min-width: 0;
+  padding: 0px 10px;
 }
 .btn-filled {
   background: #0d1c45;
@@ -2180,7 +2182,7 @@ form iframe.mail-list-form {
   margin-right: 0;
 }
 .button-tabs .tab-title {
-  padding: 10px 10px 10px 30px;
+  padding: 6px 15px 6px 15px;
   display: inline-block;
   background: #f5f5f5;
   color: #1f1f1f;

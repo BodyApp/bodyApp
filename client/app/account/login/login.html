@@ -1,9 +1,14 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container">
+<div class="container full-screen-height">
+  <div class = "row">
+    <div class = "col-sm-12 text-center mt32">
+      <span id="dark-text">Login with your email address</span>
+    </div>
+  </div>
   <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-6 mt24">
+      <div class="col-md-4"></div>
+      <div class="col-md-4 mt24">
           <form class="form" name="form" ng-submit="login(form)" novalidate>
             
             <div>
@@ -26,17 +31,17 @@
 
               <p class="help-block">{{ errors.other }}</p>
             </div>
-            <div>
-              <button class="btn btn-inverse btn-lg btn-login col-xs-12" type="submit">
+            <div class="text-center">
+              <button class="btn btn-inverse btn-lg btn-login btn-full" type="submit">
                 Login
               </button>
             </div>
           </form>
           <div class="mt16 text-center">
-            <span id="dark-text">Need to Sign Up? <a href="/signup">Sign Up</a>.</span>
+            <span id="dark-text">Don't have an account yet? <a href="/signup">Sign Up</a>.</span>
           </div>                                                    
       </div>
-      <!-- <div class="col-md-3"></div> -->
+      <div class="col-md-4"></div>
     </div>
 </div>
 
@@ -97,7 +102,7 @@
       </form>
     </div>
   </div>
-  <br>
-  <hr>  
+  <!-- <br>
+  <hr>   -->
 </div>
-<!-- <div ng-include="'components/footer/footer.html'"></div> -->
+<div ng-include="'components/footer/footer.html'"></div>

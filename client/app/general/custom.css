@@ -129,6 +129,10 @@
 	width: 49% !important;
 }
 
+.btn-full {
+	width: 100% !important;
+}
+
 .settings-title {
 	width: 1800px;
 }
@@ -136,4 +140,21 @@
 .post-workout-results {
 	height: 300px !important;
 	padding-bottom: 250px;
+}
+
+.disclaimer {
+	font-size: 12px;
+	line-height: 10px;
+}
+
+.footer-text {
+	font-size: 12px;
+}
+
+.full-screen-height {
+	height: 100vh;	
+}
+
+.video-screen-height {
+		height: 100vh;
 }

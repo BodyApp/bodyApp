@@ -84,16 +84,16 @@
 
 
   <div class="container">
-    <!-- <div class="row"> -->
-      <!-- <div class="col-sm-12 text-center"> -->
+    <div class="row">
+      <div class="col-sm-12 text-center mt32">
         <!-- <a id="fb-btn" class="btn btn-filled btn-lg mb48" href="#"><i class="ti-facebook"></i>&nbsp;Sign Up with Facebook</a> -->
         <!-- <hr style="width: 40%; margin-left: 30%;"> -->
-        <!-- <span id="dark-text">Or sign up with your email address</span> -->
-      <!-- </div> -->
-    <!-- </div> -->
+        <span id="dark-text">Sign up with your email address</span>
+      </div>
+    </div>
     <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-6 mt24">
+      <div class="col-md-4"></div>
+      <div class="col-md-4 mt24">
           <form class="form" name="form" ng-submit="register(form)" novalidate>
             <div>
               <span ng-class="{ 'has-success': form.firstName.$valid && submitted, 'has-error': form.firstName.$invalid && submitted }">
@@ -155,18 +155,20 @@
               <input type="radio" name="gender" ng-model="user.gender" value="male" required><span id="dark-text">&nbsp;&nbsp;Male&nbsp;&nbsp;</span><input type="radio" name="gender" value="female" ng-model="user.gender" required><span id="dark-text">&nbsp;&nbsp;Female&nbsp;&nbsp;</span><br>
             </div>
             <div class="mt24 mb24 text-center">
-              <span id="dark-text">By clicking sign up you agree to BODY's <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</span>
+              <span id="dark-text" class = "disclaimer">By clicking sign up you agree to BODY's <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</span>
             </div>
-            <!-- <input type="submit" value="Update Settings" /> -->
-            <button class=" col-xs-12 btn btn-inverse btn-lg btn-login" type="submit">
-              Sign up
-            </button>
+            <div class = "text-center">
+              <!-- <input type="submit" value="Update Settings" /> -->
+              <button class="btn btn-inverse btn-lg btn-login btn-full" type="submit">
+                Sign up
+              </button>
+          </div>
           </form>
             <div class="mt16 text-center">
               <span id="dark-text">Already have an account? <a href="/login">Log in</a>.</span>
             </div>                                                    
       </div>
-      <div class="col-md-3"></div>
+      <div class="col-md-4"></div>
     </div>
   </div>
 </div>

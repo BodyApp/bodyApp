@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-      <div class="col-md-3 page-sidebar-left">
+      <div class="col-md-3 page-sidebar-left full-screen-height">
       <!--left sidebar-->
         <h3 class="uppercase text-center mb8 mt8">Daily Wod</h3>
         <h5 id="blue" class="text-center bold mb0"><i>WINTER IS COMING</i></h5>
@@ -106,10 +106,12 @@
         <!--schedule-->
         <div class="col-md-12">
           <h3 class="uppercase text-center mt32">Class Schedule</h3>
-          <label class = "col-xs-12 col-sm-12 col-md-12 col-lg-12 showAvailableClassesLabel">
-            <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
-            <span style = "color:black">Only show available classes</span>
-          </label>
+          <div class = "text-center">
+            <label class = "showAvailableClassesLabel">
+              <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
+              <span style = "color:black">Only show available classes</span>
+            </label>
+          </div>
           <div class="row times container-fluid">
             <!-- <div class = "col-xs-4 col-md-5 col-lg-5" ></div> -->
             
