@@ -4,9 +4,9 @@
     <div class="row">
       <div class="col-md-3 page-sidebar-left full-screen-height">
       <!--left sidebar-->
-        <h3 class="uppercase text-center mb8 mt8">Daily Wod</h3>
+        <h3 class="uppercase text-center mb8 mt8">Today's Workout</h3>
         <h5 id="blue" class="text-center bold mb0"><i>WINTER IS COMING</i></h5>
-        <h5 class="text-center mb32"><i>Wednesday Sep 30</i></h5>
+        <h5 class="text-center mb32"><i>{{getFormattedDateTime(nil, true).dayOfWeek}} {{getFormattedDateTime(nil, true).month}} {{getFormattedDateTime(nil, true).day}}, {{getFormattedDateTime(nil, true).year}}</i></h5>
 
         <!--WOD tabs-->
                 <div class="tabbed-content button-tabs text-center">

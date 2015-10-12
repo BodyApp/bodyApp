@@ -11,6 +11,8 @@ angular.module('bodyAppApp')
         $scope.availableClasses = true;
         $scope.userClassToJoin = Schedule.classInNext30Mins;
         $scope.userHasClassNow = false;
+        var todayDate = new Date();
+        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate()
 
         $scope.myBookedClasses;
 
@@ -28,7 +30,9 @@ angular.module('bodyAppApp')
             }
         );
 
-        $scope.getFormattedDateTime = function(slot) {
+        $scope.getFormattedDateTime = function(slot, noToday) {
+            slot = slot || {}
+            slot.date = slot.date || new Date()
             var newDate = new Date(slot.date);
             var formatted = {}
 
@@ -41,6 +45,7 @@ angular.module('bodyAppApp')
             } 
             
             formatted.day = newDate.getDate();
+            formatted.year = newDate.getFullYear();
             
             // $scope.dayOfWeek;
             
@@ -55,7 +60,7 @@ angular.module('bodyAppApp')
                 default: break;
             }
 
-            if (newDate.getDay() == new Date().getDay()) {
+            if (newDate.getDay() == new Date().getDay() && !noToday) {
                 formatted.dayOfWeek = "Today"
             }
 
