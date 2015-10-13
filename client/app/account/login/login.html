@@ -3,6 +3,16 @@
 
 
 <div class="container full-screen-height">
+  <tour step="currentStep">
+    <span tourtip="tip 1"> Highlighted </span>
+    <span tourtip="tip 2"> Elements </span>
+    <!-- <input tourtip="You can use it as an attribute on your element" /> -->
+    <span tourtip="Full options"
+          tourtip-step="3"
+          tourtip-next-label="Next"
+          tourtip-placement="right"
+          tourtip-offset="60">Full options</span>
+  </tour>
   <div class = "row">
     <div class = "col-sm-12 text-center mt32">
       <span id="dark-text" ng-mouseover ="openTour()">Login with your email address</span>

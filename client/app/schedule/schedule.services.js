@@ -6,14 +6,9 @@ angular.module('bodyAppApp')
   	service.classInNext30Mins;
   	service.userHasClassNow = false;
   	service.classUserJustJoined;
-  	service.daysFromFirebase;
 
   	service.setCurrentUser = function(user) {
   		currentUser = user
-  	}
-
-  	service.getDaysFromFirebase = function() {
-  		return service.daysFromFirebase;
   	}
 
   	service.returnClassInNext30Mins = function(){
@@ -34,7 +29,6 @@ angular.module('bodyAppApp')
 
 	    weekRef.on("value", function(snapshot) {
 	    	checkDates(snapshot.val(), weekRef);
-	    	daysFromFirebase = snapshot.val()
 	    })
 
 			return $firebaseObject(weekRef);

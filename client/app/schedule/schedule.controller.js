@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log, ipCookie) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)
@@ -36,7 +36,7 @@ angular.module('bodyAppApp')
                 return true
             } else {
                 if (hasSelectedClassThatCanJoin === false) {
-                    console.log("and here")
+                    // console.log("and here")
                     $scope.currentStep = 0;
                 }
                 return false;
@@ -131,7 +131,7 @@ angular.module('bodyAppApp')
                 return true;
             } else {
                 if (hasSelectedClassThatCanJoin === false) {
-                    console.log("here")
+                    // console.log("here")
                     $scope.currentStep = 0;
                 }
                 return false;
@@ -180,7 +180,8 @@ angular.module('bodyAppApp')
         }
 
         // load cookie, or start new tour
-        $scope.currentStep = ipCookie('dashboardTour') || 0;
+        // $scope.currentStep = ipCookie('dashboardTour') || 0;
+        $scope.currentStep = 0;
 
         $scope.checkIfSelectedRightClass = function() {
             $scope.currentStep = 0

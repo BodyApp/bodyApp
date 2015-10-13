@@ -1,7 +1,8 @@
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
 
-<tour step="currentStep">
+
 <div class="container">
+
     <div class="row">
       <div class="col-md-3 page-sidebar-left full-screen-height">
       <!--left sidebar-->
@@ -79,7 +80,7 @@
                 <!--end of button tabs-->
       </div>
       <!--end of left sidebar-->
-
+    <tour step="currentStep">
       <div class="col-md-9">
         <!--reserved classes-->
         <div class="your-classes col-md-12">
@@ -120,9 +121,6 @@
           <div class = "text-center">
             <label class = "showAvailableClassesLabel">
                 <span tourtip-step = "0"
-                    post-step="checkIfSelectedRightClass()"
-                    tour-complete="tourComplete()"
-                    post-tour="tourEnded()"
                     tourtip="Choose a {{dayOfWeekToday}} Class!  This is a basic, real-time iteration of the BODY schedule.  Book a Class By Selecting a Class Time.  You will have the option to add the class to a calendar and/or invite friends to join you." 
                     tourtip-next-label="Choose a {{dayOfWeekToday}} class!"
                     tourtip-placement="left"    

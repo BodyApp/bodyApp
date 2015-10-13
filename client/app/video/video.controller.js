@@ -1,12 +1,19 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, Auth, $state, ipCookie) {
+  .controller('ConsumerVideoCtrl', function ($scope, Auth, $state) {
   	$scope.$on('$locationChangeStart', function( event ) {
-	    easyrtc.disconnect()
+			easyrtc.disconnect()
+			easyrtc.webSocket.disconnect() 
+			easyrtc.hangupAll()
 		});
 
-		setTimeout(function(){ $state.go("results"); }, 20000);
+		setTimeout(function(){ 
+			$state.go("results");
+			easyrtc.disconnect()
+			easyrtc.webSocket.disconnect() 
+			easyrtc.hangupAll()
+		}, 20000);
 
   	var maxCALLERS = 10;
 		// var numVideoOBJS = maxCALLERS+1;
@@ -49,36 +56,36 @@ angular.module('bodyAppApp')
 		}
 
 		function callEverybodyElse(roomName, otherPeople) {
-	    easyrtc.setRoomOccupantListener(null); // so we're only called once.
+	    // easyrtc.setRoomOccupantListener(null); // so we're only called once.
 
-	    var list = [];
-	    var connectCount = 0;
-	    for(var easyrtcid in otherPeople ) {
-	        list.push(easyrtcid);
-	    }
+	    // var list = [];
+	    // var connectCount = 0;
+	    // for(var easyrtcid in otherPeople ) {
+	    //     list.push(easyrtcid);
+	    // }
 	    //
 	    // Connect in reverse order. Latter arriving people are more likely to have
 	    // empty slots.
 	    //
-	    function establishConnection(position) {
-	        function callSuccess() {
-	            connectCount++;
-	            if( connectCount < maxCALLERS && position > 0) {
-	                establishConnection(position-1);
-	            }
-	        }
-	        function callFailure(errorCode, errorText) {
-	            easyrtc.showError(errorCode, errorText);
-	            if( connectCount < maxCALLERS && position > 0) {
-	                establishConnection(position-1);
-	            }
-	        }
-	        easyrtc.call(list[position], callSuccess, callFailure);
+	    // function establishConnection(position) {
+	    //     function callSuccess() {
+	    //         connectCount++;
+	    //         if( connectCount < maxCALLERS && position > 0) {
+	    //             establishConnection(position-1);
+	    //         }
+	    //     }
+	        // function callFailure(errorCode, errorText) {
+	        //     easyrtc.showError(errorCode, errorText);
+	        //     if( connectCount < maxCALLERS && position > 0) {
+	        //         establishConnection(position-1);
+	        //     }
+	        // }
+	        // easyrtc.call(list[position], callSuccess, callFailure);
 
-	    }
-	    if( list.length > 0) {
-	        establishConnection(list.length-1);
-	    }
+	    // }
+	    // if( list.length > 0) {
+	    //     establishConnection(list.length-1);
+	    // }
 		}
 
 
@@ -86,16 +93,16 @@ angular.module('bodyAppApp')
 		    // expandThumb(0);  // expand the mirror image initially.
 		}
 
-		function messageListener(easyrtcid, msgType, content) {
-		    for(var i = 0; i < maxCALLERS; i++) {
-		        if( easyrtc.getIthCaller(i) === easyrtcid) {
-		            var startArea = document.getElementById(getIdOfBox(i+1));
-		            var startX = parseInt(startArea.offsetLeft) + parseInt(startArea.offsetWidth)/2;
-		            var startY = parseInt(startArea.offsetTop) + parseInt(startArea.offsetHeight)/2;
-		            showMessage(startX, startY, content);
-		        }
-		    }
-		}
+		// function messageListener(easyrtcid, msgType, content) {
+		//     for(var i = 0; i < maxCALLERS; i++) {
+		//         if( easyrtc.getIthCaller(i) === easyrtcid) {
+		//             var startArea = document.getElementById(getIdOfBox(i+1));
+		//             var startX = parseInt(startArea.offsetLeft) + parseInt(startArea.offsetWidth)/2;
+		//             var startY = parseInt(startArea.offsetTop) + parseInt(startArea.offsetHeight)/2;
+		//             showMessage(startX, startY, content);
+		//         }
+		//     }
+		// }
 
 		easyrtc.setStreamAcceptor( function(callerEasyrtcid, stream) {
 		    var callerUsername = easyrtc.idToName(callerEasyrtcid);
@@ -142,7 +149,7 @@ angular.module('bodyAppApp')
 		_init();
 
         // load cookie, or start new tour
-    $scope.currentStep = ipCookie('dashboardTour') || 0;
+    $scope.currentStep = 0;
 
     $scope.checkIfSelectedRightClass = function() {
         $scope.currentStep = 0

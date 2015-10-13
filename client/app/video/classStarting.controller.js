@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, Schedule, ipCookie) {
+  .controller('ClassStartingCtrl', function ($scope, $location, Schedule) {
   	var classToJoin = Schedule.classUserJustJoined;
     if (!classToJoin) {
       $location.path('/')
@@ -24,7 +24,7 @@ angular.module('bodyAppApp')
   	}
 
     // load cookie, or start new tour
-    $scope.currentStep = ipCookie('classWaiting') || 0;
+    $scope.currentStep = 0;
 
     // save cookie after each step
     $scope.stepComplete = function() {
