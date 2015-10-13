@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log, ipCookie, tourConfig) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)
@@ -14,7 +14,48 @@ angular.module('bodyAppApp')
         var todayDate = new Date();
         $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate()
 
-        $scope.myBookedClasses;
+        var hasSelectedClassThatCanJoin = false
+
+        $scope.dayOfWeekToday;
+        switch (todayDate.getDay()) {
+            case 0: $scope.dayOfWeekToday = "Sunday"; break;
+            case 1: $scope.dayOfWeekToday = "Monday"; break;
+            case 2: $scope.dayOfWeekToday = "Tuesday"; break;
+            case 3: $scope.dayOfWeekToday = "Wednesday"; break;
+            case 4: $scope.dayOfWeekToday = "Thursday"; break;
+            case 5: $scope.dayOfWeekToday = "Friday"; break;
+            case 6: $scope.dayOfWeekToday = "Saturday"; break;
+            default: break;
+        }
+
+        $scope.classIsToday = function(slot) {
+            var someNewDate = new Date()
+            if (slot.date < (someNewDate.getTime() + 1000*60*60*12)) {
+                $scope.currentStep = 1
+                hasSelectedClassThatCanJoin = true
+                return true
+            } else {
+                if (hasSelectedClassThatCanJoin === false) {
+                    console.log("and here")
+                    $scope.currentStep = 0;
+                }
+                return false;
+            }
+        }
+
+        // $scope.myBookedClasses = {}
+
+        // for (var i in Schedule.getDaysFromFirebase()) {
+        //     console.log($scope.days)
+        //     for (var slotted in i) {
+        //         console.log($slotted)
+        //         if (slotted.bookedUsers[currentUser._id] && !slotted.past) {
+        //             $scope.myBookedClasses[slotted] = $scope.days[slotted]
+        //             console.log($scope.myBookedClasses)
+        //         }
+
+        //     }
+        // }
 
         //Prompts user to join class when within 15 minutes of class
         $scope.$watch(function () { return Schedule.classInNext30Mins; },
@@ -85,9 +126,15 @@ angular.module('bodyAppApp')
 
         $scope.canJoinClass = function(slot) {
             if (slot.date - new Date().getTime() <= 15*60*1000 || new Date().getTime() - slot.date >= -15*60*1000) {
-                return true
+                $scope.currentStep = 1;
+                hasSelectedClassThatCanJoin = true;
+                return true;
             } else {
-                return false
+                if (hasSelectedClassThatCanJoin === false) {
+                    console.log("here")
+                    $scope.currentStep = 0;
+                }
+                return false;
             }
         }
 
@@ -131,6 +178,30 @@ angular.module('bodyAppApp')
         $scope.setClassUserJustJoined = function(classJoined) {
             Schedule.setClassUserJustJoined(classJoined);
         }
+
+        // load cookie, or start new tour
+        $scope.currentStep = ipCookie('dashboardTour') || 0;
+
+        $scope.checkIfSelectedRightClass = function() {
+            $scope.currentStep = 0
+        }
+
+        // save cookie after each step
+        $scope.stepComplete = function() {
+          // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
+          $scope.currentStep = 0
+        };
+        
+        // callback for when we've finished going through the tour
+        $scope.postTourCallback = function() {
+          $scope.currentStep = 0
+          console.log('tour over');
+        };
+        // optional way of saving tour progress with cookies
+        $scope.postStepCallback = function() {
+            $scope.currentStep = 0
+          // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
+        };
     })
 
     //Currently unused

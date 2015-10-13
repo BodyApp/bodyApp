@@ -155,10 +155,10 @@ angular.module('bodyAppApp')
         spotsTaken: 0,
       }
 
-      var dateSetter = new Date(monDate.getFullYear(), monDate.getMonth(), monDate.getDate(), 24, 8, 0).getTime()
+      var dateSetter = new Date(monDate.getFullYear(), monDate.getMonth(), monDate.getDate(), 22, 10, 0).getTime()
       b.slots[dateSetter] = 
       {
-        time: '12:08am',
+        time: '10:10pm',
         date: dateSetter,
         booked: false,
         trainer: "Mendelson",

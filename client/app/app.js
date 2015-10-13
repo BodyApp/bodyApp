@@ -8,7 +8,9 @@ angular.module('bodyAppApp', [
   'ui.router',
   'ui.bootstrap',
   'firebase',
-  'jshor.angular-addtocalendar'
+  'jshor.angular-addtocalendar',
+  'angular-tour',
+  'ivpusic.cookie'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

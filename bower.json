@@ -22,7 +22,10 @@
     "angular-addtocalendar": "*",
     "ics.js": "~0.1.3",
     "FileSaver": "*",
-    "jstz": "*"
+    "jstz": "*",
+    "angular-tour": "*",
+    "angular-cookie": "*",
+    "jQuery": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
