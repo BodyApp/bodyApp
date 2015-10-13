@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, Auth, $state) {
+  .controller('ConsumerVideoCtrl', function ($scope, Auth, $state, ipCookie) {
   	$scope.$on('$locationChangeStart', function( event ) {
 	    easyrtc.disconnect()
 		});
@@ -140,6 +140,30 @@ angular.module('bodyAppApp')
 		});
 
 		_init();
+
+        // load cookie, or start new tour
+    $scope.currentStep = ipCookie('dashboardTour') || 0;
+
+    $scope.checkIfSelectedRightClass = function() {
+        $scope.currentStep = 0
+    }
+
+    // save cookie after each step
+    $scope.stepComplete = function() {
+      // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
+      $scope.currentStep = 0
+    };
+    
+    // callback for when we've finished going through the tour
+    $scope.postTourCallback = function() {
+      $scope.currentStep = 0
+      console.log('tour over');
+    };
+    // optional way of saving tour progress with cookies
+    $scope.postStepCallback = function() {
+        $scope.currentStep = 0
+      // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
+    };
 	})
 
 	.controller('TrainerVideoCtrl', function ($scope) {

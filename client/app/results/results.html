@@ -1,4 +1,5 @@
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
+<tour step="currentStep">
 <div class="container full-screen-height">
   <div class="row">
   	<div class="col-md-3 page-sidebar-left">
@@ -96,6 +97,14 @@
 		</li>    							    							    						
 	</ul>		            		
 
+  <span tourtip-step = "0"
+      tourtip="Thanks for checking out the Demo!  Let's tackle fitness together!" 
+      tourtip-next-label="Me Too!"
+      tourtip-placement="Right"
+      tourtip-offset-horizontal="600"  
+      tourtip-offset-vertical="-350"  
+	></span>
+
   		<!--end of world WOD Results-->		            		
 
 
@@ -103,4 +112,5 @@
   	</div>
   </div>
 </div>
+</tour>
 <div ng-include="'components/footer/footer.html'"></div>

@@ -1,38 +1,40 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+<tour step="currentStep">
+    <div class = "video-screen-height" style="background-image:url(assets/images/irongrip.png)">
+        <div class="row" >
+            <div class = "column column-2">
+                    <video id="box1" class="column-12 row" style="visibility: hidden" muted="muted"></video>
+                    <span tourtip-step = "1"
+                          tourtip="You are in the upper left and up to 10 classmates are visible around the instructor." 
+                          tourtip-next-label="Next"
+                          tourtip-placement="Bottom"
+                          tourtip-offset-horizontal="0"  
+                          tourtip-offset-vertical="150"  
+                    ></span>
+                    <!-- <video id="box2" class="column-12 row" style="visibility: hidden"></video>
+                    <video id="box3" class="column-12 row" style="visibility: hidden"></video>
+                    <video id="box4" class="column-12 row" style="visibility: hidden"></video> -->
+            </div>
+                    <!-- <video id="box0" id="mainScreen" class="column column-8 row easyRTCMirror"></video> -->
 
-<div class = "video-screen-height" style="background-image:url(assets/images/irongrip.png)">
-    <div class="row" >
-        <div class = "column column-2">
-                <video id="box1" class="column-12 row" style="visibility: hidden" muted="muted"></video>
-                <!-- <video id="box2" class="column-12 row" style="visibility: hidden"></video>
-                <video id="box3" class="column-12 row" style="visibility: hidden"></video>
-                <video id="box4" class="column-12 row" style="visibility: hidden"></video> -->
-        </div>
-                <!-- <video id="box0" id="mainScreen" class="column column-8 row easyRTCMirror"></video> -->
+                    <iframe id="box0" height = "500" autoplay = "true" id="box0 mainScreen" class="column column-8 row easyRTCMirror"
+                        src="http://www.youtube.com/embed/qWy_aOlB45Y?autoplay=1&start=29">
+                    </iframe>
 
-                <iframe id="box0" height = "500" autoplay = "true" id="box0 mainScreen" class="column column-8 row easyRTCMirror"
-                    src="http://www.youtube.com/embed/qWy_aOlB45Y?autoplay=1&start=29">
-                </iframe>
+                <span tourtip-step = "0"
+                      tourtip="When BODY launches, this will be a live instructor providing coaching and encouragement!" 
+                      tourtip-next-label="Next"
+                      tourtip-placement="Bottom"
+                      tourtip-offset-horizontal="600"  
+                      tourtip-offset-vertical="300"  
+                ></span>
 
-                <!-- <video id="box0 mainScreen" class="column column-8 row easyRTCMirror" class="video-js vjs-default-skin"
-                  controls preload="auto" width="640" height="264"
-                  poster="http://video-js.zencoder.com/oceans-clip.png"
-                  data-setup='{"example_option":true}'>
-                 <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-                 <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-                 <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-                 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-                </video> -->
-
-<!--                 <video controls="true">
-                    <source src="www.youtube.com/watch?v=3bGNuRtlqAQ" type="video/mp4" />
-                </video> -->
-
-        <div class = "column column-2">
-                <!-- <video id="box5" class="column-12 row" style="visibility: hidden"></video>
-                <video id="box6" class="column-12 row" style="visibility: hidden"></video>
-                <video id="box7" class="column-12 row" style="visibility: hidden"></video>
-                <video id="box8" class="column-12 row" style="visibility: hidden"></video> -->
+            <div class = "column column-2">
+                    <!-- <video id="box5" class="column-12 row" style="visibility: hidden"></video>
+                    <video id="box6" class="column-12 row" style="visibility: hidden"></video>
+                    <video id="box7" class="column-12 row" style="visibility: hidden"></video>
+                    <video id="box8" class="column-12 row" style="visibility: hidden"></video> -->
+            </div>
         </div>
     </div>
 </div>
