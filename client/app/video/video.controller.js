@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, Auth) {
+  .controller('ConsumerVideoCtrl', function ($scope, Auth, $state) {
   	$scope.$on('$locationChangeStart', function( event ) {
 	    easyrtc.disconnect()
 		});
+
+		setTimeout(function(){ $state.go("results"); }, 20000);
 
   	var maxCALLERS = 10;
 		// var numVideoOBJS = maxCALLERS+1;

@@ -25,7 +25,8 @@
     "jstz": "*",
     "angular-tour": "*",
     "angular-cookie": "*",
-    "jQuery": "*"
+    "jQuery": "*",
+    "video.js": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
