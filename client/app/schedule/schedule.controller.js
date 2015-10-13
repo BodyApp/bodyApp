@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log, ipCookie, tourConfig) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log, ipCookie) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)
@@ -106,18 +106,18 @@ angular.module('bodyAppApp')
             }
 
             var month = new Array();
-            month[1] = "Jan";
-            month[2] = "Feb";
-            month[3] = "Mar";
-            month[4] = "Apr";
-            month[5] = "May";
-            month[6] = "Jun";
-            month[7] = "Jul";
-            month[8] = "Aug";
-            month[9] = "Sept";
-            month[10] = "Oct";
-            month[11] = "Nov";
-            month[12] = "Dec";
+            month[0] = "Jan";
+            month[1] = "Feb";
+            month[2] = "Mar";
+            month[3] = "Apr";
+            month[4] = "May";
+            month[5] = "Jun";
+            month[6] = "Jul";
+            month[7] = "Aug";
+            month[8] = "Sept";
+            month[9] = "Oct";
+            month[10] = "Nov";
+            month[11] = "Dec";
 
             formatted.month = month[newDate.getMonth()]    
             // console.log(formatted);       

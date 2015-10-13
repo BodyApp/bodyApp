@@ -101,7 +101,7 @@ angular.module('bodyAppApp')
 		        var mainVideo = document.getElementById('box0');
 		        easyrtc.setVideoObjectSrc(mainVideo, stream);
 		        document.getElementById(getIdOfBox(0)).style.visibility = 'visible';
-		        easyrtc.muteVideoObject(mainVideo, false);
+		        easyrtc.muteVideoObject(mainVideo, true);
 		    } else {
 		        if (callerEasyrtcidsIdsList[callerUsername]) {
 		            console.log('caller already has box');
