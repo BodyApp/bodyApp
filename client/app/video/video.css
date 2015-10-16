@@ -10,20 +10,20 @@
     border-color: 2px solid blue;
 }
 
-// .boxCommon {
+/*// .boxCommon {
 //     position:absolute;
-// }
+// }*/
 
 #mainScreen {
-    width: 10%;
-    height: 10%;
+    /*width: 10%;
+    height: 10%;*/
 }
 
 .closeButton {
     display: none; /* hide the easyApp's close button because we have our own */
 }
 
-// .thumbCommon {
+/*// .thumbCommon {
 //     float:left;
 //     position:relative;
 //     z-index:2;
@@ -31,7 +31,7 @@
 //     width: 20%;
 //     height: 20%;
 //     margin: 5px;
-// }
+// }*/
 
 #controlArea {
     background-color: #ff8000;
@@ -107,9 +107,9 @@
     float: left;
 }
 
-.column + .column {
+/*.column + .column {
     margin-left: 1.6%;
-}
+}*/
 
 .column-1 {
     width: 6.86666666667%;

@@ -23,6 +23,8 @@ angular.module('bodyAppApp')
       }
     };
 
+    $scope.currentStep = 0
+
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };

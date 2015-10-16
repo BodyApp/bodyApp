@@ -1,9 +1,9 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <tour step="currentStep">
     <div class = "video-screen-height" style="background-image:url(assets/images/irongrip.png)">
-        <div class="row" >
+        <!-- <div class="row" > -->
             <div class = "column column-2">
-                    <video id="box1" class="column-12 row" style="visibility: hidden" muted="muted"></video>
+                    <video height = "auto" width = "auto" id="box1" class="column-12 row" style="visibility: hidden" muted="muted"></video>
                     <span tourtip-step = "1"
                           tourtip="You are in the upper left and up to 10 classmates are visible around the instructor." 
                           tourtip-next-label="Next"
@@ -17,7 +17,7 @@
             </div>
                     <!-- <video id="box0" id="mainScreen" class="column column-8 row easyRTCMirror"></video> -->
 
-                    <iframe id="box0" height = "500" autoplay = "true" id="box0 mainScreen" class="column column-8 row easyRTCMirror"
+                    <iframe id="box0" height = "635" autoplay = "true" id="box0 mainScreen" class="column column-8"
                         src="https://www.youtube.com/embed/qWy_aOlB45Y?autoplay=1&start=29">
                     </iframe>
 
@@ -35,7 +35,7 @@
                     <video id="box7" class="column-12 row" style="visibility: hidden"></video>
                     <video id="box8" class="column-12 row" style="visibility: hidden"></video> -->
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 </div>
 <div ng-include="'components/footer/footer.html'"></div>
