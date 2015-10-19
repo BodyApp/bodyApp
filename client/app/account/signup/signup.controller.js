@@ -11,7 +11,7 @@ angular.module('bodyAppApp')
         Auth.createUser({
           firstName: $scope.user.firstName,
           lastName: $scope.user.lastName,
-          nickname: $scope.user.nickname,
+          nickName: $scope.user.nickName,
           birthday: $scope.user.birthday,
           email: $scope.user.email,
           gender: $scope.user.gender,

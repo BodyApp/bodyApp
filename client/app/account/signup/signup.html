@@ -109,11 +109,11 @@
                 <input id="dark-text" class="text-input-half textInput" type="text" ng-model= "user.lastName" name="lastName" placeholder="Last name" required/>
               </span>
             </div>
-            <div ng-class="{ 'has-success': form.nickname.$valid && submitted, 'has-error': form.nickname.$invalid && submitted }">
-              <p class="help-block" ng-show="form.nickname.$error.required && submitted">
-                A nickname is required.  Can just be your first name!
+            <div ng-class="{ 'has-success': form.nickName.$valid && submitted, 'has-error': form.nickName.$invalid && submitted }">
+              <p class="help-block" ng-show="form.nickName.$error.required && submitted">
+                A nickName is required.  Can just be your first name!
               </p>
-              <input id="dark-text" type="text" class = "textInput" name="nickname" ng-model= "user.nickname" placeholder="Nickname" required/>
+              <input id="dark-text" type="text" class = "textInput" name="nickName" ng-model= "user.nickName" placeholder="Nickname" required/>
             </div>
             <div ng-class="{ 'has-success': form.email.$valid && submitted, 'has-error': form.email.$invalid && submitted }">
               <p class="help-block" ng-show="form.email.$error.email && submitted">

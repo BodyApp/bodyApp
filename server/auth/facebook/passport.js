@@ -15,7 +15,7 @@ exports.setup = function (User, config) {
     function(accessToken, refreshToken, profile, done) {
       console.log(profile)
       User.findOne({
-        'facebook.id': profile.id
+        'email': profile.emails[0].value.toLowerCase()
       },
       function(err, user) {
         if (err) {
