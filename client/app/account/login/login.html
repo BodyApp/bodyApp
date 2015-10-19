@@ -4,8 +4,14 @@
 
 <div class="container full-screen-height">
   <div class = "row">
-    <div class = "col-sm-12 text-center mt32">
-      <span id="dark-text" ng-mouseover ="openTour()">Login with your email address</span>
+    <div class="text-center">
+      <a id = "fb-btn" class="btn btn-filled btn-lg mb32 mt32" href="#" ng-click="loginOauth('facebook')">
+        <i class="ti-facebook"></i>&nbsp;Login with Facebook
+      </a>
+    </div>
+    <hr style="width: 40%; margin-left: 30%">
+    <div class = "col-sm-12 text-center">
+      <span id="dark-text" ng-mouseover ="openTour()">Or login with your email address</span>
     </div>
   </div>
   <div class="row">

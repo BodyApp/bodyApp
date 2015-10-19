@@ -19,8 +19,6 @@
     "easyrtc": "*",
     "firebase": "*",
     "angularfire": "*",
-    "angular-addtocalendar": "*",
-    "ics.js": "~0.1.3",
     "FileSaver": "*",
     "jstz": "*",
     "angular-tour": "*",

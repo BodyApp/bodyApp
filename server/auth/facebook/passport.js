@@ -8,7 +8,8 @@ exports.setup = function (User, config) {
       callbackURL: config.facebook.callbackURL,
       profileFields: [
       'displayName',
-      'emails'
+      'emails',
+      'gender'
       ]
     },
     function(accessToken, refreshToken, profile, done) {
@@ -23,6 +24,11 @@ exports.setup = function (User, config) {
         if (!user) {
           user = new User({
             name: profile.displayName,
+            firstName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
+            lastName: profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1),
+            nickName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
+            gender: profile.gender,
+            birthday: " ",
             email: profile.emails[0].value,
             role: 'user',
             provider: 'facebook',
