@@ -18,9 +18,4 @@ angular.module('bodyAppApp')
         });
       }
 		};
-    $scope.saveCreditCardToken = function(code, result) {
-      console.log(code)
-      console.log(result)
-
-    }
   });

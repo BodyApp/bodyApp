@@ -6,7 +6,9 @@ angular.module('bodyAppApp')
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)
 
-        Schedule.setFirebaseObject("weekof9272015").$bindTo($scope, 'days')
+        // checkWhetherUserIsSubscribed()
+
+        Schedule.setFirebaseObject("weekof9272015").$bindTo($scope, 'days')  
         
         $scope.availableClasses = true;
         $scope.userClassToJoin = Schedule.classInNext30Mins;
@@ -142,24 +144,71 @@ angular.module('bodyAppApp')
             $location.path('/consumervideo')
         }
 
-        $scope.openBookingConfirmation = function (slot) {
+        function checkWhetherUserIsSubscribed() {
+            if (!currentUser.isSubscribed) {
+                // openPaymentModal();
+                var handler = StripeCheckout.configure({
+                    key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+                    image: '../../assets/images/body-app-logo-header.png',
+                    locale: 'auto',
+                    token: function(token) {
+                      // Use the token to create the charge with a server-side script.
+                      // You can access the token ID with `token.id`
+                    }
+                });
+                handler.open({
+                  name: 'BODY SUBSCRIPTION',
+                  email: currentUser.email,
+                  description: '1 Month ($40.00)',
+                  zipCode: true,
+                  amount: 4000
+                });
+            } 
+            return currentUser.isSubscribed
+        }
+
+        function openPaymentModal() {
             var modalInstance = $modal.open({
               animation: true,
-              templateUrl: 'app/schedule/bookingConfirmation.html',
-              controller: 'BookingConfirmationCtrl',
+              templateUrl: 'app/account/payment/payment.html',
+              controller: 'PaymentCtrl'
               // size: size,
-              resolve: {
-                slot: function () {
-                  return slot;
-                }
-              }
+              // resolve: {
+                // slot: function () {
+                  // return slot;
+                // }
+              // }
             });
 
-            modalInstance.result.then(function (selectedItem) {
-              $scope.selected = selectedItem;
-            }, function () {
-              $log.info('Modal dismissed at: ' + new Date());
-            });
+            // modalInstance.result.then(function (selectedItem) {
+            //   $scope.selected = selectedItem;
+            // }, function () {
+            //   $log.info('Modal dismissed at: ' + new Date());
+            // });
+        }
+
+        $scope.openBookingConfirmation = function (slot) {
+            if (checkWhetherUserIsSubscribed() == true) {
+                var modalInstance = $modal.open({
+                  animation: true,
+                  templateUrl: 'app/schedule/bookingConfirmation.html',
+                  controller: 'BookingConfirmationCtrl',
+                  // size: size,
+                  resolve: {
+                    slot: function () {
+                      return slot;
+                    }
+                  }
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                  $scope.selected = selectedItem;
+                }, function () {
+                  $log.info('Modal dismissed at: ' + new Date());
+                });
+            } else {
+                slot.bookedUsers[currentUser._id] = false
+            }
         };
 
         $scope.firstActive;

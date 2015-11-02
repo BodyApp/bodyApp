@@ -1,0 +1,24 @@
+<div class="modal-body" style="background-image: url(../../assets/images/hero_payment_crossfit.jpg)">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h3 class="mb16 uppercase" style = "color: #ffffff;">Please Enter Payment Details Before Continuing</h3>
+        </div>
+    </div>
+    <div class="col-sm-5"></div>
+    <div class="mb8">
+        <!-- By placing the script tag inside a <form>, a hidden input called stripeToken will be appended to the form when a token is created. -->
+        <div ng-hide="false" class="row creditCardRow">
+          <form action="/charge" method="POST">
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT"
+              data-amount="4000"
+              data-name="Body App Subscription"
+              data-description="1 Month ($40.00)"
+              data-image="../../assets/images/body-app-logo-header.png"
+              data-locale="auto">
+            </script>
+          </form>
+        </div>
+    </div>
+</div>
