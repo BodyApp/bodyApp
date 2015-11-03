@@ -44,6 +44,19 @@ var all = {
     }
   },
 
+  stripeOptions: {
+    apiKey: process.env.STRIPE_KEY || 'key',
+    stripePubKey: process.env.STRIPE_PUB_KEY || 'pubKey',
+    defaultPlan: 'basicSubscription',
+    plans: ['basicSubscription'],
+    planData: {
+      'basicSubscription': {
+        name: 'Monthly Subscription',
+        price: 40
+      }
+    }
+  },
+
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',

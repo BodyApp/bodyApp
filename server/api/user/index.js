@@ -14,4 +14,13 @@ router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 
+router.post('/charge',
+//   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
+//   // auth.isAuthenticated(),
+  controller.postBilling);
+// router.post('/charge',
+  // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
+  // auth.isAuthenticated(),
+  // controller.postPlan);
+
 module.exports = router;

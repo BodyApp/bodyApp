@@ -4,6 +4,7 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var stripe = require("stripe")(config.stripeOptions.apiKey);
 
 var validationError = function(res, err) {
   return res.status(422).json(err);
@@ -27,6 +28,11 @@ exports.create = function (req, res, next) {
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
+  if(!newUser.isNew || newUser.stripe.customerId) return next();
+  newUser.createCustomer(function(err){
+    if (err) return next(err);
+    next();
+  });
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
@@ -99,3 +105,97 @@ exports.me = function(req, res, next) {
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
+
+// Adds or updates a users card using Stripe integration.
+exports.postBilling = function(req, res, next){
+  console.log(req.body)
+  var stripeToken = req.body.stripeToken;
+  var userEmail = req.body.stripeEmail;
+
+  stripe.customers.create({
+    source: stripeToken,
+    plan: "basicSubscription",
+    email: userEmail,
+    description: "Created subscription during inital private beta"
+  }, function(err, customer) {
+    if (err) {
+      console.log("error creating customer: " + err)
+    } else {
+      console.log("customer created: ")
+      console.log(customer)
+    }
+  });
+
+  // console.log(req.body.stripeToken)
+  // var stripeToken = req.body.token;
+
+  // if(!stripeToken){
+  //   // req.flash('errors', { msg: 'Please provide a valid card.' });
+  //   return 
+  //   // res.redirect(req.redirect.failure);
+  // }
+
+  // User.findById(req.user._id, function(err, user) {
+  //   if (err) return next(err);
+
+  //   user.setCard(stripeToken, function (err) {
+  //     if (err) {
+  //       if(err.code && err.code == 'card_declined'){
+  //         req.flash('errors', { msg: 'Your card was declined. Please provide a valid card.' });
+  //         return res.redirect(req.redirect.failure);
+  //       }
+  //       req.flash('errors', { msg: 'An unexpected error occurred.' });
+  //       return res.redirect(req.redirect.failure);
+  //     }
+  //     req.flash('success', { msg: 'Billing has been updated.' });
+  //     res.redirect(req.redirect.success);
+  //   });
+  // });
+};
+
+// exports.postPlan = function(req, res, next){
+//   console.log(req)
+//   var plan = req.body.plan;
+//   var stripeToken = null;
+
+//   if(plan){
+//     plan = plan.toLowerCase();
+//   }
+
+//   if(req.body.user.stripe.plan == plan){
+//     req.flash('info', {msg: 'The selected plan is the same as the current plan.'});
+//     return res.redirect(req.redirect.success);
+//   }
+
+//   if(req.body.token){
+//     stripeToken = req.body.token.id;
+//   }
+
+//   if(!req.user.stripe.last4 && !req.body.stripeToken){
+//     req.flash('errors', {msg: 'Please add a card to your account before choosing a plan.'});
+//     return res.redirect(req.redirect.failure);
+//   }
+
+//   User.findById(req.user._id, function(err, user) {
+//     if (err) return next(err);
+
+//     user.setPlan(plan, stripeToken, function (err) {
+//       var msg;
+
+//       if (err) {
+//         if(err.code && err.code == 'card_declined'){
+//           msg = 'Your card was declined. Please provide a valid card.';
+//         } else if(err && err.message) {
+//           msg = err.message;
+//         } else {
+//           msg = 'An unexpected error occurred.';
+//         }
+
+//         req.flash('errors', { msg:  msg});
+//         return res.redirect(req.redirect.failure);
+//       }
+//       req.flash('success', { msg: 'Plan has been updated.' });
+//       res.redirect(req.redirect.success);
+//     });
+//   });
+// };

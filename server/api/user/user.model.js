@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var stripeCustomer = require('../payment/payment.controller');
+var config = require('../../config/environment');
 
 var UserSchema = new Schema({
   firstName: String,
@@ -23,6 +25,10 @@ var UserSchema = new Schema({
   google: {},
   github: {}
 });
+
+//Sets up Stripe
+var stripeOptions = config.stripeOptions;
+UserSchema.plugin(stripeCustomer, stripeOptions);
 
 /**
  * Virtuals

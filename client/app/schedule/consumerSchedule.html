@@ -87,13 +87,13 @@
 
           <h3 class="uppercase text-center mb16">Your Classes</h3>
           <div class="reservations">
-            <span tourtip-step = "1"
+<!--             <span tourtip-step = "1"
                   tourtip="Normally, you'd have to wait until 30 minutes before your class.  But we'll just go ahead and let you in right now!" 
                   tourtip-next-label="Click Join Now Button"
                   tourtip-placement="right"
                   tourtip-offset-horizontal="525"  
                   tourtip-offset-vertical="-25"  
-            ></span>
+            ></span> -->
             
               <table class="reservations-table" ng-repeat="day in days">
                 <tbody ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
@@ -120,13 +120,13 @@
           <h3 class="uppercase text-center mt32">Class Schedule</h3>
           <div class = "text-center">
             <label class = "showAvailableClassesLabel">
-                <span tourtip-step = "0"
+<!--                 <span tourtip-step = "0"
                     tourtip="Choose a {{dayOfWeekToday}} Class!  This is a basic, real-time iteration of the BODY schedule.  Book a Class By Selecting a Class Time.  You will have the option to add the class to a calendar and/or invite friends to join you." 
                     tourtip-next-label="Choose a {{dayOfWeekToday}} class!"
                     tourtip-placement="left"    
                     tourtip-offset-horizontal = "-80"
                     tourtip-offset-vertical = "175"
-                ></span>
+                ></span> -->
               <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
               <span style = "color:black">Only show available classes</span>
             </label>
