@@ -146,7 +146,9 @@ angular.module('bodyAppApp')
 
         function checkWhetherUserIsSubscribed() {
             console.log(currentUser)
-            if (!currentUser.stripe || !currentUser.stripe.plan) {
+            if (currentUser.stripe && currentUser.stripe.plan) {
+                return currentUser.stripe.plan
+            } else {
                 // openPaymentModal();
                 var handler = StripeCheckout.configure({
                     key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
@@ -183,28 +185,27 @@ angular.module('bodyAppApp')
                   amount: 4000
                 });
             } 
-            return currentUser.stripe.plan
         }
 
-        function openPaymentModal() {
-            var modalInstance = $modal.open({
-              animation: true,
-              templateUrl: 'app/account/payment/payment.html',
-              controller: 'PaymentCtrl'
+        // function openPaymentModal() {
+        //     var modalInstance = $modal.open({
+        //       animation: true,
+        //       templateUrl: 'app/account/payment/payment.html',
+        //       controller: 'PaymentCtrl'
               // size: size,
               // resolve: {
                 // slot: function () {
                   // return slot;
                 // }
               // }
-            });
+            // });
 
             // modalInstance.result.then(function (selectedItem) {
             //   $scope.selected = selectedItem;
             // }, function () {
             //   $log.info('Modal dismissed at: ' + new Date());
             // });
-        }
+        // }
 
         $scope.openBookingConfirmation = function (slot) {
             if (checkWhetherUserIsSubscribed() == "basicSubscription") {
