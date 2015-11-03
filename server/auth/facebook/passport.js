@@ -13,7 +13,6 @@ exports.setup = function (User, config) {
       ]
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(profile)
       User.findOne({
         'email': profile.emails[0].value.toLowerCase()
       },

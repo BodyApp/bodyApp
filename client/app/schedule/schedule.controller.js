@@ -145,7 +145,8 @@ angular.module('bodyAppApp')
         }
 
         function checkWhetherUserIsSubscribed() {
-            if (!currentUser.isSubscribed) {
+            console.log(currentUser)
+            if (!currentUser.stripe || !currentUser.stripe.plan) {
                 // openPaymentModal();
                 var handler = StripeCheckout.configure({
                     key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
@@ -182,7 +183,7 @@ angular.module('bodyAppApp')
                   amount: 4000
                 });
             } 
-            return currentUser.isSubscribed
+            return currentUser.stripe.plan
         }
 
         function openPaymentModal() {
@@ -206,7 +207,7 @@ angular.module('bodyAppApp')
         }
 
         $scope.openBookingConfirmation = function (slot) {
-            if (checkWhetherUserIsSubscribed() == true) {
+            if (checkWhetherUserIsSubscribed() == "basicSubscription") {
                 var modalInstance = $modal.open({
                   animation: true,
                   templateUrl: 'app/schedule/bookingConfirmation.html',

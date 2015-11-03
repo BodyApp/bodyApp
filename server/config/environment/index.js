@@ -47,14 +47,14 @@ var all = {
   stripeOptions: {
     apiKey: process.env.STRIPE_KEY || 'key',
     stripePubKey: process.env.STRIPE_PUB_KEY || 'pubKey',
-    defaultPlan: 'basicSubscription',
-    plans: ['basicSubscription'],
-    planData: {
-      'basicSubscription': {
-        name: 'Monthly Subscription',
-        price: 40
-      }
-    }
+    // defaultPlan: 'basicSubscription',
+    // plans: ['basicSubscription'],
+    // planData: {
+    //   'basicSubscription': {
+    //     name: 'Monthly Subscription',
+    //     price: 40
+    //   }
+    // }
   },
 
   facebook: {

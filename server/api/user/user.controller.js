@@ -29,11 +29,27 @@ exports.create = function (req, res, next) {
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
+
+  // function stripeCallback(err){
+  //   if (err) return next(err);
+  //   next();
+  // }
+
   if(!newUser.isNew || newUser.stripe.customerId) return next();
   newUser.createCustomer(function(err){
     if (err) return next(err);
     next();
   });
+  
+  // stripe.customers.create({
+  //   email: user.email
+  //   }, function(err, customer){
+  //     if (err) return stripeCallback(err);
+
+  //     user.stripe.customerId = customer.id;
+  //     return stripeCallback();
+  // });
+
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
@@ -109,46 +125,26 @@ exports.authCallback = function(req, res, next) {
 
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
-  // console.log(req.body)
-  // var stripeToken = req.body.stripeToken;
-  // var userEmail = req.body.stripeEmail;
-
-  // stripe.customers.create({
-  //   source: stripeToken,
-  //   plan: "basicSubscription",
-  //   email: userEmail,
-  //   description: "Created subscription during inital private beta"
-  // }, function(err, customer) {
-  //   if (err) {
-  //     console.log("error creating customer: " + err)
-  //   } else {
-  //     console.log("customer created: ")
-  //     console.log(customer)
-  //   }
-  // });
-
   var stripeToken = req.body.stripeToken.id;
 
   if(!stripeToken){
-    // req.flash('errors', { msg: 'Please provide a valid card.' });
     return console.log("error retrieving stripe token.")
+    // req.flash('errors', { msg: 'Please provide a valid card.' });
     // res.redirect(req.redirect.failure);
   }
 
   User.findById(req.body.user._id, function(err, user) {
-    // console.log(user)
     if (err) return next(err);
     
     var cb = function(err) {
-    // user.setCard(stripeToken, user, function (err) {
       if (err) {
         if(err.code && err.code == 'card_declined'){
           console.log('Your card was declined. Please provide a valid card.');
           // req.flash('errors', { msg: 'Your card was declined. Please provide a valid card.' });
           // return res.redirect(req.redirect.failure);
         }
-        // req.flash('errors', { msg: 'An unexpected error occurred.' });
         console.log('An unexpected error occurred.');
+        // req.flash('errors', { msg: 'An unexpected error occurred.' });
         // return res.redirect(req.redirect.failure);
       }
       console.log('Billing has been updated.');
@@ -156,16 +152,19 @@ exports.postBilling = function(req, res, next){
       // res.redirect(req.redirect.success);
     };
 
-    // function setCard(stripe_token, user, cb) {
-    // var user = User.get();
-
       var cardHandler = function(err, customer) {
+        console.log(customer.subscriptions.data[0])
         if (err) return cb(err);
 
         if(!user.stripe.customerId){
           console.log("Didn't have customer ID yet.  Saving now.")
           user.stripe.customerId = customer.id;
         }
+
+        if(!user.stripe.plan){
+          console.log("Didn't have plan saved yet.  Saving now.")
+          user.stripe.plan = customer.subscriptions.data[0].plan.id;
+        }        
 
         var card = customer.sources.data[0];
         user.stripe.last4 = card.last4;
@@ -200,55 +199,5 @@ exports.postBilling = function(req, res, next){
           description: "Created subscription during inital private beta"
         }, cardHandler);
       }
-    // };
   });
 };
-
-
-
-// exports.postPlan = function(req, res, next){
-//   console.log(req)
-//   var plan = req.body.plan;
-//   var stripeToken = null;
-
-//   if(plan){
-//     plan = plan.toLowerCase();
-//   }
-
-//   if(req.body.user.stripe.plan == plan){
-//     req.flash('info', {msg: 'The selected plan is the same as the current plan.'});
-//     return res.redirect(req.redirect.success);
-//   }
-
-//   if(req.body.token){
-//     stripeToken = req.body.token.id;
-//   }
-
-//   if(!req.user.stripe.last4 && !req.body.stripeToken){
-//     req.flash('errors', {msg: 'Please add a card to your account before choosing a plan.'});
-//     return res.redirect(req.redirect.failure);
-//   }
-
-//   User.findById(req.user._id, function(err, user) {
-//     if (err) return next(err);
-
-//     user.setPlan(plan, stripeToken, function (err) {
-//       var msg;
-
-//       if (err) {
-//         if(err.code && err.code == 'card_declined'){
-//           msg = 'Your card was declined. Please provide a valid card.';
-//         } else if(err && err.message) {
-//           msg = err.message;
-//         } else {
-//           msg = 'An unexpected error occurred.';
-//         }
-
-//         req.flash('errors', { msg:  msg});
-//         return res.redirect(req.redirect.failure);
-//       }
-//       req.flash('success', { msg: 'Plan has been updated.' });
-//       res.redirect(req.redirect.success);
-//     });
-//   });
-// };
