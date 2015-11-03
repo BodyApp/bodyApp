@@ -163,12 +163,15 @@ exports.postBilling = function(req, res, next){
         if (err) return cb(err);
 
         if(!user.stripe.customerId){
+          console.log("Didn't have customer ID yet.  Saving now.")
           user.stripe.customerId = customer.id;
         }
-        console.log(customer)
+
         var card = customer.sources.data[0];
         user.stripe.last4 = card.last4;
+        
         user.save(function(err){
+          console.log("saving user")
           if (err) return cb(err);
           return cb(null);
           return
@@ -176,10 +179,20 @@ exports.postBilling = function(req, res, next){
       };
 
       if(user.stripe.customerId){
-        console.log("card updated. Customer not charged.")
-        stripe.customers.update(user.stripe.customerId, {card: stripeToken}, cardHandler);
+        console.log("User " + user.stripe.customerId + " already has ID. Card updated and customer not charged again.");
+        stripe.customers.update(user.stripe.customerId, {source: stripeToken}, cardHandler);
+        if (user.stripe.plan) {
+          return console.log("Customer " + user.stripe.customerId + " already has subscription. Not charged again");
+        } else {
+          console.log("Customer " + user.stripe.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
+          stripe.customers.updateSubscription(
+            user.stripe.customerId,
+            null,
+            { plan: "basicSubscription"},
+          cardHandler);
+        }
       } else {
-        console.log("User didn't have active subscription.  Charging subscription")
+        console.log("User " + user._id + " didn't have active subscription.  Charging subscription")
         stripe.customers.create({
           email: user.email,
           source: stripeToken,
