@@ -5,6 +5,7 @@ var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
+var flash = require('req-flash');
 
 var validationError = function(res, err) {
   return res.status(422).json(err);
@@ -108,50 +109,89 @@ exports.authCallback = function(req, res, next) {
 
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
-  console.log(req.body)
-  var stripeToken = req.body.stripeToken;
-  var userEmail = req.body.stripeEmail;
+  // console.log(req.body)
+  // var stripeToken = req.body.stripeToken;
+  // var userEmail = req.body.stripeEmail;
 
-  stripe.customers.create({
-    source: stripeToken,
-    plan: "basicSubscription",
-    email: userEmail,
-    description: "Created subscription during inital private beta"
-  }, function(err, customer) {
-    if (err) {
-      console.log("error creating customer: " + err)
-    } else {
-      console.log("customer created: ")
-      console.log(customer)
-    }
-  });
-
-  // console.log(req.body.stripeToken)
-  // var stripeToken = req.body.token;
-
-  // if(!stripeToken){
-  //   // req.flash('errors', { msg: 'Please provide a valid card.' });
-  //   return 
-  //   // res.redirect(req.redirect.failure);
-  // }
-
-  // User.findById(req.user._id, function(err, user) {
-  //   if (err) return next(err);
-
-  //   user.setCard(stripeToken, function (err) {
-  //     if (err) {
-  //       if(err.code && err.code == 'card_declined'){
-  //         req.flash('errors', { msg: 'Your card was declined. Please provide a valid card.' });
-  //         return res.redirect(req.redirect.failure);
-  //       }
-  //       req.flash('errors', { msg: 'An unexpected error occurred.' });
-  //       return res.redirect(req.redirect.failure);
-  //     }
-  //     req.flash('success', { msg: 'Billing has been updated.' });
-  //     res.redirect(req.redirect.success);
-  //   });
+  // stripe.customers.create({
+  //   source: stripeToken,
+  //   plan: "basicSubscription",
+  //   email: userEmail,
+  //   description: "Created subscription during inital private beta"
+  // }, function(err, customer) {
+  //   if (err) {
+  //     console.log("error creating customer: " + err)
+  //   } else {
+  //     console.log("customer created: ")
+  //     console.log(customer)
+  //   }
   // });
+
+  var stripeToken = req.body.stripeToken.id;
+
+  if(!stripeToken){
+    // req.flash('errors', { msg: 'Please provide a valid card.' });
+    return console.log("error retrieving stripe token.")
+    // res.redirect(req.redirect.failure);
+  }
+
+  User.findById(req.body.user._id, function(err, user) {
+    // console.log(user)
+    if (err) return next(err);
+    
+    var cb = function(err) {
+    // user.setCard(stripeToken, user, function (err) {
+      if (err) {
+        if(err.code && err.code == 'card_declined'){
+          console.log('Your card was declined. Please provide a valid card.');
+          // req.flash('errors', { msg: 'Your card was declined. Please provide a valid card.' });
+          // return res.redirect(req.redirect.failure);
+        }
+        // req.flash('errors', { msg: 'An unexpected error occurred.' });
+        console.log('An unexpected error occurred.');
+        // return res.redirect(req.redirect.failure);
+      }
+      console.log('Billing has been updated.');
+      // req.flash('success', { msg: 'Billing has been updated.' });
+      // res.redirect(req.redirect.success);
+    };
+
+    // function setCard(stripe_token, user, cb) {
+    // var user = User.get();
+
+      var cardHandler = function(err, customer) {
+        if (err) return cb(err);
+
+        if(!user.stripe.customerId){
+          user.stripe.customerId = customer.id;
+        }
+        console.log(customer)
+        var card = customer.sources.data[0];
+        user.stripe.last4 = card.last4;
+        user.save(function(err){
+          if (err) return cb(err);
+          return cb(null);
+          return
+        });
+      };
+
+      if(user.stripe.customerId){
+        console.log("card updated. Customer not charged.")
+        stripe.customers.update(user.stripe.customerId, {card: stripeToken}, cardHandler);
+      } else {
+        console.log("User didn't have active subscription.  Charging subscription")
+        stripe.customers.create({
+          email: user.email,
+          source: stripeToken,
+          plan: "basicSubscription",
+          description: "Created subscription during inital private beta"
+        }, cardHandler);
+      }
+    // };
+  });
 };
+
+
 
 // exports.postPlan = function(req, res, next){
 //   console.log(req)

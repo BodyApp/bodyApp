@@ -28,7 +28,8 @@
     "socketio-jwt": "^3.0.0",
     "easyrtc": "*",
     "stripe": "*",
-    "stripe-webhook-middleware": "*"
+    "stripe-webhook-middleware": "*",
+    "req-flash": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

@@ -146,41 +146,41 @@ angular.module('bodyAppApp')
 
         function checkWhetherUserIsSubscribed() {
             if (!currentUser.isSubscribed) {
-                openPaymentModal();
-                // var handler = StripeCheckout.configure({
-                //     key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
-                //     image: '../../assets/images/body-app-logo-header.png',
-                //     locale: 'auto',
-                //     token: function(token) {
-                //         $http.post('/api/users/charge', {
-                //           user: currentUser,
-                //           stripeToken: token
-                //         }).
-                //         success(function(data) {
-                //             console.log("Successfully posted to /user/charge")
-                //           // $cookieStore.put('token', data.token);
-                //           // currentUser = User.get();
-                //           // deferred.resolve(data);
-                //           // return cb();
-                //         }).
-                //         error(function(err) {
-                //             console.log("Error posting to /user/charge: " + err)
-                //           // this.logout();
-                //           // deferred.reject(err);
-                //           // return cb(err);
-                //         }.bind(this));
+                // openPaymentModal();
+                var handler = StripeCheckout.configure({
+                    key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+                    image: '../../assets/images/body-app-logo-header.png',
+                    locale: 'auto',
+                    token: function(token) {
+                        $http.post('/api/users/charge', {
+                          user: currentUser,
+                          stripeToken: token
+                        }).
+                        success(function(data) {
+                            console.log("Successfully posted to /user/charge")
+                          // $cookieStore.put('token', data.token);
+                          // currentUser = User.get();
+                          // deferred.resolve(data);
+                          // return cb();
+                        }).
+                        error(function(err) {
+                            console.log("Error posting to /user/charge: " + err)
+                          // this.logout();
+                          // deferred.reject(err);
+                          // return cb(err);
+                        }.bind(this));
 
-                //       // Use the token to create the charge with a server-side script.
-                //       // You can access the token ID with `token.id`
-                //     }
-                // });
-                // handler.open({
-                //   name: 'BODY SUBSCRIPTION',
-                //   email: currentUser.email,
-                //   description: '1 Month ($40.00)',
-                //   zipCode: true,
-                //   amount: 4000
-                // });
+                      // Use the token to create the charge with a server-side script.
+                      // You can access the token ID with `token.id`
+                    }
+                });
+                handler.open({
+                  name: 'BODY SUBSCRIPTION',
+                  email: currentUser.email,
+                  description: '1 Month ($40.00)',
+                  zipCode: true,
+                  amount: 4000
+                });
             } 
             return currentUser.isSubscribed
         }
