@@ -101,6 +101,11 @@ angular.module('bodyAppApp')
         return currentUser;
       },
 
+      getUpdatedUser: function() {
+        currentUser = User.get();
+        return currentUser;
+      },
+
       /**
        * Check if a user is logged in
        *

@@ -153,7 +153,6 @@ exports.postBilling = function(req, res, next){
     };
 
       var cardHandler = function(err, customer) {
-        console.log(customer.subscriptions.data[0])
         if (err) return cb(err);
 
         if(!user.stripe.customerId){
@@ -171,6 +170,7 @@ exports.postBilling = function(req, res, next){
         
         user.save(function(err){
           console.log("saving user")
+          res.json(user)
           if (err) return cb(err);
           return cb(null);
           return

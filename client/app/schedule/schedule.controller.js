@@ -145,7 +145,9 @@ angular.module('bodyAppApp')
         }
 
         function checkWhetherUserIsSubscribed() {
-            console.log(currentUser)
+            // currentUser = Auth.getUpdatedUser();
+            // $scope.currentUser = currentUser;
+            // console.log(currentUser)
             if (currentUser.stripe && currentUser.stripe.plan) {
                 return currentUser.stripe.plan
             } else {
@@ -158,15 +160,27 @@ angular.module('bodyAppApp')
                         $http.post('/api/users/charge', {
                           user: currentUser,
                           stripeToken: token
-                        }).
-                        success(function(data) {
-                            console.log("Successfully posted to /user/charge")
-                          // $cookieStore.put('token', data.token);
-                          // currentUser = User.get();
-                          // deferred.resolve(data);
-                          // return cb();
-                        }).
-                        error(function(err) {
+                        })
+                        // then(function() {
+                        //     console.log("Successfully posted to /user/charge")
+                        //     currentUser = User.get();
+                        //     $scope.currentUser = currentUser
+                        //     console.log(currentUser)
+                        // }, function(err){
+                        //     console.log("Error posting to /user/charge: " + err)
+                        // })
+
+                        .success(function(data) {
+                            console.log("Successfully posted to /user/charge");
+                            console.log(data);
+                            // $cookieStore.put('token', data.token);
+                            currentUser = data
+                            $scope.currentUser = currentUser
+                            console.log(currentUser)
+                            // deferred.resolve(data);
+                            // return cb();
+                        })
+                        .error(function(err) {
                             console.log("Error posting to /user/charge: " + err)
                           // this.logout();
                           // deferred.reject(err);
@@ -177,6 +191,7 @@ angular.module('bodyAppApp')
                       // You can access the token ID with `token.id`
                     }
                 });
+
                 handler.open({
                   name: 'BODY SUBSCRIPTION',
                   email: currentUser.email,
