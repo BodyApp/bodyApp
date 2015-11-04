@@ -7,7 +7,7 @@
       <div class="col-md-3 page-sidebar-left full-screen-height">
       <!--left sidebar-->
         <h3 class="uppercase text-center mb8 mt8">Today's Workout</h3>
-        <h5 id="blue" class="text-center bold mb0"><i>WINTER IS COMING</i></h5>
+        <h5 id="blue" class="text-center bold mb0"><i>{{wod.name}}</i></h5>
         <h5 class="text-center mb32"><i>{{getFormattedDateTime(nil, true).dayOfWeek}} {{getFormattedDateTime(nil, true).month}} {{getFormattedDateTime(nil, true).day}}, {{getFormattedDateTime(nil, true).year}}</i></h5>
 
         <!--WOD tabs-->
@@ -15,11 +15,11 @@
                     <ul class="tabs" ng-init = "firstActive = true">
                         <li ng-class="{active: firstActive}" ng-mouseover = "firstActive = true; secondActive = false; thirdActive = false">
                             <div class="tab-title">
-                                <span>Lvl 1</span>
+                                <span>All</span>
                             </div>
                             
                         </li>
-                        <li ng-class="{active: secondActive}" ng-mouseover = "firstActive = false; secondActive = true; thirdActive = false">
+                        <!-- <li ng-class="{active: secondActive}" ng-mouseover = "firstActive = false; secondActive = true; thirdActive = false">
                             <div class="tab-title">
                                 <span>Lvl 2</span>
                             </div>
@@ -30,21 +30,21 @@
                                 <span>Lvl 3</span>
                             </div>
                             
-                        </li>
+                        </li> -->
                     </ul>
                 <ul class="content">
                   <li ng-class="{active: firstActive}">
                     <div class="tab-content">
                       <!--Strength movements-->
                       <h5 class="bold uppercase mb16">Strength</h5>
-                      <p id="dark-text">Yoga Pushups 12-12-12-12</p>
+                      <p id="dark-text">{{wod.strength}}</p>
                       
                       <!--WOD movements-->
                       <h5 class="bold uppercase mb8">Workout</h5>
-                      <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                      <p id="dark-text" class="mb0">8 Air Squats</p>
-                      <p id="dark-text" class="mb0">15 Burpees</p>
-                      <p id="dark-text" class="mb0">10 V-Ups</p>
+                      <h6 class="mb16"><i>{{wod.workout.type}}</i></h6>
+                      <p id="dark-text" class="mb0">{{wod.workout.first}}</p>
+                      <p id="dark-text" class="mb0">{{wod.workout.second}}</p>
+                      <p id="dark-text" class="mb0">{{wod.workout.third}}</p>
                     </div>
                   </li>
                   <li ng-class="{active: secondActive}">

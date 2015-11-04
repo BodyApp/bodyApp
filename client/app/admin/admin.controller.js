@@ -30,7 +30,11 @@ angular.module('bodyAppApp')
       var friDayWeek = 5;
       var satDayWeek = 6;
 
-      var ref = new Firebase("https://bodyapp.firebaseio.com/weekof9272015");  
+      var sunDate = new Date();
+      sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+      var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear()
+
+      var ref = new Firebase("https://bodyapp.firebaseio.com/"+weekOf);  
       var syncObject = $firebaseObject(ref);
 
       var sunDate = new Date();

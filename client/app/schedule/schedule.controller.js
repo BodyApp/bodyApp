@@ -8,13 +8,19 @@ angular.module('bodyAppApp')
 
         // checkWhetherUserIsSubscribed()
 
-        Schedule.setFirebaseObject("weekof9272015").$bindTo($scope, 'days')  
+        var todayDate = new Date();
+        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate()
+
+        var sunDate = new Date();
+        sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+        var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear()
+
+        Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days')  
         
         $scope.availableClasses = true;
         $scope.userClassToJoin = Schedule.classInNext30Mins;
         $scope.userHasClassNow = false;
-        var todayDate = new Date();
-        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate()
+        
 
         var hasSelectedClassThatCanJoin = false
 
@@ -271,6 +277,8 @@ angular.module('bodyAppApp')
             $scope.currentStep = 0
           // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
         };
+        var ref = new Firebase("https://bodyapp.firebaseio.com");
+        $scope.wod = $firebaseObject(ref.child('WOD'));
     })
 
     //Currently unused
