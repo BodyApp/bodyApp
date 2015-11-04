@@ -5,7 +5,7 @@ var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
-var flash = require('req-flash');
+// var flash = require('req-flash');
 
 var validationError = function(res, err) {
   return res.status(422).json(err);

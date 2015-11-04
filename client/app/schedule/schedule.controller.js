@@ -161,30 +161,14 @@ angular.module('bodyAppApp')
                           user: currentUser,
                           stripeToken: token
                         })
-                        // then(function() {
-                        //     console.log("Successfully posted to /user/charge")
-                        //     currentUser = User.get();
-                        //     $scope.currentUser = currentUser
-                        //     console.log(currentUser)
-                        // }, function(err){
-                        //     console.log("Error posting to /user/charge: " + err)
-                        // })
-
                         .success(function(data) {
                             console.log("Successfully posted to /user/charge");
-                            console.log(data);
-                            // $cookieStore.put('token', data.token);
                             currentUser = data
                             $scope.currentUser = currentUser
-                            console.log(currentUser)
-                            // deferred.resolve(data);
-                            // return cb();
+
                         })
                         .error(function(err) {
                             console.log("Error posting to /user/charge: " + err)
-                          // this.logout();
-                          // deferred.reject(err);
-                          // return cb(err);
                         }.bind(this));
 
                       // Use the token to create the charge with a server-side script.
