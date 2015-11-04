@@ -1,23 +1,23 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
-  <ul class="list-group">
+  <!-- <ul class="list-group">
     <li class="list-group-item" ng-repeat="user in users">
         <strong>{{user.name}}</strong><br>
         <span class="text-muted">{{user.email}}</span>
         <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
     </li>
-  </ul>
+  </ul> -->
 
-  <form action="demo_form.asp">
-    WOD Name <input type="text" name="fname"><br>
-    Last name: <input type="text" name="lname"><br>
-    <input type="submit" value="Submit">
+  <form novalidate class="simple-form col-sm-3">
+    <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br />
+    <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
+    <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
+    <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
   </form>
 
-  <button ng-click="seedCalendar()" class="btn btn-lg btn-primary" style="visibility: visible;">
+<!--   <button ng-click="seedCalendar()" class="btn btn-lg btn-primary" style="visibility: visible;">
     Seed Sample Calendar
-  </button>
+  </button> -->
 </div>
 <div ng-include="'components/footer/footer.html'"></div>

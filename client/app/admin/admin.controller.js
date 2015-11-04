@@ -6,16 +6,55 @@ angular.module('bodyAppApp')
     // Use the User $resource to fetch all users
     $scope.users = User.query();
     var todayDate = new Date();
+    $scope.todayDate = todayDate
     var todayDayOfWeek = todayDate.getDay();
 
-    $scope.delete = function(user) {
-      User.remove({ id: user._id });
-      angular.forEach($scope.users, function(u, i) {
-        if (u === user) {
-          $scope.users.splice(i, 1);
-        }
-      });
-    };
+    var sunDate = new Date();
+    sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+    var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear()
+
+    var ref = new Firebase("https://bodyapp.firebaseio.com/"+weekOf);  
+    var syncObject = $firebaseObject(ref);
+
+    $scope.createWorkout = function(workoutToCreate) {
+      console.log(workoutToCreate);
+      var date = workoutToCreate.date
+      syncObject[date.getDay()].slots[date.getTime()] = {
+        date: date,
+        booked: false,
+        trainer: workoutToCreate.trainer,
+        classFull: false,
+        past: false,
+        spots: 8,
+        spotsTaken: 0
+      }
+
+      syncObject.$save().then(function() {
+        console.log("new workout saved")
+      }).catch(function(err) {
+        console.log("error saving new workout: " + err)
+      })
+      // var dateSetter = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate(), 20, 0, 0).getTime()
+      // a.slots[dateSetter] = 
+      // time: '8:00pm',
+      // date: dateSetter,
+      // booked: false,
+      // trainer: "Mendelson",
+      // classFull: false,
+      // past: false,
+      // spots: 8,
+      // spotsTaken: 0,
+    }
+
+    // $scope.delete = function(user) {
+    //   User.remove({ id: user._id });
+    //   angular.forEach($scope.users, function(u, i) {
+    //     if (u === user) {
+    //       $scope.users.splice(i, 1);
+    //     }
+    //   });
+    // };
+
     $scope.seedCalendar = function() {
       console.log("Seeding calendar");    
       var dd = todayDate.getDate();
@@ -28,14 +67,7 @@ angular.module('bodyAppApp')
       var wedDayWeek = 3;
       var thursDayWeek = 4;
       var friDayWeek = 5;
-      var satDayWeek = 6;
-
-      var sunDate = new Date();
-      sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-      var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear()
-
-      var ref = new Firebase("https://bodyapp.firebaseio.com/"+weekOf);  
-      var syncObject = $firebaseObject(ref);
+      var satDayWeek = 6;     
 
       var sunDate = new Date();
       sunDate.setDate(todayDate.getDate() + sunDayWeek - todayDayOfWeek);
@@ -471,13 +503,13 @@ angular.module('bodyAppApp')
         spotsTaken: 0,
       }
 
-      syncObject[sunDate.getTime()] = a
-      syncObject[monDate.getTime()] = b
-      syncObject[tuesDate.getTime()] = c
-      syncObject[wedDate.getTime()] = d
-      syncObject[thursDate.getTime()] = e
-      syncObject[friDate.getTime()] = f
-      syncObject[satDate.getTime()] = g
+      syncObject[0] = a
+      syncObject[1] = b
+      syncObject[2] = c
+      syncObject[3] = d
+      syncObject[4] = e
+      syncObject[5] = f
+      syncObject[6] = g
 
       syncObject.$save();
     }
