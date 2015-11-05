@@ -38,14 +38,14 @@ angular.module('bodyAppApp')
 
         $scope.classIsToday = function(slot) {
             var someNewDate = new Date()
-            if (slot.date < (someNewDate.getTime() + 1000*60*60*12)) {
-                $scope.currentStep = 1
+            if (slot.date < (someNewDate.getTime() + 1000*60*60*0.5)) { //0.5 is for 30 minutes
+                // $scope.currentStep = 1
                 hasSelectedClassThatCanJoin = true
                 return true
             } else {
                 if (hasSelectedClassThatCanJoin === false) {
                     // console.log("and here")
-                    $scope.currentStep = 0;
+                    // $scope.currentStep = 0;
                 }
                 return false;
             }

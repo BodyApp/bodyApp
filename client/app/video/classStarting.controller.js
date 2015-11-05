@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
     }
     
   	$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
-  	$scope.trainer = "Mendelson";
+  	// $scope.trainer = "Mendelson";
   	// $scope.joinClassActive = false;
 
   	window.setInterval(function(){ checkTime() }, 20*1000)
@@ -24,7 +24,7 @@ angular.module('bodyAppApp')
   	}
 
     // load cookie, or start new tour
-    $scope.currentStep = 0;
+    // $scope.currentStep = 0;
 
     // save cookie after each step
     $scope.stepComplete = function() {
