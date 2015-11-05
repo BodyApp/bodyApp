@@ -24,7 +24,7 @@ angular.module('bodyAppApp')
       var date = workoutToCreate.date
       syncObject[date.getDay()].slots[date.getTime()] = {
         time: timeFormatter(date),
-        date: date,
+        date: date.getTime(),
         booked: false,
         trainer: workoutToCreate.trainer,
         classFull: false,
