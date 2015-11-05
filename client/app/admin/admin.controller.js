@@ -16,6 +16,9 @@ angular.module('bodyAppApp')
     var ref = new Firebase("https://bodyapp.firebaseio.com/"+weekOf);  
     var syncObject = $firebaseObject(ref);
 
+    var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
+    $scope.wod = $firebaseObject(wodRef);
+
     $scope.createWorkout = function(workoutToCreate) {
       console.log(workoutToCreate);
       var date = workoutToCreate.date
@@ -35,16 +38,6 @@ angular.module('bodyAppApp')
       }).catch(function(err) {
         console.log("error saving new workout: " + err)
       })
-      // var dateSetter = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate(), 20, 0, 0).getTime()
-      // a.slots[dateSetter] = 
-      // time: '8:00pm',
-      // date: dateSetter,
-      // booked: false,
-      // trainer: "Mendelson",
-      // classFull: false,
-      // past: false,
-      // spots: 8,
-      // spotsTaken: 0,
     }
 
     function timeFormatter(date) {

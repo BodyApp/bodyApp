@@ -8,13 +8,23 @@
         <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
     </li>
   </ul> -->
-
+  <div class = "col-sm-2"></div>
   <form novalidate class="simple-form col-sm-3">
     <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br />
     <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
     <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
     <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
   </form>
+
+  <form novalidate class="simple-form col-sm-3">
+    <input style="color: black" type="text" ng-model="wod.name" placeholder="WOD Name" required/><br />
+    <input style="color: black" type="text" ng-model="wod.strength" placeholder="Strength" required/><br />
+    <input style="color: black" type="text" ng-model="wod.workout.type" placeholder = "Workout Type" required/><br />
+    <input style="color: black" type="text" ng-model="wod.workout.first" placeholder = "First Exercise" required/><br />
+    <input style="color: black" type="text" ng-model="wod.workout.second" placeholder = "Second Exercise" required/><br />
+    <input style="color: black" type="text" ng-model="wod.workout.third" placeholder = "Third Exercise" required/><br />
+    <input type="submit" ng-click="wod.$save()" value="Change WOD" />
+  </form>  
 
 <!--   <button ng-click="seedCalendar()" class="btn btn-lg btn-primary" style="visibility: visible;">
     Seed Sample Calendar
