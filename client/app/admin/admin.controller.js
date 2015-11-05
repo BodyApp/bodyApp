@@ -20,6 +20,7 @@ angular.module('bodyAppApp')
       console.log(workoutToCreate);
       var date = workoutToCreate.date
       syncObject[date.getDay()].slots[date.getTime()] = {
+        time: timeFormatter(date),
         date: date,
         booked: false,
         trainer: workoutToCreate.trainer,
@@ -44,6 +45,18 @@ angular.module('bodyAppApp')
       // past: false,
       // spots: 8,
       // spotsTaken: 0,
+    }
+
+    function timeFormatter(date) {
+      var formatted;
+      if (date.getHours() == 12) {
+          formatted = date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "pm"
+      } else if (date.getHours() == 24) {
+          formatted = date.getHours()-12 +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "am"
+      } else {
+          formatted = ((date.getHours() < 13)? date.getHours() : date.getHours()-12) +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + ((date.getHours() < 13)? "am" : "pm")
+      } 
+      return formatted
     }
 
     // $scope.delete = function(user) {
