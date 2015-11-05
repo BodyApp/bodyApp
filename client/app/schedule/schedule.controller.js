@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, Schedule, $modal, $log) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, User, Schedule, $modal, $log) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser)
@@ -231,6 +231,17 @@ angular.module('bodyAppApp')
                 }, function () {
                   $log.info('Modal dismissed at: ' + new Date());
                 });
+
+                User.addBookedClass({ id: currentUser._id }, {
+                  classToAdd: slot
+                }, function(user) {
+                  currentUser = user;
+                  $scope.currentUser = currentUser;
+                }, function(err) {
+                    console.log("Error adding class: " + err)
+                    slot.bookedUsers[currentUser._id] = false    
+                }).$promise;
+
             } else {
                 slot.bookedUsers[currentUser._id] = false
             }

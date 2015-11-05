@@ -17,6 +17,12 @@ angular.module('bodyAppApp')
         params: {
           id:'me'
         }
+      },
+      addBookedClass: {
+        method: 'PUT',
+        params: {
+          controller:'addBookedClass'
+        }
       }
 	  });
   });

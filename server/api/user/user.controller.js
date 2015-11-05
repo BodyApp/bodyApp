@@ -201,3 +201,19 @@ exports.postBilling = function(req, res, next){
       }
   });
 };
+
+exports.addBookedClass = function(req, res, next) {
+  var userId = req.user._id;
+  var classToAdd = req.body.classToAdd;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      console.log(user);
+      user.classes.push(classToAdd);
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};

@@ -13,6 +13,7 @@ router.get('/me', auth.isAuthenticated(), controller.me);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
+router.put('/:id/addBookedClass', auth.isAuthenticated(), controller.addBookedClass);
 
 router.post('/charge',
 //   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
