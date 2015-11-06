@@ -101,10 +101,10 @@
                     <td class = "col-md-9">
                       <span id="dark-text" >Lvl 1 {{slot.trainer}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
                     </td>
-                    <td class = "col-md-3" ng-if = "canJoinClass(slot) || classIsToday(slot)">
+                    <td class = "col-md-3" ng-if = "slot.date <= (timeNow + 1000*60*15)">
                       <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">JOIN NOW</a>
                     </td>
-                    <td class = "col-md-3" ng-if = "!canJoinClass(slot) && !classIsToday(slot)">
+                    <td class = "col-md-3" ng-if = "slot.date > (timeNow + 1000*60*15)">
                       <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a>
                     </td>
                   </tr>

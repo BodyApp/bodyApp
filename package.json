@@ -27,7 +27,9 @@
     "socket.io": "^1.0.6",
     "socketio-jwt": "^3.0.0",
     "easyrtc": "*",
-    "stripe": "*"
+    "stripe": "*",
+    "cron": "*",
+    "firebase": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
