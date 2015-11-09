@@ -141,6 +141,10 @@ angular.module('bodyAppApp')
         return currentUser.role === 'admin';
       },
 
+      isInstructor: function() {
+        return currentUser.role === 'instructor';
+      },
+
       /**
        * Get auth token
        */
