@@ -27,11 +27,8 @@ if(config.seedDB) { require('./config/seed'); }
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
-var socketio = require('socket.io')(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
-});
-require('./config/socketio')(socketio);
+
+// require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
 
@@ -40,8 +37,15 @@ server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
 
+var socketio = require('socket.io')(server, {
+  serveClient: config.env !== 'production',
+  path: '/socket.io-client'
+});
+
+var socketServer = require('socket.io').listen(server, {"log level":1})
+
 // Start EasyRTC server
-var rtc = easyrtc.listen(app, socketio);
+var rtc = easyrtc.listen(app, socketServer);
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {

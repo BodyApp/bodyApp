@@ -48,18 +48,18 @@ angular.module('bodyAppApp', [
   .run(function ($rootScope, $state, Auth) {
     // Stops the webRTC connection when not in video mode
     $rootScope.$on("$locationChangeStart",function(event, next, current){
-      if (easyrtc.webSocket) {
-        easyrtc.disconnect()
-        easyrtc.webSocket.disconnect() 
-        easyrtc.hangupAll()
-      }
+      // if (easyrtc.webSocket) {
+      //   easyrtc.disconnect()
+      //   easyrtc.webSocket.disconnect() 
+      //   easyrtc.hangupAll()
+      // }
     });
 
     $rootScope.$on("$destroy",function(event, next, current){
       // if (easyrtc.webSocket) {
-        easyrtc.disconnect()
-        easyrtc.webSocket.disconnect() 
-        easyrtc.hangupAll()
+        // easyrtc.disconnect()
+        // easyrtc.webSocket.disconnect() 
+        // easyrtc.hangupAll()
       // }
     });
 

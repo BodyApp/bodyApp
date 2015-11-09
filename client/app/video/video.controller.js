@@ -1,19 +1,10 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, Auth, $state) {
-  	$scope.$on('$locationChangeStart', function( event ) {
-			easyrtc.disconnect()
-			easyrtc.webSocket.disconnect() 
-			easyrtc.hangupAll()
-		});
-
-		setTimeout(function(){ 
-			$state.go("results");
-			easyrtc.disconnect()
-			easyrtc.webSocket.disconnect() 
-			easyrtc.hangupAll()
-		}, 20000);
+  .controller('ConsumerVideoCtrl', function ($scope, Auth) {
+  // 	$scope.$on('$locationChangeStart', function( event ) {
+	 //    easyrtc.disconnect()
+		// });
 
   	var maxCALLERS = 10;
 		// var numVideoOBJS = maxCALLERS+1;
@@ -26,24 +17,29 @@ angular.module('bodyAppApp')
 
 		var currentUser = Auth.getCurrentUser();
 
+		function loginSuccess() {
+			console.log("successfully connected to easyRTC server.")
+		    // expandThumb(0);  // expand the mirror image initially.
+		}
+
 		var _init = function() {
-	  	// console.log('got here')
 	    // var usernameInput = prompt('Welcome to the Alpha version of Body App!  Please enter a username.  Make sure it's the same one you used before if you're logging back in.')
 	    // usernameInput = usernameInput.replace(/\s+/g, ''); //Gets rid of white space
 
-	    easyrtc.setRoomOccupantListener(callEverybodyElse);
 	    easyrtc.initMediaSource(
 	        function(){       // success callback
 	            var selfVideo = document.getElementById('box1');
 	            easyrtc.setVideoObjectSrc(selfVideo, easyrtc.getLocalStream());
 	            easyrtc.setUsername(currentUser._id.toString());
-	            console.log(currentUser._id.toString())
-	            easyrtc.connect('easyrtc.multiparty', loginSuccess);
+	            console.log("set username to " + currentUser._id.toString())
+	            easyrtc.connect("easyrtc.multiparty", loginSuccess);
 	            document.getElementById(getIdOfBox(1)).style.visibility = 'visible'; //This is the box for this user
 	        }, function() { //Failure callback
 	        	alert("Body App can't access your video camera.  Please make sure your browser is allowing Body App to access your camera and microphone by clicking permissions in the address bar above.")
 	        }
 	    );
+
+	    easyrtc.setRoomOccupantListener(callEverybodyElse);
 
 	    // easyrtc.setPeerListener(messageListener);
 	    easyrtc.setDisconnectListener( function() {
@@ -56,41 +52,37 @@ angular.module('bodyAppApp')
 		}
 
 		function callEverybodyElse(roomName, otherPeople) {
-	    // easyrtc.setRoomOccupantListener(null); // so we're only called once.
+			console.log("calling everybody else");
+	    easyrtc.setRoomOccupantListener(null); // so we're only called once.
 
-	    // var list = [];
-	    // var connectCount = 0;
-	    // for(var easyrtcid in otherPeople ) {
-	    //     list.push(easyrtcid);
-	    // }
+	    var list = [];
+	    var connectCount = 0;
+	    for(var easyrtcid in otherPeople ) {
+	        list.push(easyrtcid);
+	    }
 	    //
 	    // Connect in reverse order. Latter arriving people are more likely to have
 	    // empty slots.
 	    //
-	    // function establishConnection(position) {
-	    //     function callSuccess() {
-	    //         connectCount++;
-	    //         if( connectCount < maxCALLERS && position > 0) {
-	    //             establishConnection(position-1);
-	    //         }
-	    //     }
-	        // function callFailure(errorCode, errorText) {
-	        //     easyrtc.showError(errorCode, errorText);
-	        //     if( connectCount < maxCALLERS && position > 0) {
-	        //         establishConnection(position-1);
-	        //     }
-	        // }
-	        // easyrtc.call(list[position], callSuccess, callFailure);
+	    function establishConnection(position) {
+	        function callSuccess() {
+	            connectCount++;
+	            if( connectCount < maxCALLERS && position > 0) {
+	                establishConnection(position-1);
+	            }
+	        }
+	        function callFailure(errorCode, errorText) {
+	            easyrtc.showError(errorCode, errorText);
+	            if( connectCount < maxCALLERS && position > 0) {
+	                establishConnection(position-1);
+	            }
+	        }
+	        easyrtc.call(list[position], callSuccess, callFailure);
 
-	    // }
-	    // if( list.length > 0) {
-	    //     establishConnection(list.length-1);
-	    // }
-		}
-
-
-		function loginSuccess() {
-		    // expandThumb(0);  // expand the mirror image initially.
+	    }
+	    if( list.length > 0) {
+	        establishConnection(list.length-1);
+	    }
 		}
 
 		// function messageListener(easyrtcid, msgType, content) {
@@ -105,6 +97,7 @@ angular.module('bodyAppApp')
 		// }
 
 		easyrtc.setStreamAcceptor( function(callerEasyrtcid, stream) {
+			console.log("new stream accepted")
 		    var callerUsername = easyrtc.idToName(callerEasyrtcid);
 		    if (callerUsername === 'trainer') {
 		        var mainVideo = document.getElementById('box0');
@@ -147,30 +140,6 @@ angular.module('bodyAppApp')
 		});
 
 		_init();
-
-        // load cookie, or start new tour
-    $scope.currentStep = 0;
-
-    $scope.checkIfSelectedRightClass = function() {
-        $scope.currentStep = 0
-    }
-
-    // save cookie after each step
-    $scope.stepComplete = function() {
-      // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
-      $scope.currentStep = 0
-    };
-    
-    // callback for when we've finished going through the tour
-    $scope.postTourCallback = function() {
-      $scope.currentStep = 0
-      console.log('tour over');
-    };
-    // optional way of saving tour progress with cookies
-    $scope.postStepCallback = function() {
-        $scope.currentStep = 0
-      // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
-    };
 	})
 
 	.controller('TrainerVideoCtrl', function ($scope) {
@@ -291,7 +260,7 @@ angular.module('bodyAppApp')
 
 	            if( easyrtc.getConnectionCount() === 0 ) { // no more connections
 	                // expandThumb(0);
-	                document.getElementById('textEntryButton').style.display = 'none';
+	                // document.getElementById('textEntryButton').style.display = 'none';
 	                // document.getElementById('textentryBox').style.display = 'none';
 	            }
 	            // handleWindowResize();

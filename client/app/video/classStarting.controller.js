@@ -7,7 +7,10 @@ angular.module('bodyAppApp')
       $location.path('/')
     }
     
-  	$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
+    var classTime = classToJoin.date
+
+  	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
+    console.log($scope.minutesUntilClass)
   	// $scope.trainer = "Mendelson";
   	// $scope.joinClassActive = false;
 
