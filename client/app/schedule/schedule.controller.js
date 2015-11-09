@@ -4,27 +4,27 @@ angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, User, Schedule, $modal, $log) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
-        Schedule.setCurrentUser(currentUser)
+        Schedule.setCurrentUser(currentUser);
 
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         $scope.wod = $firebaseObject(ref.child('WOD'));
 
         var todayDate = new Date();
-        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate()
+        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate();
 
         var sunDate = new Date();
         sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-        var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear()
+        var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear();
 
-        Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days')  
+        Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days');
         
         $scope.availableClasses = true;
         $scope.timeNow = new Date().getTime();
-        $scope.classOverTime = $scope.timeNow - 1000*60*45
+        $scope.classOverTime = $scope.timeNow - 1000*60*45;
 
         $scope.getFormattedDateTime = function(slot, noToday) {
-            slot = slot || {}
-            slot.date = slot.date || new Date()
+            slot = slot || {};
+            slot.date = slot.date || new Date();
             var newDate = new Date(slot.date);
             var formatted = {}
 
