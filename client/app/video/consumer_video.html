@@ -1,21 +1,21 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<tour step="currentStep">
+<!-- <tour step="currentStep"> -->
     <div class = "video-screen-height" style="background-image:url(assets/images/irongrip.png)">
-        <div class="row" >
-            <div class = "column column-2">
-                    <video height = "auto" width = "auto" id="box1" class="column-12 row" style="visibility: hidden" muted="muted"></video>
-
-                    <video id="box2" class="column-12 row" style="visibility: hidden"></video>
-                    <video id="box3" class="column-12 row" style="visibility: hidden"></video>
-                    <video id="box4" class="column-12 row" style="visibility: hidden"></video>
+        <div class="row">
+            <div class = "column col-xs-2">
+                    <video id="box1" style = "margin: 0px" class="row" style="visibility: hidden" muted="muted"></video>
+                    <video id="box2" style = "margin: 0px" class="row" style="visibility: hidden"></video>
+                    <video id="box3" style = "margin: 0px" class="row" style="visibility: hidden"></video>
+                    <video id="box4" style = "margin: 0px" class="row" style="visibility: hidden"></video>
             </div>
-                    <video id="box0" id="mainScreen" class="column column-8 row easyRTCMirror"></video>
-
-            <div class = "column column-2">
-                    <video id="box5" class="column-12 row" style="visibility: hidden"></video>
-                    <video id="box6" class="column-12 row" style="visibility: hidden"></video>
-                    <video id="box7" class="column-12 row" style="visibility: hidden"></video>
-                    <video id="box8" class="column-12 row" style="visibility: hidden"></video>
+            <div class = "column col-sm-8">
+                    <video id="box0" id="mainScreen" class="row col-sm-12 easyRTCMirror"></video>
+            </div>
+            <div class = "column col-sm-2">
+                    <video id="box5" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
+                    <video id="box6" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
+                    <video id="box7" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
+                    <video id="box8" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
             </div>
         </div>
     </div>
