@@ -15,6 +15,7 @@ angular.module('bodyAppApp')
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/"+weekOf);  
     var syncObject = $firebaseObject(ref);
+    syncObject.$save()
 
     var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
     $scope.wod = $firebaseObject(wodRef);
@@ -22,6 +23,9 @@ angular.module('bodyAppApp')
     $scope.createWorkout = function(workoutToCreate) {
       console.log(workoutToCreate);
       var date = workoutToCreate.date
+      syncObject[date.getDay()] = syncObject[date.getDay()] || {};
+      syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {};
+
       syncObject[date.getDay()].slots[date.getTime()] = {
         time: timeFormatter(date),
         date: date.getTime(),
