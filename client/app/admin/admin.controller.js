@@ -21,13 +21,24 @@ angular.module('bodyAppApp')
 
     $scope.createWorkout = function(workoutToCreate) {
       var date = workoutToCreate.date
-      syncObject[date.getDay()] = syncObject[date.getDay()] || {    
-          dayOfWeek: date.getDay(),
-          formattedDate: ""+(date.getMonth()+1)+"/"+date.getDate()+"",
-          name: getDayOfWeek(date),
-          slots: {}
-      };
+      
+      //Set up the week if this is first class of week
+      if (!syncObject[date.getDay()]) {
+        for (var i = 0; i < 7; i++) {
+          var thisDate = new Date();
+          thisDate.setDate(sunDate.getDate() + i)
 
+          syncObject[i] = {    
+            dayOfWeek: i,
+            formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
+            name: getDayOfWeek(i),
+            slots: {}
+          };
+        }
+      }
+
+      //Set up the class
+      syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {} 
       syncObject[date.getDay()].slots[date.getTime()] = {
         time: timeFormatter(date),
         date: date.getTime(),
@@ -58,8 +69,8 @@ angular.module('bodyAppApp')
       return formatted
     }
 
-    function getDayOfWeek(date) {
-      switch (date.getDay()) {
+    function getDayOfWeek(day) {
+      switch (day) {
         case 0: return "Sun"; break;
         case 1: return "Mon"; break;
         case 2: return "Tue"; break;
