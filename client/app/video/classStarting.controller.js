@@ -1,14 +1,32 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, Schedule, Auth) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $firebaseObject, Schedule, Auth) {
   	var classToJoin = Schedule.classUserJustJoined;
+
     if (!classToJoin) {
       $location.path('/')
     }
-    
+
+    $scope.instructor = classToJoin.instructor
+    $scope.instructorPicUrl = $scope.instructor.picUrl
+
     var classTime = classToJoin.date
     var currentUser = Auth.getCurrentUser()
+
+    var classDate = new Date(classToJoin.date)
+    var sunDate = new Date()
+    sunDate.setDate(classDate.getDate()-classDate.getDay())
+
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var firebaseClassToJoin = $firebaseObject(
+      ref.child("weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear())
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+    )
+
+    firebaseClassToJoin.$bindTo($scope, 'class');
 
   	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
     console.log($scope.minutesUntilClass)

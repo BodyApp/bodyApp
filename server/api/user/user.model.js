@@ -20,6 +20,7 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  picture: String,
   classes: [],
   facebook: {},
   twitter: {},
@@ -54,7 +55,8 @@ UserSchema
       'firstName': this.firstName,
       'lastName': this.lastName,
       'gender': this.gender,
-      'role': this.role
+      'role': this.role,
+      'picture': this.picture
     };
   });
 

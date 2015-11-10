@@ -9,7 +9,8 @@ exports.setup = function (User, config) {
       profileFields: [
       'displayName',
       'emails',
-      'gender'
+      'gender',
+      'picture.type(large)'
       ]
     },
     function(accessToken, refreshToken, profile, done) {
@@ -27,6 +28,7 @@ exports.setup = function (User, config) {
             lastName: profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1),
             nickName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
             gender: profile.gender,
+            picture: profile.photos[0].value,
             birthday: " ",
             email: profile.emails[0].value,
             role: 'user',
@@ -35,6 +37,7 @@ exports.setup = function (User, config) {
           });
           user.save(function(err) {
             if (err) return done(err);
+            console.log(user);
             done(err, user);
           });
         } else {
