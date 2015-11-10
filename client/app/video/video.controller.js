@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, Auth) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, Auth, Schedule) {
+
+  	var classToJoin = Schedule.classUserJustJoined;
+  	if (!classToJoin) {
+			$location.path('/')
+		}
 
   	var maxCALLERS = 10;
 		var numConsumers = 1;
@@ -22,7 +27,7 @@ angular.module('bodyAppApp')
 	            easyrtc.setVideoObjectSrc(selfVideo, easyrtc.getLocalStream());
 	            easyrtc.setUsername(currentUser._id.toString());
 	            console.log("set username to " + currentUser._id.toString())
-	            easyrtc.connect("easyrtc.multiparty", loginSuccess);
+	            easyrtc.connect(""+classToJoin.date+"", loginSuccess);
 	            document.getElementById(getIdOfBox(1)).style.visibility = 'visible'; //This is the box for this user
 	        }, function() { //Failure callback
 	        	alert("Body App can't access your video camera.  Please make sure your browser is allowing Body App to access your camera and microphone by clicking permissions in the address bar above.")
@@ -118,10 +123,15 @@ angular.module('bodyAppApp')
 		_init();
 	})
 
-	.controller('TrainerVideoCtrl', function ($scope, $location, Auth) {
+	.controller('TrainerVideoCtrl', function ($scope, $location, Auth, Schedule) {
 		//Should only be accessible to trainers.
 	  var maxCALLERS = 10;
 		easyrtc.dontAddCloseButtons(true);
+
+		var classToJoin = Schedule.classUserJustJoined;
+		if (!classToJoin) {
+			$location.path('/')
+		}
 
 		function getIdOfBox(boxNum) {
 		    return 'box' + boxNum;
@@ -172,7 +182,7 @@ angular.module('bodyAppApp')
 
 	    easyrtc.setRoomOccupantListener(callEverybodyElse);
 	    easyrtc.setUsername('trainer');
-	    easyrtc.easyApp('easyrtc.multiparty', 'box0', ['box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8'], loginSuccess);
+	    easyrtc.easyApp(""+classToJoin.date+"", 'box0', ['box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8'], loginSuccess);
 	    // easyrtc.setPeerListener(messageListener);
 	    easyrtc.setDisconnectListener( function() {
 	        easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server');
