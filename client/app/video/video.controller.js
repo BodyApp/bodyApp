@@ -118,7 +118,7 @@ angular.module('bodyAppApp')
 		_init();
 	})
 
-	.controller('TrainerVideoCtrl', function ($scope, Auth) {
+	.controller('TrainerVideoCtrl', function ($scope, $location, Auth) {
 		//Should only be accessible to trainers.
 	  var maxCALLERS = 10;
 		easyrtc.dontAddCloseButtons(true);
@@ -161,8 +161,11 @@ angular.module('bodyAppApp')
 	}
 
 	function _init() {
-
-		if (!Auth.isInstructor() && !Auth.isAdmin()) {return alert('You are not an instructor. Please hit back button and join as a consumer.')}
+		console.log("You are logged in as a " + Auth.getCurrentUser().role)
+		if (Auth.getCurrentUser().role === 'user') {
+			$location.path('/')
+			return alert('You are not an instructor. Please try again.')
+		}
 
 	    // var passwordEntered = prompt('Enter password to prove you are the trainer');
 	    // if (passwordEntered !== 'delts') { return alert('That was the wrong password.  Refresh to try again.'); }
