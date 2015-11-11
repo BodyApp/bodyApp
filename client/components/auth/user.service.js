@@ -30,6 +30,12 @@ angular.module('bodyAppApp')
         params: {
           id:'instructors'
         }
+      },
+      getUser: {
+        method: 'GET',
+        params: {
+          id: 'getUser'
+        }
       }
 	  });
   });

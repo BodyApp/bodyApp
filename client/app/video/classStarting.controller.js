@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $firebaseObject, Schedule, Auth) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $firebaseObject, Schedule, Auth, User) {
   	var classToJoin = Schedule.classUserJustJoined;
 
     if (!classToJoin) {
       $location.path('/')
     }
 
-    $scope.instructor = classToJoin.trainer
-    $scope.instructorPicUrl = $scope.instructor.picture
+    // $scope.instructor = classToJoin.trainer
+    // $scope.instructorPicUrl = $scope.instructor.picture
 
-    var classTime = classToJoin.date
-    var currentUser = Auth.getCurrentUser()
+    var classTime = classToJoin.date;
+    var currentUser = Auth.getCurrentUser();
+    $scope.currentUser = currentUser;
 
     var classDate = new Date(classToJoin.date)
     var sunDate = new Date()
@@ -27,6 +28,16 @@ angular.module('bodyAppApp')
     )
 
     firebaseClassToJoin.$bindTo($scope, 'class');
+    $scope.numBookedUsers = Object.keys(classToJoin.bookedUsers).length
+
+    $scope.bookedUsers = [];
+
+    for (var bookedUser in classToJoin.bookedUsers) {
+      User.getUser({id: bookedUser}).$promise.then(function(data) {
+        $scope.bookedUsers.push(data);  
+        console.log($scope.bookedUsers);
+      }) 
+    }
 
   	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
     console.log($scope.minutesUntilClass)

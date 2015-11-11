@@ -36,7 +36,7 @@
 	    		<div class="row">
 	    			<div class="col-md-6">
 	    				<h3 id="blue" class="text-center uppercase bold mb24">Instructor</h3>
-	    				<p class="text-center mb24"><img class="trainer-circle-image" src="{{instructorPicUrl}}"></p>
+	    				<p class="text-center mb24"><img class="trainer-circle-image" src="{{class.trainer.picture}}"></p>
 	    				<h4 class="text-center uppercase bold mb8">{{class.trainer.firstName}} {{class.trainer.lastName}}</h4>
 	    				<h5 class="text-center mb16">Qualifications: L1 CrossFit Trainer | ACSM certified<br>NASM Certified | AED/CPR</h5>
 	    				<h4 class="text-center">User Rating: <span id="blue" class="bold">4.5</span>/5</h4>
@@ -45,50 +45,64 @@
 	    				<h3 id="blue" class="text-center uppercase bold mb32">Classmates</h3>
 	    				<div class="col-md-6">
 	    					<ul class="user-list">
-	    						<li>
-	    							<img class="user-circle-image" src="../../assets/images/profile1.jpg">
+	    						<li ng-if = "numBookedUsers > 0">
+	    							<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
 	    							<div class="user-name">
-	    								<span id="dark-text">Lucy L.</span><br>
-	    								<span id="dark-text">Level 2</span>
+	    								<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 2</span> -->
 	    							</div>
 	    						</li>
-	    						<li>
-	    							<img class="user-circle-image" src="../../assets/images/profile2.jpg">
+	    						<li ng-if = "numBookedUsers > 2">
+	    							<img class="user-circle-image" src="{{bookedUsers[2].picture}}">
 	    							<div class="user-name">
-	    								<span id="dark-text">Justin H.</span><br>
-	    								<span id="dark-text">Level 1</span>
+	    								<span id="dark-text">{{bookedUsers[2].firstName}} {{bookedUsers[2].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 1</span> -->
 	    							</div>		    							
 	    						</li>
-	    						<li>
-	    							<img class="user-circle-image" src="../../assets/images/profile3.jpg">
+	    						<li ng-if = "numBookedUsers > 4">
+	    							<img class="user-circle-image" src="{{bookedUsers[4].picture}}">
 	    							<div class="user-name">
-	    								<span id="dark-text">Courtney M.</span><br>
-	    								<span id="dark-text">Level 3</span>
+	    								<span id="dark-text">{{bookedUsers[4].firstName}} {{bookedUsers[4].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 3</span> -->
+	    							</div>		    							
+	    						</li>
+	    						<li ng-if = "numBookedUsers > 6">
+	    							<img class="user-circle-image" src="{{bookedUsers[6].picture}}">
+	    							<div class="user-name">
+	    								<span id="dark-text">{{bookedUsers[6].firstName}} {{bookedUsers[6].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 1</span> -->
 	    							</div>		    							
 	    						</li>
 	    					</ul>
 	    				</div>
 	    				<div class="col-md-6">
 	    					<ul class="user-list">
-	    						<li>
-	    							<img class="user-circle-image" src="../../assets/images/profile4.jpg">
+	    						<li ng-if = "numBookedUsers > 1">
+	    							<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
 	    							<div class="user-name">
-	    								<span id="dark-text">Brad T.</span><br>
-	    								<span id="dark-text">Level 2</span>
+	    								<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 2</span> -->
 	    							</div>		    							
 	    						</li>		    						
-	    						<li>
-	    							<img class="user-circle-image" src="../../assets/images/profile5.jpg">
+	    						<li ng-if = "numBookedUsers > 3">
+	    							<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
 	    							<div class="user-name">
-	    								<span id="dark-text">Becky L.</span><br>
-	    								<span id="dark-text">Level 1</span>
+	    								<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 1</span> -->
 	    							</div>		    							
 	    						</li>
-	    						<li>
-	    							<img class="user-circle-image" src="../../assets/images/profile6.jpg">
+	    						<li ng-if = "numBookedUsers > 5">
+	    							<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
 	    							<div class="user-name">
-	    								<span id="dark-text">Sally D.</span><br>
-	    								<span id="dark-text">Level 1</span>
+	    								<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 1</span> -->
+	    							</div>		    							
+	    						</li>
+	    						<li ng-if = "numBookedUsers > 7">
+	    							<img class="user-circle-image" src="{{bookedUsers[7].picture}}">
+	    							<div class="user-name">
+	    								<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span><br>
+	    								<!-- <span id="dark-text">Level 1</span> -->
 	    							</div>		    							
 	    						</li>
 	    					</ul>		    					

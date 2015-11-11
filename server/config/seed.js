@@ -35,12 +35,12 @@ User.find({}).remove(function() {
     provider: 'local',
     role: 'instructor',
     firstName: 'Bern',
-    lastName: 'James',
+    lastName: 'Prince',
     nickname: 'Bern',
     birthday: new Date(),
     email: 'instructor@getbodyapp.com',
     gender: 'Male',
-    picture: 'https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=3abebab6381d6a78e5a0c1eb2e88ab82&oe=56C14DD8',
+    picture: 'http://reebokcrossfitbackbay.com/wp-content/uploads/bfi_thumb/Bern-md2r7u98gqeubrj7basntqfgut1vy3s9jt2m7v2w3w.jpg',
     password: 'delts'
   }, {
     provider: 'local',
