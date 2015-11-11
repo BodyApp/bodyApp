@@ -37,11 +37,15 @@ exports.setup = function (User, config) {
           });
           user.save(function(err) {
             if (err) return done(err);
-            console.log(user);
             done(err, user);
           });
         } else {
-          return done(err, user);
+          user.picture = profile.photos[0].value
+          user.save(function(err) {
+            if (err) return done(err);
+            return done(err, user);
+          })
+          
         }
       })
     }
