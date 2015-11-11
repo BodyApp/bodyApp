@@ -2,23 +2,44 @@
 <!-- <tour step="currentStep"> -->
     <div class = "video-screen-height" style="background-image:url(assets/images/irongrip.png)">
         <div class="row">
-            <div class = "column col-xs-2" style = "position: relative">
+            <div class = "column col-xs-2">
                 <div>
-                    <video id="box1" class="row" style = "margin: 0px; position: absolute; top: 0;" style="visibility: hidden" muted="muted"></video>
-                    <div style = "position: absolute; width: 200px; text-align: center">{{currentUser.firstName}}</div>
-                    </div>
-                    <video id="box2" style = "margin: 0px" class="row" style="visibility: hidden"></video>
-                    <video id="box3" style = "margin: 0px" class="row" style="visibility: hidden"></video>
-                    <video id="box4" style = "margin: 0px" class="row" style="visibility: hidden"></video>
+                    <video id="box1" class="row" style = "" style="visibility: hidden" muted="muted"></video>
+                    <div style = "width: 200px; text-align: center">{{currentUser.firstName}} {{currentUser.lastName.charAt(0)}}</div>
+                </div>
+                <div>
+                    <video id="box2" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[1]].firstName}} {{consumerObjects[consumerList[1]].lastName.charAt(0)}}</div>
+                </div>
+                <div>
+                    <video id="box3" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerList[2].firstName}} {{consumerList[2].lastName.charAt(0)}}</div>
+                </div>
+                <div>
+                    <video id="box4" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerList[3].firstName}} {{consumerList[3].lastName.charAt(0)}}</div>
+                </div>
             </div>
             <div class = "column col-sm-8">
                     <video id="box0" id="mainScreen" class="row col-sm-12 easyRTCMirror"></video>
             </div>
-            <div class = "column col-sm-2">
-                    <video id="box5" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
-                    <video id="box6" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
-                    <video id="box7" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
-                    <video id="box8" style = "margin: 0px" class="col-sm-12 row" style="visibility: hidden"></video>
+            <div class = "column col-xs-2">
+                <div>
+                    <video id="box5" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerList[4].firstName}} {{consumerList[4].lastName.charAt(0)}}</div>
+                </div>
+                <div>
+                    <video id="box6" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerList[5].firstName}} {{consumerList[5].lastName.charAt(0)}}</div>
+                </div>
+                <div>
+                    <video id="box7" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerList[6].firstName}} {{consumerList[6].lastName.charAt(0)}}</div>
+                </div>
+                <div>
+                    <video id="box8" class="row" style = "" style="visibility: hidden"></video>
+                    <div style = "width: 200px; text-align: center">{{consumerList[7].firstName}} {{consumerList[7].lastName.charAt(0)}}</div>
+                </div>
             </div>
         </div>
     </div>

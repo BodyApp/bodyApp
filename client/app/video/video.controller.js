@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, $location, Auth, Schedule) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -9,13 +9,16 @@ angular.module('bodyAppApp')
 		}
 
   	var maxCALLERS = 10;
-		var numConsumers = 1;
-		var callerEasyrtcidsIdsList = {};
+		$scope.consumerList = [];
+		$scope.consumerObjects = {};
 
 		easyrtc.dontAddCloseButtons(true);
 
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
+
+		$scope.consumerList.push(currentUser._id);
+		$scope.consumerObjects[currentUser._id] = currentUser;
 
 		function loginSuccess() {
 		}
@@ -86,20 +89,30 @@ angular.module('bodyAppApp')
 		        document.getElementById(getIdOfBox(0)).style.visibility = 'visible';
 		        easyrtc.muteVideoObject(mainVideo, true);
 		    } else {
-		        if (callerEasyrtcidsIdsList[callerUsername]) {
+		    		if (callerUsername === currentUser._id.toString()) { return console.log("user tried to open new window") //Prevents user from accidentally taking multiple windows.
+		    		} else if ($scope.consumerObjects[callerUsername]) {
 		            console.log('caller already has box');
-		            // document.getElementById(callerUsername).style.visibility = 'visible';
-		            var video = document.getElementById(getIdOfBox(callerEasyrtcidsIdsList[callerUsername]));
+		            var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber));
+		            document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber)).style.visibility = 'visible';
 		            easyrtc.setVideoObjectSrc(video, stream);
-		            easyrtc.muteVideoObject(video, true);
+		            easyrtc.muteVideoObject(video, true);		
 		        } else {
 		            console.log('caller is new with easyrtcid of ' + callerUsername);
-		            numConsumers++;
-		            document.getElementById(getIdOfBox(numConsumers)).style.visibility = 'visible';
-		            var videoNew = document.getElementById(getIdOfBox(numConsumers));
+		            $scope.consumerList.push(callerUsername);
+		            console.log(callerUsername);
+		            var consumerListLength = $scope.consumerList.length;
+		            
+		            document.getElementById(getIdOfBox(consumerListLength)).style.visibility = 'visible';
+		            var videoNew = document.getElementById(getIdOfBox(consumerListLength));
 		            easyrtc.setVideoObjectSrc(videoNew, stream);
-		            callerEasyrtcidsIdsList[callerUsername] = numConsumers;
+		            // $scope.consumerObjects[callerUsername] = consumerListLength;
 		            easyrtc.muteVideoObject(videoNew, true);
+
+		            var user = User.getUser({id: callerUsername}).$promise.then(function(data) {
+		            	
+		            	$scope.consumerObjects[callerUsername] = data
+		            	$scope.consumerObjects[callerUsername].boxNumber = consumerListLength
+		            })
 		        }
 		    }
 		});
@@ -116,7 +129,7 @@ angular.module('bodyAppApp')
 	    else {
 	        // document.getElementById(getIdOfBox(numConsumers)).style.visibility = 'hidden';
 	        // var callerUsername = easyrtc.idToName(callerEasyrtcid);
-	        // var video = document.getElementById(getIdOfBox(callerEasyrtcidsIdsList[callerUsername]));
+	        // var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername]));
 	    }
 		});
 
