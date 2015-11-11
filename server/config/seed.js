@@ -33,9 +33,15 @@ var User = require('../api/user/user.model');
 User.find({}).remove(function() {
   User.create({
     provider: 'local',
-    name: 'Test User',
-    email: 'test@test.com',
-    password: 'test'
+    role: 'instructor',
+    firstName: 'Bern',
+    lastName: 'James',
+    nickname: 'Bern',
+    birthday: new Date(),
+    email: 'instructor@getbodyapp.com',
+    gender: 'Male',
+    picture: 'https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=3abebab6381d6a78e5a0c1eb2e88ab82&oe=56C14DD8',
+    password: 'delts'
   }, {
     provider: 'local',
     role: 'admin',

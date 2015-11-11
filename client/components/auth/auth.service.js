@@ -145,6 +145,10 @@ angular.module('bodyAppApp')
         return currentUser.role === 'instructor';
       },
 
+      getInstructors: function() {
+        return User.getInstructors()
+      },
+
       /**
        * Get auth token
        */

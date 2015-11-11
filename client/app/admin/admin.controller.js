@@ -4,7 +4,8 @@ angular.module('bodyAppApp')
   .controller('AdminCtrl', function ($scope, $http, Auth, User, $firebaseObject) {
 
     // Use the User $resource to fetch all users
-    $scope.users = User.query();
+    // $scope.users = User.query();
+
     var todayDate = new Date();
     $scope.todayDate = todayDate
     var todayDayOfWeek = todayDate.getDay();
@@ -18,6 +19,17 @@ angular.module('bodyAppApp')
 
     var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
     $scope.wod = $firebaseObject(wodRef);
+
+    $scope.instructors;
+    $scope.workoutToCreate = {};
+    
+    var instructors = Auth.getInstructors().$promise.then(function(data) {
+        $scope.instructors = data
+        console.log($scope.instructors)
+        $scope.workoutToCreate.trainer = $scope.instructors[0]
+      }).catch(function(err) {
+        console.log(err)
+      });;
 
     $scope.createWorkout = function(workoutToCreate) {
       var date = workoutToCreate.date

@@ -22,6 +22,14 @@ exports.index = function(req, res) {
   });
 };
 
+exports.getInstructors = function(req, res) {
+  var instructors = "instructor"
+  User.find({role: instructors}, '-salt -hashedPassword', function (err, users) {
+    if(err) return res.status(500).send(err);
+    res.status(200).json(users);
+  });
+}
+
 /**
  * Creates a new user
  */

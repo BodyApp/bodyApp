@@ -10,7 +10,10 @@
   </ul> -->
   <div class = "col-sm-2"></div>
   <form novalidate class="simple-form col-sm-3">
-    <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br />
+    <!-- <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br /> -->
+    <select ng-model="workoutToCreate.trainer" ng-options = "(option.firstName + ' ' + option.lastName) for option in instructors">
+      <!-- <option ng-options="option in instructors" value="{{option}}">{{option.firstName}} {{option.lastName}}</option> -->
+    </select>
     <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
     <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
     <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />

@@ -23,6 +23,13 @@ angular.module('bodyAppApp')
         params: {
           controller:'addBookedClass'
         }
+      },
+      getInstructors: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          id:'instructors'
+        }
       }
 	  });
   });

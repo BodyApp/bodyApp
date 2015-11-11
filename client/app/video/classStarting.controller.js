@@ -8,8 +8,8 @@ angular.module('bodyAppApp')
       $location.path('/')
     }
 
-    $scope.instructor = classToJoin.instructor
-    $scope.instructorPicUrl = $scope.instructor.picUrl
+    $scope.instructor = classToJoin.trainer
+    $scope.instructorPicUrl = $scope.instructor.picture
 
     var classTime = classToJoin.date
     var currentUser = Auth.getCurrentUser()
