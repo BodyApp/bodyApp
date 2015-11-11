@@ -58,10 +58,10 @@ angular.module('bodyAppApp')
 
     $scope.navigateToVideo = function() {
       console.log(currentUser)
-      if (currentUser.role === "user") {
-        $location.path('/consumervideo')
-      } else {
+      if (currentUser._id === classToJoin.trainer._id) {
         $location.path('/trainervideo')
+      } else {
+        $location.path('/consumervideo')
       }
     }
 

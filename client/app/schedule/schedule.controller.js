@@ -88,6 +88,7 @@ angular.module('bodyAppApp')
                     image: '../../assets/images/body-app-logo-header.png',
                     locale: 'auto',
                     token: function(token) {
+                        var modalInstance = openPaymentConfirmedModal()
                         $http.post('/api/users/charge', {
                           user: currentUser,
                           stripeToken: token
@@ -96,7 +97,7 @@ angular.module('bodyAppApp')
                             console.log("Successfully posted to /user/charge");
                             currentUser = data
                             $scope.currentUser = currentUser
-
+                            modalInstance.close()
                         })
                         .error(function(err) {
                             console.log("Error posting to /user/charge: " + err)
@@ -115,6 +116,30 @@ angular.module('bodyAppApp')
                   amount: 4000
                 });
             } 
+        }
+
+        function openPaymentConfirmedModal() {
+            var modalInstance = $modal.open({
+              animation: true,
+              templateUrl: 'app/account/payment/paymentThanks.html',
+              controller: 'PaymentCtrl',
+              backdrop: "static",
+              keyboard: false
+              // size: size,
+              // resolve: {
+              //   currentUser: function () {
+              //     return currentUser;
+              //   }
+              // }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+              $scope.selected = selectedItem;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+
+            return modalInstance;
         }
 
         // function openPaymentModal() {
