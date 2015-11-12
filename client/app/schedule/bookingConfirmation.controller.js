@@ -4,6 +4,7 @@ angular.module('bodyAppApp')
     .controller('BookingConfirmationCtrl', function ($scope, Auth, Schedule, slot, $modalInstance) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
+        $scope.bookedClass = slot;
     
         var date = new Date(slot.date)
         // $scope.calendarDateSetter = "20150704T210000"
