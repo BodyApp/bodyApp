@@ -5,6 +5,15 @@ angular.module('bodyAppApp')
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
+        var loggedIn = false
+
+        Auth.isLoggedInAsync(function(boolAnswer) {
+            loggedIn = boolAnswer;
+            if (!loggedIn) {
+              event.preventDefault();
+                var loginModal = openLoginModal()
+            }
+        });
 
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         $scope.wod = $firebaseObject(ref.child('WOD'));
@@ -142,6 +151,25 @@ angular.module('bodyAppApp')
             return modalInstance;
         }
 
+        function openLoginModal() {
+            var modalInstance = $modal.open({
+              animation: true,
+              templateUrl: 'app/account/login/login.html',
+              controller: 'LoginCtrl',
+              backdrop: "static",
+              windowClass: "loginModal",
+              keyboard: false
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+              $scope.selected = selectedItem;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+
+            return modalInstance;
+        }
+
         // function openPaymentModal() {
         //     var modalInstance = $modal.open({
         //       animation: true,
@@ -163,7 +191,10 @@ angular.module('bodyAppApp')
         // }
 
         $scope.openBookingConfirmation = function (slot) {
-            if (checkWhetherUserIsSubscribed() == "basicSubscription") {
+            if (!loggedIn) {
+                slot.bookedUsers[currentUser._id] = false
+                return openLoginModal()
+            } else if (checkWhetherUserIsSubscribed() == "basicSubscription") {
                 var modalInstance = $modal.open({
                   animation: true,
                   templateUrl: 'app/schedule/bookingConfirmation.html',

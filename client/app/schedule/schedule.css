@@ -94,3 +94,10 @@ h5.dateTitles {
   50%   { background:#5E6E99; transform:scale(1.25); }
   100%  { background:#C8D1E5; transform:scale(1); }
 }
+
+.loginModal .modal-dialog {
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+}

@@ -30,10 +30,10 @@ angular.module('bodyAppApp', [
         return config;
       },
 
-      // Intercept 401s and redirect you to login
+      // Intercept 401s and redirect you to schedule (since login is a modal)
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/login');
+          $location.path('/');
           // remove any stale tokens
           $cookieStore.remove('token');
           return $q.reject(response);
@@ -68,7 +68,7 @@ angular.module('bodyAppApp', [
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           event.preventDefault();
-          $state.go('login');
+          $state.go('schedule');
         }
       });
     });
