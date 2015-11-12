@@ -153,9 +153,10 @@
                       <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
                       <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
                       <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past">Available</span>
+                      <span ng-if="slot.bookedUsers[currentUser._id] && slot.past">Taken</span>
                       <br>
                       <div id="trainerName">Lvl 1</div>
-                      <div id="trainerName">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</div>
+                      <div id="trainerName">{{slot.trainer.firstName.charAt(0)}}. {{slot.trainer.lastName}}</div>
                     </label>
 
                   </div>
