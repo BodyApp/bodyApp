@@ -149,6 +149,10 @@ angular.module('bodyAppApp')
         return User.getInstructors()
       },
 
+      getAdmins: function() {
+        return User.getAdmins()
+      },
+
       /**
        * Get auth token
        */

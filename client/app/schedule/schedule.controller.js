@@ -241,6 +241,12 @@ angular.module('bodyAppApp')
             }
         }
 
+        $scope.formattedWaitTime = function(slot, timeNow) {
+            var returnValue = Math.round((slot - timeNow)/(1000*60))
+            console.log(returnValue)
+            return (returnValue < 120 ? returnValue + " Mins": Math.round(returnValue / 60) + " Hours")
+        } 
+
         $scope.setClassUserJustJoined = function(classJoined) {
             Schedule.setClassUserJustJoined(classJoined);
         }
@@ -251,6 +257,10 @@ angular.module('bodyAppApp')
 
         $scope.checkIfSelectedRightClass = function() {
             $scope.currentStep = 0
+        }
+
+        $scope.getNumberOfBookedUsers = function(slot) {
+            return slot.bookedUsers ? Object.keys(slot.bookedUsers).length : 0
         }
 
         // // save cookie after each step

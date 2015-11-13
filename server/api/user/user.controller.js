@@ -28,7 +28,15 @@ exports.getInstructors = function(req, res) {
     if(err) return res.status(500).send(err);
     res.status(200).json(users);
   });
-}
+};
+
+exports.getAdmins = function(req, res) {
+  var admins = "admin"
+  User.find({role: admins}, '-salt -hashedPassword', function (err, users) {
+    if(err) return res.status(500).send(err);
+    res.status(200).json(users);
+  });
+};
 
 exports.getUser = function(req, res, next) {
   console.log(req)

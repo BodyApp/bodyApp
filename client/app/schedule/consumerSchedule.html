@@ -104,7 +104,20 @@
                       <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">JOIN NOW</a>
                     </td>
                     <td class = "col-md-3" ng-if = "slot.date > (timeNow + 1000*60*15)">
-                      <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp;INVITE</a>
+                      <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
+                    </td>
+                  </tr>
+              </tbody>
+              <tbody ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+                  <tr >
+                    <td class = "col-md-9">
+                      <span id="dark-text" >You are teaching {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
+                    </td>
+                    <td class = "col-md-3" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+                      <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">TEACH NOW</a>
+                    </td>
+                    <td class = "col-md-3" ng-if = "slot.date > (timeNow + 1000*60*15)">
+                      <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
                     </td>
                   </tr>
               </tbody>
@@ -145,18 +158,23 @@
                   
                   <div class="time-slot" ng-repeat="slot in day.slots">     
 
-                    <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past" ng-click="openBookingConfirmation(slot);">
+                    <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past || (slot.trainer._id === currentUser._id)" ng-click="openBookingConfirmation(slot);">
                     <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->  
 
                     <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
                       <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
                       <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
                       <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
-                      <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past">Available</span>
+                      <span ng-if="!slot.past && (slot.trainer._id === currentUser._id)"> Teaching</span>
+                      <span ng-if="slot.past && (slot.trainer._id === currentUser._id)"> Taught</span>
+                      <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past && (slot.trainer._id != currentUser._id)">Available</span>
                       <span ng-if="slot.bookedUsers[currentUser._id] && slot.past">Taken</span>
                       <br>
-                      <div id="trainerName">Lvl 1</div>
-                      <div id="trainerName">{{slot.trainer.firstName.charAt(0)}}. {{slot.trainer.lastName}}</div>
+                      <div ng-if = "slot.trainer._id != currentUser._id">{{slot.trainer.firstName}}</div>
+                      <div ng-if = "slot.trainer._id != currentUser._id">{{slot.trainer.lastName}}</div>
+                      <div ng-if = "slot.trainer._id === currentUser._id">YOU</div>
+                      <div ng-if = "slot.trainer._id === currentUser._id">{{getNumberOfBookedUsers(slot)}} In Class</div>
+
                     </label>
 
                   </div>

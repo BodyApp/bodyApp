@@ -25,11 +25,16 @@ angular.module('bodyAppApp')
     
     var instructors = Auth.getInstructors().$promise.then(function(data) {
         $scope.instructors = data
-        console.log($scope.instructors)
         $scope.workoutToCreate.trainer = $scope.instructors[0]
       }).catch(function(err) {
         console.log(err)
       });;
+
+    var admins = Auth.getAdmins().$promise.then(function(data) {
+      for (var i = 0; i < data.length; i++) {
+        $scope.instructors.push(data[i])  
+      }
+    })
 
     $scope.createWorkout = function(workoutToCreate) {
       var date = workoutToCreate.date

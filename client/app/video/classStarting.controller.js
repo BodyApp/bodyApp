@@ -33,10 +33,12 @@ angular.module('bodyAppApp')
     $scope.bookedUsers = [];
 
     for (var bookedUser in classToJoin.bookedUsers) {
-      User.getUser({id: bookedUser}).$promise.then(function(data) {
-        $scope.bookedUsers.push(data);  
-        console.log($scope.bookedUsers);
-      }) 
+      if (bookedUser) {
+        User.getUser({id: bookedUser}).$promise.then(function(data) {
+          $scope.bookedUsers.push(data);  
+          console.log($scope.bookedUsers);
+        })
+      }    
     }
 
   	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);

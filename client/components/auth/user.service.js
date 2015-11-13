@@ -31,6 +31,13 @@ angular.module('bodyAppApp')
           id:'instructors'
         }
       },
+      getAdmins: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          id:'admins'
+        }
+      },
       getUser: {
         method: 'GET',
         params: {
