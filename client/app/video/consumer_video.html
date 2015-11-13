@@ -8,15 +8,15 @@
                     <div style = "width: 200px; text-align: center">{{currentUser.firstName}} {{currentUser.lastName.charAt(0)}}</div>
                 </div>
                 <div>
-                    <video id="box2" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box2" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[1]].firstName}} {{consumerObjects[consumerList[1]].lastName.charAt(0)}}</div>
                 </div>
                 <div>
-                    <video id="box3" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box3" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerList[2].firstName}} {{consumerList[2].lastName.charAt(0)}}</div>
                 </div>
                 <div>
-                    <video id="box4" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box4" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerList[3].firstName}} {{consumerList[3].lastName.charAt(0)}}</div>
                 </div>
             </div>
@@ -25,23 +25,25 @@
             </div>
             <div class = "column col-xs-2">
                 <div>
-                    <video id="box5" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box5" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerList[4].firstName}} {{consumerList[4].lastName.charAt(0)}}</div>
                 </div>
                 <div>
-                    <video id="box6" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box6" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerList[5].firstName}} {{consumerList[5].lastName.charAt(0)}}</div>
                 </div>
                 <div>
-                    <video id="box7" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box7" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerList[6].firstName}} {{consumerList[6].lastName.charAt(0)}}</div>
                 </div>
                 <div>
-                    <video id="box8" class="row" style = "" style="visibility: hidden"></video>
+                    <video id="box8" class="row" style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{consumerList[7].firstName}} {{consumerList[7].lastName.charAt(0)}}</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- <iframe src="http://www.977music.com/playlist/4/Top-40-Dance"></iframe> -->
+<audio id = "audioPlayer" autoplay="autoplay" src="http://oggvorbis.tb-stream.net:80/technobase.ogg">
 <div ng-include="'components/footer/footer.html'"></div>

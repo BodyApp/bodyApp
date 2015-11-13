@@ -12,6 +12,8 @@ angular.module('bodyAppApp')
 		$scope.consumerList = [];
 		$scope.consumerObjects = {};
 
+		document.getElementById('audioPlayer').volume = 0.5
+
 		easyrtc.dontAddCloseButtons(true);
 
 		var currentUser = Auth.getCurrentUser();
@@ -87,7 +89,7 @@ angular.module('bodyAppApp')
 		        var mainVideo = document.getElementById('box0');
 		        easyrtc.setVideoObjectSrc(mainVideo, stream);
 		        document.getElementById(getIdOfBox(0)).style.visibility = 'visible';
-		        easyrtc.muteVideoObject(mainVideo, true);
+		        easyrtc.muteVideoObject(mainVideo, false);
 		    } else {
 		    		if (callerUsername === currentUser._id.toString()) { return console.log("user tried to open new window") //Prevents user from accidentally taking multiple windows.
 		    		} else if ($scope.consumerObjects[callerUsername]) {
