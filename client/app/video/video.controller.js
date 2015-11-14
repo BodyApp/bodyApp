@@ -249,10 +249,11 @@ angular.module('bodyAppApp')
    });
 
 		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-			console.log("playing audio with elapsed time of " + elapsedTime);		
 			if (firstTimePlayingSong) {
-				firstTimePlayingSong = false;
-				audioPlayer.getSounds(function(soundArray) {
+				setTimeout(function(){ firstTimePlayingSong = false }, 2000);
+				audioPlayer.setVolume(0.10);
+				console.log("playing audio with elapsed time of " + elapsedTime);		
+				audioPlayer.getSounds(function(soundArray) {					
 					for (var i = 0; i < soundArray.length; i++) {
 						if (elapsedTime > soundsLength + soundArray[i].duration) {
 							soundsLength += soundArray[i].duration;
@@ -262,10 +263,9 @@ angular.module('bodyAppApp')
 							console.log("seeking to " + seekingTo);						
 							return audioPlayer.seekTo(seekingTo)
 						}
-					}
+					}	
 				})
 			}
-			
 		});
 
 		audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
