@@ -17,15 +17,21 @@ angular.module('bodyAppApp')
 		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
 		audioPlayer.bind(SC.Widget.Events.READY, function() {
 			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
-    	audioPlayer.setVolume(0.30)
+    	audioPlayer.setVolume(0.20)
     	audioPlayer.play()
 			// audioPlayer.getVolume(function(volume) {console.log(volume)})
-			 
    });
 
-		audioPlayer.bind (SC.Widget.Events.PLAY,function(){
-			audioPlayer.seekTo(1000*14)  
+		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+			audioPlayer.seekTo(1000*25)  
 		});
+
+		// audioPlayer.bind(SC.Widget.Events.LOAD_PROGRESS, function onLoadProgress (e) {
+		//   if (e.loadedProgress && e.loadedProgress === 1) {
+		//     audioPlayer.seekTo(15000); // seek to previous location
+		//     audioPlayer.unbind(SC.Widget.Events.LOAD_PROGRESS);
+		//   }
+		// });
 
 		easyrtc.dontAddCloseButtons(true);
 
