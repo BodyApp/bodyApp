@@ -12,7 +12,20 @@ angular.module('bodyAppApp')
 		$scope.consumerList = [];
 		$scope.consumerObjects = {};
 
-		document.getElementById('audioPlayer').volume = 0.5
+		// document.getElementById('audioPlayer').volume = 0.5
+
+		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+		audioPlayer.bind(SC.Widget.Events.READY, function() {
+			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
+    	audioPlayer.setVolume(0.30)
+    	audioPlayer.play()
+			// audioPlayer.getVolume(function(volume) {console.log(volume)})
+			 
+   });
+
+		audioPlayer.bind (SC.Widget.Events.PLAY,function(){
+			audioPlayer.seekTo(1000*14)  
+		});
 
 		easyrtc.dontAddCloseButtons(true);
 
@@ -90,6 +103,8 @@ angular.module('bodyAppApp')
 		        easyrtc.setVideoObjectSrc(mainVideo, stream);
 		        document.getElementById(getIdOfBox(0)).style.visibility = 'visible';
 		        easyrtc.muteVideoObject(mainVideo, false);
+		        // getTrainerMicrophoneLevel(stream);
+
 		    } else {
 		    		if (callerUsername === currentUser._id.toString()) { return console.log("user tried to open new window") //Prevents user from accidentally taking multiple windows.
 		    		} else if ($scope.consumerObjects[callerUsername]) {
@@ -97,7 +112,8 @@ angular.module('bodyAppApp')
 		            var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber));
 		            document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber)).style.visibility = 'visible';
 		            easyrtc.setVideoObjectSrc(video, stream);
-		            easyrtc.muteVideoObject(video, true);		
+		            easyrtc.muteVideoObject(video, true);
+		            
 		        } else {
 		            console.log('caller is new with easyrtcid of ' + callerUsername);
 		            $scope.consumerList.push(callerUsername);
@@ -134,6 +150,44 @@ angular.module('bodyAppApp')
 	        // var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername]));
 	    }
 		});
+
+		// var getTrainerMicrophoneLevel = function(stream) {
+		// 	var max_level_L = 0;
+		// 	var old_level_L = 0;
+
+		// 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+		// 	var audioContext = new AudioContext();
+		// 	var microphone = audioContext.createMediaStreamSource(stream);
+		// 	var javascriptNode = audioContext.createScriptProcessor(1024, 1, 1);
+			
+		// 	microphone.connect(javascriptNode);
+		// 	javascriptNode.connect(audioContext.destination);
+		// 	javascriptNode.onaudioprocess = function(event){
+		// 		// console.log(event)
+
+		// 		var inpt_L = event.inputBuffer.getChannelData(0);
+		// 		// console.log(inpt_L)
+		// 		var instant_L = 0.0;
+
+		// 		var sum_L = 0.0;
+		// 		for(var i = 0; i < inpt_L.length; ++i) {
+		// 			sum_L += inpt_L[i] * inpt_L[i];
+		// 			// console.log(sum_L)
+		// 		}
+
+		// 		instant_L = Math.sqrt(sum_L / inpt_L.length);
+		// 		console.log(instant_L)
+		// 		max_level_L = Math.max(max_level_L, instant_L);				
+		// 		instant_L = Math.max( instant_L, old_level_L -0.008 );
+		// 		old_level_L = instant_L;
+		// 		console.log(instant_L)
+				
+		// 		// cnvs_cntxt.clearRect(0, 0, cnvs.width, cnvs.height);
+		// 		// cnvs_cntxt.fillStyle = '#00ff00';
+		// 		// cnvs_cntxt.fillRect(10,10,(cnvs.width-20)*(instant_L/max_level_L),(cnvs.height-20)); // x,y,w,h
+				
+		// 	}
+		// }
 
 		_init();
 	})
