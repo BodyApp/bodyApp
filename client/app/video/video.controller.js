@@ -17,28 +17,31 @@ angular.module('bodyAppApp')
 
 		// document.getElementById('audioPlayer').volume = 0.5
 
+		var firstTimePlayingSong = true;
 		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
-		audioPlayer.bind(SC.Widget.Events.READY, function() {
+		// audioPlayer.bind(SC.Widget.Events.READY, function() {
 			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
-    	audioPlayer.setVolume(0.20)
-    	audioPlayer.play()
-   });
+    	// audioPlayer.play();
+   // });
 
 		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-			console.log("playing audio with elapsed time of " + elapsedTime);		
-			audioPlayer.getSounds(function(soundArray) {
-				for (var i = 0; i < soundArray.length; i++) {
-					if (elapsedTime > soundsLength + soundArray[i].duration) {
-						soundsLength += soundArray[i].duration;
-						audioPlayer.next()						
-					} else {
-						var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-						console.log("seeking to " + seekingTo);						
-						return audioPlayer.seekTo(seekingTo)
-					}
-				}
-			})
-			
+			if (firstTimePlayingSong) {
+				setTimeout(function(){ firstTimePlayingSong = false }, 2000);
+				audioPlayer.setVolume(0.10);
+				console.log("playing audio with elapsed time of " + elapsedTime);		
+				audioPlayer.getSounds(function(soundArray) {					
+					for (var i = 0; i < soundArray.length; i++) {
+						if (elapsedTime > soundsLength + soundArray[i].duration) {
+							soundsLength += soundArray[i].duration;
+							audioPlayer.next()						
+						} else {
+							var seekingTo = Math.round(elapsedTime - soundsLength, 0)
+							console.log("seeking to " + seekingTo);						
+							return audioPlayer.seekTo(seekingTo)
+						}
+					}	
+				})
+			}
 		});
 
 		audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
@@ -236,27 +239,32 @@ angular.module('bodyAppApp')
 
 		// document.getElementById('audioPlayer').volume = 0.5
 
+		var firstTimePlayingSong = true;
+
 		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
 		audioPlayer.bind(SC.Widget.Events.READY, function() {
 			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
-    	audioPlayer.setVolume(0.20)
+    	audioPlayer.setVolume(0.10)
     	audioPlayer.play()
    });
 
 		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
 			console.log("playing audio with elapsed time of " + elapsedTime);		
-			audioPlayer.getSounds(function(soundArray) {
-				for (var i = 0; i < soundArray.length; i++) {
-					if (elapsedTime > soundsLength + soundArray[i].duration) {
-						soundsLength += soundArray[i].duration;
-						audioPlayer.next()						
-					} else {
-						var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-						console.log("seeking to " + seekingTo);						
-						return audioPlayer.seekTo(seekingTo)
+			if (firstTimePlayingSong) {
+				firstTimePlayingSong = false;
+				audioPlayer.getSounds(function(soundArray) {
+					for (var i = 0; i < soundArray.length; i++) {
+						if (elapsedTime > soundsLength + soundArray[i].duration) {
+							soundsLength += soundArray[i].duration;
+							audioPlayer.next()						
+						} else {
+							var seekingTo = Math.round(elapsedTime - soundsLength, 0)
+							console.log("seeking to " + seekingTo);						
+							return audioPlayer.seekTo(seekingTo)
+						}
 					}
-				}
-			})
+				})
+			}
 			
 		});
 
