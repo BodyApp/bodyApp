@@ -28,19 +28,23 @@ angular.module('bodyAppApp')
     )
 
     firebaseClassToJoin.$bindTo($scope, 'class');
-    $scope.numBookedUsers = Object.keys(classToJoin.bookedUsers).length
 
+    $scope.numBookedUsers;
     $scope.bookedUsers = [];
 
-    for (var bookedUser in classToJoin.bookedUsers) {
-      if (bookedUser) {
-        User.getUser({id: bookedUser}).$promise.then(function(data) {
-          $scope.bookedUsers.push(data);  
-          console.log($scope.bookedUsers);
-        })
-      }    
-    }
+    if (classToJoin.bookedUsers) {
+      $scope.numBookedUsers = Object.keys(classToJoin.bookedUsers).length  
 
+      for (var bookedUser in classToJoin.bookedUsers) {
+        if (bookedUser) {
+          User.getUser({id: bookedUser}).$promise.then(function(data) {
+            $scope.bookedUsers.push(data);  
+            console.log($scope.bookedUsers);
+          })
+        }    
+      }
+    }
+    
   	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
     console.log($scope.minutesUntilClass)
   	// $scope.trainer = "Mendelson";

@@ -22,8 +22,6 @@ angular.module('bodyAppApp')
 			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
     	audioPlayer.setVolume(0.20)
     	audioPlayer.play()
-    	
-			// audioPlayer.getVolume(function(volume) {console.log(volume)})
    });
 
 		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
@@ -232,6 +230,43 @@ angular.module('bodyAppApp')
 		if (!classToJoin) {
 			$location.path('/')
 		}
+
+		var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+		var soundsLength = 0
+
+		// document.getElementById('audioPlayer').volume = 0.5
+
+		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+		audioPlayer.bind(SC.Widget.Events.READY, function() {
+			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
+    	audioPlayer.setVolume(0.20)
+    	audioPlayer.play()
+   });
+
+		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+			console.log("playing audio with elapsed time of " + elapsedTime);		
+			audioPlayer.getSounds(function(soundArray) {
+				for (var i = 0; i < soundArray.length; i++) {
+					if (elapsedTime > soundsLength + soundArray[i].duration) {
+						soundsLength += soundArray[i].duration;
+						audioPlayer.next()						
+					} else {
+						var seekingTo = Math.round(elapsedTime - soundsLength, 0)
+						console.log("seeking to " + seekingTo);						
+						return audioPlayer.seekTo(seekingTo)
+					}
+				}
+			})
+			
+		});
+
+		audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
+			audioPlayer.getCurrentSoundIndex(function(index) {
+				audioPlayer.getPosition(function(position) {
+					console.log("playing song " + index + " at " + position + " ms")
+				})
+			})
+		});
 
 		function getIdOfBox(boxNum) {
 		    return 'box' + boxNum;
