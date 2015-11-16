@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, User, Schedule, $modal, $log) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
@@ -29,7 +29,10 @@ angular.module('bodyAppApp')
         
         $scope.availableClasses = true;
         $scope.timeNow = new Date().getTime();
-        $scope.classOverTime = $scope.timeNow - 1000*60*45;
+        $interval(function() {
+            $scope.timeNow = new Date().getTime();
+        }, 1000*30)
+        // $scope.classOverTime = $scope.timeNow - 1000*60*45;
 
         $scope.getFormattedDateTime = function(slot, noToday) {
             slot = slot || {};
