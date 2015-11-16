@@ -158,3 +158,8 @@
 .video-screen-height {
 		height: 100vh;
 }
+
+.fullscreen {
+	width: 100%;
+	height: 100%;
+}

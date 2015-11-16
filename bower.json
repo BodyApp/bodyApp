@@ -22,7 +22,8 @@
     "FileSaver": "*",
     "jstz": "*",
     "angular-tour": "*",
-    "angular-cookie": "*"
+    "angular-cookie": "*",
+    "angular-screenfull": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

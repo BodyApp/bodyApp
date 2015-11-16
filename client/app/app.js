@@ -9,7 +9,8 @@ angular.module('bodyAppApp', [
   'ui.bootstrap',
   'firebase',
   'jshor.angular-addtocalendar',
-  'angular-tour'
+  'angular-tour',
+  'angularScreenfull'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

@@ -18,6 +18,7 @@ angular.module('bodyAppApp')
 		// document.getElementById('audioPlayer').volume = 0.5
 
 		var firstTimePlayingSong = true;
+
 		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
 		// audioPlayer.bind(SC.Widget.Events.READY, function() {
 			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")

@@ -39,7 +39,7 @@ angular.module('bodyAppApp')
 
     $scope.numBookedUsers;
     $scope.bookedUsers = [];
-    getBookedUsers(classToJoin);
+    // getBookedUsers(classToJoin);
 
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];

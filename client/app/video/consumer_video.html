@@ -1,10 +1,10 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <!-- <tour step="currentStep"> -->
-    <div class = "video-screen-height" style="background-image:url(assets/images/irongrip.png)">
+    <div class = "video-screen-height" ngsf-fullscreen="fullscreenCtrl" ng-click="fullscreenCtrl.toggleFullscreen()" id="masterDiv" style="background-image:url(assets/images/irongrip.png)">
         <div class="row">
             <div class = "column col-xs-2">
                 <div>
-                    <video id="box1" class="row" style = "" style="visibility: hidden" muted="muted"></video>
+                    <video  id="box1" class="row"  style = "" style="visibility: hidden" muted="muted"></video>
                     <div style = "width: 200px; text-align: center">{{currentUser.firstName}} {{currentUser.lastName.charAt(0)}}</div>
                 </div>
                 <div>
