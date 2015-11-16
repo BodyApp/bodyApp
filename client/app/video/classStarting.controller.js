@@ -27,21 +27,32 @@ angular.module('bodyAppApp')
       .child(classDate.getTime())
     )
 
-    firebaseClassToJoin.$bindTo($scope, 'class');
+    firebaseClassToJoin.$loaded().then(function() {
+      $scope.class = firebaseClassToJoin;
+      getBookedUsers(firebaseClassToJoin);
+    });
+
+    firebaseClassToJoin.$watch(function() {
+      $scope.class = firebaseClassToJoin;
+      getBookedUsers(firebaseClassToJoin);
+    })
 
     $scope.numBookedUsers;
     $scope.bookedUsers = [];
+    getBookedUsers(classToJoin);
 
-    if (classToJoin.bookedUsers) {
-      $scope.numBookedUsers = Object.keys(classToJoin.bookedUsers).length  
+    function getBookedUsers(classJoined) {
+      $scope.bookedUsers = [];
+      if (classJoined.bookedUsers) {
+        $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
 
-      for (var bookedUser in classToJoin.bookedUsers) {
-        if (bookedUser) {
-          User.getUser({id: bookedUser}).$promise.then(function(data) {
-            $scope.bookedUsers.push(data);  
-            console.log($scope.bookedUsers);
-          })
-        }    
+        for (var bookedUser in classJoined.bookedUsers) {
+          if (bookedUser) {
+            User.getUser({id: bookedUser}).$promise.then(function(data) {
+              $scope.bookedUsers.push(data);  
+            })
+          }    
+        }
       }
     }
     

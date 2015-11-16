@@ -10,7 +10,7 @@ angular.module('bodyAppApp')
         Auth.isLoggedInAsync(function(boolAnswer) {
             loggedIn = boolAnswer;
             if (!loggedIn) {
-              event.preventDefault();
+              // event.preventDefault();
                 var loginModal = openLoginModal()
             }
         });
