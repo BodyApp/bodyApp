@@ -19,47 +19,6 @@ angular.module('bodyAppApp')
 
 		var firstTimePlayingSong = true;
 
-		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
-		// audioPlayer.bind(SC.Widget.Events.READY, function() {
-			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
-    	// audioPlayer.play();
-   // });
-
-		audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-			if (firstTimePlayingSong) {
-				setTimeout(function(){ firstTimePlayingSong = false }, 2000);
-				audioPlayer.setVolume(0.10);
-				console.log("playing audio with elapsed time of " + elapsedTime);		
-				audioPlayer.getSounds(function(soundArray) {					
-					for (var i = 0; i < soundArray.length; i++) {
-						if (elapsedTime > soundsLength + soundArray[i].duration) {
-							soundsLength += soundArray[i].duration;
-							audioPlayer.next()						
-						} else {
-							var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-							console.log("seeking to " + seekingTo);						
-							return audioPlayer.seekTo(seekingTo)
-						}
-					}	
-				})
-			}
-		});
-
-		audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
-			audioPlayer.getCurrentSoundIndex(function(index) {
-				audioPlayer.getPosition(function(position) {
-					console.log("playing song " + index + " at " + position + " ms")
-				})
-			})
-		});
-
-		// audioPlayer.bind(SC.Widget.Events.LOAD_PROGRESS, function onLoadProgress (e) {
-		//   if (e.loadedProgress && e.loadedProgress === 1) {
-		//     audioPlayer.seekTo(15000); // seek to previous location
-		//     audioPlayer.unbind(SC.Widget.Events.LOAD_PROGRESS);
-		//   }
-		// });
-
 		easyrtc.dontAddCloseButtons(true);
 
 		var currentUser = Auth.getCurrentUser();
@@ -67,6 +26,46 @@ angular.module('bodyAppApp')
 
 		$scope.consumerList.push(currentUser._id);
 		$scope.consumerObjects[currentUser._id] = currentUser;
+
+		// function setMusicPlayer() {
+
+		// if (!SC) {
+		// 	alert('nope')
+		// } else {
+		if (typeof SC !== 'undefined') {
+			var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+
+			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+				if (firstTimePlayingSong) {
+					setTimeout(function(){ firstTimePlayingSong = false }, 2000);
+					audioPlayer.setVolume(0.10);
+					console.log("playing audio with elapsed time of " + elapsedTime);		
+					audioPlayer.getSounds(function(soundArray) {					
+						for (var i = 0; i < soundArray.length; i++) {
+							if (elapsedTime > soundsLength + soundArray[i].duration) {
+								soundsLength += soundArray[i].duration;
+								audioPlayer.next()						
+							} else {
+								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
+								console.log("seeking to " + seekingTo);						
+								return audioPlayer.seekTo(seekingTo)
+							}
+						}	
+					})
+				}
+			});
+
+			audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
+				audioPlayer.getCurrentSoundIndex(function(index) {
+					audioPlayer.getPosition(function(position) {
+						console.log("playing song " + index + " at " + position + " ms")
+					})
+				})
+			});
+		} else {
+			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+		}
+		// }
 
 		function loginSuccess() {
 		}
