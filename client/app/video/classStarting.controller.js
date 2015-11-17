@@ -20,26 +20,23 @@ angular.module('bodyAppApp')
     sunDate.setDate(classDate.getDate()-classDate.getDay())
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
-    var firebaseClassToJoin = $firebaseObject(
+    $scope.class = $firebaseObject(
       ref.child("weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear())
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
     )
 
-    firebaseClassToJoin.$loaded().then(function() {
-      $scope.class = firebaseClassToJoin;
-      getBookedUsers(firebaseClassToJoin);
-    });
-
-    firebaseClassToJoin.$watch(function() {
-      $scope.class = firebaseClassToJoin;
-      getBookedUsers(firebaseClassToJoin);
-    })
-
     $scope.numBookedUsers;
-    $scope.bookedUsers = [];
-    // getBookedUsers(classToJoin);
+    $scope.bookedUsers;
+
+    getBookedUsers(classToJoin);
+
+    $scope.class.$loaded().then(function() {
+      $scope.class.$watch(function(e) {
+        getBookedUsers($scope.class);
+      })
+    });
 
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];

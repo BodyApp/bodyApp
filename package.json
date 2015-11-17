@@ -29,7 +29,8 @@
     "easyrtc": "1.0.15",
     "stripe": "*",
     "cron": "*",
-    "firebase": "*"
+    "firebase": "*",
+    "request": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
