@@ -44,6 +44,10 @@ var all = {
     }
   },
 
+  iceIdent: process.env.iceIdent,
+  iceSecret: process.env.iceSecret,
+  iceDomain: process.env.iceDomain,  
+
   stripeOptions: {
     apiKey: process.env.STRIPE_KEY || 'key',
     stripePubKey: process.env.STRIPE_PUB_KEY || 'pubKey',
