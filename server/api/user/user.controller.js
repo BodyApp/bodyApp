@@ -190,11 +190,28 @@ exports.postBilling = function(req, res, next){
 
         if(!user.stripe.plan){
           console.log("Didn't have plan saved yet.  Saving now.")
-          user.stripe.plan = customer.subscriptions.data[0].plan.id;
+          var subData = customer.subscriptions.data[0]
+          console.log(subData);
+          user.stripe.plan = subData.plan.id;
+          user.stripe.amount = subData.plan.amount;
+          user.stripe.startDate = subData.start
+          user.stripe.endDate = subData.current_period_end
+          user.stripe.currency = subData.plan.currency;
+          user.stripe.interval = subData.plan.interval;
+          user.stripe.intervalCount = subData.plan.interval_count;
+          user.stripe.liveMode = subData.plan.livemode;
+          
         }        
 
         var card = customer.sources.data[0];
+        console.log(card);
         user.stripe.last4 = card.last4;
+        user.stripe.brand = card.brand;
+        user.stripe.zip = card.address_zip;
+        user.stripe.country = card.country;
+        user.stripe.expMonth = card.exp_month;
+        user.stripe.expYear = card.exp_year;
+        user.stripe.fingerprint = card.fingerprint;
         
         user.save(function(err){
           console.log("saving user")
