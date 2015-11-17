@@ -3,8 +3,11 @@
 <div class="container full-screen-height">
   
   <div class="row">
-    <h4>Card ending {{currentUser.stripe.last4}}</h4>
-    <button class="btn">Cancel My Subscription</button>
+  
+    <div class = "mt32">
+      <button class="btn btn-lg btn-primary">Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}</button>
+      <button class="btn btn-lg btn-primary">Change Current Card: {{currentUser.stripe.brand}} ending {{currentUser.stripe.last4}}</button>
+    </div>
     <!-- <div class="row changePasswordRow" ng-hide="true">
       <button type="submit" class="btn btn-lg btn-primary" style="visibility: visible;">
         Change Password
@@ -39,8 +42,7 @@
           </form>
         </div>
       </div> -->
-  </div>
 
-    <!-- <br> -->
+  </div>
 </div>
 <div ng-include="'components/footer/footer.html'"></div>

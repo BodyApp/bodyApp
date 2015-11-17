@@ -217,13 +217,14 @@ angular.module('bodyAppApp')
                 });
 
                 User.addBookedClass({ id: currentUser._id }, {
-                  classToAdd: slot
+                  classToAdd: slot.date
                 }, function(user) {
                   currentUser = user;
                   $scope.currentUser = currentUser;
                 }, function(err) {
                     console.log("Error adding class: " + err)
-                    slot.bookedUsers[currentUser._id] = false    
+                    slot.bookedUsers[currentUser._id] = false
+                    alert("sorry, there was an issue booking your class.  Please contact the BODY help team at (216) 408-2902 to get this squared away.")    
                 }).$promise;
 
             } else {

@@ -4,9 +4,13 @@ angular.module('bodyAppApp')
   .controller('SettingsCtrl', function ($scope, User, Auth) {
     $scope.errors = {};
     $scope.editingCreditCardInfo = false;
+    $scope.currentUser;
 
-    $scope.currentUser = User.get()
-    console.log($scope.currentUser);
+    User.get().$promise.then(function(data){
+      $scope.currentUser = data
+      $scope.subEndDate = new Date($scope.currentUser.stripe.endDate*1000)
+      console.log($scope.currentUser);
+    })
 
   //   $scope.changePassword = function(form) {
   //     $scope.submitted = true;
