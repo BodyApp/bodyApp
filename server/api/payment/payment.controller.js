@@ -9,25 +9,31 @@ module.exports = exports = function stripeCustomer (schema, options) {
 
   schema.add({
     stripe: {
-      customerId: String,
-      subscriptionId: String,
-      last4: String,
-      brand: String,
-      startDate: Number,
-      endDate: Number,
-      amount: Number,
-      currency: String,
-      interval: String,
-      intervalCount: Number,
-      livemode: Boolean,
-      zip: String,
-      country: String,
-      expMonth: Number,
-      expYear: Number,
-      fingerprint: String,
-      plan: {
-        type: String,
-        default: options.defaultPlan
+      customer: {
+        customerId: String
+      },
+      card: {
+        zip: String,
+        id: String,
+        country: String,
+        expMonth: Number,
+        expYear: Number,
+        fingerprint: String,
+        last4: String,
+        brand: String
+      },
+      subscription: {
+        // type: String,       
+        name: String,
+        id: String,
+        startDate: Number,
+        endDate: Number,
+        amount: Number,
+        currency: String,
+        interval: String,
+        intervalCount: Number,
+        livemode: Boolean
+        // default: options.defaultPlan
       }
     }
   });

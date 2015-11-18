@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('SettingsCtrl', function ($scope, User, Auth) {
+  .controller('SettingsCtrl', function ($scope, $http, User, Auth) {
     $scope.errors = {};
     $scope.editingCreditCardInfo = false;
     $scope.currentUser;
@@ -11,6 +11,22 @@ angular.module('bodyAppApp')
       $scope.subEndDate = new Date($scope.currentUser.stripe.endDate*1000)
       console.log($scope.currentUser);
     })
+
+    $scope.cancelSubscription = function() {
+      $http.post('/api/users/cancelSubscription', {
+        user: currentUser
+      })
+      .success(function(data) {
+          console.log("Successfully posted to /user/cancelsub");
+          currentUser = data
+          $scope.currentUser = currentUser
+          Auth.currentUser = currentUser
+          modalInstance.close()
+      })
+      .error(function(err) {
+          console.log("Error posting to /user/cancelsub: " + err)
+      }.bind(this));
+    }
 
   //   $scope.changePassword = function(form) {
   //     $scope.submitted = true;

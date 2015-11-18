@@ -109,6 +109,8 @@ angular.module('bodyAppApp')
                             console.log("Successfully posted to /user/charge");
                             currentUser = data
                             $scope.currentUser = currentUser
+                            console.log($scope.currentUser);
+                            Auth.currentUser = currentUser
                             modalInstance.close()
                         })
                         .error(function(err) {
@@ -224,7 +226,7 @@ angular.module('bodyAppApp')
                 }, function(err) {
                     console.log("Error adding class: " + err)
                     slot.bookedUsers[currentUser._id] = false
-                    alert("sorry, there was an issue booking your class.  Please contact the BODY help team at (216) 408-2902 to get this squared away.")    
+                    alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
                 }).$promise;
 
             } else {

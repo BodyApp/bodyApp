@@ -183,36 +183,47 @@ exports.postBilling = function(req, res, next){
       var cardHandler = function(err, customer) {
         if (err) return cb(err);
 
-        if(!user.stripe.customerId){
+        // if (!user.stripe) {
+        //   console.log("stripe object created on user")
+        //   user.stripe = {};
+        // }
+
+        if(!user.stripe.customer.customerId){
+          // user.stripe.customer = {};
           console.log("Didn't have customer ID yet.  Saving now.")
-          user.stripe.customerId = customer.id;
+          user.stripe.customer.customerId = customer.id;
         }
 
-        if(!user.stripe.plan){
+        if(!user.stripe.subscription.id){
+          // user.stripe.subscription = {};
           console.log("Didn't have plan saved yet.  Saving now.")
-          var subData = customer.subscriptions.data[0]
-          console.log(subData);
-          user.stripe.plan = subData.plan.id;
-          user.stripe.amount = subData.plan.amount;
-          user.stripe.startDate = subData.start
-          user.stripe.endDate = subData.current_period_end
-          user.stripe.currency = subData.plan.currency;
-          user.stripe.interval = subData.plan.interval;
-          user.stripe.intervalCount = subData.plan.interval_count;
-          user.stripe.liveMode = subData.plan.livemode;
-          
+          var subData = customer.subscriptions.data[0];          
+          console.log(subData)
+          user.stripe.subscription.id = subData.id;
+          user.stripe.subscription.name = subData.plan.id;
+          user.stripe.subscription.amount = subData.plan.amount;
+          user.stripe.subscription.startDate = subData.start
+          user.stripe.subscription.endDate = subData.current_period_end
+          user.stripe.subscription.currency = subData.plan.currency;
+          user.stripe.subscription.interval = subData.plan.interval;
+          user.stripe.subscription.intervalCount = subData.plan.interval_count;
+          user.stripe.subscription.liveMode = subData.plan.livemode;       
         }        
 
+      // if (!user.stripe.card) {
+        // user.stripe.card = {};
         var card = customer.sources.data[0];
         console.log(card);
-        user.stripe.last4 = card.last4;
-        user.stripe.brand = card.brand;
-        user.stripe.zip = card.address_zip;
-        user.stripe.country = card.country;
-        user.stripe.expMonth = card.exp_month;
-        user.stripe.expYear = card.exp_year;
-        user.stripe.fingerprint = card.fingerprint;
-        
+        user.stripe.card.id = card.id;
+        user.stripe.card.last4 = card.last4;
+        user.stripe.card.brand = card.brand;
+        user.stripe.card.zip = card.address_zip;
+        user.stripe.card.country = card.country;
+        user.stripe.card.expMonth = card.exp_month;
+        user.stripe.card.expYear = card.exp_year;
+        user.stripe.card.fingerprint = card.fingerprint;  
+      // }
+
         user.save(function(err){
           console.log("saving user")
           res.json(user)
@@ -222,15 +233,15 @@ exports.postBilling = function(req, res, next){
         });
       };
 
-      if(user.stripe.customerId){
-        console.log("User " + user.stripe.customerId + " already has ID. Card updated and customer not charged again.");
-        stripe.customers.update(user.stripe.customerId, {source: stripeToken}, cardHandler);
+      if(user.stripe && user.stripe.customer.customerId){
+        console.log("User " + user.stripe.customer.customerId + " already has ID. Card updated and customer not charged again.");
+        stripe.customers.update(user.stripe.customer.customerId, {source: stripeToken}, cardHandler);
         if (user.stripe.plan) {
-          return console.log("Customer " + user.stripe.customerId + " already has subscription. Not charged again");
+          return console.log("Customer " + user.stripe.customer.customerId + " already has subscription. Not charged again");
         } else {
-          console.log("Customer " + user.stripe.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
+          console.log("Customer " + user.stripe.customer.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
           stripe.customers.updateSubscription(
-            user.stripe.customerId,
+            user.stripe.customer.customerId,
             null,
             { plan: "basicSubscription"},
           cardHandler);
