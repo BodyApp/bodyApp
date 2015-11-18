@@ -32,7 +32,8 @@ module.exports = exports = function stripeCustomer (schema, options) {
         currency: String,
         interval: String,
         intervalCount: Number,
-        livemode: Boolean
+        livemode: Boolean,
+        status: String
         // default: options.defaultPlan
       }
     }

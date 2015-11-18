@@ -181,6 +181,7 @@ exports.postBilling = function(req, res, next){
     };
 
       var cardHandler = function(err, customer) {
+        console.log(customer);
         if (err) return cb(err);
 
         // if (!user.stripe) {
@@ -189,16 +190,20 @@ exports.postBilling = function(req, res, next){
         // }
 
         if(!user.stripe.customer.customerId){
-          // user.stripe.customer = {};
-          console.log("Didn't have customer ID yet.  Saving now.")
+        //   // user.stripe.customer = {};
+        //   console.log("Didn't have customer ID yet.  Saving now.")
           user.stripe.customer.customerId = customer.id;
         }
 
-        if(!user.stripe.subscription.id){
+        if(!user.stripe.subscription.status != "active"){
+
+          // user.stripe.customer.customerId = customer.id;
           // user.stripe.subscription = {};
           console.log("Didn't have plan saved yet.  Saving now.")
-          var subData = customer.subscriptions.data[0];          
-          console.log(subData)
+          //Only part of the 'subscriptions' object when user is first created
+          var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+          console.log(subData);    
+          // user.stripe.customer.customerId = customer.id;
           user.stripe.subscription.id = subData.id;
           user.stripe.subscription.name = subData.plan.id;
           user.stripe.subscription.amount = subData.plan.amount;
@@ -207,25 +212,26 @@ exports.postBilling = function(req, res, next){
           user.stripe.subscription.currency = subData.plan.currency;
           user.stripe.subscription.interval = subData.plan.interval;
           user.stripe.subscription.intervalCount = subData.plan.interval_count;
-          user.stripe.subscription.liveMode = subData.plan.livemode;       
-        }        
+          user.stripe.subscription.liveMode = subData.plan.livemode;    
+          user.stripe.subscription.status = subData.status;    
+        }      
 
       // if (!user.stripe.card) {
         // user.stripe.card = {};
-        var card = customer.sources.data[0];
-        console.log(card);
-        user.stripe.card.id = card.id;
-        user.stripe.card.last4 = card.last4;
-        user.stripe.card.brand = card.brand;
-        user.stripe.card.zip = card.address_zip;
-        user.stripe.card.country = card.country;
-        user.stripe.card.expMonth = card.exp_month;
-        user.stripe.card.expYear = card.exp_year;
-        user.stripe.card.fingerprint = card.fingerprint;  
+        if (customer.sources) {
+          var card = customer.sources.data[0];
+          user.stripe.card.id = card.id;
+          user.stripe.card.last4 = card.last4;
+          user.stripe.card.brand = card.brand;
+          user.stripe.card.zip = card.address_zip;
+          user.stripe.card.country = card.country;
+          user.stripe.card.expMonth = card.exp_month;
+          user.stripe.card.expYear = card.exp_year;
+          user.stripe.card.fingerprint = card.fingerprint;  
+        }
       // }
 
         user.save(function(err){
-          console.log("saving user")
           res.json(user)
           if (err) return cb(err);
           return cb(null);
@@ -233,30 +239,79 @@ exports.postBilling = function(req, res, next){
         });
       };
 
-      if(user.stripe && user.stripe.customer.customerId){
-        console.log("User " + user.stripe.customer.customerId + " already has ID. Card updated and customer not charged again.");
+      if(user.stripe.subscription.status === "active"){
+        console.log("User " + user.stripe.customer.customerId + " already has ID and subscription. Card updated and customer not charged again.");
         stripe.customers.update(user.stripe.customer.customerId, {source: stripeToken}, cardHandler);
-        if (user.stripe.plan) {
-          return console.log("Customer " + user.stripe.customer.customerId + " already has subscription. Not charged again");
+        // if (user.stripe.subscription.status === "active") {
+        //   return console.log("Customer " + user.stripe.customer.customerId + " already has subscription. Not charged again");
+        // } else {
+        //   console.log("Customer " + user.stripe.customer.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
+        //   stripe.customers.updateSubscription(
+        //     user.stripe.customer.customerId,
+        //     null,
+        //     { plan: "basicSubscription"},
+        //   cardHandler);
+        // }
+      } else {     
+        if (user.stripe.customer.customerId) {
+          console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
+          stripe.customers.createSubscription(
+            user.stripe.customer.customerId, {
+              source: stripeToken,
+              plan: "basicSubscription"
+            }, cardHandler
+          );
         } else {
-          console.log("Customer " + user.stripe.customer.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
-          stripe.customers.updateSubscription(
-            user.stripe.customer.customerId,
-            null,
-            { plan: "basicSubscription"},
-          cardHandler);
+          console.log("Creating new stripe customer and new subscription.")
+          stripe.customers.create({
+            email: user.email,
+            source: stripeToken,
+            plan: "basicSubscription",
+            description: "Created subscription during inital private beta"
+          }, cardHandler);
         }
-      } else {
-        console.log("User " + user._id + " didn't have active subscription.  Charging subscription")
-        stripe.customers.create({
-          email: user.email,
-          source: stripeToken,
-          plan: "basicSubscription",
-          description: "Created subscription during inital private beta"
-        }, cardHandler);
       }
   });
 };
+
+exports.cancelSubscription = function(req, res, next) {
+  var currentUser = req.body.user
+  User.findById(currentUser._id, function(err, user) {
+    stripe.customers.cancelSubscription(
+      user.stripe.customer.customerId,
+      user.stripe.subscription.id,
+      function(err, confirmation) {
+        if (err) return cb(err)
+        console.log(confirmation);
+        user.stripe.subscription.status = confirmation.status;
+        // .id;
+        // delete user.stripe.subscription.name;
+        // delete user.stripe.subscription.amount;
+        // delete user.stripe.subscription.startDate;
+        // delete user.stripe.subscription.endDate;
+        // delete user.stripe.subscription.currency;
+        // delete user.stripe.subscription.interval;
+        // delete user.stripe.subscription.intervalCount;
+        // delete user.stripe.subscription.liveMode;
+        // user.stripe.card = {};
+        user.save(function(err){
+          console.log("saving user")
+          res.json(user)
+          if (err) return cb(err);
+          return cb(null);
+          return
+        });
+      }
+    )
+  })
+
+  var cb = function(err) {
+      if (err) {
+        console.log('An unexpected error occurred.');
+      }
+      console.log('Subscription Cancelled.');
+    };
+}
 
 exports.addBookedClass = function(req, res, next) {
   var userId = req.user._id;

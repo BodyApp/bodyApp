@@ -22,6 +22,10 @@ router.post('/charge',
 //   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
 //   // auth.isAuthenticated(),
   controller.postBilling);
+
+router.post('/cancelsub', controller.cancelSubscription);
+
+
 // router.post('/charge',
   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
   // auth.isAuthenticated(),

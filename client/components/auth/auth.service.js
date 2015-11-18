@@ -106,6 +106,11 @@ angular.module('bodyAppApp')
         return currentUser;
       },
 
+      updateUser: function(userInfo) {
+        currentUser = userInfo;
+        return currentUser;
+      },
+
       /**
        * Check if a user is logged in
        *

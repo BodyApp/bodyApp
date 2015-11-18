@@ -111,9 +111,7 @@ new CronJob('29 * * * * *', function() {
         if (slot <= (todayDate.getTime() - 45*60*1000) && !currentWeek[day].slots[slot].past) { //Can book (and join) a class up to 45 minutes into class starting
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({past: true})
           console.log("class " + slot + " is now in the past")
-	      } 
-	      //Prevents more than 12 people from joining
-	      if (currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= 12) {
+	      } else if (!currentWeek[day].slots[slot].past && currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= 12) { //Prevents more than 12 people from joining
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({classFull: true})
           console.log("class " + slot + " is now full")
 	      }

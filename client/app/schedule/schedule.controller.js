@@ -91,8 +91,8 @@ angular.module('bodyAppApp')
             // currentUser = Auth.getUpdatedUser();
             // $scope.currentUser = currentUser;
             // console.log(currentUser)
-            if (currentUser.stripe && currentUser.stripe.plan) {
-                return currentUser.stripe.plan
+            if (currentUser.stripe && currentUser.stripe.subscription.status === "active") {
+                return true;
             } else {
                 // openPaymentModal();
                 var handler = StripeCheckout.configure({
@@ -107,10 +107,10 @@ angular.module('bodyAppApp')
                         })
                         .success(function(data) {
                             console.log("Successfully posted to /user/charge");
+                            Auth.updateUser(data)
+                            console.log(data);
                             currentUser = data
                             $scope.currentUser = currentUser
-                            console.log($scope.currentUser);
-                            Auth.currentUser = currentUser
                             modalInstance.close()
                         })
                         .error(function(err) {
@@ -199,7 +199,7 @@ angular.module('bodyAppApp')
             if (!loggedIn) {
                 slot.bookedUsers[currentUser._id] = false
                 return openLoginModal()
-            } else if (checkWhetherUserIsSubscribed() == "basicSubscription") {
+            } else if (checkWhetherUserIsSubscribed() === true) {
                 var modalInstance = $modal.open({
                   animation: true,
                   templateUrl: 'app/schedule/bookingConfirmation.html',
