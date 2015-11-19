@@ -12,16 +12,16 @@ module.exports = exports = function stripeCustomer (schema, options) {
       customer: {
         customerId: String
       },
-      card: {
-        zip: String,
-        id: String,
-        country: String,
-        expMonth: Number,
-        expYear: Number,
-        fingerprint: String,
-        last4: String,
-        brand: String
-      },
+      // card: {
+      //   zip: String,
+      //   id: String,
+      //   country: String,
+      //   expMonth: Number,
+      //   expYear: Number,
+      //   fingerprint: String,
+      //   last4: String,
+      //   brand: String
+      // },
       subscription: {
         // type: String,       
         name: String,

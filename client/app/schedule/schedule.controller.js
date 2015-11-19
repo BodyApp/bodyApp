@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, socket, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
@@ -93,6 +93,22 @@ angular.module('bodyAppApp')
             // console.log(currentUser)
             if (currentUser.stripe && currentUser.stripe.subscription.status === "active") {
                 return true;
+            // } else if (currentUser.strip.subscription.status === "canceled") {
+            //     var modalInstance = openRenewSubscriptionModal()
+            //     $http.post('/api/users/charge', {
+            //       user: currentUser,
+            //       stripeToken: token
+            //     })
+            //     .success(function(data) {
+            //         console.log("Successfully posted to /user/charge");
+            //         Auth.updateUser(data)
+            //         currentUser = data
+            //         $scope.currentUser = currentUser
+            //         modalInstance.close()
+            //     })
+            //     .error(function(err) {
+            //         console.log("Error posting to /user/charge: " + err)
+            //     }.bind(this));
             } else {
                 // openPaymentModal();
                 var handler = StripeCheckout.configure({
@@ -108,7 +124,6 @@ angular.module('bodyAppApp')
                         .success(function(data) {
                             console.log("Successfully posted to /user/charge");
                             Auth.updateUser(data)
-                            console.log(data);
                             currentUser = data
                             $scope.currentUser = currentUser
                             modalInstance.close()

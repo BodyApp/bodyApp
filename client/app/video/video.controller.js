@@ -188,6 +188,11 @@ angular.module('bodyAppApp')
 	    }
 		});
 
+		easyrtc.setOnError(function(err) {
+			console.log("easyrtc error: ")
+			console.log(err)
+		})
+
 		// var getTrainerMicrophoneLevel = function(stream) {
 		// 	var max_level_L = 0;
 		// 	var old_level_L = 0;
@@ -352,6 +357,11 @@ angular.module('bodyAppApp')
 	        console.log('slot: ' + slot);
 	        document.getElementById(getIdOfBox(slot+1)).style.visibility = 'visible';
 	    });
+
+			easyrtc.setOnError(function(err) {
+				console.log("easyrtc error: ")
+				console.log(err)
+			})
 
 	    easyrtc.setOnHangup(function(easyrtcid, slot) {
 	        setTimeout(function() {

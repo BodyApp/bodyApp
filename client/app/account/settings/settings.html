@@ -6,7 +6,7 @@
   
     <div class = "mt32">
       <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}</button>
-      <button class="btn btn-lg btn-primary">Change Current Card: {{currentUser.stripe.card.brand}} ending {{currentUser.stripe.card.last4}}</button>
+      <!-- <button class="btn btn-lg btn-primary">Change Current Card: {{currentUser.stripe.card.brand}} ending {{currentUser.stripe.card.last4}}</button> -->
     </div>
     <!-- <div class="row changePasswordRow" ng-hide="true">
       <button type="submit" class="btn btn-lg btn-primary" style="visibility: visible;">

@@ -58,7 +58,7 @@ angular.module('bodyAppApp')
   	// $scope.trainer = "Mendelson";
   	// $scope.joinClassActive = false;
 
-  	window.setInterval(function(){ checkTime() }, 20*1000)
+  	var checkTimeInterval = window.setInterval(function(){ checkTime() }, 20*1000)
 
   	function checkTime() {
   		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
@@ -73,8 +73,10 @@ angular.module('bodyAppApp')
     $scope.navigateToVideo = function() {
       console.log(currentUser)
       if (currentUser._id === classToJoin.trainer._id) {
+        clearInterval(checkTimeInterval)
         $location.path('/trainervideo')
       } else {
+        clearInterval(checkTimeInterval)
         $location.path('/consumervideo')
       }
     }

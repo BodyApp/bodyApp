@@ -182,6 +182,7 @@ exports.postBilling = function(req, res, next){
 
       var cardHandler = function(err, customer) {
         console.log(customer);
+        // console.log(third);
         if (err) return cb(err);
 
         // if (!user.stripe) {
@@ -216,19 +217,24 @@ exports.postBilling = function(req, res, next){
           user.stripe.subscription.status = subData.status;    
         }      
 
+        //If going to add card information, have to pull the card information any time update user subscription / card information.  Otherwise, it's incorrect.
       // if (!user.stripe.card) {
         // user.stripe.card = {};
-        if (customer.sources) {
-          var card = customer.sources.data[0];
-          user.stripe.card.id = card.id;
-          user.stripe.card.last4 = card.last4;
-          user.stripe.card.brand = card.brand;
-          user.stripe.card.zip = card.address_zip;
-          user.stripe.card.country = card.country;
-          user.stripe.card.expMonth = card.exp_month;
-          user.stripe.card.expYear = card.exp_year;
-          user.stripe.card.fingerprint = card.fingerprint;  
-        }
+        // if (customer.sources) {
+        //   var card = customer.sources.data[0];
+        //   user.stripe.card.id = card.id;
+        //   user.stripe.card.last4 = card.last4;
+        //   user.stripe.card.brand = card.brand;
+        //   user.stripe.card.zip = card.address_zip;
+        //   user.stripe.card.country = card.country;
+        //   user.stripe.card.expMonth = card.exp_month;
+        //   user.stripe.card.expYear = card.exp_year;
+        //   user.stripe.card.fingerprint = card.fingerprint;  
+        // } 
+        // else {
+        // stripe.customers.retrieve(
+        //   customer.id, cardHandler)
+        // }
       // }
 
         user.save(function(err){

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('SettingsCtrl', function ($scope, $http, $modal, User, Auth) {
+  .controller('SettingsCtrl', function ($scope, $http, $modal, $state, User, Auth) {
     $scope.errors = {};
     $scope.editingCreditCardInfo = false;
     $scope.currentUser = Auth.getCurrentUser();
@@ -23,6 +23,7 @@ angular.module('bodyAppApp')
             $scope.currentUser = data
             Auth.updateUser(data)
             modalInstance.close()
+            $state.go('schedule');
         })
         .error(function(err) {
             console.log("Error posting to /user/cancelsub: " + err)
