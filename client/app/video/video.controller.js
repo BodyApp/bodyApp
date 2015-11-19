@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, $location, Auth, User, Schedule) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, $sce, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -26,13 +26,19 @@ angular.module('bodyAppApp')
 		$scope.consumerList.push(currentUser._id);
 		$scope.consumerObjects[currentUser._id] = currentUser;
 
+		// if (classToJoin) {
+		// 	$scope.playlistUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url="+classToJoin.playlist.soundcloudUrl+"&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30")
+		// }
+
 		// function setMusicPlayer() {
 
 		// if (!SC) {
 		// 	alert('nope')
 		// } else {
 		if (typeof SC !== 'undefined') {
-			var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+			var element = document.getElementById('audioPlayer')
+			var audioPlayer = SC.Widget(element);
+			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
 
 			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
 				var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
@@ -47,7 +53,7 @@ angular.module('bodyAppApp')
 								audioPlayer.next()						
 							} else {
 								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-								console.log("seeking to " + seekingTo);						
+								console.log("seeking to track " + (i+1) + " at " + seekingTo);						
 								return audioPlayer.seekTo(seekingTo)
 							}
 						}	
@@ -69,10 +75,14 @@ angular.module('bodyAppApp')
 
 		function loginSuccess() {
 			if (typeof SC !== 'undefined') {
-	    	audioPlayer.play()
+				console.log("should be playing music")
+				audioPlayer.play()
+
 		  } else {
 				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 			}
+
+
 		}
 
 		var _init = function() {
@@ -250,7 +260,10 @@ angular.module('bodyAppApp')
 
 		var firstTimePlayingSong = true;
 
+		$scope.playlistUrl = classToJoin.playlist.soundcloudUrl
+
 		var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+		audioPlayer.load(classToJoin.playlist.soundcloudUrl)
 		// audioPlayer.bind(SC.Widget.Events.READY, function() {
 			// audioPlayer.load("https%3A//api.soundcloud.com/playlists/27058368")
     	// audioPlayer.setVolume(0.10)
@@ -273,7 +286,7 @@ angular.module('bodyAppApp')
 								audioPlayer.next()						
 							} else {
 								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-								console.log("seeking to " + seekingTo);						
+								console.log("seeking to track " + (i+1) + " at " + seekingTo);						
 								return audioPlayer.seekTo(seekingTo)
 							}
 						}	
