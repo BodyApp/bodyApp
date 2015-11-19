@@ -177,6 +177,15 @@
 	         .then(mapPlaylists, SoundCloudSessionManager.disconnect);
 	     };
 
+	     this.defaultPlaylist = function defaultPlaylists() {
+	     	return $http.get(SoundCloudAPIBase + '/playlists/165421585.json?client_id=98ce72f3387d68c97372c1aa09dc5f2a', {
+	         params : {
+	           oauth_token : SoundCloudSessionManager.accessToken
+	         }
+	       })
+	         .then(mapPlaylists, SoundCloudSessionManager.disconnect);
+	     } 
+
        /**
         * Fetch metadata for a track that exists in SoundCloud.
         * @param trackId Track ID for the song

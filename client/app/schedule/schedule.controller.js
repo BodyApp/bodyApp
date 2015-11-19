@@ -264,7 +264,6 @@ angular.module('bodyAppApp')
 
         $scope.formattedWaitTime = function(slot, timeNow) {
             var returnValue = Math.round((slot - timeNow)/(1000*60))
-            console.log(returnValue)
             return (returnValue < 120 ? returnValue + " Mins": Math.round(returnValue / 60) + " Hours")
         } 
 

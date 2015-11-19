@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject) {
-    if (!(Auth.isInstructor() || Auth.isAdmin())) {
-      $location.path('/')
-    }
+  .controller('AdminCtrl', function ($scope, $http, $location, $modal, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject) {
+    // if (!(Auth.isInstructor() || Auth.isAdmin())) {
+    //   $location.path('/')
+    // }
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
 
@@ -22,16 +22,19 @@ angular.module('bodyAppApp')
     var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
     $scope.wod = $firebaseObject(wodRef);
 
-    $scope.instructors;
+    $scope.instructors = [];
+    getAdminsAndInstructors()
     $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}};
-    $scope.playlists;
+    $scope.playlists = [];
+    loadDefaultPlaylist();
+
+    $scope.createdClass = {};
     
     $scope.soundcloudAuth = function() {
       SoundCloudLogin.connect().then(function(token) {
         SoundCloudAPI.me().then(function(myInfo) {
-          console.log(myInfo)
           SoundCloudAPI.myPlaylists().then(function(playlists) {
-            console.log(playlists)
+            // console.log(playlists)
             $scope.playlists = playlists;
             $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
           })
@@ -39,26 +42,61 @@ angular.module('bodyAppApp')
       })
     }  
 
+    function loadDefaultPlaylist() {
+      SoundCloudAPI.defaultPlaylist().then(function(playlist) {
+        console.log(playlist);
+        $scope.playlists.push(playlist);
+        $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
+        // console.log(playlist)
+      })
+    }
+
     $scope.roundMins = function(mins) {
       return Math.round(mins);
     }
 
-    var instructors = Auth.getInstructors().$promise.then(function(data) {
-        $scope.instructors = data
-        $scope.workoutToCreate.trainer = $scope.instructors[0]
-      }).catch(function(err) {
-        console.log(err)
-      });;
+    function getAdminsAndInstructors() {
+      // if (user.role === "instructor") {
+      //   $scope.instructors = user;
+      // } else {
+        var instructors = Auth.getInstructors().$promise.then(function(data) {
+          $scope.instructors = data;
+          $scope.workoutToCreate.trainer = $scope.instructors[0];
+          
+          Auth.getAdmins().$promise.then(function(data) {
+            for (var i = 0; i < data.length; i++) {
+              $scope.instructors.push(data[i]);  
+            }
+          }).catch(function(err) { console.log(err)})
 
-    var admins = Auth.getAdmins().$promise.then(function(data) {
-      for (var i = 0; i < data.length; i++) {
-        $scope.instructors.push(data[i])  
-      }
-    })
+        }).catch(function(err) {
+          console.log(err);
+        });;
+      // }
+    }
+
+    function openCreatingModal() {
+        var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'app/admin/creating.html',
+          controller: 'AdminCtrl',
+          backdrop: "static",
+          keyboard: false
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+        }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+        });
+
+        return modalInstance;
+    }
 
     $scope.createWorkout = function(workoutToCreate) {
-      var date = workoutToCreate.date
-      
+      var date = workoutToCreate.date;
+      workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
+
       //Set up the week if this is first class of week
       if (!syncObject[date.getDay()]) {
         for (var i = 0; i < 7; i++) {
@@ -90,8 +128,9 @@ angular.module('bodyAppApp')
           title: workoutToCreate.playlistUrl.title,
           trackCount: workoutToCreate.playlistUrl.track_count,
           tracks: workoutToCreate.playlistUrl.tracks,
-          secretUri: workoutToCreate.playlistUrl.secret_uri,
-          sharing: workoutToCreate.playlistUrl.sharing
+          // secretUri: workoutToCreate.playlistUrl.secret_uri,
+          sharing: workoutToCreate.playlistUrl.sharing,
+          user_id: workoutToCreate.playlistUrl.user_id
         },
         trainer: workoutToCreate.trainer,
         classFull: false,
@@ -100,8 +139,12 @@ angular.module('bodyAppApp')
         spotsTaken: 0
       }
 
+      var modalInstance = openCreatingModal();
+
       syncObject.$save().then(function() {
         console.log("new workout saved")
+        modalInstance.close()
+        $location.path('/')
       }).catch(function(err) {
         console.log("error saving new workout: " + err)
       })
@@ -116,7 +159,15 @@ angular.module('bodyAppApp')
       } else {
           formatted = ((date.getHours() < 13)? date.getHours() : date.getHours()-12) +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + ((date.getHours() < 13)? "am" : "pm")
       } 
+      console.log(formatted)
       return formatted
+    }
+
+    function newDate(date) {
+      var newDate = new Date(date);
+      newDate.month = newDate.getMonth() + 1;
+      newDate.day = newDate.getDate();
+      return newDate;
     }
 
     function getDayOfWeek(day) {
