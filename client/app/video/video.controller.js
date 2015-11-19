@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, $location, $sce, Auth, User, Schedule) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -9,26 +9,20 @@ angular.module('bodyAppApp')
 		}
 
   	var maxCALLERS = 10;
-		$scope.consumerList = [];
-		$scope.consumerObjects = {};
-
 		var soundsLength = 0
 
 		// document.getElementById('audioPlayer').volume = 0.5
 
 		var firstTimePlayingSong = true;
-
 		easyrtc.dontAddCloseButtons(true);
 
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
 
+		$scope.consumerList = [];
+		$scope.consumerObjects = {};
 		$scope.consumerList.push(currentUser._id);
 		$scope.consumerObjects[currentUser._id] = currentUser;
-
-		// if (classToJoin) {
-		// 	$scope.playlistUrl = $sce.trustAsResourceUrl("https://w.soundcloud.com/player/?url="+classToJoin.playlist.soundcloudUrl+"&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30")
-		// }
 
 		// function setMusicPlayer() {
 
@@ -52,6 +46,7 @@ angular.module('bodyAppApp')
 								soundsLength += soundArray[i].duration;
 								audioPlayer.next()						
 							} else {
+								elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
 								console.log("seeking to track " + (i+1) + " at " + seekingTo);						
 								return audioPlayer.seekTo(seekingTo)
@@ -244,7 +239,7 @@ angular.module('bodyAppApp')
 		_init();
 	})
 
-	.controller('TrainerVideoCtrl', function ($scope, $location, Auth, Schedule) {
+	.controller('TrainerVideoCtrl', function ($scope, $location, Auth, User, Schedule) {
 		//Should only be accessible to trainers.
 	  var maxCALLERS = 10;
 		easyrtc.dontAddCloseButtons(true);
@@ -255,6 +250,13 @@ angular.module('bodyAppApp')
 		}
 
 		var soundsLength = 0
+		// var currentUser = Auth.getCurrentUser();
+		// $scope.currentUser = currentUser;
+
+		$scope.consumerList = [];
+		$scope.consumerObjects = {};
+		var currentUser = Auth.getCurrentUser()
+		$scope.currentUser = currentUser;
 
 		// document.getElementById('audioPlayer').volume = 0.5
 
@@ -272,6 +274,7 @@ angular.module('bodyAppApp')
 
 		if (typeof SC !== 'undefined') {
 			var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
 
 			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
 				var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
@@ -285,6 +288,7 @@ angular.module('bodyAppApp')
 								soundsLength += soundArray[i].duration;
 								audioPlayer.next()						
 							} else {
+								elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
 								console.log("seeking to track " + (i+1) + " at " + seekingTo);						
 								return audioPlayer.seekTo(seekingTo)
@@ -337,51 +341,99 @@ angular.module('bodyAppApp')
 	    if( list.length > 0) {
 	        establishConnection(list.length-1);
 	    }
-	}
-
-	function loginSuccess() {
-		if (typeof SC !== 'undefined') {
-	    	audioPlayer.play()
-	  } else {
-			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
-		}
-	}
-
-	function _init() {
-		console.log("You are logged in as a " + Auth.getCurrentUser().role)
-		if (Auth.getCurrentUser().role === 'user') {
-			$location.path('/')
-			return alert('You are not an instructor. Please try again.')
 		}
 
-	    // var passwordEntered = prompt('Enter password to prove you are the trainer');
-	    // if (passwordEntered !== 'delts') { return alert('That was the wrong password.  Refresh to try again.'); }
+		function loginSuccess() {
+			if (typeof SC !== 'undefined') {
+		    	audioPlayer.play()
+		  } else {
+				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+			}
+		}
+
+		function _init() {
+			console.log("You are logged in as a " + currentUser.role)
+			if (currentUser.role === 'user') {
+				$location.path('/')
+				return alert('You are not an instructor. Please try again.')
+			}
+
+		    // var passwordEntered = prompt('Enter password to prove you are the trainer');
+		    // if (passwordEntered !== 'delts') { return alert('That was the wrong password.  Refresh to try again.'); }
+
+			easyrtc.initMediaSource(
+        function(){       // success callback
+            var selfVideo = document.getElementById('box0');
+            easyrtc.setVideoObjectSrc(selfVideo, easyrtc.getLocalStream());
+            easyrtc.setUsername('trainer');
+            easyrtc.muteVideoObject(selfVideo, true);
+            easyrtc.connect(""+classToJoin.date+"", loginSuccess);
+            document.getElementById(getIdOfBox(0)).style.visibility = 'visible'; //This is the box for this user
+        }, function() { //Failure callback
+        	alert("Body App can't access your video camera.  Please make sure your browser is allowing Body App to access your camera and microphone by clicking permissions in the address bar above.")
+        }
+		  );
 
 	    easyrtc.setRoomOccupantListener(callEverybodyElse);
-	    easyrtc.setUsername('trainer');
-	    easyrtc.easyApp(""+classToJoin.date+"", 'box0', ['box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8'], loginSuccess);
+
 	    // easyrtc.setPeerListener(messageListener);
 	    easyrtc.setDisconnectListener( function() {
 	        easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server');
 	    });
-	    easyrtc.setOnCall( function(easyrtcid, slot) {
-	        console.log('getConnection count='  + easyrtc.getConnectionCount() );
-	        console.log('easyrtcid: ' + easyrtcid);
-	        console.log('slot: ' + slot);
-	        document.getElementById(getIdOfBox(slot+1)).style.visibility = 'visible';
-	    });
-
-			easyrtc.setOnError(function(err) {
-				console.log("easyrtc error: ")
-				console.log(err)
-			})
-
-	    easyrtc.setOnHangup(function(easyrtcid, slot) {
-	        setTimeout(function() {
-	            document.getElementById(getIdOfBox(slot+1)).style.visibility = 'hidden';
-
-	        },20);
-	    });
 		}
+
+		easyrtc.setStreamAcceptor( function(callerEasyrtcid, stream) {
+			console.log("new stream accepted")
+	    var callerUsername = easyrtc.idToName(callerEasyrtcid);
+    	if (callerUsername === currentUser._id.toString()) { return console.log("user tried to open new window") }//Prevents user from accidentally taking multiple windows.
+  		
+  		else if ($scope.consumerObjects[callerUsername]) {
+        console.log('caller already has box');
+        var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber));
+        document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber)).style.visibility = 'visible';
+        easyrtc.setVideoObjectSrc(video, stream);
+        easyrtc.muteVideoObject(video, false);
+          
+      } else {
+        console.log('caller is new with easyrtcid of ' + callerUsername);
+        $scope.consumerList.push(callerUsername);
+        console.log(callerUsername);
+        var consumerListLength = $scope.consumerList.length;
+        
+        document.getElementById(getIdOfBox(consumerListLength)).style.visibility = 'visible';
+        var videoNew = document.getElementById(getIdOfBox(consumerListLength));
+        easyrtc.setVideoObjectSrc(videoNew, stream);
+        // $scope.consumerObjects[callerUsername] = consumerListLength;
+        easyrtc.muteVideoObject(videoNew, false);
+
+        var user = User.getUser({id: callerUsername}).$promise.then(function(data) {
+        	$scope.consumerObjects[callerUsername] = data
+        	$scope.consumerObjects[callerUsername].boxNumber = consumerListLength
+        })
+      }
+		});
+
+	  easyrtc.setOnStreamClosed( function (callerEasyrtcid) {
+	    // easyrtc.setVideoObjectSrc(document.getElementById('box0'), ');
+	    // document.getElementById(getIdOfBox(0)).style.visibility = 'hidden';
+
+	    // if (easyrtc.idToName(callerEasyrtcid) === 'trainer') {
+	    //     var mainVideo = document.getElementById('box0');
+	    //     easyrtc.setVideoObjectSrc(mainVideo, '');
+	    //     // document.getElementById(getIdOfBox(0)).style.visibility = 'hidden';
+	    // } 
+	    // else {
+	    //     // document.getElementById(getIdOfBox(numConsumers)).style.visibility = 'hidden';
+	    //     // var callerUsername = easyrtc.idToName(callerEasyrtcid);
+	    //     // var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername]));
+	    // }
+		});
+
+		easyrtc.setOnError(function(err) {
+			console.log("easyrtc error: ")
+			console.log(err)
+		})
+
+
 		_init();
 	});
