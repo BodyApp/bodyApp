@@ -10,7 +10,8 @@ angular.module('bodyAppApp', [
   'firebase',
   'jshor.angular-addtocalendar',
   'angular-tour',
-  'angularScreenfull'
+  'angularScreenfull',
+  'SoundCloud'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

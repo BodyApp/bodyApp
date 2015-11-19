@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, Auth, User, $firebaseObject) {
+  .controller('AdminCtrl', function ($scope, $http, $rootScope, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject) {
 
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
@@ -21,8 +21,26 @@ angular.module('bodyAppApp')
     $scope.wod = $firebaseObject(wodRef);
 
     $scope.instructors;
-    $scope.workoutToCreate = {};
+    $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}};
+    $scope.playlists;
     
+    $scope.soundcloudAuth = function() {
+      SoundCloudLogin.connect().then(function(token) {
+        SoundCloudAPI.me().then(function(myInfo) {
+          console.log(myInfo)
+          SoundCloudAPI.myPlaylists().then(function(playlists) {
+            console.log(playlists)
+            $scope.playlists = playlists;
+            $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
+          })
+        })
+      })
+    }  
+
+    $scope.roundMins = function(mins) {
+      return Math.round(mins);
+    }
+
     var instructors = Auth.getInstructors().$promise.then(function(data) {
         $scope.instructors = data
         $scope.workoutToCreate.trainer = $scope.instructors[0]
@@ -60,6 +78,7 @@ angular.module('bodyAppApp')
         time: timeFormatter(date),
         date: date.getTime(),
         booked: false,
+        soundcloudUrl: workoutToCreate.soundcloudUrl,
         trainer: workoutToCreate.trainer,
         classFull: false,
         past: false,
