@@ -8,5 +8,12 @@ angular.module('bodyAppApp')
         templateUrl: 'app/admin/admin.html',
         controller: 'AdminCtrl',
         authenticate: true
-      });
+      })
+      .state('createclass', {
+        url: '/createclass',
+        templateUrl: 'app/admin/createClass.html',
+        controller: 'AdminCtrl',
+        authenticate: true
+      })
+      ;
   });

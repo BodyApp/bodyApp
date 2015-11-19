@@ -23,17 +23,6 @@
     <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
     <button style="background-image: url(../../assets/images/soundcloudButton.png); width: 245px; height: 32px" ng-click = "soundcloudAuth()"> </button>
   </form>
-
-  <form novalidate class="simple-form col-sm-3">
-    <input style="color: black" type="text" ng-model="wod.name" placeholder="WOD Name" required/><br />
-    <input style="color: black" type="text" ng-model="wod.strength" placeholder="Strength" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.type" placeholder = "Workout Type" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.first" placeholder = "First Exercise" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.second" placeholder = "Second Exercise" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.third" placeholder = "Third Exercise" required/><br />
-    <input type="submit" ng-click="wod.$save()" value="Change WOD" />
-  </form>  
-
 <!--   <button ng-click="seedCalendar()" class="btn btn-lg btn-primary" style="visibility: visible;">
     Seed Sample Calendar
   </button> -->

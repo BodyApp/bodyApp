@@ -24,6 +24,7 @@ angular.module('bodyAppApp')
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
+    $scope.isInstructor = Auth.isInstructor;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
     $scope.logoStyle = {"background-color": "white"};

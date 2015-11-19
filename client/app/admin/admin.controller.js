@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $rootScope, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject) {
-
+  .controller('AdminCtrl', function ($scope, $http, $location, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject) {
+    if (!(Auth.isInstructor() || Auth.isAdmin())) {
+      $location.path('/')
+    }
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
 
