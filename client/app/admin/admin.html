@@ -16,7 +16,7 @@
     </select>
     <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
     <!-- <input style="color: black" type="text" ng-model="workoutToCreate.soundcloudUrl" placeholder = "Soundcloud Url"/><br /> -->
-     <select placeholder = "Soundcloud Playlist" ng-model="workoutToCreate.playlistUrl" ng-options = "(option.title + ': ' + option.track_count + ' trcks (' + roundMins(option.duration/1000/60) + ' mins)') for option in playlists">
+     <select placeholder = "Soundcloud Playlist" ng-model="workoutToCreate.playlistUrl" ng-options = "(option.title + ': ' + option.track_count + ' trcks (' + roundMins(option.duration/1000/60) + ' mins)') for option in playlists | filter: {sharing: 'public'}">
       <option value="">- Login To SoundCloud Below -</option>
     </select>
     <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
