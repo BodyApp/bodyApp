@@ -1,5 +1,5 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div style="background-image:url(assets/images/irongrip.png)" ngsf-fullscreen="fullscreenCtrl" ng-click="fullscreenCtrl.toggleFullscreen()">
+<div class = "video-screen-height"  style="background-image:url(assets/images/irongrip.png)" ngsf-fullscreen="fullscreenCtrl" ng-click="fullscreenCtrl.toggleFullscreen()">
     <!-- <h1 id="bodyAppTitle"> Body App </h1> -->
     <!-- <div class="row"> -->
     <div class="row text-align: center"><timer class = "column col-xs-12" style = "text-align: center" start-time="classTime">{{minutes}} minutes, {{seconds}} seconds elapsed</timer></div>
@@ -46,8 +46,13 @@
             <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[7]].firstName}} {{consumerObjects[consumerList[7]].lastName.charAt(0)}}</div>
         </div>
     </div>
+    <div class = "row" ng-show = "currentSong.title">
+        <img ng-src="../assets/images/soundcloudWhiteLogo.png"/>
+        <span>Currently Playing: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
+    </div>
+    <iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
 </div>
 
-<iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
+<!-- <iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe> -->
 
 <div ng-include="'components/footer/footer.html'"></div>

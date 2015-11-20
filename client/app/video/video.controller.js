@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, $location, Auth, User, Schedule) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, $timeout, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -17,6 +17,11 @@ angular.module('bodyAppApp')
 
 		var firstTimePlayingSong = true;
 		easyrtc.dontAddCloseButtons(true);
+		$scope.currentSong = {};
+		var currentSongIndex = 0;
+		var soundsLength = 0
+		var songArray = [];
+		var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
@@ -34,29 +39,45 @@ angular.module('bodyAppApp')
 		if (typeof SC !== 'undefined') {
 			var element = document.getElementById('audioPlayer')
 			var audioPlayer = SC.Widget(element);
-			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
+			audioPlayer.load(classToJoin.playlist.soundcloudUrl);
 
-			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-				var soundsLength = 0
-				var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+			audioPlayer.bind(SC.Widget.Events.READY, function() {
 				if (firstTimePlayingSong) {
-					setTimeout(function(){ firstTimePlayingSong = false }, 1000);
+					elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+					// $timeout(function(){ firstTimePlayingSong = false }, 2000);
 					audioPlayer.setVolume(0.05);
-					// console.log("playing audio with elapsed time of " + elapsedTime);		
-					audioPlayer.getSounds(function(soundArray) {					
+					audioPlayer.getSounds(function(soundArray) {
+						songArray = soundArray		
+						console.log(songArray);			
 						for (var i = 0; i < soundArray.length; i++) {
 							if (elapsedTime > soundsLength + soundArray[i].duration) {
 								soundsLength += soundArray[i].duration;
-								audioPlayer.next()						
+								audioPlayer.next();
 							} else {
-								elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
-								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-								console.log("seeking to track " + (i+1) + " at " + seekingTo);						
-								return audioPlayer.seekTo(seekingTo)
+								console.log("seeking to track " + (i+1));
+								currentSongIndex = i;			
+								return audioPlayer.play()
 							}
 						}	
 					})
 				}
+			})		
+
+			audioPlayer.bind(SC.Widget.Events.PLAY, function(data){
+				if (songArray.length > 0 && !firstTimePlayingSong) {
+					currentSongIndex++
+					$scope.currentSong = songArray[currentSongIndex];
+					$scope.$apply()
+				}
+				if (firstTimePlayingSong) {
+					elapsedTime = new Date().getTime() - classToJoin.date
+					var seekingTo = elapsedTime - soundsLength
+					audioPlayer.seekTo(seekingTo);
+					console.log("seeking to position " + seekingTo);
+					$scope.currentSong = songArray[currentSongIndex];
+					$scope.$apply()
+					firstTimePlayingSong = false;
+				} 
 			});
 		} else {
 			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
@@ -64,12 +85,12 @@ angular.module('bodyAppApp')
 		// }
 
 		function loginSuccess() {
-			if (typeof SC !== 'undefined') {
-				// console.log("should be playing music")
-				audioPlayer.play()
-		  } else {
-				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
-			}
+			// if (typeof SC !== 'undefined') {
+			// 	// console.log("should be playing music")
+			// 	// audioPlayer.play()
+		 //  } else {
+			// 	alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+			// }
 		}
 
 		var _init = function() {
@@ -231,7 +252,7 @@ angular.module('bodyAppApp')
 		_init();
 	})
 
-	.controller('TrainerVideoCtrl', function ($scope, $location, Auth, User, Schedule) {
+	.controller('TrainerVideoCtrl', function ($scope, $location, $timeout, Auth, User, Schedule) {
 		//Should only be accessible to trainers.
 	  var maxCALLERS = 10;
 		easyrtc.dontAddCloseButtons(true);
@@ -255,6 +276,7 @@ angular.module('bodyAppApp')
 		// document.getElementById('audioPlayer').volume = 0.5
 
 		var firstTimePlayingSong = true;
+		$scope.currentSong = {}
 
 		$scope.playlistUrl = classToJoin.playlist.soundcloudUrl
 
@@ -272,10 +294,11 @@ angular.module('bodyAppApp')
 			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
 
 			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-				var soundsLength = 0
-				var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+				
 				if (firstTimePlayingSong) {
-					setTimeout(function(){ firstTimePlayingSong = false }, 1000);
+					var soundsLength = 0
+					var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+					$timeout(function(){ firstTimePlayingSong = false }, 2000);
 					audioPlayer.setVolume(0.05);
 					// console.log("playing audio with elapsed time of " + elapsedTime);		
 					audioPlayer.getSounds(function(soundArray) {					
@@ -286,7 +309,8 @@ angular.module('bodyAppApp')
 							} else {
 								elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-								console.log("seeking to track " + (i+1) + " at " + seekingTo);						
+								console.log("seeking to track " + (i+1) + " at " + seekingTo);	
+								$scope.currentSong = soundArray[i];						
 								return audioPlayer.seekTo(seekingTo)
 							}
 						}	
