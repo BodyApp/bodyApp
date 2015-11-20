@@ -46,7 +46,7 @@
             <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[7]].firstName}} {{consumerObjects[consumerList[7]].lastName.charAt(0)}}</div>
         </div>
     </div>
-    <div class = "row" ng-show = "currentSong.title">
+    <div ng-click = "openSongPermalink(currentSong)" class = "row" ng-show = "currentSong.title">
         <img ng-src="../assets/images/soundcloudWhiteLogo.png"/>
         <span>Currently Playing: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
     </div>

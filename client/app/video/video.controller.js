@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, $location, $timeout, Auth, User, Schedule) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, $timeout, $window, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -114,6 +114,10 @@ angular.module('bodyAppApp')
 	        easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server');
 	    });
 		};
+
+		$scope.openSongPermalink = function(currentSong) {
+			$window.open(currentSong.permalink_url);
+		}
 
 		function getIdOfBox(boxNum) {
 	    return 'box' + boxNum;
@@ -252,7 +256,7 @@ angular.module('bodyAppApp')
 		_init();
 	})
 
-	.controller('TrainerVideoCtrl', function ($scope, $location, $timeout, Auth, User, Schedule) {
+	.controller('TrainerVideoCtrl', function ($scope, $location, $timeout, $window, Auth, User, Schedule) {
 		//Should only be accessible to trainers.
 	  var maxCALLERS = 10;
 		easyrtc.dontAddCloseButtons(true);
@@ -371,6 +375,10 @@ angular.module('bodyAppApp')
 	    if( list.length > 0) {
 	        establishConnection(list.length-1);
 	    }
+		}
+
+		$scope.openSongPermalink = function(currentSong) {
+			$window.open(currentSong.permalink_url);
 		}
 
 		function loginSuccess() {
