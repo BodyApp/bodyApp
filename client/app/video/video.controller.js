@@ -11,7 +11,7 @@ angular.module('bodyAppApp')
 		$scope.classTime = classToJoin.date;
 
   	var maxCALLERS = 10;
-		var soundsLength = 0
+		
 
 		// document.getElementById('audioPlayer').volume = 0.5
 
@@ -37,10 +37,11 @@ angular.module('bodyAppApp')
 			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
 
 			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+				var soundsLength = 0
 				var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 				if (firstTimePlayingSong) {
-					setTimeout(function(){ firstTimePlayingSong = false }, 2000);
-					audioPlayer.setVolume(0.10);
+					setTimeout(function(){ firstTimePlayingSong = false }, 1000);
+					audioPlayer.setVolume(0.05);
 					// console.log("playing audio with elapsed time of " + elapsedTime);		
 					audioPlayer.getSounds(function(soundArray) {					
 						for (var i = 0; i < soundArray.length; i++) {
@@ -57,14 +58,6 @@ angular.module('bodyAppApp')
 					})
 				}
 			});
-
-			// audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
-			// 	audioPlayer.getCurrentSoundIndex(function(index) {
-			// 		audioPlayer.getPosition(function(position) {
-						// console.log("playing song " + index + " at " + position + " ms")
-				// 	})
-				// })
-			// });
 		} else {
 			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 		}
@@ -72,14 +65,11 @@ angular.module('bodyAppApp')
 
 		function loginSuccess() {
 			if (typeof SC !== 'undefined') {
-				console.log("should be playing music")
+				// console.log("should be playing music")
 				audioPlayer.play()
-
 		  } else {
 				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 			}
-
-
 		}
 
 		var _init = function() {
@@ -253,7 +243,7 @@ angular.module('bodyAppApp')
 
 		$scope.classTime = classToJoin.date;
 
-		var soundsLength = 0
+		
 		// var currentUser = Auth.getCurrentUser();
 		// $scope.currentUser = currentUser;
 
@@ -277,13 +267,15 @@ angular.module('bodyAppApp')
    // });
 
 		if (typeof SC !== 'undefined') {
-			var audioPlayer = SC.Widget(document.getElementById('audioPlayer'));
+			var element = document.getElementById('audioPlayer')
+			var audioPlayer = SC.Widget(element);
 			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
 
 			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+				var soundsLength = 0
 				var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 				if (firstTimePlayingSong) {
-					setTimeout(function(){ firstTimePlayingSong = false }, 2000);
+					setTimeout(function(){ firstTimePlayingSong = false }, 1000);
 					audioPlayer.setVolume(0.05);
 					// console.log("playing audio with elapsed time of " + elapsedTime);		
 					audioPlayer.getSounds(function(soundArray) {					
