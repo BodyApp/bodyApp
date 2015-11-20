@@ -11,7 +11,8 @@ angular.module('bodyAppApp', [
   'jshor.angular-addtocalendar',
   'angular-tour',
   'angularScreenfull',
-  'SoundCloud'
+  'SoundCloud',
+  'timer'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

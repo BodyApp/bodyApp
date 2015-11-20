@@ -23,7 +23,10 @@
     "jstz": "*",
     "angular-tour": "*",
     "angular-cookie": "*",
-    "angular-screenfull": "*"
+    "angular-screenfull": "*",
+    "angular-timer": "*",
+    "humanize-duration": "*",
+    "momentjs": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

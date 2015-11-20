@@ -8,6 +8,8 @@ angular.module('bodyAppApp')
 			$location.path('/')
 		}
 
+		$scope.classTime = classToJoin.date;
+
   	var maxCALLERS = 10;
 		var soundsLength = 0
 
@@ -248,6 +250,8 @@ angular.module('bodyAppApp')
 		if (!classToJoin) {
 			$location.path('/')
 		}
+
+		$scope.classTime = classToJoin.date;
 
 		var soundsLength = 0
 		// var currentUser = Auth.getCurrentUser();
