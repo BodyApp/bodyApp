@@ -63,8 +63,8 @@ angular.module('bodyAppApp')
 				}
 			})		
 
-			audioPlayer.bind(SC.Widget.Events.PLAY, function(data){
-				if (songArray.length > 0 && !firstTimePlayingSong) {
+			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+				if (!firstTimePlayingSong && songArray.length > 0) {
 					currentSongIndex++
 					$scope.currentSong = songArray[currentSongIndex];
 					$scope.$apply()
@@ -276,7 +276,11 @@ angular.module('bodyAppApp')
 		// document.getElementById('audioPlayer').volume = 0.5
 
 		var firstTimePlayingSong = true;
-		$scope.currentSong = {}
+		$scope.currentSong = {};
+		var currentSongIndex = 0;
+		var soundsLength = 0
+		var songArray = [];
+		var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
 
 		$scope.playlistUrl = classToJoin.playlist.soundcloudUrl
 
@@ -291,43 +295,49 @@ angular.module('bodyAppApp')
 		if (typeof SC !== 'undefined') {
 			var element = document.getElementById('audioPlayer')
 			var audioPlayer = SC.Widget(element);
-			audioPlayer.load(classToJoin.playlist.soundcloudUrl)
+			audioPlayer.load(classToJoin.playlist.soundcloudUrl);
 
-			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-				
+			audioPlayer.bind(SC.Widget.Events.READY, function() {
 				if (firstTimePlayingSong) {
-					var soundsLength = 0
-					var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
-					$timeout(function(){ firstTimePlayingSong = false }, 2000);
+					elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+					// $timeout(function(){ firstTimePlayingSong = false }, 2000);
 					audioPlayer.setVolume(0.05);
-					// console.log("playing audio with elapsed time of " + elapsedTime);		
-					audioPlayer.getSounds(function(soundArray) {					
+					audioPlayer.getSounds(function(soundArray) {
+						songArray = soundArray		
+						console.log(songArray);			
 						for (var i = 0; i < soundArray.length; i++) {
 							if (elapsedTime > soundsLength + soundArray[i].duration) {
 								soundsLength += soundArray[i].duration;
-								audioPlayer.next()						
+								audioPlayer.next();
 							} else {
-								elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
-								var seekingTo = Math.round(elapsedTime - soundsLength, 0)
-								console.log("seeking to track " + (i+1) + " at " + seekingTo);	
-								$scope.currentSong = soundArray[i];						
-								return audioPlayer.seekTo(seekingTo)
+								console.log("seeking to track " + (i+1));
+								currentSongIndex = i;			
+								return audioPlayer.play()
 							}
 						}	
 					})
 				}
+			})		
+
+			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+				if (!firstTimePlayingSong && songArray.length > 0) {
+					currentSongIndex++
+					$scope.currentSong = songArray[currentSongIndex];
+					$scope.$apply()
+				}
+				if (firstTimePlayingSong) {
+					elapsedTime = new Date().getTime() - classToJoin.date
+					var seekingTo = elapsedTime - soundsLength
+					audioPlayer.seekTo(seekingTo);
+					console.log("seeking to position " + seekingTo);
+					$scope.currentSong = songArray[currentSongIndex];
+					$scope.$apply()
+					firstTimePlayingSong = false;
+				} 
 			});
 		} else {
 			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 		}
-
-		// audioPlayer.bind(SC.Widget.Events.PLAY_PROGRESS, function(){
-		// 	audioPlayer.getCurrentSoundIndex(function(index) {
-		// 		audioPlayer.getPosition(function(position) {
-		// 			console.log("playing song " + index + " at " + position + " ms")
-		// 		})
-		// 	})
-		// });
 
 		function getIdOfBox(boxNum) {
 		    return 'box' + boxNum;
@@ -364,11 +374,11 @@ angular.module('bodyAppApp')
 		}
 
 		function loginSuccess() {
-			if (typeof SC !== 'undefined') {
-		    	audioPlayer.play()
-		  } else {
-				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
-			}
+			// if (typeof SC !== 'undefined') {
+		 //    	audioPlayer.play()
+		 //  } else {
+			// 	alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+			// }
 		}
 
 		function _init() {
