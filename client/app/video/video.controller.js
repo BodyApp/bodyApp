@@ -1,12 +1,32 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ConsumerVideoCtrl', function ($scope, $location, $timeout, $window, Auth, User, Schedule) {
+  .controller('ConsumerVideoCtrl', function ($scope, $location, $interval, $window, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
 			$location.path('/')
 		}
+
+		var classClosesTime = (classToJoin.date + 1000*60*90)
+
+		var endClassCheckInterval = $interval(function() {
+			var currentTime = (new Date()).getTime()
+			if (classClosesTime < currentTime) {
+				console.log("class is over, booting people out");
+				$location.path('/');
+			} else {
+				console.log("class currently in session");
+			}
+		}, 1000*60*15)
+
+		$scope.$on('$destroy', function() {
+      console.log("hanging up easyrtc connection.")
+      easyrtc.disconnect();
+      easyrtc.webSocket.disconnect();
+      easyrtc.hangupAll();
+      $interval.cancel(endClassCheckInterval);
+    });
 
 		$scope.classTime = classToJoin.date;
 
@@ -256,7 +276,7 @@ angular.module('bodyAppApp')
 		_init();
 	})
 
-	.controller('TrainerVideoCtrl', function ($scope, $location, $timeout, $window, Auth, User, Schedule) {
+	.controller('TrainerVideoCtrl', function ($scope, $location, $window, Auth, User, Schedule) {
 		//Should only be accessible to trainers.
 	  var maxCALLERS = 10;
 		easyrtc.dontAddCloseButtons(true);
@@ -267,7 +287,6 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.classTime = classToJoin.date;
-
 		
 		// var currentUser = Auth.getCurrentUser();
 		// $scope.currentUser = currentUser;

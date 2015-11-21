@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $firebaseObject, Schedule, Auth, User) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $firebaseObject, Schedule, Auth, User) {
   	var classToJoin = Schedule.classUserJustJoined;
 
     if (!classToJoin) {
@@ -58,7 +58,10 @@ angular.module('bodyAppApp')
   	// $scope.trainer = "Mendelson";
   	// $scope.joinClassActive = false;
 
-  	var checkTimeInterval = window.setInterval(function(){ checkTime() }, 20*1000)
+  	var checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
+    $scope.$on('$destroy', function() {
+      $interval.cancel(checkTimeInterval);      
+    });
 
   	function checkTime() {
   		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);

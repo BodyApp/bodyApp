@@ -53,7 +53,15 @@ angular.module('bodyAppApp', [
     $rootScope.$on("$locationChangeStart",function(event, next, current){
       if (easyrtc.webSocket) {
         console.log("hanging up easyrtc connection.")
-        console.log(easyrtc);
+        easyrtc.disconnect();
+        easyrtc.webSocket.disconnect();
+        easyrtc.hangupAll();
+      }
+    });
+
+    $rootScope.$on("$routeChangeStart",function(event, next, current){
+      if (easyrtc.webSocket) {
+        console.log("hanging up easyrtc connection.")
         easyrtc.disconnect();
         easyrtc.webSocket.disconnect();
         easyrtc.hangupAll();
