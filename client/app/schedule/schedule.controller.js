@@ -91,7 +91,7 @@ angular.module('bodyAppApp')
             // currentUser = Auth.getUpdatedUser();
             // $scope.currentUser = currentUser;
             // console.log(currentUser)
-            if (currentUser.stripe && currentUser.stripe.subscription.status === "active") {
+            if (currentUser.stripe && currentUser.stripe.subscription && currentUser.stripe.subscription.status === "active") {
                 return true;
             // } else if (currentUser.strip.subscription.status === "canceled") {
             //     var modalInstance = openRenewSubscriptionModal()
