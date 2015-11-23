@@ -134,6 +134,7 @@ angular.module('bodyAppApp')
         },
         trainer: workoutToCreate.trainer,
         classFull: false,
+        musicVolume: 50,
         past: false,
         spots: 12,
         spotsTaken: 0

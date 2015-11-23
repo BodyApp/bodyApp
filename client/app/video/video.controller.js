@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $location, $interval, $window, Auth, User, Schedule) {
+  .controller('VideoCtrl', function ($scope, $location, $interval, $window, $firebaseObject, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -49,15 +49,42 @@ angular.module('bodyAppApp')
 			$scope.consumerObjects[currentUser._id] = currentUser;
 		}
 
+		var audioPlayer;
+		$scope.musicVolume = 50;
+
+		var classDate = new Date(classToJoin.date)
+    var sunDate = new Date()
+    sunDate.setDate(classDate.getDate()-classDate.getDay())
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var volumeRef = $firebaseObject(
+      ref.child("weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear())
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("musicVolume")
+    )
+
+		volumeRef.$loaded().then(function() {
+			$scope.musicVolume = volumeRef.$value
+			setMusicVolume($scope.musicVolume);
+	  });
+
+		volumeRef.$watch(function() {
+			$scope.musicVolume = volumeRef.$value
+			setMusicVolume($scope.musicVolume);
+	  });
+
 		if (typeof SC !== 'undefined') {
 			var element = document.getElementById('audioPlayer')
-			var audioPlayer = SC.Widget(element);
+			audioPlayer = SC.Widget(element);
 			audioPlayer.load(classToJoin.playlist.soundcloudUrl);
 
 			audioPlayer.bind(SC.Widget.Events.READY, function() {
 				if (firstTimePlayingSong) {
 					elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
-					audioPlayer.setVolume(0.05);
+					
+					setMusicVolume($scope.musicVolume);
+
 					audioPlayer.getSounds(function(soundArray) {
 						songArray = soundArray		
 						for (var i = 0; i < soundArray.length; i++) {
@@ -96,6 +123,20 @@ angular.module('bodyAppApp')
 
 		$scope.openSongPermalink = function(currentSong) {
 			$window.open(currentSong.permalink_url);
+		}
+
+		$scope.setMusicVolume = function(musicVolume) {
+			setMusicVolume(musicVolume)
+			volumeRef.$value = musicVolume
+			volumeRef.$save()
+		}
+
+		function setMusicVolume(musicVolume) {
+			if (userIsInstructor) {
+				audioPlayer.setVolume(musicVolume / 1000);
+			} else {
+				audioPlayer.setVolume(musicVolume / 500);
+			}
 		}
 
 		function loginSuccess() {

@@ -5,15 +5,21 @@
     <div class="row text-align: center"><timer class = "column col-xs-12" style = "text-align: center" start-time="classTime">{{minutes}} minutes, {{seconds}} seconds elapsed</timer></div>
     <div class = "row">
         <video class="column column-2"></video>
-        <video class="column column-2"></video>
+        <div class="column column-2">
+            <form>
+                <label style = "text-align: center" class = "column-12">Volume (Entire class)</label>        
+                <input type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />
+            </form>    
+        </div>
         <video class="column column-1"></video>
         <video id="box0" id="mainScreen" class="column column-2 row easyRTCMirror" muted="muted"></video>
     </div>
     </br>
     <div class = "row">
-        <div>
-            <video id="box1" class="column-3" style="visibility: hidden"></video>
-            <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[0]].firstName}} {{consumerObjects[consumerList[0]].lastName.charAt(0)}}</div>
+        <div class="col-xs-3">
+            <video id="box1" class = "column-12" style="visibility: hidden"></video>
+            <label style = "text-align: center" class = "column-12">{{consumerObjects[consumerList[0]].firstName}} {{consumerObjects[consumerList[0]].lastName.charAt(0)}}</label>
+           <!--  <div class = "column-12" style = "text-align: center">{{consumerObjects[consumerList[0]].firstName}} {{consumerObjects[consumerList[0]].lastName.charAt(0)}}</div> -->
         </div>
         <div>
             <video id="box2" class="column-3" style="visibility: hidden"></video>
