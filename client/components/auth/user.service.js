@@ -43,6 +43,12 @@ angular.module('bodyAppApp')
         params: {
           id: 'getUser'
         }
-      }
+      },
+      saveEmailAddress: {
+        method: 'PUT',
+        params: {
+          controller:'saveEmail'
+        }
+      },
 	  });
   });

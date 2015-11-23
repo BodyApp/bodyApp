@@ -14,8 +14,11 @@ exports.setup = function (User, config) {
       ]
     },
     function(accessToken, refreshToken, profile, done) {
+
+      //Will have to change to email check if incorporate authentication other than facebook.  Changed to this because there was an issue if email wasn't properly set in facebook.
       User.findOne({
-        'email': profile.emails[0].value.toLowerCase()
+        // 'email': profile.emails[0].value.toLowerCase()
+        'facebookId': profile.id
       },
       function(err, user) {
         if (err) {
@@ -29,8 +32,9 @@ exports.setup = function (User, config) {
             nickName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
             gender: profile.gender,
             picture: profile.photos[0].value,
+            facebookId: profile.id,
             birthday: " ",
-            email: profile.emails[0].value,
+            email: profile.emails[0].value || "",
             role: 'user',
             provider: 'facebook',
             facebook: profile._json
@@ -38,8 +42,10 @@ exports.setup = function (User, config) {
           user.save(function(err) {
             if (err) return done(err);
             done(err, user);
+            console.log(user);
           });
         } else {
+          //Update picture link every time.
           user.picture = profile.photos[0].value
           user.save(function(err) {
             if (err) return done(err);

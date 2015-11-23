@@ -22,6 +22,7 @@ var UserSchema = new Schema({
   salt: String,
   picture: String,
   classes: [],
+  facebookId: String,
   facebook: {},
   twitter: {},
   google: {},
@@ -90,12 +91,26 @@ UserSchema
     return hashedPassword.length;
   }, 'Password cannot be blank');
 
-// Validate email is not taken
+// Validate user email address doesn't exist
+// UserSchema
+//   .path('email')
+//   .validate(function(value, respond) {
+//     var self = this;
+//       this.constructor.findOne({facebookId: value}, function(err, user) {
+//       if(err) throw err;
+//       if(user) {
+//         if(self.id === user.id) return respond(true);
+//         return respond(false);
+//       }
+//       respond(true);
+//     });
+// }, 'The specified email address is already in use.');
+
 UserSchema
-  .path('email')
+  .path('facebookId')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({email: value}, function(err, user) {
+      this.constructor.findOne({facebookId: value}, function(err, user) {
       if(err) throw err;
       if(user) {
         if(self.id === user.id) return respond(true);
@@ -103,7 +118,7 @@ UserSchema
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+}, 'The user has already authenticated with facebook.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

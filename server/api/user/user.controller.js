@@ -50,6 +50,26 @@ exports.getUser = function(req, res, next) {
   });
 }
 
+//Saves email address if there wasn't one provided by Facebook
+exports.saveEmail = function (req, res, next) {
+  var userId = req.user._id;
+  email = req.body.email.toLowerCase()  
+
+  User.findOne({
+    _id: userId
+  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+    if (err) return next(err);
+    if (!user) return res.status(401).send('Unauthorized');
+      user.email = email;
+
+      user.save(function(err, user) {
+        if (err) return validationError(res, err);
+        res.json(user)
+      });
+  });
+};
+
+
 /**
  * Creates a new user
  */

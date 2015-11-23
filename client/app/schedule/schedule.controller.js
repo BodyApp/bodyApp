@@ -136,14 +136,22 @@ angular.module('bodyAppApp')
                       // You can access the token ID with `token.id`
                     }
                 });
-
-                handler.open({
-                  name: 'BODY SUBSCRIPTION',
-                  email: currentUser.email,
-                  description: '1 Month ($40.00)',
-                  zipCode: true,
-                  amount: 4000
-                });
+                if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+                    handler.open({
+                      name: 'BODY SUBSCRIPTION',
+                      description: '1 Month ($40.00)',
+                      zipCode: true,
+                      amount: 4000
+                    });    
+                } else {
+                    handler.open({
+                      name: 'BODY SUBSCRIPTION',
+                      email: currentUser.email,
+                      description: '1 Month ($40.00)',
+                      zipCode: true,
+                      amount: 4000
+                    });
+                }
             } 
         }
 
@@ -183,6 +191,41 @@ angular.module('bodyAppApp')
 
             modalInstance.result.then(function (selectedItem) {
               $scope.selected = selectedItem;
+            }, function () {
+                currentUser = Auth.getCurrentUser();
+                $scope.currentUser = currentUser;
+                Schedule.setCurrentUser(currentUser);
+              $log.info('Modal dismissed at: ' + new Date());
+              if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+                openEmailEntryModal();
+              }
+            });
+
+            return modalInstance;
+        }
+
+        function openEmailEntryModal() {
+            var modalInstance = $modal.open({
+              animation: true,
+              templateUrl: 'app/account/login/enterEmail.html',
+              controller: 'LoginCtrl'
+              // backdrop: "static",
+              // windowClass: "loginModal",
+              // keyboard: false
+            });
+
+            modalInstance.result.then(function (userObj) {
+                // User.saveEmailAddress({ id: currentUser._id }, {
+                //   email: userObj.email
+                // }, function(user) {
+                //   currentUser = user;
+                //   $scope.currentUser = currentUser;
+                //   modalInstance.close()
+                // }, function(err) {
+                //     console.log("Error saving email: " + err)
+                //     slot.bookedUsers[currentUser._id] = false
+                //     alert("sorry, there was an issue saving your email.  Some features may not function properly.  Contact the BODY help team at (216) 408-2902 to get this squared away.")    
+                // }).$promise;
             }, function () {
               $log.info('Modal dismissed at: ' + new Date());
             });
