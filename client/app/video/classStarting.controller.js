@@ -75,13 +75,13 @@ angular.module('bodyAppApp')
 
     $scope.navigateToVideo = function() {
       console.log(currentUser)
-      if (currentUser._id === classToJoin.trainer._id) {
+      // if (currentUser._id === classToJoin.trainer._id) {
         clearInterval(checkTimeInterval)
         $location.path('/trainervideo')
-      } else {
-        clearInterval(checkTimeInterval)
-        $location.path('/consumervideo')
-      }
+      // } else {
+        // clearInterval(checkTimeInterval)
+        // $location.path('/consumervideo')
+      // }
     }
 
     // load cookie, or start new tour
