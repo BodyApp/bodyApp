@@ -6,6 +6,7 @@ var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
 // var flash = require('req-flash');
+var twilio = require('../../twilio');
 
 var validationError = function(res, err) {
   return res.status(422).json(err);
@@ -223,7 +224,7 @@ exports.postBilling = function(req, res, next){
           console.log("Didn't have plan saved yet.  Saving now.")
           //Only part of the 'subscriptions' object when user is first created
           var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
-          console.log(subData);    
+          // console.log(subData);    
           // user.stripe.customer.customerId = customer.id;
           user.stripe.subscription.id = subData.id;
           user.stripe.subscription.name = subData.plan.id;
@@ -345,7 +346,7 @@ exports.addBookedClass = function(req, res, next) {
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      console.log(user);
+      // console.log(user);
       user.classes.push(classToAdd);
       user.save(function(err) {
         if (err) return validationError(res, err);
@@ -353,4 +354,20 @@ exports.addBookedClass = function(req, res, next) {
       });
     } 
   });
+};
+
+exports.getTwilioAccessToken = function(req, res) {
+  var userId = req.user._id;
+  console.log("getting twilio access token for user with ID: " + userId);
+  // You will need your Account Sid and a API Key Sid and Secret
+  // to generate an Access Token for your SDK endpoint to connect to Twilio.
+  var accountSid = 'AC22623a7243be71a78beb7d0b53f6580e';
+  var apiKeySid = config.twilio.keySid;
+  var apiKeySecret = config.twilio.keySecret;
+
+  var token = new twilio.AccessToken(apiKeySid, accountSid, apiKeySecret);
+  token.addEndpointGrant(userId);
+  token.enableNTS();
+  console.log(token.toJwt());
+  res.status(200).send({token: token.toJwt()});
 };

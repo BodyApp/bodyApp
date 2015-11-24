@@ -31,6 +31,12 @@ angular.module('bodyAppApp')
           id:'instructors'
         }
       },
+      getTwilioAccessToken: {
+        method: 'GET',
+        params: {
+          controller:'twilioAccessToken'
+        }
+      },
       getAdmins: {
         method: 'GET',
         isArray: true,

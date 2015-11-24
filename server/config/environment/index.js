@@ -44,9 +44,14 @@ var all = {
     }
   },
 
-  iceIdent: process.env.iceIdent,
-  iceSecret: process.env.iceSecret,
-  iceDomain: process.env.iceDomain,  
+  iceIdent: process.env.iceIdent || "",
+  iceSecret: process.env.iceSecret || "",
+  iceDomain: process.env.iceDomain || "",
+
+  twilio: {
+    keySid: process.env.twilioKeySid,
+    keySecret: process.env.twilioKeySecret
+  },
 
   stripeOptions: {
     apiKey: process.env.STRIPE_KEY || 'key',

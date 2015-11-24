@@ -19,6 +19,8 @@ router.put('/:id/addBookedClass', auth.isAuthenticated(), controller.addBookedCl
 router.get('/getUser', controller.getUser);
 router.put('/:id/saveEmailAddress', auth.isAuthenticated(), controller.saveEmail);
 
+router.get('/:id/twilioAccessToken', auth.isAuthenticated(), controller.getTwilioAccessToken);
+
 router.post('/charge',
 //   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
 //   // auth.isAuthenticated(),
