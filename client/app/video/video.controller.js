@@ -171,27 +171,6 @@ angular.module('bodyAppApp')
       }).$promise;
 		}
 
-		function createConversation() {
-			// var inviteTo = document.getElementById('invite-to').value;
-	    if (activeConversation) {
-	      // add a participant
-	      activeConversation.invite('quickstart');
-	    } else {
-	      // create a conversation
-	      var options = {};
-	      if (previewMedia) {
-	        options.localMedia = previewMedia;
-	      }
-	      conversationsClient.createConversation('quickstart', options).then(
-	        conversationStarted,
-	        function (error) {
-	          console.log('Unable to create conversation');
-	          console.error('Unable to create conversation', error);
-	        }
-	      );
-	    }
-		}
-
 		// successfully connected!
 		function clientConnected() {
 			showMyVideo()
@@ -203,12 +182,26 @@ angular.module('bodyAppApp')
 		    invite.accept().then(conversationStarted);
 		  });
 
-		  // createConversation()
+	  	var keys = [];
+	  	if (!userIsInstructor) {
+		  	keys.push(classToJoin.trainer._id);
+		  }
+
+			for(var k in classToJoin.bookedUsers) {
+				if (k != currentUser._id) {
+					keys.push(k);
+				}
+			}
+
+			if (keys.length > 0) {
+		  	createConversation(keys)	
+		  }
 		};
 
 		// conversation is live
 		function conversationStarted(conversation) {
 		  console.log('In an active Conversation');
+		  console.log(conversation);
 		  activeConversation = conversation;
 		  // draw local video, if not already previewing
 		  if (!previewMedia) {
@@ -218,7 +211,15 @@ angular.module('bodyAppApp')
 		  // when a participant joins, draw their video on screen
 		  conversation.on('participantConnected', function (participant) {
 		    console.log("Participant '" + participant.identity + "' connected");
-		    participant.media.attach('#box2');
+		    if (participant.identity === classToJoin.trainer._id) {
+		    	console.log("Trainer connected, placing into box 0")
+		    	participant.media.attach('#box0');	
+		    } else{
+					$scope.consumerList.push(participant.identity);
+		    	console.log("User "+participant.identity + " connected, placing into box "+ $scope.consumerList.length)
+		    	participant.media.attach('#box' + $scope.consumerList.length);
+		    	$scope.consumerObjects[participant.identity] = participant;	
+		    }
 		  });
 		  // when a participant disconnects, note in console.log
 		  conversation.on('participantDisconnected', function (participant) {
@@ -233,13 +234,38 @@ angular.module('bodyAppApp')
 		  });
 		};
 
+		function createConversation(usersToInvite) {
+				// var inviteTo = document.getElementById('invite-to').value;
+		    if (activeConversation) {
+		      // add a participant
+		      activeConversation.invite(usersToInvite);
+		    } else {
+		      // create a conversation
+		      var options = {};
+		      if (previewMedia) {
+		        options.localMedia = previewMedia;
+		      }
+		      conversationsClient.createConversation(usersToInvite, options).then(
+		        conversationStarted,
+		        function (error) {
+		          console.log('Unable to create conversation');
+		          console.error('Unable to create conversation', error);
+		        }
+		      );
+		    }
+		}
+
 		function showMyVideo() {
 			if (!previewMedia) {
 		    previewMedia = new Twilio.Conversations.LocalMedia();
 		    Twilio.Conversations.getUserMedia().then(
 		      function (mediaStream) {
 		        previewMedia.addStream(mediaStream);
-		        previewMedia.attach('#box1');
+		        if (userIsInstructor) {
+		        	previewMedia.attach('#box0');	
+		        } else {
+			        previewMedia.attach('#box1');
+			      }
 		      },
 		      function (error) {
 		        console.error('Unable to access local media', error);
