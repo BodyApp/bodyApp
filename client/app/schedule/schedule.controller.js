@@ -23,7 +23,10 @@ angular.module('bodyAppApp')
 
         var sunDate = new Date();
         sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-        var weekOf = "weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear();
+        var sunGetDate = sunDate.getDate();
+        var sunGetMonth = sunDate.getMonth()+1;
+        var sunGetYear = sunDate.getFullYear();
+        var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
         Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days');
         
