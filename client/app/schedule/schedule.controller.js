@@ -42,8 +42,8 @@ angular.module('bodyAppApp')
 
             if (newDate.getHours() == 12) {
                 formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
-            } else if (newDate.getHours() == 24) {
-                formatted.classTime = newDate.getHours()-12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
+            } else if (newDate.getHours() == 0) {
+                formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
             } else {
                 formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
             } 
@@ -136,21 +136,40 @@ angular.module('bodyAppApp')
                       // You can access the token ID with `token.id`
                     }
                 });
-                if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-                    handler.open({
-                      name: 'BODY SUBSCRIPTION',
-                      description: '1 Month ($40.00)',
-                      zipCode: true,
-                      amount: 4000
-                    });    
+                if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
+                    if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+                        handler.open({
+                          name: 'BODY SUBSCRIPTION',
+                          description: '$40/mo Subscription',
+                          zipCode: true,
+                          amount: 4000
+                        });    
+                    } else {
+                        handler.open({
+                          name: 'BODY SUBSCRIPTION',
+                          email: currentUser.email,
+                          description: '$40/mo Subscription',
+                          zipCode: true,
+                          amount: 4000
+                        });
+                    }
                 } else {
-                    handler.open({
-                      name: 'BODY SUBSCRIPTION',
-                      email: currentUser.email,
-                      description: '1 Month ($40.00)',
-                      zipCode: true,
-                      amount: 4000
-                    });
+                    if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+                        handler.open({
+                          name: 'BODY SUBSCRIPTION',
+                          description: 'First Month free! $40/mo after that',
+                          zipCode: true,
+                          amount: 4000
+                        });    
+                    } else {
+                        handler.open({
+                          name: 'BODY SUBSCRIPTION',
+                          email: currentUser.email,
+                          description: 'First Month free! $40/mo after that',
+                          zipCode: true,
+                          amount: 4000
+                        });
+                    }
                 }
             } 
         }

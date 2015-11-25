@@ -293,6 +293,7 @@ exports.postBilling = function(req, res, next){
             email: user.email,
             source: stripeToken,
             plan: "basicSubscription",
+            coupon: "BODY4AMONTH",
             description: "Created subscription during inital private beta"
           }, cardHandler);
         }
