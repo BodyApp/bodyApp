@@ -158,3 +158,8 @@
 .column-12 {
     width: 100%;
 }
+
+.fullscreen {
+    width: 60%;
+    height: 60%;
+}
