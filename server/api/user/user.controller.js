@@ -301,6 +301,53 @@ exports.postBilling = function(req, res, next){
   });
 };
 
+exports.retrieveSubscription = function(req, res, next){
+
+  User.findById(req.body.user._id, function(err, user) {
+    if (err) return next(err);
+    
+    var cb = function(err) {
+      if (err) {
+        console.log('An unexpected error occurred. ' + err);
+      }
+      console.log('Subscription retrieved and saved.');
+    };
+
+    var subscriptionHandler = function(err, customer) {
+      console.log(customer);
+      if (err) return cb(err);
+
+      var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+      console.log(subData);    
+      // user.stripe.customer.customerId = customer.id;
+      user.stripe.subscription.id = subData.id;
+      user.stripe.subscription.name = subData.plan.id;
+      user.stripe.subscription.amount = subData.plan.amount;
+      user.stripe.subscription.startDate = subData.start
+      user.stripe.subscription.endDate = subData.current_period_end
+      user.stripe.subscription.currency = subData.plan.currency;
+      user.stripe.subscription.interval = subData.plan.interval;
+      user.stripe.subscription.intervalCount = subData.plan.interval_count;
+      user.stripe.subscription.liveMode = subData.plan.livemode;    
+      user.stripe.subscription.status = subData.status;    
+
+      user.save(function(err){
+        res.json(user)
+        if (err) return cb(err);
+        return cb(null);
+        return
+      });
+    };
+
+    if (user.stripe.customer.customerId) {
+      stripe.customers.retrieve(
+        user.stripe.customer.customerId,
+        subscriptionHandler
+      );
+    }
+  });
+};
+
 exports.cancelSubscription = function(req, res, next) {
   var currentUser = req.body.user
   User.findById(currentUser._id, function(err, user) {

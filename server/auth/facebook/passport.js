@@ -1,5 +1,7 @@
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var config = require('../../config/environment');
+var stripe = require("stripe")(config.stripeOptions.apiKey);
 
 exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
@@ -42,7 +44,6 @@ exports.setup = function (User, config) {
           user.save(function(err) {
             if (err) return done(err);
             done(err, user);
-            console.log(user);
           });
         } else {
           //Update picture link every time.
@@ -51,6 +52,7 @@ exports.setup = function (User, config) {
             if (err) return done(err);
             return done(err, user);
           })
+
           
         }
       })
