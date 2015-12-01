@@ -135,6 +135,8 @@ angular.module('bodyAppApp')
                         })
                         .error(function(err) {
                             console.log("Error posting to /user/charge: " + err)
+                            alert("We had trouble processing your payment.  Please try again in a few minutes or contact daniel@getbodyapp.com for assistance.")
+                            modalInstance.close()
                         }.bind(this));
 
                       // Use the token to create the charge with a server-side script.

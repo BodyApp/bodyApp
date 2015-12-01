@@ -29,6 +29,7 @@ angular.module('bodyAppApp')
     getAdminsAndInstructors()
     $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}};
     $scope.playlists = [];
+    var defaultPlaylist;
     loadDefaultPlaylist();
 
     $scope.createdClass = {};
@@ -39,7 +40,8 @@ angular.module('bodyAppApp')
           SoundCloudAPI.myPlaylists().then(function(playlists) {
             // console.log(playlists)
             $scope.playlists = playlists;
-            $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
+            $scope.playlists.push(defaultPlaylist);
+            $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
           })
         })
       })
@@ -48,6 +50,7 @@ angular.module('bodyAppApp')
     function loadDefaultPlaylist() {
       SoundCloudAPI.defaultPlaylist().then(function(playlist) {
         console.log(playlist);
+        defaultPlaylist = playlist
         $scope.playlists.push(playlist);
         $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
         // console.log(playlist)
