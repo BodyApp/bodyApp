@@ -12,6 +12,8 @@ angular.module('bodyAppApp')
             if (!loggedIn) {
               // event.preventDefault();
                 var loginModal = openLoginModal()
+            } else {
+                User.getSubscription({ id: currentUser._id })
             }
         });
 

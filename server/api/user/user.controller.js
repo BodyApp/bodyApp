@@ -301,9 +301,8 @@ exports.postBilling = function(req, res, next){
   });
 };
 
-exports.retrieveSubscription = function(req, res, next){
-
-  User.findById(req.body.user._id, function(err, user) {
+exports.getSubscription = function(req, res, next){
+  User.findById(req.params.id, function(err, user) {
     if (err) return next(err);
     
     var cb = function(err) {

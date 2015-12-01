@@ -44,11 +44,17 @@ angular.module('bodyAppApp')
           id: 'getUser'
         }
       },
+      getSubscription: {
+        method: 'GET',
+        params: {
+          controller: 'getSubscription'
+        }
+      },
       saveEmailAddress: {
         method: 'PUT',
         params: {
           controller:'saveEmail'
         }
-      },
+      }
 	  });
   });
