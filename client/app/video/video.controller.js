@@ -50,6 +50,7 @@ angular.module('bodyAppApp')
 		var maxCALLERS = 10;
 		var connectionCount = 0;
 		var session;
+		var publisher;
 
 		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer._id.toString()
 		if (!userIsInstructor) {
@@ -157,35 +158,40 @@ angular.module('bodyAppApp')
 		var connect = function() {
 			var apiKey = 45425152;
 			var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
+			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
+			var publisherInitialized = true;
+			var connected = false;
 
 			if (OT.checkSystemRequirements() == 1) {
 				var session = OT.initSession(apiKey, sessionId);
 			} else {
 			  // The client does not support WebRTC.
+			  console.log("Not using Chrome or Firefox")
 			  alert('BODY is not available in your browser. Please switch to Chrome or Firefox.');
 		  	return $location.path('/')
 			}
 
-			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9YjVmMTQxYjM3MzdiYTJjODlhYTg4NTFhNTAzYzU3ZjRkZTYwYWNiZDpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTA5MTkwMCZub25jZT0wLjc3MTgwMTAyMzAzMzA2ODEmZXhwaXJlX3RpbWU9MTQ0OTE3ODMwMA==';
+			// if (session.capabilities.publish == 1) {
+			//     // The client can publish. See the next section.
+			// } else {
+			//     // The client cannot publish.
+			//     alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
+			// }
+
+			setPublisher()
 
 			session.connect(token, function(error) {
 			  if (error) {
+			  	console.log(error);
 			  	if (error.code === 1006) {
-			  		alert('Failed to connect. Please check your connection and try connecting again.')
+			  		alert('Failed to connect. Please check your connection and try connecting again.');
 			  	} else {
 			  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 			  	}
 			  } else {
 			  	if (!userIsInstructor) {
-			  		var publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
-				      insertMode: 'append',
-				    }, function(error) {
-				    	if (error) {
-				    		alert("Something went wrong and we can't connect your video to the BODY platform.  Please contact BODY Support at (216) 408-2902 to get this worked out.")
-				    	}
-				    	console.log("successfully published")
-				    });
-					  session.publish(publisher)
+					  connected = true;
+				    publish();
 				  }
 			  }
 			});	
@@ -204,9 +210,10 @@ angular.module('bodyAppApp')
 			  sessionDisconnected: function sessionDisconnectHandler(event) {
 		      // The event is defined by the SessionDisconnectEvent class
 		      console.log('Disconnected from the session.');
-		      document.getElementById('disconnectBtn').style.display = 'none';
+		      console.log(event.reason);
 		      if (event.reason == 'networkDisconnected') {
 		        alert('You lost your internet connection. Please check your connection and try connecting again.')
+
 		      }
 		    }
 			});
@@ -214,13 +221,87 @@ angular.module('bodyAppApp')
   		session.on('streamCreated', function(event) {
 				$scope.consumerList.push(" ")
 			  session.subscribe(event.stream, getIdOfBox($scope.consumerList.length), {
-			    insertMode: 'append',
-			  }, function() {console.log("Received stream")});
+			    insertMode: 'replace',
+			  }, function() {
+			  	console.log("Received stream")
+			  });
 			});
+
+  		var publish = function() {
+			  if (connected && publisherInitialized) {
+			    session.publish(publisher, function(err) {
+					  if(err) {
+					    if (err.code === 1553 || (err.code === 1500 && err.message.indexOf("Publisher PeerConnection Error:") >= 0)) {
+					      alert("Streaming connection failed. This could be due to a restrictive firewall.");
+					    } else {
+					      alert("An unknown error occurred while trying to publish your video. Please try again later.");
+					    }
+					    publisher.destroy();
+					    publisher = null;
+					  }
+					});
+			  }
+			};
+
+			function setPublisher() {
+				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
+		      insertMode: 'replace',
+		    }, function(err) {
+		    	if (err) {
+				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
+				      // Access denied can also be handled by the accessDenied event
+				      alert('Please allow access to the Camera and Microphone and try publishing again.');
+				    } else {
+				      alert('Failed to get access to your camera or microphone. Please check that your webcam'
+				        + ' is connected and not being used by another application and try again.');
+				    }
+				    publisher.destroy();
+				    publisher = null;
+		    	} else {
+			    	publisherInitialized = true;
+				    publish();
+			    	console.log("successfully published")
+			    }
+		    });
+
+		    publisher.on('streamCreated', function (event) {
+				    console.log('The publisher started streaming.');
+				});
+
+			  publisher.on("streamDestroyed", function (event) {
+			  	event.preventDefault();
+				  console.log("The publisher stopped streaming. Reason: " + event.reason);
+				  if (event.reason === 'networkDisconnected') {
+			      alert('Your publisher lost its connection. Please check your internet connection and try publishing again.');
+			    }
+				});
+
+				publisher.on({
+				  accessAllowed: function (event) {
+				    // The user has granted access to the camera and mic.
+				  },
+				  accessDenied: function accessDeniedHandler(event) {
+				  	console.log("User denied access to video and/or microphone")
+				    alert("Oh no!  If you don't allow us access to your video and microphone, we can't stream your video to others!  Please reload this page and accept the camera / microphone access request.")
+				  },
+				  accessDialogOpened: function (event) {
+				    // Show allow camera message to give some background on why camera access is being requested
+				    // pleaseAllowCamera.style.display = 'block';
+				  },
+				  accessDialogClosed: function (event) {
+				    // Hide allow camera message
+				    // pleaseAllowCamera.style.display = 'none';
+				  }
+				});			
+			}
 
 		};
 
 		connect()
+
+		function navigateAway() {
+			publisher.destroy();
+		}
 
 		// var _init = function() {
 	    // easyrtc.initMediaSource(
