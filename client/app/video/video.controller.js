@@ -159,7 +159,7 @@ angular.module('bodyAppApp')
 			var apiKey = 45425152;
 			var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
 			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
-			var publisherInitialized = true;
+			var publisherInitialized = false;
 			var connected = false;
 
 			if (OT.checkSystemRequirements() == 1) {
@@ -179,6 +179,47 @@ angular.module('bodyAppApp')
 			// }
 
 			setPublisher()
+
+			session.on('streamCreated', function(event) {
+				$scope.consumerList.push(" ")
+			  var subscriber = session.subscribe(event.stream, getIdOfBox($scope.consumerList.length), {
+			    insertMode: 'replace',
+			  }, function(err) {
+			  	if (err) {
+			  		console.log(err)
+			  	} else {
+			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
+				  	console.log("Received stream")
+
+				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
+						  // Set picture overlay
+						  // domElement = document.getElementById(subscriber.id);
+						  // domElement.style["visibility"] = "hidden";
+						});
+
+						subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
+							// Remove picture overlay
+						  // domElement = document.getElementById(subscriber.id);
+						  // domElement.style["visibility"] = "visible";
+						});
+
+				  }
+			  });
+			});
+
+			session.on("streamDestroyed", function (event) {
+				if (event.reason === 'networkDisconnected') {
+		      event.preventDefault(); // prevents object from being destroyed and removed from the DOM.  Replace with the user's picture?
+		      var subscribers = session.getSubscribersForStream(event.stream); // returns all of the Subscriber objects for a Stream
+		      if (subscribers.length > 0) {
+		        var subscriber = document.getElementById(subscribers[0].id);
+		        // Display error message inside the Subscriber
+		        subscriber.innerHTML = 'Lost connection. This could be due to your internet connection '
+		          + 'or because the other party lost their connection.';
+		        event.preventDefault();   // Prevent the Subscriber from being removed
+		      }
+		    }
+			});
 
 			session.connect(token, function(error) {
 			  if (error) {
@@ -218,19 +259,11 @@ angular.module('bodyAppApp')
 		    }
 			});
 
-  		session.on('streamCreated', function(event) {
-				$scope.consumerList.push(" ")
-			  session.subscribe(event.stream, getIdOfBox($scope.consumerList.length), {
-			    insertMode: 'replace',
-			  }, function() {
-			  	console.log("Received stream")
-			  });
-			});
-
   		var publish = function() {
 			  if (connected && publisherInitialized) {
 			    session.publish(publisher, function(err) {
 					  if(err) {
+					  	console.log(err);
 					    if (err.code === 1553 || (err.code === 1500 && err.message.indexOf("Publisher PeerConnection Error:") >= 0)) {
 					      alert("Streaming connection failed. This could be due to a restrictive firewall.");
 					    } else {
