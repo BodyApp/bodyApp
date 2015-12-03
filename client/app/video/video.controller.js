@@ -182,7 +182,7 @@ angular.module('bodyAppApp')
 
 			session.on('streamCreated', function(event) {
 				$scope.consumerList.push(" ")
-			  var subscriber = session.subscribe(event.stream, getIdOfBox($scope.consumerList.length), {
+			  var subscriber = session.subscribe(event.stream, subscriber.name === "Trainer" ? 0 : getIdOfBox($scope.consumerList.length), {
 			    insertMode: 'replace',
 			  }, function(err) {
 			  	if (err) {
@@ -190,6 +190,12 @@ angular.module('bodyAppApp')
 			  	} else {
 			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
 				  	console.log("Received stream")
+
+				  	if (subscriber.name != 'Trainer') {
+				  		subscriber.subscribeToAudio(false); // audio off
+				  	} else {
+				  		subscriber.setAudioVolume(100);
+				  	}
 
 				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
 						  // Set picture overlay
@@ -279,6 +285,8 @@ angular.module('bodyAppApp')
 			function setPublisher() {
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
+		      publishAudio:true, 
+		      publishVideo:true
 		    }, function(err) {
 		    	if (err) {
 				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
