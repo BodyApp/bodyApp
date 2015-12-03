@@ -8,11 +8,11 @@ angular.module('bodyAppApp')
 			$location.path('/')
 		}
 
-		// check for WebRTC
-		if (!navigator.webkitGetUserMedia && !navigator.mozGetUserMedia) {
-		  alert('BODY is not available in your browser. Please switch to Chrome, Firefox or Opera.');
-		  $location.path('/')
-		}
+		// check for WebRTC - moved to vidInit
+		// if (!navigator.webkitGetUserMedia && !navigator.mozGetUserMedia) {
+		//   alert('BODY is not available in your browser. Please switch to Chrome, Firefox or Opera.');
+		//   $location.path('/')
+		// }
 
 		$scope.classTime = classToJoin.date;
 		var classClosesTime = (classToJoin.date + 1000*60*90)
@@ -48,6 +48,8 @@ angular.module('bodyAppApp')
 		$scope.consumerList = [];
 		$scope.consumerObjects = {};
 		var maxCALLERS = 10;
+		var connectionCount = 0;
+		var session;
 
 		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer._id.toString()
 		if (!userIsInstructor) {
@@ -152,51 +154,73 @@ angular.module('bodyAppApp')
 	    return 'box' + boxNum;
 		}
 
-
-
-		var vidInit = function() {
+		var connect = function() {
 			var apiKey = 45425152;
 			var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
-			var session = OT.initSession(apiKey, sessionId);
+
+			if (OT.checkSystemRequirements() == 1) {
+				var session = OT.initSession(apiKey, sessionId);
+			} else {
+			  // The client does not support WebRTC.
+			  alert('BODY is not available in your browser. Please switch to Chrome or Firefox.');
+		  	return $location.path('/')
+			}
 
 			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9YjVmMTQxYjM3MzdiYTJjODlhYTg4NTFhNTAzYzU3ZjRkZTYwYWNiZDpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTA5MTkwMCZub25jZT0wLjc3MTgwMTAyMzAzMzA2ODEmZXhwaXJlX3RpbWU9MTQ0OTE3ODMwMA==';
-			
-			session.on('streamCreated', function(event) {
-				$scope.consumerList.push(" ")
-			  session.subscribe(event.stream, getIdOfBox($scope.consumerList.length), {
-			    insertMode: 'append',
-			    // width: '100%',
-			    // height: '100%'
-			  }, function() {console.log("Received stream")});
-			});
-
-			// session.on({
-			//   streamCreated: function(event) { 
-			//   	console.log(event);
-			//   	$scope.consumerList.push(" ")
-			//     session.subscribe(event.stream, 'box2', {insertMode: 'append'}); 
-			//   }
-			// });
 
 			session.connect(token, function(error) {
 			  if (error) {
-			    console.log(error.message);
+			  	if (error.code === 1006) {
+			  		alert('Failed to connect. Please check your connection and try connecting again.')
+			  	} else {
+			  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
+			  	}
 			  } else {
 			  	if (!userIsInstructor) {
-			  		var publisher = OT.initPublisher('box1', {
+			  		var publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 				      insertMode: 'append',
-				      // width: '100%',
-				      // height: '100%'
-				    }, function() {console.log("successfully published")});
+				    }, function(error) {
+				    	if (error) {
+				    		alert("Something went wrong and we can't connect your video to the BODY platform.  Please contact BODY Support at (216) 408-2902 to get this worked out.")
+				    	}
+				    	console.log("successfully published")
+				    });
 					  session.publish(publisher)
-				    
-				    // session.publish('box1', {}, function(){console.log("success")});
 				  }
 			  }
 			});	
-		}
 
-		vidInit()
+			session.on({
+			  connectionCreated: function (event) {
+			    connectionCount++;
+			    if (event.connection.connectionId != session.connection.connectionId) {
+			      console.log('Another client connected. ' + connectionCount + ' total.');
+			    }
+			  },
+			  connectionDestroyed: function connectionDestroyedHandler(event) {
+			    connectionCount--;
+			    console.log('A client disconnected. ' + connectionCount + ' total.');
+			  },
+			  sessionDisconnected: function sessionDisconnectHandler(event) {
+		      // The event is defined by the SessionDisconnectEvent class
+		      console.log('Disconnected from the session.');
+		      document.getElementById('disconnectBtn').style.display = 'none';
+		      if (event.reason == 'networkDisconnected') {
+		        alert('You lost your internet connection. Please check your connection and try connecting again.')
+		      }
+		    }
+			});
+
+  		session.on('streamCreated', function(event) {
+				$scope.consumerList.push(" ")
+			  session.subscribe(event.stream, getIdOfBox($scope.consumerList.length), {
+			    insertMode: 'append',
+			  }, function() {console.log("Received stream")});
+			});
+
+		};
+
+		connect()
 
 		// var _init = function() {
 	    // easyrtc.initMediaSource(
