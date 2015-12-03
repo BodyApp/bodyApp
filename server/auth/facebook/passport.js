@@ -16,7 +16,7 @@ exports.setup = function (User, config) {
       ]
     },
     function(accessToken, refreshToken, profile, done) {
-
+      console.log(profile.photos[0].value)
       //Will have to change to email check if incorporate authentication other than facebook.  Changed to this because there was an issue if email wasn't properly set in facebook.
       User.findOne({
         // 'email': profile.emails[0].value.toLowerCase()
@@ -33,7 +33,7 @@ exports.setup = function (User, config) {
             lastName: profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1),
             nickName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
             gender: profile.gender,
-            picture: profile.photos ? profile.photos[0].value : undefined,
+            picture: profile.photos ? profile.photos[0].value : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg",
             facebookId: profile.id,
             birthday: " ",
             email: profile.emails ? profile.emails[0].value : "", //Getting cannot read property 0 of undefined here.  Crashed server.
