@@ -8,6 +8,12 @@ angular.module('bodyAppApp')
 			$location.path('/')
 		}
 
+		// check for WebRTC
+		if (!navigator.webkitGetUserMedia && !navigator.mozGetUserMedia) {
+		  alert('BODY is not available in your browser. Please switch to Chrome, Firefox or Opera.');
+		  $location.path('/')
+		}
+
 		$scope.classTime = classToJoin.date;
 		var classClosesTime = (classToJoin.date + 1000*60*90)
 		var endClassCheckInterval = $interval(function() {
@@ -143,6 +149,27 @@ angular.module('bodyAppApp')
 		}
 
 		var _init = function() {
+			// var apiKey = 45425152;
+			// var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
+			// var session = OT.initSession(apiKey, sessionId);
+
+			// var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9YjVmMTQxYjM3MzdiYTJjODlhYTg4NTFhNTAzYzU3ZjRkZTYwYWNiZDpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTA5MTkwMCZub25jZT0wLjc3MTgwMTAyMzAzMzA2ODEmZXhwaXJlX3RpbWU9MTQ0OTE3ODMwMA==';
+			// session.connect(token, function(error) {
+			//   if (error) {
+			//     console.log(error.message);
+			//   } else {
+			//     console.log('connected to session');
+			//   }
+			// });
+
+			// session.publish('box0', {width: 320, height: 240}, function(){console.log("success")});
+
+			// session.on({
+			//   streamCreated: function(event) { 
+			//     session.subscribe(event.stream, 'subscribersDiv', {insertMode: 'append'}); 
+			//   }
+			// });
+
 	    easyrtc.initMediaSource(
 	        function(){       // success callback
 	          var myBoxNumber;  

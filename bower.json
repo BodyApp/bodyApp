@@ -25,7 +25,8 @@
     "angular-screenfull": "*",
     "angular-timer": "*",
     "humanize-duration": "*",
-    "momentjs": "*"
+    "momentjs": "*",
+    "Blob.js": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
