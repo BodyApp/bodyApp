@@ -214,8 +214,8 @@ angular.module('bodyAppApp')
 			// var setStreamAcceptor = function() {
 				session.on('streamCreated', function(event) {
 					var instructorStream = false
-					var vidWidth = 400;
-					var vidHeight = 300;
+					var vidWidth = 264;
+					var vidHeight = 198;
 
 					if (event.stream.connection.data.toString() === classToJoin.trainer._id.toString()) {
 						instructorStream = true
@@ -239,12 +239,15 @@ angular.module('bodyAppApp')
 				  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
 					  	console.log("Received stream");
 
-					  	if (event.stream.connection.data != classToJoin.trainer._id) {
-					  		subscriber.subscribeToAudio(false); // audio off
+					  	if (!userIsInstructor && !instructorStream) {
+					  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer
 					  	} else {
+					  		subscriber.subscribeToAudio(true); // Audio on in any other case
 					  		subscriber.setAudioVolume(100);
 					  	}
 
+					  	subscriber.boxNumber = $scope.consumerList.length
+					  	console.log(subscriber.boxNumber);
 
 					  	subscriber.setStyle("nameDisplayMode", "on")
 					  	subscriber.setStyle('backgroundImageURI', 'http://tokbox.com/img/styleguide/tb-colors-cream.png'); //Sets image to be displayed when no video
@@ -266,11 +269,12 @@ angular.module('bodyAppApp')
 
 							SpeakerDetection(subscriber, function() {
 							  console.log('started talking');
+							  if (userIsInstructor) { document.getElementById(getIdOfBox(subscriber.boxNumber)).style.border = "thick solid #0000FF"; }
 							  setMusicVolume(10)
 							}, function() {
 								setMusicVolume($scope.musicVolume)
-								// $scope.musicVolume === 100;
 							  console.log('stopped talking');
+							  if (userIsInstructor) { document.getElementById(getIdOfBox(subscriber.boxNumber)).style.border = "none"; }
 							});
 
 					  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
