@@ -214,19 +214,33 @@ angular.module('bodyAppApp')
 			// var setStreamAcceptor = function() {
 				session.on('streamCreated', function(event) {
 					var instructorStream = false
+					var instructorInfo;
 					var vidWidth = 264;
 					var vidHeight = 198;
 
-					if (event.stream.connection.data.toString() === classToJoin.trainer._id.toString()) {
+					var streamId = event.stream.connection.data.toString()
+
+					if (streamId === classToJoin.trainer._id.toString()) {
 						instructorStream = true
 						vidWidth = 900;
 						vidHeight = 600;
 					}
 
 					//Need to check if this user is already in the consumerList or not
-					$scope.consumerList.push(" ")
-					console.log(event.stream.connection.data.toString())
-					console.log(classToJoin.trainer._id.toString())
+					if (!instructorStream) {
+						$scope.consumerList.push(streamId)
+				  	subscriber.boxNumber = $scope.consumerList.length
+
+				  	var streamUser = User.getUser({id: streamId}).$promise.then(function(data) {
+            	$scope.consumerObjects[streamId] = data
+            	$scope.consumerObjects[streamId].boxNumber = subscriber.boxNumber;
+            })
+					} else {
+						User.getUser({id: streamId}).$promise.then(function(data) {
+            	instructorInfo = data
+            })
+					}
+
 				  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : $scope.consumerList.length), {
 				    insertMode: 'replace',
 				    width: vidWidth,
@@ -246,26 +260,9 @@ angular.module('bodyAppApp')
 					  		subscriber.setAudioVolume(100);
 					  	}
 
-					  	subscriber.boxNumber = $scope.consumerList.length
-					  	console.log(subscriber.boxNumber);
-
 					  	subscriber.setStyle("nameDisplayMode", "on")
-					  	subscriber.setStyle('backgroundImageURI', 'http://tokbox.com/img/styleguide/tb-colors-cream.png'); //Sets image to be displayed when no video
+					  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture) : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"; //Sets image to be displayed when no video
 					  	subscriber.setStyle('audioLevelDisplayMode', 'off');
-
-							// var movingAvg = null;
-							// subscriber.on('audioLevelUpdated', function(event) {
-							//   if (movingAvg === null || movingAvg <= event.audioLevel) {
-							//     movingAvg = event.audioLevel;
-							//   } else {
-							//     movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
-							//   }
-
-							//   // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
-							//   var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
-							//   logLevel = Math.min(Math.max(logLevel, 0), 1);
-							//   // document.getElementById('subscriberMeter').value = logLevel;
-							// });
 
 							SpeakerDetection(subscriber, function() {
 							  console.log('started talking');
@@ -288,7 +285,6 @@ angular.module('bodyAppApp')
 							  // domElement = document.getElementById(subscriber.id);
 							  // domElement.style["visibility"] = "visible";
 							});
-
 					  }
 				  });
 				});
@@ -351,6 +347,7 @@ angular.module('bodyAppApp')
 		      insertMode: 'replace',
 		      publishAudio:true, 
 		      publishVideo:true,
+		      mirror: true,
 		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
 		      style: {
 		      	buttonDisplayMode: 'on', //Mute microphone button
