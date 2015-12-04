@@ -164,7 +164,7 @@ angular.module('bodyAppApp')
 			User.createTokBoxToken({ id: currentUser._id }, {
         sessionId: classToJoin.sessionId
       }, function(token) {
-        connectToSession(token)
+      	connectToSession(token.token)
       }, function(err) {
           console.log(err);
       }).$promise;
@@ -214,7 +214,7 @@ angular.module('bodyAppApp')
 				$scope.consumerList.push(" ")
 				console.log(event)
 			  var subscriber = session.subscribe(event.stream, event.name === "trainer" ? 0 : getIdOfBox($scope.consumerList.length), {
-			    insertMode: 'append',
+			    insertMode: 'replace',
 			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 			  }, function(err) {
 			  	if (err) {
@@ -228,6 +228,8 @@ angular.module('bodyAppApp')
 				  	} else {
 				  		subscriber.setAudioVolume(100);
 				  	}
+
+				  	console.log(subscriber)
 
 				  	subscriber.setStyle("nameDisplayMode", "on")
 				  	subscriber.setStyle('backgroundImageURI', 'http://tokbox.com/img/styleguide/tb-colors-cream.png'); //Sets image to be displayed when no video

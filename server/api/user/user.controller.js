@@ -423,6 +423,6 @@ exports.createTokBoxToken = function(req, res, next) {
   })
   // , function(token) {
     console.log(token);
-    res.status(200).json(token);  
+    res.json({ token: token }); 
   // })
 }
