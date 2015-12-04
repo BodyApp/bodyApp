@@ -213,12 +213,24 @@ angular.module('bodyAppApp')
 
 			// var setStreamAcceptor = function() {
 				session.on('streamCreated', function(event) {
+					var instructorStream = false
+					var vidWidth = 400;
+					var vidHeight = 300;
+
+					if (event.stream.connection.data.toString() === classToJoin.trainer._id.toString()) {
+						instructorStream = true
+						vidWidth = 900;
+						vidHeight = 600;
+					}
+
 					//Need to check if this user is already in the consumerList or not
 					$scope.consumerList.push(" ")
 					console.log(event.stream.connection.data.toString())
 					console.log(classToJoin.trainer._id.toString())
-				  var subscriber = session.subscribe(event.stream, getIdOfBox(event.stream.connection.data.toString() === classToJoin.trainer._id.toString() ? 0 : $scope.consumerList.length), {
+				  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : $scope.consumerList.length), {
 				    insertMode: 'replace',
+				    width: vidWidth,
+					  height: vidHeight,
 				    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 				  }, function(err) {
 				  	if (err) {
@@ -254,7 +266,7 @@ angular.module('bodyAppApp')
 
 							SpeakerDetection(subscriber, function() {
 							  console.log('started talking');
-							  setMusicVolume(5)
+							  setMusicVolume(10)
 							}, function() {
 								setMusicVolume($scope.musicVolume)
 								// $scope.musicVolume === 100;
