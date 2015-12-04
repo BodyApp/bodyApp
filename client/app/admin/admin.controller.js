@@ -38,7 +38,6 @@ angular.module('bodyAppApp')
       SoundCloudLogin.connect().then(function(token) {
         SoundCloudAPI.me().then(function(myInfo) {
           SoundCloudAPI.myPlaylists().then(function(playlists) {
-            // console.log(playlists)
             $scope.playlists = playlists;
             $scope.playlists.push(defaultPlaylist);
             $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
@@ -49,11 +48,9 @@ angular.module('bodyAppApp')
 
     function loadDefaultPlaylist() {
       SoundCloudAPI.defaultPlaylist().then(function(playlist) {
-        console.log(playlist);
         defaultPlaylist = playlist
         $scope.playlists.push(playlist);
         $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
-        // console.log(playlist)
       })
     }
 
@@ -163,7 +160,6 @@ angular.module('bodyAppApp')
       // }).$promise;
 
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-        console.log(session);
         syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
         syncObject.$save().then(function() {
           console.log("new workout saved");
@@ -198,7 +194,6 @@ angular.module('bodyAppApp')
       } else {
           formatted = ((date.getHours() < 13)? date.getHours() : date.getHours()-12) +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + ((date.getHours() < 13)? "am" : "pm")
       } 
-      console.log(formatted)
       return formatted
     }
 
