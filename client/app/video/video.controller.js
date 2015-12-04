@@ -26,13 +26,13 @@ angular.module('bodyAppApp')
 			}
 		}, 1000*60*15)
 
-		$scope.$on('$destroy', function() {
-      console.log("hanging up easyrtc connection.")
-      easyrtc.disconnect();
-      easyrtc.webSocket.disconnect();
-      easyrtc.hangupAll();
-      $interval.cancel(endClassCheckInterval);
-    });
+		// $scope.$on('$destroy', function() {
+  //     console.log("hanging up easyrtc connection.")
+  //     easyrtc.disconnect();
+  //     easyrtc.webSocket.disconnect();
+  //     easyrtc.hangupAll();
+  //     $interval.cancel(endClassCheckInterval);
+  //   });
   	
 		var firstTimePlayingSong = true;
 		easyrtc.dontAddCloseButtons(true);
@@ -160,7 +160,6 @@ angular.module('bodyAppApp')
 			var apiKey = 45425152;
 			var sessionId = classToJoin.sessionId;
 			var session;
-
 			
 			// setStreamAcceptor();
 
@@ -176,7 +175,14 @@ angular.module('bodyAppApp')
 			var connected = false;
 
 			if (OT.checkSystemRequirements() == 1) {
-					session = OT.initSession(apiKey, sessionId);
+				session = OT.initSession(apiKey, sessionId);
+
+				$scope.$on("$destroy", function() { // destroys the session when navigate away
+	        if (session) {
+	        	console.log("Disconnecting session because navigated away.")
+	          session.disconnect()
+	        }
+		    });
 			} else {
 			  // The client does not support WebRTC.
 			  console.log("Not using Chrome or Firefox")
@@ -226,7 +232,6 @@ angular.module('bodyAppApp')
 						vidWidth = 900;
 						vidHeight = 600;
 					} else {
-
 						if (!$scope.consumerObjects[streamId]) {
 							$scope.consumerList.push(streamId);
 							streamBoxNumber = $scope.consumerList.length;
@@ -280,8 +285,6 @@ angular.module('bodyAppApp')
 							  console.log('stopped talking');
 							  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
 							});
-
-							
 
 					  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
 							  // Set picture overlay
