@@ -49,33 +49,6 @@ angular.module('bodyAppApp', [
   })
 
   .run(function ($rootScope, $state, Auth) {
-    // Stops the webRTC connection when not in video mode
-    // $rootScope.$on("$locationChangeStart",function(event, next, current){
-    //   if (easyrtc.webSocket) {
-    //     console.log("hanging up easyrtc connection.")
-    //     easyrtc.disconnect();
-    //     easyrtc.webSocket.disconnect();
-    //     easyrtc.hangupAll();
-    //   }
-    // });
-
-    // $rootScope.$on("$routeChangeStart",function(event, next, current){
-    //   if (easyrtc.webSocket) {
-    //     console.log("hanging up easyrtc connection.")
-    //     easyrtc.disconnect();
-    //     easyrtc.webSocket.disconnect();
-    //     easyrtc.hangupAll();
-    //   }
-    // });
-
-    // $rootScope.$on("$destroy",function(event, next, current){
-    //   if (easyrtc.webSocket) {
-    //     easyrtc.disconnect()
-    //     easyrtc.webSocket.disconnect() 
-    //     easyrtc.hangupAll()
-    //   }
-    // });
-
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {

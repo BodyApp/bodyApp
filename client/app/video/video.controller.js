@@ -5,7 +5,7 @@ angular.module('bodyAppApp')
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
-			$location.path('/')
+			return $location.path('/')
 		}
 
 		// check for WebRTC - moved to vidInit
@@ -25,17 +25,8 @@ angular.module('bodyAppApp')
 				console.log("class currently in session");
 			}
 		}, 1000*60*15)
-
-		// $scope.$on('$destroy', function() {
-  //     console.log("hanging up easyrtc connection.")
-  //     easyrtc.disconnect();
-  //     easyrtc.webSocket.disconnect();
-  //     easyrtc.hangupAll();
-  //     $interval.cancel(endClassCheckInterval);
-  //   });
   	
 		var firstTimePlayingSong = true;
-		easyrtc.dontAddCloseButtons(true);
 		$scope.currentSong = {};
 		var currentSongIndex = 0;
 		var soundsLength = 0
@@ -217,90 +208,88 @@ angular.module('bodyAppApp')
 
 			setPublisher();
 
-			// var setStreamAcceptor = function() {
-				session.on('streamCreated', function(event) {
-					var instructorStream = false
-					var instructorInfo;
-					var vidWidth = 264;
-					var vidHeight = 198;
+			session.on('streamCreated', function(event) {
+				var instructorStream = false
+				var instructorInfo;
+				var vidWidth = 264;
+				var vidHeight = 198;
 
-					var streamId = event.stream.connection.data.toString()
-					var streamBoxNumber = 1
+				var streamId = event.stream.connection.data.toString()
+				var streamBoxNumber = 1
 
-					if (streamId === classToJoin.trainer._id.toString()) {
-						instructorStream = true
-						vidWidth = 900;
-						vidHeight = 600;
+				if (streamId === classToJoin.trainer._id.toString()) {
+					instructorStream = true
+					vidWidth = 900;
+					vidHeight = 600;
+				} else {
+					if (!$scope.consumerObjects[streamId]) {
+						$scope.consumerList.push(streamId);
+						streamBoxNumber = $scope.consumerList.length;
 					} else {
-						if (!$scope.consumerObjects[streamId]) {
-							$scope.consumerList.push(streamId);
-							streamBoxNumber = $scope.consumerList.length;
-						} else {
-							streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
-						}
+						streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
 					}
+				}
 
-				  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : streamBoxNumber), {
-				    insertMode: 'replace',
-				    width: vidWidth,
-					  height: vidHeight,
-					  mirror: true,
-				    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
-				  }, function(err) {
-				  	if (err) {
-				  		console.log(err)
+			  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : streamBoxNumber), {
+			    insertMode: 'replace',
+			    width: vidWidth,
+				  height: vidHeight,
+				  mirror: true,
+			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
+			  }, function(err) {
+			  	if (err) {
+			  		console.log(err)
+			  	} else {
+			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
+				  	console.log("Received stream");
+
+				  	if (!userIsInstructor && !instructorStream) {
+				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer
 				  	} else {
-				  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-					  	console.log("Received stream");
+				  		subscriber.subscribeToAudio(true); // Audio on in any other case
+				  		subscriber.setAudioVolume(100);
+				  	}
 
-					  	if (!userIsInstructor && !instructorStream) {
-					  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer
-					  	} else {
-					  		subscriber.subscribeToAudio(true); // Audio on in any other case
-					  		subscriber.setAudioVolume(100);
-					  	}
+				  	//Need to check if this user is already in the consumerList or not
+						if (!instructorStream) {
+					  	var streamUser = User.getUser({id: streamId}).$promise.then(function(data) {
+	            	$scope.consumerObjects[streamId] = data
+	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+	            })
+						} else {
+							User.getUser({id: streamId}).$promise.then(function(data) {
+	            	instructorInfo = data
+	            })
+						}
 
-					  	//Need to check if this user is already in the consumerList or not
-							if (!instructorStream) {
-						  	var streamUser = User.getUser({id: streamId}).$promise.then(function(data) {
-		            	$scope.consumerObjects[streamId] = data
-		            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-		            })
-							} else {
-								User.getUser({id: streamId}).$promise.then(function(data) {
-		            	instructorInfo = data
-		            })
-							}
+				  	subscriber.setStyle("nameDisplayMode", "on")
+				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"); //Sets image to be displayed when no video
+				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
-					  	subscriber.setStyle("nameDisplayMode", "on")
-					  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"); //Sets image to be displayed when no video
-					  	subscriber.setStyle('audioLevelDisplayMode', 'off');
+						SpeakerDetection(subscriber, function() {
+						  console.log('started talking');
+						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
+						  setMusicVolume(10)
+						}, function() {
+							setMusicVolume($scope.musicVolume)
+						  console.log('stopped talking');
+						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
+						});
 
-							SpeakerDetection(subscriber, function() {
-							  console.log('started talking');
-							  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
-							  setMusicVolume(10)
-							}, function() {
-								setMusicVolume($scope.musicVolume)
-							  console.log('stopped talking');
-							  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
-							});
+				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
+						  // Set picture overlay
+						  // domElement = document.getElementById(subscriber.id);
+						  // domElement.style["visibility"] = "hidden";
+						});
 
-					  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
-							  // Set picture overlay
-							  // domElement = document.getElementById(subscriber.id);
-							  // domElement.style["visibility"] = "hidden";
-							});
-
-							subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
-								// Remove picture overlay
-							  // domElement = document.getElementById(subscriber.id);
-							  // domElement.style["visibility"] = "visible";
-							});
-					  }
-				  });
-				});
-			// }
+						subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
+							// Remove picture overlay
+						  // domElement = document.getElementById(subscriber.id);
+						  // domElement.style["visibility"] = "visible";
+						});
+				  }
+			  });
+			});
 
 			session.on("streamDestroyed", function (event) {
 				if (event.reason === 'networkDisconnected') {
@@ -415,8 +404,6 @@ angular.module('bodyAppApp')
 			}
 		};
 
-		connect()
-
 		var SpeakerDetection = function(subscriber, startTalking, stopTalking) { // Used to determine whether stream is talking
 		  var activity = null;
 		  subscriber.on('audioLevelUpdated', function(event) {
@@ -450,137 +437,5 @@ angular.module('bodyAppApp')
 			publisher.destroy();
 		}
 
-		// var _init = function() {
-	    // easyrtc.initMediaSource(
-	    //     function(){       // success callback
-	    //       var myBoxNumber;  
-	    //         if (userIsInstructor) {
-	    //         	easyrtc.setUsername("trainer");
-	    //         	myBoxNumber = 0;	
-	    //         } else {
-		   //          easyrtc.setUsername(currentUser._id.toString());
-		   //          myBoxNumber = 1;
-		   //        }
-		   //        var selfVideo = document.getElementById(getIdOfBox(myBoxNumber));
-		   //        selfVideo.style.visibility = 'visible'; //This is the box for this user
-	    //         easyrtc.setVideoObjectSrc(selfVideo, easyrtc.getLocalStream());           
-	    //         easyrtc.connect(""+classToJoin.date+"", loginSuccess);
-	            
-	    //     }, function() { //Failure callback
-	    //     	alert("Body App can't access your video camera.  Please make sure your browser is allowing Body App to access your camera and microphone by clicking permissions in the address bar above.")
-	    //     }
-	    // );
-
-	    // easyrtc.setRoomOccupantListener(callEverybodyElse);
-
-	    // easyrtc.setPeerListener(messageListener);
-	    // easyrtc.setDisconnectListener( function() {
-	    //     easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server');
-	    // });
-		// };
-
-		// function callEverybodyElse(roomName, otherPeople) {
-		// 	console.log("calling everybody else");
-	 //    easyrtc.setRoomOccupantListener(null); // so we're only called once.
-
-	 //    var list = [];
-	 //    var connectCount = 0;
-	 //    for(var easyrtcid in otherPeople ) {
-	 //        list.push(easyrtcid);
-	 //    }
-
-	 //    function establishConnection(position) {
-	 //        function callSuccess() {
-	 //            connectCount++;
-	 //            if( connectCount < maxCALLERS && position > 0) {
-	 //                establishConnection(position-1);
-	 //            }
-	 //        }
-	 //        function callFailure(errorCode, errorText) {
-	 //            easyrtc.showError(errorCode, errorText);
-	 //            if( connectCount < maxCALLERS && position > 0) {
-	 //                establishConnection(position-1);
-	 //            }
-	 //        }
-	 //        easyrtc.call(list[position], callSuccess, callFailure);
-
-	 //    }
-	 //    if( list.length > 0) {
-	 //        establishConnection(list.length-1);
-	 //    }
-		// }
-
-		// easyrtc.setStreamAcceptor( function(callerEasyrtcid, stream) {
-		// 	console.log("new stream accepted")
-		//     var callerUsername = easyrtc.idToName(callerEasyrtcid);
-		//     if (!userIsInstructor && callerUsername === 'trainer') {
-		//         var mainVideo = document.getElementById(getIdOfBox(0));
-		//         easyrtc.setVideoObjectSrc(mainVideo, stream);
-		//         mainVideo.style.visibility = 'visible';
-		//         easyrtc.muteVideoObject(mainVideo, false);
-		//         // getTrainerMicrophoneLevel(stream);
-
-		//     } else {
-		//     		if (userIsInstructor && callerUsername === 'trainer') { 
-		//     			alert("You already have a connection in a different window"); 
-		//     			return console.log("trainer tried to open new window"); 
-		//     		}
-		//     		else if (callerUsername === currentUser._id.toString()) { 
-		//     			alert("You already have a connection in a different window"); 
-		//     			return console.log("user tried to open new window"); //Prevents user from accidentally taking multiple windows.
-		//     		} 
-		//     		else if ($scope.consumerObjects[callerUsername]) {
-		//             console.log('caller already has box');
-		//             var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername].boxNumber));
-		//             video.style.visibility = 'visible';
-		//             easyrtc.setVideoObjectSrc(video, stream);
-		//             if (userIsInstructor) {
-		//             	easyrtc.muteVideoObject(video, false);
-		//           	}	else {
-		//           		easyrtc.muteVideoObject(video, true);
-		//           	}
-		//         } else {
-		//             console.log('caller is new with easyrtcid of ' + callerUsername);
-		//             $scope.consumerList.push(callerUsername);
-		//             var consumerListLength = $scope.consumerList.length;
-		            
-		//             var videoNew = document.getElementById(getIdOfBox(consumerListLength));
-		//             videoNew.style.visibility = 'visible';
-		//             easyrtc.setVideoObjectSrc(videoNew, stream);
-		//             if (userIsInstructor) {
-		// 	            easyrtc.muteVideoObject(videoNew, false);
-		// 	          } else {
-		// 	          	easyrtc.muteVideoObject(videoNew, true);
-		// 	          }
-
-		//             var user = User.getUser({id: callerUsername}).$promise.then(function(data) {
-		//             	$scope.consumerObjects[callerUsername] = data
-		//             	$scope.consumerObjects[callerUsername].boxNumber = consumerListLength
-		//             })
-		//         }
-		//     }
-		// });
-
-	  // easyrtc.setOnStreamClosed( function (callerEasyrtcid) {
-	    // easyrtc.setVideoObjectSrc(document.getElementById('box0'), ');
-	    // document.getElementById(getIdOfBox(0)).style.visibility = 'hidden';
-
-	    // if (easyrtc.idToName(callerEasyrtcid) === 'trainer') {
-	    //     var mainVideo = document.getElementById('box0');
-	    //     easyrtc.setVideoObjectSrc(mainVideo, '');
-	        // document.getElementById(getIdOfBox(0)).style.visibility = 'hidden';
-	    // } 
-	    // else {
-	        // document.getElementById(getIdOfBox(numConsumers)).style.visibility = 'hidden';
-	        // var callerUsername = easyrtc.idToName(callerEasyrtcid);
-	        // var video = document.getElementById(getIdOfBox($scope.consumerObjects[callerUsername]));
-	    // }
-		// });
-
-		// easyrtc.setOnError(function(err) {
-		// 	console.log("easyrtc error: ")
-		// 	console.log(err)
-		// })
-
-		// _init();
+		connect()
 	})
