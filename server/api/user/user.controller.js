@@ -413,4 +413,16 @@ exports.createTokBoxSession = function(req, res, next) {
     // save the session.sessionId back in firebase
     res.status(200).json(session);
   });
+};
+
+exports.createTokBoxToken = function(req, res, next) {
+
+  var token = opentok.generateToken(req.body.sessionId, {
+    expireTime : (new Date().getTime() / 1000)+(24 * 60 * 60), // in one day, which is the default
+    data :       req.user._id.toString()
+  })
+  // , function(token) {
+    console.log(token);
+    res.status(200).json(token);  
+  // })
 }

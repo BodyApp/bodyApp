@@ -61,6 +61,12 @@ angular.module('bodyAppApp')
         params: {
           controller: 'createTokBoxSession'
         }
+      },
+      createTokBoxToken: {
+        method: 'PUT',
+        params: {
+          controller: 'createTokBoxToken'
+        }
       }
 	  });
   });

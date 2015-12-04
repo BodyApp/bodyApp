@@ -158,19 +158,47 @@ angular.module('bodyAppApp')
 		var connect = function() {
 			// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 			var apiKey = 45425152;
-			var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
-			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
+			var sessionId = classToJoin.sessionId;
+			var session;
+
+			User.createTokBoxToken({ id: currentUser._id }, {
+        sessionId: classToJoin.sessionId
+      }, function(token) {
+        connectToSession(token)
+      }, function(err) {
+          console.log(err);
+      }).$promise;
+			// var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
 			var publisherInitialized = false;
 			var connected = false;
 
 			if (OT.checkSystemRequirements() == 1) {
-				var session = OT.initSession(apiKey, sessionId);
+					session = OT.initSession(apiKey, sessionId);
 			} else {
 			  // The client does not support WebRTC.
 			  console.log("Not using Chrome or Firefox")
 			  alert('BODY is not available in your browser. Please switch to Chrome or Firefox.');
 		  	return $location.path('/')
 			}
+
+			function connectToSession(token) {
+				console.log(token)
+				session.connect(token, function(error) {
+				  if (error) {
+				  	console.log(error);
+				  	if (error.code === 1006) {
+				  		alert('Failed to connect. Please check your connection and try connecting again.');
+				  	} else {
+				  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
+				  	}
+				  } else {
+				  	if (!userIsInstructor) {
+						  connected = true;
+					    publish();
+					  }
+				  }
+				});	
+			};
 
 			// if (session.capabilities.publish == 1) {
 			//     // The client can publish. See the next section.
@@ -256,22 +284,6 @@ angular.module('bodyAppApp')
 		      }
 		    }
 			});
-
-			session.connect(token, function(error) {
-			  if (error) {
-			  	console.log(error);
-			  	if (error.code === 1006) {
-			  		alert('Failed to connect. Please check your connection and try connecting again.');
-			  	} else {
-			  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
-			  	}
-			  } else {
-			  	if (!userIsInstructor) {
-					  connected = true;
-				    publish();
-				  }
-			  }
-			});	
 
 			session.on({
 			  connectionCreated: function (event) {
