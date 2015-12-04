@@ -31,7 +31,8 @@
     "cron": "*",
     "firebase": "*",
     "request": "*",
-    "browserify": "*"
+    "browserify": "*",
+    "opentok": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

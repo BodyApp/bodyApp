@@ -182,6 +182,7 @@ angular.module('bodyAppApp')
 			setPublisher()
 
 			session.on('streamCreated', function(event) {
+				//Need to check if this user is already in the consumerList or not
 				$scope.consumerList.push(" ")
 				console.log(event)
 			  var subscriber = session.subscribe(event.stream, event.name === "trainer" ? 0 : getIdOfBox($scope.consumerList.length), {

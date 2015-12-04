@@ -7,6 +7,9 @@ var jwt = require('jsonwebtoken');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
 // var flash = require('req-flash');
 
+var OpenTok = require('opentok'),
+    opentok = new OpenTok(config.tokBoxApiKey, config.tokBoxApiSecret);
+
 var validationError = function(res, err) {
   return res.status(422).json(err);
 };
@@ -401,3 +404,13 @@ exports.addBookedClass = function(req, res, next) {
     } 
   });
 };
+
+exports.createTokBoxSession = function(req, res, next) {
+  // The session will the OpenTok Media Router:
+  opentok.createSession({mediaMode:"routed"}, function(err, session) {
+    if (err) return console.log(err);
+    console.log(session);
+    // save the session.sessionId back in firebase
+    res.status(200).json(session);
+  });
+}

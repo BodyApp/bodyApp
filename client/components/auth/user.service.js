@@ -55,6 +55,12 @@ angular.module('bodyAppApp')
         params: {
           controller:'saveEmail'
         }
+      },
+      createTokBoxSession: {
+        method: 'GET',
+        params: {
+          controller: 'createTokBoxSession'
+        }
       }
 	  });
   });

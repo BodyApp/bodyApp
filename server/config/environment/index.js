@@ -46,7 +46,10 @@ var all = {
 
   iceIdent: process.env.iceIdent,
   iceSecret: process.env.iceSecret,
-  iceDomain: process.env.iceDomain,  
+  iceDomain: process.env.iceDomain,
+
+  tokBoxApiSecret: process.env.tokBoxApiSecret || 'secret',
+  tokBoxApiKey: process.env.tokBoxApiKey || 'key',   
 
   stripeOptions: {
     apiKey: process.env.STRIPE_KEY || 'key',

@@ -21,6 +21,8 @@ router.put('/:id/saveEmailAddress', auth.isAuthenticated(), controller.saveEmail
 
 router.get('/:id/getSubscription', controller.getSubscription);
 
+router.get('/:id/createTokBoxSession', controller.createTokBoxSession);
+
 router.post('/charge',
 //   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
 //   // auth.isAuthenticated(),
