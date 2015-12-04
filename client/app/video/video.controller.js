@@ -219,32 +219,27 @@ angular.module('bodyAppApp')
 					var vidHeight = 198;
 
 					var streamId = event.stream.connection.data.toString()
+					var streamBoxNumber = 1
 
 					if (streamId === classToJoin.trainer._id.toString()) {
 						instructorStream = true
 						vidWidth = 900;
 						vidHeight = 600;
-					}
-
-					//Need to check if this user is already in the consumerList or not
-					if (!instructorStream) {
-						$scope.consumerList.push(streamId)
-				  	subscriber.boxNumber = $scope.consumerList.length
-
-				  	var streamUser = User.getUser({id: streamId}).$promise.then(function(data) {
-            	$scope.consumerObjects[streamId] = data
-            	$scope.consumerObjects[streamId].boxNumber = subscriber.boxNumber;
-            })
 					} else {
-						User.getUser({id: streamId}).$promise.then(function(data) {
-            	instructorInfo = data
-            })
+
+						if (!$scope.consumerObjects[streamId]) {
+							$scope.consumerList.push(streamId);
+							streamBoxNumber = $scope.consumerList.length;
+						} else {
+							streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
+						}
 					}
 
-				  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : $scope.consumerList.length), {
+				  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : streamBoxNumber), {
 				    insertMode: 'replace',
 				    width: vidWidth,
 					  height: vidHeight,
+					  mirror: true,
 				    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 				  }, function(err) {
 				  	if (err) {
@@ -260,8 +255,20 @@ angular.module('bodyAppApp')
 					  		subscriber.setAudioVolume(100);
 					  	}
 
+					  	//Need to check if this user is already in the consumerList or not
+							if (!instructorStream) {
+						  	var streamUser = User.getUser({id: streamId}).$promise.then(function(data) {
+		            	$scope.consumerObjects[streamId] = data
+		            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+		            })
+							} else {
+								User.getUser({id: streamId}).$promise.then(function(data) {
+		            	instructorInfo = data
+		            })
+							}
+
 					  	subscriber.setStyle("nameDisplayMode", "on")
-					  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture) : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"; //Sets image to be displayed when no video
+					  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"); //Sets image to be displayed when no video
 					  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
 							SpeakerDetection(subscriber, function() {
@@ -273,6 +280,8 @@ angular.module('bodyAppApp')
 							  console.log('stopped talking');
 							  if (userIsInstructor) { document.getElementById(getIdOfBox(subscriber.boxNumber)).style.border = "none"; }
 							});
+
+							
 
 					  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
 							  // Set picture overlay
