@@ -161,6 +161,9 @@ angular.module('bodyAppApp')
 			var sessionId = classToJoin.sessionId;
 			var session;
 
+			
+			// setStreamAcceptor();
+
 			User.createTokBoxToken({ id: currentUser._id }, {
         sessionId: classToJoin.sessionId
       }, function(token) {
@@ -182,7 +185,6 @@ angular.module('bodyAppApp')
 			}
 
 			function connectToSession(token) {
-				console.log(token)
 				session.connect(token, function(error) {
 				  if (error) {
 				  	console.log(error);
@@ -192,10 +194,10 @@ angular.module('bodyAppApp')
 				  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 				  	}
 				  } else {
-				  	if (!userIsInstructor) {
+				  	// if (!userIsInstructor) {
 						  connected = true;
 					    publish();
-					  }
+					  // }
 				  }
 				});	
 			};
@@ -207,71 +209,73 @@ angular.module('bodyAppApp')
 			//     alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 			// }
 
-			setPublisher()
+			setPublisher();
 
-			session.on('streamCreated', function(event) {
-				//Need to check if this user is already in the consumerList or not
-				$scope.consumerList.push(" ")
-				console.log(event)
-			  var subscriber = session.subscribe(event.stream, event.name === "trainer" ? 0 : getIdOfBox($scope.consumerList.length), {
-			    insertMode: 'replace',
-			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
-			  }, function(err) {
-			  	if (err) {
-			  		console.log(err)
-			  	} else {
-			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-				  	console.log("Received stream");
-
-				  	if (subscriber.name != 'Trainer') {
-				  		subscriber.subscribeToAudio(false); // audio off
+			// var setStreamAcceptor = function() {
+				session.on('streamCreated', function(event) {
+					//Need to check if this user is already in the consumerList or not
+					$scope.consumerList.push(" ")
+					console.log(event.stream.connection.data.toString())
+					console.log(classToJoin.trainer._id.toString())
+				  var subscriber = session.subscribe(event.stream, getIdOfBox(event.stream.connection.data.toString() === classToJoin.trainer._id.toString() ? 0 : $scope.consumerList.length), {
+				    insertMode: 'replace',
+				    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
+				  }, function(err) {
+				  	if (err) {
+				  		console.log(err)
 				  	} else {
-				  		subscriber.setAudioVolume(100);
-				  	}
+				  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
+					  	console.log("Received stream");
 
-				  	console.log(subscriber)
+					  	if (event.stream.connection.data != classToJoin.trainer._id) {
+					  		subscriber.subscribeToAudio(false); // audio off
+					  	} else {
+					  		subscriber.setAudioVolume(100);
+					  	}
 
-				  	subscriber.setStyle("nameDisplayMode", "on")
-				  	subscriber.setStyle('backgroundImageURI', 'http://tokbox.com/img/styleguide/tb-colors-cream.png'); //Sets image to be displayed when no video
-				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
-						// var movingAvg = null;
-						// subscriber.on('audioLevelUpdated', function(event) {
-						//   if (movingAvg === null || movingAvg <= event.audioLevel) {
-						//     movingAvg = event.audioLevel;
-						//   } else {
-						//     movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
-						//   }
+					  	subscriber.setStyle("nameDisplayMode", "on")
+					  	subscriber.setStyle('backgroundImageURI', 'http://tokbox.com/img/styleguide/tb-colors-cream.png'); //Sets image to be displayed when no video
+					  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
-						//   // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
-						//   var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
-						//   logLevel = Math.min(Math.max(logLevel, 0), 1);
-						//   // document.getElementById('subscriberMeter').value = logLevel;
-						// });
+							// var movingAvg = null;
+							// subscriber.on('audioLevelUpdated', function(event) {
+							//   if (movingAvg === null || movingAvg <= event.audioLevel) {
+							//     movingAvg = event.audioLevel;
+							//   } else {
+							//     movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+							//   }
 
-						SpeakerDetection(subscriber, function() {
-						  console.log('started talking');
-						  $scope.musicVolume === 20;
-						}, function() {
-							$scope.musicVolume === 100;
-						  console.log('stopped talking');
-						});
+							//   // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+							//   var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
+							//   logLevel = Math.min(Math.max(logLevel, 0), 1);
+							//   // document.getElementById('subscriberMeter').value = logLevel;
+							// });
 
-				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
-						  // Set picture overlay
-						  // domElement = document.getElementById(subscriber.id);
-						  // domElement.style["visibility"] = "hidden";
-						});
+							SpeakerDetection(subscriber, function() {
+							  console.log('started talking');
+							  $scope.musicVolume === 20;
+							}, function() {
+								$scope.musicVolume === 100;
+							  console.log('stopped talking');
+							});
 
-						subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
-							// Remove picture overlay
-						  // domElement = document.getElementById(subscriber.id);
-						  // domElement.style["visibility"] = "visible";
-						});
+					  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
+							  // Set picture overlay
+							  // domElement = document.getElementById(subscriber.id);
+							  // domElement.style["visibility"] = "hidden";
+							});
 
-				  }
-			  });
-			});
+							subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
+								// Remove picture overlay
+							  // domElement = document.getElementById(subscriber.id);
+							  // domElement.style["visibility"] = "visible";
+							});
+
+					  }
+				  });
+				});
+			// }
 
 			session.on("streamDestroyed", function (event) {
 				if (event.reason === 'networkDisconnected') {
