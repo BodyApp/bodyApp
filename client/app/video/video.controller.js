@@ -156,7 +156,7 @@ angular.module('bodyAppApp')
 		}
 
 		var connect = function() {
-			OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
+			// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 			var apiKey = 45425152;
 			var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
 			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
@@ -183,8 +183,9 @@ angular.module('bodyAppApp')
 
 			session.on('streamCreated', function(event) {
 				$scope.consumerList.push(" ")
+				console.log(event)
 			  var subscriber = session.subscribe(event.stream, event.name === "trainer" ? 0 : getIdOfBox($scope.consumerList.length), {
-			    insertMode: 'replace',
+			    insertMode: 'append',
 			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 			  }, function(err) {
 			  	if (err) {
@@ -219,7 +220,9 @@ angular.module('bodyAppApp')
 
 						SpeakerDetection(subscriber, function() {
 						  console.log('started talking');
+						  $scope.musicVolume === 20;
 						}, function() {
+							$scope.musicVolume === 100;
 						  console.log('stopped talking');
 						});
 
