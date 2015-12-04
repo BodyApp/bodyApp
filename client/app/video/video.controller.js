@@ -254,9 +254,10 @@ angular.module('bodyAppApp')
 
 							SpeakerDetection(subscriber, function() {
 							  console.log('started talking');
-							  $scope.musicVolume === 20;
+							  setMusicVolume(5)
 							}, function() {
-								$scope.musicVolume === 100;
+								setMusicVolume($scope.musicVolume)
+								// $scope.musicVolume === 100;
 							  console.log('stopped talking');
 							});
 
