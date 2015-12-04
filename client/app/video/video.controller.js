@@ -156,6 +156,7 @@ angular.module('bodyAppApp')
 		}
 
 		var connect = function() {
+			OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 			var apiKey = 45425152;
 			var sessionId = '1_MX40NTQyNTE1Mn5-MTQ0OTA4ODg4NDc1Mn5PQ2phekU5OFMyREVnN0RNekZRMGp2QnJ-UH4';
 			var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
@@ -182,20 +183,45 @@ angular.module('bodyAppApp')
 
 			session.on('streamCreated', function(event) {
 				$scope.consumerList.push(" ")
-			  var subscriber = session.subscribe(event.stream, subscriber.name === "Trainer" ? 0 : getIdOfBox($scope.consumerList.length), {
+			  var subscriber = session.subscribe(event.stream, event.name === "trainer" ? 0 : getIdOfBox($scope.consumerList.length), {
 			    insertMode: 'replace',
+			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 			  }, function(err) {
 			  	if (err) {
 			  		console.log(err)
 			  	} else {
 			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-				  	console.log("Received stream")
+				  	console.log("Received stream");
 
 				  	if (subscriber.name != 'Trainer') {
 				  		subscriber.subscribeToAudio(false); // audio off
 				  	} else {
 				  		subscriber.setAudioVolume(100);
 				  	}
+
+				  	subscriber.setStyle("nameDisplayMode", "on")
+				  	subscriber.setStyle('backgroundImageURI', 'http://tokbox.com/img/styleguide/tb-colors-cream.png'); //Sets image to be displayed when no video
+				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
+
+						// var movingAvg = null;
+						// subscriber.on('audioLevelUpdated', function(event) {
+						//   if (movingAvg === null || movingAvg <= event.audioLevel) {
+						//     movingAvg = event.audioLevel;
+						//   } else {
+						//     movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+						//   }
+
+						//   // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+						//   var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
+						//   logLevel = Math.min(Math.max(logLevel, 0), 1);
+						//   // document.getElementById('subscriberMeter').value = logLevel;
+						// });
+
+						SpeakerDetection(subscriber, function() {
+						  console.log('started talking');
+						}, function() {
+						  console.log('stopped talking');
+						});
 
 				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
 						  // Set picture overlay
@@ -260,7 +286,6 @@ angular.module('bodyAppApp')
 		      console.log(event.reason);
 		      if (event.reason == 'networkDisconnected') {
 		        alert('You lost your internet connection. Please check your connection and try connecting again.')
-
 		      }
 		    }
 			});
@@ -286,7 +311,12 @@ angular.module('bodyAppApp')
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
 		      publishAudio:true, 
-		      publishVideo:true
+		      publishVideo:true,
+		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
+		      style: {
+		      	buttonDisplayMode: 'on', //Mute microphone button
+		      	nameDisplayMode: 'on' //Can also be off or auto
+		      }
 		    }, function(err) {
 		    	if (err) {
 				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
@@ -335,10 +365,38 @@ angular.module('bodyAppApp')
 				  }
 				});			
 			}
-
 		};
 
 		connect()
+
+		var SpeakerDetection = function(subscriber, startTalking, stopTalking) { // Used to determine whether stream is talking
+		  var activity = null;
+		  subscriber.on('audioLevelUpdated', function(event) {
+		    var now = Date.now();
+		    if (event.audioLevel > 0.2) {
+		      if (!activity) {
+		        activity = {timestamp: now, talking: false};
+		      } else if (activity.talking) {
+		        activity.timestamp = now;
+		      } else if (now- activity.timestamp > 1000) {
+		        // detected audio activity for more than 1s
+		        // for the first time.
+		        activity.talking = true;
+		        if (typeof(startTalking) === 'function') {
+		          startTalking();
+		        }
+		      }
+		    } else if (activity && now - activity.timestamp > 3000) {
+		      // detected low audio activity for more than 3s
+		      if (activity.talking) {
+		        if (typeof(stopTalking) === 'function') {
+		          stopTalking();
+		        }
+		      }
+		      activity = null;
+		    }
+		  });
+		};
 
 		function navigateAway() {
 			publisher.destroy();
