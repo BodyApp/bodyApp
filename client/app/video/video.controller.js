@@ -273,12 +273,12 @@ angular.module('bodyAppApp')
 
 							SpeakerDetection(subscriber, function() {
 							  console.log('started talking');
-							  if (userIsInstructor) { document.getElementById(getIdOfBox(subscriber.boxNumber)).style.border = "thick solid #0000FF"; }
+							  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
 							  setMusicVolume(10)
 							}, function() {
 								setMusicVolume($scope.musicVolume)
 							  console.log('stopped talking');
-							  if (userIsInstructor) { document.getElementById(getIdOfBox(subscriber.boxNumber)).style.border = "none"; }
+							  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
 							});
 
 							
