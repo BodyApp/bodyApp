@@ -12,11 +12,12 @@ exports.setup = function (User, config) {
       'displayName',
       'emails',
       'gender',
-      'picture.type(large)'
+      'picture.type(large)',
+      'friends',
+      'birthday'
       ]
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(profile.photos[0].value)
       //Will have to change to email check if incorporate authentication other than facebook.  Changed to this because there was an issue if email wasn't properly set in facebook.
       User.findOne({
         // 'email': profile.emails[0].value.toLowerCase()
@@ -35,25 +36,34 @@ exports.setup = function (User, config) {
             gender: profile.gender,
             picture: profile.photos ? profile.photos[0].value : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg",
             facebookId: profile.id,
-            birthday: " ",
+            birthday: profile.birthday,
+            friendList: profile._json.friends ? profile._json.friends.data : [],
             email: profile.emails ? profile.emails[0].value : "", //Getting cannot read property 0 of undefined here.  Crashed server.
             role: 'user',
             provider: 'facebook',
             facebook: profile._json
           });
+          user.friendListObject = {}
+          for (var i = 0; i < user.friendList.length; i++) {
+            user.friendListObject[user.friendList[i].id] = {}
+            user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
+          }
+
           user.save(function(err) {
             if (err) return done(err);
             done(err, user);
           });
         } else {
-          //Update picture link every time.
-          user.picture = profile.photos ? profile.photos[0].value : undefined
+          user.facebook = profile._json;
+          user.friendListObject = {}
+          for (var i = 0; i < user.friendList.length; i++) {
+            user.friendListObject[user.friendList[i].id] = {}
+            user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
+          }
           user.save(function(err) {
             if (err) return done(err);
             return done(err, user);
           })
-
-          
         }
       })
     }
