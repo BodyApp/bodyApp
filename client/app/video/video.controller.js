@@ -132,11 +132,11 @@ angular.module('bodyAppApp')
 		}
 
 		function setMusicVolume(musicVolume) {
-			if (userIsInstructor) {
-				audioPlayer.setVolume(musicVolume / 1000);
-			} else {
-				audioPlayer.setVolume(musicVolume / 500);
-			}
+			// if (userIsInstructor) {
+				audioPlayer.setVolume(musicVolume / 100);
+			// } else {
+			// 	audioPlayer.setVolume(musicVolume / 500);
+			// }
 		}
 
 		// function loginSuccess() {
@@ -269,7 +269,7 @@ angular.module('bodyAppApp')
 						SpeakerDetection(subscriber, function() {
 						  console.log('started talking');
 						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
-						  setMusicVolume(10)
+						  setMusicVolume($scope.musicVolume/2)
 						}, function() {
 							setMusicVolume($scope.musicVolume)
 						  console.log('stopped talking');
