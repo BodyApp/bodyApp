@@ -13,6 +13,7 @@
 								<div class="col-sm-6 text-center">
                     <h4 class="mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h4>
                     <h4 class="mb0" ng-if = "minutesUntilClass <= 1">Class is about to start!</h4>
+                    <h4 class="mb0" ng-if = "minutesUntilClass < 0">Class has started!</h4>
                     <br>
                 		<!-- <div ng-if = "minutesUntilClass <= 0"> -->
                 		<div ng-if = "minutesUntilClass <= 0">
