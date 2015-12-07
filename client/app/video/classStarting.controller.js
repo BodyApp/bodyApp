@@ -16,12 +16,16 @@ angular.module('bodyAppApp')
     $scope.currentUser = currentUser;
 
     var classDate = new Date(classToJoin.date)
-    var sunDate = new Date()
-    sunDate.setDate(classDate.getDate()-classDate.getDay())
+    var sunDate = new Date();
+    sunDate.setDate(classDate.getDate() - classDate.getDay());
+    var sunGetDate = sunDate.getDate();
+    var sunGetMonth = sunDate.getMonth()+1;
+    var sunGetYear = sunDate.getFullYear();
+    var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
     $scope.class = $firebaseObject(
-      ref.child("weekof"+(sunDate.getMonth()+1)+sunDate.getDate()+sunDate.getFullYear())
+      ref.child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
@@ -66,7 +70,7 @@ angular.module('bodyAppApp')
   	function checkTime() {
   		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
   		console.log($scope.minutesUntilClass + " minutes until class begins");
-  		$scope.$apply();
+  		// $scope.$apply();
   		// if ($scope.minutesUntilClass <= 0) {
   			// $scope.joinClassActive = true;
   			// $location.path('/consumervideo')
