@@ -418,8 +418,9 @@ exports.createTokBoxSession = function(req, res, next) {
 exports.createTokBoxToken = function(req, res, next) {
 
   var token = opentok.generateToken(req.body.sessionId, {
-    expireTime : (new Date().getTime() / 1000)+(24 * 60 * 60), // in one day, which is the default
-    data :       req.user._id.toString()
+    expireTime: (new Date().getTime() / 1000)+(24 * 60 * 60), // in one day, which is the default
+    data: req.user._id.toString(),
+    role: "publisher"
   })
   // , function(token) {
     console.log(token);
