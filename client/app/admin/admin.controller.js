@@ -64,12 +64,12 @@ angular.module('bodyAppApp')
       // } else {
         var instructors = Auth.getInstructors().$promise.then(function(data) {
           $scope.instructors = data;
-          $scope.workoutToCreate.trainer = $scope.instructors[0];
           
           Auth.getAdmins().$promise.then(function(data) {
             for (var i = 0; i < data.length; i++) {
-              $scope.instructors.push(data[i]);  
+              $scope.instructors.push(data[i]);              
             }
+            $scope.workoutToCreate.trainer = $scope.instructors[0];  
           }).catch(function(err) { console.log(err)})
 
         }).catch(function(err) {
