@@ -62,6 +62,7 @@ angular.module('bodyAppApp')
       // if (user.role === "instructor") {
       //   $scope.instructors = user;
       // } else {
+      if (Auth.isAdmin()) {
         var instructors = Auth.getInstructors().$promise.then(function(data) {
           $scope.instructors = data;
           
@@ -75,6 +76,9 @@ angular.module('bodyAppApp')
         }).catch(function(err) {
           console.log(err);
         });;
+      } else {
+        $scope.instructors.push(Auth.getCurrentUser());
+      }
       // }
     }
 
