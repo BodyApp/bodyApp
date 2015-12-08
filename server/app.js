@@ -35,11 +35,9 @@ var forceSsl = function (req, res, next) {
   return next();
 };
 
-app.configure(function () {
-  if (config.env === 'production') {
-    app.use(forceSsl);
-  }
-})
+if (config.env === 'production') {
+  app.use(forceSsl);
+}
 
 var server = require('http').createServer(app);
 
