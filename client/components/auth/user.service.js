@@ -24,6 +24,12 @@ angular.module('bodyAppApp')
           controller:'addBookedClass'
         }
       },
+      saveClassTaught: {
+        method: 'PUT',
+        params: {
+          controller:'saveClassTaught'
+        }
+      },
       getInstructors: {
         method: 'GET',
         isArray: true,

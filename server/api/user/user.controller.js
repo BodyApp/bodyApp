@@ -396,7 +396,24 @@ exports.addBookedClass = function(req, res, next) {
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
       console.log(user);
-      user.classes.push(classToAdd);
+      user.classesTaken.push(classToAdd);
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
+exports.saveClassTaught = function(req, res, next) {
+  var classToAdd = req.body.classToAdd;
+  var userToAddClassTo = req.body.userToAddClassTo
+  var userId = userToAddClassTo._id
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      console.log(user);
+      user.classesTaught.push(classToAdd);
       user.save(function(err) {
         if (err) return validationError(res, err);
         res.status(200).json(user);

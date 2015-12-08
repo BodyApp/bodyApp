@@ -151,25 +151,14 @@ angular.module('bodyAppApp')
 
       var modalInstance = openCreatingModal();
 
-      // User.createTokBoxSession(null, null, function(session) {
-      //   console.log(session)
-      //   syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
-      //   syncObject.$save().then(function() {
-      //     console.log("new workout saved")
-      //     modalInstance.close()
-      //     $location.path('/')
-      //   }).catch(function(err) {
-      //     console.log("error saving new workout: " + err)
-      //   })
-      // }, function(err) {
-      //   console.log(err)
-      // }).$promise;
-
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
         syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
         syncObject.$save().then(function() {
           console.log("new workout saved");
           modalInstance.close();
+          User.saveClassTaught({id: Auth.getCurrentUser()}, {classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer}).$promise.then(function(confirmation) {
+            console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
+          })
           $location.path('/');
         }).catch(function(err) {
           console.log("error saving new workout: " + err)
@@ -177,18 +166,6 @@ angular.module('bodyAppApp')
       }, function(err) {
         console.log(err)
       })
-
-      // User.createTokBoxSession().$promise.then(function(session) {
-      //   console.log(session)
-      //   syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
-      //   syncObject.$save().then(function() {
-      //     console.log("new workout saved")
-      //     modalInstance.close()
-      //     $location.path('/')
-      //   }).catch(function(err) {
-      //     console.log("error saving new workout: " + err)
-      //   })
-      // })
     }
 
     function timeFormatter(date) {
