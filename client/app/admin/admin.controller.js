@@ -26,8 +26,9 @@ angular.module('bodyAppApp')
     $scope.wod = $firebaseObject(wodRef);
 
     $scope.instructors = [];
-    getAdminsAndInstructors()
     $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}};
+    getAdminsAndInstructors()
+    
     $scope.playlists = [];
     var defaultPlaylist;
     loadDefaultPlaylist();
@@ -78,6 +79,7 @@ angular.module('bodyAppApp')
         });;
       } else {
         $scope.instructors.push(Auth.getCurrentUser());
+        $scope.workoutToCreate.trainer = $scope.instructors[0];  
       }
       // }
     }
