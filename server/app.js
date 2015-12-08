@@ -28,6 +28,19 @@ if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
 var app = express();
+var forceSsl = function (req, res, next) {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  return next();
+};
+
+app.configure(function () {
+  if (config.env === 'production') {
+    app.use(forceSsl);
+  }
+})
+
 var server = require('http').createServer(app);
 
 // require('./config/socketio')(socketio);

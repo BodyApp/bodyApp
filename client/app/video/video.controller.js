@@ -173,10 +173,20 @@ angular.module('bodyAppApp')
 				session = OT.initSession(apiKey, sessionId);
 
 				$scope.$on("$destroy", function() { // destroys the session when navigate away
-	        if (session) {
+	        // if (session) {
 	        	console.log("Disconnecting session because navigated away.")
-	          session.disconnect()
-	        }
+	          // session.unpublish(publisher);
+	          // publisher.disconnect();
+	          publisher.destroy();
+
+	          // session.disconnect();
+	          session.destroy();
+	          // session.destroy(publisher);
+	        // }
+
+	        // if (publisher) {
+
+	        // }
 		    });
 			} else {
 			  // The client does not support WebRTC.
@@ -348,6 +358,25 @@ angular.module('bodyAppApp')
 			};
 
 			function setPublisher() {
+				OT.getDevices(function(error, devices) {
+					if (devices) {
+					  var audioInputDevices = devices.filter(function(element) {
+					    return element.kind == "audioInput";
+					  });
+					  var videoInputDevices = devices.filter(function(element) {
+					    return element.kind == "videoInput";
+					  });
+					  for (var i = 0; i < audioInputDevices.length; i++) {
+					    console.log("audio input device: ", audioInputDevices[i].deviceId);
+					  }
+					  for (i = 0; i < videoInputDevices.length; i++) {
+					    console.log("video input device: ", videoInputDevices[i].deviceId);
+					  }
+					} else {
+						console.log("No devices discovered " + err)
+					}
+				});
+
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
 		      publishAudio:true, 
