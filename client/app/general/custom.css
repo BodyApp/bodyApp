@@ -1,160 +1,95 @@
-/****** PLACE YOUR CUSTOM STYLES HERE ******/
-.background-trans {
-	background: rgba(13,28,69,0.85);
-	border: 1px solid #ffffff;
-	padding: 4%;
+/*------GENERAL-------*/
+
+.on-dark a {
+  color: #fff;
+}
+.on-dark a:hover {
+  color: #5978D0;
+}
+.on-dark ul li a {
+  color: #fff;
+  font-weight: 300;
+  font-size: 16px;
+}
+.on-dark h5 {
+  color: #5978D0;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.on-dark p {
+  color: #fff;
+}
+.next-up-box {
+	border: 2px solid #85888D;
+	padding: 20px;
+}
+.progress-bar {
+  height: 30px;
+  border: 2px solid #85888D;
+  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-#orange {
-	color: #FF6700;
+/*------NAVIGATION-------*/
+
+/*------FOOTER-------*/
+
+.footer-nav-container {
+  margin: 0 60px;
+  padding: 20px 0;
 }
-
-#blue {
-	color: #0D1C45;
+.footer-copyright-container {
+  padding: 5px 0;
 }
-
-.trainer-circle-image, .user-circle-image, .world-wod-image, .user-wod-image {
-	background-repeat: no-repeat;
-    background-position: 50%;
-    border-radius: 50%;
-    width: 300px;
-    height: 300px;
-    border: 10px solid #CCCCCC;
+.footer-nav {
+  background: #0D1c45;
 }
-
-.user-circle-image, .world-wod-image, .user-wod-image {
-	width: 100px;
-	height: 100px;
-	border: 5px solid #CCCCCC;
-	float: left;
+.footer-copyright {
+  background: #1f1f1f;
 }
-
-.world-wod-image, .user-wod-image {
-	width: 50px;
-	height: 50px;
-	border: 1px solid #CCCCCC;
+.copyright-text {
+  color: #fff;
+  font-size: 11px;
+  margin-bottom: 0px;
 }
-
-.edit-photo {
-	padding: 34px 0 0 20px;
-	float: left;
+.copyright-text-social {
+  font-size: 14px;
+  margin-bottom: 0px;
 }
-
-.user-name {
-	float: left;
-	margin: 25px 0 0 25px;
+.copyright-text a {
+  color: #9c9c9c;
 }
-
-.world-name-wod, .user-name-wod {
-	float: left;
-	margin: 0 0 0 15px;
-	font-size: 12px;
-	line-height: 15px;
-	max-width: 70%;
+.btn-footer {
+  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 1px solid #fff;
+  padding: 6px 26px;
+  height: auto;
+  min-width: 150px;
+  line-height: 36px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  background: #0D1C45;
+  border-radius: 0;
+  color: #fff;
+  text-align: center;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  margin-right: 8px;  
 }
-
-.user-name-wod {
-	font-size: 16px;
-	line-height: 18px;
-
+.btn-footer:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid #fff;
+  color: #fff !important;
 }
-
-.user-list li, .user-list-wod li, .world-list-wod li {
-	height: 100px;
-	width: 260px;
-	margin: auto;
-	margin-bottom: 20px;
+.small {
+  color: #d0d0d0 !important;
+  font-size: 11px;
+  line-height: 14px;
 }
-
-.user-list-wod li {
-	height: 70px;
-	margin: 0 0 30px 22%;
-	width: 65%;
-}
-
-.world-list-wod li {
-	height: 50px;
-	margin-bottom: 20px;
-}
-
-#dark-text {
-	color: #1f1f1f !important;
-}
-
-.page-sidebar-left {
-	border-right: 1px solid #ccc;
-}
-
-.your-classes {
-	background: #f5f5f5;
-	padding: 10px;
-}
-
-.reservations {
-	padding-left: 15%;
-}
-
-.reservations-table {
-	margin-bottom: 0px !important;
-}
-
-.class-info {
-	padding: 4px 0 0 0;
-}
-
-.reserved-class {
-	width: 110px;
-}
-
-.join-class {
-	width: 150px;
-}
-
-.hovering {
-	background: #5E6E99 !important;
-	border: none;
-}
-
-.start-class {
-	background: #FF6700 !important;
-	border: none;
-}
-
-.startClassHovering {
-	background: #D45600 !important;
-	border: none;
-}
-
-.text-input-half {
-	width: 49% !important;
-}
-
-.btn-full {
-	width: 100% !important;
-}
-
-.settings-title {
-	width: 1800px;
-}
-
-.post-workout-results {
-	height: 300px !important;
-	padding-bottom: 250px;
-}
-
-.disclaimer {
-	font-size: 12px;
-	line-height: 10px;
-}
-
-.footer-text {
-	font-size: 12px;
-}
-
-.full-screen-height {
-	height: 100vh;	
-}
-
-.video-screen-height {
-		height: 100vh;
+.light-font, .light-font h2 {
+	color: white !important;
 }

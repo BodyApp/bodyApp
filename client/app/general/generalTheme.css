@@ -1,7 +1,6 @@
 /*!
 // Contents
 // ------------------------------------------------
-
  1. Global Styles
  2. Mixins
  3. Typography
@@ -16,7 +15,7 @@
  12. Accordions
  13. Tabs
  14. Progress Bars
- 15. Stats?
+ 15. Stats
  16. Breadcrumbs
  17. Pagination
  18. Icon Features
@@ -38,7 +37,6 @@
  34. Twitter
  35. Footers
  36. Spacing
-
 /*!---------- 1. GLOBAL STYLES ----------*/
 body {
   -webkit-font-smoothing: antialiased;
@@ -46,7 +44,7 @@ body {
   font-size: 16px;
   line-height: 24px;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #fff;
+  color: #1f1f1f;
   overflow-x: hidden;
 }
 body.boxed-layout {
@@ -284,7 +282,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Raleway',"Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 h1,
 h2,
@@ -297,8 +295,9 @@ h6 {
 }
 h1,
 .h1 {
-  font-size: 56px;
-  line-height: 64px;
+  font-size: 45px;
+  line-height: 50px;
+  font-weight: 400;
 }
 h1.large {
   font-size: 72px;
@@ -458,7 +457,7 @@ a {
   opacity: 1;
 }
 a:hover {
-  color: #398f5d;
+  color: #5978D0;
   text-decoration: none;
 }
 .label {
@@ -567,12 +566,10 @@ ul.lead li {
 /*!---------- 5. SECTIONS ----------*/
 section,
 footer {
-  padding: 5% 0;
   position: relative;
   overflow: hidden;
 }
 footer {
-  padding: 1% 0;
 }
 .fullscreen {
   height: 100vh;
@@ -725,12 +722,12 @@ footer.bg-dark li,
   height: auto;
   min-width: 150px;
   line-height: 36px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
   letter-spacing: 1px;
+  background: #0D1C45;
   border-radius: 0;
-  color: #0D1C45;
+  color: #fff;
   text-align: center;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
@@ -742,7 +739,8 @@ footer.bg-dark li,
   margin-right: 0;
 }
 .btn:hover {
-  background: #0D1C45;
+  background: #173073;
+  border: 2px solid #173073;
   color: #fff;
 }
 .btn-icon {
@@ -757,7 +755,6 @@ footer.bg-dark li,
   height: 50px;
   line-height: 46px;
   min-width: 200px;
-  padding: 0 10px;
 }
 .btn-icon.btn-lg {
   width: 50px;
@@ -779,7 +776,6 @@ footer.bg-dark li,
   font-size: 11px;
   line-height: 27px;
   min-width: 0;
-  padding: 0px 10px;
 }
 .btn-filled {
   background: #0d1c45;
@@ -793,14 +789,28 @@ footer.bg-dark li,
 .btn-white,
 .image-bg .btn,
 .image-bg .btn:visited {
+  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 1px solid #fff;
+  padding: 10px 26px;
+  height: auto;
+  min-width: 150px;
+  line-height: 36px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  border-radius: 0;
   color: #fff;
-  border-color: #fff;
+  text-align: center;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
 }
 .btn-white:hover,
 .image-bg .btn:hover,
 .image-bg .btn:visited:hover {
-  background: #fff;
-  color: #222;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid #fff;
+  color: #fff !important;
 }
 .image-bg .btn.btn-filled,
 .image-bg .btn-filled:visited {
@@ -828,7 +838,7 @@ body.btn-rounded .btn {
   color: #fff;
 }
 .btn:visited {
-  color: #0D1C45;
+  color: #fff;
 }
 .btn-white:visited,
 .btn:visited:hover {
@@ -870,7 +880,7 @@ nav ul {
 }
 .module {
   display: inline-block;
-  padding: 0 32px;
+  padding: 0 60px;
 }
 .module-group {
   display: inline-block;
@@ -899,9 +909,8 @@ nav .btn,
   top: 1px;
 }
 .nav-bar {
-  height: 55px;
-  max-height: 55px;
-  line-height: 53px;
+  height: 70px;
+  line-height: 67px;
   border-bottom: 1px solid #ccc;
 }
 .nav-bar .module,
@@ -913,7 +922,7 @@ nav .btn,
   height: 55px;
 }
 .logo {
-  max-height: 60%;
+  padding: 10px 0;
 }
 .logo-light {
   display: none;
@@ -949,9 +958,7 @@ nav.bg-dark .logo-dark {
   width: auto;
 }
 .menu li a {
-  font-size: 11px;
-  text-transform: uppercase;
-  font-weight: 600;
+  font-size: 16px;
   letter-spacing: 1px;
   color: #292929;
   opacity: 0.5;
@@ -1683,9 +1690,7 @@ textarea {
 input[type="text"],
 textarea,
 select,
-input[type="password"],
-.textInput,
-input[type="signupText"] {
+input[type="password"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -1712,9 +1717,7 @@ input[type="signupText"] {
   cursor: default;
 }
 input[type="text"],
-input[type="password"],
-.textInput,
-input[type="signupText"] {
+input[type="password"] {
   background: #f5f5f5;
   border: none;
   width: 100%;
@@ -1734,12 +1737,10 @@ input[type="signupText"] {
 input.transparent {
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.5);
-  color: #fff !important	;
+  color: #fff !important  ;
 }
 input[type="text"]:focus,
-input[type="password"]:focus,
-.textInput,
-input[type="signupText"]:focus {
+input[type="password"]:focus {
   outline: 1px solid #ccc;
 }
 textarea {
@@ -2182,7 +2183,7 @@ form iframe.mail-list-form {
   margin-right: 0;
 }
 .button-tabs .tab-title {
-  padding: 6px 15px 6px 15px;
+  padding: 10px 10px 10px 30px;
   display: inline-block;
   background: #f5f5f5;
   color: #1f1f1f;
@@ -2394,7 +2395,7 @@ form iframe.mail-list-form {
   box-shadow: none;
 }
 .progress-bar {
-  background: #0D1C45;
+  background: #46AFFF;
   box-shadow: none !important;
 }
 .bg-primary .progress-bar {
@@ -2515,7 +2516,7 @@ form iframe.mail-list-form {
   .page-title-4 .breadcrumb,
   .page-title-2 .breadcrumb {
     float: left;
-    margin-top: 8	px;
+    margin-top: 8 px;
   }
 }
 /*!---------- 17. PAGINATION ----------*/

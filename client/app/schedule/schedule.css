@@ -1,103 +1,236 @@
-/* checkbox - each time slot */
-.time-slot               { 
-  padding:0px 0px 0px 0px;
- }
-
-/* hide the checkbox itself - the label will be styled */
-.time-slot input     { 
-  display:none; 
+.dashboard-list-view {
+  margin-bottom: 4%;
 }
 
-.columnStyle {
-  padding-right: 0px;
+.dashboard-list-view h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
-label.showAvailableClassesLabel {
-  margin-bottom: 20px;
+/*-----Today's workout sidebar-------*/
+
+.workout-column, .reservations {
+  padding: 5px 0 20px 20px;
+  background: #F7F7F7;
+}
+.workout-column h3 {
+  font-size: 20px;
+  color: #0D1C45;
+  font-style: italic;
+  font-weight: 800;
+  margin-bottom: 5px;
 }
 
-h4.dateTitles {
-  line-height: 10px;
-  margin-left:10px;
+.workout-column p {
+  font-size: 14px;
 }
 
-h5.dateTitles {
-  line-height: 0px;
-  margin-left:10px;
+/*-----Reserved Classes-------*/
+
+#reserved-classes p {
+  margin-bottom: 5px;
 }
 
-/* default styling for our labels */
-.time-slot label     {
-  padding:5px; 
-  width: 70px;
-  height: 70px;
+#reserved-classes .btn,.table .btn {
+  border-radius: 5px;
+  margin-right: 16px;
+  min-width: 100px !important;
+  padding: 0 10px !important;
   font-size: 11px;
-  color:#FFF; 
-  cursor:pointer; 
-  background:#EEE; 
-  border-radius:5px; 
-  transition:0.3s ease all;
-  line-height: 15px;
+  font-weight: 600;
+  height: 25px;
+  line-height: 23px;
+}
+#reserved-classes .btn:hover {
+  background: #0D1C45;
+  border: 2px solid #0D1C45;    
+}
+.class-type {
+  font-weight: 800;
+}
+#reserved-classes .time {
+ font-weight: 800;
+ font-style: italic; 
+}
+/*-----Reserved Classes (INTRO CLASS)-------*/
+
+.introduction-class {
+  background: #00D25A;
+  border: 2px solid #00D25A;
+}
+.introduction-class:hover {
+  background: #00B84E !important;
+  border: 2px solid #00B84E !important;
+}
+.introduction-class.invite-friends {
+  border: 2px solid #00D25A;
+  color: #00D25A;
+  background: #fff;
+}
+.introduction-class.invite-friends:hover {
+  border: 2px solid #00D25A !important;
+  background: #00D25A !important;
+  color: #fff !important;  
 }
 
-#trainerName {
-  font-size: 10px;
-  /*word-wrap: break-word;*/
-  /*white-space: none*/
-  /*margin: 2px;*/
-  line-height: 15px;
-  /*padding: 2px;*/
+/*-----Reserved Classes (LVL 1 CLASS)-------*/
+
+.lvl1-class {
+  background: #4CAEFF;
+  border: 2px solid #4CAEFF;
+}
+.lvl1-class:hover {
+  background: #1F8DE8 !important;
+  border: 2px solid #1F8DE8 !important;
+}
+.lvl1-class.invite-friends {
+  border: 2px solid #4CAEFF;
+  color: #4CAEFF;
+  background: #fff;
+}
+.lvl1-class.invite-friends:hover {
+  border: 2px solid #4CAEFF !important;
+  background: #4CAEFF !important;
+  color: #fff !important;
 }
 
-#scheduleColumn {
-  margin-left: 5px;
-  margin-right: 5px;
+/*-----Reserved Classes (LVL 2 CLASS)-------*/
+
+.lvl2-class {
+  background: #FDC800;
+  border: 2px solid #FDC800;
+}
+.lvl2-class:hover {
+  background: #DEB000 !important;
+  border: 2px solid #DEB000 !important;
+}
+.lvl2-class.invite-friends {
+  border: 2px solid #FDC800;
+  color: #FDC800;
+  background: #fff;
+}
+.lvl2-class.invite-friends:hover {
+  border: 2px solid #FDC800 !important;
+  background: #FDC800 !important;
+  color: #fff !important;
 }
 
-/* if the label is booked */
-.time-slot input:checked ~ label { 
-  background:#0D1C45; 
-  cursor:not-allowed;
-  animation:flashBooked 1.0s ease; 
+/*-----Reserved Classes (LVL 3 CLASS)-------*/
+
+.lvl3-class {
+  background: #8233F0;
+  border: 2px solid #8233F0;
+}
+.lvl3-class:hover {
+  background: #6628BD !important;
+  border: 2px solid #6628BD !important;
+}
+.lvl3-class.invite-friends {
+  border: 2px solid #8233F0;
+  color: #8233F0;
+  background: #fff;
+}
+.lvl3-class.invite-friends:hover {
+  border: 2px solid #8233F0 !important;
+  background: #8233F0 !important;
+  color: #fff !important;
 }
 
-/* if the label is available */
-.time-slot input:not(:checked) ~ label { 
-  background:#8C98B9; 
-  animation:flashAvailable 1.0s ease; 
+/*-----Schedule Key-------*/
+
+.class-key {
+  padding: 10px 0px;
+}
+.class-key span {
+  font-size: 14px;
+}
+.title {
+  color: #0D1C45;
+  font-weight: 800;
+}
+.swatch {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+.swatch.intro {
+  background: #00D25A;
+}
+.swatch.lvl1 {
+  background: #4CAEFF;
+}
+.swatch.lvl2 {
+  background: #FDC800;
+}
+.swatch.lvl3 {
+  background: #8233F0;
 }
 
-/* if the label is past or full */
-.time-slot input:disabled:not(:checked) ~ label { 
-  background:#C8D1E5; 
-  cursor:not-allowed;
-  animation:flashUnavailable 1.0s ease; 
+
+/*-----Schedule List-------*/
+
+.schedule-list h1 {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  line-height: 25px;
+}
+.current-week {
+  color: #0D1C45;
+  font-size: 14px;
+  font-style: italic;
+}
+.week-select {
+  float: right;
+}
+.week-select a {
+  padding-right: 5px;
+  color: #616161;
+}
+.week-select a:hover {
+  color: #0D1C45;
 }
 
-/* animation for the time slot for available */
-@keyframes flashAvailable {
-  0%    { background:#8C98B9; transform:scale(1); }
-  50%   { background:#0D1C45; transform:scale(1.25); }
-  100%  { background:#8C98B9; transform:scale(1); }
+.class-table {
+  display: block;
+  margin-top: 10px;
+  height: 450px;
+  overflow-y: auto;
 }
 
-/* animation for the time slot for booked */
-@keyframes flashBooked {
-  0%    { background:#8C98B9; transform:scale(1); }
-  50%   { background:#5E6E99; transform:scale(1.25); }
-  100%  { background:#0D1C45; transform:scale(1); }
+.table-header {
+  background: #fff !important;
+  border-top: 2.5px solid #0D1C45;
+  border-bottom: 2.5px solid #0D1C45;
 }
 
-/* animation for the time slot for past or full */
-@keyframes flashUnavailable {
-  0%    { background:#8C98B9; transform:scale(1); }
-  50%   { background:#5E6E99; transform:scale(1.25); }
-  100%  { background:#C8D1E5; transform:scale(1); }
+.table th {
+  font-size: 16px;
+  font-weight: 800;
+  padding: 5px !important;
+  overflow: hidden;
+  color: #0D1C45;
 }
 
-.loginModal .modal-dialog {
-  position: fixed;
-  top: 20%;
-  left: 30%;
-  width: 40%;
+.table tr {
+  height: 25px;
+}
+
+.table td {
+  font-size: 13px;
+  padding: 5px !important;
+}
+
+.table tr:nth-child(even) {background: #fff}
+.table tr:nth-child(odd) {background: #F0F0F0}
+
+@media screen and (max-width: 767px) {
+  .table {
+    width: auto !important;
+  }
+  .table col {
+    width: auto !important;
+  }
 }
