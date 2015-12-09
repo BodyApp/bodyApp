@@ -5,6 +5,10 @@ angular.module('bodyAppApp')
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
+
+    // if (!Auth.isAdmin()) {
+    //   $location.path('/')
+    // }
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
 
