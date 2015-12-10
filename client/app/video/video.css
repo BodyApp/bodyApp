@@ -1,165 +1,87 @@
-.transit {
-    transition: left 1s, top 1s, right 1s, bottom 1s, width 1s, height 1s, transform 1s;
-    -moz-transition: left 1s, top 1s, right 1s, bottom 1s, width 1s, height 1s, -moz-transform 1s;
-    -webkit-transition: left 1s, top 1s, right 1s, bottom 1s, width 1s, height 1s, -webkit-transform 1s;
-    -o-transition: left 1s, top 1s, right 1s, bottom 1s, width 1s, height 1s,-o-transform 1s;
+.video-fullscreen {
+  height: 100vh;
+  background: #1f1f1f;
+}
+.user-video-sidebar {
+  background: #1f1f1f;
+  padding: 0px;
+}
+.main-user-title, .classmates-title {
+  padding: 8px;
+  height: 40px;
+}
+.main-user-name {
+  float: left;
+  color: #fff;
+  font-size: 20px;
+}
+.badges {
+  float: right;
+}
+.badges img:first-child {
+  padding-right: 5px;
 }
 
-.hidden {
-    background-color: transparent;
-    border-color: 2px solid blue;
+.trainer-column {
+  padding: 0px;
+}
+.class-details {
+  height: 45px;
+  padding-top: 10px;
+}
+.workout-title {
+  font-size: 36px;
+  color: #fff;
+  padding-right: 10px;
+}
+.workout-details {
+  color: #fff;
+}
+.workout-description {
+  float: left;
+}
+.timer {
+  float: right;
+  color: #fff;
+  font-size: 36px;
+}
+.footer-details a {
+  float: left;
+  color: #A6AAA9;
+  font-size: 12px;
+}
+.footer-details span {
+  float: right;
+  color: #fff;
+  font-size: 12px;
+}
+.classmates-title span {
+  color: #fff;
+  font-size: 20px;
+}
+.classmates-section {
+  padding: 0 5px;
+  position: relative;
+}
+.classmates-row {
+  position: relative;
+}
+.individual-classmate {
+  position: relative;
+  display: inline;
+}
+.individual-classmate img {
+  position: absolute;
+  left: 80%;
+  width: 15px;
+  height: auto;
+  padding-top: 6px;
+}
+.individual-classmate span {
+  position: absolute;
+  color: #fff;
+  font-size: 12px;
+  top: -6px;
+  left: 33%;
 }
 
-/*// .boxCommon {
-//     position:absolute;
-// }*/
-
-#mainScreen {
-    /*width: 10%;
-    height: 10%;*/
-}
-
-.closeButton {
-    display: none; /* hide the easyApp's close button because we have our own */
-}
-
-/*// .thumbCommon {
-//     float:left;
-//     position:relative;
-//     z-index:2;
-//     top: 70px;
-//     width: 20%;
-//     height: 20%;
-//     margin: 5px;
-// }*/
-
-#controlArea {
-    background-color: #ff8000;
-}
-
-/*body {
-    /*background-color:#0B1A47;*/
-    margin-left:1px;
-    margin-top:1px;
-/*}*/
-
-#bodyAppTitle {
-    color: white;
-    margin-left: 4%;
-}
-
-#killButton {
-    opacity:0.7;
-}
-
-#killButton:hover {
-    opacity:1.0;
-}
-
-#muteButton {
-    opacity:0.7;
-}
-
-#muteButton:hover {
-    opacity:1.0;
-}
-
-#textentryBox {
-    border:2px solid #a0ffa0;
-    border-radius:10px;
-    z-index:5;
-    position: absolute;
-    background-color: #ffffff;
-    box-shadow: 5px 5px 5px #000000;
-    font-family: 'Courier New',Courier,monospace;
-}
-
-#textentryField {
-    font-size:x-large;
-    margin: 20px;
-}
-
-#textentrySubmit {
-    font-size:larger;
-}
-
-#textentryCancel {
-    font-size:larger;
-}
-
-.row, 
-.column {
-    box-sizing: border-box;
-}
-
-.row:before,
-.row:after {
-    content: " ";
-    display: table;
-}
-
-.row:after {
-    clear: both;
-}
-
-.column {
-    position: relative;
-    float: left;
-}
-
-/*.column + .column {
-    margin-left: 1.6%;
-}*/
-
-.column-1 {
-    width: 6.86666666667%;
-}
-
-.column-2 {
-    width: 15.3333333333%;
-}
-
-.column-3 {
-    width: 23.8%;
-}
-
-.column-4 {
-    width: 32.2666666667%;
-}
-
-.column-5 {
-    width: 40.7333333333%;
-}
-
-.column-6 {
-    width: 49.2%;
-}
-
-.column-7 {
-    width: 57.6666666667%;
-}
-
-.column-8 {
-    width: 66.1333333333%;
-}
-
-.column-9 {
-    width: 74.6%;
-}
-
-.column-10 {
-    width: 83.0666666667%;
-}
-
-.column-11 {
-    width: 91.5333333333%;
-}
-
-.column-12 {
-    width: 100%;
-}
-
-.fullscreen {
-    width: 100%;
-    height: 100%;
-}

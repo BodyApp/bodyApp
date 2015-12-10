@@ -1,74 +1,156 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-<!-- <tour step="currentStep"> -->
-<div class = "video-screen-height" ngsf-toggle-fullscreen ngsf-fullscreen id="masterDiv" style="background-image:url(assets/images/irongrip.png)">
-    <div class="row text-align: center"><timer class = "column col-xs-12" style = "text-align: center" start-time="classTime">{{minutes}} minutes, {{seconds}} seconds elapsed</timer></div>
-    <div class="row">
-        <div class = "column col-xs-2">
-            <div>
-                <div  id="box1" class="row"  muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{currentUser.firstName}} {{currentUser.lastName.charAt(0)}}</div> -->
-            </div>
-            <div>
-                <div id="box2" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[1]].firstName}} {{consumerObjects[consumerList[1]].lastName.charAt(0)}}</div> -->
-            </div>
-            <div>
-                <div id="box3" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[2]].firstName}} {{consumerObjects[consumerList[2]].lastName.charAt(0)}}</div> -->
-            </div>
-            <div>
-                <div id="box4" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[3]].firstName}} {{consumerObjects[consumerList[3]].lastName.charAt(0)}}</div> -->
-            </div>
+<div class="video-fullscreen">
+  <section>
+    <div class="user-video-screen">
+      <div class="col-sm-2 user-video-sidebar">
+        <!--Main user video-->
+        <div class="main-user-title">
+          <span class="main-user-name">You</span>
+          <div class="badges">
+            <img src="assets/images/icons/blocks.png">
+          </div>
         </div>
-        <div class = "column col-sm-8">
-                <div id="box0" id="mainScreen" class="row col-sm-12 easyRTCMirror"></div>
+        <div class="main-user-video">
+          <iframe width="100%" height="125px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
         </div>
-        <div class = "column col-xs-2">
-            <div>
-                <div id="box5" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[4]].firstName}} {{consumerObjects[consumerList[4]].lastName.charAt(0)}}</div> -->
-            </div>
-            <div>
-                <div id="box6" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[5]].firstName}} {{consumerObjects[consumerList[5]].lastName.charAt(0)}}</div> -->
-            </div>
-            <div>
-                <div id="box7" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[6]].firstName}} {{consumerObjects[consumerList[6]].lastName.charAt(0)}}</div> -->
-            </div>
-            <div>
-                <div id="box8" class="row" muted="muted"></div>
-                <!-- <div style = "width: 200px; text-align: center">{{consumerObjects[consumerList[7]].firstName}} {{consumerObjects[consumerList[7]].lastName.charAt(0)}}</div> -->
-            </div>
+        <!--Main user video END-->
+
+        <!--Classmates video-->
+        <div class="classmates-title text-center">
+          <span>Teammates</span>
         </div>
+        <div class="classmates-section">
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <!-- <img src="assets/images/icons/blocks.png"> -->
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>                                                         
+
+
+        </div>
+        <!--Classmates video END-->
+      </div>
+
+      <div class="col-sm-10 trainer-column">
+        <!--Trainer video-->
+        <div class="trainer-screen">
+          <iframe width="100%" height="600px" src="https://www.youtube.com/embed/oS8_7KxNKhU?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <!--Trainer video END-->
+
+        <!--Footer-->
+        <div class="footer-section">
+          <div class="col-sm-12 class-details">
+            <div class="workout-description">
+              <span class="workout-title">The Flip Side</span>
+              <span class="workout-details">Skill: Airsquat | Conditioning: Burpee | Test: Lunge</span>
+            </div>
+            <div class="timer">
+              <span>Time </span><span class="clock">09:03</span>
+            </div>
+          </div>
+          <div class="col-sm-12 footer-details">
+            <a href="">Exit Class</a>
+            <div id="soundcloud-song">
+              <span>Listening to: Body, Tove Lo</span>
+            </div>
+          </div>
+        </div>
+        <!--Footer END-->
+      </div>
+
     </div>
-    <div ng-click = "openSongPermalink(currentSong)" class = "row" ng-show = "currentSong.title">
-        <img ng-src="../assets/images/soundcloudWhiteLogo.png"/>
-        <span>Currently Playing: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
-    </div>
-    <iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
+  </section> 
 </div>
-
-    <!-- <div >
-        <img ng-src="../assets/images/soundcloudWhiteLogo.png"/>
-        <span>Currently Playing: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
-    </div> -->
-
-
-<!-- </div> -->
-<!-- <iframe src="http://www.977music.com/playlist/4/Top-40-Dance"></iframe> -->
-<!-- <audio id = "audioPlayer" autoplay="autoplay" src="http://www.pandora.com/station/play/2898868600419155538"> -->
-<!-- <audio id = "audioPlayer" autoplay="autoplay" src="http://oggvorbis.tb-stream.net:80/technobase.ogg"> -->
-<!-- <iframe id = "audioPlayer" src = "https://soundcloud.com/ilovemakonnen/trust-me-danny-prod-by-danny-wolf" width="1" height="1"></iframe> -->
-<!-- <iframe width="0%" id = "audioPlayer" autoplay = "autoplay" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/34019569&color=0066cc"></iframe> -->
-
-
-<!-- <object height="81" width="100%" id="myPlayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
-    <param name="movie" value="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=myPlayer"></param>
-    <param name="allowscriptaccess" value="always"></param>
-    <embed allowscriptaccess="always" height="81" src="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=myPlayer" type="application/x-shockwave-flash" width="100%" name="myPlayer"></embed>
-</object> -->
-
-
-<div ng-include="'components/footer/footer.html'"></div>
