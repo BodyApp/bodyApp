@@ -239,12 +239,16 @@ angular.module('bodyAppApp')
 					if (!$scope.consumerObjects[streamId]) {
 						$scope.consumerList.push(streamId);
 						streamBoxNumber = $scope.consumerList.length;
+						console.log(streamBoxNumber);
 					} else {
 						streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
 					}
 				}
 
-			  var subscriber = session.subscribe(event.stream, getIdOfBox(instructorStream ? 0 : streamBoxNumber), {
+				var subscriberBox = getIdOfBox(instructorStream ? 0 : streamBoxNumber)
+				console.log(subscriberBox)
+
+			  var subscriber = session.subscribe(event.stream, subscriberBox, {
 			    insertMode: 'replace',
 			    width: vidWidth,
 				  height: vidHeight,
@@ -386,8 +390,8 @@ angular.module('bodyAppApp')
 				  height: 125,
 		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
 		      style: {
-		      	buttonDisplayMode: 'on', //Mute microphone button
-		      	nameDisplayMode: 'on' //Can also be off or auto
+		      	// buttonDisplayMode: 'on', //Mute microphone button
+		      	// nameDisplayMode: 'on' //Can also be off or auto
 		      }
 		    }, function(err) {
 		    	if (err) {
@@ -474,3 +478,13 @@ angular.module('bodyAppApp')
 
 		connect()
 	})
+
+	.directive('backImg', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backImg;
+        element.css({
+            'background-image': 'url(' + url +')',
+            'background-size' : 'cover'
+        });
+    };
+});

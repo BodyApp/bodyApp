@@ -5,12 +5,12 @@
         <!--Main user video-->
         <div class="main-user-title">
           <span class="main-user-name">You</span>
-          <div class="badges">
+          <div ng-if = "myBadges" class="badges">
             <img src="assets/images/icons/blocks.png">
           </div>
         </div>
         <div class="main-user-video">
-          <iframe width="100%" height="125px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+          <div id = "box1"></div>
         </div>
         <!--Main user video END-->
 
@@ -21,100 +21,100 @@
         <div class="classmates-section">
 
           <div class="classmates-row">
-            <div class="individual-classmate">
-              <!-- <img src="assets/images/icons/blocks.png"> -->
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            <div ng-show = "consumerList.length>=2" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>{{consumerObjects[consumerList[1]].firstName}}</span>
+              <div id = "box2" back-img="http://placekitten.com/g/1000/600"></div>
             </div>
 
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=3" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-
-            <div class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box3"></div>
             </div>
           </div>
 
           <div class="classmates-row">
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=4" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box4"></div>
             </div>
 
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=5" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-
-            <div class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box5"></div>
             </div>
           </div>
 
           <div class="classmates-row">
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=6" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box6"></div>
             </div>
 
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=7" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-
-            <div class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box7"></div>
             </div>
           </div>
 
           <div class="classmates-row">
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=8" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/eHUX2Gz_dhg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box8"></div>
             </div>
 
-            <div class="individual-classmate">
+            <div ng-show = "consumerList.length>=9" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>Amelia</span>
-              <iframe width="48%" height="60px" src="https://www.youtube.com/embed/qWy_aOlB45Y?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+              <div id = "box9"></div>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div ng-show = "consumerList.length>=10" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <div id = "box10"></div>
+            </div>
+
+            <div ng-show = "consumerList.length>=11" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <div id = "box11"></div>
+            </div>
+          </div>
+
+          <div class="classmates-row">
+            <div ng-show = "consumerList.length>=12" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+             <div id = "box12"></div>
+            </div>
+
+            <div ng-show = "consumerList.length>=13" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <div id = "box13"></div>
+            </div>
+          </div>
+
+          <div  class="classmates-row">
+            <div ng-show = "consumerList.length>=14" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <div id = "box14"></div>
+            </div>
+
+            <div ng-show = "consumerList.length>=15" class="individual-classmate">
+              <img src="assets/images/icons/blocks.png">
+              <span>Amelia</span>
+              <div id = "box15"></div>
             </div>
           </div>                                                         
 
@@ -126,7 +126,7 @@
       <div class="col-sm-10 trainer-column">
         <!--Trainer video-->
         <div class="trainer-screen">
-          <iframe width="100%" height="600px" src="https://www.youtube.com/embed/oS8_7KxNKhU?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+          <div id="box0" back-img="http://placekitten.com/g/1100/600"></div>
         </div>
         <!--Trainer video END-->
 
