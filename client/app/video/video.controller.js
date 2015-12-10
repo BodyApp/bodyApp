@@ -310,17 +310,20 @@ angular.module('bodyAppApp')
 			});
 
 			session.on("streamDestroyed", function (event) {
-				if (event.reason === 'networkDisconnected') {
-		      event.preventDefault(); // prevents object from being destroyed and removed from the DOM.  Replace with the user's picture?
-		      var subscribers = session.getSubscribersForStream(event.stream); // returns all of the Subscriber objects for a Stream
-		      if (subscribers.length > 0) {
-		        var subscriber = document.getElementById(subscribers[0].id);
-		        // Display error message inside the Subscriber
-		        subscriber.innerHTML = 'Lost connection. This could be due to your internet connection '
-		          + 'or because the other party lost their connection.';
-		        event.preventDefault();   // Prevent the Subscriber from being removed
-		      }
-		    }
+				event.preventDefault() // User picture now displayed when they disconnect.
+				// if (event.reason === 'networkDisconnected') {
+				// 	console.log(event);
+		  //     event.preventDefault(); // prevents object from being destroyed and removed from the DOM.  Replace with the user's picture?
+		  //     var subscribers = session.getSubscribersForStream(event.stream); // returns all of the Subscriber objects for a Stream
+		  //     if (subscribers.length > 0) {
+		  //     	console.log(subscribers);
+		  //       var subscriber = document.getElementById(subscribers[0].id);
+		  //       // Display error message inside the Subscriber
+		  //       subscriber.innerHTML = 'Lost connection. This could be due to your internet connection '
+		  //         + 'or because the other party lost their connection.';
+		  //       event.preventDefault();   // Prevent the Subscriber from being removed
+		  //     }
+		  //   }
 			});
 
 			session.on({
@@ -479,12 +482,23 @@ angular.module('bodyAppApp')
 		connect()
 	})
 
+	// .directive('backImg', function(){
+ //    return function(scope, element, attrs){
+ //        var url = attrs.backImg;
+ //        element.css({
+ //            'background-image': 'url(' + url +')',
+ //            'background-size' : 'cover'
+ //        });
+ //    };
+	// })
+
 	.directive('backImg', function(){
-    return function(scope, element, attrs){
-        var url = attrs.backImg;
-        element.css({
-            'background-image': 'url(' + url +')',
-            'background-size' : 'cover'
-        });
-    };
-});
+	  return function(scope, element, attrs){
+	      attrs.$observe('backImg', function(value) {
+	          element.css({
+	              'background-image': 'url(' + value +')',
+	              'background-size' : 'cover'
+	          });
+	      });
+	  };
+	});

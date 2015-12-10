@@ -24,12 +24,12 @@
             <div ng-show = "consumerList.length>=2" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
               <span>{{consumerObjects[consumerList[1]].firstName}}</span>
-              <div id = "box2" back-img="http://placekitten.com/g/1000/600"></div>
+              <div id = "box2" back-img="{{consumerObjects[consumerList[1]].picture}}"></div>
             </div>
 
             <div ng-show = "consumerList.length>=3" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[2]].firstName}}</span>
               <div id = "box3"></div>
             </div>
           </div>
@@ -37,13 +37,13 @@
           <div class="classmates-row">
             <div ng-show = "consumerList.length>=4" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[3]].firstName}}</span>
               <div id = "box4"></div>
             </div>
 
             <div ng-show = "consumerList.length>=5" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[4]].firstName}}</span>
               <div id = "box5"></div>
             </div>
           </div>
@@ -51,13 +51,13 @@
           <div class="classmates-row">
             <div ng-show = "consumerList.length>=6" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[5]].firstName}}</span>
               <div id = "box6"></div>
             </div>
 
             <div ng-show = "consumerList.length>=7" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[6]].firstName}}</span>
               <div id = "box7"></div>
             </div>
           </div>
@@ -65,13 +65,13 @@
           <div class="classmates-row">
             <div ng-show = "consumerList.length>=8" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[7]].firstName}}</span>
               <div id = "box8"></div>
             </div>
 
             <div ng-show = "consumerList.length>=9" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[8]].firstName}}</span>
               <div id = "box9"></div>
             </div>
           </div>
@@ -79,13 +79,13 @@
           <div class="classmates-row">
             <div ng-show = "consumerList.length>=10" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[9]].firstName}}</span>
               <div id = "box10"></div>
             </div>
 
             <div ng-show = "consumerList.length>=11" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[10]].firstName}}</span>
               <div id = "box11"></div>
             </div>
           </div>
@@ -93,13 +93,13 @@
           <div class="classmates-row">
             <div ng-show = "consumerList.length>=12" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[11]].firstName}}</span>
              <div id = "box12"></div>
             </div>
 
             <div ng-show = "consumerList.length>=13" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[12]].firstName}}</span>
               <div id = "box13"></div>
             </div>
           </div>
@@ -107,13 +107,13 @@
           <div  class="classmates-row">
             <div ng-show = "consumerList.length>=14" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[13]].firstName}}</span>
               <div id = "box14"></div>
             </div>
 
             <div ng-show = "consumerList.length>=15" class="individual-classmate">
               <img src="assets/images/icons/blocks.png">
-              <span>Amelia</span>
+              <span>{consumerObjects[consumerList[14]].firstName}}</span>
               <div id = "box15"></div>
             </div>
           </div>                                                         
@@ -126,7 +126,7 @@
       <div class="col-sm-10 trainer-column">
         <!--Trainer video-->
         <div class="trainer-screen">
-          <div id="box0" back-img="http://placekitten.com/g/1100/600"></div>
+          <div id="box0" back-img="https://placeimg.com/1100/600/animals/grayscale"></div>
         </div>
         <!--Trainer video END-->
 
@@ -144,7 +144,7 @@
           <div class="col-sm-12 footer-details">
             <a href="">Exit Class</a>
             <div ng-click = "openSongPermalink(currentSong)" id="soundcloud-song" ng-show = "currentSong.title">
-                <img ng-src="../assets/images/soundcloudWhiteLogo.png"/>
+                <!-- <img ng-src="../assets/images/soundcloudWhiteLogo.png"/> -->
                 <span>Listening To: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
             </div>
           </div>
