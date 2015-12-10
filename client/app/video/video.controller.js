@@ -225,15 +225,15 @@ angular.module('bodyAppApp')
 			session.on('streamCreated', function(event) {
 				var instructorStream = false
 				var instructorInfo;
-				var vidWidth = 264;
-				var vidHeight = 198;
+				var vidWidth = "48%";
+				var vidHeight = 60;
 
 				var streamId = event.stream.connection.data.toString()
 				var streamBoxNumber = 1
 
 				if (streamId === classToJoin.trainer._id.toString()) {
 					instructorStream = true
-					vidWidth = 900;
+					vidWidth = "100%";
 					vidHeight = 600;
 				} else {
 					if (!$scope.consumerObjects[streamId]) {
@@ -382,6 +382,8 @@ angular.module('bodyAppApp')
 		      publishAudio:true, 
 		      publishVideo:true,
 		      mirror: true,
+		      width: "100%",
+				  height: 125,
 		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
 		      style: {
 		      	buttonDisplayMode: 'on', //Mute microphone button
