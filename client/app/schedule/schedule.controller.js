@@ -309,6 +309,7 @@ angular.module('bodyAppApp')
                 }, function(user) {
                   currentUser = user;
                   $scope.currentUser = currentUser;
+                  slot.bookedUsers[currentUser._id] = true
                 }, function(err) {
                     console.log("Error adding class: " + err)
                     slot.bookedUsers[currentUser._id] = false
@@ -320,18 +321,19 @@ angular.module('bodyAppApp')
             }
         };
 
-        $scope.firstActive;
-        $scope.secondActive;
-        $scope.thirdActive;
+        //This was relevant when we had multiple tabs - one for each level
+        // $scope.firstActive;
+        // $scope.secondActive;
+        // $scope.thirdActive;
 
-        $scope.hoverTab = function(tab) {
-            switch (tab) {
-                case 'first': $scope.firstActive = true; $scope.secondActive = false; $scope.thirdActive = false;
-                case 'second': $scope.firstActive = false; $scope.secondActive = true; $scope.thirdActive = false;
-                case 'third': $scope.firstActive = false; $scope.secondActive = false; $scope.thirdActive = true;
-                default: break
-            }
-        }
+        // $scope.hoverTab = function(tab) {
+        //     switch (tab) {
+        //         case 'first': $scope.firstActive = true; $scope.secondActive = false; $scope.thirdActive = false;
+        //         case 'second': $scope.firstActive = false; $scope.secondActive = true; $scope.thirdActive = false;
+        //         case 'third': $scope.firstActive = false; $scope.secondActive = false; $scope.thirdActive = true;
+        //         default: break
+        //     }
+        // }
 
         $scope.formattedWaitTime = function(slot, timeNow) {
             var returnValue = Math.round((slot - timeNow)/(1000*60))

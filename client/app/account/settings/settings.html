@@ -1,48 +1,9 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
 
-<div class="container full-screen-height">
-  
-  <div class="row">
-  
-    <div class = "mt32">
-      <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}</button>
-      <!-- <button class="btn btn-lg btn-primary">Change Current Card: {{currentUser.stripe.card.brand}} ending {{currentUser.stripe.card.last4}}</button> -->
-    </div>
-    <!-- <div class="row changePasswordRow" ng-hide="true">
-      <button type="submit" class="btn btn-lg btn-primary" style="visibility: visible;">
-        Change Password
-      </button>
-
-      <div class= "changePasswordForm" ng-hide="true">
-        <div class="col-sm-4">
-          <h1>Change Password</h1>
-        </div>
-        <div class="col-sm-3">
-          <form class="form" name="form" ng-submit="changePassword(form)" novalidate>
-            <div class="form-group">
-              <label>Current Password</label> 
-              <input type="password" name="password" class="form-control" ng-model="user.oldPassword"
-                     mongoose-error/>
-              <p class="help-block" ng-show="form.password.$error.mongoose">
-                  {{ errors.other }}
-              </p>
-            </div>
-            <div class="form-group">
-              <label>New Password</label>
-              <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword"
-                     ng-minlength="3"
-                     required/>
-              <p class="help-block"
-                 ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
-                Password must be at least 3 characters.
-              </p>
-            </div>
-            <p class="help-block"> {{ message }} </p>
-            <button class="btn btn-lg btn-primary" type="submit">Save changes</button>
-          </form>
-        </div>
-      </div> -->
-
-  </div>
+<div class="container dashboard-list-view">
+  <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">
+    Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}
+  </button>
 </div>
-<div ng-include="'components/footer/footer.html'"></div>
+
+<div class = "mt64" ng-include="'components/footer/footer.html'"></div>

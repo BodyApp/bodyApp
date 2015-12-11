@@ -3,9 +3,9 @@
 angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('newuser1', {
-        url: '/newuser1',
+      .state('newuser', {
+        url: '/newuser',
         templateUrl: 'app/newUser/newUser1.html',
         controller: 'NewUserCtrl'
-      });
+      })
   });

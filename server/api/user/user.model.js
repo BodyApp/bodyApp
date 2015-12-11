@@ -27,6 +27,8 @@ var UserSchema = new Schema({
   classesTaught: [],
   facebookId: String,
   friendList: Array,
+  injuries: String,
+  bookedIntroClass: Boolean,
   facebook: {},
   twitter: {},
   google: {},

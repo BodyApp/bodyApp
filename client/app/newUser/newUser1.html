@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
 
-<div class="main-container">
+<div class="main-container" ng-hide = "newUserStep != 1">
 	<section>
 		<div class="container page-2-hero">
             <div id="user-social-setup" class="col-sm-6 text-center">
@@ -13,11 +13,86 @@
             	<h1 class="mb8">Hi Justin, help us get to know you</h1>
             	<h2 class="mb16">You’ve decided you want to get into the best shape of your life - fantastic! The BODY program starts at your current fitness level and evolves as you progress. We’re here to help you achieve results, it’s that simple.</h2>
             	<p>Do you have any prior injuries or health conditions?</p>
-            	<textarea class="large-input-box" cols="40" rows="3" name="health-conditions"></textarea>
-            	<a href="" class="btn">Let's get started</a>
+            	<textarea ng-model = "injuries" class="large-input-box" cols="40" rows="3" name="health-conditions"></textarea>
+            	<a href="" class="btn" ng-click = "saveInjuries(injuries)">Let's get started</a>
             </div>
 		</div>
 	</section>
+</div>
+
+<div class="main-container" ng-hide = "newUserStep != 2">
+      <section>
+        <div class="container page-3">
+            <div class="col-sm-12 mb32">
+                  <h1>Get started with our Introductory Class</h1>
+                  <h2>To get started with the BODY program, start with a complimentary intro class so you can reach your goals with world class coaching and a community of like-minded people. During the intro class, one of our coaches will teach you the fundamentals of moving safely and effectively, while establishing a baseline for your fitness level. Intro classes are for all fitness levels and are provided in a safe and supportive environment.</h2>                               
+            </div>
+
+            <div class="col-sm-12">
+                  <h1 class="mb8">What time works for you?</h1>
+            </div>
+            <div class="intro-class-times" ng-click = "incrementStep()">
+                  <div class="col-sm-3">
+                        <a href="" class="btn"><span class="day">Thursday November 26</span><br><span class="time">8-9pm EST</span></a>
+                  </div>
+                  <div class="col-sm-3">
+                        <a href="" class="btn"><span class="day">Thursday November 26</span><br><span class="time">8-9pm EST</span></a>
+                  </div>
+                  <div class="col-sm-3">
+                        <a href="" class="btn"><span class="day">Thursday November 26</span><br><span class="time">8-9pm EST</span></a>
+                  </div>
+                  <!-- <div class="col-sm-3">
+                        <a href="" class="seemore">See more times...</a>
+                  </div> -->
+              </div>
+        </div>
+    </section>
+</div>
+
+<div class="main-container" ng-hide = "newUserStep != 3">
+      <section>
+        <div class="container page-4">
+            <div class="col-sm-8 mb32">
+                  <h1>Your class has been reserved!</h1>
+                  <p class="day">Saturday November 28</p>
+                  <p class="time">11-12pm EST</p>
+                  <a href="">Add to calendar</a>
+
+                  <h1 class="mt40">Class checklist</h1>
+                  <ul>
+                        <li><i class="ti ti-check-box"> </i>6 feet of space to move freely</li>
+                        <li><i class="ti ti-check-box"> </i>Laptop</li>
+                        <li><i class="ti ti-check-box"> </i>Robust wifi connection</li>
+                        <li><i class="ti ti-check-box"> </i>Exercise mat (recommended)</li>
+                  </ul>
+            </div>
+
+            <div class="col-sm-4 next-up-box">
+                  <h2>Next Up</h2>
+                  <div class="progress-bar"></div>
+                  <a href="" ng-click = "incrementStep()">Invite Friends</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="main-container" ng-hide = "newUserStep != 4">
+      <section>
+        <div class="container page-5">
+            <div class="col-sm-8 mb32">
+                        <h1>Get started with our Introductory Class</h1>
+                  <h2>Exercising with friends can increase your results by 63%. After all, friends that sweat together stick together.</h2>
+                  <a class="btn" href="">Facebook</a>
+                  <a class="btn" href="">Share your link</a>
+            </div>
+
+            <div class="col-sm-4 next-up-box">
+                  <h2>Next Up</h2>
+                  <div class="progress-bar"></div>
+                  <a href="" ng-click = "goToDashboard()">Login to your dashboard</a>
+            </div>
+        </div>
+    </section>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>

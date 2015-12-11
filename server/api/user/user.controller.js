@@ -422,6 +422,22 @@ exports.saveClassTaught = function(req, res, next) {
   });
 };
 
+exports.saveInjuries = function(req, res, next) {
+  var injuries = req.body.injuryString;
+  var userId = req.user._id
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      console.log(user);
+      user.injuries = injuries;
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
 exports.createTokBoxSession = function(req, res, next) {
   // The session will the OpenTok Media Router:
   opentok.createSession({mediaMode:"routed"}, function(err, session) {

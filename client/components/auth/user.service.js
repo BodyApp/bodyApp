@@ -30,6 +30,12 @@ angular.module('bodyAppApp')
           controller:'saveClassTaught'
         }
       },
+      saveInjuries: {
+        method: 'PUT',
+        params: {
+          controller:'saveInjuries'
+        }
+      },
       getInstructors: {
         method: 'GET',
         isArray: true,

@@ -8,8 +8,13 @@ angular.module('bodyAppApp')
 
     Auth.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
-          event.preventDefault();
-          $state.go('schedule');
+          if (Auth.getCurrentUser().takenIntro) {
+            event.preventDefault();
+            $state.go('schedule');
+          } else {
+            event.preventDefault;
+            $state.go('newuser');
+          }
         }
     });
   });

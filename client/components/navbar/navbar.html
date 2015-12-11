@@ -51,12 +51,12 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="isLoggedIn()">
+                            <li ng-show="isLoggedIn() && bookedIntroClass">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/schedule">Dashboard</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}">
+                            <li ng-show="isLoggedIn() && bookedIntroClass" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
                                 Hi {{getCurrentUser().nickName}}
                               </a>
