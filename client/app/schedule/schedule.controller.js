@@ -11,6 +11,7 @@ angular.module('bodyAppApp')
             loggedIn = boolAnswer;
             if (!loggedIn) {
               // event.preventDefault();
+              $state.go('/')
                 var loginModal = openLoginModal()
             } else {
                 User.getSubscription({ id: currentUser._id })

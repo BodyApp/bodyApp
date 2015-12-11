@@ -16,7 +16,7 @@ angular.module('bodyAppApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/newuser');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -36,7 +36,7 @@ angular.module('bodyAppApp', [
       // Intercept 401s and redirect you to schedule (since login is a modal)
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/');
+          $location.path('/newuser');
           // remove any stale tokens
           $cookieStore.remove('token');
           return $q.reject(response);
@@ -54,7 +54,7 @@ angular.module('bodyAppApp', [
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           event.preventDefault();
-          $state.go('schedule');
+          $state.go('newuser');
         }
       });
     });
