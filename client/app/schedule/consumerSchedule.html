@@ -1,194 +1,201 @@
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
 
+<div class="main-container">
+  <section>
+    <div class="container dashboard-list-view">
+        <div class="col-sm-3 workout-column">
+          <h1>Today's Workout</h1>
+          <h3>The Flip Side</h3>
+          <p style = "padding-right: 30px">
+            We are developing those leg muscles and improving hip and ankle mobility. The Flip Side is all about increasing our workload capacity (endurance) and speed with which you can transition from exercise to exercise.<br><br>
+            <strong>Concentration</strong><br>
+            Hip and ankle mobility<br><br>
+            <strong>Skill Development</strong><br>
+            Yoga Pushup<br><br>
+            <strong>Workout</strong><br>
+            Air Squats<br>Burpees<br>V-ups
+          </p>
+        </div>
 
-<div class="container">
-
-    <div class="row">
-      <div class="col-md-3 page-sidebar-left full-screen-height">
-      <!--left sidebar-->
-        <h3 class="uppercase text-center mb8 mt8">Today's Workout</h3>
-        <h5 id="blue" class="text-center bold mb0"><i>{{wod.name}}</i></h5>
-        <h5 class="text-center mb32"><i>{{getFormattedDateTime(nil, true).dayOfWeek}} {{getFormattedDateTime(nil, true).month}} {{getFormattedDateTime(nil, true).day}}, {{getFormattedDateTime(nil, true).year}}</i></h5>
-
-        <!--WOD tabs-->
-                <div class="tabbed-content button-tabs text-center">
-                    <ul class="tabs" ng-init = "firstActive = true">
-                        <li ng-class="{active: firstActive}" ng-mouseover = "firstActive = true; secondActive = false; thirdActive = false">
-                            <div class="tab-title">
-                                <span>All</span>
-                            </div>
-                        </li>
-                        <!-- <li ng-class="{active: secondActive}" ng-mouseover = "firstActive = false; secondActive = true; thirdActive = false">
-                            <div class="tab-title">
-                                <span>Lvl 2</span>
-                            </div>
-                            
-                        </li>
-                        <li ng-class="{active: thirdActive}" ng-mouseover = "firstActive = false; secondActive = false; thirdActive = true">
-                            <div class="tab-title">
-                                <span>Lvl 3</span>
-                            </div>
-                            
-                        </li> -->
-                    </ul>
-                <ul class="content">
-                  <li ng-class="{active: firstActive}">
-                    <div class="tab-content">
-                      <!--Strength movements-->
-                      <h5 class="bold uppercase mb16">Strength</h5>
-                      <p id="dark-text">{{wod.strength}}</p>
-                      
-                      <!--WOD movements-->
-                      <h5 class="bold uppercase mb8">Workout</h5>
-                      <h6 class="mb16"><i>{{wod.workout.type}}</i></h6>
-                      <p id="dark-text" class="mb0">{{wod.workout.first}}</p>
-                      <p id="dark-text" class="mb0">{{wod.workout.second}}</p>
-                      <p id="dark-text" class="mb0">{{wod.workout.third}}</p>
-                    </div>
-                  </li>
-                  <li ng-class="{active: secondActive}">
-                    <div class="tab-content">
-                      <!--Strength movements-->
-                      <h5 class="bold uppercase mb16">Strength</h5>
-                      <p id="dark-text">Power Snatch 12-12-12-12</p>
-                      
-                      <!--WOD movements-->
-                      <h5 class="bold uppercase mb8">Workout</h5>
-                      <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                      <p id="dark-text" class="mb0">12 Air Squats</p>
-                      <p id="dark-text" class="mb0">25 Burpees</p>
-                      <p id="dark-text" class="mb0">10 V-Ups</p>
-                    </div>
-                  </li>
-                  <li ng-class="{active: thirdActive}">
-                    <div class="tab-content">
-                      <!--Strength movements-->
-                      <h5 class="bold uppercase mb16">Strength</h5>
-                      <p id="dark-text">Power Snatch 12-12-12-12</p>
-                      
-                      <!--WOD movements-->
-                      <h5 class="bold uppercase mb8">Workout</h5>
-                      <h6 class="mb16"><i>3 Rounds for Time</i></h6>
-                      <p id="dark-text" class="mb0">12 Air Squats</p>
-                      <p id="dark-text" class="mb0">25 Burpees</p>
-                      <p id="dark-text" class="mb0">10 V-Ups</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-                <!--end of button tabs-->
-      </div>
-      <!--end of left sidebar-->
-    <tour step="currentStep">
-      <div class="col-md-9">
-        <!--reserved classes-->
-        <div class="your-classes col-md-12">
-
-          <h3 class="uppercase text-center mb16">Your Classes</h3>
+        <div class="col-sm-9 class-column">
+          
+          <!--RESERVED CLASSES BOX -->
           <div class="reservations">
-<!--             <span tourtip-step = "1"
-                  tourtip="Normally, you'd have to wait until 30 minutes before your class.  But we'll just go ahead and let you in right now!" 
-                  tourtip-next-label="Click Join Now Button"
-                  tourtip-placement="right"
-                  tourtip-offset-horizontal="525"  
-                  tourtip-offset-vertical="-25"  
-            ></span> -->
-            
-              <table class="reservations-table" ng-repeat="day in days">
-                <tbody ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
-                  <tr >
-                    <td class = "col-md-9">
-                      <span id="dark-text" >Lvl 1 with {{slot.trainer.firstName}} {{slot.trainer.lastName}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
-                    </td>
-                    <td class = "col-md-3" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-                      <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">JOIN NOW</a>
-                    </td>
-                    <td class = "col-md-3" ng-if = "slot.date > (timeNow + 1000*60*15)">
-                      <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
-                    </td>
-                  </tr>
-              </tbody>
-              <tbody ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
-                  <tr >
-                    <td class = "col-md-9">
-                      <span id="dark-text" >You are teaching {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
-                    </td>
-                    <td class = "col-md-3" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-                      <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">TEACH NOW</a>
-                    </td>
-                    <td class = "col-md-3" ng-if = "slot.date > (timeNow + 1000*60*15)">
-                      <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
-                    </td>
-                  </tr>
-              </tbody>
-            </table>
+            <h1 style = "text-align:center">Your Reservations</h1>
+            <div id="reserved-classes">
+              <p><a class="btn lvl1-class" href="">Start Class</a><span class="class-type">Introduction Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p>
+
+              <!-- <p><a class="btn lvl1-class" href="">Start Class</a><span class="class-type">Lv1 Foundation Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p>
+              <p><a class="btn lvl1-class" href="">Start Class</a><span class="class-type">Lv2 Expansion Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p>
+              <p><a class="btn lvl1-class" href="">Start Class</a><span class="class-type">Lv3 Competitor Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p> -->
+
+              <!-- <p><a class="btn introduction-class invite-friends" href="">Invite Friends</a><span class="class-type">Introduction Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p> -->
+
+              <p><a class="btn lvl1-class invite-friends" href="">Invite Friends</a><span class="class-type">Lv1 Foundation Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p>
+
+              <p><a class="btn lvl1-class invite-friends" href="">Invite Friends</a><span class="class-type">Lv2 Expansion Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p>
+
+              <!-- <p><a class="btn lvl3-class invite-friends" href="">Invite Friends</a><span class="class-type">Lv3 Competitor Class</span>: <span class="date">Today September 28</span> at <span class="time">5pm EST</span></p> -->
+            </div>
           </div>
-        </div>
-        <!--end of reserved classes-->
+          <!--RESERVED CLASSES BOX END -->
 
-        <!--schedule-->
-        <div class="col-md-12">
+          <!--CLASS KEY -->
+<!--           <div class="class-key">
+            <span class="title">Classes: </span>
+            <div class="swatch intro"></div><span>Introduction</span>
+            <div class="swatch lvl1"></div><span>Foundation (Lvl 1)</span>
+            <div class="swatch lvl2"></div><span>Expansion (Lvl 2)</span>
+            <div class="swatch lvl3"></div><span>Competitor (Lvl 3)</span>            
+          </div> -->
+          <!--CLASS KEY END-->
 
-          <h3 class="uppercase text-center mt32">Class Schedule</h3>
-          <div class = "text-center">
-            <label class = "showAvailableClassesLabel">
-<!--                 <span tourtip-step = "0"
-                    tourtip="Choose a {{dayOfWeekToday}} Class!  This is a basic, real-time iteration of the BODY schedule.  Book a Class By Selecting a Class Time.  You will have the option to add the class to a calendar and/or invite friends to join you." 
-                    tourtip-next-label="Choose a {{dayOfWeekToday}} class!"
-                    tourtip-placement="left"    
-                    tourtip-offset-horizontal = "-80"
-                    tourtip-offset-vertical = "175"
-                ></span> -->
-              <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
-              <span style = "color:black">Only show available classes</span>
-            </label>
+          <!--SCHEDULE-->
+          <div class="schedule-list">
+            
+              <h1 style = "text-align:center">Schedule</h1>
+              <h5 class="current-week" style = "text-align:center; margin-bottom: 0px">December 7 - December 14</h5>
+              <!-- <span class="week-select">
+                <a href="">&larr; Previous</a>
+                <a href="">Today</a>
+                <a href="">Next &rarr;</a>
+              </span> -->
+
+            <!--CLASS TIMES-->
+            <div class="class-table">
+              <table class="table">
+                <tr class="table-header">
+                  <th colspan="2">MON DEC 7, 2015</th>
+                  <th>CLASS</th>
+                  <th>INSTRUCTOR</th>
+                </tr>
+                <tr>
+                  <td>7:00 am - 7:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>8:00 am - 8:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>7:30 pm - 8:20 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Expansion (Lvl 2)</td>
+                  <td>Justin Mendelson</td>
+                </tr>
+                <tr>
+                  <td>8:30 pm - 9:20 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Mastery (Lvl 3)</td>
+                  <td>Justin Mendelson</td>
+                </tr>
+                <tr class="table-header">
+                  <th colspan="2">TUE DEC 8, 2015</th>
+                  <th>CLASS</th>
+                  <th>INSTRUCTOR</th>
+                </tr>
+                <tr>
+                  <td>10:00 am - 10:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Introduction</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>11:00 am - 11:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>1:00 pm - 1:50 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>2:00 pm - 2:50 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Justin Mendelson</td>
+                </tr>
+                <tr class="table-header">
+                  <th colspan="2">WED DEC 9, 2015</th>
+                  <th>CLASS</th>
+                  <th>INSTRUCTOR</th>
+                </tr>
+                <tr>
+                  <td>7:00 am - 7:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>8:00 am - 8:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>7:30 pm - 8:20 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Justin Mendelson</td>
+                </tr>
+                <tr>
+                  <td>8:30 pm - 9:20 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Justin Mendelson</td>
+                </tr>
+                <tr class="table-header">
+                  <th colspan="2">THU DEC 10, 2015</th>
+                  <th>CLASS</th>
+                  <th>INSTRUCTOR</th>
+                </tr>
+                <tr>
+                  <td>7:00 am - 7:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>8:00 am - 8:50 am</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Chelsea Aguiar</td>
+                </tr>
+                <tr>
+                  <td>7:30 pm - 8:20 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Justin Mendelson</td>
+                </tr>
+                <tr>
+                  <td>8:30 pm - 9:20 pm</td>
+                  <td><a class="btn lvl1-class" href="">Sign Up</a></td>
+                  <td>Foundations (Lvl 1)</td>
+                  <td>Justin Mendelson</td>
+                </tr>                
+              </table>
+            </div>
+            <!--CLASS TIMES END-->
+
           </div>
-          <div class="row times container-fluid">
-            
+          <!--SCHEDULE END-->
 
-            
-            <!-- <div class = "col-xs-4 col-md-5 col-lg-5" ></div> -->
-            
-              <div class = "col-xs-0 col-sm-1 col-md-3 col-lg-2" ></div>
-              <div>
-                <div class="col-sm-1 text-center columnStyle column" id="scheduleColumn" ng-repeat="day in days">        
-                  <!-- <h3 ng-show="day.isToday">Today</h3> -->
-                  <h4 class = "dateTitles" ng-hide="day.isToday">{{ day.name }}</h4>
-                  <h5 class = "dateTitles">{{ day.formattedDate }}</h5>
-                  
-                  <div class="time-slot" ng-repeat="slot in day.slots">     
 
-                    <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past || (slot.trainer._id === currentUser._id)" ng-click="openBookingConfirmation(slot);">
-                    <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->  
 
-                    <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
-                      <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
-                      <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
-                      <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
-                      <span ng-if="!slot.past && (slot.trainer._id === currentUser._id)"> Teaching</span>
-                      <span ng-if="slot.past && (slot.trainer._id === currentUser._id)"> Taught</span>
-                      <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past && (slot.trainer._id != currentUser._id)">Available</span>
-                      <span ng-if="slot.bookedUsers[currentUser._id] && slot.past">Taken</span>
-                      <br>
-                      <div ng-if = "slot.trainer._id != currentUser._id">{{slot.trainer.firstName}}</div>
-                      <div ng-if = "slot.trainer._id != currentUser._id">{{slot.trainer.lastName}}</div>
-                      <div ng-if = "slot.trainer._id === currentUser._id">YOU</div>
-                      <div ng-if = "slot.trainer._id === currentUser._id">{{getNumberOfBookedUsers(slot)}} In Class</div>
 
-                    </label>
 
-                  </div>
 
-                </div> 
-
-              </div>
-          </div>
-        </div>
 
         </div>
-        <!--end of schedule-->
-      </div>
     </div>
+  </section> 
 </div>
-</tour> 
+
 <div ng-include="'components/footer/footer.html'"></div>
