@@ -281,10 +281,11 @@ angular.module('bodyAppApp')
         // }
 
         $scope.openBookingConfirmation = function (slot) {
-            if (!loggedIn) {
-                slot.bookedUsers[currentUser._id] = false
-                return openLoginModal()
-            } else if (checkWhetherUserIsSubscribed() === true) {
+            // if (!loggedIn) {
+            //     slot.bookedUsers[currentUser._id] = false
+            //     return openLoginModal()
+            // } else 
+            if (checkWhetherUserIsSubscribed() === true) {
                 var modalInstance = $modal.open({
                   animation: true,
                   templateUrl: 'app/schedule/bookingConfirmation.html',
