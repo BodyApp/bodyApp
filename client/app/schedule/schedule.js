@@ -7,6 +7,6 @@ angular.module('bodyAppApp')
         url: '/schedule',
         templateUrl: 'app/schedule/consumerSchedule.html',
         controller: 'ConsumerScheduleCtrl',
-        // authenticate: true
+        authenticate: true
       });
   })

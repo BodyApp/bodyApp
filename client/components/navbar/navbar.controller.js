@@ -45,6 +45,10 @@ angular.module('bodyAppApp')
       $window.location.reload()
     };
 
+    $scope.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
+
     $scope.isActive = function(route) {
       return route === $location.path();
     };

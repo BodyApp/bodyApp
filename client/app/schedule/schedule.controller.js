@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
         var loggedIn = false
 
-        Auth.isLoggedInAsync(function(boolAnswer) {
-            loggedIn = boolAnswer;
-            if (!loggedIn) {
-              // event.preventDefault();
-              $state.go('/')
-                var loginModal = openLoginModal()
-            } else {
-                User.getSubscription({ id: currentUser._id })
-            }
-        });
+        // Auth.isLoggedInAsync(function(boolAnswer) {
+        //     loggedIn = boolAnswer;
+        //     if (!loggedIn) {
+        //       // event.preventDefault();
+        //       $state.go('main')
+        //         // var loginModal = openLoginModal()
+        //     } else {
+        //         User.getSubscription({ id: currentUser._id }) //This is happening too frequently
+        //     }
+        // });
 
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         $scope.wod = $firebaseObject(ref.child('WOD'));
