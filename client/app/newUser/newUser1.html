@@ -4,13 +4,13 @@
 	<section>
 		<div class="container page-2-hero">
             <div id="user-social-setup" class="col-sm-6 text-center">
-            	<img class="user-social-image mb16" src="assets/images/justin-photo.jpg">
+            	<img class="user-social-image mb16" src="{{currentUser.picture}}">
             	<img class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
-            	<h1>Justin Mendelson</h1>
-            	<h2>jmendelson22@gmail.com</h2>
+            	<h1>{{currentUser.firstName}} {{currentUser.lastName}}</h1>
+            	<h2>{{currentUser.email}}</h2>
             </div>
             <div id="user-health-conditions" class="col-sm-6">
-            	<h1 class="mb8">Hi Justin, help us get to know you</h1>
+            	<h1 class="mb8">Hi {{currentUser.firstName}}, help us get to know you</h1>
             	<h2 class="mb16">You’ve decided you want to get into the best shape of your life - fantastic! The BODY program starts at your current fitness level and evolves as you progress. We’re here to help you achieve results, it’s that simple.</h2>
             	<p>Do you have any prior injuries or health conditions?</p>
                   <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
