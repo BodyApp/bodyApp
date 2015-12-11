@@ -27,7 +27,7 @@ angular.module('bodyAppApp')
     $scope.isInstructor = Auth.isInstructor;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
-    $scope.bookedIntroClass = $scope.getCurrentUser()
+    $scope.bookedIntroClass = $scope.getCurrentUser().bookedIntroClass
 
     $scope.logoStyle = {"background-color": "white"};
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"

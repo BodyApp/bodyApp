@@ -12,7 +12,6 @@ angular.module('bodyAppApp')
 
     $scope.goToDashboard = function() {
     	$state.go('schedule');
-
     }
 
     $scope.saveInjuries = function(injuryString) {
@@ -21,8 +20,9 @@ angular.module('bodyAppApp')
     		$scope.errorDiv = true
     		console.log("Didn't enter any information!")
     	} else {
-    		User.saveInjuries({id: $scope.currentUser}, {injuryString: injuryString}).$promise.then(function(confirmation) {
+    		User.saveInjuries({id: $scope.currentUser}, {injuryString: injuryString}).$promise.then(function(user) {
 				  console.log("Successfully saved injury info.");
+				  Auth.getUpdatedUser();
 			  })
 			  $scope.newUserStep++;	
     	}
