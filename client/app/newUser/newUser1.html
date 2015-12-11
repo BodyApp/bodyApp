@@ -13,6 +13,7 @@
             	<h1 class="mb8">Hi Justin, help us get to know you</h1>
             	<h2 class="mb16">You’ve decided you want to get into the best shape of your life - fantastic! The BODY program starts at your current fitness level and evolves as you progress. We’re here to help you achieve results, it’s that simple.</h2>
             	<p>Do you have any prior injuries or health conditions?</p>
+                  <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
             	<textarea ng-model = "injuries" class="large-input-box" cols="40" rows="3" name="health-conditions"></textarea>
             	<a href="" class="btn" ng-click = "saveInjuries(injuries)">Let's get started</a>
             </div>
