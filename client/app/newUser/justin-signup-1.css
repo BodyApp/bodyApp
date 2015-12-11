@@ -1,0 +1,62 @@
+.page-2-hero {
+    margin-top: 4%;
+    margin-bottom: 6%;  
+}
+
+.user-social-image {
+  top: 0px;
+  left: 40%;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  height: 120px;
+  border: 3px solid #fff;
+  margin-left: 50px;
+}
+
+.facebook-social-image {
+  position: relative;
+  top: 32px;
+  left: -42px;
+  z-index: 3;
+}
+
+#user-social-setup h1 {
+  font-size: 28px;
+  line-height: 40px;
+  margin-bottom: 0px;
+}
+
+#user-social-setup h2 {
+  font-size: 28px;
+  line-height: 40px;  
+  color: #6f6f6f;
+}
+
+#user-health-conditions h1 {
+  font-size: 28px;
+  line-height: 40px;
+}
+
+#user-health-conditions h2 {
+  font-size: 16px;
+  line-height: 25px;
+  color: #53585F;
+}
+
+#user-health-conditions p {
+  font-size: 12px;
+  color: #0D1c45;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.large-input-box {
+  width: 100%;
+  height: 100px;
+  border: 2px solid #0D1c45;
+  border-radius: 8px;
+  padding-left: 10px;
+  background: #fff
+}

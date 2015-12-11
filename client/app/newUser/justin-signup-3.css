@@ -1,0 +1,31 @@
+.page-4 {
+  margin-top: 3%;
+  margin-bottom: 8%;
+}
+.page-4 h1 {
+  font-size: 28px;
+  line-height: 40px;
+  margin-bottom: 16px;
+}
+.page-4 h2 {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 8px;
+}
+.page-4 .day {
+  font-size: 24px;
+  line-height: 24px;
+  margin-bottom: 5px;
+  color: #0D1C45;
+  font-weight: 600;
+}
+.page-4 .time {
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 0px;
+  color: #0D1C45;
+  margin-bottom: 5px;
+}
+.page-4 li {
+  color: #0D1C45;
+}
