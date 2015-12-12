@@ -115,21 +115,28 @@
 
 
         <div class="class-details">
-          <h1 id="timer">10:02</h1>
-          <table>
+          <h1 id="timer"><timer class = "clock" start-time="classTime">{{minutes}}:{{seconds >= 10 ? seconds : "0" + seconds}}</timer></h1>
+          <!-- <table>
             <tr>
               <td><a href="">Start</a></td>
               <td><a href="">Stop</a></td>
               <td><a href="">Reset</a></td>
             </tr>
-          </table>
+          </table> -->
           <h4>Workout</h4>
           <p><strong>Skill</strong><br>Airsquat<br><strong>Benchmark</strong><br>1 min burpees</p>
           <h4>Song</h4>
-          <p class="song">Kiss you in the Morning, Michael Ray <a href="#">Change Song</a></p>
+          <div ng-click = "openSongPermalink(currentSong)" id="soundcloud-song" ng-show = "currentSong.title">
+                <!-- <img ng-src="../assets/images/soundcloudWhiteLogo.png"/> -->
+                <span class="song">Listening To: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
+            </div>
+          <!-- <p class="song">Kiss you in the Morning, Michael Ray <a href="#">Change Song</a></p> -->
+          <h4>Volume (Entire class)</h4>
+          <form>
+                
+                <input type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />
+            </form>   
         </div>
-
-    
     </div>
   </section> 
     

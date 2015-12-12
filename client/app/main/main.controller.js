@@ -9,10 +9,10 @@ angular.module('bodyAppApp')
     Auth.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
           if (Auth.getCurrentUser().bookedIntroClass) {
-            event.preventDefault();
+            // event.preventDefault();
             $state.go('schedule');
           } else {
-            event.preventDefault;
+            // event.preventDefault;
             $state.go('newuser');
           }
         }
