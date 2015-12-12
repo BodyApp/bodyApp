@@ -20,19 +20,51 @@ angular.module('bodyAppApp')
 
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         $scope.wod = $firebaseObject(ref.child('WOD'));
+        $scope.thisWeek;
+        var unbindMethod = function(){};
 
-        var todayDate = new Date();
-        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate();
+        $scope.setCalendarToThisWeek = function() { thisWeek() }
+        function thisWeek() {
+          $scope.thisWeek = true; 
+          var todayDate = new Date();
+          $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate();
 
-        var sunDate = new Date();
-        sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-        var sunGetDate = sunDate.getDate();
-        var sunGetMonth = sunDate.getMonth()+1;
-        var sunGetYear = sunDate.getFullYear();
-        var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
+          var sunDate = new Date();
+          sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+          var sunGetDate = sunDate.getDate();
+          var sunGetMonth = sunDate.getMonth()+1;
+          var sunGetYear = sunDate.getFullYear();
+          var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
-        Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days');
-        
+          unbindMethod()
+          Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
+            unbindMethod = unbind
+          });
+        }
+
+        $scope.setCalendarToNextWeek = function() { nextWeek() }
+        function nextWeek() {
+          $scope.thisWeek = false;
+          var todayDate = new Date();
+          var nextWeekTime = todayDate.getTime() + 1000*60*60*24*7;
+          var nextWeekDate = new Date(nextWeekTime);
+          $scope.dateToday = "" + nextWeekDate.getMonth() + nextWeekDate.getDate();
+
+          var sunDate = new Date();
+          sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
+          var sunGetDate = sunDate.getDate();
+          var sunGetMonth = sunDate.getMonth()+1;
+          var sunGetYear = sunDate.getFullYear();
+          var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
+
+          unbindMethod()
+          Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
+            unbindMethod = unbind
+          });
+        }
+
+        thisWeek();
+
         $scope.availableClasses = true;
         $scope.timeNow = new Date().getTime();
         $interval(function() {
@@ -309,7 +341,6 @@ angular.module('bodyAppApp')
                 }, function(user) {
                   currentUser = user;
                   $scope.currentUser = currentUser;
-                  slot.bookedUsers[currentUser._id] = true
                 }, function(err) {
                     console.log("Error adding class: " + err)
                     slot.bookedUsers[currentUser._id] = false

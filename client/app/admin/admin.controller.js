@@ -160,6 +160,7 @@ angular.module('bodyAppApp')
 
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
         syncObject[date.getDay()] = syncObject[date.getDay()] || {}
+        syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {}
         syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
         syncObject.$save().then(function() {
           console.log("new workout saved");

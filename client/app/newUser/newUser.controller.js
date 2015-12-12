@@ -88,7 +88,8 @@ angular.module('bodyAppApp')
     $scope.getTime = function(classSent) {
     	if (classSent) {
 	    	var dateToReturn = new Date(classSent.$value)
-		    return (dateToReturn.getHours() < 12) ? dateToReturn.getHours() + "am" : dateToReturn.getHours() - 12 + "pm" 
+	    	var minutes = dateToReturn.getMinutes() < 10 ? "0" + dateToReturn.getMinutes() : dateToReturn.getMinutes()
+		    return (dateToReturn.getHours() < 12) ? dateToReturn.getHours() + ":" + minutes + "am" : (dateToReturn.getHours() - 12) + ":" + minutes + "pm" 
 		  }
     }
 

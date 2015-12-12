@@ -7,6 +7,9 @@ angular.module('bodyAppApp')
   	service.userHasClassNow = false;
   	service.classUserJustJoined;
 
+    var ref = new Firebase("https://bodyapp.firebaseio.com/"); 
+    var fbObject;
+
   	service.setCurrentUser = function(user) {
   		currentUser = user
   	}
@@ -24,11 +27,16 @@ angular.module('bodyAppApp')
   	}
 
   	service.setFirebaseObject = function(weekRef) {
-	    var ref = new Firebase("https://bodyapp.firebaseio.com/");  
 	    var weekRef = ref.child(weekRef);
-
-			return $firebaseObject(weekRef);
+      fbObject = $firebaseObject(weekRef);
+			return fbObject;
   	}
+
+    // service.clearFirebaseObject = function() {
+    //   fbObject = null;
+    //   fbObject = $firebaseObject()
+    //   return fbObject;
+    // }
 
   	return service
   })

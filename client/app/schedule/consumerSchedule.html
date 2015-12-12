@@ -67,19 +67,17 @@
         <!--schedule-->
         <div class="col-md-12">
 
-          <h3 class="uppercase text-center mt32">Class Schedule</h3>
+          <h3 class="uppercase text-center">Class Schedule</h3>
+          <div class="week-select mb32" style = "text-align:center;">
+            <a href="" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()">&larr; Previous Week</a>
+            <a href="" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()">Next Week &rarr;</a>
+          </div>
           <div class = "text-center">
-            <label class = "showAvailableClassesLabel">
-<!--                 <span tourtip-step = "0"
-                    tourtip="Choose a {{dayOfWeekToday}} Class!  This is a basic, real-time iteration of the BODY schedule.  Book a Class By Selecting a Class Time.  You will have the option to add the class to a calendar and/or invite friends to join you." 
-                    tourtip-next-label="Choose a {{dayOfWeekToday}} class!"
-                    tourtip-placement="left"    
-                    tourtip-offset-horizontal = "-80"
-                    tourtip-offset-vertical = "175"
-                ></span> -->
+            <!-- <label class = "showAvailableClassesLabel">
               <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
               <span style = "color:black">Only show available classes</span>
             </label>
+            
           </div>
           <div class="row times container-fluid">
             
