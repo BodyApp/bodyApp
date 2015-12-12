@@ -24,6 +24,12 @@ angular.module('bodyAppApp')
           controller:'addBookedClass'
         }
       },
+      addIntroClass: {
+        method: 'PUT',
+        params: {
+          controller:'addIntroClass'
+        }
+      },
       saveClassTaught: {
         method: 'PUT',
         params: {

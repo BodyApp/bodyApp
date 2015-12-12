@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 
     Auth.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
-          if (Auth.getCurrentUser().takenIntro) {
+          if (Auth.getCurrentUser().bookedIntroClass) {
             event.preventDefault();
             $state.go('schedule');
           } else {

@@ -36,7 +36,7 @@
                 <tbody ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
                   <tr >
                     <td class = "col-md-9">
-                      <span id="dark-text" >Lvl 1 with {{slot.trainer.firstName}} {{slot.trainer.lastName}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
+                      <span id="dark-text" >{{slot.level}} with {{slot.trainer.firstName}} {{slot.trainer.lastName}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
                     </td>
                     <td class = "col-md-3" ng-if = "slot.date <= (timeNow + 1000*60*15)">
                       <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">JOIN NOW</a>

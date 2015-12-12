@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $modal, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject) {
+  .controller('AdminCtrl', function ($scope, $http, $location, $modal, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject, $firebaseArray) {
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
@@ -136,6 +136,7 @@ angular.module('bodyAppApp')
         booked: false,
         playlistSource: 'SoundCloud',
         level: workoutToCreate.level,
+        bookedUsers: {},
         // playlist: workoutToCreate.playlistUrl,
         playlist: {
           soundcloudUrl: workoutToCreate.playlistUrl.uri,
@@ -166,9 +167,11 @@ angular.module('bodyAppApp')
           modalInstance.close();
           if (workoutToCreate.level === "Intro") {
             var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
-            var upcomingIntroRef = $firebaseObject(fbRef.child('upcomingIntros').child(date.getTime()))
-            upcomingIntroRef["numInClass"] = 0
-            upcomingIntroRef.$save()
+            var upcomingIntroRef = $firebaseArray(fbRef.child('upcomingIntros'))
+            upcomingIntroRef.$add(date.getTime())
+            // var upcomingIntroRef = $firebaseObject(fbRef.child('upcomingIntros').child(date.getTime()))
+            // upcomingIntroRef["numInClass"] = 0
+            // upcomingIntroRef.$save()
           }
 
           User.saveClassTaught({id: Auth.getCurrentUser()}, {classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer}).$promise.then(function(confirmation) {

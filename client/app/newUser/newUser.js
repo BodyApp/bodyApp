@@ -6,6 +6,7 @@ angular.module('bodyAppApp')
       .state('newuser', {
         url: '/newuser',
         templateUrl: 'app/newUser/newUser1.html',
-        controller: 'NewUserCtrl'
+        controller: 'NewUserCtrl',
+        authenticate: true
       })
   });

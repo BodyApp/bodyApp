@@ -389,6 +389,23 @@ exports.cancelSubscription = function(req, res, next) {
     };
 }
 
+exports.addIntroClass = function(req, res, next) {
+  var userId = req.user._id;
+  var classToAdd = req.body.classToAdd;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      console.log(user);
+      user.bookedIntroClass = true
+      user.classesTaken.push(classToAdd);
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
 exports.addBookedClass = function(req, res, next) {
   var userId = req.user._id;
   var classToAdd = req.body.classToAdd;
