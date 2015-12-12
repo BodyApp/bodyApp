@@ -71,22 +71,22 @@ angular.module('bodyAppApp')
       //   $scope.instructors = user;
       // } else {
       // if (Auth.isAdmin()) {
-        var instructors = Auth.getInstructors().$promise.then(function(data) {
-          $scope.instructors = data;
+        // var instructors = Auth.getInstructors().$promise.then(function(data) {
+        //   $scope.instructors = data;
           
-          Auth.getAdmins().$promise.then(function(data) {
-            for (var i = 0; i < data.length; i++) {
-              $scope.instructors.push(data[i]);              
-            }
-            $scope.workoutToCreate.trainer = $scope.instructors[0];  
-          }).catch(function(err) { console.log(err)})
+        //   Auth.getAdmins().$promise.then(function(data) {
+        //     for (var i = 0; i < data.length; i++) {
+        //       $scope.instructors.push(data[i]);              
+        //     }
+        //     $scope.workoutToCreate.trainer = $scope.instructors[0];  
+        //   }).catch(function(err) { console.log(err)})
 
-        }).catch(function(err) {
-          console.log(err);
-        });;
+        // }).catch(function(err) {
+        //   console.log(err);
+        // });;
       // } else {
-      //   $scope.instructors.push(Auth.getCurrentUser());
-      //   $scope.workoutToCreate.trainer = $scope.instructors[0];  
+        $scope.instructors.push(Auth.getCurrentUser());
+        $scope.workoutToCreate.trainer = $scope.instructors[0];  
       // }
       // }
     }

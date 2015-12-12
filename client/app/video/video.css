@@ -91,3 +91,118 @@
     height: 600px;
 }
 
+.feed-column {
+  height: 100vh;
+  padding: 0px;
+}
+#vid1, #vid7 {
+  background: red;
+  border: 1px solid black;
+  position: absolute;
+  height: 16.67vh;
+  width: 100%;
+}
+#vid2, #vid8 {
+  background: green;
+  border: 1px solid black;
+  position: absolute;
+  top: 16.67vh;
+  height: 16.67vh;
+  width: 100%;
+}
+#vid3, #vid9 {
+  background: gray;
+  border: 1px solid black;
+  position: absolute;
+  top: 33.34vh;
+  height: 16.67vh;
+  width: 100%;
+}
+#vid4, #vid10 {
+  background: black;
+  border: 1px solid black;
+  position: absolute;
+  top: 50.01vh;
+  height: 16.67vh;
+  width: 100%;
+}
+#vid5, #vid11 {
+  background: orange;
+  border: 1px solid black;
+  position: absolute;
+  top: 66.68vh;
+  height: 16.67vh;
+  width: 100%;
+}
+#vid6, #vid12 {
+  background: blue;
+  border: 1px solid black;
+  position: absolute;
+  top: 83.35vh;
+  height: 16.67vh;
+  width: 100%;  
+}
+#vid13, #vid14, #vid15, #vid16 {
+  background: blue;
+  border: 1px solid black;
+  position: absolute;
+  top: 83.35vh;
+  height: 16.67vh;
+  width: 100%;   
+}
+
+.name-overlay {
+  background: rgba(0,0,0,0.2);
+  padding: 0px 5px;
+}
+.name-overlay span {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+.name-overlay img {
+  margin-top: 3px;
+  float: right;
+  width: 18px;
+}
+.megavideo {
+  background: #0DC145;
+  position: absolute;
+  height: 83.35vh;
+  width: 400%;
+}
+.megavideo .name-overlay {
+  width: 25%;
+  height: 45px;
+  padding: 10px;
+  float: left;
+}
+.megavideo .name-overlay span {
+  font-size: 20px;
+}
+.class-details {
+  float: right;
+  width: 20%;
+  background: rgba(0,0,0,0.2);
+  padding: 10px;
+}
+.class-details h1, .class-details h4, .class-details p{
+  color: #fff;
+  margin-bottom: 5px;
+}
+.class-details td, .class-details a {
+  padding: 0 4px 0 0;
+  font-size: 12px;
+}
+.class-details table {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.class-details hr {
+  margin-bottom: 10px;
+}
+.song {
+  font-size: 12px;
+  color: #fff;
+  line-height: 12px;
+}

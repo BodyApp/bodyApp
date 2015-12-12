@@ -1,61 +1,154 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div class = "video-screen-height"  style="background-image:url(assets/images/irongrip.png)" id = "masterDiv" ngsf-fullscreen ngsf-toggle-fullscreen>
-    <!-- <h1 id="bodyAppTitle"> Body App </h1> -->
-    <!-- <div class="row"> -->
-    <div class="row"><timer class = "column col-xs-12" style = "text-align: center" start-time="classTime">{{minutes}} minutes, {{seconds}} seconds elapsed</timer></div>
-    <div class = "row">
-        <video class="column column-2"></video>
-        <div class="column column-2">
-            <form>
-                <label style = "text-align: center" class = "column-12">Volume (Entire class)</label>        
-                <input type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />
-            </form>    
+<div class="video-fullscreen">
+  <section>
+    <div class="trainer-video-screen">
+      <!--First Column of Feeds-->
+      <div class="col-sm-2 feed-column">
+        <div id="vid1"></div>
+        <div id="vid2">
+          <div class="name-overlay">
+            <span>Cocksucker</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>
         </div>
-        <video class="column column-1"></video>
-        <div id="box0" id="mainScreen" class="column column-2 row easyRTCMirror" muted="muted"></div>
+        <div id="vid3">
+          <div class="name-overlay">
+            <span>Motherfucker</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>          
+        </div>
+        <div id="vid4">
+          <div class="name-overlay">
+            <span>Eat</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>          
+        </div>
+        <div id="vid5">
+          <div class="name-overlay">
+            <span>a</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>             
+        </div>
+        <div id="vid6">
+          <div class="name-overlay">
+            <span>bag</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>             
+        </div>
+      </div>
+      <!--First Column of Feeds END-->
+      
+      <!--Second Column of Feeds-->
+      <div class="col-sm-2 feed-column">
+        <div id="vid7">
+          <div class="name-overlay">
+            <span>of</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>             
+        </div>
+        <div id="vid8">
+          <div class="name-overlay">
+            <span>shit</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>             
+        </div>
+        <div id="vid9">
+          <div class="name-overlay">
+            <span>asshole</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>             
+        </div>
+        <div id="vid10">
+          <div class="name-overlay">
+            <span>dueshbag</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>           
+        </div>
+        <div id="vid11">
+          <div class="name-overlay">
+            <span>suck</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>           
+        </div>
+        <div id="vid12">
+          <div class="name-overlay">
+            <span>your</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>           
+        </div>
+      </div>
+      <!--Second Column of Feeds END-->  
+
+      <!--Third Column of Feeds-->
+      <div class="col-sm-2 feed-column">
+        <div id="vid17" class="megavideo">
+          <div class="name-overlay">
+            <span>TITTY FUCKER</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>
+          <div class="class-details">
+            <h1 id="timer">10:02</h1>
+            <table>
+              <tr>
+                <td><a href="">Start</a></td>
+                <td><a href="">Stop</a></td>
+                <td><a href="">Reset</a></td>
+              </tr>
+            </table>
+            <h4>Workout</h4>
+            <hr>
+            <p><strong>Skill</strong><br>Airsquat<br><strong>Benchmark</strong><br>1 min burpees</p>
+            <h4>Song</h4>
+            <hr>
+            <p class="song">Kiss you in the Morning, Michael Ray <a href="#">Change Song</a></p>
+          </div>          
+        </div>
+
+        <div id="vid13">
+          <div class="name-overlay">
+            <span>Mother's</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>
+        </div>            
+      </div>  
+      <!--Third Column of Feeds END--> 
+
+      <!--Fourth Column of Feeds-->
+      <div class="col-sm-2 feed-column">
+        <div id="vid14">
+          <div class="name-overlay">
+            <span>Tit</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>
+        </div>            
+      </div>  
+      <!--Fourth Column of Feeds END-->
+
+      <!--Fifth Column of Feeds-->
+      <div class="col-sm-2 feed-column">
+        <div id="vid15">
+          <div class="name-overlay">
+            <span>Delta Tau</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>
+        </div>            
+      </div>  
+      <!--Fifth Column of Feeds END--> 
+
+      <!--Sixth Column of Feeds-->
+      <div class="col-sm-2 feed-column">
+        <div id="vid16">
+          <div class="name-overlay">
+            <span>Fuck</span>
+            <img src="assets/images/icons/blocks.png">
+          </div>
+        </div>            
+      </div>  
+      <!--Sixth Column of Feeds END-->                    
+
+
     </div>
-    </br>
-    <div class = "row">
-        <div class="col-xs-3">
-            <div id="box1" class = "column-12"></div>
-            <!-- <label style = "text-align: center" class = "column-12">{{consumerObjects[consumerList[0]].firstName}} {{consumerObjects[consumerList[0]].lastName.charAt(0)}}</label> -->
-           <!--  <div class = "column-12" style = "text-align: center">{{consumerObjects[consumerList[0]].firstName}} {{consumerObjects[consumerList[0]].lastName.charAt(0)}}</div> -->
-        </div>
-        <div class = "col-xs-3">
-            <div id="box2" class="column-12"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[1]].firstName}} {{consumerObjects[consumerList[1]].lastName.charAt(0)}}</div> -->
-        </div>
-        <div class="col-xs-3">
-            <div id="box3" class="column-12"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[2]].firstName}} {{consumerObjects[consumerList[2]].lastName.charAt(0)}}</div> -->
-        </div>
-        <div class="col-xs-3">
-            <div id="box4" class="column-12"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[3]].firstName}} {{consumerObjects[consumerList[3]].lastName.charAt(0)}}</div> -->
-        </div>
-    </div>
-    <div class = "row">
-        <div class="col-xs-3">
-            <div id="box5" class="column-12 row"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[4]].firstName}} {{consumerObjects[consumerList[4]].lastName.charAt(0)}}</div> -->
-        </div>
-        <div class="col-xs-3">
-            <div id="box6" class="column-12 row"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[5]].firstName}} {{consumerObjects[consumerList[5]].lastName.charAt(0)}}</div> -->
-        </div>
-        <div class="col-xs-3">
-            <div id="box7" class="column-12 row"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[6]].firstName}} {{consumerObjects[consumerList[6]].lastName.charAt(0)}}</div> -->
-        </div>
-        <div class="col-xs-3">
-            <div id="box8" class="column-12 row"></div>
-            <!-- <div style = "width: 405px; text-align: center">{{consumerObjects[consumerList[7]].firstName}} {{consumerObjects[consumerList[7]].lastName.charAt(0)}}</div> -->
-        </div>
-    </div>
-    <div ng-click = "openSongPermalink(currentSong)" class = "row" ng-show = "currentSong.title">
-        <img ng-src="../assets/images/soundcloudWhiteLogo.png"/>
-        <span>Currently Playing: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
-    </div>
+  </section> 
     <iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
 </div>
 
