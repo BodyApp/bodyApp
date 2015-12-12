@@ -82,6 +82,17 @@ new CronJob('29 * * * * *', function() {
 	    }
     }
 	})
+
+  var upcomingIntroFirebaseRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros");  
+  upcomingIntroFirebaseRef.once('value', function(upcomingIntros) {
+    var intros = upcomingIntros.val()
+    for (var intro in intros) {
+      if (intro + 1000*60*10 < todayDate) { // Intro considered upcoming up to 10 minutes into it.
+        upcomingIntroFirebaseRef.child(intro).remove()
+      }
+    }
+  })
+
 }, null, true, 'America/New_York');
 
 // Expose app
