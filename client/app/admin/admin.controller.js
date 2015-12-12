@@ -12,20 +12,6 @@ angular.module('bodyAppApp')
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
 
-    var todayDate = new Date();
-    $scope.todayDate = todayDate
-    var todayDayOfWeek = todayDate.getDay();
-
-    var sunDate = new Date();
-    sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-
-    var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf);  
-    var syncObject = $firebaseObject(weekOfRef);
-
     var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
     $scope.wod = $firebaseObject(wodRef);
 
@@ -37,8 +23,6 @@ angular.module('bodyAppApp')
     $scope.playlists = [];
     var defaultPlaylist;
     loadDefaultPlaylist();
-
-
 
     $scope.createdClass = {};
     
@@ -111,6 +95,20 @@ angular.module('bodyAppApp')
 
     $scope.createWorkout = function(workoutToCreate) {
       var date = workoutToCreate.date;
+      var workoutDate = new Date(date);
+      // $scope.workoutDate = workoutDate
+      var todayDayOfWeek = workoutDate.getDay();
+
+      var sunDate = new Date();
+      sunDate.setDate(workoutDate.getDate() - workoutDate.getDay());
+      var sunGetDate = sunDate.getDate();
+      var sunGetMonth = sunDate.getMonth()+1;
+      var sunGetYear = sunDate.getFullYear();
+      var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
+
+      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf);  
+      var syncObject = $firebaseObject(weekOfRef);
+      
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 
       //Set up the week if this is first class of week
@@ -161,6 +159,7 @@ angular.module('bodyAppApp')
       var modalInstance = openCreatingModal();
 
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+        syncObject[date.getDay()] = syncObject[date.getDay()] || {}
         syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
         syncObject.$save().then(function() {
           console.log("new workout saved");
