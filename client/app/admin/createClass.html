@@ -14,6 +14,8 @@
     <select ng-model="workoutToCreate.trainer" ng-options = "(option.firstName + ' ' + option.lastName) for option in instructors" required>
       <!-- <option ng-options="option in instructors" value="{{option}}">{{option.firstName}} {{option.lastName}}</option> -->
     </select>
+    <select ng-model="workoutToCreate.level" ng-options = "label for value in levels" required>
+    </select>
     <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
     <!-- <input style="color: black" type="text" ng-model="workoutToCreate.soundcloudUrl" placeholder = "Soundcloud Url"/><br /> -->
      <select placeholder = "Soundcloud Playlist" ng-model="workoutToCreate.playlistUrl" ng-options = "(option.title + ': ' + option.track_count + ' trcks (' + roundMins(option.duration/1000/60) + ' mins)') for option in playlists | filter: {sharing: 'public'}">

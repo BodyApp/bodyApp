@@ -23,19 +23,22 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/"+weekOf);  
-    var syncObject = $firebaseObject(ref);
+    var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf);  
+    var syncObject = $firebaseObject(weekOfRef);
 
     var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
     $scope.wod = $firebaseObject(wodRef);
 
     $scope.instructors = [];
-    $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}};
+    $scope.levels = ["Intro", "Level One", "Level Two", "Level Three"]
+    $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}, level: $scope.levels[0]};
     getAdminsAndInstructors()
     
     $scope.playlists = [];
     var defaultPlaylist;
     loadDefaultPlaylist();
+
+
 
     $scope.createdClass = {};
     
@@ -132,6 +135,7 @@ angular.module('bodyAppApp')
         date: date.getTime(),
         booked: false,
         playlistSource: 'SoundCloud',
+        level: workoutToCreate.level,
         // playlist: workoutToCreate.playlistUrl,
         playlist: {
           soundcloudUrl: workoutToCreate.playlistUrl.uri,
@@ -160,6 +164,13 @@ angular.module('bodyAppApp')
         syncObject.$save().then(function() {
           console.log("new workout saved");
           modalInstance.close();
+          if (workoutToCreate.level === "Intro") {
+            var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
+            var upcomingIntroRef = $firebaseObject(fbRef.child('upcomingIntros').child(date.getTime()))
+            upcomingIntroRef["numInClass"] = 0
+            upcomingIntroRef.$save()
+          }
+
           User.saveClassTaught({id: Auth.getCurrentUser()}, {classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer}).$promise.then(function(confirmation) {
             console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
           })
