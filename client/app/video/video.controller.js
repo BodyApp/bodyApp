@@ -384,13 +384,24 @@ angular.module('bodyAppApp')
 					}
 				});
 
-				publisher = OT.initPublisher(getIdOfBox(1), {
+				var vidWidth;
+				var vidHeight;
+
+				if (userIsInstructor) {
+					vidWidth = "16.67%"
+					vidHeight = "16.67%"
+				} else {
+					vidWidth = "100%"
+					vidHeight = 125
+				}
+
+				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
 		      publishAudio:true, 
 		      publishVideo:true,
 		      mirror: true,
-		      width: "100%",
-				  height: 125,
+		      width: vidWidth,
+				  height: vidHeight,
 		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
 		      style: {
 		      	// buttonDisplayMode: 'on', //Mute microphone button
@@ -480,6 +491,25 @@ angular.module('bodyAppApp')
 		}
 
 		connect()
+
+		$scope.setAllFalse = function() {
+			$scope.hover0 = false
+			$scope.hover1 = false
+			$scope.hover2 = false
+			$scope.hover3 = false
+			$scope.hover4 = false
+			$scope.hover5 = false
+			$scope.hover6 = false
+			$scope.hover7 = false
+			$scope.hover8 = false
+			$scope.hover9 = false
+			$scope.hover10 = false
+			$scope.hover11 = false
+			$scope.hover12 = false
+			$scope.hover13 = false
+			$scope.hover14 = false
+			$scope.hover15 = false
+		}
 	})
 
 	// .directive('backImg', function(){

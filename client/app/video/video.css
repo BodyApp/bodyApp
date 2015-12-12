@@ -1,5 +1,5 @@
 .video-fullscreen {
-  height: 100vh;
+  height: 100%;
   background: #1f1f1f;
 }
 .user-video-sidebar {
@@ -91,66 +91,17 @@
     height: 600px;
 }
 
-.feed-column {
+.trainer-video-screen {
   height: 100vh;
-  padding: 0px;
-}
-#box1, #box7 {
-  background: red;
-  border: 1px solid black;
-  position: absolute;
-  height: 16.67vh;
-  width: 100%;
-}
-#box2, #box8 {
-  background: green;
-  border: 1px solid black;
-  position: absolute;
-  top: 16.67vh;
-  height: 16.67vh;
-  width: 100%;
-}
-#box3, #box9 {
-  background: gray;
-  border: 1px solid black;
-  position: absolute;
-  top: 33.34vh;
-  height: 16.67vh;
-  width: 100%;
-}
-#box4, #box10 {
   background: black;
-  border: 1px solid black;
-  position: absolute;
-  top: 50.01vh;
-  height: 16.67vh;
-  width: 100%;
 }
-#box5, #box11 {
-  background: orange;
-  border: 1px solid black;
+.smallscreen {
+  /*background: red;*/
+  border: 1px solid white;
   position: absolute;
-  top: 66.68vh;
-  height: 16.67vh;
-  width: 100%;
+  height: 16.67%;
+  width: 16.67%;
 }
-#box6, #box12 {
-  background: blue;
-  border: 1px solid black;
-  position: absolute;
-  top: 83.35vh;
-  height: 16.67vh;
-  width: 100%;  
-}
-#box13, #box14, #box15, #box16 {
-  background: blue;
-  border: 1px solid black;
-  position: absolute;
-  top: 83.35vh;
-  height: 16.67vh;
-  width: 100%;   
-}
-
 .name-overlay {
   background: rgba(0,0,0,0.2);
   padding: 0px 5px;
@@ -165,44 +116,127 @@
   float: right;
   width: 18px;
 }
-.megavideo {
-  background: #0DC145;
-  position: absolute;
-  height: 83.35vh;
-  width: 400%;
-}
-.megavideo .name-overlay {
-  width: 25%;
-  height: 45px;
-  padding: 10px;
-  float: left;
-}
-.megavideo .name-overlay span {
-  font-size: 20px;
-}
 .class-details {
-  float: right;
-  width: 20%;
-  background: rgba(0,0,0,0.2);
+  position: absolute;
+  top: 0vh;
+  height: 350px;
+  left: 85%;
+  width: 15%;
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px;
 }
 .class-details h1, .class-details h4, .class-details p{
   color: #fff;
   margin-bottom: 5px;
+  text-align: center;
+}
+.class-details h4 {
+  margin-top: 15px;
 }
 .class-details td, .class-details a {
+  text-align: center;
   padding: 0 4px 0 0;
   font-size: 12px;
+  color: #fff;
+}
+.class-details a:hover {
+  color: gray;
 }
 .class-details table {
   width: 100%;
   margin-bottom: 10px;
 }
-.class-details hr {
-  margin-bottom: 10px;
+#timer {
+  color: #fff;
+  text-align: center;
+  margin-top: 2%;
 }
 .song {
   font-size: 12px;
   color: #fff;
   line-height: 12px;
 }
+
+#box0 {
+  left: 0%;
+  top: 0%;
+}
+#box1 {
+  left: 0%;
+  top: 16.67%;
+}
+#box2 {
+  left: 0%;
+  top: 33.34%;
+}
+#box3 {
+  left: 0%;
+  top: 50.01%;
+}
+#box4 {
+  left: 0%;
+  top: 66.68%;
+}
+#box5 {
+  left: 0%;
+  top: 83.35%;
+}
+#box6 {
+  left: 16.67%;
+  top: 0%;  
+}
+#box7 {
+  left: 16.67%;
+  top: 16.67%;  
+}
+#box8 {
+  left: 16.67%;
+  top: 33.34%;
+}
+#box9 {
+  left: 16.67%;
+  top: 50.01%;
+}
+#box10 {
+  left: 16.67%;
+  top: 66.68%;  
+}
+#box11 {
+  left: 16.67%;
+  top: 83.35%;
+}
+#box12 {
+  left: 33.34%;
+  top: 83.35%;
+}
+#box13 {
+  left: 50.01%;
+  top: 83.35%;
+}
+#box14 {
+  left: 66.68%;
+  top: 83.35%;  
+}
+#box15 {
+  left: 83.35%;
+  top: 83.35%;
+}
+
+.megascreen {
+  /*background: blue !important;*/
+  border: 1px solid white !important;
+  position: absolute !important;
+  left: 33.34% !important;
+  top: 0% !important;
+  height: 83.35% !important;
+  width: 66.68% !important;
+}
+.megascreen .name-overlay {
+  width: 25%;
+  padding: 10px;
+  float: left;  
+}
+.megascreen .name-overlay span {
+  font-size: 28px;
+}
+
