@@ -95,14 +95,14 @@
   height: 100vh;
   padding: 0px;
 }
-#vid1, #vid7 {
+#box1, #box7 {
   background: red;
   border: 1px solid black;
   position: absolute;
   height: 16.67vh;
   width: 100%;
 }
-#vid2, #vid8 {
+#box2, #box8 {
   background: green;
   border: 1px solid black;
   position: absolute;
@@ -110,7 +110,7 @@
   height: 16.67vh;
   width: 100%;
 }
-#vid3, #vid9 {
+#box3, #box9 {
   background: gray;
   border: 1px solid black;
   position: absolute;
@@ -118,7 +118,7 @@
   height: 16.67vh;
   width: 100%;
 }
-#vid4, #vid10 {
+#box4, #box10 {
   background: black;
   border: 1px solid black;
   position: absolute;
@@ -126,7 +126,7 @@
   height: 16.67vh;
   width: 100%;
 }
-#vid5, #vid11 {
+#box5, #box11 {
   background: orange;
   border: 1px solid black;
   position: absolute;
@@ -134,7 +134,7 @@
   height: 16.67vh;
   width: 100%;
 }
-#vid6, #vid12 {
+#box6, #box12 {
   background: blue;
   border: 1px solid black;
   position: absolute;
@@ -142,7 +142,7 @@
   height: 16.67vh;
   width: 100%;  
 }
-#vid13, #vid14, #vid15, #vid16 {
+#box13, #box14, #box15, #box16 {
   background: blue;
   border: 1px solid black;
   position: absolute;

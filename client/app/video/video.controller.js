@@ -384,7 +384,7 @@ angular.module('bodyAppApp')
 					}
 				});
 
-				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
+				publisher = OT.initPublisher(getIdOfBox(1), {
 		      insertMode: 'replace',
 		      publishAudio:true, 
 		      publishVideo:true,
