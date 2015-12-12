@@ -87,7 +87,8 @@ new CronJob('29 * * * * *', function() {
   upcomingIntroFirebaseRef.once('value', function(upcomingIntros) {
     var intros = upcomingIntros.val()
     for (var intro in intros) {
-      if (intro + 1000*60*10 < todayDate) { // Intro considered upcoming up to 10 minutes into it.
+      if (intros[intro] + 1000*60*10 < todayDate) { // Intro considered upcoming up to 10 minutes into it.
+        console.log("Intro Class " + intros[intro] + " removed because it is in the past")
         upcomingIntroFirebaseRef.child(intro).remove()
       }
     }
