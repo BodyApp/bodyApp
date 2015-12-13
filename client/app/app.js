@@ -9,8 +9,6 @@ angular.module('bodyAppApp', [
   'ui.bootstrap',
   'firebase',
   'jshor.angular-addtocalendar',
-  'angular-tour',
-  'angularScreenfull',
   'SoundCloud',
   'timer'
 ])

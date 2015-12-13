@@ -408,18 +408,18 @@ angular.module('bodyAppApp')
     })
 
     //Currently unused
-    .filter('showAvailable', function() {
-      return function(input, showAvailable) {
-        console.log(input)
-        console.log(showAvailable)
-        if (showAvailable) {
-            for (var slot in input) {
-                if (input[slot].past) {
-                    input[slot].hidden = true;
-                }
-            }
-        }
-        return input
-      };
-    })
+    // .filter('showAvailable', function() {
+    //   return function(input, showAvailable) {
+    //     console.log(input)
+    //     console.log(showAvailable)
+    //     if (showAvailable) {
+    //         for (var slot in input) {
+    //             if (input[slot].past) {
+    //                 input[slot].hidden = true;
+    //             }
+    //         }
+    //     }
+    //     return input
+    //   };
+    // })
 

@@ -30,7 +30,6 @@
     "cron": "*",
     "firebase": "*",
     "request": "*",
-    "browserify": "*",
     "opentok": "*"
   },
   "devDependencies": {
