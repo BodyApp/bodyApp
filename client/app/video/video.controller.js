@@ -404,8 +404,8 @@ angular.module('bodyAppApp')
 				  height: vidHeight,
 		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
 		      style: {
-		      	// buttonDisplayMode: 'on', //Mute microphone button
-		      	// nameDisplayMode: 'on' //Can also be off or auto
+		      	buttonDisplayMode: 'off', //Mute microphone button
+		      	nameDisplayMode: 'on' //Can also be off or auto
 		      }
 		    }, function(err) {
 		    	if (err) {

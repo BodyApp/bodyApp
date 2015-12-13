@@ -93,3 +93,26 @@
 .light-font, .light-font h2 {
 	color: white !important;
 }
+
+
+.your-classes {
+	background: #f5f5f5;
+	padding: 10px;
+}
+
+.reservations {
+	padding-left: 15%;
+}
+
+.reservations-table {
+	margin-bottom: 0px !important;
+}
+
+.class-info {
+	padding: 4px 0 0 0;
+}
+
+.reserved-class {
+	width: 130px;
+	padding: 10px;
+}
