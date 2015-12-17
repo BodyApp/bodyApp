@@ -1,0 +1,30 @@
+#hero-background {
+  height: auto;
+}
+#hero-background img {
+  position: absolute;
+  width: 100%;
+  z-index: -99;
+}
+#hero-background h1{
+  text-align: center;
+  color: #fff;
+  padding: 10% 0;
+}
+.section2 p {
+  font-size: 14px;
+}
+.coach-image {
+  width: 100%;
+  height: 420px;
+  float: left;
+  background-position: center !important;  
+}
+.coach-details {
+  padding: 4%;
+}
+.coach-details h3 {
+  color: #0D1C45;
+  font-weight: 600;
+  margin: 0px;
+}
