@@ -245,6 +245,11 @@ angular.module('bodyAppApp')
 					}
 				}
 
+				if (userIsInstructor) {
+					vidWidth = "16.67%";
+					vidHeight = "16.67%";
+				}
+
 				var subscriberBox = getIdOfBox(instructorStream ? 0 : streamBoxNumber)
 				console.log(subscriberBox)
 
