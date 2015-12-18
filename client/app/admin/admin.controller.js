@@ -51,28 +51,20 @@ angular.module('bodyAppApp')
     }
 
     function getAdminsAndInstructors() {
-      // if (user.role === "instructor") {
-      //   $scope.instructors = user;
-      // } else {
-      // if (Auth.isAdmin()) {
-        // var instructors = Auth.getInstructors().$promise.then(function(data) {
-        //   $scope.instructors = data;
-          
-        //   Auth.getAdmins().$promise.then(function(data) {
-        //     for (var i = 0; i < data.length; i++) {
-        //       $scope.instructors.push(data[i]);              
-        //     }
-        //     $scope.workoutToCreate.trainer = $scope.instructors[0];  
-        //   }).catch(function(err) { console.log(err)})
+      var instructors = Auth.getInstructors().$promise.then(function(data) {
+        $scope.instructors = data;
+        
+        Auth.getAdmins().$promise.then(function(data) {
+          for (var i = 0; i < data.length; i++) {
+            $scope.instructors.push(data[i]);
+          }
+          $scope.instructors.push(Auth.getCurrentUser());  
+          $scope.workoutToCreate.trainer = $scope.instructors[0];  
+        }).catch(function(err) { console.log(err)})
 
-        // }).catch(function(err) {
-        //   console.log(err);
-        // });;
-      // } else {
-        $scope.instructors.push(Auth.getCurrentUser());
-        $scope.workoutToCreate.trainer = $scope.instructors[0];  
-      // }
-      // }
+      }).catch(function(err) {
+        console.log(err);
+      });
     }
 
     function openCreatingModal() {
@@ -161,6 +153,7 @@ angular.module('bodyAppApp')
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
         syncObject[date.getDay()] = syncObject[date.getDay()] || {}
         syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {}
+        syncObject[date.getDay()].slots[date.getTime()] = syncObject[date.getDay()].slots[date.getTime()] || {}
         syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
         syncObject.$save().then(function() {
           console.log("new workout saved");
