@@ -60,6 +60,20 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
+
+    $scope.stopwatch = $firebaseObject(ref.child(weekOf)
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("stopwatch"));
+
+    var stopwatchRef = 
+    	ref.child(weekOf)
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("stopwatch")
+
     var volumeRef = $firebaseObject(
       ref.child(weekOf)
       .child(classDate.getDay())
@@ -514,6 +528,49 @@ angular.module('bodyAppApp')
 			$scope.hover13 = false
 			$scope.hover14 = false
 			$scope.hover15 = false
+		}
+		$scope.startStopwatch = function() {
+			// $scope.$broadcast('timer-start');
+			document.getElementById('stopwatch').start();
+	    // stopwatchRef.update({"start": new Date(), "currentState": "start"});
+	    $scope.stopwatch.start = new Date();
+	    $scope.stopwatch.currentState = 1;
+	    $scope.stopwatch.lastButtonPress = "start";
+			$scope.stopwatch.$save()
+		};
+
+		$scope.stopStopwatch = function() {
+			document.getElementById('stopwatch').stop();
+	    $scope.stopwatch.stop = new Date();
+	    $scope.stopwatch.lastButtonPress = "stop";
+			$scope.stopwatch.$save()
+			// stopwatchRef.update({"stop": new Date(), "currentState": "stop"})
+			// $scope.$broadcast('timer-stop');
+		}
+
+		$scope.resetStopwatch = function() {
+			console.log("reset")
+			document.getElementById('stopwatch').reset();
+			$scope.stopwatch.lastButtonPress = "reset";
+		}
+
+		$scope.setTimeOn = function(on) {
+			// stopwatchRef.update({"timeOn": on, "currentStopwatchTime": on})		
+			$scope.stopwatch.timeOn = on
+			$scope.stopwatch.currentStopwatchTime = on * 60;
+			$scope.stopwatch.$save()
+		}
+
+		$scope.setTimeOff = function(off) {
+			// stopwatchRef.update({"timeOff": off})
+			$scope.stopwatch.timeOff = off
+			$scope.stopwatch.$save()
+		}
+
+		$scope.setRounds = function(rounds) {
+			$scope.stopwatch.rounds = rounds
+			$scope.stopwatch.$save()
+			// stopwatchRef.update({"rounds": rounds})
 		}
 	})
 
