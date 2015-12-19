@@ -241,11 +241,11 @@
   font-size: 28px;
 }
 
-.watchOn {
+.workColor {
   color: green;
 }
 
-.watchOff {
+.restColor {
   color: red;
 }
 

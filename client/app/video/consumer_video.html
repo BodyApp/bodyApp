@@ -138,7 +138,7 @@
               <span class="workout-details">Skill: Airsquat | Conditioning: Burpee | Test: Lunge</span>
             </div>
             <div class="timer">
-              <span>Timer: <timer id = "stopwatch" autostart="false" interval="1000" countdown="stopwatch.currentStopwatchTime" finish-callback="callbackTimer.finished()">{{minutes}}:{{sseconds}}</timer></span>
+              <span>Timer: <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer></span>
               <h5 style = "color: white; text-align: center">{{stopwatch.rounds}} Rounds Left</h5>
             </div>
           </div>
