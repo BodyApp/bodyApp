@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $location, $interval, $window, $firebaseObject, Auth, User, Schedule) {
+  .controller('VideoCtrl', function ($scope, $location, $interval, $window, $document, $firebaseObject, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -61,7 +61,8 @@ angular.module('bodyAppApp')
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
-    $scope.stopwatch = $firebaseObject(ref.child(weekOf)
+    $scope.stopwatch = $firebaseObject(
+    	ref.child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
@@ -529,29 +530,49 @@ angular.module('bodyAppApp')
 			$scope.hover14 = false
 			$scope.hover15 = false
 		}
+
+		//Stopwatch magic. Prevents issue where NaN was showing up for current time.
+		$scope.stopwatch.$loaded().then(function() {
+			stopwatchRef.child("lastButtonPress").on('value', function(command) {
+				var timeVar = "last"+command.val()+"Time"
+				var commandTime = stopwatchRef.child(timeVar).once('value', function(time) {
+					var currentTimeMod = new Date().getTime() - 1000*1;
+					if (time.val() > currentTimeMod) {
+						switch (command.val()) {
+							case "Start": 
+								document.getElementById('stopwatch').start();
+								break;
+							case "Stop": 
+								document.getElementById('stopwatch').stop();
+								break;
+							case "Reset": 
+								document.getElementById('stopwatch').reset();
+								break;
+							default: 
+								break;
+						}
+					}
+				})
+			})
+	  });		
+		
 		$scope.startStopwatch = function() {
-			// $scope.$broadcast('timer-start');
-			document.getElementById('stopwatch').start();
-	    // stopwatchRef.update({"start": new Date(), "currentState": "start"});
-	    $scope.stopwatch.start = new Date();
+	    $scope.stopwatch.lastStartTime = new Date().getTime();
 	    $scope.stopwatch.currentState = 1;
-	    $scope.stopwatch.lastButtonPress = "start";
+	    $scope.stopwatch.lastButtonPress = "Start";
 			$scope.stopwatch.$save()
 		};
 
 		$scope.stopStopwatch = function() {
-			document.getElementById('stopwatch').stop();
-	    $scope.stopwatch.stop = new Date();
-	    $scope.stopwatch.lastButtonPress = "stop";
+	    $scope.stopwatch.lastStopTime = new Date().getTime();
+	    $scope.stopwatch.lastButtonPress = "Stop";
 			$scope.stopwatch.$save()
-			// stopwatchRef.update({"stop": new Date(), "currentState": "stop"})
-			// $scope.$broadcast('timer-stop');
 		}
 
 		$scope.resetStopwatch = function() {
-			console.log("reset")
-			document.getElementById('stopwatch').reset();
-			$scope.stopwatch.lastButtonPress = "reset";
+			$scope.stopwatch.lastResetTime = new Date().getTime();
+			$scope.stopwatch.lastButtonPress = "Reset";
+			$scope.stopwatch.$save()
 		}
 
 		$scope.setTimeOn = function(on) {
