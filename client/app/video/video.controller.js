@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $location, $interval, $window, $document, $firebaseObject, Auth, User, Schedule) {
+  .controller('VideoCtrl', function ($scope, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -554,11 +554,51 @@ angular.module('bodyAppApp')
 					}
 				})
 			})
+
+			stopwatchRef.child("isOn").on('value', function(state) {
+				if ($scope.stopwatch.rounds > 0) {
+					var timeVar = "lastStateTime"
+					var commandTime = stopwatchRef.child(timeVar).once('value', function(time) {
+						var currentTimeMod = new Date().getTime() - 1000*1;
+						if (time.val() > currentTimeMod) {
+							stopwatchRef.child("currentStopwatchTime").once('value', function(time) {
+								$scope.stopwatch.currentStopwatchTime = time.val();
+								switch (state.val()) {
+								case true: 	
+									console.log("WORK for " + $scope.stopwatch.currentStopwatchTime + " seconds!")
+									console.log()
+									$timeout(function() {
+										document.getElementById('stopwatch').stop();
+										document.getElementById('stopwatch').reset();
+										document.getElementById('stopwatch').start();	
+									}, 500)
+									break;
+								case false: 
+									console.log("Rest for " + $scope.stopwatch.currentStopwatchTime + " seconds")
+									$timeout(function() {
+										document.getElementById('stopwatch').stop();
+										document.getElementById('stopwatch').reset();
+										document.getElementById('stopwatch').start();	
+									}, 500)
+									break;
+								default: 
+									break;
+								}
+							})		
+						}
+					})
+				}
+			})
+
+			stopwatchRef.child("currentStopwatchTime").on('value', function(time) {
+				$scope.stopwatch.currentStopwatchTime = time.val();
+				console.log("Stopwatch time set to " + time.val())
+			})
 	  });		
 		
 		$scope.startStopwatch = function() {
 	    $scope.stopwatch.lastStartTime = new Date().getTime();
-	    $scope.stopwatch.currentState = 1;
+	    $scope.stopwatch.lastStateTime = new Date().getTime();
 	    $scope.stopwatch.lastButtonPress = "Start";
 			$scope.stopwatch.$save()
 		};
@@ -570,6 +610,8 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.resetStopwatch = function() {
+			$scope.stopwatch.isOn = true
+			$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOn * 60;
 			$scope.stopwatch.lastResetTime = new Date().getTime();
 			$scope.stopwatch.lastButtonPress = "Reset";
 			$scope.stopwatch.$save()
@@ -592,6 +634,30 @@ angular.module('bodyAppApp')
 			$scope.stopwatch.rounds = rounds
 			$scope.stopwatch.$save()
 			// stopwatchRef.update({"rounds": rounds})
+		}
+
+		$scope.timerAtZero = function() {
+			document.getElementById('stopwatch').stop();
+			if (userIsInstructor) {
+				if (!$scope.stopwatch.isOn) {
+					$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOn * 60
+				} else {
+					$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOff
+				}
+
+				if ($scope.stopwatch.isOn) {
+					if ($scope.stopwatch.rounds >= 1) {
+						$scope.stopwatch.rounds -= 1;
+					} 
+				}
+				$scope.stopwatch.$save()
+
+				$timeout(function() {
+					$scope.stopwatch.isOn = !$scope.stopwatch.isOn;
+					$scope.stopwatch.lastStateTime = new Date().getTime()
+					$scope.stopwatch.$save()
+				}, 1000)			
+			}
 		}
 	})
 
