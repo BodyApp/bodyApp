@@ -103,85 +103,88 @@ angular.module('bodyAppApp')
       
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 
-      //Set up the week if this is first class of week
-      if (!syncObject[date.getDay()]) {
-        for (var i = 0; i < 7; i++) {
-          var thisDate = new Date();
-          thisDate.setDate(sunDate.getDate() + i)
+      syncObject.$loaded().then(function() {
+        //Set up the week if this is first class of week
+        if (!syncObject[date.getDay()]) {
+          console.log("Setting up week for first time.")
+          for (var i = 0; i < 7; i++) {
+            var thisDate = new Date();
+            thisDate.setDate(sunDate.getDate() + i)
 
-          syncObject[i] = {    
-            dayOfWeek: i,
-            formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
-            name: getDayOfWeek(i),
-            slots: {}
-          };
+            syncObject[i] = {    
+              dayOfWeek: i,
+              formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
+              name: getDayOfWeek(i),
+              slots: {}
+            };
+          }
         }
-      }
 
-      //Set up the class
-      syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {} 
-      syncObject[date.getDay()].slots[date.getTime()] = {
-        time: timeFormatter(date),
-        date: date.getTime(),
-        booked: false,
-        playlistSource: 'SoundCloud',
-        level: workoutToCreate.level,
-        bookedUsers: {},
-        // playlist: workoutToCreate.playlistUrl,
-        playlist: {
-          soundcloudUrl: workoutToCreate.playlistUrl.uri,
-          duration: workoutToCreate.playlistUrl.duration,
-          id: workoutToCreate.playlistUrl.id,
-          lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
-          title: workoutToCreate.playlistUrl.title,
-          trackCount: workoutToCreate.playlistUrl.track_count,
-          tracks: workoutToCreate.playlistUrl.tracks,
-          // secretUri: workoutToCreate.playlistUrl.secret_uri,
-          sharing: workoutToCreate.playlistUrl.sharing,
-          user_id: workoutToCreate.playlistUrl.user_id
-        },
-        stopwatch: {
-          start: date.getTime(),
-          stop: date.getTime(),
-          currentState: "stop"
-        },
-        trainer: workoutToCreate.trainer,
-        classFull: false,
-        musicVolume: 50,
-        past: false,
-        spots: 12,
-        spotsTaken: 0
-      }
+        //Set up the class
+        syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {}; 
+        syncObject[date.getDay()].slots[date.getTime()] = {
+          time: timeFormatter(date),
+          date: date.getTime(),
+          booked: false,
+          playlistSource: 'SoundCloud',
+          level: workoutToCreate.level,
+          bookedUsers: {},
+          // playlist: workoutToCreate.playlistUrl,
+          playlist: {
+            soundcloudUrl: workoutToCreate.playlistUrl.uri,
+            duration: workoutToCreate.playlistUrl.duration,
+            id: workoutToCreate.playlistUrl.id,
+            lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
+            title: workoutToCreate.playlistUrl.title,
+            trackCount: workoutToCreate.playlistUrl.track_count,
+            tracks: workoutToCreate.playlistUrl.tracks,
+            // secretUri: workoutToCreate.playlistUrl.secret_uri,
+            sharing: workoutToCreate.playlistUrl.sharing,
+            user_id: workoutToCreate.playlistUrl.user_id
+          },
+          stopwatch: {
+            start: date.getTime(),
+            stop: date.getTime(),
+            currentState: "stop"
+          },
+          trainer: workoutToCreate.trainer,
+          classFull: false,
+          musicVolume: 50,
+          past: false,
+          spots: 12,
+          spotsTaken: 0
+        }
 
-      var modalInstance = openCreatingModal();
+        var modalInstance = openCreatingModal();
 
-      User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-        syncObject[date.getDay()] = syncObject[date.getDay()] || {}
-        syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {}
-        syncObject[date.getDay()].slots[date.getTime()] = syncObject[date.getDay()].slots[date.getTime()] || {}
-        syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
         syncObject.$save().then(function() {
           console.log("new workout saved");
           modalInstance.close();
           if (workoutToCreate.level === "Intro") {
             var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
-            var upcomingIntroRef = $firebaseArray(fbRef.child('upcomingIntros'))
-            upcomingIntroRef.$add(date.getTime())
-            // var upcomingIntroRef = $firebaseObject(fbRef.child('upcomingIntros').child(date.getTime()))
-            // upcomingIntroRef["numInClass"] = 0
-            // upcomingIntroRef.$save()
+            var upcomingIntroRef = $firebaseArray(fbRef.child('upcomingIntros'));
+            upcomingIntroRef.$add(date.getTime());
           }
 
-          User.saveClassTaught({id: Auth.getCurrentUser()}, {classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer}).$promise.then(function(confirmation) {
-            console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
+          User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+            syncObject[date.getDay()].slots[date.getTime()] = syncObject[date.getDay()].slots[date.getTime()] || {}
+            syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
+            syncObject.$save().then(function() {
+              console.log("Tokbox session added to class object.")
+              User.saveClassTaught({
+                id: Auth.getCurrentUser()
+              }, {
+                classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer
+              }).$promise.then(function(confirmation) {
+                console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
+                $location.path('/');
+              })
+            })  
+          }).catch(function(err) {
+            console.log("error saving new workout: " + err)
           })
-          $location.path('/');
-        }).catch(function(err) {
-          console.log("error saving new workout: " + err)
         })
-      }, function(err) {
-        console.log(err)
-      })
+      })   
     }
 
     function timeFormatter(date) {
