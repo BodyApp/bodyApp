@@ -98,13 +98,13 @@
                     <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->  
 
                     <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
-                      <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past">Booked</span>
-                      <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past">Class Full</span>
-                      <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]">Class Over</span>
-                      <span ng-if="!slot.past && (slot.trainer._id === currentUser._id)"> Teaching</span>
-                      <span ng-if="slot.past && (slot.trainer._id === currentUser._id)"> Taught</span>
-                      <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past && (slot.trainer._id != currentUser._id)">Available</span>
-                      <span ng-if="slot.bookedUsers[currentUser._id] && slot.past">Taken</span>
+                      <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past" style="font-style:italic">Booked</span>
+                      <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past" style="font-style:italic">Class Full</span>
+                      <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]" style="font-style:italic">Class Over</span>
+                      <span ng-if="!slot.past && (slot.trainer._id === currentUser._id)" style="font-style:italic"> Teaching</span>
+                      <span ng-if="slot.past && (slot.trainer._id === currentUser._id)" style="font-style:italic"> Taught</span>
+                      <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past && (slot.trainer._id != currentUser._id)" style="font-style:italic">Available</span>
+                      <span ng-if="slot.bookedUsers[currentUser._id] && slot.past" style="font-style:italic">Taken</span>
                       <br>
                       <div ng-if = "slot.trainer._id != currentUser._id">{{slot.trainer.firstName}}</div>
                       <div ng-if = "slot.trainer._id != currentUser._id">{{slot.trainer.lastName}}</div>
