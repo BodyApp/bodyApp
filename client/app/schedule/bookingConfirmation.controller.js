@@ -5,6 +5,11 @@ angular.module('bodyAppApp')
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         $scope.bookedClass = slot;
+        $scope.showFriendModal = false;
+        $scope.friendList;
+        $scope.friendsSelected = {
+            friends: []
+        };
     
         var date = new Date(slot.date)
         // $scope.calendarDateSetter = "20150704T210000"
@@ -15,8 +20,7 @@ angular.module('bodyAppApp')
         $scope.scheduledClass = slot
 
         // var time = jstz().determine();
-        $scope.timeZone = jstz().timezone_name;
-        
+        $scope.timeZone = jstz().timezone_name;  
         
         if (date.getHours() == 12) {
             $scope.classTime = date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "pm"
@@ -55,5 +59,25 @@ angular.module('bodyAppApp')
         month[11] = "Nov";
         month[12] = "Dec";
 
-        $scope.month = month[date.getMonth()]
+        $scope.month = month[date.getMonth()];
+
+        $scope.inviteFriendsClicked = function() {
+            var user = Auth.getCurrentUser();
+            $scope.friendList = user.friendList;
+            $scope.showFriendModal = true;
+            console.log(user.friendList);
+        }
+
+        $scope.inviteSelectedFriends = function() {
+            console.log($scope.friendsSelected)
+            $modalInstance.close()
+        }
+
+        $scope.closeModal = function() {
+            $modalInstance.close()   
+        }
+
+        $scope.backToMain = function() {
+            $scope.showFriendModal = false;
+        }
     })

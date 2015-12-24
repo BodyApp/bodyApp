@@ -10,7 +10,8 @@ angular.module('bodyAppApp', [
   'firebase',
   'jshor.angular-addtocalendar',
   'SoundCloud',
-  'timer'
+  'timer',
+  "checklist-model"
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
