@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule) {
+  .controller('VideoCtrl', function ($scope, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -417,6 +417,8 @@ angular.module('bodyAppApp')
 
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
+		      audioSource: Video.getAudioInput(), 
+		      videoSource: Video.getVideoInput(),
 		      publishAudio:true, 
 		      publishVideo:true,
 		      mirror: true,

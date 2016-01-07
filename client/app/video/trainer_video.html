@@ -118,14 +118,14 @@
           <h1 id="timer"><timer class = "clock" start-time="classTime">{{minutes}}:{{seconds >= 10 ? seconds : "0" + seconds}}</timer></h1>
           <form>
             <!-- <label>Time On (Minutes)</label> -->
-            <input type="number" step="1" ng-change = "setTimeOn(stopwatch.timeOn)" ng-model = "stopwatch.timeOn" placeholder = "Time On (Minutes)"></input>
+            <input style = "margin-bottom:6px" type="number" step="1" ng-change = "setTimeOn(stopwatch.timeOn)" ng-model = "stopwatch.timeOn" placeholder = "Time On (Minutes)"></input>
             <!-- <label>Time Off (Seconds)</label> -->
-            <input type="number" step="1" ng-change = "setTimeOff(stopwatch.timeOff)" ng-model = "stopwatch.timeOff" placeholder = "Time Off (Seconds)"></input> 
-            <input type="number" step="1" ng-change = "setRounds(stopwatch.rounds)" ng-model = "stopwatch.rounds" placeholder = "Rounds (num)"></input> 
+            <input style = "margin-bottom:6px" type="number" step="1" ng-change = "setTimeOff(stopwatch.timeOff)" ng-model = "stopwatch.timeOff" placeholder = "Time Off (Seconds)"></input> 
+            <input style = "margin-bottom:6px" type="number" step="1" ng-change = "setRounds(stopwatch.rounds)" ng-model = "stopwatch.rounds" placeholder = "Rounds (num)"></input> 
           </form>
 
             <h1 id="timer"><timer id = "stopwatch" autostart="false" interval="1000" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" countdown="stopwatch.currentStopwatchTime" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer></h1>
-            <h5 style = "color: white; text-align: center">{{stopwatch.rounds}} Rounds Left</h5>
+            <h5 style = "color: white; text-align: center; margin-bottom:12px;">{{stopwatch.rounds}} Rounds Left</h5>
           
           <table>
             <tr>
@@ -136,17 +136,15 @@
           </table>
           <h4>Workout</h4>
           <p><strong>Skill</strong><br>Airsquat<br><strong>Benchmark</strong><br>1 min burpees</p>
-          <h4>Song</h4>
+          <h4>Song/Volume</h4>
+          <form>
+                <input style = "margin-bottom:6px" type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />
+          </form> 
           <div ng-click = "openSongPermalink(currentSong)" id="soundcloud-song" ng-show = "currentSong.title">
                 <!-- <img ng-src="../assets/images/soundcloudWhiteLogo.png"/> -->
                 <span class="song">Listening To: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
             </div>
           <!-- <p class="song">Kiss you in the Morning, Michael Ray <a href="#">Change Song</a></p> -->
-          <h4>Volume</h4>
-          <form>
-                <input type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />
-          </form>   
-
         </div>
     </div>
   </section> 

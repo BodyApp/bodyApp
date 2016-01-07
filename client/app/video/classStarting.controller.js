@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $firebaseObject, Schedule, Auth, User) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $firebaseObject, Schedule, Auth, User, Video) {
   	var classToJoin = Schedule.classUserJustJoined;
 
     if (!classToJoin) {
@@ -41,6 +41,36 @@ angular.module('bodyAppApp')
         getBookedUsers($scope.class);
       })
     });
+
+    $scope.audioInputDevices;
+    $scope.videoInputDevices;
+
+    OT.getDevices(function(error, devices) {
+      $scope.audioInputDevices = devices.filter(function(element) {
+        return element.kind == "audioInput";
+      });
+      $scope.videoInputDevices = devices.filter(function(element) {
+        return element.kind == "videoInput";
+      });
+      // for (var i = 0; i < $scope.audioInputDevices.length; i++) {
+      //   console.log("audio input device: ", $scope.audioInputDevices[i]);
+      // }
+      // for (i = 0; i < $scope.videoInputDevices.length; i++) {
+      //   console.log("video input device: ", $scope.videoInputDevices[i]);
+      // }
+      $scope.audioInput = $scope.audioInputDevices[0];
+      $scope.setAudioInput($scope.audioInput);
+      $scope.videoInput = $scope.videoInputDevices[0];
+      $scope.setVideoInput($scope.videoInput);
+    });
+
+    $scope.setVideoInput = function(videoInput) {
+      Video.setVideoInput(videoInput);
+    }
+
+    $scope.setAudioInput = function(audioInput) {
+      Video.setAudioInput(audioInput);
+    }
 
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];

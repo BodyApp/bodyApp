@@ -8,6 +8,10 @@
 	        <div class="container">
 	            <div class="row">
 	                <div class="col-md-6 text-center">
+	                	<div class = "col-md-6">
+		                	<select ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>
+		                	<select ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>
+		                </div>
 	                    <!-- <h2 class="uppercase mb0">DEMO CLASS</h2> -->
 	                </div>
 								<div class="col-sm-6 text-center">

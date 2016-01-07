@@ -158,12 +158,11 @@ angular.module('bodyAppApp')
         var modalInstance = openCreatingModal();
 
         syncObject.$save().then(function() {
-          console.log("new workout saved");
-          modalInstance.close();
+          console.log("New workout saved prior to creating tokbox session")
           if (workoutToCreate.level === "Intro") {
             var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
             var upcomingIntroRef = $firebaseArray(fbRef.child('upcomingIntros'));
-            upcomingIntroRef.$add(date.getTime());
+            upcomingIntroRef.$add(date.getTime()).then(function(){console.log("Saved Intro class to intro list")})
           }
 
           User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
@@ -178,6 +177,8 @@ angular.module('bodyAppApp')
               }).$promise.then(function(confirmation) {
                 console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
                 $location.path('/');
+                console.log("new workout saved");
+                modalInstance.close();
               })
             })  
           }).catch(function(err) {

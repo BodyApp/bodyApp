@@ -101,8 +101,8 @@
                       <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past" style="font-style:italic">Booked</span>
                       <span ng-if="slot.classFull && !slot.bookedUsers[currentUser._id] && !slot.past" style="font-style:italic">Class Full</span>
                       <span ng-if="slot.past && !slot.bookedUsers[currentUser._id]" style="font-style:italic">Class Over</span>
-                      <span ng-if="!slot.past && (slot.trainer._id === currentUser._id)" style="font-style:italic"> Teaching</span>
-                      <span ng-if="slot.past && (slot.trainer._id === currentUser._id)" style="font-style:italic"> Taught</span>
+                      <span ng-if="!slot.past && (slot.trainer._id === currentUser._id)" style="font-style:italic">Teaching</span>
+                      <span ng-if="slot.past && (slot.trainer._id === currentUser._id)" style="font-style:italic">Taught</span>
                       <span ng-if="!slot.bookedUsers[currentUser._id] && !slot.classFull && !slot.past && (slot.trainer._id != currentUser._id)" style="font-style:italic">Available</span>
                       <span ng-if="slot.bookedUsers[currentUser._id] && slot.past" style="font-style:italic">Taken</span>
                       <br>

@@ -11,7 +11,8 @@ angular.module('bodyAppApp', [
   'jshor.angular-addtocalendar',
   'SoundCloud',
   'timer',
-  "checklist-model"
+  "checklist-model",
+  "angularScreenfull"
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
