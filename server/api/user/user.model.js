@@ -33,6 +33,7 @@ var UserSchema = new Schema({
   trainerCredential3: String,
   trainerCredential4: String,
   trainerRating: Number,
+  trainerNumRatings: Number,
   bookedIntroClass: Boolean,
   facebook: {},
   twitter: {},

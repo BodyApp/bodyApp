@@ -46,7 +46,8 @@ exports.setup = function (User, config) {
             trainerCredential2: "ACSM certified",
             trainerCredential3: "NASM Certified",
             trainerCredential4: "AED/CPR",
-            trainerRating: 5.0
+            trainerRating: 5.0,
+            trainerNumRatings: 0
           });
           user.friendListObject = {}
           for (var i = 0; i < user.friendList.length; i++) {
