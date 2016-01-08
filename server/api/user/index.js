@@ -19,8 +19,8 @@ router.put('/:id/addBookedClass', auth.isAuthenticated(), controller.addBookedCl
 router.put('/:id/addIntroClass', auth.isAuthenticated(), controller.addIntroClass);
 router.put('/:id/saveClassTaught', auth.isAuthenticated(), controller.saveClassTaught);
 router.put('/:id/saveInjuries', auth.isAuthenticated(), controller.saveInjuries);
-router.get('/getUser', controller.getUser);
 router.put('/:id/saveEmailAddress', auth.isAuthenticated(), controller.saveEmail);
+router.put('/:id/getUser', auth.isAuthenticated(), controller.getUser);
 
 router.get('/:id/getSubscription', controller.getSubscription);
 

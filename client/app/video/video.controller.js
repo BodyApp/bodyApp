@@ -290,12 +290,12 @@ angular.module('bodyAppApp')
 
 				  	//Need to check if this user is already in the consumerList or not
 						if (!instructorStream) {
-					  	var streamUser = User.getUser({id: streamId}).$promise.then(function(data) {
+					  	var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 	            	$scope.consumerObjects[streamId] = data
 	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
 	            })
 						} else {
-							User.getUser({id: streamId}).$promise.then(function(data) {
+							User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 	            	instructorInfo = data
 	            })
 						}

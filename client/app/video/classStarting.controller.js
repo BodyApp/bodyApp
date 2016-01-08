@@ -79,8 +79,10 @@ angular.module('bodyAppApp')
 
         for (var bookedUser in classJoined.bookedUsers) {
           if (bookedUser) {
-            User.getUser({id: bookedUser}).$promise.then(function(data) {
+            User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
               $scope.bookedUsers.push(data);  
+            }).catch(function(err) {
+              console.log(err);
             })
           }    
         }

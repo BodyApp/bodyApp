@@ -7,12 +7,12 @@ angular.module('bodyAppApp')
 
   	service.setVideoInput = function(videoInput) {
   		videoInputDevice = videoInput;
-      console.log("Video device set to " + videoInputDevice)
+      console.log("Video device set to " + videoInputDevice.label)
   	}
 
   	service.setAudioInput = function(audioInput){
   		audioInputDevice = audioInput;
-      console.log("Audio device set to " + audioInputDevice)
+      console.log("Audio device set to " + audioInputDevice.label)
   	}
 
     service.getVideoInput = function() {

@@ -57,9 +57,9 @@ angular.module('bodyAppApp')
         }
       },
       getUser: {
-        method: 'GET',
+        method: 'PUT',
         params: {
-          id: 'getUser'
+          controller: 'getUser'
         }
       },
       getSubscription: {

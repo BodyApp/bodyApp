@@ -42,14 +42,12 @@ exports.getAdmins = function(req, res) {
 };
 
 exports.getUser = function(req, res, next) {
-  console.log(req)
-  var userId = req.body.id;
-  User.findOne({
-    _id: userId
-  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+  var userId = req.body.userToGet;
+  console.log("getting user " + userId)
+  User.findOne({_id: userId}, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
     if (err) return next(err);
-    if (!user) return res.status(401).send('Unauthorized');
-    res.json(user);
+    if (!user) return res.status(200).send('No user found');
+    if (user) return res.json(user);
   });
 }
 
@@ -204,7 +202,6 @@ exports.postBilling = function(req, res, next){
     };
 
       var cardHandler = function(err, customer) {
-        console.log(customer);
         // console.log(third);
         if (err) return cb(err);
 
@@ -412,7 +409,6 @@ exports.addBookedClass = function(req, res, next) {
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      console.log(user);
       user.classesTaken.push(classToAdd);
       user.save(function(err) {
         if (err) return validationError(res, err);
@@ -429,7 +425,6 @@ exports.saveClassTaught = function(req, res, next) {
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      console.log(user);
       user.classesTaught.push(classToAdd);
       user.save(function(err) {
         if (err) return validationError(res, err);
@@ -445,7 +440,6 @@ exports.saveInjuries = function(req, res, next) {
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      console.log(user);
       user.injuries = injuries;
       user.save(function(err) {
         if (err) return validationError(res, err);
@@ -459,7 +453,6 @@ exports.createTokBoxSession = function(req, res, next) {
   // The session will the OpenTok Media Router:
   opentok.createSession({mediaMode:"routed"}, function(err, session) {
     if (err) return console.log(err);
-    console.log(session);
     // save the session.sessionId back in firebase
     res.status(200).json(session);
   });
@@ -473,7 +466,6 @@ exports.createTokBoxToken = function(req, res, next) {
     role: "publisher"
   })
   // , function(token) {
-    console.log(token);
     res.json({ token: token }); 
   // })
 }
