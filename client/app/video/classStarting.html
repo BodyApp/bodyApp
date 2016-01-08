@@ -42,8 +42,8 @@
 	    				<h3 id="blue" class="text-center uppercase bold mb24">Instructor</h3>
 	    				<p class="text-center mb24"><img class="trainer-circle-image" src="{{class.trainer.picture}}"></p>
 	    				<h4 class="text-center uppercase bold mb8">{{class.trainer.firstName}} {{class.trainer.lastName}}</h4>
-	    				<h5 class="text-center mb16">Qualifications: L1 CrossFit Trainer | ACSM certified<br>NASM Certified | AED/CPR</h5>
-	    				<h4 class="text-center">User Rating: <span id="blue" class="bold">4.5</span>/5</h4>
+	    				<h5 class="text-center mb16" ng-if = "class.trainer.trainerCredential1">Qualifications: {{class.trainer.trainerCredential1}}<span ng-if = "class.trainer.trainerCredential2"> | {{class.trainer.trainerCredential2}}</span><br ng-if = "class.trainer.trainerCredential3">{{class.trainer.trainerCredential3}}<span ng-if = "class.trainer.trainerCredential4"> | {{class.trainer.trainerCredential4}}</span></h5>
+	    				<h4 class="text-center">User Rating: <span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{class.trainer.trainerRating}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5</h4>
 	    			</div>
 	    			<div class="col-md-6">
 	    				<h3 id="blue" class="text-center uppercase bold mb32">Classmates</h3>

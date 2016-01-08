@@ -41,7 +41,12 @@ exports.setup = function (User, config) {
             email: profile.emails ? profile.emails[0].value : "", //Getting cannot read property 0 of undefined here.  Crashed server.
             role: 'user',
             provider: 'facebook',
-            facebook: profile._json
+            facebook: profile._json,
+            trainerCredential1: "L1 CrossFit Trainer",
+            trainerCredential2: "ACSM certified",
+            trainerCredential3: "NASM Certified",
+            trainerCredential4: "AED/CPR",
+            trainerRating: 5.0
           });
           user.friendListObject = {}
           for (var i = 0; i < user.friendList.length; i++) {
