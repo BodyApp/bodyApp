@@ -34,9 +34,12 @@ angular.module('bodyAppApp')
     $scope.numBookedUsers;
     $scope.bookedUsers;
 
+    $scope.trainerRatingRounded;
+
     getBookedUsers(classToJoin);
 
     $scope.class.$loaded().then(function() {
+      $scope.trainerRatingRounded = Math.round($scope.class.trainer.trainerRating * 10)/10
       $scope.class.$watch(function(e) {
         getBookedUsers($scope.class);
       })
