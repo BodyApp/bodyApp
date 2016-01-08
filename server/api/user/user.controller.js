@@ -434,6 +434,32 @@ exports.saveClassTaught = function(req, res, next) {
   });
 };
 
+exports.addRating = function(req, res, next) {
+  console.log(req.body)
+  // var userId = req.user._id;
+  var trainerId = req.body.trainer;
+  var rating = req.body.rating
+
+  User.findById(trainerId, function (err, user) {
+    if(err) { return err } else {
+      if (!user) return res.status(401).send('Unauthorized');
+      var currentRating = user.trainerRating * user.trainerNumRatings;
+      console.log(currentRating)
+      var newTotal = currentRating + Number(rating);
+      console.log(newTotal)
+      user.trainerNumRatings += 1;
+      console.log(user.trainerNumRatings)
+      user.trainerRating = newTotal / user.trainerNumRatings;
+      console.log(user.trainerRating)
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json({trainerRating: user.trainerRating, trainerNumRatings: user.trainerNumRatings});
+        // res.status(200).json({user});
+      });
+    } 
+  });
+};
+
 exports.saveInjuries = function(req, res, next) {
   var injuries = req.body.injuryString;
   var userId = req.user._id

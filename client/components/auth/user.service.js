@@ -39,7 +39,7 @@ angular.module('bodyAppApp')
       addRating: {
         method: 'PUT',
         params: {
-          controller: 'addRating'
+          controller:'addRating'
         }
       },
       saveInjuries: {

@@ -41,7 +41,13 @@ User.find({}).remove(function() {
     email: 'instructor@getbodyapp.com',
     gender: 'Male',
     picture: 'http://reebokcrossfitbackbay.com/wp-content/uploads/bfi_thumb/Bern-md2r7u98gqeubrj7basntqfgut1vy3s9jt2m7v2w3w.jpg',
-    password: 'delts'
+    password: 'delts',
+    trainerCredential1: "Qual1",
+    trainerCredential2: "Qual2",
+    trainerCredential3: "Qual3",
+    trainerCredential4: "Qual4",
+    trainerRating: 5.0,
+    trainerNumRatings: 0
   }, {
     provider: 'local',
     role: 'admin',
