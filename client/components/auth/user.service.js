@@ -42,6 +42,12 @@ angular.module('bodyAppApp')
           controller:'addRating'
         }
       },
+      saveResult: {
+        method: 'PUT',
+        params: {
+          controller:'saveResult'
+        }
+      },
       saveInjuries: {
         method: 'PUT',
         params: {

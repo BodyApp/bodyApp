@@ -52,19 +52,21 @@ angular.module('bodyAppApp')
   				userLastName: currentUser.lastName,
   				userPicture: currentUser.picture,
   				timePosted: (new Date()).getTime()
+  				
   			})
   		}
 
-  	// 	User.saveResult({ id: Auth.getCurrentUser()._id }, {
-   //      score: score, 
-   //      comment: comment,
-   //      wod: "WodData",
-   //      date: classDate.getTime(),
-   //      weekOf: weekOf
-   //    }, function(data) {
-   //      console.log("Result saved: " + data)
-   //    }, function(err) {
-   //        console.log(err)
-   //    }).$promise;
+  		User.saveResult({ id: Auth.getCurrentUser()._id }, {
+        score: score, 
+        comment: comment,
+        wod: "WodData",
+        dateTime: classDate.getTime(),
+        weekOf: weekOf,
+        date: ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+      }, function(data) {
+        console.log(data.user)
+      }, function(err) {
+          console.log(err)
+      }).$promise;
   	}
   });

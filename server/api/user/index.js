@@ -28,6 +28,7 @@ router.get('/:id/createTokBoxSession', controller.createTokBoxSession);
 router.put('/:id/createTokBoxToken', auth.isAuthenticated(), controller.createTokBoxToken);
 
 router.put('/:id/addRating', auth.isAuthenticated(), controller.addRating);
+router.put('/:id/saveResult', auth.isAuthenticated(), controller.saveResult);
 
 router.post('/charge',
 //   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),

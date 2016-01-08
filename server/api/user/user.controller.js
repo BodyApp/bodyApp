@@ -460,6 +460,29 @@ exports.addRating = function(req, res, next) {
   });
 };
 
+exports.saveResult = function(req, res, next) {
+  var userId = req.user._id;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else {
+      if (!user) return res.status(401).send('Unauthorized');
+      user.results = user.results || {};
+      user.results[req.body.date] = {
+        score: req.body.score,
+        comment: req.body.comment,
+        wod: req.body.wod,
+        dateTime: req.body.dateTime,
+        weekOf: req.body.weekOf,
+        date: req.body.date
+      }
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json({user});
+      });
+    } 
+  });
+};
+
 exports.saveInjuries = function(req, res, next) {
   var injuries = req.body.injuryString;
   var userId = req.user._id

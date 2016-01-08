@@ -35,6 +35,7 @@ var UserSchema = new Schema({
   trainerRating: Number,
   trainerNumRatings: Number,
   bookedIntroClass: Boolean,
+  results: Object,
   facebook: {},
   twitter: {},
   google: {},
