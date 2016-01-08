@@ -1,0 +1,80 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+  <section class="banner">
+    <div class="col-md-12 text-center">
+      <h2 class="class-type mb0 mt16">Intro Class Wrap-up</h2>
+      <h4 class="page-description mb16">Enter your results</h4>
+    </div>
+  </section>
+
+  <div class="container">
+
+  <section class="mt32 mb32">
+    <div class="col-md-6 text-center">
+      <h3 class="text-center mb16">Instructor Rating</h3>
+      <p class="text-center mb16"><img class="trainer-circle-image" src="assets/images/bern-prince.jpg"></p>
+      <h4 class="mb24 bold">Bern Prince</h4>
+      <h5 class="text-center mb8">Provide your feedback</h5>
+      <!--Rating-->
+      <fieldset class="rating">
+
+          <input type="radio" id="star5" name="rating" value="5" />
+          <label class = "full" for="star5" title="Awesome - 5 stars"></label>
+
+          <input type="radio" id="star4half" name="rating" value="4 and a half" />
+          <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+          
+          <input type="radio" id="star4" name="rating" value="4" />
+          <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+          
+          <input type="radio" id="star3half" name="rating" value="3 and a half" />
+          <label class="half" for="star3half" title="Above-Average - 3.5 stars"></label>
+          
+          <input type="radio" id="star3" name="rating" value="3" />
+          <label class = "full" for="star3" title="Average - 3 stars"></label>
+          
+          <input type="radio" id="star2half" name="rating" value="2 and a half" />
+          <label class="half" for="star2half" title="Not great - 2.5 stars"></label>
+          
+          <input type="radio" id="star2" name="rating" value="2" />
+          <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+          
+          <input type="radio" id="star1half" name="rating" value="1 and a half" />
+          <label class="half" for="star1half" title="Kinda bad - 1.5 stars"></label>
+          
+          <input type="radio" id="star1" name="rating" value="1" />
+          <label class = "full" for="star1" title="Big problem - 1 star"></label>
+          
+          <input type="radio" id="starhalf" name="rating" value="half" />
+          <label class="half" for="starhalf" title="Big problem - 0.5 stars"></label>
+
+      </fieldset>
+      <!--end ratings-->        
+    </div>
+
+    <div class="col-md-6">
+      <h3 class="text-center mb16">Your Results</h3>
+
+      <span class="mb0">Score:</span>
+      <input class="score" type="text" name="score" placeholder="11:10"/>
+
+      <h5 class="mt8 mb0">Comments:</h5>
+      <input class="comments" type="text" name="comments" placeholder="Feeling great, killer workout!"/>
+
+      <div class="onoffswitch">
+          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+          <label class="onoffswitch-label" for="myonoffswitch">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+      </div>      
+    </div>
+
+    <div class="col-sm-12 mt32 text-center">
+      <button class="btn">Submit rating and results</button>
+    </div>
+
+  </section>
+</div>  
+
+<div ng-include="'components/footer/footer.html'"></div>

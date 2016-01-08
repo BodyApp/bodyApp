@@ -1,0 +1,120 @@
+.trainer-circle-image {
+	background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    border: 6px solid #CCCCCC;
+}
+
+.comments {
+	height: 200px !important;
+	padding-bottom: 150px;
+	margin-bottom: 8px !important;
+}
+.score {
+	height: 35px !important;
+	margin-bottom: 8px !important;	
+	margin-left: 10px !important;
+	width: 20% !important;
+}
+::-webkit-input-placeholder {
+ font-size: 16px !important;
+ font-weight: 500 !important;
+ color: #1f1f1f !important;
+ text-transform: none !important;
+ font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+}
+
+/****** Style Star Rating Widget *****/
+
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+fieldset, label { margin: 0; padding: 0; }
+
+.rating { 
+  border: none;
+  width: 180px;
+  margin: 0 auto;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 28px;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+ color: #ddd; 
+ float: right; 
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #224893;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #A2B2E3;  } 
+
+
+
+/***** Share toggle *****/
+
+.onoffswitch {
+    float: right;
+    position: relative;
+    width: 146px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 5px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "Post publicly";
+    padding-left: 10px;
+    background-color: #0D1C45; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "Keep Private";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 30px; margin: 0px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 116px;
+    border: 2px solid #999999; border-radius: 5px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}

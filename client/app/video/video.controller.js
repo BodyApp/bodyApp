@@ -15,16 +15,27 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.classTime = classToJoin.date;
-		var classClosesTime = (classToJoin.date + 1000*60*90)
+		// var classClosesTime = (classToJoin.date + 1000*60*90)
+		// var endClassCheckInterval = $interval(function() {
+		// 	var currentTime = (new Date()).getTime()
+		// 	if (classClosesTime < currentTime) {
+		// 		console.log("class is over, booting people out");
+		// 		$location.path('/');
+		// 	} else {
+		// 		console.log("class currently in session");
+		// 	}
+		// }, 1000*60*15)
+
+		var classClosesTime = (classToJoin.date + 1000*10)
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
 				console.log("class is over, booting people out");
-				$location.path('/');
+				$location.path('/classfeedback');
 			} else {
 				console.log("class currently in session");
 			}
-		}, 1000*60*15)
+		}, 1000*10)
   	
 		var firstTimePlayingSong = true;
 		$scope.currentSong = {};
