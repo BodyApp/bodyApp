@@ -36,6 +36,12 @@ angular.module('bodyAppApp')
           controller:'saveClassTaught'
         }
       },
+      addRating: {
+        method: 'PUT',
+        params: {
+          controller: 'addRating'
+        }
+      },
       saveInjuries: {
         method: 'PUT',
         params: {
