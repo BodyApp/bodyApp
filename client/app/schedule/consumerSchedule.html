@@ -38,7 +38,7 @@
                       <span id="dark-text" >{{slot.level}} with {{slot.trainer.firstName}} {{slot.trainer.lastName}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
                     </td>
                     <td class = "col-md-3" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-                      <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">JOIN NOW</a>
+                      <a class="btn btn-filled btn-sm reserved-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classfeedback">JOIN NOW</a>
                     </td>
                     <td class = "col-md-3" ng-if = "slot.date > (timeNow + 1000*60*15)">
                       <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
