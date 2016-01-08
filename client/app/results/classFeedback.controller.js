@@ -23,39 +23,11 @@ angular.module('bodyAppApp')
 
   	$scope.submitRatingAndResults = function(rating, score, comment, postToPublic) {
   		
-  		console.log("score: " + score)
-  		console.log("comment: " + comment)
-  		console.log("post to public?: " + postToPublic)
+	  	if (!rating) rating = 5.0
+  		if (!score) score = ""
+  		if (!comment) comment = ""
 
-	  	// 	if (!rating) rating = 5.0
-			// console.log("rating: " + rating)
-
-			// User.addRating({id: Auth.getCurrentUser()._id}, {trainer: $scope.classCompleted.trainer._id, rating: rating}, function(data) {
-			// 	console.log("rating saved.  New trainer rating: " + data.rating + " on " + data.numRatings + " ratings.")
-			// })
-
-			User.addRating({ id: currentUser._id }, {
-        trainer: $scope.classCompleted.trainer._id, 
-        rating: rating
-      }, function(data) {
-        console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
-      }, function(err) {
-          console.log(err)
-      }).$promise;
-
-  		if (postToPublic) {
-  			dayRef.child("resultList").push({
-  				score: score,
-  				comment: comment,
-  				userId: currentUser._id,
-  				userFirstName: currentUser.firstName,
-  				userLastName: currentUser.lastName,
-  				userPicture: currentUser.picture,
-  				timePosted: (new Date()).getTime()
-  				
-  			})
-  		}
-
+  		//Add result to user object
   		User.saveResult({ id: Auth.getCurrentUser()._id }, {
         score: score, 
         comment: comment,
@@ -67,6 +39,31 @@ angular.module('bodyAppApp')
         console.log(data.user)
       }, function(err) {
           console.log(err)
-      }).$promise;
+      }).$promise.then(function() {
+      	//Add rating to trainer object
+      	User.addRating({ id: currentUser._id }, {
+	        trainer: $scope.classCompleted.trainer._id, 
+	        rating: rating
+	      }, function(data) {
+	        console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
+	      }, function(err) {
+	          console.log(err)
+	      }).$promise;	
+      });
+
+  		if (postToPublic) {
+  			dayRef.child("resultList").push({
+  				score: score,
+  				comment: comment,
+  				userId: currentUser._id,
+  				userFirstName: currentUser.firstName,
+  				userLastName: currentUser.lastName,
+  				userPicture: currentUser.picture,
+  				timePosted: (new Date()).getTime()				
+  			}, function(error) {
+  				if (error) return console.log(error);
+  				console.log("Result successfully published to public list.")
+  			})
+  		}
   	}
   });
