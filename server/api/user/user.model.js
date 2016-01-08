@@ -64,12 +64,19 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
-      'name': this.name,
+      'nickName': this.nickName,
       'firstName': this.firstName,
       'lastName': this.lastName,
       'gender': this.gender,
       'role': this.role,
-      'picture': this.picture
+      'picture': this.picture,
+      'email': this.email,
+      'trainerCredential1': this.trainerCredential1,
+      'trainerCredential2': this.trainerCredential2,
+      'trainerCredential3': this.trainerCredential3,
+      'trainerCredential4': this.trainerCredential4,
+      'trainerRating': this.trainerRating,
+      'trainerNumRatings': this.trainerNumRatings,
     };
   });
 

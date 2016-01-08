@@ -47,7 +47,7 @@ exports.getUser = function(req, res, next) {
   User.findOne({_id: userId}, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
     if (err) return next(err);
     if (!user) return res.status(200).send('No user found');
-    if (user) return res.json(user);
+    if (user) return res.json(user.profile);
   });
 }
 
