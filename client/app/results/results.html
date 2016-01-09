@@ -1,116 +1,155 @@
-<div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
-<tour step="currentStep">
-<div class="container full-screen-height">
-  <div class="row">
-  	<div class="col-md-3 page-sidebar-left">
-  	<!--left sidebar-->
-  		<h3 class="uppercase text-center mb8 mt8">World</h3>
-  		<h5 id="blue" class="text-center bold mb0"><i>WINTER IS COMING</i></h5>
-  		<h5 class="text-center mb32"><i>{{dayOfWeekToday}} Oct {{todayDate}}</i></h5>
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
-  		<!--world WOD Results-->
+<div class="container">
+<section class="mt32">
+	<h1>Workout History</h1>
+</section>
 
-	<ul class="world-list-wod">
-		<li>
-			<img class="world-wod-image" src="../assets/images/profile1.jpg">
-			<div class="world-name-wod">
-				<span id="blue" class="bold">Lucy L.</span><span id="dark-text"> scored 10:22 L2 - So much fun. Bern is the best!</span>
-			</div>
+<section class="col-md-2">
+	<div class="text-center"><a href="">Next Week &rarr;</a></div>
+	<ul class="classArchive mb0">
+		<li class="selectedWod">
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
 		</li>
 		<li>
-			<img class="world-wod-image" src="../assets/images/profile2.jpg">
-			<div class="world-name-wod">
-				<span id="blue" class="bold">Justin H.</span><span id="dark-text"> scored 11:10 L1 - Felt freaking awesome. I'm such a boss.</span>
-			</div>		    							
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
 		</li>
 		<li>
-			<img class="world-wod-image" src="../assets/images/profile3.jpg">
-			<div class="world-name-wod">
-				<span id="blue" class="bold">Courtney M.</span><span id="dark-text"> scored 9:34 L3 - Bern always pushes me so hard! I love BODY!</span>
-			</div>		    							
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
 		</li>
 		<li>
-			<img class="world-wod-image" src="../assets/images/profile4.jpg">
-			<div class="world-name-wod">
-				<span id="blue" class="bold">Brad T.</span><span id="dark-text"> scored 12:35 L2 - Personal best! Way to go everyone!</span>
-			</div>		    							
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
 		</li>
 		<li>
-			<img class="world-wod-image" src="../assets/images/profile5.jpg">
-			<div class="world-name-wod">
-				<span id="blue" class="bold">Becky L.</span><span id="dark-text"> scored 10:03 L1 - Not really feeling well today :(</span>
-			</div>		    							
-		</li>	   
-		<li>
-			<img class="world-wod-image" src="../assets/images/profile6.jpg">
-			<div class="world-name-wod">
-				<span id="blue" class="bold">Sally D .</span><span id="dark-text"> scored 9:17 L1 - Pretty crazy day. I felt super fired up.</span>
-			</div>		    							
-		</li>	     							    							    						
-	</ul>		            		
-
-  		<!--end of world WOD Results-->
-  		
-  	</div>
-  	<!--end of left sidebar-->
-
-  	<div class="col-md-9">
-  		<!--user results-->
-  		<h3 class="uppercase text-center mb32">Your Results</h3>
-  		<!--world WOD Results-->
-
-	<ul class="user-list-wod">
-		<li>
-			<h5 class="mb8">{{dayOfWeekToday}} Oct {{todayDate}} - <span id="blue" class="bold"><i>WOD: Winter is Coming</i></span></h5>
-			<img class="user-wod-image" src="../assets/images/bern-prince.jpg">
-			<div class="user-name-wod">
-				<span id="blue" class="bold">Jack G.</span><span id="dark-text"> scored 10:39 L2 - Bern is a beast. That was intense.</span>
-			</div>
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
 		</li>
 		<li>
-			<h5 class="mb8">Sunday Oct 11 - <span id="blue" class="bold"><i>WOD: Heaven and Hell</i></span></h5>
-			<img class="user-wod-image" src="../assets/images/bern-prince.jpg">
-			<div class="user-name-wod">
-				<span id="blue" class="bold">Jack G.</span><span id="dark-text"> scored 9:14 L1 - My classmates were all going super hard!</span>
-			</div>
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
 		</li>
 		<li>
-			<h5 class="mb8">Thursday Oct 8 - <span id="blue" class="bold"><i>WOD: Billy the Kid</i></span></h5>
-			<img class="user-wod-image" src="../assets/images/bern-prince.jpg">
-			<div class="user-name-wod">
-				<span id="blue" class="bold">Jack G.</span><span id="dark-text"> scored 11:05 L1 - I'm getting better at this!</span>
-			</div>
+			<a href="">
+				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
+		</li>												
+	</ul>
+
+	<div class="text-center"><a href="">&larr; Previous Week</a></div>
+</section>
+
+<section class="col-sm-10 mb16">
+	<!-- The workout of the day -->
+	<h2>The Flip Side</h2>
+	<p>We are developing those leg muscles and improving hip and ankle mobility. The Flip Side is all about increasing our workload capacity (endurance) and speed with which you can transition from exercise to exercise.</p>
+	<ul class="workoutModules">
+		<li><p><strong>I. Skill</strong><br>Hip Openers and Thrusters</p></li>
+		<li><p><strong>II. Strength</strong><br>5-5-5-5-5 Squat<br>Hand Release Pushups</p></li>
+		<li><p><strong>III. HIIT</strong><br>*Team Tabata<br>6 DB Thruster<br>6 Kettlebell Swings<br>12 Skaters<br>12 Band Squats</p></li>
+		<li><p><strong>IV. Workout</strong><br>*3 Rounds for Time<br>5 Burpee tuck jumps<br>10 V-ups</p></li>
+	</ul>
+</section>
+
+<section class="col-sm-10 mb16">
+	<!-- Personal Results -->
+	<h4 class="bold">Personal Result</h4>
+	<ul class="personal-results">
+		<li>
+			<div class="rank"><span>6</span></div>
+			<div class="photo"><img src="{{currentUser.picture}}"></div>
+			<div class="scoring"><span class="scoreValue">{{userResults.score}}</span><span class="user-first">{{currentUser.firstName}}</span></div>
+			<div class="wodComment">{{userResults.comment}}</span></div>
+		</li>
+	</ul>
+
+	<!-- Rankings -->
+	<h4 class="bold">Rankings</h4>
+	<div class="mb16">
+		<!-- <a class="filter-btn active" href="">Classmates</a> -->
+		<a class="filter-btn" href="">Community</a>		
+	</div>
+	<ul class="public-results" ng-repeat = "result in communityResultsArray">
+		<li>
+			<div class="rank"><span>1</span></div>
+			<div class="photo"><img src="{{result.picture}}"></div>
+			<div class="scoring"><span class="scoreValue">{{result.score}}</span><span class="user-first">{{result.firstName}}</span></div>
+			<div class="wodComment">{{result.comment}}</span></div>
+		</li>
+		<!-- <li>
+			<div class="rank"><span>2</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
 		</li>
 		<li>
-			<h5 class="mb8">Tuesday Oct 6 - <span id="blue" class="bold"><i>WOD: Godzilla</i></span></h5>
-			<img class="user-wod-image" src="../assets/images/bern-prince.jpg">
-			<div class="user-name-wod">
-				<span id="blue" class="bold">Jack G.</span><span id="dark-text"> scored 11:51 L1 - It's so motivating having other people working out with me.</span>
-			</div>
+			<div class="rank"><span>3</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>	
+		<li>
+			<div class="rank"><span>4</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
 		</li>
 		<li>
-			<h5 class="mb8">Thursday Oct 1 - <span id="blue" class="bold"><i>WOD: Joy to the World</i></span></h5>
-			<img class="user-wod-image" src="../assets/images/bern-prince.jpg">
-			<div class="user-name-wod">
-				<span id="blue" class="bold">Jack G.</span><span id="dark-text"> scored 11:42 L1 - First time on BODY and it was great!</span>
-			</div>
-		</li>    							    							    						
-	</ul>		            		
+			<div class="rank"><span>5</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>
+		<li>
+			<div class="rank"><span>6</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>
+		<li>
+			<div class="rank"><span>7</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>	
+		<li>
+			<div class="rank"><span>8</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>
+		<li>
+			<div class="rank"><span>9</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>
+		<li>
+			<div class="rank"><span>10</span></div>
+			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
+			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
+			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
+		</li>		 -->								
+	</ul>
 
-<!--   <span tourtip-step = "0"
-      tourtip="Thanks for checking out the Demo!  Let's tackle fitness together!" 
-      tourtip-next-label="Let's do it!"
-      tourtip-placement="Right"
-      tourtip-offset-horizontal="600"  
-      tourtip-offset-vertical="-350"  
-	></span> -->
+</section>
 
-  		<!--end of world WOD Results-->		            		
-
-
-  		<!--end of user results-->
-  	</div>
-  </div>
 </div>
-</tour>
+
 <div ng-include="'components/footer/footer.html'"></div>

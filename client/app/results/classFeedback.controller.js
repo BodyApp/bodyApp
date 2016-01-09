@@ -31,7 +31,7 @@ angular.module('bodyAppApp')
   		User.saveResult({ id: Auth.getCurrentUser()._id }, {
         score: score, 
         comment: comment,
-        wod: "WodData",
+        wod: "WodData", //This needs to be changed once the day's wod data has been implemented
         dateTime: classDate.getTime(),
         weekOf: weekOf,
         date: ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
@@ -46,11 +46,13 @@ angular.module('bodyAppApp')
 	        rating: rating
 	      }, function(data) {
 	        console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
+	        $location.path('/results')
 	      }, function(err) {
 	          console.log(err)
 	      }).$promise;	
       });
 
+      //Post result to public list
   		if (postToPublic) {
   			dayRef.child("resultList").push({
   				score: score,

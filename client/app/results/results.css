@@ -1,0 +1,149 @@
+.classArchive li {
+	background: #224893;
+	margin-bottom: 0px;
+	border-bottom: 1px solid white;
+	padding: 8px;
+}
+.classArchive li:hover {
+	background: #0d1c45;
+}
+.wodDate {
+	color: #A2B2E3;
+	font-weight: 600;
+	margin-bottom: 0px;
+}
+.wod {
+	color: #fff;
+	font-weight: 600;
+	margin-bottom: 0px;
+}
+.selectedWod {
+	background: #0d1c45 !important;
+}
+.workoutModules li {
+	float: left;
+	width: 25%;
+	padding-right: 20px;
+}
+.workoutModules li p {
+	float: left;
+	margin-bottom: 0px;
+}
+
+.personal-results li {
+	display: block;
+	padding: 10px 0px;
+	border-top: 1px solid #DBDBDB;
+	border-bottom: 1px solid #DBDBDB;	
+}
+.personal-results .rank {
+	display: inline-block;
+	width: 5%;
+}
+.personal-results .rank span {
+	color: #818181;
+	font-weight: 600;
+	padding-left: 10px;
+	font-size: 20px;
+}
+.personal-results .photo {
+	display: inline-block;
+	width: 10%;
+}
+.personal-results .scoring {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	width: 10%;
+}
+.personal-results .scoring .scoreValue {
+	display: block;
+	color: #818181;
+	font-weight: 600;
+	font-size: 20px;	
+}
+.personal-results .scoring .user-first {
+	display: block;
+	color: #0d1c45;
+	font-weight: 600;
+	font-size: 20px;	
+}
+.personal-results .wodComment {
+	display: inline-block;
+	vertical-align: middle;
+	width: 70%;
+}
+.personal-results .photo img {
+	width: 80px;
+	height: auto;
+	border-radius: 40px;
+}
+
+.public-results li {
+	padding: 10px 0px;
+	border-top: 1px solid #DBDBDB;
+	border-bottom: 1px solid #DBDBDB;	
+}
+.public-results .rank {
+	display: inline-block;
+	width: 4%;
+}
+.public-results .rank span {
+	color: #818181;
+	font-weight: 600;
+	padding-left: 10px;
+	font-size: 16px;
+}
+.public-results .photo {
+	display: inline-block;
+	width: 8%;
+}
+.public-results .scoring {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	width: 8%;
+}
+.public-results .scoring .scoreValue {
+	display: block;
+	color: #818181;
+	font-weight: 600;
+	font-size: 15px;	
+}
+.public-results .scoring .user-first {
+	display: block;
+	color: #0d1c45;
+	font-weight: 600;
+	font-size: 15px;	
+}
+.public-results .wodComment {
+	display: inline-block;
+	vertical-align: middle;
+	width: 70%;
+}
+.public-results .photo img {
+	width: 65px;
+	height: auto;
+	border-radius: 32px;
+}
+
+.filter-btn {
+	border: 1px solid #818181;
+	border-radius: 5px;
+	background: #D6D6D6;
+	color: #818181;
+	font-size: 14px;
+	font-weight: 400;
+	padding: 5px 20px;
+	margin-right: 5px;
+}
+
+.filter-btn:hover {
+	background: #0d1c45;
+	color: #fff;
+}
+
+.filter-btn.active {
+	background: #0d1c45 !important;
+	color: #fff !important;
+}
