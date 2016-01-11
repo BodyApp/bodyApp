@@ -23,6 +23,7 @@ angular.module('bodyAppApp')
 
     $scope.dayList = [];
     setupDayList();
+    $scope.selectedDate = new Date();
 
     var sunDate = new Date();
     sunDate.setDate(classDate.getDate() - classDate.getDay());
