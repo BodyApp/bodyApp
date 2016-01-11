@@ -28,12 +28,12 @@ angular.module('bodyAppApp')
     var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
     var dayRef = weekOfRef.child(classDate.getDay())
 
-    dayRef.child("resultList").on('value', function(snapshot) {
+    dayRef.child("resultList").orderByChild("score").on('value', function(snapshot) {
       communityResultsArray = snapshot.val();
     })
 
     if ($scope.currentUser.results[classKey]) {
-      dayRef.child('slots').child($scope.currentUser.results[classKey]["dateTime"]).child("classResultsList").on('value', function(snapshot) {
+      dayRef.child('slots').child($scope.currentUser.results[classKey]["dateTime"]).child("classResultsList").orderByChild("score").on('value', function(snapshot) {
         classResultsArray = snapshot.val();
       })
     }

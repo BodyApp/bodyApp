@@ -27,6 +27,8 @@ angular.module('bodyAppApp')
   		if (!score) score = ""
   		if (!comment) comment = ""
 
+  		score = score * 1
+
   		//Add result to user object
   		User.saveResult({ id: Auth.getCurrentUser()._id }, {
         score: score, 
@@ -55,8 +57,10 @@ angular.module('bodyAppApp')
 
       //Post result to public list
   		if (postToPublic) {
-  			dayRef.child("resultList").push({
-  				score: score,
+  			var dayList;
+  			var classList;
+  			dayList = dayRef.child("resultList").push({
+  				score: score*1,
   				comment: comment,
   				userId: currentUser._id,
   				userFirstName: currentUser.firstName,
@@ -67,7 +71,9 @@ angular.module('bodyAppApp')
   				if (error) return console.log(error);
   				console.log("Result successfully published to public list.")
 
-	  			dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
+  				dayList.setPriority(-score);
+
+	  			classList = dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
 	  				score: score,
 	  				comment: comment,
 	  				userId: currentUser._id,
@@ -78,6 +84,7 @@ angular.module('bodyAppApp')
 	  			}, function(error) {
 	  				if (error) return console.log(error);
 	  				console.log("Result successfully published to class list.")
+	  				classList.setPriority(-score);
 	  			})
   			})
   		}
