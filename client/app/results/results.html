@@ -74,8 +74,8 @@
 		<li>
 			<div class="rank"><span>6</span></div>
 			<div class="photo"><img src="{{currentUser.picture}}"></div>
-			<div class="scoring"><span class="scoreValue">{{userResults.score}}</span><span class="user-first">{{currentUser.firstName}}</span></div>
-			<div class="wodComment">{{userResults.comment}}</span></div>
+			<div class="scoring"><span class="scoreValue">{{userResultsToday.score}}</span><span class="user-first">{{currentUser.firstName}}</span></div>
+			<div class="wodComment">{{userResultsToday.comment}}</span></div>
 		</li>
 	</ul>
 
@@ -88,8 +88,8 @@
 	<ul class="public-results" ng-repeat = "result in communityResultsArray">
 		<li>
 			<div class="rank"><span>1</span></div>
-			<div class="photo"><img src="{{result.picture}}"></div>
-			<div class="scoring"><span class="scoreValue">{{result.score}}</span><span class="user-first">{{result.firstName}}</span></div>
+			<div class="photo"><img src="{{result.userPicture}}"></div>
+			<div class="scoring"><span class="scoreValue">{{result.score}}</span><span class="user-first">{{result.userFirstName}}</span></div>
 			<div class="wodComment">{{result.comment}}</span></div>
 		</li>
 		<!-- <li>

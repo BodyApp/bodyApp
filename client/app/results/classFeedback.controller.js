@@ -65,6 +65,19 @@ angular.module('bodyAppApp')
   			}, function(error) {
   				if (error) return console.log(error);
   				console.log("Result successfully published to public list.")
+
+	  			dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
+	  				score: score,
+	  				comment: comment,
+	  				userId: currentUser._id,
+	  				userFirstName: currentUser.firstName,
+	  				userLastName: currentUser.lastName,
+	  				userPicture: currentUser.picture,
+	  				timePosted: (new Date()).getTime()				
+	  			}, function(error) {
+	  				if (error) return console.log(error);
+	  				console.log("Result successfully published to class list.")
+	  			})
   			})
   		}
   	}
