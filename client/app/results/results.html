@@ -69,8 +69,8 @@
 
 <section class="col-sm-10 mb16">
 	<!-- Personal Results -->
-	<h4 class="bold">Personal Result</h4>
-	<ul class="personal-results">
+	<h4 class="bold" ng-show = "{{userResultsToday}}">Personal Result</h4>
+	<ul class="personal-results" ng-show = "{{userResultsToday}}">
 		<li>
 			<div class="rank"><span>6</span></div>
 			<div class="photo"><img src="{{currentUser.picture}}"></div>
@@ -82,8 +82,8 @@
 	<!-- Rankings -->
 	<h4 class="bold">Rankings</h4>
 	<div class="mb16">
-		<a class="filter-btn active" ng-class = "active: classmateActive" ng-click = "showClassmate()" href="">Classmates</a>
-		<a class="filter-btn" ng-class = "active: communityActive" ng-click = "showCommunity()" href="">Community</a>		
+		<a class="filter-btn" ng-class = "{active: communityActive}" ng-mouseover = "showCommunity()" href="">Community</a>		
+		<a class="filter-btn" ng-class = "{active: classmateActive}" ng-mouseover = "showClassmates()" href="">Classmates</a>
 	</div>
 	<ul class="public-results" ng-repeat = "result in rankings">
 		<li>
@@ -92,60 +92,6 @@
 			<div class="scoring"><span class="scoreValue">{{result.score}}</span><span class="user-first">{{result.userFirstName}}</span></div>
 			<div class="wodComment">{{result.comment}}</span></div>
 		</li>
-		<!-- <li>
-			<div class="rank"><span>2</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>
-		<li>
-			<div class="rank"><span>3</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>	
-		<li>
-			<div class="rank"><span>4</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>
-		<li>
-			<div class="rank"><span>5</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>
-		<li>
-			<div class="rank"><span>6</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>
-		<li>
-			<div class="rank"><span>7</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>	
-		<li>
-			<div class="rank"><span>8</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>
-		<li>
-			<div class="rank"><span>9</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>
-		<li>
-			<div class="rank"><span>10</span></div>
-			<div class="photo"><img src="/assets/images/justin-photo.jpg"></div>
-			<div class="scoring"><span class="scoreValue">09:10</span><span class="user-first">Justin</span></div>
-			<div class="wodComment">That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat! That was a great workout. Man I worked up a sweat!</span></div>
-		</li>		 -->								
 	</ul>
 
 </section>

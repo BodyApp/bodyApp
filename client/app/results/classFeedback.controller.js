@@ -36,7 +36,8 @@ angular.module('bodyAppApp')
         weekOf: weekOf,
         date: ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
       }, function(data) {
-        console.log(data.user)
+        console.log(data.user);
+        Auth.updateUser(data.user);
       }, function(err) {
           console.log(err)
       }).$promise.then(function() {
