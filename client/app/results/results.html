@@ -82,10 +82,10 @@
 	<!-- Rankings -->
 	<h4 class="bold">Rankings</h4>
 	<div class="mb16">
-		<!-- <a class="filter-btn active" href="">Classmates</a> -->
-		<a class="filter-btn" href="">Community</a>		
+		<a class="filter-btn active" ng-class = "active: classmateActive" ng-click = "showClassmate()" href="">Classmates</a>
+		<a class="filter-btn" ng-class = "active: communityActive" ng-click = "showCommunity()" href="">Community</a>		
 	</div>
-	<ul class="public-results" ng-repeat = "result in communityResultsArray">
+	<ul class="public-results" ng-repeat = "result in rankings">
 		<li>
 			<div class="rank"><span>1</span></div>
 			<div class="photo"><img src="{{result.userPicture}}"></div>

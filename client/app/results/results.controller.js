@@ -7,11 +7,14 @@ angular.module('bodyAppApp')
 
     $scope.classCompleted = Schedule.classUserJustJoined;
 
-    var classDate = new Date($scope.classCompleted.date);
+    var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date()
+
     var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
 
     $scope.userResultsToday = $scope.currentUser.results[classKey];
-    $scope.communityResultsArray;
+    var communityResultsArray;
+    var classResultsArray;
+    $scope.rankings;
 
     var sunDate = new Date();
     sunDate.setDate(classDate.getDate() - classDate.getDay());
@@ -23,7 +26,21 @@ angular.module('bodyAppApp')
     var dayRef = weekOfRef.child(classDate.getDay())
 
     dayRef.child("resultList").on('value', function(snapshot) {
-      console.log(snapshot);
-      $scope.communityResultsArray = snapshot.val();
+      communityResultsArray = snapshot.val();
+      console.log(communityResultsArray)
     })
+
+    dayRef.child('slots').child(classDate.getTime()).child("classResultsList").on('value', function(snapshot) {
+      classResultsArray = snapshot.val();
+      console.log(classResultsArray)
+    })
+
+    $scope.showClassmates = function() {
+      $scope.rankings = classResultsArray;
+    }
+
+    $scope.showCommunity = function() {
+      $scope.rankings = communityResultsArray;
+    }
+
   });
