@@ -12,8 +12,14 @@ angular.module('bodyAppApp')
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
 
-    var wodRef = new Firebase("https://bodyapp.firebaseio.com/WOD");
-    $scope.wod = $firebaseObject(wodRef);
+    $scope.wod = {};
+    var classDate;
+    var classKey;
+    var wodRef = new Firebase("https://bodyapp.firebaseio.com/WODs");
+
+    $scope.scoreTypes = []
+    $scope.scoreTypes.push({label: "Time To Complete", id: 0})
+    $scope.scoreTypes.push({label: "Rounds Completed", id: 1})
 
     $scope.instructors = [];
     $scope.levels = ["Intro", "Level One", "Level Two", "Level Three"]
@@ -25,6 +31,30 @@ angular.module('bodyAppApp')
     loadDefaultPlaylist();
 
     $scope.createdClass = {};
+
+    $scope.changeDate = function(date) {
+      classDate = date;
+      classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+
+      wodRef.child(classKey).once('value', function(snapshot) {
+        var val = snapshot.val();
+        $scope.wod = val;
+        $scope.$apply()
+        if (!$scope.wod) {
+          $scope.wod = {};
+          $scope.wod.date = classKey;
+          $scope.wod.scoreType = $scope.scoreTypes[0];
+        }
+      }) 
+    }
+
+    $scope.saveWod = function(wod, date) {
+      console.log(wod);
+      classDate = date;
+      classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+      wod.date = classKey;
+      wodRef.child(classKey).set(wod);
+    }
     
     $scope.soundcloudAuth = function() {
       SoundCloudLogin.connect().then(function(token) {

@@ -27,13 +27,43 @@
   </form>
 
   <form novalidate class="simple-form col-sm-3">
-    <input style="color: black" type="text" ng-model="wod.name" placeholder="WOD Name" required/><br />
-    <input style="color: black" type="text" ng-model="wod.strength" placeholder="Strength" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.type" placeholder = "Workout Type" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.first" placeholder = "First Exercise" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.second" placeholder = "Second Exercise" required/><br />
-    <input style="color: black" type="text" ng-model="wod.workout.third" placeholder = "Third Exercise" required/><br />
-    <input type="submit" ng-click="wod.$save()" value="Change WOD" />
+    <input type="date" name="input" ng-model="date" ng-change = "changeDate(date)" required />
+    <input style="color: black" type="text" ng-model="wod.title" placeholder="WOD Title" required/><br />
+    <input style="color: black" type="text" ng-model="wod.description" placeholder="Description" required/><br />
+    <select style="color: black" type="text" ng-model="wod.scoreType" placeholder="Score Type" ng-options="option.label for option in scoreTypes track by option.id" required/><br />
+    <input style="color: black" type="text" ng-model="wod.workout.module1.title" placeholder = "Module 1 Title" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module1.bullets[0]" placeholder = "{{wod.workout.module1.title}}: First Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module1.bullets[1]" placeholder = "{{wod.workout.module1.title}}: Second Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module1.bullets[2]" placeholder = "{{wod.workout.module1.title}}: Third Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module1.bullets[3]" placeholder = "{{wod.workout.module1.title}}: Fourth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module1.bullets[4]" placeholder = "{{wod.workout.module1.title}}: Fifth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module1.bullets[5]" placeholder = "{{wod.workout.module1.title}}: Sixth Bullet" required/>
+    <br />
+    <input style="color: black" type="text" ng-model="wod.workout.module2.title" placeholder = "Module 2 Title"/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module2.bullets[0]" placeholder = "{{wod.workout.module2.title}}: First Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module2.bullets[1]" placeholder = "{{wod.workout.module2.title}}: Second Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module2.bullets[2]" placeholder = "{{wod.workout.module2.title}}: Third Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module2.bullets[3]" placeholder = "{{wod.workout.module2.title}}: Fourth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module2.bullets[4]" placeholder = "{{wod.workout.module2.title}}: Fifth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module2.bullets[5]" placeholder = "{{wod.workout.module2.title}}: Sixth Bullet" required/>
+    <br />
+    <input style="color: black" type="text" ng-model="wod.workout.module3.title" placeholder = "Module 3 Title"/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module3.bullets[0]" placeholder = "{{wod.workout.module3.title}}: First Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module3.bullets[1]" placeholder = "{{wod.workout.module3.title}}: Second Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module3.bullets[2]" placeholder = "{{wod.workout.module3.title}}: Third Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module3.bullets[3]" placeholder = "{{wod.workout.module3.title}}: Fourth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module3.bullets[4]" placeholder = "{{wod.workout.module3.title}}: Fifth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module3.bullets[5]" placeholder = "{{wod.workout.module3.title}}: Sixth Bullet" required/>
+    <br />
+    <input style="color: black" type="text" ng-model="wod.workout.module4.title" placeholder = "Module 4 Title"/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module4.bullets[0]" placeholder = "{{wod.workout.module4.title}}: First Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module4.bullets[1]" placeholder = "{{wod.workout.module4.title}}: Second Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module4.bullets[2]" placeholder = "{{wod.workout.module4.title}}: Third Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module4.bullets[3]" placeholder = "{{wod.workout.module4.title}}: Fourth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module4.bullets[4]" placeholder = "{{wod.workout.module4.title}}: Fifth Bullet" required/>
+      <input style="color: gray" type="text" ng-model="wod.workout.module4.bullets[5]" placeholder = "{{wod.workout.module4.title}}: Sixth Bullet" required/>
+    <br />
+    <input type="submit" ng-click="saveWod(wod, date)" value="Change WOD" />
   </form>  
 
 <!--   <button ng-click="seedCalendar()" class="btn btn-lg btn-primary" style="visibility: visible;">
