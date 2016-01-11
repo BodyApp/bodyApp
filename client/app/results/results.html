@@ -6,11 +6,17 @@
 </section>
 
 <section class="col-md-2">
-	<div class="text-center"><a href="">Next Week &rarr;</a></div>
-	<ul class="classArchive mb0">
-		<li class="selectedWod">
+	<!-- <div class="text-center"><a href="">Next Week &rarr;</a></div> -->
+	<ul class="classArchive mb0" ng-repeat = "day in dayList">
+		<li ng-class="{selectedWod: selected}" ng-mouseover = "selected = true" ng-mouseleave = "selected = false">
 			<a href="">
-				<h5 class="wodDate">Jan 7, 2015</h5>
+				<h5 class="wodDate">{{formattedDayOfWeek(day)}} {{formattedMonth(day)}} {{day.getDate()}}, {{day.getFullYear()}}</h5>
+				<h5 class="wod">The Flip Side</h5>
+			</a>
+		</li>
+		<!-- <li>
+			<a href="">
+				<h5 class="wodDate">Mon Jan 11, 2015</h5>
 				<h5 class="wod">The Flip Side</h5>
 			</a>
 		</li>
@@ -43,16 +49,10 @@
 				<h5 class="wodDate">Jan 7, 2015</h5>
 				<h5 class="wod">The Flip Side</h5>
 			</a>
-		</li>
-		<li>
-			<a href="">
-				<h5 class="wodDate">Jan 7, 2015</h5>
-				<h5 class="wod">The Flip Side</h5>
-			</a>
-		</li>												
+		</li>				 -->								
 	</ul>
 
-	<div class="text-center"><a href="">&larr; Previous Week</a></div>
+	<!-- <div class="text-center"><a href="">&larr; Previous Week</a></div> -->
 </section>
 
 <section class="col-sm-10 mb16">

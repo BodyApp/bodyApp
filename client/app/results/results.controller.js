@@ -7,6 +7,8 @@ angular.module('bodyAppApp')
 
     $scope.classCompleted = Schedule.classUserJustJoined;
 
+    $scope.today = new Date();
+
     var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
 
     var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
@@ -19,7 +21,8 @@ angular.module('bodyAppApp')
     $scope.communityActive = true;
     $scope.classmateActive;
 
-    $scope.myRank;
+    $scope.dayList = [];
+    setupDayList();
 
     var sunDate = new Date();
     sunDate.setDate(classDate.getDate() - classDate.getDay());
@@ -42,7 +45,7 @@ angular.module('bodyAppApp')
           $scope.myCommunityRank = val.rank;
         }
       })
-      
+
       console.log(communityResultsArray)
       // This populates the community list when first open results page
       if ($scope.communityActive) {
@@ -77,6 +80,51 @@ angular.module('bodyAppApp')
       $scope.rankings = communityResultsArray;
       $scope.classmateActive = false;
       $scope.communityActive = true;
+    }
+
+    $scope.formattedDayOfWeek = function(date) {
+      if (date.getDay() === new Date().getDay()) {
+        return "Today"
+      }
+
+      switch (date.getDay()) {
+          case 0: return "Sun"; break;
+          case 1: return "Mon"; break;
+          case 2: return "Tue"; break;
+          case 3: return "Wed"; break;
+          case 4: return "Thu"; break;
+          case 5: return "Fri"; break;
+          case 6: return "Sat"; break;
+          default: break;
+      }
+    }
+
+    $scope.formattedMonth = function(date) {
+      var month = new Array();
+      month[0] = "Jan";
+      month[1] = "Feb";
+      month[2] = "Mar";
+      month[3] = "Apr";
+      month[4] = "May";
+      month[5] = "Jun";
+      month[6] = "Jul";
+      month[7] = "Aug";
+      month[8] = "Sept";
+      month[9] = "Oct";
+      month[10] = "Nov";
+      month[11] = "Dec";
+
+      return month[date.getMonth()]    
+    }
+
+    function setupDayList() {
+      var todayDate = new Date()
+
+      for (var i = 0; i < 7; i ++) {
+        var tempDate = new Date()
+        tempDate.setDate(todayDate.getDate() - i)
+        $scope.dayList.push(tempDate);
+      }
     }
 
   });
