@@ -72,7 +72,8 @@
 	<h4 class="bold" ng-show = "{{userResultsToday}}">Personal Result</h4>
 	<ul class="personal-results" ng-show = "{{userResultsToday}}">
 		<li>
-			<div class="rank"><span>6</span></div>
+			<div class="rank" ng-show = "communityActive"><span>{{myCommunityRank}}</span></div>
+			<div class="rank" ng-show = "classmateActive"><span>{{myClassRank}}</span></div>
 			<div class="photo"><img src="{{currentUser.picture}}"></div>
 			<div class="scoring"><span class="scoreValue">{{userResultsToday.score}}</span><span class="user-first">{{currentUser.firstName}}</span></div>
 			<div class="wodComment">{{userResultsToday.comment}}</span></div>
@@ -87,7 +88,7 @@
 	</div>
 	<ul class="public-results" ng-repeat = "result in rankings">
 		<li>
-			<div class="rank"><span>1</span></div>
+			<div class="rank"><span>{{result.rank}}</span></div>
 			<div class="photo"><img src="{{result.userPicture}}"></div>
 			<div class="scoring"><span class="scoreValue">{{result.score}}</span><span class="user-first">{{result.userFirstName}}</span></div>
 			<div class="wodComment">{{result.comment}}</span></div>

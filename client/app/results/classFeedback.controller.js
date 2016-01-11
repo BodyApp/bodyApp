@@ -71,7 +71,7 @@ angular.module('bodyAppApp')
   				if (error) return console.log(error);
   				console.log("Result successfully published to public list.")
 
-  				dayList.setPriority(-score);
+  				dayList.setPriority(score);
 
 	  			classList = dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
 	  				score: score,
@@ -84,7 +84,7 @@ angular.module('bodyAppApp')
 	  			}, function(error) {
 	  				if (error) return console.log(error);
 	  				console.log("Result successfully published to class list.")
-	  				classList.setPriority(-score);
+	  				classList.setPriority(score);
 	  			})
   			})
   		}
