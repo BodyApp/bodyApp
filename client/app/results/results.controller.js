@@ -42,20 +42,12 @@ angular.module('bodyAppApp')
           $scope.myCommunityRank = val.rank;
         }
       })
-      // communityResultsArray = snapshot.val();
-
-      // communityResultsArray = snapshot.val();
-      // for (var i = 0; i < communityResultsArray.length; i++) {
-      //   console.log("hey")
-      //   communityResultsArray[i].rank = i+1;
-      //   console.log('yo')
-      // }
+      
       console.log(communityResultsArray)
       // This populates the community list when first open results page
       if ($scope.communityActive) {
         $scope.rankings = communityResultsArray;
         console.log("Reloading community list");
-        $scope.$apply();
       }
     })
 

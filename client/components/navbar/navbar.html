@@ -56,6 +56,11 @@
                                 <a href="/schedule">Dashboard</a>
                               </p>
                             </li>
+                            <li ng-show="isLoggedIn() && bookedIntroClass">
+                              <p ng-class="{active: isActive('/results')}">
+                                <a href="/results">Results</a>
+                              </p>
+                            </li>
                             <li ng-show="isLoggedIn() && bookedIntroClass" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
                                 Hi {{getCurrentUser().nickName}}
