@@ -10,11 +10,9 @@ angular.module('bodyAppApp')
 
     $scope.today = new Date();
     var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
-    var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+    var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate());
 
-    console.log($scope.currentUser.results)
-
-    $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null
+    $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
     var communityResultsArray;
     var classResultsArray;
     $scope.rankings;
@@ -23,19 +21,26 @@ angular.module('bodyAppApp')
 
     $scope.dayList = [];
     setupDayList();
-    $scope.selectedDate = new Date(); 
-
-    loadResultsList(classDate)
+    $scope.selectedDate = new Date();     
 
     $scope.wods;
-    var wodsRef = new Firebase("https://bodyapp.firebaseio.com/WODs")
+    var wodsRef = new Firebase("https://bodyapp.firebaseio.com/WODs");
     wodsRef.once('value', function(snapshot) {
       $scope.wods = snapshot.val();  
-      console.log($scope.wods);
-      $scope.wodToDisplay = $scope.wods[classKey]
-      console.log($scope.wodToDisplay)
+      $scope.wodToDisplay = $scope.wods[classKey];
+      loadResultsList(classDate);
       $scope.$apply()
     })
+
+    $scope.formatScore = function(score) {
+      if (score > 20) {
+        var minutes = Math.floor(score / 60);
+        var seconds = score % 60;
+        return minutes + ":" + ((seconds < 10) ? "0" + seconds : seconds);
+      } else {
+        return score;
+      }
+    }
 
     $scope.formattedWodDate = function(newDate) {
       var date = new Date(newDate);
@@ -117,11 +122,8 @@ angular.module('bodyAppApp')
       classResultsArray = [];
 
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-      console.log(classKey);
-      console.log($scope.currentUser);
-      console.log($scope.currentUser.results)
+
       $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
-      console.log($scope.userResultsToday);
 
       var sunDate = new Date();
       sunDate.setDate(classDate.getDate() - classDate.getDay());
@@ -133,27 +135,51 @@ angular.module('bodyAppApp')
       var dayRef = weekOfRef.child(classDate.getDay())
 
       dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
-        var i = 1;
-        snapshot.forEach(function(childSnapshot) {
-          var val = childSnapshot.val();
-          val.rank = i;
-          i++;
-          communityResultsArray.push(val)
-          if (val.userId === $scope.currentUser._id && val.score === $scope.currentUser.results[classKey].score) {
-            $scope.myCommunityRank = val.rank;
-          }
-        })
+        if ($scope.wodToDisplay.scoreType.id === 1) { 
+          var i = snapshot.numChildren()
+          snapshot.forEach(function(childSnapshot) {
+            var val = childSnapshot.val();
+            val.rank = i;
+            i--;
+            communityResultsArray.unshift(val)
+            if (val.userId === $scope.currentUser._id && val.score && $scope.currentUser.results[classKey] && val.score === $scope.currentUser.results[classKey].score) {
+              $scope.myCommunityRank = val.rank;
+            }
+          })
+        } else { 
+          var i = 1;
+          snapshot.forEach(function(childSnapshot) {
+            var val = childSnapshot.val();
+            val.rank = i;
+            i++;
+            communityResultsArray.push(val)
+            if (val.userId === $scope.currentUser._id && val.score && $scope.currentUser.results[classKey] && val.score === $scope.currentUser.results[classKey].score) {
+              $scope.myCommunityRank = val.rank;
+            }
+          })
+        }
 
-        console.log(communityResultsArray)
         // This populates the community list when first open results page
         // if ($scope.communityActive) {
         $scope.rankings = communityResultsArray;
-          
+        $scope.$apply()
         // }
       })
 
       if ($scope.userResultsToday) {
         dayRef.child('slots').child($scope.currentUser.results[classKey]["dateTime"]).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+          if ($scope.wodToDisplay.scoreType.id === 1) { 
+          var i = snapshot.numChildren()
+          snapshot.forEach(function(childSnapshot) {
+            var val = childSnapshot.val();
+            val.rank = i;
+            i--;
+            classResultsArray.unshift(val)
+            if (val.userId === $scope.currentUser._id) {
+              $scope.myClassRank = val.rank;
+            }
+          })
+        } else { 
           var i = 1;
           snapshot.forEach(function(childSnapshot) {
             var val = childSnapshot.val();
@@ -164,6 +190,7 @@ angular.module('bodyAppApp')
               $scope.myClassRank = val.rank;
             }
           })
+        }
         })
       }
     }

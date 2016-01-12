@@ -36,11 +36,15 @@ angular.module('bodyAppApp')
   		if (!score) score = ""
   		if (!comment) comment = ""
 
+  		var priority;
   		if ($scope.classWod.scoreType.id === 0) {
   			score = seconds + minutes*60
+  			score = score * 1
+  			priority = score
+  		} else {
+  			score = score * 1
+  			priority = -score
   		}
-
-  		score = score * 1
 
   		//Add result to user object
   		User.saveResult({ id: Auth.getCurrentUser()._id }, {
@@ -85,11 +89,11 @@ angular.module('bodyAppApp')
   				if (error) return console.log(error);
   				console.log("Result successfully published to public list.")
 
-  				if ($scope.classWod.scoreType.id === 0) {
-  					dayList.setPriority(score);
-  				} else {
-  					dayList.setPriority(-score);
-  				}
+  				// if ($scope.classWod.scoreType.id === 0) {
+  				// 	dayList.setPriority(score);
+  				// } else {
+  				// 	dayList.setPriority(-score);
+  				// }
 
 	  			classList = dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
 	  				score: score,
@@ -102,13 +106,13 @@ angular.module('bodyAppApp')
 	  			}, function(error) {
 	  				if (error) return console.log(error);
 	  				console.log("Result successfully published to class list.")
-	   				if ($scope.classWod.scoreType.id === 0) {
-	  					classList.setPriority(score);
-	  				} else {
-	  					classList.setPriority(-score);
-	  				}
-	  			})
-  			})
+	   			// 	if ($scope.classWod.scoreType.id === 0) {
+	  				// 	classList.setPriority(score);
+	  				// } else {
+	  				// 	classList.setPriority(-score);
+	  				// }
+	  			}).setPriority(priority)
+  			}).setPriority(priority)
   		}
   	}
   });

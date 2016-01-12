@@ -88,7 +88,7 @@
 			<div class="rank" ng-show = "communityActive"><span>{{myCommunityRank}}</span></div>
 			<div class="rank" ng-show = "classmateActive"><span>{{myClassRank}}</span></div>
 			<div class="photo"><img src="{{currentUser.picture}}"></div>
-			<div class="scoring"><span class="scoreValue">{{userResultsToday.score}}</span><span class="user-first">{{currentUser.firstName}}</span></div>
+			<div class="scoring"><span class="scoreValue">{{formatScore(userResultsToday.score)}}</span><span class="user-first">{{currentUser.firstName}}</span></div>
 			<div class="wodComment">{{userResultsToday.comment}}</span></div>
 		</li>
 	</ul>
@@ -103,7 +103,7 @@
 		<li>
 			<div class="rank"><span>{{result.rank}}</span></div>
 			<div class="photo"><img src="{{result.userPicture}}"></div>
-			<div class="scoring"><span class="scoreValue">{{result.score}}</span><span class="user-first">{{result.userFirstName}}</span></div>
+			<div class="scoring"><span class="scoreValue">{{formatScore(result.score)}}</span><span class="user-first">{{result.userFirstName}}</span></div>
 			<div class="wodComment">{{result.comment}}</span></div>
 		</li>
 	</ul>
