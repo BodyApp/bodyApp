@@ -6,15 +6,15 @@ angular.module('bodyAppApp')
     $scope.currentUser = Auth.getCurrentUser()
 
     $scope.classCompleted = Schedule.classUserJustJoined;
+    $scope.wodToDisplay;
 
     $scope.today = new Date();
-
     var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
-
     var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
 
+    console.log($scope.currentUser.results)
+
     $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null
-    console.log($scope.currentUser);
     var communityResultsArray;
     var classResultsArray;
     $scope.rankings;
@@ -23,52 +23,30 @@ angular.module('bodyAppApp')
 
     $scope.dayList = [];
     setupDayList();
-    $scope.selectedDate = new Date();
+    $scope.selectedDate = new Date(); 
 
-    var sunDate = new Date();
-    sunDate.setDate(classDate.getDate() - classDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;    
-    var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
-    var dayRef = weekOfRef.child(classDate.getDay())
+    loadResultsList(classDate)
 
-    dayRef.child("resultList").orderByChild("score").on('value', function(snapshot) {
-      communityResultsArray = [];
-      var i = 1;
-      snapshot.forEach(function(childSnapshot) {
-        var val = childSnapshot.val();
-        val.rank = i;
-        i++;
-        communityResultsArray.push(val)
-        if (val.userId === $scope.currentUser._id) {
-          $scope.myCommunityRank = val.rank;
-        }
-      })
-
-      console.log(communityResultsArray)
-      // This populates the community list when first open results page
-      if ($scope.communityActive) {
-        $scope.rankings = communityResultsArray;
-        console.log("Reloading community list");
-      }
+    $scope.wods;
+    var wodsRef = new Firebase("https://bodyapp.firebaseio.com/WODs")
+    wodsRef.once('value', function(snapshot) {
+      $scope.wods = snapshot.val();  
+      console.log($scope.wods);
+      $scope.wodToDisplay = $scope.wods[classKey]
+      console.log($scope.wodToDisplay)
+      $scope.$apply()
     })
 
-    if ($scope.currentUser.results[classKey]) {
-      dayRef.child('slots').child($scope.currentUser.results[classKey]["dateTime"]).child("classResultsList").orderByChild("score").on('value', function(snapshot) {
-        classResultsArray = [];
-        var i = 1;
-        snapshot.forEach(function(childSnapshot) {
-          var val = childSnapshot.val();
-          val.rank = i;
-          i++;
-          classResultsArray.push(val)
-          if (val.userId === $scope.currentUser._id) {
-            $scope.myClassRank = val.rank;
-          }
-        })
-      })
+    $scope.formattedWodDate = function(newDate) {
+      var date = new Date(newDate);
+      return ""+date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())
+    }
+
+    $scope.switchToDay = function(wod) {
+      loadResultsList(new Date(wod.dateTime))
+      $scope.wodToDisplay = wod
+      $scope.wodToDisplay.dateTime = new Date(wod.dateTime);
+
     }
 
     $scope.showClassmates = function() {
@@ -84,6 +62,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.formattedDayOfWeek = function(date) {
+      date = new Date(date);
       if (date.getDay() === new Date().getDay()) {
         return "Today"
       }
@@ -101,6 +80,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.formattedMonth = function(date) {
+      date = new Date(date);
       var month = new Array();
       month[0] = "Jan";
       month[1] = "Feb";
@@ -118,6 +98,10 @@ angular.module('bodyAppApp')
       return month[date.getMonth()]    
     }
 
+    $scope.fixDate = function(date) {
+      return new Date(date);
+    }
+
     function setupDayList() {
       var todayDate = new Date()
 
@@ -125,6 +109,62 @@ angular.module('bodyAppApp')
         var tempDate = new Date()
         tempDate.setDate(todayDate.getDate() - i)
         $scope.dayList.push(tempDate);
+      }
+    }
+
+    function loadResultsList(classDate) {
+      communityResultsArray = [];
+      classResultsArray = [];
+
+      classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+      console.log(classKey);
+      console.log($scope.currentUser);
+      console.log($scope.currentUser.results)
+      $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
+      console.log($scope.userResultsToday);
+
+      var sunDate = new Date();
+      sunDate.setDate(classDate.getDate() - classDate.getDay());
+      var sunGetDate = sunDate.getDate();
+      var sunGetMonth = sunDate.getMonth()+1;
+      var sunGetYear = sunDate.getFullYear();
+      var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;    
+      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
+      var dayRef = weekOfRef.child(classDate.getDay())
+
+      dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
+        var i = 1;
+        snapshot.forEach(function(childSnapshot) {
+          var val = childSnapshot.val();
+          val.rank = i;
+          i++;
+          communityResultsArray.push(val)
+          if (val.userId === $scope.currentUser._id) {
+            $scope.myCommunityRank = val.rank;
+          }
+        })
+
+        console.log(communityResultsArray)
+        // This populates the community list when first open results page
+        // if ($scope.communityActive) {
+        $scope.rankings = communityResultsArray;
+          
+        // }
+      })
+
+      if ($scope.userResultsToday) {
+        dayRef.child('slots').child($scope.currentUser.results[classKey]["dateTime"]).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+          var i = 1;
+          snapshot.forEach(function(childSnapshot) {
+            var val = childSnapshot.val();
+            val.rank = i;
+            i++;
+            classResultsArray.push(val)
+            if (val.userId === $scope.currentUser._id) {
+              $scope.myClassRank = val.rank;
+            }
+          })
+        })
       }
     }
 
