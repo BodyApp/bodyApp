@@ -21,8 +21,8 @@
   color: #fff;
 }
 .next-up-box {
-	border: 2px solid #85888D;
-	padding: 20px;
+  border: 2px solid #85888D;
+  padding: 20px;
 }
 .progress-bar {
   height: 30px;
@@ -31,8 +31,141 @@
   width: 100%;
   margin-bottom: 10px;
 }
-
-/*------NAVIGATION-------*/
+h1 {
+  color: #0D1c45;
+}
+.light-header {
+  color: #224893;
+  margin: 50px 0px 10px 0px;
+}
+.hero-banner {
+  margin-top: 4%;
+  margin-bottom: 8%;
+}
+.big.btn {
+  padding: 5px 30px;
+  background: #224893;
+  border: none;
+}
+.mini-header {
+  font-weight: 600;
+  color: #0D1c45;
+}
+.white-section {
+  padding-top: 6%;
+  padding-bottom: 6%;
+}
+.white-section-half {
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+.lightblue-section {
+  padding: 8% 0;
+  background: #22498E;
+  color: #fff;
+}
+.lightblue-section h1 {
+  color: #fff;
+}
+.lightblue-section h4 {
+  font-weight: 400;
+  color: #A2B2E3;
+}
+.banner {
+  background: #224893;
+  color: white;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.class-type {
+  color: #A2B2E3;
+  font-weight: 400;
+}
+.page-description {
+  color: #fff;
+  font-weight: 400;
+}
+.darkblue {
+  color: #0D1c45;
+}
+.royalblue {
+  color: #224893;
+}
+.purpleblue {
+  color: #A2B2E3;
+}
+.gray {
+  color: #525252;
+}
+.lightgray {
+  color: #D3D3D3;
+}
+.white {
+  color: #fff;
+}
+.trainer-circle-image {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  border: 6px solid #CCCCCC;
+}
+.user-circle-image {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: 3px solid #CCCCCC;  
+}
+.user-list li {
+  text-align: center;
+}
+.av-audio {
+  height: auto;
+  width: 100px !important;
+  padding: 0 10px;
+  border-radius: 6px;
+  margin-bottom: 0px;
+}
+.av-video {
+  height: auto;
+  width: 150px !important;
+  padding: 0 10px;
+  border-radius: 6px;
+  margin-bottom: 0px;
+}
+.teammates-col {
+  width: 50%;
+  display: inline-block;
+}
+/*------MODALS-------*/
+.modal-body {
+  height: 360px;
+}
+.modal-body .darkblue {
+  color: #0D1C45 !important;
+}
+.cancel-modal {
+    text-align: center;
+    background: #BDBDBD;
+    color: #fff !important;
+    position: relative;
+    padding: 0 5px;
+    width: 22px;
+    height: 22px;
+    float: right;
+    top: -13px;
+    left: 13px;
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 8px;
+    border-radius: 50%;
+}
+.cancel-modal:hover {
+  opacity: 0.6;
+}
 
 /*------FOOTER-------*/
 
@@ -81,7 +214,7 @@
   margin-right: 8px;  
 }
 .btn-footer:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid #fff;
   color: #fff !important;
 }
@@ -91,28 +224,29 @@
   line-height: 14px;
 }
 .light-font, .light-font h2 {
-	color: white !important;
+  color: white !important;
 }
-
-
 .your-classes {
-	background: #f5f5f5;
-	padding: 10px;
+  background: #f5f5f5;
+  padding: 10px;
 }
 
 .reservations {
-	padding-left: 15%;
+  padding-left: 15%;
 }
 
 .reservations-table {
-	margin-bottom: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 .class-info {
-	padding: 4px 0 0 0;
+  padding: 4px 0 0 0;
 }
 
 .reserved-class {
-	width: 130px;
-	padding: 10px;
+  width: 130px;
+  padding: 10px;
+}
+.big-btn {
+  padding: 10px 80px !important;
 }

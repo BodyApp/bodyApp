@@ -1,5 +1,5 @@
 .video-fullscreen {
-  height: 100%;
+  height: 100vh;
   background: #1f1f1f;
 }
 .user-video-sidebar {
@@ -11,7 +11,6 @@
   height: 40px;
 }
 .main-user-name {
-  float: left;
   color: #fff;
   font-size: 20px;
 }
@@ -21,7 +20,9 @@
 .badges img:first-child {
   padding-right: 5px;
 }
-
+.main-user-video div {
+  height: 30vh;
+}
 .trainer-column {
   padding: 0px;
 }
@@ -36,24 +37,37 @@
 }
 .workout-details {
   color: #fff;
+  font-size: 14px;
+  line-height: 14px;
 }
 .workout-description {
   float: left;
+}
+.module-title, .module-description li {
+  color: #fff !important;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 0px;
+}
+.rounds {
+  color: #D3D3D3;
+  font-size: 30px;
 }
 .timer {
   float: right;
   color: #fff;
   font-size: 36px;
 }
-.footer-details a {
-  float: left;
-  color: #A6AAA9;
-  font-size: 12px;
+.exit-btn {
+  font-size: 10px !important;
+  line-height: 10px;
+  padding: 1px 10px;
+  color: #777777 !important;
+  border: 1px solid #777777;
 }
-.footer-details span {
-  float: right;
-  color: #fff;
-  font-size: 12px;
+.song span {
+  color: #777;
+  font-size: 10px;
 }
 .classmates-title span {
   color: #fff;
@@ -81,14 +95,13 @@
   position: absolute;
   color: #fff;
   font-size: 12px;
-  top: 10px;
-  left: 50%;
+  left: 5px;
   z-index: 100;
 }
 
 .trainer-screen div {
     width: 100%;
-    height: 600px;
+    height: 90vh;
 }
 
 .trainer-video-screen {
@@ -120,11 +133,11 @@
 .class-details {
   position: absolute;
   top: 0vh;
-  height: 400px;
+  height: auto;
   left: 85%;
   width: 15%;
   background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
+  padding: 10px 0 10px 20px;
 }
 .class-details h1, .class-details h4, .class-details p{
   color: #fff;
@@ -248,4 +261,3 @@
 .restColor {
   color: red;
 }
-

@@ -1,6 +1,5 @@
-<div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
+<div ng-include="'components/navbar/navbar.html'" class="mb80"></div>
 
-<div class="main-container">
   <section>
     <div class="container hero-banner">
         <div class="col-sm-8">
@@ -16,43 +15,109 @@
             <p class="disclaimer">We'll never post without your permission</p>
           </div>
         </div>
+        <div class="arrow">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="37" height="16" viewBox="0 0 37 16" class="js-svg replaced-svg"><path d="M19.075 15.43c-.35.366-.926.414-1.334.097L.76 2.08C.326 1.743.248 1.115.587.68.926.242 1.553.163 1.99.502L18.35 13.46 34.864.617c.436-.34 1.064-.26 1.403.175.34.436.26 1.065-.175 1.404L19.075 15.43z" fill="#909090" fill-rule="evenodd"></path></svg>
+          </span>
+        </div>        
     </div>
   </section>
 
-  <section id="home-row-2">
+  <section id="home-row-3" class="scroll-to">
     <div class="container">
-      <div class="col-sm-12">
-        <h1 class="mb32 text-center">We've All Been There</h1>
+      <div class="col-sm-12 text-center margins">
+        <h1>Better results. More convenient.</h1>
+        <h4 class="mb72">We’re revolutionizing home fitness through technology, service, and design. Join classes in real-time without leaving your living room.</h4>        
       </div>
 
       <div class="col-sm-4 text-center">
-        <img src="assets/images/icons/tongue-face.jpg">
-        <h4 class="mt16">Motivation</h4>
-        <p>You get to that last set in your workout video and can’t bring yourself to do it.</p>
+          <img src="assets/images/icons/plans.png">
+          <h4 class="mt16">Better Program</h4>
+          <p>Our program evolves as you get better. And the best part of our program is that every day is different.</p>
       </div>
       <div class="col-sm-4 text-center">
-        <img src="assets/images/icons/frustrated-face.jpg">
-        <h4 class="mt16">Personalization</h4>
-        <p>You have an injury and you’re not sure how to modify a difficult movement.</p> 
+          <img src="assets/images/icons/fit-girl.png">
+          <h4 class="mt16">Better Coaching</h4>
+          <p>Classes are capped at 15 trainees - thus providing the hands on coaching and attention that you deserve.</p> 
       </div>
       <div class="col-sm-4 text-center">
-        <img src="assets/images/icons/worry-face.jpg">
-        <h4 class="mt16">Comfort</h4>
-        <p>You’re a first timer and not sure how to get started or if this is right for you.</p>      
+          <img src="assets/images/icons/laptop.png">
+          <h4 class="mt16">Better Experience</h4>
+          <p>Participate in live group classes with just a laptop and wifi connection. Workout from anywhere.</p>
       </div>  
+
+      <div class="col-sm-12 text-center">
+        <a href="#" ng-click="loginOauth('facebook')" class="btn mb8">Sign Up with Facebook</a>     
+      </div>
     </div>
   </section>
 
-  <section id="home-row-3">
+  <section>
+    <div class="col-sm-6 lightblue-section-half">
+      <h1 class="white">Take classes right at home</h1>
+      <h4 class="white">We’re using technology to enhance the entire home fitness experience. BODY is a leader in multi-way video technology which enables you to join classes with your favorite instructors and teammates in real-time.</h4>
+    </div>
+    <div class="col-sm-6 girl-home-fitness"></div>
+  </section>
+
+  <section>
+    <div class="col-sm-6 strong-girl"></div>    
+    <div class="col-sm-6 gray-section-half-wimage">
+      <h1 class="darkblue">A program with you in mind</h1>
+      <h4>BODY is a strength and conditioning program that blends high intensity training with functional movements to increase your body’s response and achieve results in less time. Through our live classes, you’ll develop an unshakeable bond with teammates from around the world and accomplish extraordinary things.</h4>
+    </div>
+  </section>
+
+  <section class="white-section">
     <div class="container">
-      <div class="col-sm-12 text-center light-font">
-        <h2>Results Through Teamwork</h2>
-        <p class="mb72">BODY brings you live group fitness classes, accessible anywhere over group video. Join classes solo or with friends, match with same-level teammates, and receive real-time coaching from a live instructor. Our 50 minute workouts change daily, so you’ll always feel challenged and motivated, ready for more.</p>
-        <a class="btn-white" href="#" ng-click="loginOauth('facebook')">Get Started</a>
+      <div class="col-sm-12 text-center margins">
+        <h1 class="darkblue">Participate in our pilot program</h1>
+        <h4 class="mb72">Join us at the very beginning and help shape the future of home fitness.</h4>        
+      </div>
+
+      <div class="col-sm-4 text-center">
+          <h4 class="mb32 purpleblue bold">Lock in our pilot<br>rate for a year</h4>
+      </div>
+      <div class="col-sm-4 text-center">
+          <h4 class="mb32 purpleblue bold">Receive all the gear<br>you'll need</h4>
+      </div>
+      <div class="col-sm-4 text-center">
+          <h4 class="mb32 purpleblue bold">No strings<br>attached</h4>
+      </div>
+
+      <div class="col-sm-4 text-center">
+          <div class="col-sm-5 col-sm-offset-1 no-margin">
+            <span class="pricingType lightgray">Regular pricing</span>
+            <h1 class="pricingAmt lightgray"><sup>$</sup></h1><h1 class="pricingAmt lightgray strikeout">40</h1>
+            <span class="pricingTime lightgray">/mo</span>
+          </div>
+          <div class="col-sm-5 no-margin">
+            <span class="pricingType darkblue">Pilot pricing</span>
+            <h1 class="pricingAmt darkblue"><sup>$</sup></h1><h1 class="pricingAmt darkblue">10</h1>
+            <span class="pricingTime darkblue">/mo</span>            
+          </div>
+      </div>
+      <div class="col-sm-4 text-center">
+          <img src="assets/images/icons/box.png">
+      </div>
+      <div class="col-sm-4 text-center">
+          <img src="assets/images/icons/thumbsup.png">
+      </div>
+
+      <div class="col-sm-4 text-center">
+          <p>One simple membership. Always unlimited classes per month.</p>
+      </div>
+      <div class="col-sm-4 text-center">
+          <p>Receive a full set of strength bands and a foam roller to get started. No extra cost.</p> 
+      </div>
+      <div class="col-sm-4 text-center">
+          <p>No hidden fees, no annual contracts. Cancel at any time.</p>
+      </div>              
+
+      <div class="col-sm-12 text-center mt32">
+        <a href="#" ng-click="loginOauth('facebook')" class="big-btn btn">Let's Get Started</a>     
       </div>
     </div>
   </section>  
-
-</div>
 
 <div ng-include="'components/footer/footer.html'"></div>

@@ -1,158 +1,162 @@
 <div class="video-fullscreen">
-  <section>
-    <div class="user-video-screen">
-      <div class="col-sm-2 user-video-sidebar">
-        <!--Main user video-->
-        <div class="main-user-title">
-          <span class="main-user-name">You</span>
-          <div ng-if = "myBadges" class="badges">
-            <img src="assets/images/icons/blocks.png">
-          </div>
-        </div>
-        <div class="main-user-video">
-          <div id = "box1"></div>
-        </div>
-        <!--Main user video END-->
-
-        <!--Classmates video-->
-        <div class="classmates-title text-center">
-          <span>Teammates</span>
-        </div>
-        <div class="classmates-section">
-
-          <div class="classmates-row">
-            <div ng-show = "consumerList.length>=2" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{{consumerObjects[consumerList[1]].firstName}}</span>
-              <div id = "box2" back-img="{{consumerObjects[consumerList[1]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=3" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[2]].firstName}}</span>
-              <div id = "box3" back-img="{{consumerObjects[consumerList[2]].picture}}"></div>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div ng-show = "consumerList.length>=4" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[3]].firstName}}</span>
-              <div id = "box4" back-img="{{consumerObjects[consumerList[3]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=5" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[4]].firstName}}</span>
-              <div id = "box5" back-img="{{consumerObjects[consumerList[4]].picture}}"></div>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div ng-show = "consumerList.length>=6" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[5]].firstName}}</span>
-              <div id = "box6" back-img="{{consumerObjects[consumerList[5]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=7" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[6]].firstName}}</span>
-              <div id = "box7" back-img="{{consumerObjects[consumerList[6]].picture}}"></div>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div ng-show = "consumerList.length>=8" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[7]].firstName}}</span>
-              <div id = "box8" back-img="{{consumerObjects[consumerList[7]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=9" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[8]].firstName}}</span>
-              <div id = "box9" back-img="{{consumerObjects[consumerList[8]].picture}}"></div>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div ng-show = "consumerList.length>=10" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[9]].firstName}}</span>
-              <div id = "box10" back-img="{{consumerObjects[consumerList[9]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=11" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[10]].firstName}}</span>
-              <div id = "box11" back-img="{{consumerObjects[consumerList[10]].picture}}"></div>
-            </div>
-          </div>
-
-          <div class="classmates-row">
-            <div ng-show = "consumerList.length>=12" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[11]].firstName}}</span>
-             <div id = "box12" back-img="{{consumerObjects[consumerList[11]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=13" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[12]].firstName}}</span>
-              <div id = "box13" back-img="{{consumerObjects[consumerList[12]].picture}}"></div>
-            </div>
-          </div>
-
-          <div  class="classmates-row">
-            <div ng-show = "consumerList.length>=14" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[13]].firstName}}</span>
-              <div id = "box14" back-img="{{consumerObjects[consumerList[13]].picture}}"></div>
-            </div>
-
-            <div ng-show = "consumerList.length>=15" class="individual-classmate">
-              <img src="assets/images/icons/blocks.png">
-              <span>{consumerObjects[consumerList[14]].firstName}}</span>
-              <div id = "box15" back-img="{{consumerObjects[consumerList[14]].picture}}"></div>
-            </div>
-          </div>                                                         
-
-
-        </div>
-        <!--Classmates video END-->
+  <div class="user-video-screen">
+    <div class="col-sm-2 user-video-sidebar">
+      <!--Main user video-->
+      <div class="main-user-video">
+        <div id = "box1"></div>
       </div>
+      <!--Main user video END-->
 
-      <div class="col-sm-10 trainer-column">
-        <!--Trainer video-->
-        <div class="trainer-screen">
-          <div id="box0" back-img="https://placeimg.com/1100/600/animals/grayscale"></div>
-        </div>
-        <!--Trainer video END-->
-
-        <!--Footer-->
-        <div class="footer-section">
-          <div class="col-sm-12 class-details">
-            <div class="workout-description">
-              <span class="workout-title">The Flip Side</span>
-              <span class="workout-details">Skill: Airsquat | Conditioning: Burpee | Test: Lunge</span>
-            </div>
-            <div class="timer">
-              <span>Timer: <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer></span>
-              <h5 style = "color: white; text-align: center">{{stopwatch.rounds}} Rounds Left</h5>
-            </div>
-          </div>
-          <div class="col-sm-12 footer-details">
-            <a href="">Exit Class</a>
-            <div ng-click = "openSongPermalink(currentSong)" id="soundcloud-song" ng-show = "currentSong.title">
-                <!-- <img ng-src="../assets/images/soundcloudWhiteLogo.png"/> -->
-                <span>Listening To: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
-            </div>
-          </div>
-        </div>
-        <!--Footer END-->
+      <!--Classmates video-->
+      <div class="classmates-title text-center">
+        <span>Teammates</span>
       </div>
-    <iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
+      <div class="classmates-section">
+
+        <div class="classmates-row">
+          <div ng-show = "consumerList.length>=2" class="individual-classmate">
+            <span>First</span>
+            <div id = "box2" back-img="{{consumerObjects[consumerList[1]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=3" class="individual-classmate">
+            <span>First</span>
+            <div id = "box3" back-img="{{consumerObjects[consumerList[2]].picture}}"></div>
+          </div>
+        </div>
+
+        <div class="classmates-row">
+          <div ng-show = "consumerList.length>=4" class="individual-classmate">
+            <span>First</span>
+            <div id = "box4" back-img="{{consumerObjects[consumerList[3]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=5" class="individual-classmate">
+            <span>First</span>
+            <div id = "box5" back-img="{{consumerObjects[consumerList[4]].picture}}"></div>
+          </div>
+        </div>
+
+        <div class="classmates-row">
+          <div ng-show = "consumerList.length>=6" class="individual-classmate">
+            <span>First</span>
+            <div id = "box6" back-img="{{consumerObjects[consumerList[5]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=7" class="individual-classmate">
+            <span>First</span>
+            <div id = "box7" back-img="{{consumerObjects[consumerList[6]].picture}}"></div>
+          </div>
+        </div>
+
+        <div class="classmates-row">
+          <div ng-show = "consumerList.length>=8" class="individual-classmate">
+            <span>First</span>
+            <div id = "box8" back-img="{{consumerObjects[consumerList[7]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=9" class="individual-classmate">
+            <span>First</span>
+            <div id = "box9" back-img="{{consumerObjects[consumerList[8]].picture}}"></div>
+          </div>
+        </div>
+
+        <div class="classmates-row">
+          <div ng-show = "consumerList.length>=10" class="individual-classmate">
+            <span>First</span>
+            <div id = "box10" back-img="{{consumerObjects[consumerList[9]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=11" class="individual-classmate">
+            <span>First</span>
+            <div id = "box11" back-img="{{consumerObjects[consumerList[10]].picture}}"></div>
+          </div>
+        </div>
+
+        <div class="classmates-row">
+          <div ng-show = "consumerList.length>=12" class="individual-classmate">
+            <span>First</span>
+           <div id = "box12" back-img="{{consumerObjects[consumerList[11]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=13" class="individual-classmate">
+            <span>First</span>
+            <div id = "box13" back-img="{{consumerObjects[consumerList[12]].picture}}"></div>
+          </div>
+        </div>
+
+        <div  class="classmates-row">
+          <div ng-show = "consumerList.length>=14" class="individual-classmate">
+            <span>First</span>
+            <div id = "box14" back-img="{{consumerObjects[consumerList[13]].picture}}"></div>
+          </div>
+
+          <div ng-show = "consumerList.length>=15" class="individual-classmate">
+            <span>First</span>
+            <div id = "box15" back-img="{{consumerObjects[consumerList[14]].picture}}"></div>
+          </div>
+        </div>                                                         
+      </div>
+      <!--Classmates video END-->
     </div>
-  </section> 
+
+    <div class="col-sm-10 trainer-column">
+      <!--Trainer video-->
+      <div class="trainer-screen">
+        <div id="box0" back-img="https://placeimg.com/1100/600/animals/grayscale"></div>
+      </div>
+      <!--Trainer video END-->
+
+      <!--Footer-->
+      <div class="footer-section">
+        <div class="col-sm-12 class-details">
+          <div class="workout-description">
+            <h5 class="white mb8">Today's Workout</h5>
+            <span class="module-title bold">I. Skill</span>
+            <ul class="module-description mb8">
+              <li>Airsquat</li>
+              <li>Thrusters</li>
+            </ul>
+            <span class="module-title bold">II. Strength</span>
+            <ul class="module-description mb8">
+              <li>Squat</li>
+              <li>HR Pushups</li>
+            </ul>
+            <span class="module-title bold">III. HIIT</span>
+            <ul class="module-description mb8">
+              <li>*team tabata</li>
+              <li>6 DB Thruster</li>
+              <li>6 DB Thruster</li>
+              <li>6 DB Thruster</li>
+              <li>6 DB Thruster</li>
+            </ul>
+            <span class="module-title bold">IV. Challenge</span>
+            <ul class="module-description mb8">
+              <li>*team tabata</li>
+              <li>6 DB Thruster</li>
+              <li>6 DB Thruster</li>
+              <li>6 DB Thruster</li>
+              <li>6 DB Thruster</li>
+            </ul>                                    
+          </div>
+<!--           <div class="timer">
+            <span>Timer: <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer></span>
+            <h5 style = "color: white; text-align: center">{{stopwatch.rounds}} Rounds Left</h5>
+          </div> -->
+        </div>
+        <div class="col-sm-6">
+          <h3 class="white mb0">The Flip Side</h3>
+          <a href="" class="exit-btn btn-white">Exit Class</a>
+        </div>
+        <div class="col-sm-6">
+          <h3 class="white mb0">Time <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer> <span class="rounds">rds {{stopwatch.rounds}}</span></h3>
+          <div class="song" ng-click = "openSongPermalink(currentSong)" id="soundcloud-song" ng-show = "currentSong.title">
+            <span>Listening To: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
+          </div>
+        </div>
+      </div>
+      <!--Footer END-->
+    </div>
+  <iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
+  </div>
 </div>

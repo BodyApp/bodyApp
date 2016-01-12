@@ -1,120 +1,96 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
-<tour step="currentStep">
-	<div class="main-container">
-		<section class="page-title page-title-3 image-bg overlay">
-	        <div class="background-image-holder fadeIn" style="background: url(../../assets/images/hero_matched_crossfit.jpg);">
-	            <img alt="Background Image" class="background-image" src="img/hero_matched_crossfit.jpg" style="display: none; margin-top: 0px">
-	        </div>
-	        <div class="container">
-	            <div class="row">
-	                <div class="col-md-6 text-center">
-	                	<div class = "col-md-6">
-		                	<select ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>
-		                	<select ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>
-		                </div>
-	                    <!-- <h2 class="uppercase mb0">DEMO CLASS</h2> -->
-	                </div>
-								<div class="col-sm-6 text-center">
-                    <h4 class="mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h4>
-                    <h4 class="mb0" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h4>
-                    <h4 class="mb0" ng-if = "minutesUntilClass < 0">Class has started!</h4>
-                    <br>
-                		<!-- <div ng-if = "minutesUntilClass <= 0"> -->
-                		<div ng-if = "minutesUntilClass <= 0">
-	                    <a class="btn btn-filled btn-sm join-class start-class" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
-	                    <!-- <span tourtip-step = "0"
-		                    tourtip="Normally, you'd have to wait {{minutesUntilClass}} more minutes until you could join this class. But for the DEMO, we've given you full access!" 
-		                    tourtip-next-label="Click the Orange Button"
-		                    tourtip-placement="right"    
-		                    tourtip-offset-horizontal = "350"
-		                    tourtip-offset-vertical = "-25"
-		                ></span> -->
-	                  </div>		                
-	              </div>
-	            </div>
-	        </div>
-	    </section>
 
-	    <section>
-	    	<div class="container">
-	    		<div class="row">
-	    			<div class="col-md-6">
-	    				<h3 id="blue" class="text-center uppercase bold mb24">Instructor</h3>
-	    				<p class="text-center mb24"><img class="trainer-circle-image" src="{{class.trainer.picture}}"></p>
-	    				<h4 class="text-center uppercase bold mb8">{{class.trainer.firstName}} {{class.trainer.lastName}}</h4>
-	    				<h5 class="text-center mb16" ng-if = "class.trainer.trainerCredential1">Qualifications: {{class.trainer.trainerCredential1}}<span ng-if = "class.trainer.trainerCredential2"> | {{class.trainer.trainerCredential2}}</span><br ng-if = "class.trainer.trainerCredential3">{{class.trainer.trainerCredential3}}<span ng-if = "class.trainer.trainerCredential4"> | {{class.trainer.trainerCredential4}}</span></h5>
-	    				<h4 class="text-center">User Rating: <span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5</h4>
-	    			</div>
-	    			<div class="col-md-6">
-	    				<h3 id="blue" class="text-center uppercase bold mb32">Classmates</h3>
-	    				<div class="col-md-6">
-	    					<ul class="user-list">
-	    						<li ng-if = "numBookedUsers > 0">
-	    							<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 2</span> -->
-	    							</div>
-	    						</li>
-	    						<li ng-if = "numBookedUsers > 2">
-	    							<img class="user-circle-image" src="{{bookedUsers[2].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[2].firstName}} {{bookedUsers[2].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 1</span> -->
-	    							</div>		    							
-	    						</li>
-	    						<li ng-if = "numBookedUsers > 4">
-	    							<img class="user-circle-image" src="{{bookedUsers[4].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[4].firstName}} {{bookedUsers[4].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 3</span> -->
-	    							</div>		    							
-	    						</li>
-	    						<li ng-if = "numBookedUsers > 6">
-	    							<img class="user-circle-image" src="{{bookedUsers[6].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[6].firstName}} {{bookedUsers[6].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 1</span> -->
-	    							</div>		    							
-	    						</li>
-	    					</ul>
-	    				</div>
-	    				<div class="col-md-6">
-	    					<ul class="user-list">
-	    						<li ng-if = "numBookedUsers > 1">
-	    							<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 2</span> -->
-	    							</div>		    							
-	    						</li>		    						
-	    						<li ng-if = "numBookedUsers > 3">
-	    							<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 1</span> -->
-	    							</div>		    							
-	    						</li>
-	    						<li ng-if = "numBookedUsers > 5">
-	    							<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 1</span> -->
-	    							</div>		    							
-	    						</li>
-	    						<li ng-if = "numBookedUsers > 7">
-	    							<img class="user-circle-image" src="{{bookedUsers[7].picture}}">
-	    							<div class="user-name">
-	    								<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span><br>
-	    								<!-- <span id="dark-text">Level 1</span> -->
-	    							</div>		    							
-	    						</li>
-	    					</ul>		    					
-	    				</div>
-	    			</div>
-	    		</div>
-	    	</div>
-	    </section>
-	</div>
-</tour>
+  <section class="banner pt32 pb32">
+    <div class="col-sm-8">
+      <h1 class="mb16 white">{{class.level}} Class</h1>
+      <span>Audio/video setup (<span class="purpleblue">Microphone: </span><select class="av-audio" ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>&nbsp;<span class="purpleblue">Camera: </span><select class="av-video" ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>)</span>
+    </div>
+    <div class="col-sm-4">
+    	<h3 class="white" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
+    	<h3 class="white" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
+    	<h3 class="white" ng-if = "minutesUntilClass < 0">Class has started!</h3>
+		<div ng-if = "minutesUntilClass <= 0">
+	    	<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
+	    </div>
+    </div>
+  </section>
+
+  <section class="pt32 pb32">
+    <div class="col-sm-6 text-center">
+      <h3 class="text-center mb16 darkblue bold">Instructor</h3>
+      <p class="text-center mb16"><img class="trainer-circle-image" src="{{class.trainer.picture}}"></p>
+      <h4 class="mb24 bold">{{classCompleted.trainer.firstName}} {{classCompleted.trainer.lastName}}</h4>
+      <h5 class="text-center mb16" ng-if = "class.trainer.trainerCredential1">Qualifications: {{class.trainer.trainerCredential1}}<span ng-if = "class.trainer.trainerCredential2">, {{class.trainer.trainerCredential2}}</span><span ng-if = "class.trainer.trainerCredential3">, {{class.trainer.trainerCredential3}}</span><span ng-if = "class.trainer.trainerCredential4">, {{class.trainer.trainerCredential4}}</span></h5>
+      <h4 class="text-center">User Rating: <span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5</h4>      
+    </div>
+
+    <div class="col-sm-6">
+    	<h3 class="text-center mb16 darkblue bold">Teammates</h3>
+    	<div class="teammates-col">
+			<ul class="user-list">
+				<li ng-if = "numBookedUsers > 0">
+					<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 2</span> -->
+					</div>
+				</li>
+				<li ng-if = "numBookedUsers > 2">
+					<img class="user-circle-image" src="{{bookedUsers[2].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[2].firstName}} {{bookedUsers[2].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 1</span> -->
+					</div>		    							
+				</li>
+				<li ng-if = "numBookedUsers > 4">
+					<img class="user-circle-image" src="{{bookedUsers[4].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[4].firstName}} {{bookedUsers[4].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 3</span> -->
+					</div>		    							
+				</li>
+				<li ng-if = "numBookedUsers > 6">
+					<img class="user-circle-image" src="{{bookedUsers[6].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[6].firstName}} {{bookedUsers[6].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 1</span> -->
+					</div>		    							
+				</li>
+			</ul>    		
+    	</div>
+    	<div class="teammates-col">
+			<ul class="user-list">
+				<li ng-if = "numBookedUsers > 1">
+					<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 2</span> -->
+					</div>		    							
+				</li>		    						
+				<li ng-if = "numBookedUsers > 3">
+					<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 1</span> -->
+					</div>		    							
+				</li>
+				<li ng-if = "numBookedUsers > 5">
+					<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 1</span> -->
+					</div>		    							
+				</li>
+				<li ng-if = "numBookedUsers > 7">
+					<img class="user-circle-image" src="{{bookedUsers[7].picture}}">
+					<div class="user-name">
+						<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span><br>
+						<!-- <span id="dark-text">Level 1</span> -->
+					</div>		    							
+				</li>
+			</ul>    		
+    	</div>
+    </div>
+  </section>
+	
 <div ng-include="'components/footer/footer.html'"></div>

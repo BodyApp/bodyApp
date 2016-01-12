@@ -1,12 +1,3 @@
-.trainer-circle-image {
-	background-repeat: no-repeat;
-    background-position: 50%;
-    border-radius: 50%;
-    width: 180px;
-    height: 180px;
-    border: 6px solid #CCCCCC;
-}
-
 .comments {
 	height: 200px !important;
 	padding-bottom: 150px;

@@ -717,7 +717,6 @@ footer.bg-dark li,
 /*!---------- 6. BUTTONS ----------*/
 .btn {
   font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 2px solid #0D1C45;
   padding: 0 26px;
   height: auto;
   min-width: 150px;
@@ -739,8 +738,7 @@ footer.bg-dark li,
   margin-right: 0;
 }
 .btn:hover {
-  background: #173073;
-  border: 2px solid #173073;
+  background: rgba(13,28,69,0.9);
   color: #fff;
 }
 .btn-icon {

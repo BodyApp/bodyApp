@@ -1,3 +1,197 @@
+.dash-workoutModules li {
+  float: left;
+  width: 50%;
+  padding: 0 20px 20px 0;
+}
+.dash-workoutModules li p {
+  float: left;
+  margin-bottom: 0px;
+}
+.sideDivider {
+  border-right: 1px solid #DBDBDB;
+}
+.date-col, .class-col, .instr-col, .action-col {
+  padding: 0 10px 0 0;
+  display: inline-block;
+  vertical-align: top;
+}
+.date-col {
+  width: 38%;
+}
+.class-col {
+  width: 12%;
+}
+.instr-col {
+  width: 20%;
+  overflow: hidden;
+}
+.action-col {
+  width: 25%;
+}
+.reservation-listing h5, .reservation-listing span {
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+.reservation-listing hr {
+ margin: 0 0 8px 0;
+}
+.reservation-listing .btn {
+  font-size: 12px;
+  width: 15%;
+  padding: 8px 10px;
+  line-height: 12px;
+  min-width: 90px;
+  border-radius: 5px;
+  margin-right: 3px;
+}
+.reservation-listing .starting {
+  background: #46AFFF;
+}
+.reservation-listing .starting:hover {
+  background: rgba(70, 175, 255, 0.8);
+}
+.cancel-btn {
+  text-align: center;
+  background: #E8E8E8;
+  color: #fff !important;
+  padding: 0 4px;
+  font-size: 10px;
+  line-height: 10px;
+  border-radius: 8px;
+}
+.cancel-btn:hover {
+  background: #D2D2D2;
+}
+.scroller {
+  background: #E4E4E4;
+  padding: 10px 100px;
+  color: #0D1C45;
+  width: 100%;
+}
+.scroller:hover {
+  color: #224893;
+}
+
+
+/*CALENDAR FORMATTING*/
+.week-selector {
+  position: absolute;
+  top: 10px;
+}
+.col-day {
+  width: 14.28%;
+  float: left;
+}
+.day-and-date {
+  background: #224893;
+  padding: 15px 0;
+}
+.day {
+  color: #A2B2E3;
+  font-size: 14px;
+  margin-bottom: 5px;
+  display: block;
+}
+.date {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 0px;
+  display: block;
+}
+.workout-and-module {
+  background: #D3D3D3;
+  padding: 8px 0;
+  border-left: 1px solid #DFE0DF;
+  border-right: 1px solid #DFE0DF;
+}
+.wod-title {
+  color: #224893;
+  font-size: 14px;
+  margin-bottom: 0px;
+  display: block;
+}
+.wod-module {
+  font-size: 12px;
+  color: #0D1C45;
+  margin-bottom: 0px;
+  display: block;
+}
+.sched-class {
+  border: 1px solid #DFE0DF;
+  padding: 15px 10px;
+}
+.class-time, .class-instr {
+  color: #0D1C45;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 5px;
+}
+.class-type {
+  display: inline-block;
+  font-size: 15px;
+}
+.class-booking {
+  display: inline-block;
+  float: right;
+}
+.intro {
+  color: #4DC56B;
+}
+.lvl1 {
+  color: #224893;
+}
+.lvl2 {
+  color: #FF6700;
+}
+.lvl3 {
+  color: #C82428;
+}
+a.reserve.btn {
+  font-size: 10px;
+  line-height: 10px;
+  border-radius: 3px;
+  padding: 5px 10px;
+  min-width: 0;
+}
+.my-friends {
+  display: block;
+}
+.my-friends .qty {
+  display: inline-block;
+  width: 40%;
+  color: #C0C0C0;
+  font-size: 10px;
+  line-height: 10px;
+  vertical-align: middle;
+}
+.my-friends .empty {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 12.5px;
+  border: 1px dashed #BDBDBD;
+  vertical-align: middle;
+}
+.my-friends .profile {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 12.5px;
+  vertical-align: middle;
+}
+.unavailable div, .unavailable span {
+  opacity: 0.1;
+}
+
+
+
+
+
+
+
+
+
+
 /* checkbox - each time slot */
 .time-slot               { 
   padding:0px 0px 0px 0px;

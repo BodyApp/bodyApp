@@ -1,37 +1,23 @@
-<div class="modal-body" style="background-image: url(../../assets/images/hero_payment_crossfit.jpg)">
+<div class="modal-body">
     <div ng-hide = "showFriendModal">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <h3 class="mb16 uppercase" style = "color: #ffffff;">YOUR CLASS HAS BEEN RESERVED FOR:</h3>
-                <h4 class="lead mb12" style = "color: #ffffff;"><i>{{dayOfWeek}}, {{month}} {{day}} at {{classTime}} ET</i></h4>
-            </div>
+        <a class="cancel-modal" href="#" ng-click = "closeModal()">x</a>
+        <div class="col-sm-12 text-center">
+            <h3 class="mb16 darkblue" style = "color: #ffffff;">Your class has been reserved for:</h3>
+            <h4 class="mb0 gray">{{dayOfWeek}} {{month}} {{day}}</h4>
+            <h3 class="mb8 gray">{{classTime}} EST</h4>
+            <addtocalendar
+                start-date= "{{calendarDateSetter}}"
+                end-date="{{calendarDateSetterEnd}}"
+                title="BODY Class with {{bookedClass.trainer.firstName.charAt(0)}}. {{bookedClass.trainer.lastName}}"
+                location="https://bodyapp.herokuapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{bookedClass.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"              
+            ></addtocalendar>
         </div>
-        <div class = "row mb32">
-        	<div class = "col-sm-4"></div>
-    			<addtocalendar
-    			    start-date= "{{calendarDateSetter}}"
-    			    end-date="{{calendarDateSetterEnd}}"
-    			    title="BODY Class with {{bookedClass.trainer.firstName.charAt(0)}}. {{bookedClass.trainer.lastName}}"
-    			    location="https://bodyapp.herokuapp.com/"
-    			    timezone="{{timeZone}}"
-    			    class-name="btn btn-sm btn-default dropdown-toggle"
-    			    description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{bookedClass.trainer.firstName}} is excited to workout with you!"
-    			    btn-text="Add to calendar"			    
-    			></addtocalendar>
-    		</div>
-        <div class="row">
-        	<div class="col-md-1"></div>
-            <div class="col-md-10 text-center" style = "color:white">
-                <p>Please add the class to your calendar by clicking above. If you have any questions, check our <a href="#" style = "color: #FF6700;">FAQ page</a> or shoot us an email at <a href="#" style = "color: #FF6700;">support@getbodyapp.com</a>.</p>
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <!-- <h5 class="mb16 uppercase" style = "color: #ffffff;">Don't leave your friends behind</h5>
-                <a class="btn btn-filled btn-lg" href="#" ng-click = "inviteFriendsClicked()"><i class="ti-facebook"></i>&nbsp;INVITE FRIENDS</a> -->
-                <a class="btn btn-filled btn-lg" href="#" ng-click = "closeModal()"><i class=""></i>&nbsp;CLOSE</a>
-            </div>
+        <div class="col-sm-12 text-center mt32">
+            <p class="darkblue">Please add the class to your calendar by clicking above. If you have any questions, shoot us an email at <a href="#" style = "color: #FF6700;">support@getbodyapp.com</a> or give us a call at 857-600-2410.</p>
         </div>
     </div>
 

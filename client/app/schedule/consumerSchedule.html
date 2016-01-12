@@ -1,6 +1,137 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
-<div class="container dashboard-list-view">
+<div class="container">
+<section class="white-section-half">
+  <div class="col-sm-6 sideDivider">
+    <h1 class="darkblue">Today's Workout</h1>
+    <h3 class="royalblue bold mb8">The Flip Side</h3>
+    <p>We are developing those leg muscles and improving hip and ankle mobility. The Flip Side is all about increasing our workload capacity (endurance) and speed with which you can transition from exercise to exercise.</p>
+    <ul class="dash-workoutModules">
+      <li><p><span class="gray bold">I. Skill</span><br>Hip Openers and Thrusters</p></li>
+      <li><p><span class="gray bold">II. Strength</span><br>5-5-5-5-5 Squat<br>Hand Release Pushups</p></li>
+      <li><p><span class="gray bold">III. HIIT</span><br>*Team Tabata<br>6 DB Thruster<br>6 Kettlebell Swings<br>12 Skaters<br>12 Band Squats</p></li>
+      <li><p><span class="gray bold">IV. Workout</span><br>*3 Rounds for Time<br>5 Burpee tuck jumps<br>10 V-ups</p></li>
+    </ul>
+  </div>
+
+  <div class="col-sm-6" style="padding-left: 30px;">
+    <h1 class="darkblue">Your Reservations</h1>
+    <!-- RESERVATIONS -->
+    <div class="reservation-listing">
+        <div class="date-col pb0">
+          <h5 class="darkblue bold">Date</h5>
+        </div>
+        <div class="class-col pb0">
+          <h5 class="darkblue bold">Class</h5>
+        </div>
+        <div class="instr-col pb0">
+          <h5 class="darkblue bold">Instructor</h5>
+        </div>
+        <div class="action-col pb0">
+          <h5 class="darkblue bold">Action</h5>
+        </div>
+        <hr>
+    </div>       
+    <div ng-repeat="day in days">
+      <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
+        <div class="date-col mb8">
+          <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+        </div>
+        <div class="class-col mb8">
+          <span>{{slot.level}}</span>
+        </div>
+        <div class="instr-col mb8">
+          <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+        </div>
+        <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+          <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+          <a class="cancel-btn" href="#">x</a>
+        </div>
+        <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+          <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+          <a class="cancel-btn" href="#">x</a>
+        </div>        
+      </div>
+
+      <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+        <div class="date-col mb8">
+          <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+        </div>
+        <div class="class-col mb8">
+          <span>{{slot.level}}</span>
+        </div>
+        <div class="instr-col mb8">
+          <span>You</span>
+        </div>
+        <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+          <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classfeedback">Join Class</a>
+          <a class="cancel-btn" href="#">x</a>
+        </div>
+        <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+          <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+          <a class="cancel-btn" href="#">x</a>
+        </div>        
+      </div>
+    </div>  
+    
+    <div class="mt24 text-center"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
+
+  </div>
+  <!-- END RESERVATION SECTION -->
+</section>
+</div>
+
+<section class="week-schedule scroll-to mb72">
+  <div class="container">
+    <div class="col-sm-9">
+      <h1 class="darkblue">BODY Class Schedule</h1>
+    </div>
+    <div class="col-sm-3">
+      <h4 class="week-selector darkblue bold">
+        <a href=""><i class="ti-arrow-circle-left"></i></a>
+        &nbsp;Jan 11 - Jan 18&nbsp;
+        <a href=""><i class="ti-arrow-circle-right"></i></a>
+      </h4>
+    </div>
+  </div>
+
+  <div class="col-day" ng-repeat="day in days">
+    <div class="day-and-date text-center">
+      <span class="day bold">{{ day.name }}</span>
+      <span class="date bold">{{ day.formattedDate }}</span>
+    </div>
+    <div class="workout-and-module text-center">
+      <span class="wod-title bold">The Flip Side</span>
+      <span class="wod-module">Hip Openers</span>
+    </div>
+    <div ng-repeat="slot in day.slots">
+      <div class="sched-class unavailable">
+        <span class="class-time">{{ slot.time }}</span>
+        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+        <div class="class-type lvl1"><span>{{slot.level}}</span></div>
+        <div class="class-booking"><a class="reserve btn" href="#">reserve</a></div>
+        <div class="my-friends mt16 mb8">
+          <div class="qty">1 friends in class</div>
+          <img class="profile" src="{{currentUser.picture}}">
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+
+
+
+<div class="container dashboard-list-view mt72">
   <div class="col-sm-3 workout-column">
     <h1>Today's Workout</h1>
     <h3>The Flip Side</h3>
@@ -15,25 +146,25 @@
     </p>
   </div>
 
-    <!--end of left sidebar-->
+    end of left sidebar-
     <tour step="currentStep">
       <div class="col-md-9">
-        <!--reserved classes-->
+        reserved classes-
         <div class="your-classes col-md-12 mb32">
 
           <h3 class="uppercase text-center mb16">Your Classes</h3>
           <div class="reservations">
-<!--             <span tourtip-step = "1"
+             <span tourtip-step = "1"
                   tourtip="Normally, you'd have to wait until 30 minutes before your class.  But we'll just go ahead and let you in right now!" 
                   tourtip-next-label="Click Join Now Button"
                   tourtip-placement="right"
                   tourtip-offset-horizontal="525"  
                   tourtip-offset-vertical="-25"  
-            ></span> -->
+            ></span> -
             
-              <table class="reservations-table" ng-repeat="day in days">
-                <tbody ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
-                  <tr >
+              <table class="reservations-table" >
+                <tbody ng-repeat="day in days">
+                  <tr ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
                     <td class = "col-md-9">
                       <span id="dark-text" >{{slot.level}} with {{slot.trainer.firstName}} {{slot.trainer.lastName}} - {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
                     </td>
@@ -44,9 +175,10 @@
                       <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
                     </td>
                   </tr>
-              </tbody>
-              <tbody ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
-                  <tr >
+                </tbody>
+
+                <tbody ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+                  <tr>
                     <td class = "col-md-9">
                       <span id="dark-text" >You are teaching {{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} ET</span>
                     </td>
@@ -57,13 +189,13 @@
                       <a class="btn btn-filled btn-sm reserved-class" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#"><i class="ti-facebook"></i>&nbsp; {{formattedWaitTime(slot.date,timeNow)}}</a>
                     </td>
                   </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
           </div>
         </div>
-        <!--end of reserved classes-->
+        end of reserved classes-
 
-        <!--schedule-->
+        schedule-
         <div class="col-md-12">
 
           <h3 class="uppercase text-center">Class Schedule</h3>
@@ -72,7 +204,7 @@
             <a href="" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()">Next Week &rarr;</a>
           </div>
           <div class = "text-center">
-            <!-- <label class = "showAvailableClassesLabel">
+            <label class = "showAvailableClassesLabel">
               <input  type="checkbox" name="availableClasses" value="availableClasses" ng-model = "availableClasses" checked>
               <span style = "color:black">Only show available classes</span>
             </label>
@@ -82,19 +214,19 @@
             
 
             
-            <!-- <div class = "col-xs-4 col-md-5 col-lg-5" ></div> -->
+             <div class = "col-xs-4 col-md-5 col-lg-5" ></div> -
             
               <div class = "col-xs-0 col-sm-1 col-md-3 col-lg-2" ></div>
               <div>
                 <div class="col-sm-1 text-center columnStyle column" id="scheduleColumn" ng-repeat="day in days">        
-                  <!-- <h3 ng-show="day.isToday">Today</h3> -->
+                   <h3 ng-show="day.isToday">Today</h3> -
                   <h4 class = "dateTitles" ng-hide="day.isToday">{{ day.name }}</h4>
                   <h5 class = "dateTitles">{{ day.formattedDate }}</h5>
                   
                   <div class="time-slot" ng-repeat="slot in day.slots">     
 
                     <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.bookedUsers[currentUser._id]" ng-disabled=" slot.bookedUsers[currentUser._id] || slot.classFull || slot.past || (slot.trainer._id === currentUser._id)" ng-click="openBookingConfirmation(slot);">
-                    <!-- <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -->  
+                     <input type="checkbox" id="{{ day.name }}-{{ $index }} classFull" ng-model="slot.classFull" ng-disabled="slot.classFull"> -  
 
                     <label ng-hide = "availableClasses && (slot.past || slot.classFull)" for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
                       <span ng-if="slot.bookedUsers[currentUser._id] && !slot.past" style="font-style:italic">Booked</span>
@@ -121,9 +253,11 @@
         </div>
 
         </div>
-        <!--end of schedule-->
+        end of schedule-
       </div>
     </div>
 </div>
 </tour> 
+
+
 <div ng-include="'components/footer/footer.html'"></div>

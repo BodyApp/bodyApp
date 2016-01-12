@@ -252,7 +252,7 @@ angular.module('bodyAppApp')
 				var instructorStream = false
 				var instructorInfo;
 				var vidWidth = "48%";
-				var vidHeight = 60;
+				var vidHeight = 70;
 
 				var streamId = event.stream.connection.data.toString()
 				var streamBoxNumber = 1
@@ -260,7 +260,7 @@ angular.module('bodyAppApp')
 				if (streamId === classToJoin.trainer._id.toString()) {
 					instructorStream = true
 					vidWidth = "100%";
-					vidHeight = 600;
+					vidHeight = '90%';
 				} else {
 					if (!$scope.consumerObjects[streamId]) {
 						$scope.consumerList.push(streamId);
@@ -311,7 +311,7 @@ angular.module('bodyAppApp')
 	            })
 						}
 
-				  	subscriber.setStyle("nameDisplayMode", "on")
+				  	subscriber.setStyle("nameDisplayMode", "off")
 				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"); //Sets image to be displayed when no video
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
@@ -423,7 +423,6 @@ angular.module('bodyAppApp')
 					vidHeight = "16.67%"
 				} else {
 					vidWidth = "100%"
-					vidHeight = 125
 				}
 
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {

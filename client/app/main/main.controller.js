@@ -17,4 +17,12 @@ angular.module('bodyAppApp')
           }
         }
     });
+
+    // *****************SCROLL DOWN*****************
+    $(".arrow").click(function() {
+        $('html,body').animate({
+            scrollTop: $(".scroll-to").offset().top + -50},
+            600);
+    });
+
   });

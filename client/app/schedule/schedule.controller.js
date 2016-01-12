@@ -92,13 +92,13 @@ angular.module('bodyAppApp')
             // $scope.dayOfWeek;
             
             switch (newDate.getDay()) {
-                case 0: formatted.dayOfWeek = "Sunday"; break;
-                case 1: formatted.dayOfWeek = "Monday"; break;
-                case 2: formatted.dayOfWeek = "Tuesday"; break;
-                case 3: formatted.dayOfWeek = "Wednesday"; break;
-                case 4: formatted.dayOfWeek = "Thursday"; break;
-                case 5: formatted.dayOfWeek = "Friday"; break;
-                case 6: formatted.dayOfWeek = "Saturday"; break;
+                case 0: formatted.dayOfWeek = "Sun"; break;
+                case 1: formatted.dayOfWeek = "Mon"; break;
+                case 2: formatted.dayOfWeek = "Tue"; break;
+                case 3: formatted.dayOfWeek = "Wed"; break;
+                case 4: formatted.dayOfWeek = "Thu"; break;
+                case 5: formatted.dayOfWeek = "Fri"; break;
+                case 6: formatted.dayOfWeek = "Sat"; break;
                 default: break;
             }
 
@@ -403,6 +403,14 @@ angular.module('bodyAppApp')
         //     $scope.currentStep = 0
         //   // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
         // };
+
+        // *****************SCROLL DOWN*****************
+        $(".arrow-scroll").click(function() {
+            $('html,body').animate({
+                scrollTop: $(".scroll-to").offset().top + -100},
+                600);
+        });
+   
 
 
     })
