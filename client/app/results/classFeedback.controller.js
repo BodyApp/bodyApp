@@ -10,6 +10,7 @@ angular.module('bodyAppApp')
   	}
 
   	var classDate = new Date($scope.classCompleted.date);        
+  	var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
     var sunDate = new Date();
     sunDate.setDate(classDate.getDate() - classDate.getDay());
     var sunGetDate = sunDate.getDate();
@@ -21,22 +22,35 @@ angular.module('bodyAppApp')
 
     var currentUser = Auth.getCurrentUser()
 
-  	$scope.submitRatingAndResults = function(rating, score, comment, postToPublic) {
-  		
+    var wodRef = new Firebase("https://bodyapp.firebaseio.com/WODs/" + classKey)
+    $scope.classWod;
+    wodRef.once('value', function(snapshot) {
+    	$scope.classWod = snapshot.val();
+    	$scope.$apply()
+    })
+
+  	$scope.submitRatingAndResults = function(rating, score, comment, postToPublic, minutes, seconds) {
+  		console.log(score);
+  		console.log(minutes);
 	  	if (!rating) rating = 5.0
   		if (!score) score = ""
   		if (!comment) comment = ""
+
+  		if ($scope.classWod.scoreType.id === 0) {
+  			score = seconds + minutes*60
+  		}
 
   		score = score * 1
 
   		//Add result to user object
   		User.saveResult({ id: Auth.getCurrentUser()._id }, {
-        score: score, 
+        score: score,
+        typeOfScore: $scope.classWod.classType, 
         comment: comment,
         wod: "WodData", //This needs to be changed once the day's wod data has been implemented
         dateTime: classDate.getTime(),
         weekOf: weekOf,
-        date: ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+        date: classKey
       }, function(data) {
         console.log(data.user);
         Auth.updateUser(data.user);
@@ -71,7 +85,11 @@ angular.module('bodyAppApp')
   				if (error) return console.log(error);
   				console.log("Result successfully published to public list.")
 
-  				dayList.setPriority(score);
+  				if ($scope.classWod.scoreType.id === 0) {
+  					dayList.setPriority(score);
+  				} else {
+  					dayList.setPriority(-score);
+  				}
 
 	  			classList = dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
 	  				score: score,
@@ -84,7 +102,11 @@ angular.module('bodyAppApp')
 	  			}, function(error) {
 	  				if (error) return console.log(error);
 	  				console.log("Result successfully published to class list.")
-	  				classList.setPriority(score);
+	   				if ($scope.classWod.scoreType.id === 0) {
+	  					classList.setPriority(score);
+	  				} else {
+	  					classList.setPriority(-score);
+	  				}
 	  			})
   			})
   		}

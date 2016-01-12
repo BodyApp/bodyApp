@@ -55,8 +55,15 @@
     <div class="col-md-6">
       <h3 class="text-center mb16">Your Results</h3>
 
-      <span class="mb0">Score:</span>
-      <input class="score" ng-model = "score" type="text" name="score" placeholder="11:10"/>
+      <span class="mb0">Score ({{classWod.scoreType.label}}):</span>
+      <input class="score" ng-model = "score" type="number" name="score" placeholder="1" ng-show = "classWod.scoreType.id === 1"/>
+      <span ng-show = "classWod.scoreType.id === 0">
+        <br>
+        <input class="score" ng-model = "minutes" type="number" name="score"/> Minutes
+        <br>
+        <input class="score" ng-model = "seconds" type="number" name="score"/> Seconds
+      </span>
+    
 
       <h5 class="mt8 mb0">Comments:</h5>
       <input class="comments" ng-model = "comment" type="text" name="comments" placeholder="Feeling great, killer workout!"/>
@@ -71,7 +78,7 @@
     </div>
 
     <div class="col-sm-12 mt32 text-center">
-      <button class="btn" ng-click = "submitRatingAndResults(rating, score, comment, postToPublic)">Submit rating and results</button>
+      <button class="btn" ng-click = "submitRatingAndResults(rating, score, comment, postToPublic, minutes, seconds)">Submit rating and results</button>
     </div>
 
   </section>

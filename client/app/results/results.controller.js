@@ -139,7 +139,7 @@ angular.module('bodyAppApp')
           val.rank = i;
           i++;
           communityResultsArray.push(val)
-          if (val.userId === $scope.currentUser._id) {
+          if (val.userId === $scope.currentUser._id && val.score === $scope.currentUser.results[classKey].score) {
             $scope.myCommunityRank = val.rank;
           }
         })
