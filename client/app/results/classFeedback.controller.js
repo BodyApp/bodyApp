@@ -84,6 +84,7 @@ angular.module('bodyAppApp')
   				userFirstName: currentUser.firstName,
   				userLastName: currentUser.lastName,
   				userPicture: currentUser.picture,
+  				classDateTime: $scope.classCompleted.date,
   				timePosted: (new Date()).getTime()				
   			}, function(error) {
   				if (error) return console.log(error);

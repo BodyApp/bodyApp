@@ -32,7 +32,7 @@ angular.module('bodyAppApp')
       $scope.wods = snapshot.val();  
       $scope.wodToDisplay = $scope.wods[classKey];
       loadResultsList(classDate);
-      // $scope.$apply()
+      if(!$scope.$$phase) $scope.$apply();
     })
 
     $scope.formatScore = function(score) {
@@ -51,10 +51,14 @@ angular.module('bodyAppApp')
     }
 
     $scope.switchToDay = function(wod) {
+      $scope.userResultsToday = undefined;
+      $scope.myClassRank = undefined;
+      $scope.myCommunityRank = undefined;
+      $scope.rankings = [];
       loadResultsList(new Date(wod.dateTime))
       $scope.wodToDisplay = wod
       $scope.wodToDisplay.dateTime = new Date(wod.dateTime);
-
+      if(!$scope.$$phase) $scope.$apply();
     }
 
     $scope.showClassmates = function() {
@@ -127,7 +131,7 @@ angular.module('bodyAppApp')
 
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
 
-      $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
+      // $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
 
       var sunDate = new Date();
       sunDate.setDate(classDate.getDate() - classDate.getDay());
@@ -146,8 +150,9 @@ angular.module('bodyAppApp')
             val.rank = i;
             i--;
             communityResultsArray.unshift(val)
-            if (val.userId === $scope.currentUser._id && val.score && $scope.currentUser.results[classKey] && val.score === $scope.currentUser.results[classKey].score) {
+            if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
               $scope.myCommunityRank = val.rank;
+              $scope.userResultsToday = val;
             }
           })
           $scope.rankings = communityResultsArray;
@@ -158,8 +163,9 @@ angular.module('bodyAppApp')
             val.rank = i;
             i++;
             communityResultsArray.push(val)
-            if (val.userId === $scope.currentUser._id && val.score && $scope.currentUser.results[classKey] && val.score === $scope.currentUser.results[classKey].score) {
+            if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
               $scope.myCommunityRank = val.rank;
+              $scope.userResultsToday = val;
             }
           })
           $scope.rankings = communityResultsArray;
@@ -167,33 +173,117 @@ angular.module('bodyAppApp')
         }
       })
 
-      if ($scope.userResultsToday) {
-        dayRef.child('slots').child($scope.currentUser.results[classKey]["dateTime"]).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+      if ($scope.userResultsToday && $scope.userResultsToday.classDateTime) {
+        dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
           if ($scope.wodToDisplay.scoreType.id === 1) { 
-          var i = snapshot.numChildren()
-          snapshot.forEach(function(childSnapshot) {
-            var val = childSnapshot.val();
-            val.rank = i;
-            i--;
-            classResultsArray.unshift(val)
-            if (val.userId === $scope.currentUser._id) {
-              $scope.myClassRank = val.rank;
-            }
-          })
-        } else { 
-          var i = 1;
-          snapshot.forEach(function(childSnapshot) {
-            var val = childSnapshot.val();
-            val.rank = i;
-            i++;
-            classResultsArray.push(val)
-            if (val.userId === $scope.currentUser._id) {
-              $scope.myClassRank = val.rank;
-            }
-          })
-        }
+            var i = snapshot.numChildren()
+            snapshot.forEach(function(childSnapshot) {
+              var val = childSnapshot.val();
+              val.rank = i;
+              i--;
+              classResultsArray.unshift(val)
+              if (val.userId === $scope.currentUser._id) {
+                $scope.myClassRank = val.rank;
+              }
+            })
+          } else { 
+            var i = 1;
+            snapshot.forEach(function(childSnapshot) {
+              var val = childSnapshot.val();
+              val.rank = i;
+              i++;
+              classResultsArray.push(val)
+              if (val.userId === $scope.currentUser._id) {
+                $scope.myClassRank = val.rank;
+              }
+            })
+          }
+          if(!$scope.$$phase) $scope.$apply();
         })
       }
     }
+
+    function loadClassmatesList(dayRef, classDateTime) { 
+      console.log(classDateTime)
+      if (classDateTime) {
+        dayRef.child('slots').child(classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+          if ($scope.wodToDisplay.scoreType.id === 1) { 
+            var i = snapshot.numChildren()
+            snapshot.forEach(function(childSnapshot) {
+              var val = childSnapshot.val();
+              val.rank = i;
+              i--;
+              classResultsArray.unshift(val)
+              if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                $scope.myClassRank = val.rank;
+              }
+            })
+          } else { 
+            var i = 1;
+            snapshot.forEach(function(childSnapshot) {
+              var val = childSnapshot.val();
+              val.rank = i;
+              i++;
+              classResultsArray.push(val)
+              if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                $scope.myClassRank = val.rank;
+              }
+            })
+          }
+        })
+      }
+    }
+
+    // function loadResultsList(classDate) {
+    //   communityResultsArray = [];
+    //   classResultsArray = [];
+    //   $scope.rankings = [];
+
+    //   classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
+
+    //   // $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
+
+    //   var sunDate = new Date();
+    //   sunDate.setDate(classDate.getDate() - classDate.getDay());
+    //   var sunGetDate = sunDate.getDate();
+    //   var sunGetMonth = sunDate.getMonth()+1;
+    //   var sunGetYear = sunDate.getFullYear();
+    //   var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;    
+    //   var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
+    //   var dayRef = weekOfRef.child(classDate.getDay())
+
+    //   dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
+    //     if ($scope.wodToDisplay.scoreType.id === 1) { 
+    //       var i = snapshot.numChildren()
+    //       snapshot.forEach(function(childSnapshot) {
+    //         var val = childSnapshot.val();
+    //         val.rank = i;
+    //         i--;
+    //         communityResultsArray.unshift(val)
+    //         if (val.userId === $scope.currentUser._id && !$scope.userResultsToday) {
+    //           $scope.myCommunityRank = val.rank;
+    //           $scope.userResultsToday = val;
+    //           loadClassmatesList(dayRef, val.classDateTime)
+    //         }
+    //       })
+    //       $scope.rankings = communityResultsArray;
+    //     } else { 
+    //       var i = 1;
+    //       snapshot.forEach(function(childSnapshot) {
+    //         var val = childSnapshot.val();
+    //         val.rank = i;
+    //         i++;
+    //         communityResultsArray.push(val)
+    //         if (val.userId === $scope.currentUser._id && !$scope.userResultsToday) {
+    //           $scope.myCommunityRank = val.rank;
+    //           $scope.userResultsToday = val;
+    //           loadClassmatesList(dayRef, val.classDateTime)
+    //         }
+    //       })
+    //       $scope.rankings = communityResultsArray;
+    //       if(!$scope.$$phase) $scope.$apply();
+    //     }        
+    //   })
+    // }
 
   });
