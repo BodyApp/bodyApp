@@ -153,6 +153,7 @@ angular.module('bodyAppApp')
             if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
               $scope.myCommunityRank = val.rank;
               $scope.userResultsToday = val;
+              loadClassmates()
             }
           })
           $scope.rankings = communityResultsArray;
@@ -166,6 +167,7 @@ angular.module('bodyAppApp')
             if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
               $scope.myCommunityRank = val.rank;
               $scope.userResultsToday = val;
+              loadClassmates()
             }
           })
           $scope.rankings = communityResultsArray;
@@ -173,66 +175,69 @@ angular.module('bodyAppApp')
         }
       })
 
-      if ($scope.userResultsToday && $scope.userResultsToday.classDateTime) {
-        dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
-          if ($scope.wodToDisplay.scoreType.id === 1) { 
-            var i = snapshot.numChildren()
-            snapshot.forEach(function(childSnapshot) {
-              var val = childSnapshot.val();
-              val.rank = i;
-              i--;
-              classResultsArray.unshift(val)
-              if (val.userId === $scope.currentUser._id) {
-                $scope.myClassRank = val.rank;
-              }
-            })
-          } else { 
-            var i = 1;
-            snapshot.forEach(function(childSnapshot) {
-              var val = childSnapshot.val();
-              val.rank = i;
-              i++;
-              classResultsArray.push(val)
-              if (val.userId === $scope.currentUser._id) {
-                $scope.myClassRank = val.rank;
-              }
-            })
-          }
-          if(!$scope.$$phase) $scope.$apply();
-        })
+      function loadClassmates() {
+        if ($scope.userResultsToday && $scope.userResultsToday.classDateTime) {
+          console.log($scope.userResultsToday)
+          dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+            if ($scope.wodToDisplay.scoreType.id === 1) { 
+              var i = snapshot.numChildren()
+              snapshot.forEach(function(childSnapshot) {
+                var val = childSnapshot.val();
+                val.rank = i;
+                i--;
+                classResultsArray.unshift(val)
+                if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                  $scope.myClassRank = val.rank;
+                }
+              })
+            } else { 
+              var i = 1;
+              snapshot.forEach(function(childSnapshot) {
+                var val = childSnapshot.val();
+                val.rank = i;
+                i++;
+                classResultsArray.push(val)
+                if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                  $scope.myClassRank = val.rank;
+                }
+              })
+            }
+            if(!$scope.$$phase) $scope.$apply();
+          })
+        }
       }
     }
 
-    function loadClassmatesList(dayRef, classDateTime) { 
-      console.log(classDateTime)
-      if (classDateTime) {
-        dayRef.child('slots').child(classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
-          if ($scope.wodToDisplay.scoreType.id === 1) { 
-            var i = snapshot.numChildren()
-            snapshot.forEach(function(childSnapshot) {
-              var val = childSnapshot.val();
-              val.rank = i;
-              i--;
-              classResultsArray.unshift(val)
-              if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
-                $scope.myClassRank = val.rank;
-              }
-            })
-          } else { 
-            var i = 1;
-            snapshot.forEach(function(childSnapshot) {
-              var val = childSnapshot.val();
-              val.rank = i;
-              i++;
-              classResultsArray.push(val)
-              if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
-                $scope.myClassRank = val.rank;
-              }
-            })
-          }
-        })
-      }
-    }
+    // function loadClassmatesList(dayRef, classDateTime) { 
+    //   console.log(classDateTime)
+    //   if (classDateTime) {
+    //     dayRef.child('slots').child(classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+    //       if ($scope.wodToDisplay.scoreType.id === 1) { 
+    //         var i = snapshot.numChildren()
+    //         snapshot.forEach(function(childSnapshot) {
+    //           var val = childSnapshot.val();
+    //           val.rank = i;
+    //           i--;
+    //           classResultsArray.unshift(val)
+    //           if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+    //             $scope.myClassRank = val.rank;
+    //           }
+    //         })
+    //       } else { 
+    //         var i = 1;
+    //         snapshot.forEach(function(childSnapshot) {
+    //           var val = childSnapshot.val();
+    //           val.rank = i;
+    //           i++;
+    //           classResultsArray.push(val)
+    //           if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+    //             $scope.myClassRank = val.rank;
+    //           }
+    //         })
+    //       }
+    //     })
+    //   }
+    // }
 
     // function loadResultsList(classDate) {
     //   communityResultsArray = [];
