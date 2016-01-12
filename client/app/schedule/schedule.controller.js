@@ -312,7 +312,14 @@ angular.module('bodyAppApp')
             // });
         // }
 
+        $scope.cancelClass = function(slot) {
+          console.log("here")
+          slot.bookedUsers = slot.bookedUsers || {};
+          slot.bookedUsers[currentUser._id] = false
+        }
+
         $scope.openBookingConfirmation = function (slot) {
+
             // if (!loggedIn) {
             //     slot.bookedUsers[currentUser._id] = false
             //     return openLoginModal()
@@ -339,6 +346,9 @@ angular.module('bodyAppApp')
                 User.addBookedClass({ id: currentUser._id }, {
                   classToAdd: slot.date
                 }, function(user) {
+                  slot.bookedUsers = slot.bookedUsers || {};
+                  slot.bookedUsers[currentUser._id] = true
+                  // slot.$save();
                   currentUser = user;
                   $scope.currentUser = currentUser;
                 }, function(err) {
@@ -411,7 +421,11 @@ angular.module('bodyAppApp')
                 600);
         });
    
-
+      $scope.scrollToTop = function() {
+        $('html,body').animate({
+          scrollTop: $(".top-scroll").offset().top},
+        600);
+      }     
 
     })
 

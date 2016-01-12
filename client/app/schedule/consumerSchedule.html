@@ -14,7 +14,7 @@
     </ul>
   </div>
 
-  <div class="col-sm-6" style="padding-left: 30px;">
+  <div class="col-sm-6 top-scroll" style="padding-left: 30px;">
     <h1 class="darkblue">Your Reservations</h1>
     <!-- RESERVATIONS -->
     <div class="reservation-listing">
@@ -45,11 +45,11 @@
         </div>
         <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
           <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-          <a class="cancel-btn" href="#">x</a>
+          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
         </div>
         <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
           <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-          <a class="cancel-btn" href="#">x</a>
+          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
         </div>        
       </div>
 
@@ -65,11 +65,11 @@
         </div>
         <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
           <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classfeedback">Join Class</a>
-          <a class="cancel-btn" href="#">x</a>
+          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
         </div>
         <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
           <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-          <a class="cancel-btn" href="#">x</a>
+          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
         </div>        
       </div>
     </div>  
@@ -105,11 +105,12 @@
       <span class="wod-module">Hip Openers</span>
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class unavailable">
+      <div class="sched-class" ng-class = "{unavailable: slot.past}">
         <span class="class-time">{{ slot.time }}</span>
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
-        <div class="class-booking"><a class="reserve btn" href="#">reserve</a></div>
+        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id]" ng-click = "openBookingConfirmation(slot);">reserve</a></div>
+        <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id]" ng-click = "scrollToTop()">booked</a></div>
         <div class="my-friends mt16 mb8">
           <div class="qty">1 friends in class</div>
           <img class="profile" src="{{currentUser.picture}}">
