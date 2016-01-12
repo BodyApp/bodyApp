@@ -475,6 +475,7 @@ exports.saveResult = function(req, res, next) {
         weekOf: req.body.weekOf,
         date: req.body.date
       }
+      user.markModified(req.body.date);
       user.save(function(err) {
         if (err) return validationError(res, err);
         res.status(200).json({user});

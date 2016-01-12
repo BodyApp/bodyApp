@@ -4,6 +4,7 @@ angular.module('bodyAppApp')
   .controller('ResultsCtrl', function ($scope, Schedule, Auth) {
     
     $scope.currentUser = Auth.getCurrentUser()
+    console.log($scope.currentUser);
 
     $scope.classCompleted = Schedule.classUserJustJoined;
     $scope.wodToDisplay;
@@ -18,6 +19,8 @@ angular.module('bodyAppApp')
     $scope.rankings;
     $scope.communityActive = true;
     $scope.classmateActive;
+    $scope.myCommunityRank;
+    $scope.myClassRank;
 
     $scope.dayList = [];
     setupDayList();
@@ -29,7 +32,7 @@ angular.module('bodyAppApp')
       $scope.wods = snapshot.val();  
       $scope.wodToDisplay = $scope.wods[classKey];
       loadResultsList(classDate);
-      $scope.$apply()
+      // $scope.$apply()
     })
 
     $scope.formatScore = function(score) {
@@ -120,6 +123,7 @@ angular.module('bodyAppApp')
     function loadResultsList(classDate) {
       communityResultsArray = [];
       classResultsArray = [];
+      $scope.rankings = [];
 
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
 
@@ -146,6 +150,7 @@ angular.module('bodyAppApp')
               $scope.myCommunityRank = val.rank;
             }
           })
+          $scope.rankings = communityResultsArray;
         } else { 
           var i = 1;
           snapshot.forEach(function(childSnapshot) {
@@ -157,13 +162,9 @@ angular.module('bodyAppApp')
               $scope.myCommunityRank = val.rank;
             }
           })
+          $scope.rankings = communityResultsArray;
+          if(!$scope.$$phase) $scope.$apply();
         }
-
-        // This populates the community list when first open results page
-        // if ($scope.communityActive) {
-        $scope.rankings = communityResultsArray;
-        $scope.$apply()
-        // }
       })
 
       if ($scope.userResultsToday) {

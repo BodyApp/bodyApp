@@ -35,7 +35,7 @@ var UserSchema = new Schema({
   trainerRating: Number,
   trainerNumRatings: Number,
   bookedIntroClass: Boolean,
-  results: Object,
+  results: Schema.Types.Mixed,
   facebook: {},
   twitter: {},
   google: {},
