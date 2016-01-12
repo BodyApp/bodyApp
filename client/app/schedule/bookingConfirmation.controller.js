@@ -15,9 +15,12 @@ angular.module('bodyAppApp')
         // $scope.calendarDateSetter = "20150704T210000"
         // $scope.calendarDateSetterEnd = "20150704T220000"
         //Formatting for calendar appointment setting
-        $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+date.getMonth()+1:date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-        $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+date.getMonth()+1:date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+1+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
         $scope.scheduledClass = slot
+
+        console.log($scope.calendarDateSetter)
+        console.log($scope.calendarDateSetterEnd)
 
         // var time = jstz().determine();
         $scope.timeZone = jstz().timezone_name;  
