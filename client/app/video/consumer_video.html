@@ -112,31 +112,21 @@
         <div class="col-sm-12 class-details">
           <div class="workout-description">
             <h5 class="white mb8">Today's Workout</h5>
-            <span class="module-title bold">I. Skill</span>
-            <ul class="module-description mb8">
-              <li>Airsquat</li>
-              <li>Thrusters</li>
+            <span class="module-title bold">I. {{todayWod.workout.module1.title}}</span>
+            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module1.bullets">
+              <li>{{bullet}}</li>
             </ul>
-            <span class="module-title bold">II. Strength</span>
-            <ul class="module-description mb8">
-              <li>Squat</li>
-              <li>HR Pushups</li>
+            <span class="module-title bold">II. {{todayWod.workout.module2.title}}</span>
+            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module2.bullets">
+              <li>{{bullet}}</li>
             </ul>
-            <span class="module-title bold">III. HIIT</span>
-            <ul class="module-description mb8">
-              <li>*team tabata</li>
-              <li>6 DB Thruster</li>
-              <li>6 DB Thruster</li>
-              <li>6 DB Thruster</li>
-              <li>6 DB Thruster</li>
+            <span class="module-title bold">III. {{todayWod.workout.module3.title}}</span>
+            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module3.bullets">
+              <li>{{bullet}}</li>
             </ul>
-            <span class="module-title bold">IV. Challenge</span>
-            <ul class="module-description mb8">
-              <li>*team tabata</li>
-              <li>6 DB Thruster</li>
-              <li>6 DB Thruster</li>
-              <li>6 DB Thruster</li>
-              <li>6 DB Thruster</li>
+            <span class="module-title bold">IV. {{todayWod.workout.module4.title}}</span>
+            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module4.bullets">
+              <li>{{bullet}}</li>
             </ul>                                    
           </div>
 <!--           <div class="timer">
@@ -145,7 +135,7 @@
           </div> -->
         </div>
         <div class="col-sm-6">
-          <h3 class="white mb0">The Flip Side</h3>
+          <h3 class="white mb0">{{todayWod.title}}</h3>
           <a href="" class="exit-btn btn-white">Exit Class</a>
         </div>
         <div class="col-sm-6">

@@ -15,6 +15,7 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.classTime = classToJoin.date;
+
 		var classClosesTime = (classToJoin.date + 1000*60*90)
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
@@ -64,6 +65,7 @@ angular.module('bodyAppApp')
 		$scope.musicVolume = 50;
 
 		var classDate = new Date(classToJoin.date)
+		var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
     var sunDate = new Date();
     sunDate.setDate(classDate.getDate() - classDate.getDay());
     var sunGetDate = sunDate.getDate();
@@ -150,6 +152,11 @@ angular.module('bodyAppApp')
 		} else {
 			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 		}
+
+		var wodRef = ref.child("WODs").child(classKey)
+		wodRef.once('value', function(snapshot) {
+			$scope.todayWod = snapshot.val()
+		})
 
 		$scope.openSongPermalink = function(currentSong) {
 			$window.open(currentSong.permalink_url);
