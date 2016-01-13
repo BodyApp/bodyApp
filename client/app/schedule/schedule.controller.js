@@ -3,9 +3,12 @@
 angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state) {
         var currentUser = Auth.getCurrentUser();
+        console.log(currentUser)
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
         var loggedIn = false
+
+        $scope.pictureData = {};
 
         // Auth.isLoggedInAsync(function(boolAnswer) {
         //     loggedIn = boolAnswer;
@@ -19,14 +22,41 @@ angular.module('bodyAppApp')
         // });
 
         var ref = new Firebase("https://bodyapp.firebaseio.com");
-        $scope.wod = $firebaseObject(ref.child('WOD'));
+        var todayDate = new Date();
+
         $scope.thisWeek;
         var unbindMethod = function(){};
+
+        var classKey = ""+todayDate.getFullYear()+""+((todayDate.getMonth()+1 < 10)?"0"+(todayDate.getMonth()+1):todayDate.getMonth()+1)+""+((todayDate.getDate() < 10)?"0"+todayDate.getDate():todayDate.getDate())
+        var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
+          $scope.wod = snapshot.val()
+        });
+
+        $scope.checkIfFriends = function(slot) {
+          var friendList = [];
+          for (var user in slot.bookedFbUserIds) {
+            if (currentUser.friendListObject[user]) {
+              friendList.push(user);
+              console.log(friendList)
+              if (!$scope.pictureData[user]) {
+                var userRef = ref.child("fbUsers").child(user)
+                userRef.once('value', function(snapshot) {
+                  var userPulled = snapshot.val()
+                  $scope.pictureData[friendList[0]] = snapshot.val()
+                  if(!$scope.$$phase) $scope.$apply();
+                })
+              }
+              console.log(friendList[0]) 
+            }
+          }
+
+          return friendList;
+        }
 
         $scope.setCalendarToThisWeek = function() { thisWeek() }
         function thisWeek() {
           $scope.thisWeek = true; 
-          var todayDate = new Date();
+          
           $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate();
 
           var sunDate = new Date();
@@ -347,18 +377,22 @@ angular.module('bodyAppApp')
                   classToAdd: slot.date
                 }, function(user) {
                   slot.bookedUsers = slot.bookedUsers || {};
+                  slot.bookedFbUserIds = slot.bookedFbUserIds || {};
                   slot.bookedUsers[currentUser._id] = true
+                  slot.bookedFbUserIds[currentUser.facebook.id] = true
                   // slot.$save();
                   currentUser = user;
                   $scope.currentUser = currentUser;
                 }, function(err) {
                     console.log("Error adding class: " + err)
                     slot.bookedUsers[currentUser._id] = false
+                    slot.bookedFbUsers[currentUser.facebook.id].delete()
                     alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
                 }).$promise;
 
             } else {
                 slot.bookedUsers[currentUser._id] = false
+                slot.bookedFbUsers[currentUser.facebook.id].delete()
             }
         };
 

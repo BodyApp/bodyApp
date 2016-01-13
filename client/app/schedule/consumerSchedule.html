@@ -4,13 +4,33 @@
 <section class="white-section-half">
   <div class="col-sm-6 sideDivider">
     <h1 class="darkblue">Today's Workout</h1>
-    <h3 class="royalblue bold mb8">The Flip Side</h3>
-    <p>We are developing those leg muscles and improving hip and ankle mobility. The Flip Side is all about increasing our workload capacity (endurance) and speed with which you can transition from exercise to exercise.</p>
+    <h3 class="royalblue bold mb8">{{wod.title}}</h3>
+    <p>{{wod.description}}</p>
     <ul class="dash-workoutModules">
-      <li><p><span class="gray bold">I. Skill</span><br>Hip Openers and Thrusters</p></li>
-      <li><p><span class="gray bold">II. Strength</span><br>5-5-5-5-5 Squat<br>Hand Release Pushups</p></li>
-      <li><p><span class="gray bold">III. HIIT</span><br>*Team Tabata<br>6 DB Thruster<br>6 Kettlebell Swings<br>12 Skaters<br>12 Band Squats</p></li>
-      <li><p><span class="gray bold">IV. Workout</span><br>*3 Rounds for Time<br>5 Burpee tuck jumps<br>10 V-ups</p></li>
+      <li>
+        <span>
+          <span class="gray bold" ng-if = "wod.workout.module1">I. {{wod.workout.module1.title}}</span>
+          <div ng-repeat = "bullet in wod.workout.module1.bullets">{{bullet}}</div>
+        </span>
+      </li>
+      <li>
+        <span>
+          <span class="gray bold" ng-if = "wod.workout.module2">II. {{wod.workout.module2.title}}</span>
+          <div ng-repeat = "bullet in wod.workout.module2.bullets">{{bullet}}</div>
+        </span>
+      </li>
+      <li>
+        <span>
+          <span class="gray bold" ng-if = "wod.workout.module3">III. {{wod.workout.module3.title}}</span>
+          <div ng-repeat = "bullet in wod.workout.module3.bullets">{{bullet}}</div>
+        </span>
+      </li>
+      <li>
+        <span>
+          <span class="gray bold" ng-if = "wod.workout.module4">IV. {{wod.workout.module4.title}}</span>
+          <div ng-repeat = "bullet in wod.workout.module4.bullets">{{bullet}}</div>
+        </span>
+      </li>
     </ul>
   </div>
 
@@ -111,11 +131,16 @@
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id]" ng-click = "openBookingConfirmation(slot);">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id]" ng-click = "scrollToTop()">booked</a></div>
-        <div class="my-friends mt16 mb8">
-          <div class="qty">1 friends in class</div>
-          <img class="profile" src="{{currentUser.picture}}">
-          <div class="empty"></div>
-          <div class="empty"></div>
+        <div class="my-friends mt16 mb8" >
+          <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
+            <span ng-show = "friendList.length != 1">friends in class</span> 
+            <span ng-show = "friendList.length === 1">friend in class</span> 
+            </div>
+          <img class="profile" ng-src="{{pictureData[friendList[0]].picture}}">
+          <img class="profile" ng-src="{{pictureData[friendList[1]].picture}}">
+          <img class="profile" ng-src="{{pictureData[friendList[2]].picture}}">
+          <!-- <div class="empty"></div>
+          <div class="empty"></div> -->
         </div>
       </div>
     </div>
