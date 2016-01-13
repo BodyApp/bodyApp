@@ -108,9 +108,9 @@
     </div>
     <div class="col-sm-3">
       <h4 class="week-selector darkblue bold">
-        <a href=""><i class="ti-arrow-circle-left"></i></a>
-        &nbsp;Jan 11 - Jan 18&nbsp;
-        <a href=""><i class="ti-arrow-circle-right"></i></a>
+        <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()"></i></a>
+        &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+        <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()"></i></a>
       </h4>
     </div>
   </div>
