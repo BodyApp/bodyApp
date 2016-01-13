@@ -187,17 +187,19 @@ exports.postBilling = function(req, res, next){
     if (err) return next(err);
     
     var cb = function(err) {
-      if (err) {
-        if(err.code && err.code == 'card_declined'){
-          console.log('Your card was declined. Please provide a valid card.');
-          // req.flash('errors', { msg: 'Your card was declined. Please provide a valid card.' });
-          // return res.redirect(req.redirect.failure);
+      if (err && err.statusCode) {
+        res.status(err.statusCode).send(err)
+        if(err.code){
+          console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + ' - Error: ' + err.code);
+        } else {
+          console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + '. Unknown error');
         }
-        console.log('An unexpected error occurred.');
-        // req.flash('errors', { msg: 'An unexpected error occurred.' });
-        // return res.redirect(req.redirect.failure);
+      } else if (err) {
+        res.status(400).send(err)
+        console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Unknown error');
+      } else {
+        console.log('Billing has been updated.');
       }
-      console.log('Billing has been updated.');
       // req.flash('success', { msg: 'Billing has been updated.' });
       // res.redirect(req.redirect.success);
     };

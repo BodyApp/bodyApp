@@ -185,7 +185,6 @@ angular.module('bodyAppApp')
                     image: '../../assets/images/body-app-logo-header.png',
                     locale: 'auto',
                     token: function(token, args) {
-                      console.log(args)
                         var modalInstance = openPaymentConfirmedModal()
                         $http.post('/api/users/charge', {
                           user: currentUser,
@@ -201,9 +200,10 @@ angular.module('bodyAppApp')
                             bookClass(slot)
                         })
                         .error(function(err) {
-                            console.log("Error posting to /user/charge: " + err)
-                            alert("We had trouble processing your payment.  Please try again in a few minutes or contact daniel@getbodyapp.com for assistance.")
+                            console.log(err)
                             modalInstance.close()
+                            if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+                            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
                         }.bind(this));
 
                       // Use the token to create the charge with a server-side script.
