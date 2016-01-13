@@ -55,9 +55,9 @@ angular.module('bodyAppApp')
       $scope.myClassRank = undefined;
       $scope.myCommunityRank = undefined;
       $scope.rankings = [];
-      loadResultsList(new Date(wod.dateTime))
+      if (wod) loadResultsList(new Date(wod.dateTime))
       $scope.wodToDisplay = wod
-      $scope.wodToDisplay.dateTime = new Date(wod.dateTime);
+      if (wod) $scope.wodToDisplay.dateTime = new Date(wod.dateTime);
       if(!$scope.$$phase) $scope.$apply();
     }
 
@@ -143,7 +143,7 @@ angular.module('bodyAppApp')
       var dayRef = weekOfRef.child(classDate.getDay())
 
       dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
-        if ($scope.wodToDisplay.scoreType.id === 1) { 
+        if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType.id === 1) { 
           var i = snapshot.numChildren()
           snapshot.forEach(function(childSnapshot) {
             var val = childSnapshot.val();
