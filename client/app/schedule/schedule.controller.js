@@ -31,7 +31,7 @@ angular.module('bodyAppApp')
           $scope.wod = snapshot.val()
         });
 
-        if (!currentUser.hasTakenTour) {
+        if (!currentUser.tourtipShown) {
           loadTour();
         }
 
@@ -423,7 +423,6 @@ angular.module('bodyAppApp')
 
         // load cookie, or start new tour
         // $scope.currentStep = ipCookie('dashboardTour') || 0;
-        $scope.currentStep = 0;
 
         $scope.checkIfSelectedRightClass = function() {
             $scope.currentStep = 0
@@ -440,6 +439,11 @@ angular.module('bodyAppApp')
 
         $scope.tourtipShown = function() {
           //Save tourtipshown to user model
+          User.tourtipShown({ id: currentUser._id }, {
+            date: new Date().getTime()
+          }, function(user) {
+            Auth.updateUser(user);
+          })
         }
 
         // // save cookie after each step

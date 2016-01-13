@@ -418,6 +418,21 @@ exports.addBookedClass = function(req, res, next) {
   });
 };
 
+exports.tourtipShown = function(req, res, next) {
+  var userId = req.user._id;
+  var dateShown = req.body.date;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      user.tourtipShown = dateShown;
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
 exports.saveClassTaught = function(req, res, next) {
   var classToAdd = req.body.classToAdd;
   var userToAddClassTo = req.body.userToAddClassTo

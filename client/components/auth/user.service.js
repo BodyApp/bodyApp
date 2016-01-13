@@ -24,6 +24,12 @@ angular.module('bodyAppApp')
           controller:'addBookedClass'
         }
       },
+      tourtipShown: {
+        method: 'PUT',
+        params: {
+          controller:'tourtipShown'
+        }
+      },
       addIntroClass: {
         method: 'PUT',
         params: {

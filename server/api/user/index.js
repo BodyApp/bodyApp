@@ -30,6 +30,8 @@ router.put('/:id/createTokBoxToken', auth.isAuthenticated(), controller.createTo
 router.put('/:id/addRating', auth.isAuthenticated(), controller.addRating);
 router.put('/:id/saveResult', auth.isAuthenticated(), controller.saveResult);
 
+router.put('/:id/tourtipShown', auth.isAuthenticated(), controller.tourtipShown);
+
 router.post('/charge',
 //   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
 //   // auth.isAuthenticated(),
