@@ -89,7 +89,7 @@ angular.module('bodyAppApp')
           for (var i = 0; i < data.length; i++) {
             $scope.instructors.push(data[i]);
           }
-          $scope.instructors.push(Auth.getCurrentUser());  
+          // $scope.instructors.push(Auth.getCurrentUser());  
           $scope.workoutToCreate.trainer = $scope.instructors[0];  
         }).catch(function(err) { console.log(err)})
 
@@ -207,7 +207,7 @@ angular.module('bodyAppApp')
                 classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer
               }).$promise.then(function(confirmation) {
                 console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
-                $location.path('/');
+                // $location.path('/');
                 console.log("new workout saved");
                 modalInstance.close();
               })

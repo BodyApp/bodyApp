@@ -159,7 +159,7 @@ angular.module('bodyAppApp')
 		})
 
 		$scope.openSongPermalink = function(currentSong) {
-			$window.open(currentSong.permalink_url);
+			$window.open(currentSong.permalink_url, '_blank');
 		}
 
 		$scope.setMusicVolume = function(musicVolume) {
