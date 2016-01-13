@@ -58,6 +58,8 @@ exports.setup = function (User, config) {
             user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
           }
 
+          user.level = 0;
+
           user.save(function(err) {
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  

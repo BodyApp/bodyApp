@@ -48,6 +48,14 @@ angular.module('bodyAppApp')
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
 
+		if (classToJoin.level = "Intro" && currentUser.role === "user") {
+			User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
+        Auth.updateUser(user);
+      }, function(err) {
+          console.log("Error setting intro class taken property: " + err)                  
+      }).$promise;
+		}
+
 		$scope.consumerList = [];
 		$scope.consumerObjects = {};
 		var maxCALLERS = 10;

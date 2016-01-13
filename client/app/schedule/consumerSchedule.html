@@ -143,7 +143,7 @@
       <h1 class="darkblue">BODY Class Schedule</h1>
     </div>
     <div class="col-sm-3">
-      <h4 class="week-selector darkblue bold">
+      <h4 class="week-selector darkblue bold" ng-show = "days">
         <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()"></i></a>
         &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
         <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()"></i></a>

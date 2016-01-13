@@ -36,6 +36,18 @@ angular.module('bodyAppApp')
           controller:'addIntroClass'
         }
       },
+      cancelIntroClass: {
+        method: 'PUT',
+        params: {
+          controller:'cancelIntroClass'
+        }
+      },
+      takeIntroClass: {
+        method: 'PUT',
+        params: {
+          controller:'takeIntroClass'
+        }
+      },
       saveClassTaught: {
         method: 'PUT',
         params: {
