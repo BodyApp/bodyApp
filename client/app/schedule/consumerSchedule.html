@@ -1,102 +1,138 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
-
+<tour step = "currentStep">
 <div class="container">
 <section class="white-section-half">
-  <div class="col-sm-6 sideDivider">
-    <h1 class="darkblue">Today's Workout</h1>
-    <h3 class="royalblue bold mb8">{{wod.title}}</h3>
-    <p>{{wod.description}}</p>
-    <ul class="dash-workoutModules">
-      <li>
-        <span>
-          <span class="gray bold" ng-if = "wod.workout.module1">I. {{wod.workout.module1.title}}</span>
-          <div ng-repeat = "bullet in wod.workout.module1.bullets">{{bullet}}</div>
-        </span>
-      </li>
-      <li>
-        <span>
-          <span class="gray bold" ng-if = "wod.workout.module2">II. {{wod.workout.module2.title}}</span>
-          <div ng-repeat = "bullet in wod.workout.module2.bullets">{{bullet}}</div>
-        </span>
-      </li>
-      <li>
-        <span>
-          <span class="gray bold" ng-if = "wod.workout.module3">III. {{wod.workout.module3.title}}</span>
-          <div ng-repeat = "bullet in wod.workout.module3.bullets">{{bullet}}</div>
-        </span>
-      </li>
-      <li>
-        <span>
-          <span class="gray bold" ng-if = "wod.workout.module4">IV. {{wod.workout.module4.title}}</span>
-          <div ng-repeat = "bullet in wod.workout.module4.bullets">{{bullet}}</div>
-        </span>
-      </li>
-    </ul>
-  </div>
+  
+  <span tourtip-step = "4"
+    tourtip="Click Results to see how you did during your workouts and your rank amongst the community and your classmates." 
+    tourtip-next-label="I'm ready to start using BODY!"
+    tourtip-placement="bottom"
+    tourtip-animation="false"
+    tourtip-offset-horizontal = "500"
+    tourtip-offset-vertical = "0">
+  </span>
+    <div class="col-sm-6 sideDivider">
+      <h1 class="darkblue">Today's Workout</h1>
+      <h3 class="royalblue bold mb8">{{wod.title}}</h3>
+      <p>{{wod.description}}</p>
+      <span tourtip-step = "1"
+        tourtip="Each day has a new workout that everyone on the platform will be taking. Get fired up!" 
+        tourtip-next-label="What is that reservation section?"
+        tourtip-placement="right"
+        tourtip-animation="false"
+        tourtip-offset-horizontal = "100"
+        tourtip-offset-vertical = "0">
+      </span>
+      <ul class="dash-workoutModules">
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module1">I. {{wod.workout.module1.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module1.bullets">{{bullet}}</div>
+          </span>
+        </li>
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module2">II. {{wod.workout.module2.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module2.bullets">{{bullet}}</div>
+          </span>
+        </li>
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module3">III. {{wod.workout.module3.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module3.bullets">{{bullet}}</div>
+          </span>
+        </li>
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module4">IV. {{wod.workout.module4.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module4.bullets">{{bullet}}</div>
+          </span>
+        </li>
+      </ul>
+    </div>
 
-  <div class="col-sm-6 top-scroll" style="padding-left: 30px;">
-    <h1 class="darkblue">Your Reservations</h1>
-    <!-- RESERVATIONS -->
-    <div class="reservation-listing">
-        <div class="date-col pb0">
-          <h5 class="darkblue bold">Date</h5>
+    <div class="col-sm-6 top-scroll" style="padding-left: 30px;">
+      
+      <h1 class="darkblue">Your Reservations</h1>
+      <span tourtip-step = "0"
+        tourtip="Thanks for signing up for BODY App! To prepare for your free intro class, be sure to have a computer, a workout mat, and enough space to fit your whole body in the video shot. That's it! No other equipment required." 
+        tourtip-next-label="Got it! What else should I know?"
+        tourtip-placement="center"
+        tourtip-animation="true"
+        on-show="tourtipShown()"
+        tourtip-offset-horizontal = "0"
+        tourtip-offset-vertical = "0">
+      </span>
+      <span tourtip-step = "2"
+        tourtip="Whenever you sign up for a class, it will show up in this reservation section. Here, you can join or cancel a class." 
+        tourtip-next-label="How do I schedule classes?"
+        tourtip-placement="left"
+        tourtip-animation="false"
+        tourtip-offset-horizontal = "0"
+        tourtip-offset-vertical = "0">
+      </span>
+      <!-- RESERVATIONS -->
+      <div class="reservation-listing">
+          <div class="date-col pb0">
+            <h5 class="darkblue bold">Date</h5>
+          </div>
+          <div class="class-col pb0">
+            <h5 class="darkblue bold">Class</h5>
+          </div>
+          <div class="instr-col pb0">
+            <h5 class="darkblue bold">Instructor</h5>
+          </div>
+          <div class="action-col pb0">
+            <h5 class="darkblue bold">Action</h5>
+          </div>
+          <hr>
+      </div>       
+      <div ng-repeat="day in days">
+        <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
+          <div class="date-col mb8">
+            <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+          </div>
+          <div class="class-col mb8">
+            <span>{{slot.level}}</span>
+          </div>
+          <div class="instr-col mb8">
+            <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+          </div>
+          <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+            <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+          </div>
+          <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+            <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+          </div>        
         </div>
-        <div class="class-col pb0">
-          <h5 class="darkblue bold">Class</h5>
-        </div>
-        <div class="instr-col pb0">
-          <h5 class="darkblue bold">Instructor</h5>
-        </div>
-        <div class="action-col pb0">
-          <h5 class="darkblue bold">Action</h5>
-        </div>
-        <hr>
-    </div>       
-    <div ng-repeat="day in days">
-      <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
-        <div class="date-col mb8">
-          <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
-        </div>
-        <div class="class-col mb8">
-          <span>{{slot.level}}</span>
-        </div>
-        <div class="instr-col mb8">
-          <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
-        </div>
-        <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-          <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
-        </div>
-        <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-          <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
-        </div>        
-      </div>
 
-      <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
-        <div class="date-col mb8">
-          <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+        <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+          <div class="date-col mb8">
+            <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+          </div>
+          <div class="class-col mb8">
+            <span>{{slot.level}}</span>
+          </div>
+          <div class="instr-col mb8">
+            <span>You</span>
+          </div>
+          <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+            <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+          </div>
+          <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+            <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+          </div>        
         </div>
-        <div class="class-col mb8">
-          <span>{{slot.level}}</span>
-        </div>
-        <div class="instr-col mb8">
-          <span>You</span>
-        </div>
-        <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-          <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
-        </div>
-        <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-          <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-          <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
-        </div>        
-      </div>
-    </div>  
-    
-    <div class="mt24 text-center"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
+      </div>  
+      
+      <div class="mt24 text-center"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
 
-  </div>
+    </div>
+
   <!-- END RESERVATION SECTION -->
 </section>
 </div>
@@ -115,6 +151,14 @@
     </div>
   </div>
 
+    <span tourtip-step = "3"
+      tourtip="You'll see BODY's full schedule of classes here. You can even see which classes your friends have booked!" 
+      tourtip-next-label="Are there any results from my workouts?"
+      tourtip-placement="top"
+      tourtip-animation="false"
+      tourtip-offset-horizontal = "300"
+      tourtip-offset-vertical = "0">
+    </span>
   <div class="col-day" ng-repeat="day in days">
     <div class="day-and-date text-center">
       <span class="day bold">{{ day.name }}</span>
@@ -147,5 +191,6 @@
   </div>
   
 </section>
+</tour>
 
 <div ng-include="'components/footer/footer.html'"></div>

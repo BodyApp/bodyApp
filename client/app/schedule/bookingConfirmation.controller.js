@@ -20,7 +20,6 @@ angular.module('bodyAppApp')
         $scope.scheduledClass = slot
 
         console.log($scope.calendarDateSetter)
-        console.log($scope.calendarDateSetterEnd)
 
         // var time = jstz().determine();
         $scope.timeZone = jstz().timezone_name;  

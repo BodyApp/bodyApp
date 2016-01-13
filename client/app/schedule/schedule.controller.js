@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig) {
         var currentUser = Auth.getCurrentUser();
-        console.log(currentUser)
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
         var loggedIn = false
@@ -31,6 +30,10 @@ angular.module('bodyAppApp')
         var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
           $scope.wod = snapshot.val()
         });
+
+        if (!currentUser.hasTakenTour) {
+          loadTour();
+        }
 
         $scope.checkIfFriends = function(slot) {
           var friendList = [];
@@ -428,6 +431,15 @@ angular.module('bodyAppApp')
 
         $scope.getNumberOfBookedUsers = function(slot) {
             return slot.bookedUsers ? Object.keys(slot.bookedUsers).length : 0
+        }
+
+        function loadTour() {
+          $scope.currentStep = 0;
+          tourConfig.backDrop = true;
+        }
+
+        $scope.tourtipShown = function() {
+          //Save tourtipshown to user model
         }
 
         // // save cookie after each step

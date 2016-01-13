@@ -169,11 +169,11 @@ angular.module('bodyAppApp')
 		}
 
 		function setMusicVolume(musicVolume) {
-			// if (userIsInstructor) {
-				audioPlayer.setVolume(musicVolume / 100);
-			// } else {
-			// 	audioPlayer.setVolume(musicVolume / 500);
-			// }
+			if (userIsInstructor) {
+				audioPlayer.setVolume(0);
+			} else {
+				audioPlayer.setVolume(musicVolume / 250);
+			}
 		}
 
 		// function loginSuccess() {

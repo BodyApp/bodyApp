@@ -12,7 +12,8 @@ angular.module('bodyAppApp', [
   'SoundCloud',
   'timer',
   "checklist-model",
-  "angularScreenfull"
+  "angularScreenfull",
+  'angular-tour'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
