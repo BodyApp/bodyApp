@@ -37,7 +37,6 @@ angular.module('bodyAppApp')
           for (var user in slot.bookedFbUserIds) {
             if (currentUser.friendListObject[user]) {
               friendList.push(user);
-              console.log(friendList)
               if (!$scope.pictureData[user]) {
                 var userRef = ref.child("fbUsers").child(user)
                 userRef.once('value', function(snapshot) {
@@ -46,10 +45,8 @@ angular.module('bodyAppApp')
                   if(!$scope.$$phase) $scope.$apply();
                 })
               }
-              console.log(friendList[0]) 
             }
           }
-
           return friendList;
         }
 
@@ -343,9 +340,11 @@ angular.module('bodyAppApp')
         // }
 
         $scope.cancelClass = function(slot) {
-          console.log("here")
+          console.log(slot)
           slot.bookedUsers = slot.bookedUsers || {};
+          slot.bookedFbUserIds = slot.bookedFbUserIds || {};
           slot.bookedUsers[currentUser._id] = false
+          delete slot.bookedFbUserIds[currentUser.facebook.id]
         }
 
         $scope.openBookingConfirmation = function (slot) {
@@ -386,13 +385,13 @@ angular.module('bodyAppApp')
                 }, function(err) {
                     console.log("Error adding class: " + err)
                     slot.bookedUsers[currentUser._id] = false
-                    slot.bookedFbUsers[currentUser.facebook.id].delete()
+                    delete slot.bookedFbUserIds[currentUser.facebook.id]
                     alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
                 }).$promise;
 
             } else {
                 slot.bookedUsers[currentUser._id] = false
-                slot.bookedFbUsers[currentUser.facebook.id].delete()
+                delete slot.bookedFbUserIds[currentUser.facebook.id]
             }
         };
 
