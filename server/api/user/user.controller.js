@@ -175,6 +175,7 @@ exports.authCallback = function(req, res, next) {
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;
+  console.log(req.body)
 
   if(!stripeToken){
     return console.log("error retrieving stripe token.")
@@ -209,6 +210,8 @@ exports.postBilling = function(req, res, next){
         //   console.log("stripe object created on user")
         //   user.stripe = {};
         // }
+
+        if (req.body.shippingAddress) user.shippingAddress = req.body.shippingAddress;
 
         if(!user.stripe.customer.customerId){
         //   // user.stripe.customer = {};
@@ -284,7 +287,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "basicSubscription"
+              plan: "pilotSubscription"
             }, cardHandler
           );
         } else {
@@ -292,9 +295,9 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "basicSubscription",
-            coupon: "BODY4AMONTH",
-            description: "Created subscription during inital private beta"
+            plan: "pilotSubscription",
+            // coupon: "BODY4AMONTH",
+            description: "Created subscription during pilot"
           }, cardHandler);
         }
       }

@@ -156,7 +156,7 @@ angular.module('bodyAppApp')
             return formatted;
         }
 
-        function checkWhetherUserIsSubscribed() {
+        function checkWhetherUserIsSubscribed(slot) {
             // currentUser = Auth.getUpdatedUser();
             // $scope.currentUser = currentUser;
             // console.log(currentUser)
@@ -184,11 +184,13 @@ angular.module('bodyAppApp')
                     key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
                     image: '../../assets/images/body-app-logo-header.png',
                     locale: 'auto',
-                    token: function(token) {
+                    token: function(token, args) {
+                      console.log(args)
                         var modalInstance = openPaymentConfirmedModal()
                         $http.post('/api/users/charge', {
                           user: currentUser,
-                          stripeToken: token
+                          stripeToken: token,
+                          shippingAddress: args,
                         })
                         .success(function(data) {
                             console.log("Successfully posted to /user/charge");
@@ -196,6 +198,7 @@ angular.module('bodyAppApp')
                             currentUser = data
                             $scope.currentUser = currentUser
                             modalInstance.close()
+                            bookClass(slot)
                         })
                         .error(function(err) {
                             console.log("Error posting to /user/charge: " + err)
@@ -208,37 +211,44 @@ angular.module('bodyAppApp')
                     }
                 });
                 if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
+                  //If user has already signed up previously
                     if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
                         handler.open({
                           name: 'BODY SUBSCRIPTION',
-                          description: '$40/mo Subscription',
+                          description: '$10/mo Pilot Price!',
+                          panelLabel: "Pay {{amount}} / Month",
                           zipCode: true,
-                          amount: 4000
+                          amount: 1000
                         });    
                     } else {
                         handler.open({
                           name: 'BODY SUBSCRIPTION',
                           email: currentUser.email,
-                          description: '$40/mo Subscription',
+                          description: '$10/mo Pilot Price!',
+                          panelLabel: "Pay {{amount}} / Month",
                           zipCode: true,
-                          amount: 4000
+                          amount: 1000
                         });
                     }
                 } else {
                     if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
                         handler.open({
                           name: 'BODY SUBSCRIPTION',
-                          description: 'First Month free! $40/mo after that',
+                          description: '$10/mo Pilot Price!',
+                          panelLabel: "Pay {{amount}} / Month",
                           zipCode: true,
-                          amount: 4000
+                          shippingAddress: true,
+                          amount: 1000
                         });    
                     } else {
                         handler.open({
                           name: 'BODY SUBSCRIPTION',
                           email: currentUser.email,
-                          description: 'First Month free! $40/mo after that',
+                          description: '$10/mo Pilot Price!',
+                          panelLabel: "Pay {{amount}} / Month",
                           zipCode: true,
-                          amount: 4000
+                          shippingAddress: true,
+                          amount: 1000
                         });
                     }
                 }
@@ -345,7 +355,7 @@ angular.module('bodyAppApp')
 
         $scope.cancelClass = function(slot) {
           console.log(slot)
-          if (slot.level = "Intro") {
+          if (slot.level === "Intro") {
             User.cancelIntroClass({ id: currentUser._id }, {}, function(user) {
                   slot.bookedUsers = slot.bookedUsers || {};
                   slot.bookedFbUserIds = slot.bookedFbUserIds || {};
@@ -361,8 +371,8 @@ angular.module('bodyAppApp')
           } else {
             slot.bookedUsers = slot.bookedUsers || {};
             slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-            slot.bookedUsers[currentUser._id] = false
-            delete slot.bookedFbUserIds[currentUser.facebook.id]
+            slot.bookedUsers[currentUser._id] = false;
+            delete slot.bookedFbUserIds[currentUser.facebook.id];
           }
         }
 
@@ -393,47 +403,52 @@ angular.module('bodyAppApp')
             //     slot.bookedUsers[currentUser._id] = false
             //     return openLoginModal()
             // } else 
-            if (checkWhetherUserIsSubscribed() === true) {
-                var modalInstance = $modal.open({
-                  animation: true,
-                  templateUrl: 'app/schedule/bookingConfirmation.html',
-                  controller: 'BookingConfirmationCtrl',
-                  // size: size,
-                  resolve: {
-                    slot: function () {
-                      return slot;
-                    }
-                  }
-                });
-
-                modalInstance.result.then(function (selectedItem) {
-                  $scope.selected = selectedItem;
-                }, function () {
-                  $log.info('Modal dismissed at: ' + new Date());
-                });
-
-                User.addBookedClass({ id: currentUser._id }, {
-                  classToAdd: slot.date
-                }, function(user) {
-                  slot.bookedUsers = slot.bookedUsers || {};
-                  slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                  slot.bookedUsers[currentUser._id] = true
-                  slot.bookedFbUserIds[currentUser.facebook.id] = true
-                  // slot.$save();
-                  currentUser = user;
-                  $scope.currentUser = currentUser;
-                }, function(err) {
-                    console.log("Error adding class: " + err)
-                    slot.bookedUsers[currentUser._id] = false
-                    delete slot.bookedFbUserIds[currentUser.facebook.id]
-                    alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
-                }).$promise;
-
-            } else {
-                slot.bookedUsers[currentUser._id] = false
-                delete slot.bookedFbUserIds[currentUser.facebook.id]
-            }
+            if (checkWhetherUserIsSubscribed(slot) === true) bookClass(slot)
+                
+            // } else {
+                // slot.bookedUsers = slot.bookedUsers || {};
+                // slot.bookedUsers[currentUser._id] = false
+                // delete slot.bookedFbUserIds[currentUser.facebook.id]
+            // }
         };
+
+        function bookClass(slot) {
+          var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'app/schedule/bookingConfirmation.html',
+            controller: 'BookingConfirmationCtrl',
+            // size: size,
+            resolve: {
+              slot: function () {
+                return slot;
+              }
+            }
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+          }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+          });
+
+          User.addBookedClass({ id: currentUser._id }, {
+            classToAdd: slot.date
+          }, function(user) {
+            slot.bookedUsers = slot.bookedUsers || {};
+            slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+            slot.bookedUsers[currentUser._id] = true
+            slot.bookedFbUserIds[currentUser.facebook.id] = true
+            // slot.$save();
+            currentUser = user;
+            $scope.currentUser = currentUser;
+          }, function(err) {
+              console.log("Error adding class: " + err)
+              slot.bookedUsers = slot.bookedUsers || {};
+              slot.bookedUsers[currentUser._id] = false
+              delete slot.bookedFbUserIds[currentUser.facebook.id]
+              alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+          }).$promise;
+        }
 
         //This was relevant when we had multiple tabs - one for each level
         // $scope.firstActive;

@@ -37,6 +37,7 @@ var UserSchema = new Schema({
   bookedIntroClass: Boolean,
   introClassTaken: Boolean,
   tourtipShown: String,
+  shippingAddress: Object,
   level: Number,
   results: Schema.Types.Mixed,
   facebook: {},
