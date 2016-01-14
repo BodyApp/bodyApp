@@ -67,8 +67,11 @@ exports.setup = function (User, config) {
             done(err, user);
           });
         } else {
-          user.facebook = profile._json;
-          user.friendListObject = {}
+          if (profile._json) {
+            user.facebook = profile._json;
+            if (profile._json.friends) user.friendList = profile._json.friends.data;
+          }
+          user.friendListObject = {};
           for (var i = 0; i < user.friendList.length; i++) {
             user.friendListObject[user.friendList[i].id] = {}
             user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
