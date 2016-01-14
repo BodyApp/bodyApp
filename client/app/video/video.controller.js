@@ -15,6 +15,7 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.classTime = classToJoin.date;
+		$scope.trainer = classToJoin.trainer;
 
 		var classClosesTime = (classToJoin.date + 1000*60*90)
 		var endClassCheckInterval = $interval(function() {
