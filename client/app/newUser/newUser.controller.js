@@ -38,10 +38,16 @@ angular.module('bodyAppApp')
 
     	console.log(classToBook)
 
+        var date = new Date(classBooked.$id*1)
+        $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        $scope.timeZone = jstz().timezone_name;
+
     	classToBook.$loaded(function() {
     		classToBook.bookedUsers = classToBook.bookedUsers || {};
 			classToBook.bookedUsers[$scope.currentUser._id] = true;
-			classToBook.$save()	
+			classToBook.$save()
+            $scope.classDetails = classToBook;
     	})
 		
 		User.addIntroClass({ id: $scope.currentUser._id }, {

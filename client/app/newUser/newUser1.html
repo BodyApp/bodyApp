@@ -126,7 +126,16 @@
         <h1 class="darkblue mb8">Your Intro class has been reserved!</h1>
         <h4 class="gray mb0">{{getDate(bookedIntroClass)}}</h4>
         <h4 class="gray mb32">{{getTime(bookedIntroClass)}} EST</h4>
-        <!-- <a href="">Add to calendar</a> -->
+        <addtocalendar
+          start-date= "{{calendarDateSetter}}"
+          end-date="{{calendarDateSetterEnd}}"
+          title="Intro BODY Class with {{classDetails.trainer.firstName}} {{classDetails.trainer.lastName}}"
+          location="https://getbodyapp.com/"
+          timezone="{{timeZone}}"
+          class-name="btn btn-sm btn-default dropdown-toggle"
+          description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{classDetails.trainer.firstName}} is excited to workout with you!"
+          btn-text="Add to calendar"           
+        ></addtocalendar>
       </div>
       <div class="col-sm-6">
         <h3 class="royalblue mb16">A few tips before your first class</h3>
