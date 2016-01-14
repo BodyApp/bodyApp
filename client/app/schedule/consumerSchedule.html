@@ -100,11 +100,13 @@
           </div>
           <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
             <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
           </div>
           <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
             <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
           </div>        
         </div>
 
@@ -120,11 +122,13 @@
           </div>
           <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
             <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
           </div>
           <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
             <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-            <a class="cancel-btn" href="#" ng-click = "cancelClass(slot)">x</a>
+            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
           </div>        
         </div>
       </div>  
