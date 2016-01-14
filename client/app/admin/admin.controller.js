@@ -39,7 +39,7 @@ angular.module('bodyAppApp')
       wodRef.child(classKey).once('value', function(snapshot) {
         var val = snapshot.val();
         $scope.wod = val;
-        $scope.$apply()
+        if(!$scope.$$phase) $scope.$apply();
         if (!$scope.wod) {
           $scope.wod = {};
           $scope.wod.date = classKey;

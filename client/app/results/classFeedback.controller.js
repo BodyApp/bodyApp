@@ -26,7 +26,7 @@ angular.module('bodyAppApp')
     $scope.classWod;
     wodRef.once('value', function(snapshot) {
     	$scope.classWod = snapshot.val();
-    	$scope.$apply()
+    	if(!$scope.$$phase) $scope.$apply();
     })
 
   	$scope.submitRatingAndResults = function(rating, score, comment, postToPublic, minutes, seconds) {
@@ -58,6 +58,7 @@ angular.module('bodyAppApp')
       }, function(data) {
         console.log(data.user);
         Auth.updateUser(data.user);
+        Auth.
       }, function(err) {
           console.log(err)
       }).$promise.then(function() {
