@@ -201,8 +201,11 @@ a.full.btn {
   opacity: 0.1;
 }
 
-
-
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+}
 
 
 
