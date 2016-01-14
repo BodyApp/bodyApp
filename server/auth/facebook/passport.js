@@ -52,7 +52,6 @@ exports.setup = function (User, config) {
           });
           user.friendListObject = {}
           for (var i = 0; i < user.friendList.length; i++) {
-            console.log(user.friendList[i])
             user.friendListObject[user.friendList[i].id] = {}
             user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
             user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
@@ -64,7 +63,6 @@ exports.setup = function (User, config) {
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
             var userId = user._id.toString()
-            console.log(userId)
             usersRef.child(profile.id).set({mongoId: userId, picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName})
             done(err, user);
           });
@@ -79,7 +77,6 @@ exports.setup = function (User, config) {
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
             var userId = user._id.toString()
-            console.log(userId)
             usersRef.child(profile.id).set({mongoId: userId, picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName})
             return done(err, user);
           })

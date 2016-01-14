@@ -11,24 +11,22 @@ angular.module('bodyAppApp')
     var ref = new Firebase("https://bodyapp.firebaseio.com")
     $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
 
-	var todayDate = new Date();        
-    var sunDate = new Date();
-    sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-    var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
-
 	$scope.bookIntroClass = function(classBooked) {
 		$scope.newUserStep++;
 		$scope.bookedIntroClass = classBooked
 
-		console.log(classBooked);
+        var classDate = new Date(classBooked.$id*1)
+        console.log(classDate.getDay())
+        console.log(classDate.getTime())
 
-		var classDate = new Date(classBooked.$id*1)
-		console.log(classDate.getDay())
-		console.log(classDate.getTime())
+        var todayDate = new Date(classDate);        
+        var sunDate = new Date();
+        sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+        var sunGetDate = sunDate.getDate();
+        var sunGetMonth = sunDate.getMonth()+1;
+        var sunGetYear = sunDate.getFullYear();
+        var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
+        var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
 
 		var classToBook = $firebaseObject(
 	      weekOfRef.child(classDate.getDay())

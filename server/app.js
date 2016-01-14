@@ -73,10 +73,13 @@ new CronJob('29 * * * * *', function() {
 		currentWeek = currentWeek.val()
 	  for (var day in currentWeek) {
     	for (var slot in currentWeek[day].slots) {
-        if (slot <= (todayDate.getTime() - 45*60*1000) && !currentWeek[day].slots[slot].past) { //Can book (and join) a class up to 45 minutes into class starting
+        if (!currentWeek[day].slots[slot].past && slot <= (todayDate.getTime() - 45*60*1000)) { //Can book (and join) a class up to 45 minutes into class starting
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({past: true})
           console.log("class " + slot + " is now in the past")
-          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){if (!error)console.log(slot + " removed from intro classes because in past")})
+          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){
+            if (!error) return console.log(slot + " removed from intro classes because in past");
+            if (error) return console.log(error);
+          })
 	      } else if (!currentWeek[day].slots[slot].past && currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= slot.spots) { //Prevents more than 15 people from joining
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({classFull: true})
           console.log("class " + slot + " is now full")
