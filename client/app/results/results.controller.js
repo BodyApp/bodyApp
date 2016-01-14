@@ -179,7 +179,7 @@ angular.module('bodyAppApp')
         if ($scope.userResultsToday && $scope.userResultsToday.classDateTime) {
           console.log($scope.userResultsToday)
           dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
-            if ($scope.wodToDisplay.scoreType.id === 1) { 
+            if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType && $scope.wodToDisplay.scoreType.id === 1) { 
               var i = snapshot.numChildren()
               snapshot.forEach(function(childSnapshot) {
                 var val = childSnapshot.val();

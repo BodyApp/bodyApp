@@ -48,7 +48,7 @@ angular.module('bodyAppApp')
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
 
-		if (classToJoin.level = "Intro" && currentUser.role === "user") {
+		if (classToJoin.level === "Intro" && currentUser.role === "user") {
 			User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
         Auth.updateUser(user);
       }, function(err) {
@@ -114,7 +114,7 @@ angular.module('bodyAppApp')
 			setMusicVolume($scope.musicVolume);
 	  });
 
-		if (typeof SC !== 'undefined') {
+		if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
 			var element = document.getElementById('audioPlayer')
 			audioPlayer = SC.Widget(element);
 			audioPlayer.load(classToJoin.playlist.soundcloudUrl);
@@ -145,7 +145,7 @@ angular.module('bodyAppApp')
 				if (!firstTimePlayingSong && songArray.length > 0) {
 					currentSongIndex++
 					$scope.currentSong = songArray[currentSongIndex];
-					$scope.$apply()
+					if(!$scope.$$phase) $scope.$apply();
 				}
 				if (firstTimePlayingSong) {
 					elapsedTime = new Date().getTime() - classToJoin.date
@@ -153,7 +153,7 @@ angular.module('bodyAppApp')
 					audioPlayer.seekTo(seekingTo);
 					console.log("seeking to position " + seekingTo);
 					$scope.currentSong = songArray[currentSongIndex];
-					$scope.$apply()
+					if(!$scope.$$phase) $scope.$apply();
 					firstTimePlayingSong = false;
 				} 
 			});
@@ -195,7 +195,7 @@ angular.module('bodyAppApp')
 			// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 			var apiKey = 45425152;
 			var sessionId = classToJoin.sessionId;
-			var session;
+			
 			
 			// setStreamAcceptor();
 
@@ -560,6 +560,8 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.exitClass = function() {
+			publisher.destroy();
+      session.destroy();
 			$state.go('classfeedback');
 		}
 
