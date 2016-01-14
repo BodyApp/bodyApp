@@ -117,6 +117,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.createWorkout = function(workoutToCreate) {
+      var modalInstance = openCreatingModal();
       var date = workoutToCreate.date;
       var workoutDate = new Date(date);
       // $scope.workoutDate = workoutDate
@@ -185,8 +186,6 @@ angular.module('bodyAppApp')
           spots: 12,
           spotsTaken: 0
         }
-
-        var modalInstance = openCreatingModal();
 
         syncObject.$save().then(function() {
           console.log("New workout saved prior to creating tokbox session")

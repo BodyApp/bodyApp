@@ -201,7 +201,7 @@ angular.module('bodyAppApp')
                         })
                         .error(function(err) {
                             console.log(err)
-                            modalInstance.close()
+                            modalInstance.close();
                             if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
                             return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
                         }.bind(this));
@@ -217,6 +217,7 @@ angular.module('bodyAppApp')
                           name: 'BODY SUBSCRIPTION',
                           description: '$10/mo Pilot Price!',
                           panelLabel: "Pay {{amount}} / Month",
+                          shippingAddress: true,
                           zipCode: true,
                           amount: 1000
                         });    
@@ -226,6 +227,7 @@ angular.module('bodyAppApp')
                           email: currentUser.email,
                           description: '$10/mo Pilot Price!',
                           panelLabel: "Pay {{amount}} / Month",
+                          shippingAddress: true,
                           zipCode: true,
                           amount: 1000
                         });

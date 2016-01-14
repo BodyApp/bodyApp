@@ -1,9 +1,30 @@
-<div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
+<div ng-include="'components/navbar/navbar.html'" class = "mb80"></div>
 
-<div class="container dashboard-list-view">
-  <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">
-    Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}
-  </button>
+<div class="container">
+  
+  <div class="col-sm-6 text-center mb72">
+  	  <div id="user-social-setup" class="col-sm-12 text-center">
+  	<img class="user-social-image mb16" src="{{currentUser.picture}}">
+  	<img class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
+  	<h1>{{currentUser.firstName}} {{currentUser.lastName}}</h1>
+  	<h2>{{currentUser.email}}</h2>
+  </div>
+	  <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">
+	    Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}
+	  </button>
+
+	  <button ng-if = "currentUser.stripe.subscription.status != 'active'" ng-click = "addSubscription()" class="btn btn-lg btn-primary">
+	    Add Subscription
+	  </button>
+	</div>
+
+	<div class="col-sm-6 text-center mb72">
+	  <div>
+	  	<h4> Your Friends Currently Using BODY</h4>
+	  	<div ng-repeat = "friend in currentUser.friendList" class = "mb8">{{friend.name}}</div>
+	  </div>
+	</div>
+
 </div>
 
-<div class = "mt64" ng-include="'components/footer/footer.html'"></div>
+<div ng-include="'components/footer/footer.html'"></div>

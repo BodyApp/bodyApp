@@ -5,6 +5,7 @@ angular.module('bodyAppApp')
     $scope.errors = {};
     $scope.editingCreditCardInfo = false;
     $scope.currentUser = Auth.getCurrentUser();
+    var currentUser = $scope.currentUser;
     console.log($scope.currentUser)
     $scope.subEndDate;
     if ($scope.currentUser.stripe && $scope.currentUser.stripe.subscription) {
@@ -19,16 +20,106 @@ angular.module('bodyAppApp')
         })
         .success(function(data) {
             console.log("Successfully posted to /user/cancelsub");
-            console.log(data)
             $scope.currentUser = data
             Auth.updateUser(data)
             modalInstance.close()
-            $state.go('schedule');
         })
         .error(function(err) {
             console.log("Error posting to /user/cancelsub: " + err)
         }.bind(this));
       }
+    }
+
+    $scope.addSubscription = function() {
+      var handler = StripeCheckout.configure({
+          key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+          image: '../../assets/images/body-app-logo-header.png',
+          locale: 'auto',
+          token: function(token, args) {
+            var modalInstance = openPaymentConfirmedModal()
+            $http.post('/api/users/charge', {
+              user: currentUser,
+              stripeToken: token,
+              shippingAddress: args,
+            })
+            .success(function(data) {
+                console.log("Successfully posted to /user/charge");
+                Auth.updateUser(data)
+                currentUser = data
+                $scope.currentUser = currentUser
+                modalInstance.close()
+            })
+            .error(function(err) {
+                console.log(err)
+                modalInstance.close();
+                if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+                return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+            }.bind(this));
+          }
+      });
+
+      if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
+        //If user has already signed up previously
+          if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+              handler.open({
+                name: 'BODY SUBSCRIPTION',
+                description: '$10/mo Pilot Price!',
+                panelLabel: "Pay {{amount}} / Month",
+                zipCode: true,
+                shippingAddress: true,
+                amount: 1000
+              });    
+          } else {
+              handler.open({
+                name: 'BODY SUBSCRIPTION',
+                email: currentUser.email,
+                description: '$10/mo Pilot Price!',
+                panelLabel: "Pay {{amount}} / Month",
+                zipCode: true,
+                shippingAddress: true,
+                amount: 1000
+              });
+          }
+      } else {
+          if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+              handler.open({
+                name: 'BODY SUBSCRIPTION',
+                description: '$10/mo Pilot Price!',
+                panelLabel: "Pay {{amount}} / Month",
+                zipCode: true,
+                shippingAddress: true,
+                amount: 1000
+              });    
+          } else {
+              handler.open({
+                name: 'BODY SUBSCRIPTION',
+                email: currentUser.email,
+                description: '$10/mo Pilot Price!',
+                panelLabel: "Pay {{amount}} / Month",
+                zipCode: true,
+                shippingAddress: true,
+                amount: 1000
+              });
+          }
+      }
+    }
+
+    function openPaymentConfirmedModal() {
+      var modalInstance = $modal.open({
+        animation: true,
+        templateUrl: 'app/account/payment/paymentThanks.html',
+        controller: 'PaymentCtrl',
+        backdrop: "static",
+        keyboard: false
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+
+      return modalInstance;
     }
 
     $scope.changeCard = function() {
