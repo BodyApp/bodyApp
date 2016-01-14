@@ -1,8 +1,15 @@
 .comments {
-	height: 200px !important;
-	padding-bottom: 150px;
+	height: 150px !important;
+	padding-bottom: 100px;
 	margin-bottom: 8px !important;
 }
+
+.feedback {
+  height: 100px !important;
+  padding-bottom: 50px;
+  margin-bottom: 8px !important;
+}
+
 .score {
 	height: 35px !important;
 	margin-bottom: 8px !important;	

@@ -563,7 +563,7 @@ angular.module('bodyAppApp')
 		$scope.exitClass = function() {
 			publisher.destroy();
       session.destroy();
-			$state.go('classfeedback');
+			$location.path('/classfeedback');
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.

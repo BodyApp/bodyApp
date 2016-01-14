@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassFeedbackCtrl', function ($scope, $location, Schedule, Auth, User) {
+  .controller('ClassFeedbackCtrl', function ($scope, $state, $location, Schedule, Auth, User) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
   	console.log($scope.classCompleted)
 
   	if (!$scope.classCompleted) {
-  		$location.path('/')
+  		$state.go('schedule')
+  		// $location.path('/')
   	}
 
   	var classDate = new Date($scope.classCompleted.date);        
@@ -17,7 +18,8 @@ angular.module('bodyAppApp')
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-    var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var weekOfRef = ref.child(weekOf)
     var dayRef = weekOfRef.child(classDate.getDay())
 
     var currentUser = Auth.getCurrentUser()
@@ -29,12 +31,13 @@ angular.module('bodyAppApp')
     	if(!$scope.$$phase) $scope.$apply();
     })
 
-  	$scope.submitRatingAndResults = function(rating, score, comment, postToPublic, minutes, seconds) {
+  	$scope.submitRatingAndResults = function(rating, score, comment, feedback, postToPublic, minutes, seconds) {
   		console.log(score);
   		console.log(minutes);
 	  	if (!rating) rating = 5.0
   		if (!score) score = ""
   		if (!comment) comment = ""
+  		if (!feedback) feedback = ""
 
   		var priority;
   		if ($scope.classWod.scoreType.id === 0) {
@@ -51,6 +54,7 @@ angular.module('bodyAppApp')
         score: score,
         typeOfScore: $scope.classWod.classType, 
         comment: comment,
+        feedback: feedback,
         wod: "WodData", //This needs to be changed once the day's wod data has been implemented
         dateTime: classDate.getTime(),
         weekOf: weekOf,
@@ -58,7 +62,6 @@ angular.module('bodyAppApp')
       }, function(data) {
         console.log(data.user);
         Auth.updateUser(data.user);
-        Auth.
       }, function(err) {
           console.log(err)
       }).$promise.then(function() {
@@ -107,6 +110,17 @@ angular.module('bodyAppApp')
 	  				timePosted: (new Date()).getTime()				
 	  			}, function(error) {
 	  				if (error) return console.log(error);
+	  				if (feedback.length > 2) {
+	  					ref.child('feedback').push({
+	  						userId: currentUser._id,
+	  						userFirstName: currentUser.firstName,
+	  						timePosted: (new Date()).getTime(),
+	  						classTaken: classDate.getTime(),
+	  						instructor: $scope.classCompleted.trainer._id,
+	  						rating: rating,
+	  						feedback: feedback
+	  					})
+	  				}
 	  				console.log("Result successfully published to class list.")
 	   			// 	if ($scope.classWod.scoreType.id === 0) {
 	  				// 	classList.setPriority(score);
