@@ -5,6 +5,8 @@ angular.module('bodyAppApp')
     var currentUser = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
+      console.log("Current user from Auth:")
+      console.log(currentUser)
     }
 
     return {

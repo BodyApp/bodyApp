@@ -2,23 +2,19 @@
 
 angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig) {
-        var currentUser = Auth.getCurrentUser();
-        console.log(currentUser)
-        $scope.currentUser = currentUser;
-        Schedule.setCurrentUser(currentUser);
-        var loggedIn = false
-        $scope.pictureData = {};
+        var currentUser;
+        Auth.getCurrentUser().$promise.then(function(user) {
+          currentUser = user
 
-        // Auth.isLoggedInAsync(function(boolAnswer) {
-        //     loggedIn = boolAnswer;
-        //     if (!loggedIn) {
-        //       // event.preventDefault();
-        //       $state.go('main')
-        //         // var loginModal = openLoginModal()
-        //     } else {
-        //         User.getSubscription({ id: currentUser._id }) //This is happening too frequently
-        //     }
-        // });
+          $scope.currentUser = currentUser;
+          Schedule.setCurrentUser(currentUser);
+          $scope.pictureData = {};
+
+          if (currentUser && !currentUser.tourtipShown) {
+            console.log(currentUser)
+            loadTour();
+          }
+        })
 
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
@@ -30,10 +26,6 @@ angular.module('bodyAppApp')
         var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
           $scope.wod = snapshot.val()
         });
-
-        if (!currentUser.tourtipShown) {
-          loadTour();
-        }
 
         $scope.checkIfFriends = function(slot) {
           var friendList = [];
@@ -174,7 +166,7 @@ angular.module('bodyAppApp')
 
             function openStripePayment() {
               var handler = StripeCheckout.configure({
-                key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+                key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
                 image: '../../assets/images/body-app-logo-header.png',
                 locale: 'auto',
                 token: function(token, args) {
@@ -491,6 +483,7 @@ angular.module('bodyAppApp')
           User.tourtipShown({ id: currentUser._id }, {
             date: new Date().getTime()
           }, function(user) {
+            console.log("tour tip shown")
             Auth.updateUser(user);
           })
         }

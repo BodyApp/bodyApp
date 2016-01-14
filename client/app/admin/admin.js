@@ -6,14 +6,12 @@ angular.module('bodyAppApp')
       .state('admin', {
         url: '/admin',
         templateUrl: 'app/admin/admin.html',
-        controller: 'AdminCtrl',
-        authenticate: true
+        controller: 'AdminCtrl'
       })
-      .state('createclass', {
-        url: '/createclass',
-        templateUrl: 'app/admin/createClass.html',
-        controller: 'AdminCtrl',
-        authenticate: true
-      })
+      // .state('createclass', {
+      //   url: '/createclass',
+      //   templateUrl: 'app/admin/createClass.html',
+      //   controller: 'AdminCtrl'
+      // })
       ;
   });

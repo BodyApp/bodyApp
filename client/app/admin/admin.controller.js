@@ -6,9 +6,15 @@ angular.module('bodyAppApp')
     //   $location.path('/')
     // }
 
-    // if (!Auth.isAdmin()) {
-    //   $location.path('/')
-    // }
+    Auth.getCurrentUser().$promise.then(function(data){
+      if (data.role != "admin") {
+        console.log("You aren't an admin, so you can't access this page")
+        console.log(data);
+        $location.path('/')
+      }
+    })
+
+    
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
 

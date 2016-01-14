@@ -51,7 +51,7 @@ angular.module('bodyAppApp')
 		User.addIntroClass({ id: $scope.currentUser._id }, {
             classToAdd: classDate
         }, function(user) {
-            Auth.getUpdatedUser();
+            Auth.updateUser(user)
         }, function(err) {
             console.log("Error adding class: " + err)
             classToBook.bookedUsers[currentUser._id] = false
