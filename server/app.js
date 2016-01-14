@@ -66,7 +66,8 @@ new CronJob('29 * * * * *', function() {
   var sunGetMonth = sunDate.getMonth()+1;
   var sunGetYear = sunDate.getFullYear();
   var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-	var weeklyFirebaseRef = new Firebase("https://bodyapp.firebaseio.com/"+(weekOf));
+  var firebaseRef = new Firebase("https://bodyapp.firebaseio.com/")
+	var weeklyFirebaseRef = firebaseRef.child(weekOf);
 
 	weeklyFirebaseRef.once("value", function(currentWeek) {
 		currentWeek = currentWeek.val()
@@ -75,24 +76,26 @@ new CronJob('29 * * * * *', function() {
         if (slot <= (todayDate.getTime() - 45*60*1000) && !currentWeek[day].slots[slot].past) { //Can book (and join) a class up to 45 minutes into class starting
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({past: true})
           console.log("class " + slot + " is now in the past")
-	      } else if (!currentWeek[day].slots[slot].past && currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= 12) { //Prevents more than 12 people from joining
+          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){if (!error)console.log(slot + " removed from intro classes because in past")})
+	      } else if (!currentWeek[day].slots[slot].past && currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= slot.spots) { //Prevents more than 15 people from joining
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({classFull: true})
           console.log("class " + slot + " is now full")
+          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){if (!error)console.log(slot + " removed from intro classes because full")})
 	      }
 	    }
     }
 	})
 
-  var upcomingIntroFirebaseRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros");  
-  upcomingIntroFirebaseRef.once('value', function(upcomingIntros) {
-    var intros = upcomingIntros.val()
-    for (var intro in intros) {
-      if (intros[intro] + 1000*60*10 < todayDate) { // Intro considered upcoming up to 10 minutes into it.
-        console.log("Intro Class " + intros[intro] + " removed because it is in the past")
-        upcomingIntroFirebaseRef.child(intro).remove()
-      }
-    }
-  })
+  // var upcomingIntroFirebaseRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros");  
+  // upcomingIntroFirebaseRef.once('value', function(upcomingIntros) {
+  //   var intros = upcomingIntros.val()
+  //   for (var intro in intros) {
+  //     if (intros[intro] + 1000*60*10 < todayDate) { // Intro considered upcoming up to 10 minutes into it.
+  //       console.log("Intro Class " + intros[intro] + " removed because it is in the past")
+  //       upcomingIntroFirebaseRef.child(intro).remove()
+  //     }
+  //   }
+  // })
 
 }, null, true, 'America/New_York');
 

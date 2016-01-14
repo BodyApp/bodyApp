@@ -100,12 +100,12 @@
 }
 
 .trainer-screen div {
-    width: 100%;
-    height: 90vh;
+    width: 100% !important;
+    height: 90vh !important;
 }
 
 .trainer-video-screen {
-  height: 100vh;
+  height: 100vh !important;
   background: black;
 }
 .smallscreen {

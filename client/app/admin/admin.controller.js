@@ -183,16 +183,17 @@ angular.module('bodyAppApp')
           classFull: false,
           musicVolume: 50,
           past: false,
-          spots: 12,
-          spotsTaken: 0
+          spots: 15
         }
 
         syncObject.$save().then(function() {
           console.log("New workout saved prior to creating tokbox session")
           if (workoutToCreate.level === "Intro") {
+            var introToSet = {};
+            introToSet[date.getTime()] = true
             var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
-            var upcomingIntroRef = $firebaseArray(fbRef.child('upcomingIntros'));
-            upcomingIntroRef.$add(date.getTime()).then(function(){console.log("Saved Intro class to intro list")})
+            var upcomingIntroRef = fbRef.child('upcomingIntros').child(date.getTime())
+            upcomingIntroRef.set(true, function(){console.log("Saved Intro class to intro list")})
           }
 
           User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {

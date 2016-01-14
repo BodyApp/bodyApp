@@ -179,8 +179,9 @@
         <span class="class-time">{{ slot.time }}</span>
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
-        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id]" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
-        <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id]" ng-click = "scrollToTop()">booked</a></div>
+        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
+        <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+        <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
         <div class="my-friends mt16 mb8" >
           <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
             <span ng-show = "friendList.length != 1">friends in class</span> 

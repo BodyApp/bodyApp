@@ -161,6 +161,16 @@ a.booked.btn {
   padding: 5px 10px;
   min-width: 0;
 }
+
+a.full.btn {
+  font-size: 10px;
+  line-height: 10px;
+  background-color: #C0C0C0;
+  border-radius: 3px;
+  padding: 5px 10px;
+  min-width: 0;
+  opacity: 1 !important;
+}
 .my-friends {
   display: block;
 }
