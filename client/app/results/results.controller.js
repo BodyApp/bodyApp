@@ -15,14 +15,14 @@ angular.module('bodyAppApp')
 
     $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
     var communityResultsArray;
-    // var classResultsArray;
-    var myFriendsArray;
+    var classResultsArray;
+    // var myFriendsArray;
     $scope.rankings;
     $scope.communityActive = true;
     $scope.classmateActive;
     $scope.myCommunityRank;
-    // $scope.myClassRank;
-    $scope.myFriendsRank;
+    $scope.myClassRank;
+    // $scope.myFriendsRank;
 
     $scope.dayList = [];
     setupDayList();
