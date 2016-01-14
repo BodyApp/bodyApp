@@ -11,7 +11,7 @@
     tourtip-offset-horizontal = "500"
     tourtip-offset-vertical = "0">
   </span>
-    <div class="col-sm-6 sideDivider">
+    <div class="col-sm-5 sideDivider">
       <h1 class="darkblue">Today's Workout</h1>
       <h3 class="royalblue bold mb8">{{wod.title}}</h3>
       <p>{{wod.description}}</p>
@@ -51,7 +51,7 @@
       </ul>
     </div>
 
-    <div class="col-sm-6 top-scroll" style="padding-left: 30px;">
+    <div class="col-sm-7 top-scroll" style="padding-left: 30px;">
       
       <h1 class="darkblue">Your Reservations</h1>
       <span tourtip-step = "0"
@@ -101,12 +101,12 @@
           <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
             <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
             <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
           </div>
           <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
             <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
             <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
           </div>        
         </div>
 
@@ -123,12 +123,12 @@
           <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
             <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
             <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
           </div>
           <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
             <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
             <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; position: relative; top: -28px; left: 115px;">Remove</span>
+            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
           </div>        
         </div>
       </div>  

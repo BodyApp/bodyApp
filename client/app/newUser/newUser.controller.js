@@ -11,7 +11,7 @@ angular.module('bodyAppApp')
     var ref = new Firebase("https://bodyapp.firebaseio.com")
     $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
 
-		var todayDate = new Date();        
+	var todayDate = new Date();        
     var sunDate = new Date();
     sunDate.setDate(todayDate.getDate() - todayDate.getDay());
     var sunGetDate = sunDate.getDate();
@@ -20,17 +20,17 @@ angular.module('bodyAppApp')
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf)
 
-		$scope.bookIntroClass = function(classBooked) {
-			$scope.newUserStep++;
-			$scope.bookedIntroClass = classBooked
+	$scope.bookIntroClass = function(classBooked) {
+		$scope.newUserStep++;
+		$scope.bookedIntroClass = classBooked
 
-			console.log(classBooked);
+		console.log(classBooked);
 
-			var classDate = new Date(classBooked.$value)
-			console.log(classDate.getDay())
-			console.log(classDate.getTime())
+		var classDate = new Date(classBooked.$id*1)
+		console.log(classDate.getDay())
+		console.log(classDate.getTime())
 
-			var classToBook = $firebaseObject(
+		var classToBook = $firebaseObject(
 	      weekOfRef.child(classDate.getDay())
 	      .child("slots")
 	      .child(classDate.getTime())
@@ -39,22 +39,22 @@ angular.module('bodyAppApp')
     	console.log(classToBook)
 
     	classToBook.$loaded(function() {
-    		classToBook.bookedUsers = classToBook.bookedUsers || {}
-				classToBook.bookedUsers[$scope.currentUser._id] = true;
-				classToBook.$save()	
+    		classToBook.bookedUsers = classToBook.bookedUsers || {};
+			classToBook.bookedUsers[$scope.currentUser._id] = true;
+			classToBook.$save()	
     	})
-			
-			User.addIntroClass({ id: $scope.currentUser._id }, {
-        classToAdd: classDate
-      }, function(user) {
-        Auth.getUpdatedUser();
-      }, function(err) {
-          console.log("Error adding class: " + err)
-          classToBook.bookedUsers[currentUser._id] = false
-          classToBook.$save()
-          alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
-      }).$promise;
-		}
+		
+		User.addIntroClass({ id: $scope.currentUser._id }, {
+            classToAdd: classDate
+        }, function(user) {
+            Auth.getUpdatedUser();
+        }, function(err) {
+            console.log("Error adding class: " + err)
+            classToBook.bookedUsers[currentUser._id] = false
+            classToBook.$save()
+            alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+        }).$promise;
+	}
 
     $scope.incrementStep = function() {
     	$scope.newUserStep++;
@@ -80,14 +80,14 @@ angular.module('bodyAppApp')
 
     $scope.getDate = function(classSent) {
     	if (classSent) {
-	     	var dateToReturn = new Date(classSent.$value)
+	     	var dateToReturn = new Date(classSent.$id*1)
 		    return getDayOfWeek(dateToReturn.getDay()) + ", " + getMonth(dateToReturn.getMonth()) + " " + dateToReturn.getDate()
 		  }
     }
 
     $scope.getTime = function(classSent) {
     	if (classSent) {
-	    	var dateToReturn = new Date(classSent.$value)
+	    	var dateToReturn = new Date(classSent.$id*1)
 	    	var minutes = dateToReturn.getMinutes() < 10 ? "0" + dateToReturn.getMinutes() : dateToReturn.getMinutes()
 		    return (dateToReturn.getHours() < 12) ? dateToReturn.getHours() + ":" + minutes + "am" : (dateToReturn.getHours() - 12) + ":" + minutes + "pm" 
 		  }
