@@ -150,10 +150,11 @@ angular.module('bodyAppApp')
             val.rank = i;
             i--;
             communityResultsArray.unshift(val)
-            if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
+            // if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
+            if (val.userId === $scope.currentUser._id) {
               $scope.myCommunityRank = val.rank;
               $scope.userResultsToday = val;
-              loadClassmates()
+              // loadClassmates()
             }
           })
           $scope.rankings = communityResultsArray;
@@ -164,15 +165,17 @@ angular.module('bodyAppApp')
             val.rank = i;
             i++;
             communityResultsArray.push(val)
-            if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
+            // if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
+            if (val.userId === $scope.currentUser._id) {
               $scope.myCommunityRank = val.rank;
               $scope.userResultsToday = val;
-              loadClassmates()
+              // loadClassmates()
             }
           })
           $scope.rankings = communityResultsArray;
           if(!$scope.$$phase) $scope.$apply();
         }
+        loadClassmates()
       })
 
       function loadClassmates() {
@@ -186,7 +189,8 @@ angular.module('bodyAppApp')
                 val.rank = i;
                 i--;
                 classResultsArray.unshift(val)
-                if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                // if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                if (val.userId === $scope.currentUser._id) {
                   $scope.myClassRank = val.rank;
                 }
               })
@@ -197,7 +201,8 @@ angular.module('bodyAppApp')
                 val.rank = i;
                 i++;
                 classResultsArray.push(val)
-                if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                // if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
+                if (val.userId === $scope.currentUser._id) {
                   $scope.myClassRank = val.rank;
                 }
               })

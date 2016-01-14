@@ -51,7 +51,7 @@
       </fieldset>
       <!--end ratings-->
       <div>
-        <input class="feedback" ng-model = "feedback" type="text" name="feedback" placeholder="Please provide any feedback"/>
+        <input class="feedback" ng-model = "feedback" type="text" name="feedback" placeholder="Please provide any feedback for {{classCompleted.trainer.firstName}} or BODY"/>
       </div>        
     </div>
 
@@ -59,7 +59,7 @@
       <h3 class="text-center mb16">Your Results</h3>
 
       <span class="mb0">Score ({{classWod.scoreType.label}}):</span>
-      <input class="classFeedback-score" ng-model = "score" type="number" name="score" placeholder="1" ng-show = "classWod.scoreType.id === 1"/>
+      <input class="classFeedback-score" ng-model = "score" type="number" name="score" placeholder="Enter Score" ng-show = "classWod.scoreType.id === 1"/>
       <span ng-show = "classWod.scoreType.id === 0">
         <br>
         <input class="classFeedback-score" ng-model = "minutes" type="number" name="score"/> Minutes
@@ -69,10 +69,10 @@
     
 
       <h5 class="mt8 mb0">Comments:</h5>
-      <input class="comments" ng-model = "comment" type="text" name="comments" placeholder="Feeling great, killer workout!"/>
+      <input class="comments" ng-model = "comment" type="text" name="comments" placeholder="i.e. Feeling great, killer workout!"/>
 
       <div class="onoffswitch">
-          <input type="checkbox" ng-model = "postToPublic" ng-init = "postToPublic = false" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" >
+          <input type="checkbox" ng-model = "postToPublic" ng-init = "postToPublic = true" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" >
           <label class="onoffswitch-label" for="myonoffswitch">
               <span class="onoffswitch-inner"></span>
               <span class="onoffswitch-switch"></span>
