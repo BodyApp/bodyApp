@@ -14,6 +14,8 @@
   padding: 0 10px 0 0;
   display: inline-block;
   vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .date-col {
   width: 35%;

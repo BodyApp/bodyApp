@@ -3,24 +3,26 @@
 <div class="container">
 <section class="white-section-half">
   
-  <span tourtip-step = "4"
-    tourtip="Click Results to see how you did during your workouts and your rank amongst the community and your classmates." 
-    tourtip-next-label="I'm ready to start using BODY!"
+  <span tourtip-step = "3"
+    tourtip="Tip #4: Check out the results tab to learn about past workouts as well as your scores for classes you took. You'll also see how you stack up against your friends and the BODY Community." 
+    tourtip-element="#tour-results"
+    tourtip-next-label="Finish tour"
     tourtip-placement="bottom"
     tourtip-animation="false"
-    tourtip-offset-horizontal = "500"
+    tourtip-offset-horizontal = "0"
     tourtip-offset-vertical = "0">
   </span>
-    <div class="col-sm-5 sideDivider">
+    <div id="tour-workout" class="col-sm-5 sideDivider">
       <h1 class="darkblue">Today's Workout</h1>
       <h3 class="royalblue bold mb8">{{wod.title}}</h3>
       <p>{{wod.description}}</p>
-      <span tourtip-step = "1"
-        tourtip="Each day has a new workout that everyone on the platform will be taking. Get fired up!" 
-        tourtip-next-label="What is that reservation section?"
+      <span tourtip-step = "0"
+        tourtip="This is where today's workout will be posted. Each day consists of one or multiple modules that include Skill Work, Strength Training, HIIT, Mobility, and the Daily Challenge. Each of our classes provide scaling options for trainees at any ability level."
+        tourtip-element="#tour-workout"
+        tourtip-next-label="Next tip"
         tourtip-placement="right"
         tourtip-animation="false"
-        tourtip-offset-horizontal = "100"
+        tourtip-offset-horizontal = "0"
         tourtip-offset-vertical = "0">
       </span>
       <ul class="dash-workoutModules">
@@ -52,87 +54,79 @@
     </div>
 
     <div class="col-sm-7 top-scroll" style="padding-left: 30px;">
-      
-      <h1 class="darkblue">Your Reservations</h1>
-      <span tourtip-step = "0"
-        tourtip="Thanks for signing up for BODY App! To prepare for your free intro class, be sure to have a computer, a workout mat, and enough space to fit your whole body in the video shot. That's it! No other equipment required." 
-        tourtip-next-label="Got it! What else should I know?"
-        tourtip-placement="center"
-        tourtip-animation="true"
-        on-show="tourtipShown()"
-        tourtip-offset-horizontal = "0"
-        tourtip-offset-vertical = "0">
-      </span>
-      <span tourtip-step = "2"
-        tourtip="Whenever you sign up for a class, it will show up in this reservation section. Here, you can join or cancel a class." 
-        tourtip-next-label="How do I schedule classes?"
-        tourtip-placement="left"
-        tourtip-animation="false"
-        tourtip-offset-horizontal = "0"
-        tourtip-offset-vertical = "0">
-      </span>
-      <!-- RESERVATIONS -->
-      <div class="reservation-listing">
-          <div class="date-col pb0">
-            <h5 class="darkblue bold">Date</h5>
+      <div id="tour-reservation">
+        <h1 class="darkblue">Your Reservations</h1>
+        <span tourtip-step = "1"
+          tourtip="Tip #2: This is where we list your current class reservations. As you can see, your Introductory Class reservation is now listed here." 
+          tourtip-element="#tour-reservation"
+          tourtip-next-label="Next tip"
+          tourtip-placement="left"
+          tourtip-animation="false"
+          tourtip-offset-horizontal = "0"
+          tourtip-offset-vertical = "0">
+        </span>
+        <!-- RESERVATIONS -->
+        <div class="reservation-listing">
+            <div class="date-col pb0">
+              <h5 class="darkblue bold">Date</h5>
+            </div>
+            <div class="class-col pb0">
+              <h5 class="darkblue bold">Class</h5>
+            </div>
+            <div class="instr-col pb0">
+              <h5 class="darkblue bold">Instructor</h5>
+            </div>
+            <div class="action-col pb0">
+              <h5 class="darkblue bold">Action</h5>
+            </div>
+            <hr>
+        </div>       
+        <div ng-repeat="day in days">
+          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
+            <div class="date-col mb8">
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+            </div>
+            <div class="class-col mb8">
+              <span>{{slot.level}}</span>
+            </div>
+            <div class="instr-col mb8">
+              <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>        
           </div>
-          <div class="class-col pb0">
-            <h5 class="darkblue bold">Class</h5>
-          </div>
-          <div class="instr-col pb0">
-            <h5 class="darkblue bold">Instructor</h5>
-          </div>
-          <div class="action-col pb0">
-            <h5 class="darkblue bold">Action</h5>
-          </div>
-          <hr>
-      </div>       
-      <div ng-repeat="day in days">
-        <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
-          <div class="date-col mb8">
-            <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
-          </div>
-          <div class="class-col mb8">
-            <span>{{slot.level}}</span>
-          </div>
-          <div class="instr-col mb8">
-            <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
-          </div>
-          <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-            <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
-          </div>
-          <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-            <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
-          </div>        
-        </div>
 
-        <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
-          <div class="date-col mb8">
-            <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+            <div class="date-col mb8">
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+            </div>
+            <div class="class-col mb8">
+              <span>{{slot.level}}</span>
+            </div>
+            <div class="instr-col mb8">
+              <span>You</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>        
           </div>
-          <div class="class-col mb8">
-            <span>{{slot.level}}</span>
-          </div>
-          <div class="instr-col mb8">
-            <span>You</span>
-          </div>
-          <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-            <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
-          </div>
-          <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-            <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-            <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-            <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
-          </div>        
-        </div>
-      </div>  
-      
+        </div>  
+      </div>
       <div class="mt24 text-center"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
 
     </div>
@@ -142,7 +136,7 @@
 </div>
 
 <section class="week-schedule scroll-to mb72">
-  <div class="container">
+  <div id="tour-classes" class="container">
     <div class="col-sm-9">
       <h1 class="darkblue">BODY Class Schedule</h1>
     </div>
@@ -155,14 +149,16 @@
     </div>
   </div>
 
-    <span tourtip-step = "3"
-      tourtip="You'll see BODY's full schedule of classes here. You can even see which classes your friends have booked!" 
-      tourtip-next-label="Are there any results from my workouts?"
+    <span tourtip-step = "2"
+      tourtip="Tip #3: Here's where you can reserve classes and even see which ones your friends will be taking. Level One classes are great for the 3x/week trainee or newcomers looking to ramp up their fitness level and fitness education. Level Two builds upon Level One foundations by adding more complex movements and weight to our routine. Level Three is dedicated to optimizing performance and body definition." 
+      tourtip-element="#tour-classes"
+      tourtip-next-label="Next tip"
       tourtip-placement="top"
       tourtip-animation="false"
-      tourtip-offset-horizontal = "300"
+      tourtip-offset-horizontal = "0"
       tourtip-offset-vertical = "0">
     </span>
+
   <div class="col-day" ng-repeat="day in days">
     <div class = "fixedAtTop">
       <div class="day-and-date text-center">

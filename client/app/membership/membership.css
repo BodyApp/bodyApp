@@ -16,14 +16,20 @@
 	font-size: 24px !important;
 	padding: 10px 70px;
 }
-.needmore {
-	font-size: 14px;
+.learnmore {
+	font-size: 12px;
 	line-height: 18px;
 	font-style: italic;
+	position: relative;
+	top: -60px;
+	color: #909090;
+}
+.learnmore:hover {
+	color: #0dc145;
 }
 .half-way-down {
 	margin-top: 20%;
-	margin-bottom: 10%;
+	margin-bottom: 5%;
 }
 .lightgray-section {
 	background: #D3D3D3;
