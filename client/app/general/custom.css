@@ -250,3 +250,10 @@ h1 {
 .big-btn {
   padding: 10px 80px !important;
 }
+
+/*.fixedAtTop {
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:100;
+}*/

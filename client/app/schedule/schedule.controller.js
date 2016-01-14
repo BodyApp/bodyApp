@@ -517,19 +517,33 @@ angular.module('bodyAppApp')
         //   // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
         // };
 
-        // *****************SCROLL DOWN*****************
-        $(".arrow-scroll").click(function() {
-            $('html,body').animate({
-                scrollTop: $(".scroll-to").offset().top + -100},
-                600);
-        });
+    // *****************SCROLLING MAGIC*****************
+      //Scroll Down
+      $(".arrow-scroll").click(function() {
+          $('html,body').animate({
+              scrollTop: $(".scroll-to").offset().top + -100},
+              600);
+      });
    
+      //Scroll Up
       $scope.scrollToTop = function() {
         $('html,body').animate({
           scrollTop: $(".top-scroll").offset().top},
         600);
       }     
 
+      //Stick top of calendar to top of screen
+      $(window).scroll(function(e){ 
+        var $el = $('.fixedAtTop'); 
+        var isPositionFixed = ($el.css('position') == 'fixed');
+        if ($(this).scrollTop() > 350 && !isPositionFixed){ 
+          $('.fixedAtTop').css({'position': 'fixed', 'top': '70px', 'width':'14.28%'}); 
+        }
+        if ($(this).scrollTop() < 350 && isPositionFixed)
+        {
+          $('.fixedAtTop').css({'position': 'static', 'top': '70px', 'width':'100%'}); 
+        } 
+      });
     })
 
     //Currently unused
