@@ -1,8 +1,3 @@
-.page-2-hero {
-    margin-top: 4%;
-    margin-bottom: 6%;  
-}
-
 .user-social-image {
   top: 0px;
   left: 40%;
@@ -22,176 +17,58 @@
   z-index: 3;
 }
 
-#user-social-setup h1 {
-  font-size: 28px;
-  line-height: 40px;
-  margin-bottom: 0px;
-}
-
-#user-social-setup h2 {
-  font-size: 28px;
-  line-height: 40px;  
-  color: #6f6f6f;
-}
-
-#user-health-conditions h1 {
-  font-size: 28px;
-  line-height: 40px;
-}
-
-#user-health-conditions h2 {
-  font-size: 16px;
-  line-height: 25px;
-  color: #53585F;
-}
-
-#user-health-conditions p {
-  font-size: 12px;
-  color: #0D1c45;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
 .large-input-box {
   width: 100%;
   height: 100px;
   border: 2px solid #0D1c45;
   border-radius: 8px;
-  padding-left: 10px;
+  padding: 10px;
   background: #fff
 }
-
-.page-3 {
-  margin-top: 3%;
-  margin-bottom: 8%;
+.medical-disclaimer {
+  font-size: 11px;
+  line-height: 14px;
 }
-.page-3 h1 {
-  font-size: 28px;
-  line-height: 40px;
-  margin-bottom: 16px;
+.large-input-box::-webkit-input-placeholder {
+ font-size: 14px !important;
+ font-weight: 400 !important;
+ color: #525252 !important;
+ text-transform: none !important;
+ font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif !important
 }
-.page-3 h2 {
-  font-size: 16px;
-  line-height: 24px;
-  margin-bottom: 0px;
-}
-.intro-class-times .btn {
-  border: 2px solid #0D1C45;
-  padding: 20px 26px;
-  height: auto;
-  min-width: 250px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  background: #fff;
-  border-radius: 8px;
-  color: #0D1C45;
-  text-align: left;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;  
-}
-.intro-class-times .btn:hover {
-  background: #0D1C45;
-  border: 2px solid #0D1C45;
-  color: #fff !important;
-}
-.intro-class-times .seemore {
-  position: relative;
-  top: 30px;
+ul#bullet-list {
+  list-style-type: disc !important;
   padding-left: 20px;
 }
-.intro-class-times .btn .day {
-  font-size: 22px;
-  line-height: 18px;
-  font-weight: 600;
-}
-.intro-class-times .btn .time {
-  font-size: 18px;
-  font-weight: 400;
-}  
-
-.page-4 {
-  margin-top: 3%;
-  margin-bottom: 8%;
-}
-.page-4 h1 {
-  font-size: 28px;
-  line-height: 40px;
-  margin-bottom: 16px;
-}
-.page-4 h2 {
-  font-size: 16px;
-  line-height: 24px;
-  margin-bottom: 8px;
-}
-.page-4 .day {
-  font-size: 24px;
-  line-height: 24px;
-  margin-bottom: 5px;
-  color: #0D1C45;
-  font-weight: 600;
-}
-.page-4 .time {
-  font-size: 18px;
-  line-height: 24px;
-  margin-bottom: 0px;
-  color: #0D1C45;
-  margin-bottom: 5px;
-}
-.page-4 li {
-  color: #0D1C45;
-}
-
-.page-5 {
-  margin-top: 4%;
-  margin-bottom: 10%;
-}
-.page-5 h1 {
-  font-size: 28px;
-  line-height: 40px;
-  margin-bottom: 16px;
-}
-.page-5 h2 {
-  font-size: 16px;
-  line-height: 24px;
-  margin-bottom: 16px;
-  width: 80%;
-}
-.page-5 .day {
-  font-size: 24px;
-  line-height: 24px;
-  margin-bottom: 5px;
-  color: #0D1C45;
-  font-weight: 600;
-}
-.page-5 .time {
-  font-size: 18px;
-  line-height: 24px;
-  margin-bottom: 0px;
-  color: #0D1C45;
-  margin-bottom: 5px;
-}
-.page-5 li {
-  color: #0D1C45;
-}
-.page-5 .btn {
-  border: 2px solid #0D1C45;
-  padding: 10px 16px;
-  height: auto;
-  min-width: 200px;
-  font-weight: 600;
-  letter-spacing: 1px;
+.signupScheduler .signupDateSection {
+  padding: 20px;
+  border: 3px solid #0D1c45;
   background: #fff;
-  border-radius: 8px;
-  color: #0D1C45;
-  text-align: center;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  font-size: 20px;
+  border-radius: 5px;
+  width: 260px;
+  margin-bottom: 5px;
 }
-.page-5 .btn:hover {
-  background: #0D1C45;
-  border: 2px solid #0D1C45;
+.signupScheduler .signupSelect {
+  padding: 10px;
+  border: 3px solid #0D1c45;
+  background: #fff;
+  border-radius: 5px;
+  width: 260px;
+}
+.signupScheduler:hover .signupDateSection {
+  background: #0D1c45;
+}
+.signupScheduler:hover .signupSelect {
+  background: #0D1c45;
+}
+.signupScheduler:hover .signupDateSection span, .signupScheduler:hover .signupSelect span {
   color: #fff !important;
+}
+.signupDate {
+  font-size: 18px;
+  display: block;
+}
+.signupTime {
+  font-size: 24px;
+  display: block;
 }

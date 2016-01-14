@@ -56,12 +56,12 @@
       <h3 class="text-center mb16">Your Results</h3>
 
       <span class="mb0">Score ({{classWod.scoreType.label}}):</span>
-      <input class="score" ng-model = "score" type="number" name="score" placeholder="1" ng-show = "classWod.scoreType.id === 1"/>
+      <input class="classFeedback-score" ng-model = "score" type="number" name="score" placeholder="1" ng-show = "classWod.scoreType.id === 1"/>
       <span ng-show = "classWod.scoreType.id === 0">
         <br>
-        <input class="score" ng-model = "minutes" type="number" name="score"/> Minutes
+        <input class="classFeedback-score" ng-model = "minutes" type="number" name="score"/> Minutes
         <br>
-        <input class="score" ng-model = "seconds" type="number" name="score"/> Seconds
+        <input class="classFeedback-score" ng-model = "seconds" type="number" name="score"/> Seconds
       </span>
     
 

@@ -276,7 +276,6 @@ angular.module('bodyAppApp')
 				if (streamId === classToJoin.trainer._id.toString()) {
 					instructorStream = true
 					vidWidth = "100%";
-					// vidHeight = '90%';
 				} else {
 					vidHeight = 70;
 					if (!$scope.consumerObjects[streamId]) {

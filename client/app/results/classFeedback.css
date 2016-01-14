@@ -9,7 +9,7 @@
 	margin-left: 10px !important;
 	width: 20% !important;
 }
-::-webkit-input-placeholder {
+.classFeedback-score::-webkit-input-placeholder, .classFeedback-comments::-webkit-input-placeholder {
  font-size: 16px !important;
  font-weight: 500 !important;
  color: #1f1f1f !important;

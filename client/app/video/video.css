@@ -47,16 +47,21 @@
   color: #fff !important;
   font-size: 14px;
   line-height: 20px;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 .rounds {
-  color: #D3D3D3;
-  font-size: 30px;
+  color: #224893;
+  font-size: 40px;
+  font-weight: 500;
+  display: block;
 }
-.timer {
-  float: right;
-  color: #fff;
-  font-size: 36px;
+#stopwatch {
+  font-size: 60px;
+  margin-bottom: 30px;
+  display: block;
+}
+#stopwatch span {
+  font-weight: 600;
 }
 .exit-btn {
   font-size: 10px !important;
@@ -134,10 +139,10 @@
   position: absolute;
   top: 0vh;
   height: auto;
-  left: 85%;
-  width: 15%;
+  left: 83%;
+  width: 17%;
   background: rgba(0, 0, 0, 0.5);
-  padding: 10px 0 10px 20px;
+  padding: 25px;
 }
 .class-details h1, .class-details h4, .class-details p{
   color: #fff;
@@ -255,9 +260,13 @@
 }
 
 .workColor {
-  color: green;
+  color: #fff;
 }
 
 .restColor {
-  color: red;
+  color: #224893;
+}
+
+iframe#audioPlayer {
+  display: none !important;
 }

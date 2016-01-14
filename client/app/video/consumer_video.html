@@ -109,37 +109,24 @@
 
       <!--Footer-->
       <div class="footer-section">
-        <div class="col-sm-12 class-details">
+        <div class="col-sm-12 class-details text-center">
           <div class="workout-description">
-            <h5 class="white mb8">Today's Workout</h5>
-            <span class="module-title bold">I. {{todayWod.workout.module1.title}}</span>
-            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module1.bullets">
-              <li>{{bullet}}</li>
-            </ul>
-            <span class="module-title bold">II. {{todayWod.workout.module2.title}}</span>
-            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module2.bullets">
-              <li>{{bullet}}</li>
-            </ul>
-            <span class="module-title bold">III. {{todayWod.workout.module3.title}}</span>
-            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module3.bullets">
-              <li>{{bullet}}</li>
-            </ul>
+            
+            <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer>
+            <span class="rounds">rds {{stopwatch.rounds}}</span>
+            <h5 class="white mb8 mt32 text-left">Today's Challenge</h5>
             <span class="module-title bold">IV. {{todayWod.workout.module4.title}}</span>
-            <ul class="module-description mb8" ng-repeat = "bullet in todayWod.workout.module4.bullets">
+            <ul class="module-description mb8 text-left" ng-repeat = "bullet in todayWod.workout.module4.bullets">
               <li>{{bullet}}</li>
             </ul>                                    
           </div>
-<!--           <div class="timer">
-            <span>Timer: <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer></span>
-            <h5 style = "color: white; text-align: center">{{stopwatch.rounds}} Rounds Left</h5>
-          </div> -->
         </div>
         <div class="col-sm-6">
           <h3 class="white mb0">{{todayWod.title}}</h3>
           <a href="" class="exit-btn btn-white">Exit Class</a>
         </div>
         <div class="col-sm-6">
-          <h3 class="white mb0">Time <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer> <span class="rounds">rds {{stopwatch.rounds}}</span></h3>
+          <h5 class="white mt8 mb0">Need technical support? Call or text 857-600-2410.</h5>
           <div class="song" ng-click = "openSongPermalink(currentSong)" id="soundcloud-song" ng-show = "currentSong.title">
             <span>Listening To: {{currentSong.title}}, uploaded by {{currentSong.user.username}}</span>
           </div>

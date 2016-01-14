@@ -1,101 +1,149 @@
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
 
-<div class="main-container" ng-hide = "newUserStep != 1">
-	<section>
-		<div class="container page-2-hero">
-            <div id="user-social-setup" class="col-sm-6 text-center">
-            	<img class="user-social-image mb16" src="{{currentUser.picture}}">
-            	<img class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
-            	<h1>{{currentUser.firstName}} {{currentUser.lastName}}</h1>
-            	<h2>{{currentUser.email}}</h2>
-            </div>
-            <div id="user-health-conditions" class="col-sm-6">
-            	<h1 class="mb8">Hi {{currentUser.firstName}}, help us get to know you</h1>
-            	<h2 class="mb16">You’ve decided you want to get into the best shape of your life - fantastic! The BODY program starts at your current fitness level and evolves as you progress. We’re here to help you achieve results, it’s that simple.</h2>
-            	<p>Do you have any prior injuries or health conditions?</p>
-                  <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
-            	<textarea ng-model = "injuries" class="large-input-box" cols="40" rows="3" name="health-conditions"></textarea>
-            	<a href="" class="btn" ng-click = "saveInjuries(injuries)">Let's get started</a>
-            </div>
-		</div>
-	</section>
+<div class="main-container fullscreen-section" ng-hide = "newUserStep != 1">
+  <section>
+    <div class="container white-section">
+      <div class="col-sm-12 text-center margins">
+        <h1 class="darkblue">Participate in our pilot program</h1>
+        <h4 class="mb32">Hey there {{currentUser.firstName}}! It’s time to get you into the best shape of your life.</h4>        
+      </div>
+
+      <div class="col-sm-3 text-center">
+          <h4 class="mb32 purpleblue bold">Lock in our pilot rate for a year</h4>
+      </div>
+      <div class="col-sm-3 text-center">
+          <h4 class="mb32 purpleblue bold">Get a free introductory class</h4>
+      </div>
+      <div class="col-sm-3 text-center">
+          <h4 class="mb32 purpleblue bold">Receive your gear, no extra cost</h4>
+      </div>
+      <div class="col-sm-3 text-center">
+        <h4 class="mb32 purpleblue bold">No strings<br>attached</h4>
+      </div>
+
+      <div class="col-sm-3 text-center">
+          <div class="col-sm-6 no-margin">
+            <span class="pricingType lightgray">Regular pricing</span>
+            <h1 class="pricingAmt lightgray"><sup>$</sup></h1><h1 class="pricingAmt lightgray strikeout">40</h1>
+            <span class="pricingTime lightgray">/mo</span>
+          </div>
+          <div class="col-sm-6 no-margin">
+            <span class="pricingType darkblue">Pilot pricing</span>
+            <h1 class="pricingAmt darkblue"><sup>$</sup></h1><h1 class="pricingAmt darkblue">10</h1>
+            <span class="pricingTime darkblue">/mo</span>            
+          </div>
+      </div>
+      <div class="col-sm-3 text-center">
+        <img src="assets/images/icons/fit-girl_small.png">
+      </div>      
+      <div class="col-sm-3 text-center">
+          <img src="assets/images/icons/box.png">
+      </div>
+      <div class="col-sm-3 text-center">
+          <img src="assets/images/icons/thumbsup.png">
+      </div>
+
+      <div class="col-sm-3 text-center mt16">
+          <p>One simple membership. Always unlimited classes per month.</p>
+      </div>
+      <div class="col-sm-3 text-center mt16">
+          <p>An intro to the BODY program and a great free workout.</p> 
+      </div>
+      <div class="col-sm-3 text-center mt16">
+          <p>A set of strength bands and foam roller to get started.</p>
+      </div>
+      <div class="col-sm-3 text-center mt16">
+        <p>No hidden fees, no annual contracts. Cancel at any time.</p>
+      </div>              
+
+      <div class="col-sm-12 text-center mt32">
+        <a class="btn" href="" ng-click = "incrementStep()">Let's get started</a>
+      </div>
+    </div>
+  </section>
 </div>
 
-<div class="main-container" ng-hide = "newUserStep != 2">
-      <section>
-        <div class="container page-3">
-            <div class="col-sm-12 mb32">
-                  <h1>Get started with our Introductory Class</h1>
-                  <h2>To get started with the BODY program, start with a complimentary intro class so you can reach your goals with world class coaching and a community of like-minded people. During the intro class, one of our coaches will teach you the fundamentals of moving safely and effectively, while establishing a baseline for your fitness level. Intro classes are for all fitness levels and are provided in a safe and supportive environment.</h2>                               
-            </div>
+<div class="main-container fullscreen-section" ng-hide = "newUserStep != 2">
+  <section>
+    <div class="container white-section">
+      <div class="col-sm-12 text-center margins">
+        <h1 class="darkblue mb8">Welcome to BODY!</h1>
+        <h4 class="mb48">Help us get to know you a bit better</h4>        
+      </div>      
+      <div class="col-sm-5 text-center">
+        <h3 class="royalblue mb16">Your profile info</h3>
+        <img class="user-social-image mb16" src="{{currentUser.picture}}">
+        <img class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
+        <h3 class="darkblue mb8">{{currentUser.firstName}} {{currentUser.lastName}}</h1>
+        <h5 class="gray">{{currentUser.email}}</h2>
+      </div>
+      <div class="col-sm-7">
+        <<h3 class="royalblue mb16">Important health info</h3>
+        <p class="darkblue mb0">Do you have any prior injuries or health conditions?</p>
+        <p class="darkgray mb16 medical-disclaimer">This information is confidential and only shared with your BODY instructor.</p>
+            <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
+        <textarea ng-model = "injuries" class="large-input-box mb16" cols="40" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
 
-            <div class="col-sm-12">
-                  <h1 class="mb8">What time works for you?</h1>
-            </div>
-            <div ng-if = "newUserStep === 2" class="intro-class-times" ng-repeat = "class in upcomingIntros">
-                  <!-- Turn these into an ng-repeat of upcoming intro classes --> 
-                  <div class="col-sm-4">
-                        <a ng-click = "bookIntroClass(class)" href="" class="btn"><span class="day">{{getDate(class)}}</span><br><span class="time">{{getTime(class)}}</span></a>
-                  </div>
-                  <!-- <div class="col-sm-4">
-                        <a href="" class="btn"><span class="day">Thursday November 26</span><br><span class="time">8-9pm EST</span></a>
-                  </div>
-                  <div class="col-sm-4">
-                        <a href="" class="btn"><span class="day">Thursday November 26</span><br><span class="time">8-9pm EST</span></a>
-                  </div> -->
-                  <!-- <div class="col-sm-3">
-                        <a href="" class="seemore">See more times...</a>
-                  </div> -->
-              </div>
-        </div>
-    </section>
+        <a href="" class="btn" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
+        <p class="darkgray medical-disclaimer">Before continuing, please review our <a href="/terms" target="_blank">medical disclaimer</a>.</p>
+      </div>
+    </div>
+  </section>
 </div>
 
 <div class="main-container" ng-hide = "newUserStep != 3">
-      <section>
-        <div class="container page-4">
-            <div class="col-sm-8 mb32">
-                  <h1>Your class has been reserved!</h1>
-                  <p class="day">{{getDate(bookedIntroClass)}}</p>
-                  <p class="time">{{getTime(bookedIntroClass)}} EST</p>
-                  <!-- <a href="">Add to calendar</a> -->
-
-                  <h1 class="mt40">Class checklist</h1>
-                  <ul>
-                        <li><i class="ti ti-check-box"> </i>6 feet of space to move freely</li>
-                        <li><i class="ti ti-check-box"> </i>Laptop</li>
-                        <li><i class="ti ti-check-box"> </i>Robust wifi connection</li>
-                        <li><i class="ti ti-check-box"> </i>Exercise mat (recommended)</li>
-                  </ul>
-            </div>
-
-            <div class="col-sm-4 next-up-box">
-                  <h2>Next Up</h2>
-                  <div class="progress-bar"></div>
-                  <a href="" ng-click = "goToDashboard()">Login to your dashboard</a>
-                  <!-- <a href="" ng-click = "incrementStep()">Invite Friends</a> -->
-            </div>
+  <section>
+    <div class="container white-section">
+        <div class="col-sm-12 mb32">
+          <h3 class="royalblue mb16">Great! Now let's get you registered for that free Intro Class.</h3>
+          <h4>The purpose of this session is to help us serve you better by getting to know your goals and expectations, fitness level, and experience. At the end of your session, we will answer any questions you may have regarding programming, nutrition, mobility, scaling, etc.</h4>                               
         </div>
-    </section>
+
+        <div class="col-sm-12">
+          <h3 class="royalblue mb16">What time works for you?</h3>
+        </div>
+        <div ng-if = "newUserStep === 3" class="intro-class-times" ng-repeat = "class in upcomingIntros">
+          <div class="col-sm-4 mb16">
+            <a ng-click = "bookIntroClass(class)" href="" class="signupScheduler">
+              <div class="signupDateSection">
+                <span class="darkblue signupDate">{{getDate(class)}}</span>
+                <span class="darkblue signupTime">{{getTime(class)}}</span>
+              </div>
+              <div class="signupSelect text-center">
+                <span class="gray">Select</span>
+              </div>
+            </a>
+          </div>
+        </div>
+    </div>
+  </section>
 </div>
 
-<!-- <div class="main-container" ng-hide = "newUserStep != 4">
-      <section>
-        <div class="container page-5">
-            <div class="col-sm-8 mb32">
-                        <h1>Get started with our Introductory Class</h1>
-                  <h2>Exercising with friends can increase your results by 63%. After all, friends that sweat together stick together.</h2>
-                  <a class="btn" href="">Facebook</a>
-                  <a class="btn" href="">Share your link</a>
-            </div>
-
-            <div class="col-sm-4 next-up-box">
-                  <h2>Next Up</h2>
-                  <div class="progress-bar"></div>
-                  <a href="" ng-click = "goToDashboard()">Login to your dashboard</a>
-            </div>
-        </div>
-    </section>
-</div> -->
+<div class="main-container fullscreen-section" ng-hide = "newUserStep != 4">
+  <section>
+    <div class="container white-section page-4">
+      <div class="col-sm-12 mb32 text-center">
+        <h1 class="darkblue mb8">Your Intro class has been reserved!</h1>
+        <h4 class="gray mb0">{{getDate(bookedIntroClass)}}</h4>
+        <h4 class="gray mb32">{{getTime(bookedIntroClass)}} EST</h4>
+        <!-- <a href="">Add to calendar</a> -->
+      </div>
+      <div class="col-sm-6">
+        <h3 class="royalblue mb16">A few tips before your first class</h3>
+        <ul id="bullet-list">
+          <li><h4 class="mb0">Set your computer 6ft in front of you</h4></li>
+          <li><h4 class="mb0">Make sure you’re connected to the internet</h4></li>
+          <li><h4 class="mb0">Clear a safe space to move freely</h4></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <img src="/assets/images/icons/workout-setup.png">
+      </div>
+      <div class="col-sm-12 mt32 text-center">
+        <a href="" class="btn" ng-click = "goToDashboard()">Continue to your dashboard</a>                
+      </div>
+    </div>
+  </section>
+</div>
 
 <div ng-include="'components/footer/footer.html'"></div>

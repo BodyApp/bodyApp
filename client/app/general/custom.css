@@ -140,6 +140,33 @@ h1 {
   width: 50%;
   display: inline-block;
 }
+.fullscreen-section {
+  height: 100vh;
+}
+
+.arrow {
+  bottom: -70px;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 100%;  
+ }
+.arrow span {
+  cursor: pointer;
+  display: inline-block;
+  height: 15px;
+  -webkit-transition: -webkit-transform 0.33s cubic-bezier(0.33, 0, 0.2, 1);
+  transition: transform 0.33s cubic-bezier(0.33, 0, 0.2, 1);
+  width: 35px;
+}
+.arrow span:hover {
+  transform: translateY(-13px);
+}
+.arrow span:hover svg path {
+  fill: #0d1c45;
+}
+
 /*------MODALS-------*/
 .modal-body {
   height: 360px;
@@ -249,6 +276,11 @@ h1 {
 }
 .big-btn {
   padding: 10px 80px !important;
+}
+
+.disclaimer {
+  font-size: 12px;
+  font-style: italic;
 }
 
 /*.fixedAtTop {
