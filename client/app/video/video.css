@@ -267,6 +267,15 @@
   color: #224893;
 }
 
+.video-teammate-name {
+  width: 75px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 iframe#audioPlayer {
-  display: none !important;
+  position: absolute;
+  top: -999px;
+  left: -999px;
+  /*display: none !important;*/
 }

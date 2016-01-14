@@ -15,84 +15,84 @@
 
         <div class="classmates-row">
           <div ng-show = "consumerList.length>=2" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[1]].firstName}} {{consumerObjects[consumerList[1]].lastName.charAt(0)}}.</span>
             <div id = "box2" back-img="{{consumerObjects[consumerList[1]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=3" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[2]].firstName}} {{consumerObjects[consumerList[2]].lastName.charAt(0)}}.</span>
             <div id = "box3" back-img="{{consumerObjects[consumerList[2]].picture}}"></div>
           </div>
         </div>
 
         <div class="classmates-row">
           <div ng-show = "consumerList.length>=4" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[3]].firstName}} {{consumerObjects[consumerList[3]].lastName.charAt(0)}}.</span>
             <div id = "box4" back-img="{{consumerObjects[consumerList[3]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=5" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[4]].firstName}} {{consumerObjects[consumerList[4]].lastName.charAt(0)}}.</span>
             <div id = "box5" back-img="{{consumerObjects[consumerList[4]].picture}}"></div>
           </div>
         </div>
 
         <div class="classmates-row">
           <div ng-show = "consumerList.length>=6" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[5]].firstName}} {{consumerObjects[consumerList[5]].lastName.charAt(0)}}.</span>
             <div id = "box6" back-img="{{consumerObjects[consumerList[5]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=7" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[6]].firstName}} {{consumerObjects[consumerList[6]].lastName.charAt(0)}}.</span>
             <div id = "box7" back-img="{{consumerObjects[consumerList[6]].picture}}"></div>
           </div>
         </div>
 
         <div class="classmates-row">
           <div ng-show = "consumerList.length>=8" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[7]].firstName}} {{consumerObjects[consumerList[7]].lastName.charAt(0)}}.</span>
             <div id = "box8" back-img="{{consumerObjects[consumerList[7]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=9" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[8]].firstName}} {{consumerObjects[consumerList[8]].lastName.charAt(0)}}.</span>
             <div id = "box9" back-img="{{consumerObjects[consumerList[8]].picture}}"></div>
           </div>
         </div>
 
         <div class="classmates-row">
           <div ng-show = "consumerList.length>=10" class="individual-classmate">
-            <span>First</span>
+            <span class="video-teammate-name">{{consumerObjects[consumerList[9]].firstName}} {{consumerObjects[consumerList[9]].lastName.charAt(0)}}.</span>
             <div id = "box10" back-img="{{consumerObjects[consumerList[9]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=11" class="individual-classmate">
-            <span>First</span>
+            <span> class="video-teammate-name"{{consumerObjects[consumerList[10]].firstName}} {{consumerObjects[consumerList[10]].lastName.charAt(0)}}.</span>
             <div id = "box11" back-img="{{consumerObjects[consumerList[10]].picture}}"></div>
           </div>
         </div>
 
         <div class="classmates-row">
           <div ng-show = "consumerList.length>=12" class="individual-classmate">
-            <span>First</span>
+            <span> class="video-teammate-name"{{consumerObjects[consumerList[11]].firstName}} {{consumerObjects[consumerList[11]].lastName.charAt(0)}}.</span>
            <div id = "box12" back-img="{{consumerObjects[consumerList[11]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=13" class="individual-classmate">
-            <span>First</span>
+            <span> class="video-teammate-name"{{consumerObjects[consumerList[12]].firstName}} {{consumerObjects[consumerList[12]].lastName.charAt(0)}}.</span>
             <div id = "box13" back-img="{{consumerObjects[consumerList[12]].picture}}"></div>
           </div>
         </div>
 
         <div  class="classmates-row">
           <div ng-show = "consumerList.length>=14" class="individual-classmate">
-            <span>First</span>
+            <span> class="video-teammate-name"{{consumerObjects[consumerList[13]].firstName}} {{consumerObjects[consumerList[13]].lastName.charAt(0)}}.</span>
             <div id = "box14" back-img="{{consumerObjects[consumerList[13]].picture}}"></div>
           </div>
 
           <div ng-show = "consumerList.length>=15" class="individual-classmate">
-            <span>First</span>
+            <span> class="video-teammate-name"{{consumerObjects[consumerList[14]].firstName}} {{consumerObjects[consumerList[14]].lastName.charAt(0)}}.</span>
             <div id = "box15" back-img="{{consumerObjects[consumerList[14]].picture}}"></div>
           </div>
         </div>                                                         
@@ -123,7 +123,7 @@
         </div>
         <div class="col-sm-6">
           <h3 class="white mb0">{{todayWod.title}}</h3>
-          <a href="" class="exit-btn btn-white">Exit Class</a>
+          <a href="" class="exit-btn btn-white" ng-click = "exitClass()">Exit Class</a>
         </div>
         <div class="col-sm-6">
           <h5 class="white mt8 mb0">Need technical support? Call or text 857-600-2410.</h5>

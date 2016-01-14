@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig) {
@@ -7,7 +7,6 @@ angular.module('bodyAppApp')
         $scope.currentUser = currentUser;
         Schedule.setCurrentUser(currentUser);
         var loggedIn = false
-
         $scope.pictureData = {};
 
         // Auth.isLoggedInAsync(function(boolAnswer) {
@@ -39,7 +38,7 @@ angular.module('bodyAppApp')
         $scope.checkIfFriends = function(slot) {
           var friendList = [];
           for (var user in slot.bookedFbUserIds) {
-            if (currentUser.friendListObject[user]) {
+            if (currentUser.friendListObject && currentUser.friendListObject[user]) {
               friendList.push(user);
               if (!$scope.pictureData[user]) {
                 var userRef = ref.child("fbUsers").child(user)

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
+  .controller('VideoCtrl', function ($scope, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
 
   	var classToJoin = Schedule.classUserJustJoined;
   	if (!classToJoin) {
@@ -557,6 +557,10 @@ angular.module('bodyAppApp')
 			$scope.hover13 = false
 			$scope.hover14 = false
 			$scope.hover15 = false
+		}
+
+		$scope.exitClass = function() {
+			$state.go('classfeedback');
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.
