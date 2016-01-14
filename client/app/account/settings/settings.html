@@ -21,7 +21,12 @@
 	<div class="col-sm-6 text-center mb72">
 	  <div>
 	  	<h4> Your Friends Currently Using BODY</h4>
-	  	<div ng-repeat = "friend in currentUser.friendList" class = "mb8">{{friend.name}}</div>
+	  	<div ng-repeat = "friend in currentUser.friendList" class = "mb8" ng-show = "friendList.length === 0">
+	  		<span style = "margin-left: 10px;">{{friend.name}}</span>
+	  	</div>
+	  	<div ng-repeat = "friend in friendList" class = "mb8" ng-show = "friendList.length > 0">
+	  		<img ng-src = "{{friend.picture}}" height = "50" width = "50"><span style = "margin-left: 10px;">{{friend.firstName}} {{friend.lastName}}</span>
+	  	</div>
 	  </div>
 	</div>
 

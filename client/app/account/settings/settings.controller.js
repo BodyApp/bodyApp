@@ -6,10 +6,26 @@ angular.module('bodyAppApp')
     $scope.editingCreditCardInfo = false;
     $scope.currentUser = Auth.getCurrentUser();
     var currentUser = $scope.currentUser;
-    console.log($scope.currentUser)
     $scope.subEndDate;
     if ($scope.currentUser.stripe && $scope.currentUser.stripe.subscription) {
       $scope.subEndDate = new Date($scope.currentUser.stripe.subscription.endDate*1000)
+    }
+
+    $scope.friendList = [];
+
+    var ref = new Firebase("https://bodyapp.firebaseio.com");
+    pullFriendPictures()
+
+    function pullFriendPictures() {
+      for (var user in currentUser.friendListObject) {
+        var userRef = ref.child("fbUsers").child(user)
+        userRef.once('value', function(snapshot) {
+          var userPulled = snapshot.val()
+          if (userPulled) $scope.friendList.push(userPulled)
+          if(!$scope.$$phase) $scope.$apply();
+        })
+      }
+      
     }
 
     $scope.cancelSubscription = function() {
