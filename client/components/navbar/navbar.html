@@ -41,8 +41,8 @@
         <nav>
             <div class="nav-bar">
                 <div class="module left">
-                    <a href="#">
-                        <img class="logo" src="assets/images/BodyLogo_blue_small.png">
+                    <a href="/">
+                        <img ng-style = "logoStyle" ng-mouseover = "hover()" ng-mouseleave = "unhover()" ng-src="{{imageSrc}}">
                     </a>
                 </div>
                 <div class="module widget-handle mobile-toggle right visible-sm visible-xs" ng-click = "checkClickCorrect()">
@@ -54,17 +54,17 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="isLoggedIn() && bookedIntroClass">
+                            <li ng-show="isLoggedIn() && completedNewUserFlow">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/schedule">Dashboard</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && bookedIntroClass">
+                            <li ng-show="isLoggedIn() && completedNewUserFlow">
                               <p ng-class="{active: isActive('/results')}">
                                 <a href="/results">Results</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && bookedIntroClass" ng-class="{active: isActive('/settings')}">
+                            <li ng-show="isLoggedIn() && completedNewUserFlow" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
                                 Hi {{getCurrentUser().nickName}}
                               </a>
@@ -84,17 +84,17 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="isLoggedIn() && bookedIntroClass">
+                        <li ng-show="isLoggedIn() && completedNewUserFlow">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/schedule">Dashboard</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && bookedIntroClass">
+                        <li ng-show="isLoggedIn() && completedNewUserFlow">
                           <p ng-class="{active: isActive('/results')}">
                             <a href="/results">Results</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && bookedIntroClass" ng-class="{active: isActive('/settings')}">
+                        <li ng-show="isLoggedIn() && completedNewUserFlow" ng-class="{active: isActive('/settings')}">
                           <a href="/settings">
                             Hi {{getCurrentUser().nickName}}
                           </a>

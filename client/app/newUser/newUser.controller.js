@@ -49,12 +49,13 @@ angular.module('bodyAppApp')
     	})
 		
 		User.addIntroClass({ id: $scope.currentUser._id }, {
-            classToAdd: classDate
+            classToAdd: classDate.getTime()
         }, function(user) {
             Auth.updateUser(user)
         }, function(err) {
             console.log("Error adding class: " + err)
-            classToBook.bookedUsers[currentUser._id] = false
+            classToBook.bookedUsers = classToBook.bookedUsers || {};
+            classToBook.bookedUsers[$scope.currentUser._id] = false
             classToBook.$save()
             alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
         }).$promise;

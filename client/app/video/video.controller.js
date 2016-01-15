@@ -17,12 +17,16 @@ angular.module('bodyAppApp')
 		$scope.classTime = classToJoin.date;
 		$scope.trainer = classToJoin.trainer;
 
-		var classClosesTime = (classToJoin.date + 1000*60*90)
+		var classClosesTime = (classToJoin.date + 1000*60*60);
+		var classHalfway = (classToJoin.date + 1000*60*30);
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
 				console.log("class is over, booting people out");
+				classOver()
 				$location.path('/');
+			} else if (classHalfway < currentTime ) {
+				classTaken()
 			} else {
 				console.log("class currently in session");
 			}
@@ -48,14 +52,6 @@ angular.module('bodyAppApp')
 
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
-
-		if (classToJoin.level === "Intro" && currentUser.role === "user") {
-			User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
-        Auth.updateUser(user);
-      }, function(err) {
-          console.log("Error setting intro class taken property: " + err)                  
-      }).$promise;
-		}
 
 		$scope.consumerList = [];
 		$scope.consumerObjects = {};
@@ -692,6 +688,24 @@ angular.module('bodyAppApp')
 					$scope.stopwatch.lastStateTime = new Date().getTime()
 					$scope.stopwatch.$save()
 				}, 1000)			
+			}
+		}
+
+		function classTaken() {
+			if (currentUser._id !== classToJoin.trainer._id) {
+				if (classToJoin.level === "Intro") {
+					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
+		        Auth.updateUser(user);
+		      }, function(err) {
+		          console.log("Error setting intro class taken property: " + err)                  
+		      }).$promise;
+				} else {
+					User.pushTakenClass({ id: currentUser._id }, {classToPush: classToJoin.date}, function(user) {
+		        Auth.updateUser(user);
+		      }, function(err) {
+		          console.log("Error setting class taken property: " + err)                  
+		      }).$promise;
+				}
 			}
 		}
 	})

@@ -392,11 +392,16 @@ exports.cancelSubscription = function(req, res, next) {
 }
 
 exports.addIntroClass = function(req, res, next) {
+  console.log(req.body);
   var userId = req.user._id;
+  var classToAdd = req.body.classToAdd;
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      user.bookedIntroClass = true
+      user.classesBooked = user.classesBooked || {};
+      user.classesBooked[classToAdd] = true;
+      user.bookedIntroClass = true;
+      user.completedNewUserFlow = true;
       user.save(function(err) {
         if (err) return validationError(res, err);
         res.status(200).json(user);
@@ -406,11 +411,14 @@ exports.addIntroClass = function(req, res, next) {
 };
 
 exports.cancelIntroClass = function(req, res, next) {
+  console.log(req.body)
   var userId = req.user._id;
+  var classToCancel = req.body.classToCancel;
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      user.bookedIntroClass = false
+      user.bookedIntroClass = false;
+      if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
         if (err) return validationError(res, err);
         res.status(200).json(user);
@@ -428,6 +436,7 @@ exports.takeIntroClass = function(req, res, next) {
       console.log(user);
       user.introClassTaken = true
       user.classesTaken.push(introClassTaken);
+      if (user.classesBooked && user.classesBooked[introClassTaken]) delete user.classesBooked[introClassTaken];
       user.level = 1;
       user.save(function(err) {
         if (err) return validationError(res, err);
@@ -443,7 +452,39 @@ exports.addBookedClass = function(req, res, next) {
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
-      user.classesTaken.push(classToAdd);
+      user.classesBooked = user.classesBooked || {};
+      user.classesBooked[classToAdd.date] = true;
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
+exports.cancelBookedClass = function(req, res, next) {
+  var userId = req.user._id;
+  var classToCancel = req.body.classToCancel;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
+exports.pushTakenClass = function(req, res, next) {
+  var userId = req.user._id;
+  var classToPush = req.body.classToPush;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      user.classesTaken.push(classToPush);
+      if (user.classesBooked && user.classesBooked[classToPush]) delete user.classesBooked[classToPush];
       user.save(function(err) {
         if (err) return validationError(res, err);
         res.status(200).json(user);

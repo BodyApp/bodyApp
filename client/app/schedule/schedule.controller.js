@@ -5,6 +5,7 @@ angular.module('bodyAppApp')
         var currentUser;
         Auth.getCurrentUser().$promise.then(function(user) {
           currentUser = user
+          console.log(currentUser)
 
           $scope.currentUser = currentUser;
           Schedule.setCurrentUser(currentUser);
@@ -344,24 +345,34 @@ angular.module('bodyAppApp')
         $scope.cancelClass = function(slot) {
           console.log(slot)
           if (slot.level === "Intro") {
-            User.cancelIntroClass({ id: currentUser._id }, {}, function(user) {
-                  slot.bookedUsers = slot.bookedUsers || {};
-                  slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                  slot.bookedUsers[currentUser._id] = false
-                  slot.spotsTaken
-                  delete slot.bookedFbUserIds[currentUser.facebook.id]
-                  // slot.$save();
-                  currentUser = user;
-                  Auth.updateUser(currentUser);
-                  $scope.currentUser = currentUser;
-                }, function(err) {
-                    console.log("Error cancelling class: " + err)
-                }).$promise;
+            User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
+              slot.bookedUsers = slot.bookedUsers || {};
+              slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+              slot.bookedUsers[currentUser._id] = false
+              slot.spotsTaken
+              delete slot.bookedFbUserIds[currentUser.facebook.id]
+              // slot.$save();
+              currentUser = user;
+              Auth.updateUser(currentUser);
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error cancelling class: " + err)
+            }).$promise;
           } else {
-            slot.bookedUsers = slot.bookedUsers || {};
-            slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-            slot.bookedUsers[currentUser._id] = false;
-            delete slot.bookedFbUserIds[currentUser.facebook.id];
+            User.cancelBookedClass({ id: currentUser._id }, {
+              classToCancel: slot.date
+            }, function(user) {
+              slot.bookedUsers = slot.bookedUsers || {};
+              slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+              slot.bookedUsers[currentUser._id] = false
+              delete slot.bookedFbUserIds[currentUser.facebook.id]
+              Auth.updateUser(user);
+              currentUser = user;
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error adding class: " + err)
+                alert("sorry, there was an issue canceling your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+            }).$promise;
           }
         }
 
@@ -372,7 +383,7 @@ angular.module('bodyAppApp')
             // } else if (currentUser.bookedIntroClass) {
             //   return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
             // } else {
-              return User.addIntroClass({ id: $scope.currentUser._id }, {}, function(user) {
+              return User.addIntroClass({ id: $scope.currentUser._id }, {classToAdd: slot.date}, function(user) {
                 Auth.updateUser(user);
                 currentUser = user;
                 $scope.currentUser = user;
@@ -387,6 +398,9 @@ angular.module('bodyAppApp')
                   alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
               }).$promise;
             // }
+          } else {
+            // if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
+            bookClass(slot)
           }
         };
 

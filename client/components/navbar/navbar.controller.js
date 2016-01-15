@@ -31,7 +31,7 @@ angular.module('bodyAppApp')
 
     if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
       Auth.getCurrentUser().$promise.then(function(user) {
-        $scope.bookedIntroClass = user.bookedIntroClass
+        $scope.completedNewUserFlow = user.completedNewUserFlow;
       })
     }
 
@@ -39,12 +39,12 @@ angular.module('bodyAppApp')
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
 
     $scope.hover = function(element) {
-      $scope.imageSrc = "../assets/images/BodyLogo_white_small.png";
-      // $scope.logoStyle = {"background-color": "black"};
+      $scope.imageSrc = "assets/images/BodyLogo_white_small.png";
+      $scope.logoStyle = {"background-color": "black"};
     }
 
     $scope.unhover = function(element) {
-      $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png";
+      $scope.imageSrc = "assets/images/BodyLogo_blue_small.png";
       $scope.logoStyle = {"background-color": "white"};
     }
 

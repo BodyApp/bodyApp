@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 
     Auth.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
-          if (Auth.getCurrentUser().bookedIntroClass) {
+          if (Auth.getCurrentUser().completedNewUserFlow) {
             // event.preventDefault();
             $state.go('schedule');
           } else {

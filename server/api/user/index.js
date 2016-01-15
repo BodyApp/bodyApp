@@ -16,6 +16,8 @@ router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 router.put('/:id/addBookedClass', auth.isAuthenticated(), controller.addBookedClass);
+router.put('/:id/cancelBookedClass', auth.isAuthenticated(), controller.cancelBookedClass);
+router.put('/:id/pushTakenClass', auth.isAuthenticated(), controller.pushTakenClass);
 router.put('/:id/addIntroClass', auth.isAuthenticated(), controller.addIntroClass);
 router.put('/:id/cancelIntroClass', auth.isAuthenticated(), controller.cancelIntroClass);
 router.put('/:id/takeIntroClass', auth.isAuthenticated(), controller.takeIntroClass);

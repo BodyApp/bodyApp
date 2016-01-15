@@ -24,6 +24,12 @@ angular.module('bodyAppApp')
           controller:'addBookedClass'
         }
       },
+      cancelBookedClass: {
+        method: 'PUT',
+        params: {
+          controller:'cancelBookedClass'
+        }
+      },
       tourtipShown: {
         method: 'PUT',
         params: {
@@ -46,6 +52,12 @@ angular.module('bodyAppApp')
         method: 'PUT',
         params: {
           controller:'takeIntroClass'
+        }
+      },
+      pushTakenClass: {
+        method: 'PUT',
+        params: {
+          controller:'pushTakenClass'
         }
       },
       saveClassTaught: {
