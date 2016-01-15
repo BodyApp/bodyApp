@@ -1331,8 +1331,14 @@ nav .cart-overview a {
     float: none;
     width: 100%;
   }
+  .nav-bar p {
+    margin-bottom: 0px;
+    text-align: right;
+  }
   .menu {
     height: auto;
+    text-align: right;
+    margin-bottom: 15px;
   }
   .menu.inline-block {
     width: 100%;

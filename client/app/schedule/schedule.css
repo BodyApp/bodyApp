@@ -25,7 +25,6 @@
 }
 .instr-col {
   width: 20%;
-  overflow: hidden;
 }
 .action-col {
   width: 25%;
@@ -126,7 +125,9 @@
   color: #0D1C45;
   font-size: 15px;
   display: block;
-  margin-bottom: 5px;
+}
+.class-instr {
+  margin-top: 5px;
 }
 .class-type {
   display: inline-block;
@@ -319,8 +320,100 @@ h5.dateTitles {
   width: 40%;
 }
 
-@media all and (max-width: 990px) {
+.wod-description {
+  font-size: 14px;
+  line-height: 20px;
+}
+.daily-skill {
+  font-size: 18px;
+}
+
+@media all and (max-width: 767px) {
   .sideDivider {
+    border-right: 0px;
   }
+  #reservation-section {
+    margin-bottom: 50px;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  #reservation-section h1 {
+    text-align: center;
+  }
+  #reservation-section span {
+    font-size: 11px;
+    line-height: 11px;
+    padding-bottom: 0px;
+  }
+  #reservation-section .btn {
+    padding: 2px;
+    min-width: 60px;
+    font-size: 10px;
+    margin-right: 0px;
+  }    
+  #reservation-section .cancel-btn {
+    text-align: center;
+    background: #E8E8E8;
+    color: #fff !important;
+    padding: 0px 3px;
+    font-size: 8px;
+    line-height: 8px;
+    border-radius: 50%;
+  }
+  .date-col, .class-col, .instr-col, .action-col {
+    padding: 0 10px 0 0;
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal;
+  }
+  .date-col {
+    width: 30%;
+  }
+  .class-col {
+    width: 15%;
+  }
+  .instr-col {
+    width: 20%;
+  }
+  .action-col {
+    width: 25%;
+  }
+  #tour-workout h4, h1, p, span {
+    text-align: center;
+  }
+  #tour-workout h4 {
+    font-size: 24px;
+  }
+  .theChallenge {
+    font-size: 16px;
+  }
+
+  /*MOBILE CALENDAR*/
+  .col-day {
+    width: 100%;
+  }
+  .class-time {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .week-selector {
+    position: relative;
+    top: 0px;
+  }
+  .class-type, .class-booking {
+    display: inline-block;
+    float: none;
+  }
+  .sched-class {
+    padding: 15px 10px;
+    height: 120px;    
+  }
+  .my-friends .qty {
+    width: 100%;
+    font-size: 10px;
+    line-height: 18px;
+    vertical-align: top;
+  }
+
 }
 

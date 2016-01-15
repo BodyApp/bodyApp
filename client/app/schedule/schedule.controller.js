@@ -5,6 +5,7 @@ angular.module('bodyAppApp')
         var currentUser;
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
+        $scope.windowWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         // $scope.myBookedClasses = {};
 
         $scope.thisWeek;
@@ -22,6 +23,7 @@ angular.module('bodyAppApp')
           $scope.currentUser = currentUser;
           Schedule.setCurrentUser(currentUser);
           $scope.pictureData = {};
+
 
           // $scope.myBookedClasses = currentUser.classesBooked;
           // for (prop in currentUser.classesBooked) {

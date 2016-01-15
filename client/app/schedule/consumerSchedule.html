@@ -2,39 +2,7 @@
 <tour step = "currentStep">
 <div class="container">
 <section class="white-section-half">
-    <div id="tour-workout" class="col-sm-5 sideDivider">
-      <h1 class="darkblue">Today's Workout</h1>
-      <h3 class="royalblue bold mb8">{{wod.title}}</h3>
-      <p>{{wod.description}}</p>
-      <ul class="dash-workoutModules">
-        <li>
-          <span>
-            <span class="gray bold" ng-if = "wod.workout.module1">I. {{wod.workout.module1.title}}</span>
-            <div ng-repeat = "bullet in wod.workout.module1.bullets">{{bullet}}</div>
-          </span>
-        </li>
-        <li>
-          <span>
-            <span class="gray bold" ng-if = "wod.workout.module2">II. {{wod.workout.module2.title}}</span>
-            <div ng-repeat = "bullet in wod.workout.module2.bullets">{{bullet}}</div>
-          </span>
-        </li>
-        <li>
-          <span>
-            <span class="gray bold" ng-if = "wod.workout.module3">III. {{wod.workout.module3.title}}</span>
-            <div ng-repeat = "bullet in wod.workout.module3.bullets">{{bullet}}</div>
-          </span>
-        </li>
-        <li>
-          <span>
-            <span class="gray bold" ng-if = "wod.workout.module4">IV. {{wod.workout.module4.title}}</span>
-            <div ng-repeat = "bullet in wod.workout.module4.bullets">{{bullet}}</div>
-          </span>
-        </li>
-      </ul>
-    </div>
-
-    <div class="col-sm-7 top-scroll" style="padding-left: 30px;">
+     <div id="reservation-section" class="col-sm-7 col-sm-push-5 top-scroll" style="padding-left: 30px;">
       <div id="tour-reservation">
         <h1 class="darkblue">Your Reservations</h1>
         <!-- RESERVATIONS -->
@@ -144,15 +112,54 @@
           </div>
         </div>  
       </div>
-      <div class="mt24 text-center"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
+      <div class="mt24 text-center hidden-xs"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
 
     </div>
 
   <!-- END RESERVATION SECTION -->
+
+    <div id="tour-workout" class="col-sm-5 col-sm-pull-7 sideDivider">
+      <h1 class="darkblue">Today's Workout</h1>
+      <h4 class="royalblue bold mb8">{{wod.title}}</h4>
+      <p class="wod-description mb16">{{wod.description}}</p>   
+      <span>
+        <p class="gray bold theChallenge mb8" ng-if = "wod.workout.module4">{{wod.workout.module4.title}}</p>
+        <div ng-repeat = "bullet in wod.workout.module4.bullets"><span class="wod-description">{{bullet}}</span></div>
+      </span>
+
+<!--       <ul class="dash-workoutModules">
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module1">I. {{wod.workout.module1.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module1.bullets">{{bullet}}</div>
+          </span>
+        </li>
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module2">II. {{wod.workout.module2.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module2.bullets">{{bullet}}</div>
+          </span>
+        </li>
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module3">III. {{wod.workout.module3.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module3.bullets">{{bullet}}</div>
+          </span>
+        </li>
+        <li>
+          <span>
+            <span class="gray bold" ng-if = "wod.workout.module4">IV. {{wod.workout.module4.title}}</span>
+            <div ng-repeat = "bullet in wod.workout.module4.bullets">{{bullet}}</div>
+          </span>
+        </li>
+      </ul> -->
+    </div>
+
+
 </section>
 </div>
 
-<section class="week-schedule scroll-to mb72">
+<section class="week-schedule hidden-xs scroll-to mb72">
   <div id="tour-classes" class="container">
     <div class="col-sm-9">
       <h1 class="darkblue">BODY Class Schedule</h1>
@@ -179,11 +186,11 @@
     <div ng-repeat="slot in day.slots">
       <div class="sched-class" ng-class = "{unavailable: slot.past}">
         <span class="class-time">{{ slot.time }}</span>
-        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
+        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
         <div class="my-friends mt16 mb8" >
           <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
             <span ng-show = "friendList.length != 1">friends in class</span> 
@@ -198,8 +205,55 @@
       </div>
     </div>
   </div>
-  
 </section>
+<section class="visible-xs">
+  <h1 id="tour-classes" class="darkblue">BODY Class Schedule</h1>
+  <h4 class="week-selector darkblue bold text-center" ng-show = "days">
+    <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()"></i></a>
+    &nbsp;{{days[6].formattedDate}}&nbsp;
+    <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()"></i></a>
+  </h4>
+  <div class="col-day" ng-repeat="day in days">
+    <div class = "fixedAtTop">
+      <div class="day-and-date text-center">
+        <span class="day bold">{{ day.name }}</span>
+        <span class="date bold">{{ day.formattedDate }}</span>
+      </div>
+      <div class="workout-and-module text-center">
+        <span class="wod-title bold">The Flip Side</span>
+        <span class="wod-module">Hip Openers</span>
+      </div>
+    </div>
+    <div ng-repeat="slot in day.slots">
+      <div class="sched-class" ng-class = "{unavailable: slot.past}">
+        <span class="class-time mb8">{{ slot.time }}</span>
+        <div class="col-xs-6 text-center">
+          <div class="class-type lvl1"><span>{{slot.level}}</span></div>
+          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
+          <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+          <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
+        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+        </div>
+        <div class="col-xs-6 text-center">
+          <div class="my-friends" >
+            <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
+              <span ng-show = "friendList.length != 1">friends in class</span> 
+              <span ng-show = "friendList.length === 1">friend in class</span> 
+            </div>
+            <img class="profile" ng-src="{{pictureData[friendList[0]].picture}}">
+            <img class="profile" ng-src="{{pictureData[friendList[1]].picture}}">
+            <img class="profile" ng-src="{{pictureData[friendList[2]].picture}}">
+            <!-- <div class="empty"></div>
+            <div class="empty"></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div ng-if="windowWidth > 767">
+
 <span tourtip-step = "0"
   tourtip="This is where today's workout will be posted. Each day consists of one or multiple modules that include Skill Work, Strength Training, HIIT, Mobility, and the Daily Challenge. Each of our classes provide scaling options for trainees at any ability level."
   tourtip-element="#tour-workout"
