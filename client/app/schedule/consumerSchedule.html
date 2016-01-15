@@ -82,8 +82,53 @@
             </div>
             <hr>
         </div>       
-        <div ng-repeat="day in days">
+        <div ng-repeat="day in currentWeek">
           <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
+            <div class="date-col mb8">
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+            </div>
+            <div class="class-col mb8">
+              <span>{{slot.level}}</span>
+            </div>
+            <div class="instr-col mb8">
+              <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>        
+          </div>
+
+          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+            <div class="date-col mb8">
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+            </div>
+            <div class="class-col mb8">
+              <span>{{slot.level}}</span>
+            </div>
+            <div class="instr-col mb8">
+              <span>You</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
+              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+            </div>        
+          </div>
+        </div>
+        <div ng-repeat="nextWeekDay in nextWeek">
+          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
             </div>
