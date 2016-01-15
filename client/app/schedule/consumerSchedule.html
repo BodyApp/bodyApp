@@ -2,30 +2,10 @@
 <tour step = "currentStep">
 <div class="container">
 <section class="white-section-half">
-  
-  <span tourtip-step = "3"
-    tourtip="Tip #4: Check out the results tab to learn about past workouts as well as your scores for classes you took. You'll also see how you stack up against your friends and the BODY Community." 
-    tourtip-element="#tour-results"
-    tourtip-next-label="Finish tour"
-    tourtip-placement="bottom"
-    tourtip-animation="false"
-    tourtip-offset-horizontal = "0"
-    tourtip-offset-vertical = "0">
-  </span>
     <div id="tour-workout" class="col-sm-5 sideDivider">
       <h1 class="darkblue">Today's Workout</h1>
       <h3 class="royalblue bold mb8">{{wod.title}}</h3>
       <p>{{wod.description}}</p>
-      <span tourtip-step = "0"
-        tourtip="This is where today's workout will be posted. Each day consists of one or multiple modules that include Skill Work, Strength Training, HIIT, Mobility, and the Daily Challenge. Each of our classes provide scaling options for trainees at any ability level."
-        tourtip-element="#tour-workout"
-        tourtip-next-label="Next tip"
-        tourtip-placement="right"
-        on-show="tourtipShown()"
-        tourtip-animation="false"
-        tourtip-offset-horizontal = "0"
-        tourtip-offset-vertical = "0">
-      </span>
       <ul class="dash-workoutModules">
         <li>
           <span>
@@ -57,15 +37,6 @@
     <div class="col-sm-7 top-scroll" style="padding-left: 30px;">
       <div id="tour-reservation">
         <h1 class="darkblue">Your Reservations</h1>
-        <span tourtip-step = "1"
-          tourtip="Tip #2: This is where we list your current class reservations. As you can see, your Introductory Class reservation is now listed here." 
-          tourtip-element="#tour-reservation"
-          tourtip-next-label="Next tip"
-          tourtip-placement="left"
-          tourtip-animation="false"
-          tourtip-offset-horizontal = "0"
-          tourtip-offset-vertical = "0">
-        </span>
         <!-- RESERVATIONS -->
         <div class="reservation-listing">
             <div class="date-col pb0">
@@ -194,17 +165,6 @@
       </h4>
     </div>
   </div>
-
-    <span tourtip-step = "2"
-      tourtip="Tip #3: Here's where you can reserve classes and even see which ones your friends will be taking. Level One classes are great for the 3x/week trainee or newcomers looking to ramp up their fitness level and fitness education. Level Two builds upon Level One foundations by adding more complex movements and weight to our routine. Level Three is dedicated to optimizing performance and body definition." 
-      tourtip-element="#tour-classes"
-      tourtip-next-label="Next tip"
-      tourtip-placement="top"
-      tourtip-animation="false"
-      tourtip-offset-horizontal = "0"
-      tourtip-offset-vertical = "0">
-    </span>
-
   <div class="col-day" ng-repeat="day in days">
     <div class = "fixedAtTop">
       <div class="day-and-date text-center">
@@ -240,6 +200,43 @@
   </div>
   
 </section>
+<span tourtip-step = "0"
+  tourtip="This is where today's workout will be posted. Each day consists of one or multiple modules that include Skill Work, Strength Training, HIIT, Mobility, and the Daily Challenge. Each of our classes provide scaling options for trainees at any ability level."
+  tourtip-element="#tour-workout"
+  tourtip-next-label="Next tip"
+  tourtip-placement="right"
+  on-show="tourtipShown()"
+  tourtip-animation="false"
+  tourtip-offset-horizontal = "0"
+  tourtip-offset-vertical = "0">
+</span>
+<span tourtip-step = "1"
+  tourtip="Tip #2: This is where we list your current class reservations. As you can see, your Introductory Class reservation is now listed here." 
+  tourtip-element="#tour-reservation"
+  tourtip-next-label="Next tip"
+  tourtip-placement="left"
+  tourtip-animation="false"
+  tourtip-offset-horizontal = "0"
+  tourtip-offset-vertical = "0">
+</span>
+<span tourtip-step = "2"
+  tourtip="Tip #3: Here's where you can reserve classes and even see which ones your friends will be taking. Level One classes are great for the 3x/week trainee or newcomers looking to ramp up their fitness level and fitness education. Level Two builds upon Level One foundations by adding more complex movements and weight to our routine. Level Three is dedicated to optimizing performance and body definition." 
+  tourtip-element="#tour-classes"
+  tourtip-next-label="Next tip"
+  tourtip-placement="top"
+  tourtip-animation="false"
+  tourtip-offset-horizontal = "0"
+  tourtip-offset-vertical = "0">
+</span>
+<span tourtip-step = "3"
+  tourtip="Tip #4: Check out the results tab to learn about past workouts as well as your scores for classes you took. You'll also see how you stack up against your friends and the BODY Community." 
+  tourtip-element="#tour-results"
+  tourtip-next-label="Finish tour"
+  tourtip-placement="bottom"
+  tourtip-animation="false"
+  tourtip-offset-horizontal = "0"
+  tourtip-offset-vertical = "0">
+</span>
 </tour>
 
 <div ng-include="'components/footer/footer.html'"></div>
