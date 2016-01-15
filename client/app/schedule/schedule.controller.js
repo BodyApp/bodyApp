@@ -572,17 +572,19 @@ angular.module('bodyAppApp')
       }     
 
       //Stick top of calendar to top of screen
-      $(window).scroll(function(e){ 
-        var $el = $('.fixedAtTop'); 
-        var isPositionFixed = ($el.css('position') == 'fixed');
-        if ($(this).scrollTop() > ($('#tour-workout').height() + $('#tour-classes').height()*2) && !isPositionFixed){ 
-          $('.fixedAtTop').css({'position': 'fixed', 'top': '70px', 'width':'14.28%'}); 
-        }
-        if ($(this).scrollTop() < ($('#tour-workout').height() + $('#tour-classes').height()*2)  && isPositionFixed)
-        {
-          $('.fixedAtTop').css({'position': 'static', 'top': '70px', 'width':'100%'}); 
-        } 
-      });
+      if ($scope.windowWidth > 800) {
+        $(window).scroll(function(e){ 
+          var $el = $('.fixedAtTop'); 
+          var isPositionFixed = ($el.css('position') == 'fixed');
+          if ($(this).scrollTop() > ($('#tour-workout').height() + $('#tour-classes').height()*2) && !isPositionFixed){ 
+            $('.fixedAtTop').css({'position': 'fixed', 'top': '70px', 'width':'14.28%'}); 
+          }
+          if ($(this).scrollTop() < ($('#tour-workout').height() + $('#tour-classes').height()*2)  && isPositionFixed)
+          {
+            $('.fixedAtTop').css({'position': 'static', 'top': '70px', 'width':'100%'}); 
+          } 
+        });
+      }
     })
 
     //Currently unused
