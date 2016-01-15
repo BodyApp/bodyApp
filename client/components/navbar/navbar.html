@@ -45,7 +45,10 @@
                         <img class="logo" src="assets/images/BodyLogo_blue_small.png">
                     </a>
                 </div>
-                <div id="tour-results" class="module-group right">
+                <div class="module widget-handle mobile-toggle right visible-sm visible-xs" ng-click = "checkClickCorrect()">
+                    <i class="ti-menu"></i>
+                </div>                
+                <div id="tour-results" class="module-group right" ng-show = "clicked">
                     <div class="module left">
                         <ul class="menu">
                             <!-- <li>
@@ -70,11 +73,41 @@
                               <a href="" ng-click="logout()">Logout</a>
                             </li>
                             <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                              <a href="#" ng-click="loginOauth('facebook')">Login With Facebook</a>
+                              <a href="#" ng-click="loginOauth('facebook')">Login with Facebook</a>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <div id="tour-results" class="module-group right visible-md visible-lg">
+                  <div class="module left">
+                    <ul class="menu">
+                        <!-- <li>
+                            <a href="#">Sign In</a>
+                        </li> -->
+                        <li ng-show="isLoggedIn() && bookedIntroClass">
+                          <p ng-class="{active: isActive('/schedule')}">
+                            <a href="/schedule">Dashboard</a>
+                          </p>
+                        </li>
+                        <li ng-show="isLoggedIn() && bookedIntroClass">
+                          <p ng-class="{active: isActive('/results')}">
+                            <a href="/results">Results</a>
+                          </p>
+                        </li>
+                        <li ng-show="isLoggedIn() && bookedIntroClass" ng-class="{active: isActive('/settings')}">
+                          <a href="/settings">
+                            Hi {{getCurrentUser().nickName}}
+                          </a>
+                        </li>
+                        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
+                          <a href="" ng-click="logout()">Logout</a>
+                        </li>
+                        <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
+                          <a href="#" ng-click="loginOauth('facebook')">Login with Facebook</a>
+                        </li>
+                    </ul>
+                  </div>
+              </div>
             </div>
         </nav>
     </div>       

@@ -367,11 +367,11 @@ angular.module('bodyAppApp')
 
         $scope.openBookingConfirmation = function (slot) {
           if (slot.level === "Intro") {
-            if (currentUser.introClassTaken) {
-              return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
-            } else if (currentUser.bookedIntroClass) {
-              return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
-            } else {
+            // if (currentUser.introClassTaken) {
+            //   return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
+            // } else if (currentUser.bookedIntroClass) {
+            //   return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
+            // } else {
               return User.addIntroClass({ id: $scope.currentUser._id }, {}, function(user) {
                 Auth.updateUser(user);
                 currentUser = user;
@@ -386,19 +386,8 @@ angular.module('bodyAppApp')
                   classToBook.$save()
                   alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
               }).$promise;
-            }
-          }
-            // if (!loggedIn) {
-            //     slot.bookedUsers[currentUser._id] = false
-            //     return openLoginModal()
-            // } else 
-            if (checkWhetherUserIsSubscribed(slot) === true) bookClass(slot)
-                
-            // } else {
-                // slot.bookedUsers = slot.bookedUsers || {};
-                // slot.bookedUsers[currentUser._id] = false
-                // delete slot.bookedFbUserIds[currentUser.facebook.id]
             // }
+          }
         };
 
         function bookClass(slot) {
@@ -406,7 +395,6 @@ angular.module('bodyAppApp')
             animation: true,
             templateUrl: 'app/schedule/bookingConfirmation.html',
             controller: 'BookingConfirmationCtrl',
-            // size: size,
             resolve: {
               slot: function () {
                 return slot;
@@ -524,10 +512,10 @@ angular.module('bodyAppApp')
       $(window).scroll(function(e){ 
         var $el = $('.fixedAtTop'); 
         var isPositionFixed = ($el.css('position') == 'fixed');
-        if ($(this).scrollTop() > 350 && !isPositionFixed){ 
+        if ($(this).scrollTop() > ($('#tour-workout').height() + $('#tour-classes').height()*2) && !isPositionFixed){ 
           $('.fixedAtTop').css({'position': 'fixed', 'top': '70px', 'width':'14.28%'}); 
         }
-        if ($(this).scrollTop() < 350 && isPositionFixed)
+        if ($(this).scrollTop() < ($('#tour-workout').height() + $('#tour-classes').height()*2)  && isPositionFixed)
         {
           $('.fixedAtTop').css({'position': 'static', 'top': '70px', 'width':'100%'}); 
         } 

@@ -27,9 +27,13 @@ angular.module('bodyAppApp')
     $scope.isInstructor = Auth.isInstructor;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
-    $scope.getCurrentUser().$promise.then(function(user) {
-      $scope.bookedIntroClass = user.bookedIntroClass
-    })
+    $scope.clicked = false;
+
+    if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
+      Auth.getCurrentUser().$promise.then(function(user) {
+        $scope.bookedIntroClass = user.bookedIntroClass
+      })
+    }
 
     $scope.logoStyle = {"background-color": "white"};
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
@@ -56,4 +60,8 @@ angular.module('bodyAppApp')
     $scope.isActive = function(route) {
       return route === $location.path();
     };
+
+    $scope.checkClickCorrect = function() {
+      $scope.clicked = !$scope.clicked;
+    }
   });
