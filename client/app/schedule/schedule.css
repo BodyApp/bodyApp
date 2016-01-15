@@ -318,3 +318,9 @@ h5.dateTitles {
   left: 30%;
   width: 40%;
 }
+
+@media all and (max-width: 990px) {
+  .sideDivider {
+  }
+}
+

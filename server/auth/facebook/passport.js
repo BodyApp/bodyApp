@@ -43,10 +43,7 @@ exports.setup = function (User, config) {
             role: 'user',
             provider: 'facebook',
             facebook: profile._json,
-            trainerCredential1: "L1 CrossFit Trainer",
-            trainerCredential2: "ACSM certified",
-            trainerCredential3: "NASM Certified",
-            trainerCredential4: "AED/CPR",
+            trainerCredential1: "Highly Enthusiastic",
             trainerRating: 5.0,
             trainerNumRatings: 0
           });

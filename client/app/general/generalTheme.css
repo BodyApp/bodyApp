@@ -1293,6 +1293,13 @@ nav .cart-overview a {
   }
 }
 @media all and (max-width: 990px) {
+  .logo {
+    height: 95%;
+  }
+  .nav-bar {
+    line-height: inherit;
+  }
+  
   nav.fixed {
     position: absolute !important;
     opacity: 1 !important;
@@ -1317,7 +1324,7 @@ nav .cart-overview a {
   }
   .nav-bar .module-group {
     width: 100%;
-    padding: 16px 0;
+    /*padding: 16px 0;*/
   }
   .nav-bar .module-group .module {
     display: block;
@@ -1391,7 +1398,7 @@ nav .cart-overview a {
   }
   .module.widget-handle {
     border-left: none;
-    border-top: 1px solid #ccc;
+    /*border-top: 1px solid #ccc;*/
     line-height: 40px;
     min-height: 40px;
   }
@@ -1433,7 +1440,7 @@ nav .cart-overview a {
     top: 18px;
   }
   .mobile-toggle {
-    border-left: 1px solid #ccc !important;
+    /*border-left: 1px solid #ccc !important;*/
     border-bottom: none !important;
   }
   .mobile-toggle i {
