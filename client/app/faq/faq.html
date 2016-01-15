@@ -1,0 +1,149 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+  <div class="main-container">
+
+    <section class="white-section">
+      <div class="col-sm-12 text-center">
+        <h1 class="mb16">Frequently Asked Questions</h1>
+        <h4 class="lead mb64">Other questions? <a href="#">Talk with one of our coaches</a>.</h4>
+      </div>
+      
+      <div class="col-sm-10 col-sm-offset-1">
+        <ul class="accordion-2">
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "instructorSee = !instructorSee">How does the instructor see me?</h4>
+                </div>
+                <div class="content" ng-show = "instructorSee">
+                    <p>
+                        We use the video camera in your laptop or computer to provide a multi-way live feed between you and your instructor.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "otherSee = !otherSee">Can other class members see me as well?</h4>
+                </div>
+                <div class="content" ng-show = "otherSee">
+                    <p>
+                        Yes, but the image is very small in the corner of the screen. We show everyone in class as we have found that it increases the level of motivation and engagement experienced during class. It's also allows for an opportunity for you to connect with your fellow classmates, the same way you would in an in-person class.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "startingOut = !startingOut">What if I'm just starting out?</h4>
+                </div>
+                <div class="content" ng-show = "startingOut">
+                    <p>
+                        The BODY Program is tiered into multiple levels. Each level providing additional challenges. Our BODY1 class focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education. Being surrounded with peers of similar ability levels in a slower paced environment, allows for a comfortable learning experience, with more focused individual attention and guidance to help build a strong foundation during the early stages of your fitness journey.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "variousLevels = !variousLevels">What are the various levels of the BODY Program?</h4>
+                </div>
+                <div class="content" ng-show = "variousLevels">
+                    <h5>BODY1</h5>
+                    <p>
+                        Our BODY1 class focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education. Being surrounded with peers of similar ability levels in a slower paced environment, allows for a comfortable learning experience, with more focused individual attention and guidance to help build a strong foundation during the early stages of your fitness journey.
+                    </p>
+                    <p>
+                      Highlights: Static core strength, fat loss, cardiovascular capacity
+                      After 60 days you can expect: Increased muscle tone and body control
+                    </p>
+                    <h5>BODY2</h5>
+                    <p>
+                        Our BODY2 class builds upon the foundations established during BODY1 by adding more complex movements and weight to our routine. You’ll push yourself and sweat it out with like-minded individuals, as you compete with yourself (and others, if you choose) for rounds, time, points, glory, emotional satisfaction and physical and mental growth. You will reach new physical and emotional levels you didn’t think were possible. These classes are ideal for those who have been a member for 2+ months or have had prior athletic experience.
+                    </p>
+                    <p>
+                      Highlights: Dynamic core strength and stability, joint strength, cardiovascular capacity
+                      After 60 days you can expect: Increased muscle definition and range of motion
+                    </p>
+                    <h5>BODYX</h5>
+                    <p>
+                        Our BODYX class is not for the faint of heart. Here we focus is on optimizing performance and body definition. You show up to hone your movement skills with a spirit of playfulness, intentional virtuosity, and a willingness to learn alongside your teammates. During the BODYX classes, there will not be as much hand holding and time will be spent on furthering skills. Trainees should have 4-6 months of experience with our program or previous experience from other functional training programs.
+                    </p>
+                    <p>
+                      Highlights: Elite strength and performance
+                      After 60 days you can expect: Dramatic muscle definition and fat loss
+                    </p>                                        
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "classTime = !classTime">Do you offer more class times?</h4>
+                </div>
+                <div class="content" ng-show = "classTime">
+                    <p>
+                        We are on-boarding only the best instructors to deliver you the best training experience. As we increase our number of trainres, we will slowly be adding additional class times.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "cantMakeClass = !cantMakeClass" >What if I can't make it to class?</h4>
+                </div>
+                <div class="content" ng-show = "cantMakeClass">
+                    <p>
+                        There is no charge to your account if you cancel a reservation by 5pm the day before your scheduled class. If you cancel after 5pm the day before your scheduled class we will charge you a $10 cancelation fee.
+
+                        To cancel a class, please log into your online account and click the cancel button or call us, and our staff will gladly assist you.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "runningLate = !runningLate" >What if I'm running late?</h4>
+                </div>
+                <div class="content" ng-show = "runningLate">
+                    <p>
+                      Please arrive 5 minutes before each class and 10 minutes early for your introductory class to get acquainted with the BODY platform. If you are running late, please call us to let us know. If you are running late and we have not heard from you by the start of class, any waitlisted BODIES may take your place in class. We do not allow BODIES into class more than 5 minutes after the class start time.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "refundPolicy = !refundPolicy" >How does the 60 day refund policy work?</h4>
+                </div>
+                <div class="content" ng-show = "refundPolicy">
+                    <p>
+                      We have a no questions asked 60 day refund policy on any new memberships. You will be required to return the equipment we provided you in your starter kit and are responsible for return shipping. If you would like a refund on your membership fee, please contact us.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "membershipCancellation = !membershipCancellation" >What's your membership cancelation policy?</h4>
+                </div>
+                <div class="content" ng-show = "membershipCancellation">
+                    <p>
+                      We pride ourselves in providing you an outstanding customer experience. If you would like to cancel your membership at anytime. We will provide you a refund to your credit card on file, pro-rated for the current month. If you would like to cancel your membership, please contact us.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="title">
+                    <h4 class="inline-block mb0" ng-click = "releasePolicy = !releasePolicy" >Do you have a release policy?</h4>
+                </div>
+                <div class="content" ng-show = "releasePolicy">
+                    <p>
+                      Yes! By signing up for a BODY class, you acknowledge that you have voluntarily chosen to participate in a program of intense physical exercise. You further acknowledge that BODY App Inc. strongly recommends that you consult with your physician prior to commencing any classes. You acknowledge that you are fully informed of the strenuous nature of this exercise program and the possibility of adverse physiological occurrences including, but not limited to, abnormal blood pressure, fainting, heart attack or death. You assume all risk for your health and well being, and fully release and hold harmless for any responsibility, cost or damages BODY App Inc. and all its wholly owned subsidiaries, its instructors, members and employees. You acknowledge that your agreement to this release applies to each time you participate in a BODY class. You hereby acknowledge that you, and any minor under your care, have voluntarily chosen to participate. You assume all risk for your health and well being, and that of any minor under your care, and fully release BODY App Inc. and all its wholly owned subsidiaries from all liability.
+                    </p>
+                </div>
+            </li>                                                             
+        </ul>        
+      </div>
+    
+    </section>
+
+  </div>
+<div ng-include="'components/footer/footer.html'"></div>
+
+<script type="text/javascript">
+$(".arrow").click(function() {
+    $('html,body').animate({
+        scrollTop: $("#scroll-link").offset().top},
+        600);
+});
+</script>
