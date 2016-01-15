@@ -10,10 +10,4 @@ angular.module('bodyAppApp')
   	$scope.runningLate = false
   	$scope.refundPolicy = false;
   	$scope.releasePolicy = false;
-
-  	$scope.expand = function(g) {
-  		console.log("yo")
-  		g = !g
-  		// $scope.instructorSee = !$scope.instructorSee;
-  	}
   });
