@@ -3,20 +3,6 @@
 angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig) {
         var currentUser;
-        Auth.getCurrentUser().$promise.then(function(user) {
-          currentUser = user
-          console.log(currentUser)
-
-          $scope.currentUser = currentUser;
-          Schedule.setCurrentUser(currentUser);
-          $scope.pictureData = {};
-
-          if (currentUser && !currentUser.tourtipShown) {
-            console.log(currentUser)
-            loadTour();
-          }
-        })
-
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
 
@@ -27,6 +13,26 @@ angular.module('bodyAppApp')
         var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
           $scope.wod = snapshot.val()
         });
+
+        Auth.getCurrentUser().$promise.then(function(user) {
+          currentUser = user
+          console.log(currentUser)
+
+          $scope.currentUser = currentUser;
+          Schedule.setCurrentUser(currentUser);
+          $scope.pictureData = {};
+
+          $scope.myBookedClasses = currentUser.classesBooked;
+          for (prop in $scope.myBookedClasses) {
+
+          }
+          console.log($scope.myBookedClasses)
+
+          if (currentUser && !currentUser.tourtipShown) {
+            console.log(currentUser)
+            loadTour();
+          }
+        })
 
         $scope.checkIfFriends = function(slot) {
           var friendList = [];
@@ -488,7 +494,6 @@ angular.module('bodyAppApp')
           User.tourtipShown({ id: currentUser._id }, {
             date: new Date().getTime()
           }, function(user) {
-            console.log("tour tip shown")
             Auth.updateUser(user);
           })
         }
