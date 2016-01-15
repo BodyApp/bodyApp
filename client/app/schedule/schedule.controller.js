@@ -443,7 +443,10 @@ angular.module('bodyAppApp')
 
         $scope.formattedWaitTime = function(slot, timeNow) {
             var returnValue = Math.round((slot - timeNow)/(1000*60))
-            return (returnValue < 120 ? returnValue + " Mins": Math.round(returnValue / 60) + " Hours")
+            if (returnValue < 120) return returnValue + " Mins"
+            if (returnValue < (24 * 60)) return Math.round(returnValue / 60) + " Hours"
+            if (returnValue >= (24 * 60) && returnValue < (48 * 60)) return "1 Day"
+            return Math.round(returnValue / 60 / 24) + " Days"
         } 
 
         $scope.setClassUserJustJoined = function(classJoined) {
