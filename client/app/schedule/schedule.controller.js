@@ -91,7 +91,7 @@ angular.module('bodyAppApp')
           });
         }
 
-        setNextWeek = function() {
+        function setNextWeek() {
           var todayDate = new Date();
           var nextWeekTime = todayDate.getTime() + 1000*60*60*24*7;
           var nextWeekDate = new Date(nextWeekTime);
