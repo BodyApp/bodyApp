@@ -59,9 +59,13 @@
 	<!-- The workout of the day -->
 	<h2 class = "mb0">{{wodToDisplay.title}}</h2>
 	<h4>{{formattedDayOfWeek(wodToDisplay.dateTime)}} {{formattedMonth(wodToDisplay.dateTime)}} {{fixDate(wodToDisplay.dateTime).getDate()}}, {{fixDate(wodToDisplay.dateTime).getFullYear()}}</h4>
-	<p>{{wodToDisplay.description}}</p>
+	<p ng-show = "wodToDisplay.description">{{wodToDisplay.description}}</p>
 	<ul class="workoutModules">
-		<li ng-show = "wodToDisplay.workout.module1">
+		<li ng-show = "wodToDisplay.challenge">
+				<span style = "display:block; font-weight:bold;">{{wodToDisplay.scoreType.label}}</span>
+				<div ng-repeat = "bullet in wodToDisplay.challenge.bullets">{{bullet}}</div><br>
+		</li>
+		<!-- <li ng-show = "wodToDisplay.workout.module1">
 				<span style = "display:block; font-weight:bold;">I. {{wodToDisplay.workout.module1.title}}</span>
 				<div ng-repeat = "bullet in wodToDisplay.workout.module1.bullets">{{bullet}}</div><br>
 		</li>
@@ -76,7 +80,7 @@
 		<li ng-show = "wodToDisplay.workout.module4">
 				<span style = "display:block; font-weight:bold;">IV. {{wodToDisplay.workout.module4.title}}</span>
 				<div ng-repeat = "bullet in wodToDisplay.workout.module4.bullets">{{bullet}}</div><br>
-		</li>
+		</li> -->
 	</ul>
 </section>
 
@@ -99,8 +103,8 @@
 		<a class="filter-btn" ng-class = "{active: communityActive}" ng-mouseover = "showCommunity()" href="">Community</a>		
 		<a class="filter-btn" ng-class = "{active: classmateActive}" ng-mouseover = "showClassmates()" href="">Classmates</a>
 	</div>
-	<ul class="public-results" ng-repeat = "result in rankings">
-		<li>
+	<ul class="public-results" >
+		<li ng-repeat = "result in rankings">
 			<div class="rank"><span>{{result.rank}}</span></div>
 			<div class="photo"><img src="{{result.userPicture}}"></div>
 			<div class="scoring"><span class="scoreValue">{{formatScore(result.score)}}</span><span class="user-first">{{result.userFirstName}}</span></div>

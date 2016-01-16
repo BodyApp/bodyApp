@@ -63,6 +63,8 @@ angular.module('bodyAppApp')
 		var publisher;
 
 		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer._id.toString()
+		var userIsDan = currentUser.facebookId === "10100958748247716"
+		// if (userIsDan) userIsInstructor = true;
 		if (!userIsInstructor) {
 			$scope.consumerList.push(currentUser._id);
 			$scope.consumerObjects[currentUser._id] = currentUser;
@@ -120,22 +122,22 @@ angular.module('bodyAppApp')
 			setMusicVolume($scope.musicVolume);
 	  });
 
-		if (!userIsInstructor) {
-		  $scope.consumersCanHearEachOther.$watch(function() {
-		  	$scope.consumersCanHearEachOther = $scope.consumersCanHearEachOther;
-		  	if ($scope.consumersCanHearEachOther) {
-		  		setVolume(0)
-		  		for (var i = 0; i < subscriberArray.length; i++) {
-		  			subscriberArray[i].subscribeToAudio(true);
-		  		}
-		  	} else {
-		  		for (var i = 0; i < subscriberArray.length; i++) {
-		  			subscriberArray[i].subscribeToAudio(false);
-		  		}
-		  		setVolume($scope.musicVolume)
-		  	}
-		  })
-		}
+		// if (!userIsInstructor) {
+		//   $scope.consumersCanHearEachOther.$watch(function() {
+		//   	$scope.consumersCanHearEachOther = $scope.consumersCanHearEachOther;
+		//   	if ($scope.consumersCanHearEachOther) {
+		//   		setVolume(0)
+		//   		for (var i = 0; i < subscriberArray.length; i++) {
+		//   			subscriberArray[i].subscribeToAudio(true);
+		//   		}
+		//   	} else {
+		//   		for (var i = 0; i < subscriberArray.length; i++) {
+		//   			subscriberArray[i].subscribeToAudio(false);
+		//   		}
+		//   		setVolume($scope.musicVolume)
+		//   	}
+		//   })
+		// }
 
 		if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
 			var element = document.getElementById('audioPlayer')
@@ -208,6 +210,7 @@ angular.module('bodyAppApp')
 		}
 
 		function setMusicVolume(musicVolume) {
+			console.log("Volume percentage changed to " + musicVolume)
 			if (userIsInstructor) {
 				audioPlayer.setVolume(0);
 			} else {
@@ -361,7 +364,9 @@ angular.module('bodyAppApp')
 						subscriberArray.push(subscriber);
 
 				  	subscriber.setStyle("nameDisplayMode", "off")
-				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"); //Sets image to be displayed when no video
+				  	console.log($scope.consumerObjects);
+				  	console.log(streamId)
+				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : classToJoin.trainer.picture); //Sets image to be displayed when no video
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
 						SpeakerDetection(subscriber, function() {
@@ -445,6 +450,7 @@ angular.module('bodyAppApp')
 			};
 
 			function setPublisher() {
+				if (!userIsDan) { return }
 				OT.getDevices(function(error, devices) {
 					if (devices) {
 					  var audioInputDevices = devices.filter(function(element) {
@@ -547,15 +553,15 @@ angular.module('bodyAppApp')
 		        activity = {timestamp: now, talking: false};
 		      } else if (activity.talking) {
 		        activity.timestamp = now;
-		      } else if (now- activity.timestamp > 1000) {
-		        // detected audio activity for more than 1s
+		      } else if (now- activity.timestamp > 500) {
+		        // detected audio activity for more than half second
 		        // for the first time.
 		        activity.talking = true;
 		        if (typeof(startTalking) === 'function') {
 		          startTalking();
 		        }
 		      }
-		    } else if (activity && now - activity.timestamp > 3000) {
+		    } else if (activity && now - activity.timestamp > 2000) {
 		      // detected low audio activity for more than 3s
 		      if (activity.talking) {
 		        if (typeof(stopTalking) === 'function') {

@@ -87,7 +87,7 @@
 }
 .individual-classmate {
   position: relative;
-  display: inline;
+  display: block;
 }
 .individual-classmate img {
   position: absolute;
