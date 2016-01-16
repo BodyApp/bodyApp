@@ -208,14 +208,14 @@
     </div>
   </div>
 </section>
-<section class="visible-xs">
+<section class="visible-xs" style = "padding-bottom:32px; padding-top:32px;">
   <h1 id="tour-classes" class="darkblue">BODY Class Schedule</h1>
-  <h4 class="week-selector darkblue bold text-center" ng-show = "chosenDay">
-    <a href=""><span ng-click = "setCalendarToThisWeek()"> &larr; </span></a>
-      &nbsp;{{chosenDay.formattedDate}}&nbsp;
-    <a href=""><span ng-click = "setCalendarToNextWeek()"> &rarr; </span></a>
+  <h4 class="week-selector darkblue bold text-center" ng-show = "days" ng-click="changeWeek()">
+    <a href=""><span ng-hide = "thisWeek"> &larr; </span></a>
+      &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+    <a href=""><span ng-show = "thisWeek" > &rarr; </span></a>
   </h4>
-  <div class="col-day" ng-repeat="day in days">
+  <div class="col-day" ng-repeat="day in days" ng-if = "!thisWeek || day.dayOfWeek >= todayDayOfWeek">
     <div class = "fixedAtTop">
       <div class="day-and-date text-center">
         <span class="day bold">{{ day.name }}</span>
@@ -252,7 +252,13 @@
       </div>
     </div>
   </div>
+  
 </section>
+<h4 class="week-selector darkblue bold text-center" ng-show = "days" ng-click="changeWeek()">
+  <a href=""><span ng-hide = "thisWeek"> &larr; </span></a>
+    &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+  <a href=""><span ng-show = "thisWeek" > &rarr; </span></a>
+</h4>
 
 <div ng-if="windowWidth > 767">
 

@@ -5,10 +5,12 @@ angular.module('bodyAppApp')
         var currentUser;
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
+        $scope.todayDayOfWeek = todayDate.getDay();
         $scope.windowWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         // $scope.myBookedClasses = {};
 
         $scope.thisWeek;
+        $scope.chosenDay;
         var unbindMethod = function(){};
 
         var classKey = ""+todayDate.getFullYear()+""+((todayDate.getMonth()+1 < 10)?"0"+(todayDate.getMonth()+1):todayDate.getMonth()+1)+""+((todayDate.getDate() < 10)?"0"+todayDate.getDate():todayDate.getDate())
@@ -55,7 +57,7 @@ angular.module('bodyAppApp')
         }
 
         $scope.openFriendFbLink = function(friend) {
-          $window.open('https://www.facebook.com/'+friend.facebookId, '_blank');
+          // $window.open('https://www.facebook.com/'+friend.facebookId, '_blank');
         }
 
         $scope.checkIfFriends = function(slot) {
@@ -87,6 +89,14 @@ angular.module('bodyAppApp')
           return friendList;
         }
 
+        $scope.changeWeek = function() {
+          if ($scope.thisWeek) {
+            $scope.setCalendarToNextWeek()
+          } else {
+            $scope.setCalendarToThisWeek()
+          }
+        }
+
         $scope.setCalendarToThisWeek = function() { thisWeek() }
         function thisWeek() {
           $scope.thisWeek = true; 
@@ -101,7 +111,7 @@ angular.module('bodyAppApp')
           var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
           if (!$scope.currentWeek) $firebaseObject(ref.child(weekOf)).$bindTo($scope, 'currentWeek')
-
+          
           unbindMethod()
           Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
             unbindMethod = unbind
