@@ -121,12 +121,12 @@
   <!-- END RESERVATION SECTION -->
 
     <div id="tour-workout" class="col-sm-5 col-sm-pull-7 sideDivider">
-      <h1 class="darkblue">Today's Workout</h1>
+      <h1 class="darkblue">Today's Challenge</h1>
       <h4 class="royalblue bold mb8">{{wod.title}}</h4>
       <p class="wod-description mb16">{{wod.description}}</p>   
       <span>
-        <p class="gray bold theChallenge mb8" ng-if = "wod.workout.module4">{{wod.workout.module4.title}}</p>
-        <div ng-repeat = "bullet in wod.workout.module4.bullets"><span class="wod-description">{{bullet}}</span></div>
+        <p class="gray bold theChallenge mb0" ng-if = "wod.scoreType">{{wod.scoreType.label}}</p>
+        <div ng-repeat = "bullet in wod.challenge.bullets"><span class="wod-description">{{bullet}}</span></div>
       </span>
 
 <!--       <ul class="dash-workoutModules">

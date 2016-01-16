@@ -115,8 +115,8 @@
             <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer>
             <span class="rounds">rds {{stopwatch.rounds}}</span>
             <h5 class="white mb8 mt32 text-left">Today's Challenge</h5>
-            <span class="module-title bold">IV. {{todayWod.workout.module4.title}}</span>
-            <ul class="module-description mb8 text-left" ng-repeat = "bullet in todayWod.workout.module4.bullets">
+            <span class="module-title bold">IV. {{todayWod.scoreType.label}}</span>
+            <ul class="module-description mb8 text-left" ng-repeat = "bullet in todayWod.challenge.bullets">
               <li>{{bullet}}</li>
             </ul>                                    
           </div>
