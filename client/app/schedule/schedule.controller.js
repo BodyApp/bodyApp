@@ -167,7 +167,7 @@ angular.module('bodyAppApp')
                 default: break;
             }
 
-            if (newDate.getDay() == new Date().getDay() && !noToday) {
+            if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
                 formatted.dayOfWeek = "Today"
             }
 
@@ -391,9 +391,10 @@ angular.module('bodyAppApp')
               // delete $scope.myBookedClasses[slot.date];
               slot.bookedUsers = slot.bookedUsers || {};
               slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-              slot.bookedUsers[currentUser._id] = false
-              slot.spotsTaken
-              delete slot.bookedFbUserIds[currentUser.facebook.id]
+              slot.cancelledUsers = slot.cancelledUsers || {};
+              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeCancelled: new Date().getTime()};
+              delete slot.bookedUsers[currentUser._id];
+              delete slot.bookedFbUserIds[currentUser.facebook.id];
               // slot.$save();
               currentUser = user;
               Auth.updateUser(currentUser);
@@ -409,8 +410,10 @@ angular.module('bodyAppApp')
               // delete $scope.myBookedClasses[slot.date];
               slot.bookedUsers = slot.bookedUsers || {};
               slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-              slot.bookedUsers[currentUser._id] = false
-              delete slot.bookedFbUserIds[currentUser.facebook.id]
+              slot.cancelledUsers = slot.cancelledUsers || {};
+              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeCancelled: new Date().getTime()};
+              delete slot.bookedUsers[currentUser._id];
+              delete slot.bookedFbUserIds[currentUser.facebook.id];
               Auth.updateUser(user);
               currentUser = user;
               $scope.currentUser = currentUser;
@@ -435,12 +438,12 @@ angular.module('bodyAppApp')
                 getInfo(slot.date);
                 slot.bookedUsers = slot.bookedUsers || {};
                 slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                slot.bookedUsers[currentUser._id] = true;
-                slot.bookedFbUserIds[currentUser.facebook.id] = true;
+                slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
+                slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
               }, function(err) {
                   console.log("Error adding class: " + err)
-                  classToBook.bookedUsers[currentUser._id] = false
-                  classToBook.$save()
+                  // classToBook.bookedUsers[currentUser._id] = false
+                  // classToBook.$save()
                   alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
               }).$promise;
             // }
@@ -474,7 +477,7 @@ angular.module('bodyAppApp')
             getInfo(slot.date);
             slot.bookedUsers = slot.bookedUsers || {};
             slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-            slot.bookedUsers[currentUser._id] = true
+            slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
             slot.bookedFbUserIds[currentUser.facebook.id] = true
             // slot.$save();
             currentUser = user;
@@ -482,8 +485,8 @@ angular.module('bodyAppApp')
           }, function(err) {
               console.log("Error adding class: " + err)
               slot.bookedUsers = slot.bookedUsers || {};
-              slot.bookedUsers[currentUser._id] = false
-              delete slot.bookedFbUserIds[currentUser.facebook.id]
+              delete slot.bookedUsers[currentUser._id];
+              delete slot.bookedFbUserIds[currentUser.facebook.id];
               alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
           }).$promise;
         }

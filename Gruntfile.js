@@ -225,7 +225,6 @@ module.exports = function (grunt) {
           src: [
             '<%= yeoman.dist %>/public/{,*/}*.js',
             '<%= yeoman.dist %>/public/{,*/}*.css',
-            // '<%= yeoman.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/public/assets/*'
           ]
         }
@@ -302,15 +301,15 @@ module.exports = function (grunt) {
       options: {
         // This should be the name of your apps angular module
         module: 'bodyAppApp',
-        htmlmin: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeEmptyAttributes: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
-        },
+        // htmlmin: {
+        //   collapseBooleanAttributes: true,
+        //   collapseWhitespace: true,
+        //   removeAttributeQuotes: true,
+        //   removeEmptyAttributes: true,
+        //   removeRedundantAttributes: true,
+        //   removeScriptTypeAttributes: true,
+        //   removeStyleLinkTypeAttributes: true
+        // },
         usemin: 'app/app.js'
       },
       main: {
@@ -344,7 +343,6 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/**/*',
-            // 'assets/images/{,*/}*.{webp}',
             'assets/**/*',
             'index.html'
           ]

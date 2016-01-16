@@ -134,8 +134,10 @@
               <td><a ng-click = "resetStopwatch();">Reset</a></td>
             </tr>
           </table>
-          <h4>Workout</h4>
-          <p><strong>Skill</strong><br>Airsquat<br><strong>Benchmark</strong><br>1 min burpees</p>
+          <button class = "btn btn-success" ng-show = "!consumersCanHearEachOther" ng-click = "letConsumersHearEachOther()">Let Everyone Hear Each Other</button>
+          <button class = "btn btn-danger" ng-show = "consumersCanHearEachOther" ng-click = "stopConsumersFromHearingEachOther()">Stop Everyone From Hearing Each Other</button>
+          <!-- <h4>Workout</h4>
+          <p><strong>Skill</strong><br>Airsquat<br><strong>Benchmark</strong><br>1 min burpees</p> -->
           <h4>Song/Volume</h4>
           <form>
                 <input style = "margin-bottom:6px" type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />

@@ -33,7 +33,8 @@
               <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
             </div>
             <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach Class</a>
               <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
               <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
             </div>
@@ -55,7 +56,8 @@
               <span>You</span>
             </div>
             <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
-              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
+              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach Class</a>
               <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
               <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
             </div>

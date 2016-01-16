@@ -17,6 +17,8 @@ angular.module('bodyAppApp')
 		$scope.classTime = classToJoin.date;
 		$scope.trainer = classToJoin.trainer;
 
+		var subscriberArray = [];
+
 		var classClosesTime = (classToJoin.date + 1000*60*60);
 		var classHalfway = (classToJoin.date + 1000*60*30);
 		var endClassCheckInterval = $interval(function() {
@@ -86,6 +88,13 @@ angular.module('bodyAppApp')
       .child(classDate.getTime())
       .child("stopwatch"));
 
+    $scope.consumersCanHearEachOther = $firebaseObject(
+    	ref.child(weekOf)
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("consumersCanHearEachOther"));
+
     var stopwatchRef = 
     	ref.child(weekOf)
       .child(classDate.getDay())
@@ -110,6 +119,23 @@ angular.module('bodyAppApp')
 			$scope.musicVolume = volumeRef.$value
 			setMusicVolume($scope.musicVolume);
 	  });
+
+		if (!userIsInstructor) {
+		  $scope.consumersCanHearEachOther.$watch(function() {
+		  	$scope.consumersCanHearEachOther = $scope.consumersCanHearEachOther;
+		  	if ($scope.consumersCanHearEachOther) {
+		  		setVolume(0)
+		  		for (var i = 0; i < subscriberArray.length; i++) {
+		  			subscriberArray[i].subscribeToAudio(true);
+		  		}
+		  	} else {
+		  		for (var i = 0; i < subscriberArray.length; i++) {
+		  			subscriberArray[i].subscribeToAudio(false);
+		  		}
+		  		setVolume($scope.musicVolume)
+		  	}
+		  })
+		}
 
 		if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
 			var element = document.getElementById('audioPlayer')
@@ -162,6 +188,14 @@ angular.module('bodyAppApp')
 		wodRef.once('value', function(snapshot) {
 			$scope.todayWod = snapshot.val()
 		})
+
+		$scope.letConsumersHearEachOther = function() {
+			$scope.consumersCanHearEachOther = true;
+		}
+
+		$scope.stopConsumersFromHearingEachOther = function() {
+			$scope.consumersCanHearEachOther = false;
+		}
 
 		$scope.openSongPermalink = function(currentSong) {
 			$window.open(currentSong.permalink_url, '_blank');
@@ -323,6 +357,8 @@ angular.module('bodyAppApp')
 	            	instructorInfo = data
 	            })
 						}
+
+						subscriberArray.push(subscriber);
 
 				  	subscriber.setStyle("nameDisplayMode", "off")
 				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : "http://www.london24.com/polopoly_fs/1.3602534.1400170400!/image/2302025834.jpg_gen/derivatives/landscape_630/2302025834.jpg"); //Sets image to be displayed when no video

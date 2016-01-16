@@ -7,6 +7,7 @@ angular.module('bodyAppApp')
     $scope.currentUser = Auth.getCurrentUser();
     $scope.upcomingIntros;
     $scope.bookedIntroClass;
+    var injuries = "";
 
     var ref = new Firebase("https://bodyapp.firebaseio.com")
     $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
@@ -43,7 +44,9 @@ angular.module('bodyAppApp')
 
     	classToBook.$loaded(function() {
     		classToBook.bookedUsers = classToBook.bookedUsers || {};
-			classToBook.bookedUsers[$scope.currentUser._id] = true;
+			classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName, timeBooked: new Date().getTime(), injuries: injuries, picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
+            classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
+            classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
 			classToBook.$save()
             $scope.classDetails = classToBook;
     	})
@@ -55,7 +58,10 @@ angular.module('bodyAppApp')
         }, function(err) {
             console.log("Error adding class: " + err)
             classToBook.bookedUsers = classToBook.bookedUsers || {};
-            classToBook.bookedUsers[$scope.currentUser._id] = false
+            delete classToBook.bookedUsers[$scope.currentUser._id]
+            classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
+            delete classToBook.bookedFbUserIds[$scope.currentUser.facebook.id]
+
             classToBook.$save()
             alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
         }).$promise;
@@ -70,12 +76,12 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveInjuries = function(injuryString) {
-    	injuryString = injuryString || ""
-    	if (injuryString.length < 2) {
+    	injuries = injuryString || ""
+    	if (injuries.length < 2) {
     		$scope.errorDiv = true
     		console.log("Didn't enter any information!")
     	} else {
-    		User.saveInjuries({id: $scope.currentUser}, {injuryString: injuryString}).$promise.then(function(user) {
+    		User.saveInjuries({id: $scope.currentUser}, {injuryString: injuries}).$promise.then(function(user) {
 				  console.log("Successfully saved injury info.");
 				  Auth.getUpdatedUser();
 			  })
