@@ -189,7 +189,7 @@ a.full.btn {
   display: inline-block;
   width: 25px;
   height: 25px;
-  border-radius: 12.5px;
+  border-radius: 16px;
   border: 1px dashed #BDBDBD;
   vertical-align: middle;
 }

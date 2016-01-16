@@ -1,7 +1,7 @@
 // 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig, $window) {
         var currentUser;
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
@@ -54,21 +54,36 @@ angular.module('bodyAppApp')
           // })
         }
 
+        $scope.openFriendFbLink = function(friend) {
+          $window.open('https://www.facebook.com/'+friend.facebookId, '_blank');
+        }
+
         $scope.checkIfFriends = function(slot) {
           var friendList = [];
-          for (var user in slot.bookedFbUserIds) {
-            if (currentUser.friendListObject && currentUser.friendListObject[user]) {
+          for (var prop in slot.bookedUsers) {
+            var user = slot.bookedUsers[prop];
+            if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
+              console.log(user);
               friendList.push(user);
-              if (!$scope.pictureData[user]) {
-                var userRef = ref.child("fbUsers").child(user)
-                userRef.once('value', function(snapshot) {
-                  var userPulled = snapshot.val()
-                  $scope.pictureData[friendList[0]] = snapshot.val()
-                  if(!$scope.$$phase) $scope.$apply();
-                })
+              if (!$scope.pictureData[user.facebookId]) {
+                $scope.pictureData[user.facebookId] = user;
               }
             }
           }
+          // for (var user in slot.bookedFbUserIds) {
+          //   if (currentUser.friendListObject && currentUser.friendListObject[user]) {
+          //     friendList.push(user);
+          //     if (!$scope.pictureData[user]) {
+          //       var userRef = ref.child("fbUsers").child(user)
+          //       userRef.once('value', function(snapshot) {
+          //         var userPulled = snapshot.val()
+          //         $scope.pictureData[friendList[0]] = snapshot.val()
+          //         if(!$scope.$$phase) $scope.$apply();
+          //       })
+          //     }
+          //   }
+          // }
+          console.log(friendList);
           return friendList;
         }
 
@@ -575,7 +590,7 @@ angular.module('bodyAppApp')
       }     
 
       //Stick top of calendar to top of screen
-      if ($scope.windowWidth > 800) {
+      if ($scope.windowWidth > 1100) {
         $(window).scroll(function(e){ 
           var $el = $('.fixedAtTop'); 
           var isPositionFixed = ($el.css('position') == 'fixed');

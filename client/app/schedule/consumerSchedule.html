@@ -192,15 +192,15 @@
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
-        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         <div class="my-friends mt16 mb8" >
           <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
             <span ng-show = "friendList.length != 1">friends in class</span> 
             <span ng-show = "friendList.length === 1">friend in class</span> 
             </div>
-          <img class="profile" ng-src="{{pictureData[friendList[0]].picture}}">
-          <img class="profile" ng-src="{{pictureData[friendList[1]].picture}}">
-          <img class="profile" ng-src="{{pictureData[friendList[2]].picture}}">
+          <img class="profile" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+          <img class="profile" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+          <img class="profile" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
           <!-- <div class="empty"></div>
           <div class="empty"></div> -->
         </div>
@@ -210,10 +210,10 @@
 </section>
 <section class="visible-xs">
   <h1 id="tour-classes" class="darkblue">BODY Class Schedule</h1>
-  <h4 class="week-selector darkblue bold text-center" ng-show = "days">
-    <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()"></i></a>
-    &nbsp;{{days[6].formattedDate}}&nbsp;
-    <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()"></i></a>
+  <h4 class="week-selector darkblue bold text-center" ng-show = "chosenDay">
+    <a href=""><span ng-click = "setCalendarToThisWeek()"> &larr; </span></a>
+      &nbsp;{{chosenDay.formattedDate}}&nbsp;
+    <a href=""><span ng-click = "setCalendarToNextWeek()"> &rarr; </span></a>
   </h4>
   <div class="col-day" ng-repeat="day in days">
     <div class = "fixedAtTop">
@@ -234,7 +234,7 @@
           <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
           <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
           <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
-        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         </div>
         <div class="col-xs-6 text-center">
           <div class="my-friends" >
@@ -242,9 +242,9 @@
               <span ng-show = "friendList.length != 1">friends in class</span> 
               <span ng-show = "friendList.length === 1">friend in class</span> 
             </div>
-            <img class="profile" ng-src="{{pictureData[friendList[0]].picture}}">
-            <img class="profile" ng-src="{{pictureData[friendList[1]].picture}}">
-            <img class="profile" ng-src="{{pictureData[friendList[2]].picture}}">
+          <img class="profile" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+          <img class="profile" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+          <img class="profile" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
             <!-- <div class="empty"></div>
             <div class="empty"></div> -->
           </div>
