@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('SettingsCtrl', function ($scope, $http, $modal, $state, User, Auth) {
+  .controller('SettingsCtrl', function ($scope, $http, $uibModal, $state, User, Auth) {
     $scope.errors = {};
     $scope.editingCreditCardInfo = false;
     $scope.currentUser = Auth.getCurrentUser();
@@ -121,7 +121,7 @@ angular.module('bodyAppApp')
     }
 
     function openPaymentConfirmedModal() {
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/account/payment/paymentThanks.html',
         controller: 'PaymentCtrl',
@@ -143,7 +143,7 @@ angular.module('bodyAppApp')
     }
 
     function openCancellationConfirmedModal() {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'app/account/settings/cancellation.html',
           controller: 'SettingsCtrl',

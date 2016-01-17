@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $modal, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject, $firebaseArray) {
+  .controller('AdminCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject, $firebaseArray) {
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
@@ -105,7 +105,7 @@ angular.module('bodyAppApp')
     }
 
     function openCreatingModal() {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'app/admin/creating.html',
           controller: 'AdminCtrl',

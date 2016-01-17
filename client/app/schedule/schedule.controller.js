@@ -1,7 +1,7 @@
 // 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $modal, $log, $interval, $state, tourConfig, $window) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
         var currentUser;
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
@@ -84,7 +84,6 @@ angular.module('bodyAppApp')
           //     }
           //   }
           // }
-          console.log(friendList);
           return friendList;
         }
 
@@ -218,7 +217,7 @@ angular.module('bodyAppApp')
           if (currentUser.stripe && currentUser.stripe.subscription && currentUser.stripe.subscription.status === "active") {
               return true;
           } else {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'app/membership/membership.html',
               controller: 'MembershipCtrl',
@@ -311,7 +310,7 @@ angular.module('bodyAppApp')
         }
 
         function openPaymentConfirmedModal() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'app/account/payment/paymentThanks.html',
               controller: 'PaymentCtrl',
@@ -478,7 +477,7 @@ angular.module('bodyAppApp')
         };
 
         function bookClass(slot) {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'app/schedule/bookingConfirmation.html',
             controller: 'BookingConfirmationCtrl',
@@ -582,6 +581,18 @@ angular.module('bodyAppApp')
         //     $scope.currentStep = 0
         //   // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
         // };
+
+    // *****************jQuery MAGIC*****************
+        //Makes titles show up immediately on hover
+    //     $(document).ready(function(){
+    // $("#friendPicture").tooltip({
+    //       show: {
+    //         effect: "slideDown",
+    //         delay: 250
+    //       }
+    //     });
+    //   });
+        
 
     // *****************SCROLLING MAGIC*****************
       //Scroll Down

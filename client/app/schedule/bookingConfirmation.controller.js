@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('BookingConfirmationCtrl', function ($scope, Auth, Schedule, slot, $modalInstance) {
+    .controller('BookingConfirmationCtrl', function ($scope, Auth, Schedule, slot, $uibModalInstance) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         $scope.bookedClass = slot;
@@ -72,11 +72,11 @@ angular.module('bodyAppApp')
 
         $scope.inviteSelectedFriends = function() {
             console.log($scope.friendsSelected)
-            $modalInstance.close()
+            $uibModalInstance.close()
         }
 
         $scope.closeModal = function() {
-            $modalInstance.close()   
+            $uibModalInstance.close()   
         }
 
         $scope.backToMain = function() {

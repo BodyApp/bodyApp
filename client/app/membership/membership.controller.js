@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $modalInstance) {
+  .controller('MembershipCtrl', function ($scope, $uibModalInstance) {
 		$(".arrow").click(function() {
 	    $('html,body').animate({
         scrollTop: $("#scroll-link").offset().top + -100},
@@ -10,6 +10,6 @@ angular.module('bodyAppApp')
 		});
 
 		$scope.joinClicked = function() {
-			$modalInstance.dismiss('join');
+			$uibModalInstance.dismiss('join');
 		}	
 	});

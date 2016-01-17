@@ -1,6 +1,6 @@
 
 angular.module('bodyAppApp')
-  .controller('PaymentCtrl', function ($scope, Auth, $modalInstance) {
+  .controller('PaymentCtrl', function ($scope, Auth, $uibModalInstance) {
 
   	$scope.currentUser = Auth.getCurrentUser();
   	// console.log($scope.currentUser);

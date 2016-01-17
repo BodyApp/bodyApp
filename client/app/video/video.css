@@ -87,7 +87,7 @@
 }
 .individual-classmate {
   position: relative;
-  display: block;
+  display: inline;
 }
 .individual-classmate img {
   position: absolute;
@@ -269,6 +269,20 @@
 
 .video-teammate-name {
   width: 75px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.video-consumer-name {
+  width: 125px;
+  font-size:20px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.megascreen .video-consumer-name {
+  width: 200px;
+  font-size:28px;
   white-space: nowrap;
   overflow: hidden;
 }

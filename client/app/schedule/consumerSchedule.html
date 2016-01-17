@@ -198,9 +198,9 @@
             <span ng-show = "friendList.length != 1">friends in class</span> 
             <span ng-show = "friendList.length === 1">friend in class</span> 
             </div>
-          <img class="profile" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
-          <img class="profile" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
-          <img class="profile" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
+          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
           <!-- <div class="empty"></div>
           <div class="empty"></div> -->
         </div>
@@ -222,7 +222,7 @@
         <span class="date bold">{{ day.formattedDate }}</span>
       </div>
       <!-- <div class="workout-and-module text-center">
-        <span class="wod-title bold">The Flip Side</span>
+        <span class="wod-uib-popover "hello" title=bold">The Flip Side</span>
         <span class="wod-module">Hip Openers</span>
       </div> -->
     </div>
@@ -242,9 +242,9 @@
               <span ng-show = "friendList.length != 1">friends in class</span> 
               <span ng-show = "friendList.length === 1">friend in class</span> 
             </div>
-          <img class="profile" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
-          <img class="profile" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
-          <img class="profile" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
+          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
             <!-- <div class="empty"></div>
             <div class="empty"></div> -->
           </div>
