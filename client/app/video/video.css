@@ -177,66 +177,82 @@
 }
 
 #box0 {
+  display:inline-block;
   left: 0%;
   top: 0%;
 }
 #box1 {
+  display:inline-block;
   left: 0%;
   top: 16.67%;
 }
 #box2 {
+  display:inline-block;
   left: 0%;
   top: 33.34%;
 }
 #box3 {
+  display:inline-block;
   left: 0%;
   top: 50.01%;
 }
 #box4 {
+  display:inline-block;
   left: 0%;
   top: 66.68%;
 }
 #box5 {
+  display:inline-block;
   left: 0%;
   top: 83.35%;
 }
 #box6 {
+  display:inline-block;
   left: 16.67%;
   top: 0%;  
 }
 #box7 {
+  display:inline-block;
   left: 16.67%;
   top: 16.67%;  
 }
 #box8 {
+  display:inline-block;
   left: 16.67%;
   top: 33.34%;
 }
 #box9 {
+  display:inline-block;
   left: 16.67%;
   top: 50.01%;
 }
 #box10 {
+  display:inline-block;
   left: 16.67%;
   top: 66.68%;  
 }
 #box11 {
+  display:inline-block;
   left: 16.67%;
   top: 83.35%;
 }
 #box12 {
+  display:inline-block;
   left: 33.34%;
   top: 83.35%;
 }
 #box13 {
+  display:inline-block;
   left: 50.01%;
   top: 83.35%;
 }
 #box14 {
+  display:inline-block;
   left: 66.68%;
   top: 83.35%;  
 }
 #box15 {
+  display:inline-block;
   left: 83.35%;
   top: 83.35%;
 }
