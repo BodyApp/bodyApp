@@ -25,8 +25,7 @@ angular.module('bodyAppApp')
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
 				console.log("class is over, booting people out");
-				classOver()
-				$location.path('/');
+				$location.path('/classfeedback');
 			} else if (classHalfway < currentTime ) {
 				classTaken()
 			} else {
