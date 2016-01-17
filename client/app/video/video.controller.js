@@ -8,18 +8,12 @@ angular.module('bodyAppApp')
 			return $location.path('/')
 		}
 
-		// check for WebRTC - moved to vidInit
-		// if (!navigator.webkitGetUserMedia && !navigator.mozGetUserMedia) {
-		//   alert('BODY is not available in your browser. Please switch to Chrome, Firefox or Opera.');
-		//   $location.path('/')
-		// }
-
 		$scope.classTime = classToJoin.date;
 		$scope.trainer = classToJoin.trainer;
 
 		var lastConsumerTrainerCouldHear;
 
-		var classClosesTime = (classToJoin.date + 1000*60*60);
+		var classClosesTime = (classToJoin.date + 1000*60*70);
 		var classHalfway = (classToJoin.date + 1000*60*30);
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
@@ -32,17 +26,6 @@ angular.module('bodyAppApp')
 				console.log("class currently in session");
 			}
 		}, 1000*60*15)
-
-		// var classClosesTime = (classToJoin.date + 1000*10)
-		// var endClassCheckInterval = $interval(function() {
-		// 	var currentTime = (new Date()).getTime()
-		// 	if (classClosesTime < currentTime) {
-		// 		console.log("class is over, booting people out");
-		// 		$location.path('/classfeedback');
-		// 	} else {
-		// 		console.log("class currently in session");
-		// 	}
-		// }, 1000*10)
   	
 		var firstTimePlayingSong = true;
 		$scope.currentSong = {};
@@ -72,6 +55,7 @@ angular.module('bodyAppApp')
 
 		var audioPlayer;
 		$scope.musicVolume = 50;
+		var oldSoundVolume; //Used for toggling whether users can hear each other or not
 
 		var classDate = new Date(classToJoin.date)
 		var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
@@ -90,7 +74,9 @@ angular.module('bodyAppApp')
       .child(classDate.getTime())
       .child("stopwatch"));
 
-    $scope.consumersCanHearEachOther = $firebaseObject(
+    $scope.consumersCanHearEachOther;
+
+    var canHearRef = $firebaseObject(
     	ref.child(weekOf)
       .child(classDate.getDay())
       .child("slots")
@@ -122,11 +108,40 @@ angular.module('bodyAppApp')
 			setMusicVolume($scope.musicVolume);
 	  });
 
+	  canHearRef.$loaded().then(function() {
+			$scope.consumersCanHearEachOther = canHearRef.$value
+			if ($scope.consumersCanHearEachOther) {
+	  		for (var i = 0; i < subscriberArray.length; i++) {
+	  			console.log("Can hear user " + subscriberArray[i].streamId)
+	  			subscriberArray[i].subscribeToAudio(true);
+	  		}
+	  	} else {
+	  		for (var i = 0; i < subscriberArray.length; i++) {
+	  			console.log("Can no longer hear user " + subscriberArray[i].streamId)
+	  			subscriberArray[i].subscribeToAudio(false);
+	  		}
+	  	}
+	  });
+
+		canHearRef.$watch(function() {
+			$scope.consumersCanHearEachOther = canHearRef.$value
+			if ($scope.consumersCanHearEachOther) {
+	  		for (var i = 0; i < subscriberArray.length; i++) {
+	  			console.log("Can hear user " + subscriberArray[i].streamId)
+	  			subscriberArray[i].subscribeToAudio(true);
+	  		}
+	  	} else {
+	  		for (var i = 0; i < subscriberArray.length; i++) {
+	  			console.log("Can no longer hear user " + subscriberArray[i].streamId)
+	  			subscriberArray[i].subscribeToAudio(false);
+	  		}
+	  	}
+	  });
+
 		// if (!userIsInstructor) {
 		//   $scope.consumersCanHearEachOther.$watch(function() {
 		//   	$scope.consumersCanHearEachOther = $scope.consumersCanHearEachOther;
 		//   	if ($scope.consumersCanHearEachOther) {
-		//   		setVolume(0)
 		//   		for (var i = 0; i < subscriberArray.length; i++) {
 		//   			subscriberArray[i].subscribeToAudio(true);
 		//   		}
@@ -134,7 +149,6 @@ angular.module('bodyAppApp')
 		//   		for (var i = 0; i < subscriberArray.length; i++) {
 		//   			subscriberArray[i].subscribeToAudio(false);
 		//   		}
-		//   		setVolume($scope.musicVolume)
 		//   	}
 		//   })
 		// }
@@ -193,14 +207,24 @@ angular.module('bodyAppApp')
 
 		$scope.letConsumersHearEachOther = function() {
 			$scope.consumersCanHearEachOther = true;
+			canHearRef.$value = true;
+			canHearRef.$save()
+			oldSoundVolume = $scope.musicVolume;
+			$scope.musicVolume = 0;
+			$scope.setMusicVolume($scope.musicVolume);
 		}
 
 		$scope.stopConsumersFromHearingEachOther = function() {
 			$scope.consumersCanHearEachOther = false;
+			canHearRef.$value = false;
+			canHearRef.$save()
+
+			$scope.musicVolume = oldSoundVolume;
+			$scope.setMusicVolume($scope.musicVolume);
 		}
 
 		$scope.openSongPermalink = function(currentSong) {
-			$window.open(currentSong.permalink_url, '_blank');
+			if (!userIsInstructor) $window.open(currentSong.permalink_url, '_blank');
 		}
 
 		$scope.setMusicVolume = function(musicVolume) {
@@ -239,28 +263,15 @@ angular.module('bodyAppApp')
       }, function(err) {
           console.log(err);
       }).$promise;
-			// var token = 'T1==cGFydG5lcl9pZD00NTQyNTE1MiZzaWc9ODk3MTI5MzkyNDM3ZjA2ZDliZTk2YmNlMjNmOWI0MzUyNmQ2Y2JhMzpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPTFfTVg0ME5UUXlOVEUxTW41LU1UUTBPVEE0T0RnNE5EYzFNbjVQUTJwaGVrVTVPRk15UkVWbk4wUk5la1pSTUdwMlFuSi1VSDQmY3JlYXRlX3RpbWU9MTQ0OTE3OTc3MCZub25jZT0wLjMxODA1NjA1ODQxNDAwNTUmZXhwaXJlX3RpbWU9MTQ0OTI2NjE3MA==';
 			var publisherInitialized = false;
 			var connected = false;
 
 			if (OT.checkSystemRequirements() == 1) {
 				session = OT.initSession(apiKey, sessionId);
-
 				$scope.$on("$destroy", function() { // destroys the session when navigate away
-	        // if (session) {
-	        	console.log("Disconnecting session because navigated away.")
-	          // session.unpublish(publisher);
-	          // publisher.disconnect();
-	          publisher.destroy();
-
-	          // session.disconnect();
-	          session.destroy();
-	          // session.destroy(publisher);
-	        // }
-
-	        // if (publisher) {
-
-	        // }
+        	console.log("Disconnecting session because navigated away.")
+          publisher.destroy();
+          session.destroy();
 		    });
 			} else {
 			  // The client does not support WebRTC.
@@ -279,20 +290,15 @@ angular.module('bodyAppApp')
 				  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 				  	}
 				  } else {
-				  	// if (!userIsInstructor) {
-						  connected = true;
-					    publish();
-					  // }
+					  connected = true;
+				    publish();
+				    if (session.capabilities.publish != 1) {
+		  				alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
+		  				$location.path('/');
+		  			}
 				  }
 				});	
 			};
-
-			// if (session.capabilities.publish == 1) {
-			//     // The client can publish. See the next section.
-			// } else {
-			//     // The client cannot publish.
-			//     alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
-			// }
 
 			setPublisher();
 
@@ -332,7 +338,6 @@ angular.module('bodyAppApp')
 			    insertMode: 'replace',
 			    width: vidWidth,
 				  height: vidHeight,
-				  testNetwork: true,
 				  mirror: true,
 			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 			  }, function(err) {
@@ -367,11 +372,13 @@ angular.module('bodyAppApp')
 								if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
 								$scope.consumerObjects[streamId] = classToJoin.bookedUsers[streamId]
 	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+	            	if(!$scope.$$phase) $scope.$apply();
 							} else {
 						  	var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 						  		if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
 		            	$scope.consumerObjects[streamId] = data;
 		            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+		            	if(!$scope.$$phase) $scope.$apply();
 		            })
 		          }
 						} else {
@@ -380,9 +387,14 @@ angular.module('bodyAppApp')
 	            })
 						}
 
-				  	subscriber.setStyle("nameDisplayMode", "off");
+						if (userIsInstructor) {
+							subscriber.setStyle("nameDisplayMode", "on");
+						} else {
+							subscriber.setStyle("nameDisplayMode", "off");	
+						}
 				  	console.log($scope.consumerObjects);
 				  	console.log(streamId);
+				  	console.log($scope.consumerObjects[$scope.consumerList[0]].firstName)
 				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : classToJoin.trainer.picture); //Sets image to be displayed when no video
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 

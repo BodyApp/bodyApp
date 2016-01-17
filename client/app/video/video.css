@@ -209,52 +209,52 @@
 }
 #box6 {
   display:inline-block;
-  left: 16.67%;
+  left: 0%;
   top: 0%;  
 }
 #box7 {
   display:inline-block;
-  left: 16.67%;
+  left: 0%;
   top: 16.67%;  
 }
 #box8 {
   display:inline-block;
-  left: 16.67%;
+  left: 0%;
   top: 33.34%;
 }
 #box9 {
   display:inline-block;
-  left: 16.67%;
+  left: 0%;
   top: 50.01%;
 }
 #box10 {
   display:inline-block;
-  left: 16.67%;
+  left: 0%;
   top: 66.68%;  
 }
 #box11 {
   display:inline-block;
-  left: 16.67%;
+  left: 0%;
   top: 83.35%;
 }
 #box12 {
   display:inline-block;
-  left: 33.34%;
+  left: 0%;
   top: 83.35%;
 }
 #box13 {
   display:inline-block;
-  left: 50.01%;
+  left: 0%;
   top: 83.35%;
 }
 #box14 {
   display:inline-block;
-  left: 66.68%;
+  left: 0%;
   top: 83.35%;  
 }
 #box15 {
   display:inline-block;
-  left: 83.35%;
+  left: 0%;
   top: 83.35%;
 }
 
@@ -291,10 +291,10 @@
 }
 
 .video-consumer-name {
-  width: 125px;
-  font-size:20px;
-  white-space: nowrap;
-  overflow: hidden;
+  width: 125px !important;
+  font-size:20px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
 }
 
 .megascreen .video-consumer-name {

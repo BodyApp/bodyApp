@@ -187,6 +187,7 @@ angular.module('bodyAppApp')
           },
           trainer: workoutToCreate.trainer,
           classFull: false,
+          consumersCanHearEachOther: false,
           musicVolume: 50,
           past: false,
           spots: 15
