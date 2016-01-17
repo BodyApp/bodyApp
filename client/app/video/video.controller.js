@@ -332,6 +332,7 @@ angular.module('bodyAppApp')
 			    insertMode: 'replace',
 			    width: vidWidth,
 				  height: vidHeight,
+				  testNetwork: true,
 				  mirror: true,
 			    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
 			  }, function(err) {
@@ -358,8 +359,15 @@ angular.module('bodyAppApp')
 				  		subscriber.setAudioVolume(100);
 				  	}
 
+				  	console.log(subscriber.getStats())
+
+
 				  	//Need to check if this user is already in the consumerList or not
 						if (!instructorStream) {
+							if (classToJoin.bookedUsers[streamId]) {
+								$scope.consumerObjects[streamId] = classToJoin.bookedUsers[streamId]
+	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+							} else {
 					  	var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 	            	$scope.consumerObjects[streamId] = data
 	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
@@ -369,8 +377,6 @@ angular.module('bodyAppApp')
 	            	instructorInfo = data
 	            })
 						}
-
-						subscriberArray.push(subscriber);
 
 				  	subscriber.setStyle("nameDisplayMode", "off")
 				  	console.log($scope.consumerObjects);
