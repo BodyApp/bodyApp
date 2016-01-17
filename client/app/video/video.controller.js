@@ -614,17 +614,36 @@ angular.module('bodyAppApp')
 			$scope.hover13 = false;
 			$scope.hover14 = false;
 			$scope.hover15 = false;
-			consumerBoxNumber -=1;
 			
-			if (subscriberArray[lastConsumerTrainerCouldHear] && lastConsumerTrainerCouldHear != consumerBoxNumber) subscriberArray[lastConsumerTrainerCouldHear].subscribeToAudio(false);
-			// if (!consumerBoxNumber) return console.log("Can't hear yourself!")
-			if (subscriberArray.length < 1) return console.log("No consumers");
-			if (!subscriberArray[consumerBoxNumber]) return console.log("No consumer audio found in that box")
-			lastConsumerTrainerCouldHear = consumerBoxNumber;
-			subscriberArray[consumerBoxNumber].subscribeToAudio(true);
-			subscriberArray[consumerBoxNumber].setAudioVolume(100);
-			var userStreamId = subscriberArray[consumerBoxNumber].streamId;
-			console.log("Now listening to " + consumerObjects[userStreamId].firstName + " " + consumerObjects[userStreamId].lastName)
+			consumerBoxNumber -=1;
+
+			// console.log(subscriberArray)
+			// console.log(lastConsumerTrainerCouldHear)
+			// console.log(consumerBoxNumber)
+
+			for (var i = 0; i < subscriberArray.length; i++) {
+				subscriberArray[i].subscribeToAudio(false);
+				if (i === consumerBoxNumber) {
+					console.log("subscribing to audio from "+subscriberArray[i].streamId)
+					subscriberArray[i].subscribeToAudio(true);	
+				}
+			}
+			
+			// if (subscriberArray[lastConsumerTrainerCouldHear] && lastConsumerTrainerCouldHear != consumerBoxNumber) {
+			// 	subscriberArray[lastConsumerTrainerCouldHear].subscribeToAudio(false);
+			// 	var oldStreamId = subscriberArray[lastConsumerTrainerCouldHear].streamId;
+			// 	console.log("Killing audio from " + oldStreamId)
+			// 	// console.log("Killing audio from " + $scope.consumerObjects[oldStreamId].firstName + " " + $scope.consumerObjects[oldStreamId].lastName)
+			// }
+			// // if (!consumerBoxNumber) return console.log("Can't hear yourself!")
+			// if (subscriberArray.length < 1) return console.log("No consumers");
+			// if (!subscriberArray[consumerBoxNumber]) return console.log("No consumer audio found in that box")
+			// lastConsumerTrainerCouldHear = consumerBoxNumber;
+			// subscriberArray[consumerBoxNumber].subscribeToAudio(true);
+			// subscriberArray[consumerBoxNumber].setAudioVolume(100);
+			// var userStreamId = subscriberArray[consumerBoxNumber].streamId;
+			// console.log("Now listening to " + userStreamId)
+			// console.log("Now listening to " + $scope.consumerObjects[userStreamId].firstName + " " + $scope.consumerObjects[userStreamId].lastName)
 		}
 
 		$scope.exitClass = function() {

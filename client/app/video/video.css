@@ -154,9 +154,10 @@
 }
 .class-details td, .class-details a {
   text-align: center;
-  padding: 0 4px 0 0;
-  font-size: 12px;
+  padding: 0px;
+  font-size: 14px;
   color: #fff;
+  min-width: 70px;
 }
 .class-details a:hover {
   color: gray;
