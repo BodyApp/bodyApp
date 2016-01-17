@@ -43,31 +43,32 @@ angular.module('bodyAppApp')
       $scope.class.$watch(function(e) {
         getBookedUsers($scope.class);
       })
+      setupVidAud()
     });
 
     $scope.audioInputDevices;
     $scope.videoInputDevices;
 
-    OT.getDevices(function(error, devices) {
-      if (devices) {
-        $scope.audioInputDevices = devices.filter(function(element) {
-          return element.kind == "audioInput";
-        });
-        $scope.videoInputDevices = devices.filter(function(element) {
-          return element.kind == "videoInput";
-        });
-        // for (var i = 0; i < $scope.audioInputDevices.length; i++) {
-        //   console.log("audio input device: ", $scope.audioInputDevices[i]);
-        // }
-        // for (i = 0; i < $scope.videoInputDevices.length; i++) {
-        //   console.log("video input device: ", $scope.videoInputDevices[i]);
-        // }
-        $scope.audioInput = $scope.audioInputDevices[0];
-        if ($scope.audioInput) $scope.setAudioInput($scope.audioInput);
-        $scope.videoInput = $scope.videoInputDevices[0];
-        if ($scope.videoInput) $scope.setVideoInput($scope.videoInput);
-      }
-    });
+    // OT.getDevices(function(error, devices) {
+    //   if (devices) {
+    //     $scope.audioInputDevices = devices.filter(function(element) {
+    //       return element.kind == "audioInput";
+    //     });
+    //     $scope.videoInputDevices = devices.filter(function(element) {
+    //       return element.kind == "videoInput";
+    //     });
+    //     // for (var i = 0; i < $scope.audioInputDevices.length; i++) {
+    //     //   console.log("audio input device: ", $scope.audioInputDevices[i]);
+    //     // }
+    //     // for (i = 0; i < $scope.videoInputDevices.length; i++) {
+    //     //   console.log("video input device: ", $scope.videoInputDevices[i]);
+    //     // }
+    //     $scope.audioInput = $scope.audioInputDevices[0];
+    //     if ($scope.audioInput) $scope.setAudioInput($scope.audioInput);
+    //     $scope.videoInput = $scope.videoInputDevices[0];
+    //     if ($scope.videoInput) $scope.setVideoInput($scope.videoInput);
+    //   }
+    // });
 
     $scope.setVideoInput = function(videoInput) {
       Video.setVideoInput(videoInput);
@@ -123,6 +124,25 @@ angular.module('bodyAppApp')
         clearInterval(checkTimeInterval)
         $location.path('/consumervideo')
       }
+    }
+
+    function setupVidAud() {
+      var element = document.querySelector('#audioVideoSetup');
+      var component = createOpentokHardwareSetupComponent(element, {
+        insertMode: 'append'
+      }, function(error) {
+        if (error) {
+          console.log(component)
+          console.error('Error: ', error);
+          document.querySelector('#audioVideoSetup').innerHTML = '<strong>Error getting ' +
+            'devices</strong>: ' + error.message;
+          return;
+        }
+        // var button = document.createElement('button');
+        // button.onclick = component.destroy;
+        // button.appendChild(document.createTextNode('Destroy'));
+        // element.appendChild(button);
+      });
     }
 
     // load cookie, or start new tour
