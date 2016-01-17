@@ -46,8 +46,8 @@ angular.module('bodyAppApp')
       setupVidAud()
     });
 
-    $scope.audioInputDevices;
-    $scope.videoInputDevices;
+    // $scope.audioInputDevices;
+    // $scope.videoInputDevices;
 
     // OT.getDevices(function(error, devices) {
     //   if (devices) {
@@ -70,11 +70,11 @@ angular.module('bodyAppApp')
     //   }
     // });
 
-    $scope.setVideoInput = function(videoInput) {
+    function setVideoInput(videoInput) {
       Video.setVideoInput(videoInput);
     }
 
-    $scope.setAudioInput = function(audioInput) {
+    function setAudioInput(audioInput) {
       Video.setAudioInput(audioInput);
     }
 
@@ -131,8 +131,12 @@ angular.module('bodyAppApp')
       var component = createOpentokHardwareSetupComponent(element, {
         insertMode: 'append'
       }, function(error) {
-        if (error) {
+        if (!error) {
           console.log(component)
+          setVideoInput(component.videoSource());
+          setAudioInput(component.audioSource())
+        }
+        if (error) {
           console.error('Error: ', error);
           document.querySelector('#audioVideoSetup').innerHTML = '<strong>Error getting ' +
             'devices</strong>: ' + error.message;
