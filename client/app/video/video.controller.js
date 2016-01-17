@@ -341,7 +341,17 @@ angular.module('bodyAppApp')
 			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
 				  	console.log("Received stream");
 
-				  	if (!userIsInstructor && !instructorStream) {
+				  	SpeakerDetection(subscriber, function() {
+						  console.log('started talking');
+						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
+						  setMusicVolume($scope.musicVolume/2.5)
+						}, function() {
+							setMusicVolume($scope.musicVolume)
+						  console.log('stopped talking');
+						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
+						});
+
+				  	if ((!userIsInstructor && !instructorStream) || (userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
 				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer
 				  	} else {
 				  		subscriber.subscribeToAudio(true); // Audio on in any other case
@@ -367,16 +377,6 @@ angular.module('bodyAppApp')
 				  	console.log(streamId)
 				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : classToJoin.trainer.picture); //Sets image to be displayed when no video
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
-
-						SpeakerDetection(subscriber, function() {
-						  console.log('started talking');
-						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
-						  setMusicVolume($scope.musicVolume/2)
-						}, function() {
-							setMusicVolume($scope.musicVolume)
-						  console.log('stopped talking');
-						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
-						});
 
 				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
 						  // Set picture overlay
@@ -471,19 +471,22 @@ angular.module('bodyAppApp')
 
 				var vidWidth;
 				var vidHeight;
+				var suggestedResolution;
+				var suggestedFPS;
 
 				if (userIsInstructor) {
-					vidWidth = "16.67%"
-					vidHeight = "16.67%"
+					vidWidth = "16.67%";
+					vidHeight = "16.67%";
+					suggestedResolution = "1280x720";
+					suggestedFPS = 30;
 				} else {
 					vidWidth = "100%"
+					suggestedResolution = "320x240";
+					suggestedFPS = 7;
 				}
 
 				var audioInputDevice = Video.getAudioInput().deviceId;
 				var videoInputDevice = Video.getVideoInput().deviceId;
-
-				console.log(audioInputDevice);
-				console.log(videoInputDevice);
 
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
