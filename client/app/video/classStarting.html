@@ -1,12 +1,13 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
   <section class="banner pt32 pb32">
-    <div class="col-sm-7">
+    <div class="col-sm-4">
       <h1 class="mb16 white">{{class.level}} Class</h1>
-      <span id = "audioVideoSetup"></span>
-      <!-- Audio/video setup<br><span class="purpleblue">Microphone: </span><select class="av-audio" ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>&nbsp;<span class="purpleblue">Camera: </span><select class="av-video" ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>) <span style = "color:red;" ng-if = "!videoInput">No Camera Detected</span></span> -->
     </div>
-    <div class="col-sm-5">
+    <div class="col-sm-5" id = "audioVideoSetup"></div>
+      <!-- Audio/video setup<br><span class="purpleblue">Microphone: </span><select class="av-audio" ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>&nbsp;<span class="purpleblue">Camera: </span><select class="av-video" ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>) <span style = "color:red;" ng-if = "!videoInput">No Camera Detected</span></span> -->
+    
+    <div class="col-sm-3">
     	<h3 class="white" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
     	<h3 class="white" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
     	<h3 class="white" ng-if = "minutesUntilClass < 0">Class has started!</h3>

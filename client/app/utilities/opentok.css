@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
+    font-size: 90%;
     font-family: Arial, Helvetica, sans-serif;
     vertical-align: baseline;
 }
@@ -21,8 +21,10 @@
   border: 0;
   /*background-color: #333;*/
   padding: 30px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   width: 380px;
-  height: 340px;
+  height: 270px;
 }
 
 .opentok-hardware-setup-loading {
@@ -85,6 +87,7 @@
 
 .opentok-hardware-setup .opentok-hardware-setup-selector select {
   padding: 5px 8px;
+  height: 35px;
   width: 100%;
   color: #414141;
   border: none;
