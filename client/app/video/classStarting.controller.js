@@ -23,7 +23,7 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var ref = new Firebase("https://bodyapp.firebaseio.com/");
     $scope.class = $firebaseObject(
       ref.child(weekOf)
       .child(classDate.getDay())
@@ -128,25 +128,7 @@ angular.module('bodyAppApp')
 
     function setupVidAud() {
       var element = document.querySelector('#audioVideoSetup');
-      var component = createOpentokHardwareSetupComponent(element, {
-        insertMode: 'append'
-      }, function(error) {
-        if (!error) {
-          console.log(component)
-          setVideoInput(component.videoSource());
-          setAudioInput(component.audioSource())
-        }
-        if (error) {
-          console.error('Error: ', error);
-          document.querySelector('#audioVideoSetup').innerHTML = '<strong>Error getting ' +
-            'devices</strong>: ' + error.message;
-          return;
-        }
-        // var button = document.createElement('button');
-        // button.onclick = component.destroy;
-        // button.appendChild(document.createTextNode('Destroy'));
-        // element.appendChild(button);
-      });
+      var component = Video.hardwareSetup(element);
     }
 
     // load cookie, or start new tour

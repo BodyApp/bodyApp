@@ -229,8 +229,7 @@ angular.module('bodyAppApp')
 			// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 			var apiKey = 45425152;
 			var sessionId = classToJoin.sessionId;
-			
-			
+				
 			// setStreamAcceptor();
 
 			User.createTokBoxToken({ id: currentUser._id }, {
@@ -450,25 +449,25 @@ angular.module('bodyAppApp')
 			};
 
 			function setPublisher() {
-				if (!userIsDan) { return }
-				OT.getDevices(function(error, devices) {
-					if (devices) {
-					  var audioInputDevices = devices.filter(function(element) {
-					    return element.kind == "audioInput";
-					  });
-					  var videoInputDevices = devices.filter(function(element) {
-					    return element.kind == "videoInput";
-					  });
-					  for (var i = 0; i < audioInputDevices.length; i++) {
-					    console.log("audio input device: ", audioInputDevices[i].deviceId);
-					  }
-					  for (i = 0; i < videoInputDevices.length; i++) {
-					    console.log("video input device: ", videoInputDevices[i].deviceId);
-					  }
-					} else {
-						console.log("No devices discovered " + err)
-					}
-				});
+				// if (userIsDan) { return }
+				// OT.getDevices(function(error, devices) {
+				// 	if (devices) {
+				// 	  var audioInputDevices = devices.filter(function(element) {
+				// 	    return element.kind == "audioInput";
+				// 	  });
+				// 	  var videoInputDevices = devices.filter(function(element) {
+				// 	    return element.kind == "videoInput";
+				// 	  });
+				// 	  for (var i = 0; i < audioInputDevices.length; i++) {
+				// 	    console.log("audio input device: ", audioInputDevices[i].deviceId);
+				// 	  }
+				// 	  for (i = 0; i < videoInputDevices.length; i++) {
+				// 	    console.log("video input device: ", videoInputDevices[i].deviceId);
+				// 	  }
+				// 	} else {
+				// 		console.log("No devices discovered " + err)
+				// 	}
+				// });
 
 				var vidWidth;
 				var vidHeight;
@@ -480,10 +479,16 @@ angular.module('bodyAppApp')
 					vidWidth = "100%"
 				}
 
+				var audioInputDevice = Video.getAudioInput().deviceId;
+				var videoInputDevice = Video.getVideoInput().deviceId;
+
+				console.log(audioInputDevice);
+				console.log(videoInputDevice);
+
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
-		      audioSource: Video.getAudioInput(), 
-		      videoSource: Video.getVideoInput(),
+		      audioSource: audioInputDevice, 
+		      videoSource: videoInputDevice,
 		      publishAudio:true, 
 		      publishVideo:true,
 		      mirror: true,

@@ -65,7 +65,6 @@ angular.module('bodyAppApp')
           for (var prop in slot.bookedUsers) {
             var user = slot.bookedUsers[prop];
             if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
-              console.log(user);
               friendList.push(user);
               if (!$scope.pictureData[user.facebookId]) {
                 $scope.pictureData[user.facebookId] = user;
