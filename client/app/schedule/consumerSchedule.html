@@ -168,9 +168,9 @@
     </div>
     <div class="col-sm-3">
       <h4 class="week-selector darkblue bold" ng-show = "days">
-        <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()"></i></a>
+        <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="right" uib-popover="This Week"></i></a>
         &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
-        <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()"></i></a>
+        <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="left" uib-popover="Next Week"></i></a>
       </h4>
     </div>
   </div>
@@ -180,10 +180,10 @@
         <span class="day bold">{{ day.name }}</span>
         <span class="date bold">{{ day.formattedDate }}</span>
       </div>
-      <div class="workout-and-module text-center">
+      <!-- <div class="workout-and-module text-center">
         <span class="wod-title bold">The Flip Side</span>
         <span class="wod-module">Hip Openers</span>
-      </div>
+      </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
       <div class="sched-class" ng-class = "{unavailable: slot.past}">
@@ -198,9 +198,9 @@
             <span ng-show = "friendList.length != 1">friends in class</span> 
             <span ng-show = "friendList.length === 1">friend in class</span> 
             </div>
-          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
-          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
-          <img class="profile" id="friendPicture" uib-popover="hello" title="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
+          <img class="profile" popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+          <img class="profile" popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+          <img class="profile" popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
           <!-- <div class="empty"></div>
           <div class="empty"></div> -->
         </div>
