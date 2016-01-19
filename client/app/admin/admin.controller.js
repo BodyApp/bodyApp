@@ -180,11 +180,11 @@ angular.module('bodyAppApp')
             sharing: workoutToCreate.playlistUrl.sharing,
             user_id: workoutToCreate.playlistUrl.user_id
           },
-          stopwatch: {
-            start: date.getTime(),
-            stop: date.getTime(),
-            currentState: "stop"
-          },
+          // stopwatch: {
+          //   start: date.getTime(),
+          //   stop: date.getTime(),
+          //   currentState: "stop"
+          // },
           trainer: workoutToCreate.trainer,
           classFull: false,
           consumersCanHearEachOther: false,

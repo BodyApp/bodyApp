@@ -76,11 +76,67 @@ angular.module('bodyAppApp')
     //   .child(classDate.getTime())
     //   .child("stopwatch"));
 
+		//3-way data bind for stopwatch time and rounds
     $firebaseObject(ref.child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
-      .child("stopwatch")).$bindTo($scope, 'stopwatch')
+      .child("stopwatch")).$bindTo($scope, 'stopwatch').then(function() {
+      	if (userIsInstructor) {return}
+      	else if (!userIsInstructor) {
+      		console.log("Watching whether stopwatch is on or off.")
+      		$scope.$watch('stopwatch.isOn', function(data){
+	          document.getElementById('stopwatch').stop();
+						document.getElementById('stopwatch').reset();
+						if ($scope.stopwatch.lastStart > $scope.stopwatch.lastSet) {
+							console.log("Starting consumer stopwatch")
+							document.getElementById('stopwatch').start();
+						}
+	        });
+      		
+      		$scope.$watch('stopwatch.lastSet', function(data){
+	          document.getElementById('stopwatch').stop();
+						document.getElementById('stopwatch').reset();
+						console.log("Stopping and resetting stopwatch")
+	        });
+
+	        $scope.$watch('stopwatch.lastStart', function(data){
+	        	if ($scope.stopwatch.lastStart > $scope.stopwatch.lastSet) {
+							document.getElementById('stopwatch').start();
+							console.log("Starting stopwatch")
+						}
+	        });
+      	}
+     //  	
+     //  	$scope.$watch('stopwatch.lastButtonPress', function(data){
+     //  		if (data.val() === "Start") {
+     //  			document.getElementById('stopwatch').start();
+     //  		} else {
+     //  			document.getElementById('stopwatch').stop();
+					// document.getElementById('stopwatch').reset();	
+     //  		}
+     //    });
+
+        
+
+    // 		$scope.stopwatch.isOn.$on('change', function(snapshot) {
+				// 	document.getElementById('stopwatch').stop();
+				// 	document.getElementById('stopwatch').reset();
+				// 	document.getElementById('stopwatch').start();	
+				// })  	
+      })
+  	
+
+    // //2-way data bind for stopwatch controls
+    // var stopwatchIsOnRef = $firebaseObject(
+    // 	ref.child(weekOf)
+    //   .child(classDate.getDay())
+    //   .child("slots")
+    //   .child(classDate.getTime())
+    //   .child("stopwatch")
+    //   .child("isOn"));
+
+    // console.log(stopwatchIsOnRef);
 
     $scope.consumersCanHearEachOther;
 
@@ -90,13 +146,6 @@ angular.module('bodyAppApp')
       .child("slots")
       .child(classDate.getTime())
       .child("consumersCanHearEachOther"));
-
-    var stopwatchRef = $firebaseObject(
-    	ref.child(weekOf)
-      .child(classDate.getDay())
-      .child("slots")
-      .child(classDate.getTime())
-      .child("stopwatch"));
 
     var volumeRef = $firebaseObject(
       ref.child(weekOf)
@@ -699,9 +748,9 @@ angular.module('bodyAppApp')
 		// 		})
 		// 	})
 
-			// stopwatchRef.child("isOn").on('value', function(state) {
+			// stopwatchRef.child("lastButtonPress").on('value', function(state) {
 			// 	if ($scope.stopwatch.rounds > 0) {
-			// 		var timeVar = "lastStateTime"
+			// 		// var timeVar = "lastStateTime"
 			// 		var commandTime = stopwatchRef.child(timeVar).once('value', function(time) {
 			// 			var currentTimeMod = new Date().getTime() - 1000*1;
 			// 			if (time.val() > currentTimeMod) {
@@ -741,10 +790,13 @@ angular.module('bodyAppApp')
 	  // });		
 		
 		$scope.startStopwatch = function() {
-	    $scope.stopwatch.lastStartTime = new Date().getTime();
-	    $scope.stopwatch.lastStateTime = new Date().getTime();
-	    $scope.stopwatch.lastButtonPress = "Start";
-			$scope.stopwatch.$save()
+			$scope.stopwatch.lastStart = new Date().getTime();
+			// document.getElementById('stopwatch').start()
+			$timeout(function() {document.getElementById('stopwatch').start();}, 1000)
+	    // $scope.stopwatch.lastStartTime = new Date().getTime();
+	    // $scope.stopwatch.lastStateTime = new Date().getTime();
+	    // $scope.stopwatch.lastButtonPress = "Start";
+			// $scope.stopwatch.$save()
 		};
 
 		// $scope.stopStopwatch = function() {
@@ -763,10 +815,14 @@ angular.module('bodyAppApp')
 
 		$scope.setStopwatch = function() {
 			$scope.stopwatch.isOn = true
-			// $scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOn * 60;
+			document.getElementById('stopwatch').stop();
+			document.getElementById('stopwatch').reset();
+			$scope.stopwatch.lastSet = new Date().getTime();
+			$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOnMinutes*60 + $scope.stopwatch.timeOnSeconds*1;
+			if(!$scope.$$phase) $scope.$apply();
 			// $scope.stopwatch.lastResetTime = new Date().getTime();
-			// $scope.stopwatch.lastButtonPress = "Reset";
-			$scope.stopwatch.$save()
+			// $scope.stopwatch.lastButtonPress = "Set";
+			// $scope.stopwatch.$save()
 		}
 
 		function setStopwatchOptions() {
@@ -809,27 +865,51 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.timerAtZero = function() {
-			document.getElementById('stopwatch').stop();
+			console.log("Timer at zero");
+			// document.getElementById('stopwatch').stop();
 			if (userIsInstructor) {
-				if (!$scope.stopwatch.isOn) {
-					$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOn * 60
-				} else {
-					$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOff
-				}
-
 				if ($scope.stopwatch.isOn) {
-					if ($scope.stopwatch.rounds >= 1) {
+					if ($scope.stopwatch.rounds > 0) {
 						$scope.stopwatch.rounds -= 1;
-					} 
+						$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOffSeconds*1;
+						$scope.stopwatch.isOn = false;
+						console.log("Setting stopwatch to off");
+						if(!$scope.$$phase) $scope.$apply();
+												
+						document.getElementById('stopwatch').stop();
+						document.getElementById('stopwatch').reset();
+						// document.getElementById('stopwatch').start();
+						$timeout(function() {document.getElementById('stopwatch').start();}, 1000)
+					}
+					// document.getElementById('stopwatch').start();
+				} else {
+					if ($scope.stopwatch.rounds > 0) {
+						$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOnMinutes*60 + $scope.stopwatch.timeOnSeconds*1
+						$scope.stopwatch.isOn = true;
+						console.log("Setting stopwatch to on");
+						if(!$scope.$$phase) $scope.$apply();
+						document.getElementById('stopwatch').stop();
+						document.getElementById('stopwatch').reset();
+						// document.getElementById('stopwatch').start();
+						$timeout(function() {document.getElementById('stopwatch').start();}, 1000)
+						// document.getElementById('stopwatch').start();
+					}
 				}
-				$scope.stopwatch.$save()
-
-				$timeout(function() {
-					$scope.stopwatch.isOn = !$scope.stopwatch.isOn;
-					$scope.stopwatch.lastStateTime = new Date().getTime()
-					$scope.stopwatch.$save()
-				}, 1000)			
 			}
+
+				// if ($scope.stopwatch.isOn) {
+				// 	if ($scope.stopwatch.rounds >= 1) {
+				// 		$scope.stopwatch.rounds -= 1;
+				// 	} 
+				// }
+				// $scope.stopwatch.$save()
+
+				// $timeout(function() {
+				// 	$scope.stopwatch.isOn = !$scope.stopwatch.isOn;
+				// 	$scope.stopwatch.lastStateTime = new Date().getTime()
+				// 	$scope.stopwatch.$save()
+				// }, 1000)			
+			// }
 		}
 
 		function classTaken() {
