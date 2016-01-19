@@ -67,76 +67,75 @@ angular.module('bodyAppApp')
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
-    setStopwatchOptions()
+    setTabataOptions()
 
-    // $scope.stopwatch = $firebaseObject(
+    // $scope.tabata = $firebaseObject(
     // 	ref.child(weekOf)
     //   .child(classDate.getDay())
     //   .child("slots")
     //   .child(classDate.getTime())
-    //   .child("stopwatch"));
+    //   .child("tabata"));
 
-		//3-way data bind for stopwatch time and rounds
+		//3-way data bind for tabata time and rounds
     $firebaseObject(ref.child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
-      .child("stopwatch")).$bindTo($scope, 'stopwatch').then(function() {
-      	if (userIsInstructor) {return}
+      .child("tabata")).$bindTo($scope, 'tabata').then(function() {
+      	if (userIsInstructor) {return $scope.tabata.tabataActive = true}
       	else if (!userIsInstructor) {
-      		console.log("Watching whether stopwatch is on or off.")
-      		$scope.$watch('stopwatch.isOn', function(data){
-	          document.getElementById('stopwatch').stop();
-						document.getElementById('stopwatch').reset();
-						if ($scope.stopwatch.lastStart > $scope.stopwatch.lastSet) {
-							console.log("Starting consumer stopwatch")
-							document.getElementById('stopwatch').start();
+      		console.log("Watching whether tabata is on or off.")
+      		$scope.$watch('tabata.isOn', function(data){
+	          document.getElementById('tabata').stop();
+						document.getElementById('tabata').reset();
+						if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+							console.log("Starting consumer tabata")
+							document.getElementById('tabata').start();
 						}
 	        });
       		
-      		$scope.$watch('stopwatch.lastSet', function(data){
-	          document.getElementById('stopwatch').stop();
-						document.getElementById('stopwatch').reset();
-						console.log("Stopping and resetting stopwatch")
+      		$scope.$watch('tabata.lastSet', function(data){
+	          document.getElementById('tabata').stop();
+						document.getElementById('tabata').reset();
+						console.log("Stopping and resetting tabata")
 	        });
 
-	        $scope.$watch('stopwatch.lastStart', function(data){
-	        	if ($scope.stopwatch.lastStart > $scope.stopwatch.lastSet) {
-							document.getElementById('stopwatch').start();
-							console.log("Starting stopwatch")
+	        $scope.$watch('tabata.lastStart', function(data){
+	        	if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+							document.getElementById('tabata').start();
+							console.log("Starting tabata")
 						}
 	        });
       	}
-     //  	
-     //  	$scope.$watch('stopwatch.lastButtonPress', function(data){
-     //  		if (data.val() === "Start") {
-     //  			document.getElementById('stopwatch').start();
-     //  		} else {
-     //  			document.getElementById('stopwatch').stop();
-					// document.getElementById('stopwatch').reset();	
-     //  		}
-     //    });
-
-        
-
-    // 		$scope.stopwatch.isOn.$on('change', function(snapshot) {
-				// 	document.getElementById('stopwatch').stop();
-				// 	document.getElementById('stopwatch').reset();
-				// 	document.getElementById('stopwatch').start();	
-				// })  	
       })
-  	
 
-    // //2-way data bind for stopwatch controls
-    // var stopwatchIsOnRef = $firebaseObject(
+    var stopwatchRef = $firebaseObject(
+    	ref.child(weekOf)
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("stopwatch")
+      .child("running"));
+  	
+  	stopwatchRef.$watch(function() {
+  		if (stopwatchRef.$value) {
+  			document.getElementById('stopwatch').start();
+  		} else {
+  			document.getElementById('stopwatch').stop();
+  			document.getElementById('stopwatch').reset();
+  		}
+  	})
+
+    // //2-way data bind for tabata controls
+    // var tabataIsOnRef = $firebaseObject(
     // 	ref.child(weekOf)
     //   .child(classDate.getDay())
     //   .child("slots")
     //   .child(classDate.getTime())
-    //   .child("stopwatch")
+    //   .child("tabata")
     //   .child("isOn"));
 
-    // console.log(stopwatchIsOnRef);
+    // console.log(tabataIsOnRef);
 
     $scope.consumersCanHearEachOther;
 
@@ -265,9 +264,12 @@ angular.module('bodyAppApp')
 			$scope.consumersCanHearEachOther = true;
 			canHearRef.$value = true;
 			canHearRef.$save()
+
 			oldSoundVolume = $scope.musicVolume;
 			$scope.musicVolume = 0;
-			$scope.setMusicVolume($scope.musicVolume);
+			volumeRef.$value = $scope.musicVolume
+			volumeRef.$save()
+			setMusicVolume(musicVolume)
 		}
 
 		$scope.stopConsumersFromHearingEachOther = function() {
@@ -276,7 +278,9 @@ angular.module('bodyAppApp')
 			canHearRef.$save()
 
 			$scope.musicVolume = oldSoundVolume;
-			$scope.setMusicVolume($scope.musicVolume);
+			volumeRef.$value = $scope.musicVolume
+			volumeRef.$save()
+			setMusicVolume(musicVolume)
 		}
 
 		$scope.openSongPermalink = function(currentSong) {
@@ -287,7 +291,9 @@ angular.module('bodyAppApp')
 			setMusicVolume(musicVolume)
 			volumeRef.$value = musicVolume
 			volumeRef.$save()
+
 			if ($scope.consumersCanHearEachOther) {
+				$scope.consumersCanHearEachOther = false;
 				canHearRef.$value = false;
 				canHearRef.$save()
 			}
@@ -725,21 +731,21 @@ angular.module('bodyAppApp')
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.
-		// $scope.stopwatch.$loaded().then(function() {
-		// 	stopwatchRef.child("lastButtonPress").on('value', function(command) {
+		// $scope.tabata.$loaded().then(function() {
+		// 	tabataRef.child("lastButtonPress").on('value', function(command) {
 		// 		var timeVar = "last"+command.val()+"Time"
-		// 		var commandTime = stopwatchRef.child(timeVar).once('value', function(time) {
+		// 		var commandTime = tabataRef.child(timeVar).once('value', function(time) {
 		// 			var currentTimeMod = new Date().getTime() - 1000*1;
 		// 			if (time.val() > currentTimeMod) {
 		// 				switch (command.val()) {
 		// 					case "Start": 
-		// 						document.getElementById('stopwatch').start();
+		// 						document.getElementById('tabata').start();
 		// 						break;
 		// 					case "Stop": 
-		// 						document.getElementById('stopwatch').stop();
+		// 						document.getElementById('tabata').stop();
 		// 						break;
 		// 					case "Reset": 
-		// 						document.getElementById('stopwatch').reset();
+		// 						document.getElementById('tabata').reset();
 		// 						break;
 		// 					default: 
 		// 						break;
@@ -748,30 +754,30 @@ angular.module('bodyAppApp')
 		// 		})
 		// 	})
 
-			// stopwatchRef.child("lastButtonPress").on('value', function(state) {
-			// 	if ($scope.stopwatch.rounds > 0) {
+			// tabataRef.child("lastButtonPress").on('value', function(state) {
+			// 	if ($scope.tabata.rounds > 0) {
 			// 		// var timeVar = "lastStateTime"
-			// 		var commandTime = stopwatchRef.child(timeVar).once('value', function(time) {
+			// 		var commandTime = tabataRef.child(timeVar).once('value', function(time) {
 			// 			var currentTimeMod = new Date().getTime() - 1000*1;
 			// 			if (time.val() > currentTimeMod) {
-			// 				stopwatchRef.child("currentStopwatchTime").once('value', function(time) {
-			// 					$scope.stopwatch.currentStopwatchTime = time.val();
+			// 				tabataRef.child("currentStopwatchTime").once('value', function(time) {
+			// 					$scope.tabata.currentStopwatchTime = time.val();
 			// 					switch (state.val()) {
 			// 					case true: 	
-			// 						console.log("WORK for " + $scope.stopwatch.currentStopwatchTime + " seconds!")
+			// 						console.log("WORK for " + $scope.tabata.currentStopwatchTime + " seconds!")
 			// 						console.log()
 			// 						$timeout(function() {
-			// 							document.getElementById('stopwatch').stop();
-			// 							document.getElementById('stopwatch').reset();
-			// 							document.getElementById('stopwatch').start();	
+			// 							document.getElementById('tabata').stop();
+			// 							document.getElementById('tabata').reset();
+			// 							document.getElementById('tabata').start();	
 			// 						}, 500)
 			// 						break;
 			// 					case false: 
-			// 						console.log("Rest for " + $scope.stopwatch.currentStopwatchTime + " seconds")
+			// 						console.log("Rest for " + $scope.tabata.currentStopwatchTime + " seconds")
 			// 						$timeout(function() {
-			// 							document.getElementById('stopwatch').stop();
-			// 							document.getElementById('stopwatch').reset();
-			// 							document.getElementById('stopwatch').start();	
+			// 							document.getElementById('tabata').stop();
+			// 							document.getElementById('tabata').reset();
+			// 							document.getElementById('tabata').start();	
 			// 						}, 500)
 			// 						break;
 			// 					default: 
@@ -783,49 +789,49 @@ angular.module('bodyAppApp')
 			// 	}
 			// })
 
-			// stopwatchRef.child("currentStopwatchTime").on('value', function(time) {
-			// 	$scope.stopwatch.currentStopwatchTime = time.val();
+			// tabataRef.child("currentStopwatchTime").on('value', function(time) {
+			// 	$scope.tabata.currentStopwatchTime = time.val();
 			// 	console.log("Stopwatch time set to " + time.val())
 			// })
 	  // });		
 		
-		$scope.startStopwatch = function() {
-			$scope.stopwatch.lastStart = new Date().getTime();
-			// document.getElementById('stopwatch').start()
-			$timeout(function() {document.getElementById('stopwatch').start();}, 1000)
-	    // $scope.stopwatch.lastStartTime = new Date().getTime();
-	    // $scope.stopwatch.lastStateTime = new Date().getTime();
-	    // $scope.stopwatch.lastButtonPress = "Start";
-			// $scope.stopwatch.$save()
+		$scope.startTabata = function() {
+			$scope.tabata.lastStart = new Date().getTime();
+			// document.getElementById('tabata').start()
+			$timeout(function() {document.getElementById('tabata').start();}, 1000)
+	    // $scope.tabata.lastStartTime = new Date().getTime();
+	    // $scope.tabata.lastStateTime = new Date().getTime();
+	    // $scope.tabata.lastButtonPress = "Start";
+			// $scope.tabata.$save()
 		};
 
 		// $scope.stopStopwatch = function() {
-	 //    $scope.stopwatch.lastStopTime = new Date().getTime();
-	 //    $scope.stopwatch.lastButtonPress = "Stop";
-		// 	$scope.stopwatch.$save()
+	 //    $scope.tabata.lastStopTime = new Date().getTime();
+	 //    $scope.tabata.lastButtonPress = "Stop";
+		// 	$scope.tabata.$save()
 		// }
 
 		// $scope.resetStopwatch = function() {
-		// 	$scope.stopwatch.isOn = true
-		// 	$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOn * 60;
-		// 	$scope.stopwatch.lastResetTime = new Date().getTime();
-		// 	$scope.stopwatch.lastButtonPress = "Reset";
-		// 	$scope.stopwatch.$save()
+		// 	$scope.tabata.isOn = true
+		// 	$scope.tabata.currentStopwatchTime = $scope.tabata.timeOn * 60;
+		// 	$scope.tabata.lastResetTime = new Date().getTime();
+		// 	$scope.tabata.lastButtonPress = "Reset";
+		// 	$scope.tabata.$save()
 		// }
 
-		$scope.setStopwatch = function() {
-			$scope.stopwatch.isOn = true
-			document.getElementById('stopwatch').stop();
-			document.getElementById('stopwatch').reset();
-			$scope.stopwatch.lastSet = new Date().getTime();
-			$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOnMinutes*60 + $scope.stopwatch.timeOnSeconds*1;
+		$scope.setTabata = function() {
+			$scope.tabata.isOn = true
+			document.getElementById('tabata').stop();
+			document.getElementById('tabata').reset();
+			$scope.tabata.lastSet = new Date().getTime();
+			$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1;
 			if(!$scope.$$phase) $scope.$apply();
-			// $scope.stopwatch.lastResetTime = new Date().getTime();
-			// $scope.stopwatch.lastButtonPress = "Set";
-			// $scope.stopwatch.$save()
+			// $scope.tabata.lastResetTime = new Date().getTime();
+			// $scope.tabata.lastButtonPress = "Set";
+			// $scope.tabata.$save()
 		}
 
-		function setStopwatchOptions() {
+		function setTabataOptions() {
 			$scope.timeOnMinuteOptions = [];
 			for (var i = 0; i < 11; i++) {
 				$scope.timeOnMinuteOptions.push(i.toString())
@@ -845,69 +851,91 @@ angular.module('bodyAppApp')
 			}
 		}
 
+		$scope.startStopwatch = function() {
+			stopwatchRef.$value = new Date().getTime();
+			stopwatchRef.$save();
+
+			// document.getElementById('stopwatch').start();
+		}
+
+		$scope.stopStopwatch = function() {
+			stopwatchRef.$value = false;
+			stopwatchRef.$save();
+			// document.getElementById('stopwatch').stop();
+			// document.getElementById('stopwatch').reset();
+		}
+
+		// function resetStopwatch() {
+		// 	document.getElementById('stopwatch').reset();
+		// }
+
+		$scope.switchTimerType = function() {
+			$scope.tabata.tabataActive = !$scope.tabata.tabataActive;
+		}
+
 		// $scope.setTimeOn = function(on) {
-		// 	// stopwatchRef.update({"timeOn": on, "currentStopwatchTime": on})		
-		// 	$scope.stopwatch.timeOn = on
-		// 	$scope.stopwatch.currentStopwatchTime = on * 60;
-		// 	$scope.stopwatch.$save()
+		// 	// tabataRef.update({"timeOn": on, "currentStopwatchTime": on})		
+		// 	$scope.tabata.timeOn = on
+		// 	$scope.tabata.currentStopwatchTime = on * 60;
+		// 	$scope.tabata.$save()
 		// }
 
 		// $scope.setTimeOff = function(off) {
-		// 	// stopwatchRef.update({"timeOff": off})
-		// 	$scope.stopwatch.timeOff = off
-		// 	$scope.stopwatch.$save()
+		// 	// tabataRef.update({"timeOff": off})
+		// 	$scope.tabata.timeOff = off
+		// 	$scope.tabata.$save()
 		// }
 
 		// $scope.setRounds = function(rounds) {
-		// 	$scope.stopwatch.rounds = rounds
-		// 	$scope.stopwatch.$save()
-		// 	// stopwatchRef.update({"rounds": rounds})
+		// 	$scope.tabata.rounds = rounds
+		// 	$scope.tabata.$save()
+		// 	// tabataRef.update({"rounds": rounds})
 		// }
 
 		$scope.timerAtZero = function() {
 			console.log("Timer at zero");
-			// document.getElementById('stopwatch').stop();
+			// document.getElementById('tabata').stop();
 			if (userIsInstructor) {
-				if ($scope.stopwatch.isOn) {
-					if ($scope.stopwatch.rounds > 0) {
-						$scope.stopwatch.rounds -= 1;
-						$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOffSeconds*1;
-						$scope.stopwatch.isOn = false;
-						console.log("Setting stopwatch to off");
+				if ($scope.tabata.isOn) {
+					if ($scope.tabata.rounds > 0) {
+						$scope.tabata.rounds -= 1;
+						$scope.tabata.currentTabataTime = $scope.tabata.timeOffSeconds*1;
+						$scope.tabata.isOn = false;
+						console.log("Setting tabata to off");
 						if(!$scope.$$phase) $scope.$apply();
 												
-						document.getElementById('stopwatch').stop();
-						document.getElementById('stopwatch').reset();
-						// document.getElementById('stopwatch').start();
-						$timeout(function() {document.getElementById('stopwatch').start();}, 1000)
+						document.getElementById('tabata').stop();
+						document.getElementById('tabata').reset();
+						// document.getElementById('tabata').start();
+						$timeout(function() {document.getElementById('tabata').start();}, 1000)
 					}
-					// document.getElementById('stopwatch').start();
+					// document.getElementById('tabata').start();
 				} else {
-					if ($scope.stopwatch.rounds > 0) {
-						$scope.stopwatch.currentStopwatchTime = $scope.stopwatch.timeOnMinutes*60 + $scope.stopwatch.timeOnSeconds*1
-						$scope.stopwatch.isOn = true;
-						console.log("Setting stopwatch to on");
+					if ($scope.tabata.rounds > 0) {
+						$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1
+						$scope.tabata.isOn = true;
+						console.log("Setting tabata to on");
 						if(!$scope.$$phase) $scope.$apply();
-						document.getElementById('stopwatch').stop();
-						document.getElementById('stopwatch').reset();
-						// document.getElementById('stopwatch').start();
-						$timeout(function() {document.getElementById('stopwatch').start();}, 1000)
-						// document.getElementById('stopwatch').start();
+						document.getElementById('tabata').stop();
+						document.getElementById('tabata').reset();
+						// document.getElementById('tabata').start();
+						$timeout(function() {document.getElementById('tabata').start();}, 1000)
+						// document.getElementById('tabata').start();
 					}
 				}
 			}
 
-				// if ($scope.stopwatch.isOn) {
-				// 	if ($scope.stopwatch.rounds >= 1) {
-				// 		$scope.stopwatch.rounds -= 1;
+				// if ($scope.tabata.isOn) {
+				// 	if ($scope.tabata.rounds >= 1) {
+				// 		$scope.tabata.rounds -= 1;
 				// 	} 
 				// }
-				// $scope.stopwatch.$save()
+				// $scope.tabata.$save()
 
 				// $timeout(function() {
-				// 	$scope.stopwatch.isOn = !$scope.stopwatch.isOn;
-				// 	$scope.stopwatch.lastStateTime = new Date().getTime()
-				// 	$scope.stopwatch.$save()
+				// 	$scope.tabata.isOn = !$scope.tabata.isOn;
+				// 	$scope.tabata.lastStateTime = new Date().getTime()
+				// 	$scope.tabata.$save()
 				// }, 1000)			
 			// }
 		}

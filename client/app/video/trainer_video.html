@@ -133,25 +133,39 @@
           <h1 id="timer"><timer class = "clock" start-time="classTime">{{minutes}}:{{seconds >= 10 ? seconds : "0" + seconds}}</timer></h1>
           <!-- <form> -->
             <!-- <label>Time On (Minutes)</label> -->
-            <select style = "margin-bottom:6px" ng-options="o for o in timeOnMinuteOptions" ng-change = "stopWatch.timeOnMinutes" ng-model = "stopwatch.timeOnMinutes" placeholder = "Time On (Minutes)"></select>
-            <select style = "margin-bottom:6px" ng-options="o for o in timeOnSecondOptions" ng-model = "stopwatch.timeOnSeconds" placeholder = "Time On (Minutes)"></select>
+            <select style = "margin-bottom:6px" ng-options="o for o in timeOnMinuteOptions" ng-change = "stopWatch.timeOnMinutes" ng-model = "tabata.timeOnMinutes" placeholder = "Time On (Minutes)"></select>
+            <select style = "margin-bottom:6px" ng-options="o for o in timeOnSecondOptions" ng-model = "tabata.timeOnSeconds" placeholder = "Time On (Minutes)"></select>
             <!-- <label>Time Off (Seconds)</label> -->
-            <select style = "margin-bottom:6px" ng-options="o for o in timeOffSecondOptions" ng-model = "stopwatch.timeOffSeconds" placeholder = "Time Off (Seconds)"></select> 
-            <select style = "margin-bottom:6px" ng-options="o for o in roundOptions" ng-model = "stopwatch.rounds" placeholder = "Rounds (num)"></select> 
+            <select style = "margin-bottom:6px" ng-options="o for o in timeOffSecondOptions" ng-model = "tabata.timeOffSeconds" placeholder = "Time Off (Seconds)"></select> 
+            <select style = "margin-bottom:6px" ng-options="o for o in roundOptions" ng-model = "tabata.rounds" placeholder = "Rounds (num)"></select> 
           <!-- </form> -->
 
-            <h1 id="timer"><timer id = "stopwatch" autostart="false" interval="1000" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" countdown="stopwatch.currentStopwatchTime" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer></h1>
-            <h5 style = "color: white; text-align: center; margin-bottom:12px;">{{stopwatch.rounds}} Rounds Left</h5>
+          <div ng-show="tabata.tabataActive">
+            <h1 id="timer"><timer id = "tabata" autostart="false" interval="1000" ng-class = "{workColor: tabata.isOn, restColor: !tabata.isOn}" countdown="tabata.currentTabataTime" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer></h1>
+            <h5 style = "color: white; text-align: center; margin-bottom:12px;">{{tabata.rounds}} Rounds Left</h5>
+          </div>
+
+          <div ng-hide="tabata.tabataActive">
+            <h1 id="timer">
+              <timer id = "stopwatch" autostart="false" interval="1000" ng-class = "{workColor: true}">{{minutes}}:{{sseconds}}</timer>
+            </h1>
+          </div>
           
           <table>
             <tr>
-              <td class="btn-white"><a ng-click = "startStopwatch();">Start</a></td>
-              <!-- <td class="btn-white"><a ng-click = "stopStopwatch();">Stop</a></td> -->
-              <td class="btn-white"><a ng-click = "setStopwatch();">Set</a></td>
+              <td class="btn-white" ng-show="tabata.tabataActive" ng-click = "startTabata();"><a>Start</a></td>
+              <td class="btn-white" ng-show="tabata.tabataActive" ng-click = "setTabata();"><a>Set</a></td>
+              <td class="btn-white" ng-hide="tabata.tabataActive" ng-click = "startStopwatch();"><a>Start</a></td>
+              <td class="btn-white" ng-hide="tabata.tabataActive" ng-click = "stopStopwatch();"><a>Stop / Reset</a></td>
+              <!-- <td class="btn-white" ng-hide="tabata.tabataActive"><a ng-click = "resetStopwatch();">Reset</a></td> -->
+              <td class="btn-white" ng-click = "switchTimerType();"><a >Switch To 
+                <span ng-show="tabata.tabataActive">Stopwatch</span>
+                <span ng-hide="tabata.tabataActive">Tabata</span>
+              </a></td>
             </tr>
           </table>
-          <button class = "btn btn-success" ng-show = "!consumersCanHearEachOther" ng-click = "letConsumersHearEachOther()">Everyone Can't Hear Everyone</button>
-          <button class = "btn btn-danger" ng-show = "consumersCanHearEachOther" ng-click = "stopConsumersFromHearingEachOther()">Everyone Hears Everyone</button>
+          <button class = "btn btn-success" id="cantHearButton" ng-show = "!consumersCanHearEachOther" ng-click = "letConsumersHearEachOther()">Everyone Can't Hear Everyone</button>
+          <button class = "btn btn-danger" id="canHearButton" ng-show = "consumersCanHearEachOther" ng-click = "stopConsumersFromHearingEachOther()">Everyone Hears Everyone</button>
           <!-- <h4>Workout</h4>
           <p><strong>Skill</strong><br>Airsquat<br><strong>Benchmark</strong><br>1 min burpees</p> -->
           <h4>Song/Volume</h4>

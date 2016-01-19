@@ -50,10 +50,18 @@
   margin-bottom: 5px;
 }
 .rounds {
-  color: #224893;
+  color: #fff;
   font-size: 40px;
   font-weight: 500;
   display: block;
+}
+#tabata {
+  font-size: 60px;
+  margin-bottom: 30px;
+  display: block;
+}
+#tabata span {
+  font-weight: 600;
 }
 #stopwatch {
   font-size: 60px;
@@ -62,6 +70,12 @@
 }
 #stopwatch span {
   font-weight: 600;
+}
+#canHearButton {
+  background-color: red !important;
+}
+#cantHearButton {
+  background-color: #0D1C45 !important;
 }
 .exit-btn {
   font-size: 10px !important;
@@ -281,7 +295,7 @@
 }
 
 .restColor {
-  color: #224893;
+  color: #FF5050;
 }
 
 .video-teammate-name {
