@@ -231,6 +231,10 @@ angular.module('bodyAppApp')
 			setMusicVolume(musicVolume)
 			volumeRef.$value = musicVolume
 			volumeRef.$save()
+			if ($scope.consumersCanHearEachOther) {
+				canHearRef.$value = false;
+				canHearRef.$save()
+			}
 		}
 
 		function setMusicVolume(musicVolume) {
