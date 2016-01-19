@@ -186,7 +186,7 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: slot.past}">
+      <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time">{{ slot.time }}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
@@ -227,7 +227,7 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: slot.past}">
+      <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time mb8">{{ slot.time }}</span>
         <div class="col-xs-6 text-center">
           <div class="class-type lvl1"><span>{{slot.level}}</span></div>

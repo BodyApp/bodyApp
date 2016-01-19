@@ -28,7 +28,7 @@ angular.module('bodyAppApp')
     $scope.scoreTypes.push({label: "Rounds Completed", id: 1})
 
     $scope.instructors = [];
-    $scope.levels = ["Intro", "Level One", "Level Two", "Level Three"]
+    $scope.levels = ["Intro", "Level One", "Level Two", "Level Three", "Test"]
     $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}, level: $scope.levels[0]};
     getAdminsAndInstructors()
     
