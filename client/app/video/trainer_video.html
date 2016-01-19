@@ -131,13 +131,14 @@
 
         <div class="class-details">
           <h1 id="timer"><timer class = "clock" start-time="classTime">{{minutes}}:{{seconds >= 10 ? seconds : "0" + seconds}}</timer></h1>
-          <form>
+          <!-- <form> -->
             <!-- <label>Time On (Minutes)</label> -->
-            <input style = "margin-bottom:6px" type="number" step="1" ng-change = "setTimeOn(stopwatch.timeOn)" ng-model = "stopwatch.timeOn" placeholder = "Time On (Minutes)"></input>
+            <select style = "margin-bottom:6px" ng-options="o for o in timeOnMinuteOptions" ng-change = "stopWatch.timeOnMinutes" ng-model = "stopwatch.timeOnMinutes" placeholder = "Time On (Minutes)"></select>
+            <select style = "margin-bottom:6px" ng-options="o for o in timeOnSecondOptions" ng-model = "stopwatch.timeOnSeconds" placeholder = "Time On (Minutes)"></select>
             <!-- <label>Time Off (Seconds)</label> -->
-            <input style = "margin-bottom:6px" type="number" step="1" ng-change = "setTimeOff(stopwatch.timeOff)" ng-model = "stopwatch.timeOff" placeholder = "Time Off (Seconds)"></input> 
-            <input style = "margin-bottom:6px" type="number" step="1" ng-change = "setRounds(stopwatch.rounds)" ng-model = "stopwatch.rounds" placeholder = "Rounds (num)"></input> 
-          </form>
+            <select style = "margin-bottom:6px" ng-options="o for o in timeOffSecondOptions" ng-model = "stopwatch.timeOffSeconds" placeholder = "Time Off (Seconds)"></select> 
+            <select style = "margin-bottom:6px" ng-options="o for o in roundOptions" ng-model = "stopwatch.rounds" placeholder = "Rounds (num)"></select> 
+          <!-- </form> -->
 
             <h1 id="timer"><timer id = "stopwatch" autostart="false" interval="1000" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" countdown="stopwatch.currentStopwatchTime" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer></h1>
             <h5 style = "color: white; text-align: center; margin-bottom:12px;">{{stopwatch.rounds}} Rounds Left</h5>
