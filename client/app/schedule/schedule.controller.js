@@ -611,13 +611,19 @@ angular.module('bodyAppApp')
 
       //Stick top of calendar to top of screen
       if ($scope.windowWidth > 1100) {
-        $(window).scroll(function(e){ 
+        $(window).scroll(function(e){
+          var classHeaderHeight = $('#tour-classes').height()*2;
+          var workoutHeight = $('#tour-workout').height();
+          var reservationHeight = $('#reservation-section').height();
+          var heightToScroll = workoutHeight > reservationHeight? workoutHeight+classHeaderHeight: reservationHeight+classHeaderHeight
+          // var heightToScroll = workoutHeight + reservationHeight
+
           var $el = $('.fixedAtTop'); 
           var isPositionFixed = ($el.css('position') == 'fixed');
-          if ($(this).scrollTop() > ($('#tour-workout').height() + $('#tour-classes').height()*2) && !isPositionFixed){ 
+          if ($(this).scrollTop() > heightToScroll && !isPositionFixed){ 
             $('.fixedAtTop').css({'position': 'fixed', 'top': '70px', 'width':'14.28%'}); 
           }
-          if ($(this).scrollTop() < ($('#tour-workout').height() + $('#tour-classes').height()*2)  && isPositionFixed)
+          if ($(this).scrollTop() < heightToScroll  && isPositionFixed)
           {
             $('.fixedAtTop').css({'position': 'static', 'top': '70px', 'width':'100%'}); 
           } 
