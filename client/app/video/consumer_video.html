@@ -1,8 +1,8 @@
 <div class="video-fullscreen">
-  <div class="user-video-screen">
-    <div class="col-sm-2 user-video-sidebar">
+  <div class="video-screen">
+    <div class="col-sm-2 video-sidebar">
       <!--Main user video-->
-      <div class="main-user-video">
+      <div class="main-video">
         <div id = "box1"></div>
       </div>
       <!--Main user video END-->
@@ -114,9 +114,10 @@
             
             <timer id = "stopwatch" autostart="false" ng-class = "{workColor: stopwatch.isOn, restColor: !stopwatch.isOn}" interval="1000" countdown="stopwatch.currentStopwatchTime" >{{minutes}}:{{sseconds}}</timer>
             <span class="rounds">rds {{stopwatch.rounds}}</span>
-            <h5 class="white mb8 mt32 text-left">Today's Challenge</h5>
-            <span class="module-title bold">IV. {{todayWod.scoreType.label}}</span>
-            <ul class="module-description mb8 text-left" ng-repeat = "bullet in todayWod.challenge.bullets">
+            <h3 class="white mb8 mt32 text-center">Challenge</h3>
+            <hr style="margin-bottom:15px;">
+            <span class="module-title bold">{{todayWod.scoreType.label}}</span>
+            <ul class="module-description mt16 mb8 text-left" ng-repeat = "bullet in todayWod.challenge.bullets">
               <li>{{bullet}}</li>
             </ul>                                    
           </div>
