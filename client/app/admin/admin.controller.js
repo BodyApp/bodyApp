@@ -208,7 +208,8 @@ angular.module('bodyAppApp')
             introToSet[date.getTime()] = true
             var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
             var upcomingIntroRef = fbRef.child('upcomingIntros').child(date.getTime())
-            upcomingIntroRef.set(true, function(){console.log("Saved Intro class to intro list")})
+            var dateKey = ""+date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())
+            upcomingIntroRef.set(dateKey, function(){console.log("Saved Intro class to intro list")})
           }
 
           User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {

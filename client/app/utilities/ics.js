@@ -59,7 +59,7 @@ var ics = function() {
             var tempStartDate = new Date(begin).getTime() + offset*60*1000
             var start_date = new Date(tempStartDate)
 
-            var tempEndDate = new Date(begin).getTime() + offset*60*1000
+            var tempEndDate = new Date(stop).getTime() + offset*60*1000
             var end_date = new Date(tempEndDate);
 
             var start_year = ("0000" + (start_date.getFullYear().toString())).slice(-4);

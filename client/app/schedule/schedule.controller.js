@@ -11,6 +11,7 @@ angular.module('bodyAppApp')
 
         $scope.thisWeek;
         $scope.chosenDay;
+        $scope.timeZone = jstz().timezone_name;
         var unbindMethod = function(){};
 
         var classKey = ""+todayDate.getFullYear()+""+((todayDate.getMonth()+1 < 10)?"0"+(todayDate.getMonth()+1):todayDate.getMonth()+1)+""+((todayDate.getDate() < 10)?"0"+todayDate.getDate():todayDate.getDate())
@@ -71,19 +72,6 @@ angular.module('bodyAppApp')
               }
             }
           }
-          // for (var user in slot.bookedFbUserIds) {
-          //   if (currentUser.friendListObject && currentUser.friendListObject[user]) {
-          //     friendList.push(user);
-          //     if (!$scope.pictureData[user]) {
-          //       var userRef = ref.child("fbUsers").child(user)
-          //       userRef.once('value', function(snapshot) {
-          //         var userPulled = snapshot.val()
-          //         $scope.pictureData[friendList[0]] = snapshot.val()
-          //         if(!$scope.$$phase) $scope.$apply();
-          //       })
-          //     }
-          //   }
-          // }
           return friendList;
         }
 
@@ -413,11 +401,11 @@ angular.module('bodyAppApp')
             User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
               // delete $scope.myBookedClasses[slot.date];
               slot.bookedUsers = slot.bookedUsers || {};
-              slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+              // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
               slot.cancelledUsers = slot.cancelledUsers || {};
               slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeCancelled: new Date().getTime()};
               delete slot.bookedUsers[currentUser._id];
-              delete slot.bookedFbUserIds[currentUser.facebook.id];
+              // delete slot.bookedFbUserIds[currentUser.facebook.id];
               // slot.$save();
               currentUser = user;
               Auth.updateUser(currentUser);
@@ -432,11 +420,11 @@ angular.module('bodyAppApp')
             }, function(user) {
               // delete $scope.myBookedClasses[slot.date];
               slot.bookedUsers = slot.bookedUsers || {};
-              slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+              // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
               slot.cancelledUsers = slot.cancelledUsers || {};
               slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeCancelled: new Date().getTime()};
               delete slot.bookedUsers[currentUser._id];
-              delete slot.bookedFbUserIds[currentUser.facebook.id];
+              // delete slot.bookedFbUserIds[currentUser.facebook.id];
               Auth.updateUser(user);
               currentUser = user;
               $scope.currentUser = currentUser;
@@ -460,9 +448,9 @@ angular.module('bodyAppApp')
                 $scope.currentUser = user;
                 getInfo(slot.date);
                 slot.bookedUsers = slot.bookedUsers || {};
-                slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+                // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
                 slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
-                slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
+                // slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
               }, function(err) {
                   console.log("Error adding class: " + err)
                   // classToBook.bookedUsers[currentUser._id] = false
@@ -499,9 +487,9 @@ angular.module('bodyAppApp')
           }, function(user) {
             getInfo(slot.date);
             slot.bookedUsers = slot.bookedUsers || {};
-            slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+            // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
             slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
-            slot.bookedFbUserIds[currentUser.facebook.id] = true
+            // slot.bookedFbUserIds[currentUser.facebook.id] = true
             // slot.$save();
             currentUser = user;
             $scope.currentUser = currentUser;
@@ -509,7 +497,7 @@ angular.module('bodyAppApp')
               console.log("Error adding class: " + err)
               slot.bookedUsers = slot.bookedUsers || {};
               delete slot.bookedUsers[currentUser._id];
-              delete slot.bookedFbUserIds[currentUser.facebook.id];
+              // delete slot.bookedFbUserIds[currentUser.facebook.id];
               alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
           }).$promise;
         }
@@ -629,6 +617,15 @@ angular.module('bodyAppApp')
           } 
         });
       }
+
+      $scope.calendarDateSetter = function(slot) {
+        var date = new Date(slot.date);
+        return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+      } 
+      $scope.calendarDateSetterEnd = function(slot) {
+        var date = new Date(slot.date);
+        return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+      } 
     })
 
     //Currently unused

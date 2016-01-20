@@ -161,6 +161,7 @@ angular.module('bodyAppApp')
 		volumeRef.$watch(function() {
 			$scope.musicVolume = volumeRef.$value
 			setMusicVolume($scope.musicVolume);
+			if(!$scope.$$phase) $scope.$apply();
 	  });
 
 	  canHearRef.$loaded().then(function() {
@@ -291,6 +292,40 @@ angular.module('bodyAppApp')
 			setMusicVolume(musicVolume)
 			volumeRef.$value = musicVolume
 			volumeRef.$save()
+
+			if ($scope.consumersCanHearEachOther) {
+				$scope.consumersCanHearEachOther = false;
+				canHearRef.$value = false;
+				canHearRef.$save()
+			}
+		}
+
+		$scope.upMusicButton = function(musicVolume) {
+			if ($scope.musicVolume < 100) {
+				musicVolume += 25;
+				setMusicVolume(musicVolume)
+				$scope.musicVolume = musicVolume;
+				if(!$scope.$$phase) $scope.$apply();
+				volumeRef.$value = musicVolume
+				volumeRef.$save()
+			}
+
+			if ($scope.consumersCanHearEachOther) {
+				$scope.consumersCanHearEachOther = false;
+				canHearRef.$value = false;
+				canHearRef.$save()
+			}
+		}
+
+		$scope.downMusicButton = function(musicVolume) {
+			if ($scope.musicVolume > 0) {
+				musicVolume -= 25;
+				setMusicVolume(musicVolume)
+				$scope.musicVolume = musicVolume;
+				if(!$scope.$$phase) $scope.$apply();
+				volumeRef.$value = musicVolume
+				volumeRef.$save()
+			}
 
 			if ($scope.consumersCanHearEachOther) {
 				$scope.consumersCanHearEachOther = false;

@@ -187,9 +187,9 @@
               <a class="btn" href="#">Collect Scores</a>
             </div>
             <div class="classControls text-center">
-              <h3 class="white mb8 mt16">Music:</h3>
-              <a class="btn music-btnUp" href="#">UP 25%</a>
-              <a class="btn music-btnDown" href="#">DOWN 25%</a>
+              <h3 class="white mb8 mt16">Music {{musicVolume}}</h3>
+              <a class="btn music-btnUp" ng-click = "upMusicButton(musicVolume)">UP 25%</a>
+              <a class="btn music-btnDown" ng-click = "downMusicButton(musicVolume)">DOWN 25%</a>
 <!--               <form>
                 <input style = "margin-bottom:6px" type="range" min="0" max="100" ng-change = "setMusicVolume(musicVolume)" ng-model="musicVolume" />
               </form> --> 

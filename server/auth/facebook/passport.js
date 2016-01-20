@@ -45,7 +45,8 @@ exports.setup = function (User, config) {
             facebook: profile._json,
             trainerCredential1: "Highly Enthusiastic",
             trainerRating: 5.0,
-            trainerNumRatings: 0
+            trainerNumRatings: 0,
+            signUpDate: new Date()
           });
           user.friendListObject = {}
           for (var i = 0; i < user.friendList.length; i++) {
@@ -65,14 +66,15 @@ exports.setup = function (User, config) {
           });
         } else {
           if (profile._json) {
+            console.log("Pulled facebook information for " + user.firstName + " " + user.lastName);
             user.facebook = profile._json;
             if (profile._json.friends) user.friendList = profile._json.friends.data;
-          }
-          user.friendListObject = {};
-          for (var i = 0; i < user.friendList.length; i++) {
-            user.friendListObject[user.friendList[i].id] = {}
-            user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
-          }
+            user.friendListObject = {};
+            for (var i = 0; i < user.friendList.length; i++) {
+              user.friendListObject[user.friendList[i].id] = {}
+              user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
+            }
+          }          
           user.save(function(err) {
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
