@@ -96,7 +96,7 @@
                         </li>
                         <li ng-show="isLoggedIn() && completedNewUserFlow" ng-class="{active: isActive('/settings')}">
                           <a href="/settings">
-                            Hi {{getCurrentUser().nickName}}
+                            <img class="nav-profile-pic" src="{{currentUser.picture}}"> Hi, {{getCurrentUser().nickName}}
                           </a>
                         </li>
                         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">

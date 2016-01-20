@@ -2,15 +2,15 @@
   height: 100vh;
   background: #1f1f1f;
 }
-.user-video-sidebar {
+.video-sidebar {
   background: #1f1f1f;
   padding: 0px;
 }
-.main-user-title, .classmates-title {
+.main-title, .classmates-title {
   padding: 8px;
   height: 40px;
 }
-.main-user-name {
+.main-name {
   color: #fff;
   font-size: 20px;
 }
@@ -20,7 +20,7 @@
 .badges img:first-child {
   padding-right: 5px;
 }
-.main-user-video div {
+.main-video div {
   height: 30vh;
 }
 .trainer-column {
@@ -45,13 +45,15 @@
 }
 .module-title, .module-description li {
   color: #fff !important;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 25px;
+  line-height: 25px;
+}
+.module-description li {
   margin-bottom: 5px;
 }
 .rounds {
   color: #fff;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 500;
   display: block;
 }
@@ -64,8 +66,8 @@
   font-weight: 600;
 }
 #stopwatch {
-  font-size: 60px;
-  margin-bottom: 30px;
+  font-size: 100px;
+  margin: 20px 0 50px 0;
   display: block;
 }
 #stopwatch span {
@@ -153,8 +155,8 @@
   position: absolute;
   top: 0vh;
   height: auto;
-  left: 83%;
-  width: 17%;
+  right: 20px;
+  width: 250px;
   background: rgba(0, 0, 0, 0.5);
   padding: 25px;
 }
@@ -191,12 +193,26 @@
   line-height: 12px;
 }
 
-#box0 {
+#box0,
+#box1,
+#box2,
+#box3,
+#box4,
+#box5,
+#box6,
+#box7,
+#box8,
+#box9,
+#box10,
+#box11,
+#box12,
+#box13,
+#box14,
+#box15 {
   display:inline-block;
-  left: 0%;
-  top: 0%;
 }
-#box1 {
+
+/*#box1 {
   display:inline-block;
   left: 0%;
   top: 16.67%;
@@ -270,7 +286,7 @@
   display:inline-block;
   left: 0%;
   top: 83.35%;
-}
+}*/
 
 .megascreen {
   /*background: blue !important;*/

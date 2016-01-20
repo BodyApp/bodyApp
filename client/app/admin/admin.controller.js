@@ -29,6 +29,14 @@ angular.module('bodyAppApp')
 
     $scope.instructors = [];
     $scope.levels = ["Intro", "Level One", "Level Two", "Level Three", "Test"]
+
+    var http = location.protocol;
+    var slashes = http.concat("//");
+    var host = slashes.concat(window.location.hostname);
+    if (host === "http://localhost") {
+      $scope.levels = ["Test"]      
+    }
+
     $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}, level: $scope.levels[0]};
     getAdminsAndInstructors()
     

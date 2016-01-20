@@ -1,4 +1,38 @@
-/*------MOBILE-------*/
+/*------PROFILE-------*/
+.friendList li {
+  padding: 10px 0px;
+  border-top: 1px solid #DBDBDB;
+}
+.friendPhoto {
+  display: inline-block;
+  padding-right: 10px;
+}
+.friendPhoto img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+.friendName {
+  display: inline-block;
+  font-size: 18px;
+}
+.inviteFriend {
+  display: inline-block;
+}
+.friends-User-col {
+  display: inline-block;
+  width: 50%;
+}
+.friends-Action-col {
+  display: inline-block;
+  width: 35%;
+}
+@media all and (max-width: 767px) {
+  .friendPhoto {
+    display: block;
+  }
+}
+
 
 /*------GENERAL-------*/
 
@@ -167,6 +201,17 @@ h1 {
 }
 .arrow span:hover svg path {
   fill: #0d1c45;
+}
+.nav-profile-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.trainerImg {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
 }
 
 /*------MODALS-------*/

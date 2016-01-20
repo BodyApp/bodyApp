@@ -3,6 +3,11 @@
 angular.module('bodyAppApp')
   .controller('SettingsCtrl', function ($scope, $http, $uibModal, $state, User, Auth) {
     $scope.errors = {};
+    $scope.teammates = true;
+    $scope.profilePage = false;
+    $scope.billing = false;
+    $scope.support = false;
+
     $scope.editingCreditCardInfo = false;
     $scope.currentUser = Auth.getCurrentUser();
     var currentUser = $scope.currentUser;
@@ -164,6 +169,20 @@ angular.module('bodyAppApp')
         });
 
         return modalInstance;
+    }
+
+    $scope.setToSee = function(pageToView) {
+      $scope.teammates = false;
+      $scope.profilePage = false;
+      $scope.billing = false;
+      $scope.support = false;
+      switch (pageToView) {
+        case 0: return $scope.teammates = true; break;
+        case 1: return $scope.profilePage = true; break;
+        case 2: return $scope.billing = true; break;
+        case 3: return $scope.support = true; break;
+        default: break;
+      }
     }
 
   //   $scope.changePassword = function(form) {

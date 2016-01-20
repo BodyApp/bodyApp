@@ -1,36 +1,96 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb80"></div>
 
 <div class="container">
-  
-  <div class="col-sm-6 text-center mb72">
-  	  <div id="user-social-setup" class="col-sm-12 text-center">
-  	<img class="user-social-image mb16" src="{{currentUser.picture}}">
-  	<img class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
-  	<h1>{{currentUser.firstName}} {{currentUser.lastName}}</h1>
-  	<h2>{{currentUser.email}}</h2>
-  </div>
-	  <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">
-	    Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}
-	  </button>
+	<section class="white-section-half">
+		<div class="col-sm-3">
+			<h1 class="darkblue mb32">Account</h1>
+			<a href="" ng-click = "setToSee(0)"><h4 class="royalblue bold mb16">Teammates</h4></a>
+			<hr>
+			<a href="" ng-click = "setToSee(1)"><h4 class="royalblue bold mb16">Profile</h4></a>
+			<hr>
+			<a href="" ng-click = "setToSee(2)"><h4 class="royalblue bold mb16">Billing</h4></a>
+			<hr>
+			<a href="" ng-click = "setToSee(3)"><h4 class="royalblue bold mb16">Contact Support</h4></a>
+			<hr>
+		</div>
 
-	  <button ng-if = "currentUser.stripe.subscription.status != 'active'" ng-click = "addSubscription()" class="btn btn-lg btn-primary">
-	    Add Subscription
-	  </button>
-	</div>
+		<!-- FRIENDS -->
+		<div class="col-sm-9" ng-show="teammates">
+			<div class="mb8">
+				<div class="col-sm-9">
+					<h3 class="royalblue">Teammates (20)</h3>
+				</div>
+				<div class="col-sm-3">
+					<!-- <a class="btn addTeammates" href="#">Add Teammates</a> -->
+				</div>				
+			</div>
+			<div class="col-sm-12">
+				<div class="friends-User-col"><span class="lightgray">User</span></div>
+				<div class="friends-Action-col"><span class="lightgray">Action</span></div>
+			</div>
+			<div class="col-sm-12">
+				<ul class="friendList">
+					<li ng-repeat = "friend in friendList" ng-show = "friendList.length > 0">
+						<div class="friends-User-col">
+							<div class="friendPhoto"><img src="{{friend.picture}}"></div>
+							<div class="friendName"><span>{{friend.firstName}} {{friend.lastName}}</span></div>
+						</div>
+						<div class="friends-Action-col">
+							<div class="inviteFriend"><span class="lightgray">Invite to class (coming soon)<span></div>
+							<!-- <div class="inviteFriend"><a href=""><span>Invite to class<span></a></div> -->
+						</div>
+					</li>
+				</ul>							
+			</div>
+		</div>
+		<!-- FRIENDS END -->
 
-	<div class="col-sm-6 text-center mb72">
-	  <div>
-	  	<h3> Your Friends</h3>
-	  	<div ng-repeat = "friend in currentUser.friendList" class = "mb8" ng-show = "friendList.length === 0">
-	  		<span style = "margin-left: 10px;">{{friend.name}}</span>
-	  	</div>
-	  	<div ng-repeat = "friend in friendList" class = "mb8" ng-show = "friendList.length > 0">
-	  		<img ng-src = "{{friend.picture}}" height = "50" width = "50">
-	  		<span style = "margin-left: 10px;">{{friend.firstName}} {{friend.lastName}}</span>
-	  	</div>
-	  </div>
-	</div>
+		<!-- PROFILE -->
+		<div class="col-sm-9" ng-show="profilePage">
+			<div class="col-sm-12">
+				<h4 class="royalblue mb8">Profile Photo</h4>
+			  	<img class="user-social-image mb16" src="{{currentUser.picture}}" style="margin-left:0px;">
+			  	<img class="facebook-social-image" src="assets/images/icons/facebook-circle.png">				
+			</div>
+			<div class="col-sm-6">
+				<h4 class="royalblue mb8">First Name</h4>
+				<p>{{currentUser.firstName}}</p>
+			</div>
+			<div class="col-sm-6">
+				<h4 class="royalblue mb8">Last Name</h4>
+				<p>{{currentUser.lastName}}</p>				
+			</div>
+			<div class="col-sm-12">
+				<h4 class="royalblue mb8">Email</h4>
+				<p>{{currentUser.email}}</p>				
+			</div>			
+		</div>
+		<!-- PROFILE END -->
 
+		<!-- Billing -->
+		<div class="col-sm-9" ng-show="billing">
+			<div class="col-sm-12">
+				<h4 class="royalblue mb8">Membership</h4>
+			  	<p class="mb32">Not currently a member</p>	
+				<button ng-if = "currentUser.stripe.subscription.status != 'active'" ng-click = "addSubscription()" class="btn btn-lg btn-primary">Add Subscription</button>
+			</div>		
+		</div>
+		<!-- Billing END -->
+
+
+		<!-- Contact Support -->
+		<div class="col-sm-9" ng-show="support">
+			<div class="col-sm-12 text-center">
+				<img src="assets/images/icons/contact-us.png">
+				<h4 class="text-center">Need some assistance?<br>Ask us a question and we'll get in touch.</h4>
+			</div>
+			<div class="col-sm-12 text-center">
+				<a class="btn" href="mailto:justin@getbodyapp.com?Subject=BODY%20Question">Email us</a>
+				<!-- <a class="btn" href="#">Call now</a> -->
+			</div>			
+		</div>
+		<!-- Contact Support END -->
+	</section>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>

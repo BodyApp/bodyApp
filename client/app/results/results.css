@@ -123,8 +123,8 @@
 }
 .public-results .photo img {
 	width: 65px;
-	height: auto;
-	border-radius: 32px;
+	height: 65px;
+	border-radius: 50%;
 }
 
 .filter-btn {

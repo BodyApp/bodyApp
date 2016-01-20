@@ -1,20 +1,21 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
-  <section class="banner pt32 pb32">
-    <div class="col-sm-4">
-      <h1 class="mb16 white">{{class.level}} Class</h1>
+  <section class="banner pt8 pb8">
+    <div class="col-sm-8">
+      <h1 class="mt56 mb16 white">{{class.level}} Class</h1>
+      <h3 class="purpleblue" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
+      <h3 class="purpleblue" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
+      <h3 class="purpleblue" ng-if = "minutesUntilClass < 0">Class has started!</h3>
+
+      <div ng-if = "minutesUntilClass <= 0">
+      	<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
+      </div>       
+
     </div>
-    <div class="col-sm-5" id = "audioVideoSetup"></div>
+    <div class="col-sm-4 text-center" id = "audioVideoSetup">
+    	<p class="mb8 bold purpleblue">Tech Setup:</p>
+    </div>
       <!-- Audio/video setup<br><span class="purpleblue">Microphone: </span><select class="av-audio" ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>&nbsp;<span class="purpleblue">Camera: </span><select class="av-video" ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>) <span style = "color:red;" ng-if = "!videoInput">No Camera Detected</span></span> -->
-    
-    <div class="col-sm-3">
-    	<h3 class="white" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
-    	<h3 class="white" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
-    	<h3 class="white" ng-if = "minutesUntilClass < 0">Class has started!</h3>
-		<div ng-if = "minutesUntilClass <= 0">
-	    	<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
-	    </div>
-    </div>
   </section>
 
   <section class="pt32 pb32">
@@ -22,7 +23,7 @@
       <h3 class="text-center mb16 darkblue bold">Instructor</h3>
       <p class="text-center mb16"><img class="trainer-circle-image" src="{{class.trainer.picture}}"></p>
       <h4 class="mb24 bold">{{classCompleted.trainer.firstName}} {{classCompleted.trainer.lastName}}</h4>
-      <h5 class="text-center mb16" ng-if = "class.trainer.trainerCredential1">Qualifications: {{class.trainer.trainerCredential1}}<span ng-if = "class.trainer.trainerCredential2">, {{class.trainer.trainerCredential2}}</span><span ng-if = "class.trainer.trainerCredential3">, {{class.trainer.trainerCredential3}}</span><span ng-if = "class.trainer.trainerCredential4">, {{class.trainer.trainerCredential4}}</span></h5>
+      <h5 class="text-center mb8" ng-if = "class.trainer.trainerCredential1">Qualifications: {{class.trainer.trainerCredential1}}<span ng-if = "class.trainer.trainerCredential2">, {{class.trainer.trainerCredential2}}</span><span ng-if = "class.trainer.trainerCredential3">, {{class.trainer.trainerCredential3}}</span><span ng-if = "class.trainer.trainerCredential4">, {{class.trainer.trainerCredential4}}</span></h5>
       <h4 class="text-center">User Rating: <span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5</h4>      
     </div>
 
