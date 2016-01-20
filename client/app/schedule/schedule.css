@@ -178,12 +178,12 @@ a.full.btn {
   display: block;
 }
 .my-friends .qty {
-  display: inline-block;
-  width: 40%;
+  display: block;
   color: #C0C0C0;
   font-size: 10px;
   line-height: 10px;
   vertical-align: middle;
+  margin-bottom: 8px;
 }
 .my-friends .empty {
   display: inline-block;
@@ -328,6 +328,16 @@ h5.dateTitles {
   font-size: 18px;
 }
 
+@media all and (max-width: 1110px) {
+  .class-type {
+    display: block;
+  }
+  .class-booking {
+    display: block;
+    float: none;
+  }
+}
+
 @media all and (max-width: 767px) {
   .sideDivider {
     border-right: 0px;
@@ -395,6 +405,8 @@ h5.dateTitles {
   .class-time {
     font-size: 20px;
     font-weight: 500;
+    display: inline-block;
+    padding-right: 10px;
   }
   .week-selector {
     position: relative;
@@ -403,6 +415,7 @@ h5.dateTitles {
   .class-type, .class-booking {
     display: inline-block;
     float: none;
+    vertical-align: top;
   }
   .sched-class {
     padding: 15px 10px;
@@ -416,4 +429,3 @@ h5.dateTitles {
   }
 
 }
-

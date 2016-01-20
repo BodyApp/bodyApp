@@ -312,6 +312,16 @@
   font-size: 28px;
 }
 
+.smallscreen .OT_name {
+  font-size: 25px !important;
+}
+.smallscreen .OT_bar {
+  width: 60%;
+}
+.megascreen .OT_bar {
+  width: 20%
+}
+
 .workColor {
   color: #fff;
 }

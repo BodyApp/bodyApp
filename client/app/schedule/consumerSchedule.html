@@ -309,13 +309,15 @@
     </div>
     <div ng-repeat="slot in day.slots">
       <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
-        <span class="class-time mb8">{{ slot.time }}</span>
-        <div class="col-xs-6 text-center">
-          <div class="class-type lvl1"><span>{{slot.level}}</span></div>
+        <div class="col-xs-12 text-center">
+          <span class="class-time mb8">{{ slot.time }}</span>
           <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
           <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
-          <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
-        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
+          <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>          
+        </div>
+        <div class="col-xs-6 text-center">
+          <div class="class-type lvl1"><span>{{slot.level}}</span></div>
+          <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         </div>
         <div class="col-xs-6 text-center">
           <div class="my-friends" >
