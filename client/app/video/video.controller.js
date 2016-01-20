@@ -312,7 +312,11 @@ angular.module('bodyAppApp')
 		// }
 
 		function getIdOfBox(boxNum) {
-	    return 'box' + boxNum;
+			if (userIsInstructor) {
+				return 'trainer' + boxNum;
+			} else {
+				return 'box' + boxNum;		
+			}
 		}
 
 		var connect = function() {
