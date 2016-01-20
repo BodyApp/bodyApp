@@ -199,6 +199,7 @@ a.full.btn {
   height: 25px;
   border-radius: 12.5px;
   vertical-align: middle;
+  margin-right: 5px !important;
 }
 .unavailable div, .unavailable span {
   opacity: 0.1;
