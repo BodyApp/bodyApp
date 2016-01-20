@@ -53,11 +53,11 @@
 }
 .cancel-btn {
   text-align: center;
-  background: #E8E8E8;
+  /*background: #E8E8E8;*/
   color: #fff !important;
-  padding: 0 4px;
+  padding: 1 4px;
   font-size: 10px;
-  line-height: 10px;
+  line-height: 12px;
   border-radius: 8px;
 }
 .cancel-btn:hover {

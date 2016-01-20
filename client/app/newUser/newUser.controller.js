@@ -10,7 +10,9 @@ angular.module('bodyAppApp')
     var injuries = "";
 
     var ref = new Firebase("https://bodyapp.firebaseio.com")
-    $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
+    $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros').orderByKey().limitToFirst(12))
+    // var query = $scope.allIntros.orderByKey().limitToFirst(10);
+    // $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
 
 	$scope.bookIntroClass = function(classBooked) {
 		$scope.newUserStep++;
@@ -45,8 +47,8 @@ angular.module('bodyAppApp')
     	classToBook.$loaded(function() {
     		classToBook.bookedUsers = classToBook.bookedUsers || {};
 			classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName, timeBooked: new Date().getTime(), injuries: injuries, picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
-            classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
-            classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
+            // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
+            // classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
 			classToBook.$save()
             $scope.classDetails = classToBook;
     	})
@@ -59,8 +61,8 @@ angular.module('bodyAppApp')
             console.log("Error adding class: " + err)
             classToBook.bookedUsers = classToBook.bookedUsers || {};
             delete classToBook.bookedUsers[$scope.currentUser._id]
-            classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
-            delete classToBook.bookedFbUserIds[$scope.currentUser.facebook.id]
+            // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
+            // delete classToBook.bookedFbUserIds[$scope.currentUser.facebook.id]
 
             classToBook.$save()
             alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
@@ -98,9 +100,10 @@ angular.module('bodyAppApp')
 
     $scope.getTime = function(classSent) {
     	if (classSent) {
-	    	var dateToReturn = new Date(classSent.$id*1)
-	    	var minutes = dateToReturn.getMinutes() < 10 ? "0" + dateToReturn.getMinutes() : dateToReturn.getMinutes()
-		    return (dateToReturn.getHours() < 12) ? dateToReturn.getHours() + ":" + minutes + "am" : (dateToReturn.getHours() - 12) + ":" + minutes + "pm" 
+	    	var dateToReturn = new Date(classSent.$id*1);
+	    	var minutes = dateToReturn.getMinutes() < 10 ? "0" + dateToReturn.getMinutes() : dateToReturn.getMinutes();
+            if (dateToReturn.getHours() === 12) return "12:" + minutes + "pm";
+		    return (dateToReturn.getHours() < 12) ? dateToReturn.getHours() + ":" + minutes + "am" : (dateToReturn.getHours() - 12) + ":" + minutes + "pm"; 
 		  }
     }
 

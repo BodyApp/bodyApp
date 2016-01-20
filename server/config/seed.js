@@ -92,8 +92,8 @@ User.find({}).remove(function() {
     injuries: "Nope",
     bookedIntroClass: false,
     tourtipShown: "1452812397819",
-    completedNewUserFlow: true,
-    introClassTaken: true,
+    completedNewUserFlow: false,
+    introClassTaken: false,
     level: 1
     }, 
     {

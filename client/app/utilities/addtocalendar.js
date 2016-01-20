@@ -85,6 +85,26 @@ angular.module('jshor.angular-addtocalendar', [])
 				</div>\
 			'
 		};
+	})
+
+	.directive('addtocalendarimage', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        startDate 	: '@',
+        endDate 		: '@',
+        title 			: '@',
+        timezone		: '@',
+        description : '@',
+        location 		: '@',
+        className 	: '@'
+      },
+    	controller: 'AddtocalendarCtrl',
+      template: '\
+					<img ng-click="getIcsCalendarUrl()" src = "../assets/images/icons/calendar_icon.svg" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Calendar" ng-click = "getIcsCalendarUrl()"></img>\
+				</div>\
+			'
+		};
 	});
 
 // <li><a href="{{calendarUrl.google}}" target="_blank">Google Calendar</a></li>\

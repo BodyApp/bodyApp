@@ -35,13 +35,34 @@
             <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
               <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
               <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach Class</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
             <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <img src = "../assets/images/icons/calendar_icon.svg" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Calendar" ng-click = "getIcsCalendarUrl()"></img> -->
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>        
           </div>
 
@@ -58,13 +79,33 @@
             <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
               <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
               <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach Class</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
             <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>        
           </div>
         </div>
@@ -81,13 +122,33 @@
             </div>
             <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
               <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
             <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>        
           </div>
 
@@ -103,13 +164,33 @@
             </div>
             <div class="action-col mb8" ng-if = "slot.date <= (timeNow + 1000*60*15)">
               <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Join Class</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
             <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)">
-              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#">{{formattedWaitTime(slot.date,timeNow)}}</a>
-              <a class="cancel-btn" title="Remove" ng-mouseover = "removeText = true" ng-mouseleave = "removeText = false" href="#" ng-click = "cancelClass(slot)">x</a>
-              <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span>
+              <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <addtocalendarimage
+                start-date= "{{calendarDateSetter(slot)}}"
+                end-date="{{calendarDateSetterEnd(slot)}}"
+                title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
+                location="https://getbodyapp.com/"
+                timezone="{{timeZone}}"
+                class-name="btn btn-sm btn-default dropdown-toggle"
+                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
+                btn-text="Add to calendar"           
+              ></addtocalendarimage>
+              <img src="../assets/images/icons/x_button.png" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>        
           </div>
         </div>  
