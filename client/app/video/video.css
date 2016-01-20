@@ -49,7 +49,7 @@
   line-height: 25px;
 }
 .module-description li {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 .rounds {
   color: #fff;
@@ -58,8 +58,8 @@
   display: block;
 }
 #tabata {
-  font-size: 60px;
-  margin-bottom: 30px;
+  font-size: 100px;
+  margin: 20px 0 50px 0;
   display: block;
 }
 #tabata span {
@@ -75,9 +75,11 @@
 }
 #canHearButton {
   background-color: red !important;
+  margin-bottom: 5px;
 }
 #cantHearButton {
   background-color: #0D1C45 !important;
+  margin-bottom: 5px;
 }
 .exit-btn {
   font-size: 10px !important;
@@ -130,7 +132,6 @@
   background: black;
 }
 .smallscreen {
-  /*background: red;*/
   border: 1px solid white;
   position: absolute !important;
   height: 16.67%;
@@ -209,84 +210,89 @@
 #box13,
 #box14,
 #box15 {
-  display:inline-block;
+  display: inline-block;
 }
 
-/*#box1 {
-  display:inline-block;
+#trainer0 {
+  left: 0%;
+  top: 0%;
+  display: inline-block;
+}
+#trainer1 {
   left: 0%;
   top: 16.67%;
+  display: inline-block;
 }
-#box2 {
-  display:inline-block;
+#trainer2 {
   left: 0%;
   top: 33.34%;
+  display: inline-block;
 }
-#box3 {
-  display:inline-block;
+#trainer3 {
   left: 0%;
   top: 50.01%;
+  display: inline-block;
 }
-#box4 {
-  display:inline-block;
+#trainer4 {
   left: 0%;
   top: 66.68%;
+  display: inline-block;
 }
-#box5 {
-  display:inline-block;
+#trainer5 {
   left: 0%;
   top: 83.35%;
+  display: inline-block;
 }
-#box6 {
-  display:inline-block;
-  left: 0%;
-  top: 0%;  
+#trainer6 {
+  left: 16.67%;
+  top: 0%;  
+  display: inline-block;
 }
-#box7 {
-  display:inline-block;
-  left: 0%;
-  top: 16.67%;  
+#trainer7 {
+  left: 16.67%;
+  top: 16.67%;  
+  display: inline-block;
 }
-#box8 {
-  display:inline-block;
-  left: 0%;
+#trainer8 {
+  left: 16.67%;
   top: 33.34%;
+  display: inline-block;
 }
-#box9 {
-  display:inline-block;
-  left: 0%;
+#trainer9 {
+  left: 16.67%;
   top: 50.01%;
+  display: inline-block;
 }
-#box10 {
-  display:inline-block;
-  left: 0%;
-  top: 66.68%;  
+#trainer10 {
+  left: 16.67%;
+  top: 66.68%;
+  display: inline-block;  
 }
-#box11 {
-  display:inline-block;
-  left: 0%;
+#trainer11 {
+  left: 16.67%;
   top: 83.35%;
+  display: inline-block;
 }
-#box12 {
-  display:inline-block;
-  left: 0%;
+#trainer12 {
+  left: 33.34%;
   top: 83.35%;
+  display: inline-block;
 }
-#box13 {
-  display:inline-block;
-  left: 0%;
+#trainer13 {
+  left: 50.01%;
   top: 83.35%;
+  display: inline-block;
 }
-#box14 {
-  display:inline-block;
-  left: 0%;
-  top: 83.35%;  
-}
-#box15 {
-  display:inline-block;
-  left: 0%;
+#trainer14 {
+  left: 66.68%;
   top: 83.35%;
-}*/
+  display: inline-block;  
+}
+#trainer15 {
+  left: 83.35%;
+  top: 83.35%;
+  display: inline-block;
+}
 
 .megascreen {
   /*background: blue !important;*/
@@ -332,6 +338,73 @@
   font-size:28px;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.trainerDetails {
+  position: absolute;
+  right: 0px;
+  top: 0vh;
+  height: auto;
+  width: 400px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 25px;  
+}
+.trainerDetails table {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.timerControls {
+  display: block;
+  text-align: center;
+}
+.timerControls a {
+  display: inline-block;
+  padding: 5px;
+  margin-right: 0px;
+  width: 35%;
+  min-width: 30%;
+}
+.tabataSelections {
+  display: block;
+}
+.tabataColumns {
+  width: 49%;
+  float: left;
+  height: 170px;
+}
+.tabataColumns span {
+  display: inline-block;
+  padding: 0 10px;
+}
+.tabata-select {
+  display: inline-block;
+  width: 100px;
+  height: 45px;
+  border-radius: 5px;
+  font-size: 25px;
+  color: #0D1C45;
+}
+.classControls {
+  width: 49%;
+  float: left;
+  height: 500px;
+}
+.music-btnUp, .music-btnDown {
+  width: 100px;
+  margin-right: 0px;
+  margin-bottom: 5px;
+}
+.music-btnUp {
+  background: #9711A5;
+}
+.music-btnUp:hover {
+  background: #7D1488;
+}
+.music-btnDown {
+  background: #B6CC23;
+}
+.music-btnDown:hover {
+  background: #95A71C;
 }
 
 iframe#audioPlayer {
