@@ -45,7 +45,8 @@ exports.setup = function (User, config) {
             facebook: profile._json,
             trainerCredential1: "Highly Enthusiastic",
             trainerRating: 5.0,
-            trainerNumRatings: 0
+            trainerNumRatings: 0,
+            signUpDate: new Date()
           });
           user.friendListObject = {}
           for (var i = 0; i < user.friendList.length; i++) {

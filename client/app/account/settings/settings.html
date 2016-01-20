@@ -72,10 +72,12 @@
 			<div class="col-sm-12">
 				<h4 class="royalblue mb8">Membership</h4>	
 			  <button ng-if = "currentUser.stripe.subscription.status === 'active'" ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">
-				    Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}
-				  </button>	
-				<p class="mb32">Not currently a member</p>
-				<button ng-if = "currentUser.stripe.subscription.status != 'active'" ng-click = "addSubscription()" class="btn btn-lg btn-primary">Add Subscription</button>
+			    Cancel My Subscription Ending {{subEndDate.getMonth()+1}}/{{subEndDate.getDate()}}/{{subEndDate.getFullYear()}}
+			  </button>	
+			  <div ng-if = "currentUser.stripe.subscription.status != 'active'">
+					<p class="mb32">Not currently a member</p>
+					<button ng-click = "addSubscription()" class="btn btn-lg btn-primary">Add Subscription</button>
+				</div>
 			</div>		
 		</div>
 		<!-- Billing END -->
