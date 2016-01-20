@@ -35,6 +35,11 @@
 
 
 /*------GENERAL-------*/
+@media all and (max-width: 767px) {
+  .container {
+    padding: 0 20px;
+  }
+}
 
 .on-dark a {
   color: #fff;
