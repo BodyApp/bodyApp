@@ -65,7 +65,8 @@
               <span>You</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach ({{formattedWaitTime(slot.date,timeNow)}})</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*15)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach</a>
+              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*15)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">View</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
@@ -125,7 +126,7 @@
             </div>
             <div class="action-col mb8" >
               <!-- Doesn't let instructor look further out than 24 hours as a lot can change in that amount of time -->
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*60*24)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">Teach</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*60*24)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">View</a>
               <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*60*24)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
