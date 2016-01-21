@@ -52,7 +52,7 @@ exports.setup = function (User, config) {
           for (var i = 0; i < user.friendList.length; i++) {
             user.friendListObject[user.friendList[i].id] = {}
             user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
-            user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
+            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
           }
 
           user.level = 0;
@@ -73,7 +73,7 @@ exports.setup = function (User, config) {
             for (var i = 0; i < user.friendList.length; i++) {
               user.friendListObject[user.friendList[i].id] = {}
               user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
-              user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
+              // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
             }
           }          
           user.save(function(err) {
