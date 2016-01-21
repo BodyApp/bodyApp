@@ -8,6 +8,12 @@ angular.module('bodyAppApp')
     $scope.upcomingIntros;
     $scope.bookedIntroClass;
     var injuries = "";
+    $scope.timezone;
+    setTimezone();
+    function setTimezone() {
+      var tzName = jstz().timezone_name;
+      $scope.timezone = moment().tz(tzName).format('z');
+    }
 
     var ref = new Firebase("https://bodyapp.firebaseio.com")
     $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros').orderByKey().limitToFirst(12))
@@ -39,10 +45,10 @@ angular.module('bodyAppApp')
 
     	console.log(classToBook)
 
-        var date = new Date(classBooked.$id*1)
-        $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-        $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-        $scope.timeZone = jstz().timezone_name;
+        // var date = new Date(classBooked.$id*1)
+        // $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        // $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        // $scope.timeZone = jstz().timezone_name;
 
     	classToBook.$loaded(function() {
     		classToBook.bookedUsers = classToBook.bookedUsers || {};
@@ -137,4 +143,18 @@ angular.module('bodyAppApp')
         default: break;
       }
     }
+
+    $scope.calendarDateSetter = function(slot) {
+        console.log(slot)
+        var localDate = new Date(slot.$id*1);
+        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        var dateToSet = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+         console.log(dateToSet);
+         return dateToSet
+      } 
+      $scope.calendarDateSetterEnd = function(slot) {
+        var localDate = new Date(slot.$id*1);
+        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+      } 
   });

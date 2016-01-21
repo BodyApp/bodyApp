@@ -44,7 +44,6 @@ User.find({}).remove(function() {
     __v: 51,
     injuries: "Nope",
     bookedIntroClass: false,
-    tourtipShown: "1452812397819",
     completedNewUserFlow: false,
     introClassTaken: false,
     level: 1

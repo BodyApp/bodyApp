@@ -27,6 +27,7 @@
     "angular-timer": "*",
     "humanize-duration": "*",
     "momentjs": "*",
+    "moment-timezone": "*",
     "checklist-model": "*"
   },
   "devDependencies": {

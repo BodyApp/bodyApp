@@ -27,7 +27,7 @@
         <div ng-repeat="day in currentWeek">
           <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
-              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
             <div class="class-col mb8">
               <span>{{slot.level}}</span>
@@ -43,7 +43,7 @@
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
                 location="https://getbodyapp.com/"
-                timezone="{{timeZone}}"
+                
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
                 btn-text="Add to calendar"           
@@ -56,7 +56,7 @@
             <!-- If user is the instructor -->
           <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
             <div class="date-col mb8">
-              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
             <div class="class-col mb8">
               <span>{{slot.level}}</span>
@@ -72,7 +72,7 @@
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Teaching Intro BODY Class"
                 location="https://getbodyapp.com/"
-                timezone="{{timeZone}}"
+                
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Teaching an Intro BODY Class"
                 btn-text="Add to calendar"           
@@ -88,7 +88,7 @@
         <div ng-repeat="nextWeekDay in nextWeek">
           <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
-              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
             <div class="class-col mb8">
               <span>{{slot.level}}</span>
@@ -103,7 +103,7 @@
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
                 location="https://getbodyapp.com/"
-                timezone="{{timeZone}}"
+                
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
                 btn-text="Add to calendar"           
@@ -116,7 +116,7 @@
             <!-- If user is the instructor -->
           <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
             <div class="date-col mb8">
-              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} EST</span>
+              <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
             <div class="class-col mb8">
               <span>{{slot.level}}</span>
@@ -133,7 +133,7 @@
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
                 location="https://getbodyapp.com/"
-                timezone="{{timeZone}}"
+                
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
                 btn-text="Add to calendar"           
@@ -165,7 +165,7 @@
 <section class="week-schedule hidden-xs scroll-to mb72">
   <div id="tour-classes" class="container">
     <div class="col-sm-9">
-      <h1 class="darkblue">BODY Class Schedule</h1>
+      <h1 class="darkblue mb0">BODY Class Schedule</h1>
     </div>
     <div class="col-sm-3">
       <h4 class="week-selector darkblue bold" ng-show = "days">
@@ -188,7 +188,7 @@
     </div>
     <div ng-repeat="slot in day.slots">
       <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
-        <span class="class-time">{{ slot.time }}</span>
+        <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
@@ -230,7 +230,7 @@
     <div ng-repeat="slot in day.slots">
       <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <div class="col-xs-12 text-center">
-          <span class="class-time mb8">{{ slot.time }}</span>
+          <span class="class-time mb8">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
           <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
           <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
           <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>          

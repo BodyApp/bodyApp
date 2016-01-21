@@ -107,7 +107,7 @@
             <a ng-click = "bookIntroClass(class)" href="" class="signupScheduler">
               <div class="signupDateSection">
                 <span class="darkblue signupDate">{{getDate(class)}}</span>
-                <span class="darkblue signupTime">{{getTime(class)}}</span>
+                <span class="darkblue signupTime">{{getTime(class)}} {{timezone}}</span>
               </div>
               <div class="signupSelect text-center">
                 <span class="gray">Select</span>
@@ -118,7 +118,7 @@
               <a ng-click = "bookIntroClass(class)" href="" class="signupScheduler">
                 <div class="signupDateSection">
                   <span class="darkblue signupDate">{{getDate(class)}}</span>
-                  <span class="darkblue signupTime">{{getTime(class)}}</span>
+                  <span class="darkblue signupTime">{{getTime(class)}} {{timezone}}</span>
                 </div>
               </a>
             </div>
@@ -133,17 +133,17 @@
       <div class="col-sm-12 mb56 text-center">
         <h1 class="darkblue mb8">Your Intro class has been reserved!</h1>
         <h4 class="gray mb0">{{getDate(bookedIntroClass)}}</h4>
-        <h4 class="gray mb8">{{getTime(bookedIntroClass)}} EST</h4>
-        <addtocalendar
-          start-date= "{{calendarDateSetter}}"
-          end-date="{{calendarDateSetterEnd}}"
-          title="Intro BODY Class with {{classDetails.trainer.firstName}} {{classDetails.trainer.lastName}}"
+        <h4 class="gray mb8">{{getTime(bookedIntroClass)}} {{timezone}}</h4>
+        <addtocalendarbigimage
+          ng-if = "bookedIntroClass"
+          start-date= "{{calendarDateSetter(bookedIntroClass)}}"
+          end-date="{{calendarDateSetterEnd(bookedIntroClass)}}"
+          title="Intro BODY Class!"
           location="https://getbodyapp.com/"
-          timezone="{{timeZone}}"
           class-name="btn btn-sm btn-default dropdown-toggle"
-          description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{classDetails.trainer.firstName}} is excited to workout with you!"
+          description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. We are excited to workout with you!"
           btn-text="Add to calendar"           
-        ></addtocalendar>
+        ></addtocalendarbigimage>
       </div>
       <div class="col-sm-6">
         <h3 class="royalblue mb16">A few tips before your first class</h3>

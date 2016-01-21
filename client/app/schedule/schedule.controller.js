@@ -11,7 +11,25 @@ angular.module('bodyAppApp')
 
         $scope.thisWeek;
         $scope.chosenDay;
-        $scope.timeZone = jstz().timezone_name;
+
+        setTimezone()
+        function setTimezone() {
+          var tzName = jstz().timezone_name;
+          // var m = moment(); // now, or the moment in question
+          $scope.timezone = moment().tz(tzName).format('z');
+          
+          // var tzMinuteOffset = jstz().utc_offset;
+          // var tzHourOffset = tzMinuteOffset/60
+
+          // switch (tzHourOffset) {
+          //   case -5: $scope.timezone = "ET"; break;
+          //   case -6: $scope.timezone = "CT"; break;
+          //   case -7: $scope.timezone = "MT"; break;
+          //   case -8: $scope.timezone = "PT"; break;
+          //   default: break;
+          // }
+        }
+
         var unbindMethod = function(){};
 
         var classKey = ""+todayDate.getFullYear()+""+((todayDate.getMonth()+1 < 10)?"0"+(todayDate.getMonth()+1):todayDate.getMonth()+1)+""+((todayDate.getDate() < 10)?"0"+todayDate.getDate():todayDate.getDate())
@@ -446,7 +464,7 @@ angular.module('bodyAppApp')
                 Auth.updateUser(user);
                 currentUser = user;
                 $scope.currentUser = user;
-                getInfo(slot.date);
+                // getInfo(slot.date);
                 slot.bookedUsers = slot.bookedUsers || {};
                 // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
                 slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
@@ -485,7 +503,7 @@ angular.module('bodyAppApp')
           User.addBookedClass({ id: currentUser._id }, {
             classToAdd: slot.date
           }, function(user) {
-            getInfo(slot.date);
+            // getInfo(slot.date);
             slot.bookedUsers = slot.bookedUsers || {};
             // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
             slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
@@ -619,11 +637,13 @@ angular.module('bodyAppApp')
       }
 
       $scope.calendarDateSetter = function(slot) {
-        var date = new Date(slot.date);
+        var localDate = new Date(slot.date);
+        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
       $scope.calendarDateSetterEnd = function(slot) {
-        var date = new Date(slot.date);
+        var localDate = new Date(slot.date);
+        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
     })
