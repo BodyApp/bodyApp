@@ -40,53 +40,6 @@ User.find({}).remove(function() {
     facebookId: "10100958748247716",
     email: "daniel.liebeskind@gmail.com",
     provider: "facebook",
-    "facebook": {
-        "id": "10100958748247716",
-        "birthday": "10/14/1986",
-        "friends": {
-            "summary": {
-                "total_count": 943
-            },
-            "paging": {
-                "next": "https://graph.facebook.com/v2.4/10100958748247716/friends?access_token=CAAHIgAQWChoBAJ7bvgI4lvjEwaLOepSdvodZAzVaJphtpKkxjZAKqZBMX6ZCgiUGqhgw7780Jmo0p3cO5nQp2McU8mXNlMvop5y0gINeRGuVZCwIthQbksVZBzEDOdKi2maJALno7X1igSMdXOTaq2R6FZBO3JmyEtOVDFCWnVyzqgpGd65grIXXr6zXHw1zWLzAZCpX8TARkiMkDgIpLdpb&limit=25&offset=25&__after_id=enc_AdCZAS0xEevxwTSUNqWpu41OIp1DPxIHZAjybfke4MGYLAGyhO1iLu6K4CPtrxN9ZBzgMUZD"
-            },
-            "data": [
-                {
-                    "id": "10101326452260845",
-                    "name": "Bella Schori"
-                },
-                {
-                    "id": "10100768993163348",
-                    "name": "Danny Bialosky"
-                },
-                {
-                    "id": "10100511977824168",
-                    "name": "Adam Witzel"
-                },
-                {
-                    "id": "10102806074281496",
-                    "name": "Phil Alexander"
-                },
-                {
-                    "id": "10101001125298766",
-                    "name": "Chris Psiaki"
-                },
-                {
-                    "id": "10101001126810736",
-                    "name": "Alison Lee"
-                }
-            ]
-        },
-        "picture": {
-            "data": {
-                "url": "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=e21562e6ed8ffaee6bf68543df6ca1d2&oe=5737F4D8",
-                "is_silhouette": false
-            }
-        },
-        "gender": "male",
-        "email": "daniel.liebeskind@gmail.com",
-        "name": "Daniel Liebeskind"
-    },
     role: "admin",
     __v: 51,
     injuries: "Nope",
