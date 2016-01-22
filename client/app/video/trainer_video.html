@@ -8,7 +8,7 @@
           </div>
         </div>
 
-        <div class="smallscreen" id="trainer1" ng-class = "{megascreen: hover1}" ng-click = "hoveredOverConsumer(1); hover1 = true">
+        <div class="smallscreen" id="trainer1" ng-class = "{megascreen: hover1}" ng-click = "hoveredOverConsumer(0, consumerList[0]); hover1 = true">
           <span class="video-consumer-name" ng-init = "box1User = consumerList[0]">{{consumerObjects[box1User].firstName}} {{consumerObjects[consumerList[0]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Billy</span>
@@ -16,7 +16,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer2" ng-class = "{megascreen: hover2}" ng-click = "hoveredOverConsumer(2); hover2 = true">
+        <div class="smallscreen" id="trainer2" ng-class = "{megascreen: hover2}" ng-click = "hoveredOverConsumer(1, consumerList[1]); hover2 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[1]].firstName}} {{consumerObjects[consumerList[1]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Danny</span>
@@ -24,7 +24,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer3" ng-class = "{megascreen: hover3}" ng-click = "hoveredOverConsumer(3); hover3 = true">
+        <div class="smallscreen" id="trainer3" ng-class = "{megascreen: hover3}" ng-click = "hoveredOverConsumer(2, consumerList[2]); hover3 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[2]].firstName}} {{consumerObjects[consumerList[2]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Billy</span>
@@ -32,7 +32,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer4" ng-class = "{megascreen: hover4}" ng-click = "hoveredOverConsumer(4); hover4 = true">
+        <div class="smallscreen" id="trainer4" ng-class = "{megascreen: hover4}" ng-click = "hoveredOverConsumer(3, consumerList[3]); hover4 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[3]].firstName}} {{consumerObjects[consumerList[3]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -40,7 +40,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer5" ng-class = "{megascreen: hover5}" ng-click = "hoveredOverConsumer(5); hover5 = true">
+        <div class="smallscreen" id="trainer5" ng-class = "{megascreen: hover5}" ng-click = "hoveredOverConsumer(4, consumerList[4]); hover5 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[4]].firstName}} {{consumerObjects[consumerList[4]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -48,7 +48,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer6" ng-class = "{megascreen: hover6}" ng-click = "hoveredOverConsumer(6); hover6 = true">
+        <div class="smallscreen" id="trainer6" ng-class = "{megascreen: hover6}" ng-click = "hoveredOverConsumer(5, consumerList[5]); hover6 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[5]].firstName}} {{consumerObjects[consumerList[5]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -56,7 +56,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer7" ng-class = "{megascreen: hover7}" ng-click = "hoveredOverConsumer(7); hover7 = true">
+        <div class="smallscreen" id="trainer7" ng-class = "{megascreen: hover7}" ng-click = "hoveredOverConsumer(6, consumerList[6]); hover7 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[6]].firstName}} {{consumerObjects[consumerList[6]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -64,7 +64,7 @@
           </div> -->
         </div>
         
-        <div class="smallscreen" id="trainer8" ng-class = "{megascreen: hover8}" ng-click = "hoveredOverConsumer(8); hover8 = true">
+        <div class="smallscreen" id="trainer8" ng-class = "{megascreen: hover8}" ng-click = "hoveredOverConsumer(7, consumerList[7]); hover8 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[7]].firstName}} {{consumerObjects[consumerList[7]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -72,7 +72,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer9" ng-class = "{megascreen: hover9}" ng-click = "hoveredOverConsumer(9); hover9 = true">
+        <div class="smallscreen" id="trainer9" ng-class = "{megascreen: hover9}" ng-click = "hoveredOverConsumer(8, consumerList[8]); hover9 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[8]].firstName}} {{consumerObjects[consumerList[8]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -80,7 +80,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer10" ng-class = "{megascreen: hover10}" ng-click = "hoveredOverConsumer(10); hover10 = true">
+        <div class="smallscreen" id="trainer10" ng-class = "{megascreen: hover10}" ng-click = "hoveredOverConsumer(9, consumerList[9]); hover10 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[9]].firstName}} {{consumerObjects[consumerList[9]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -88,7 +88,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer11" ng-class = "{megascreen: hover11}" ng-click = "hoveredOverConsumer(11); hover11 = true">
+        <div class="smallscreen" id="trainer11" ng-class = "{megascreen: hover11}" ng-click = "hoveredOverConsumer(10, consumerList[10]); hover11 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[10]].firstName}} {{consumerObjects[consumerList[10]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -96,7 +96,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer12" ng-class = "{megascreen: hover12}" ng-click = "hoveredOverConsumer(12); hover12 = true">
+        <div class="smallscreen" id="trainer12" ng-class = "{megascreen: hover12}" ng-click = "hoveredOverConsumer(11, consumerList[11]); hover12 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[11]].firstName}} {{consumerObjects[consumerList[11]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -104,7 +104,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer13" ng-class = "{megascreen: hover13}" ng-click = "hoveredOverConsumer(13); hover13 = true">
+        <div class="smallscreen" id="trainer13" ng-class = "{megascreen: hover13}" ng-click = "hoveredOverConsumer(12, consumerList[12]); hover13 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[12]].firstName}} {{consumerObjects[consumerList[12]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -112,7 +112,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer14" ng-class = "{megascreen: hover14}" ng-click = "hoveredOverConsumer(14); hover14 = true">
+        <div class="smallscreen" id="trainer14" ng-class = "{megascreen: hover14}" ng-click = "hoveredOverConsumer(13, consumerList[13]); hover14 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[13]].firstName}} {{consumerObjects[consumerList[13]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
@@ -120,7 +120,7 @@
           </div> -->
         </div>
 
-        <div class="smallscreen" id="trainer15" ng-class = "{megascreen: hover15}" ng-click = "hoveredOverConsumer(15); hover15 = true">
+        <div class="smallscreen" id="trainer15" ng-class = "{megascreen: hover15}" ng-click = "hoveredOverConsumer(14, consumerList[14]); hover15 = true">
           <span class="video-consumer-name">{{consumerObjects[consumerList[14]].firstName}} {{consumerObjects[consumerList[14]].lastName.charAt(0)}}.</span>
           <!-- <div class="name-overlay">
             <span>Username</span>
