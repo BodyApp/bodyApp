@@ -56,13 +56,14 @@ var ics = function() {
             //TODO add time and time zone? use moment to format?
             // var offset = new Date().getTimezoneOffset();
             // var offset = jstz().utc_offset;
-            var offset = -jstz().utc_offset - 5*60; // What is difference between current timezone and EST.
+            var offset = jstz().utc_offset - 5*60; // Adjustment because set the times in NYC, which is UTC-5
             
-            var tempStartDate = new Date(begin).getTime() + offset*60*1000;
-            var start_date = new Date(tempStartDate);
+            console.log(begin)
+            var tempStartDate = new Date(begin).getTime() ;
+            var start_date = new Date(tempStartDate + offset*60*1000);
 
-            var tempEndDate = new Date(stop).getTime() + offset*60*1000;
-            var end_date = new Date(tempEndDate);
+            var tempEndDate = new Date(stop).getTime() ;
+            var end_date = new Date(tempEndDate + offset*60*1000);
 
             var start_year = ("0000" + (start_date.getFullYear().toString())).slice(-4);
             var start_month = ("00" + ((start_date.getMonth() + 1).toString())).slice(-2);

@@ -15,14 +15,13 @@ angular.module('bodyAppApp')
         // $scope.calendarDateSetter = "20150704T210000"
         // $scope.calendarDateSetterEnd = "20150704T220000"
         //Formatting for calendar appointment setting
-        $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-        $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
         $scope.scheduledClass = slot
 
-        console.log($scope.calendarDateSetter)
-
-        // var time = jstz().determine();
-        $scope.timeZone = jstz().timezone_name;  
+        setTimezone()
+        function setTimezone() {
+          var tzName = jstz().timezone_name;
+          $scope.timezone = moment().tz(tzName).format('z');
+        }
         
         if (date.getHours() == 12) {
             $scope.classTime = date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "pm"
@@ -82,4 +81,18 @@ angular.module('bodyAppApp')
         $scope.backToMain = function() {
             $scope.showFriendModal = false;
         }
+
+      $scope.calendarDateSetter = function() {
+        var date = new Date(slot.date)
+        // var localDate = new Date(slot.date);
+        // var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        // console.log(date)
+        return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+      } 
+      $scope.calendarDateSetterEnd = function() {
+        var date = new Date(slot.date)
+        // var localDate = new Date(slot.date);
+        // var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+      } 
     })

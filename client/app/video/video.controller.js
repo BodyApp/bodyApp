@@ -82,7 +82,13 @@ angular.module('bodyAppApp')
       .child("slots")
       .child(classDate.getTime())
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
-      	if (userIsInstructor) {return $scope.tabata.tabataActive = true}
+      	if (userIsInstructor) {
+      		$scope.tabata.timeOnMinutes = "0"
+      		$scope.tabata.timeOnSeconds = "0"
+      		$scope.tabata.timeOffSeconds = "0"
+      		$scope.tabata.rounds = "1"
+      		return $scope.tabata.tabataActive = true
+      	}
       	else if (!userIsInstructor) {
       		console.log("Watching whether tabata is on or off.")
       		$scope.$watch('tabata.isOn', function(data){

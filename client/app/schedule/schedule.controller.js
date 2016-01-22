@@ -15,19 +15,7 @@ angular.module('bodyAppApp')
         setTimezone()
         function setTimezone() {
           var tzName = jstz().timezone_name;
-          // var m = moment(); // now, or the moment in question
           $scope.timezone = moment().tz(tzName).format('z');
-          
-          // var tzMinuteOffset = jstz().utc_offset;
-          // var tzHourOffset = tzMinuteOffset/60
-
-          // switch (tzHourOffset) {
-          //   case -5: $scope.timezone = "ET"; break;
-          //   case -6: $scope.timezone = "CT"; break;
-          //   case -7: $scope.timezone = "MT"; break;
-          //   case -8: $scope.timezone = "PT"; break;
-          //   default: break;
-          // }
         }
 
         var unbindMethod = function(){};
@@ -455,12 +443,30 @@ angular.module('bodyAppApp')
 
         $scope.openBookingConfirmation = function (slot) {
           if (slot.level === "Intro") {
+
             // if (currentUser.introClassTaken) {
             //   return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
             // } else if (currentUser.bookedIntroClass) {
             //   return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
             // } else {
               return User.addIntroClass({ id: $scope.currentUser._id }, {classToAdd: slot.date}, function(user) {
+                var modalInstance = $uibModal.open({
+                  animation: true,
+                  templateUrl: 'app/schedule/bookingConfirmation.html',
+                  controller: 'BookingConfirmationCtrl',
+                  resolve: {
+                    slot: function () {
+                      return slot;
+                    }
+                  }
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                  $scope.selected = selectedItem;
+                }, function () {
+                  $log.info('Modal dismissed at: ' + new Date());
+                });
+
                 Auth.updateUser(user);
                 currentUser = user;
                 $scope.currentUser = user;
@@ -637,13 +643,15 @@ angular.module('bodyAppApp')
       }
 
       $scope.calendarDateSetter = function(slot) {
-        var localDate = new Date(slot.date);
-        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        var date = new Date(slot.date);
+        // var localDate = new Date(slot.date);
+        // var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
       $scope.calendarDateSetterEnd = function(slot) {
-        var localDate = new Date(slot.date);
-        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        var date = new Date(slot.date);
+        // var localDate = new Date(slot.date);
+        // var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
     })
