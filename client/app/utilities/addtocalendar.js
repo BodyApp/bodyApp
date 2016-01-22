@@ -5,13 +5,14 @@ angular.module('jshor.angular-addtocalendar', [])
 		var cal = ics();
 
 		var utcToDate = function(date) {
-			var dateObj = new Date();
+			var dateObj = new Date(date);
 			dateObj.setFullYear(date.substring(0, 4));
 			dateObj.setDate(date.substring(6, 8));
 			dateObj.setMonth(parseInt(date.substring(4, 6))-1);
 			dateObj.setUTCHours(date.substring(9, 11));
 			dateObj.setUTCMinutes(date.substring(11, 13));
 			dateObj.setUTCSeconds(date.substring(13, 15));
+			console.log(dateObj)
 			return dateObj.toString();
 		};
 
