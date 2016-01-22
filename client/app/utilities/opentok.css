@@ -1,3 +1,7 @@
+#audioVideoSetup {
+  height: 350px;
+}
+
 .opentok-hardware-setup,
 .opentok-hardware-setup * {
     margin: 0;
@@ -20,9 +24,8 @@
   box-sizing: border-box;
   border: 0;
   /*background-color: #333;*/
-  padding: 0 60px 0 0;
-  width: 380px;
-  height: 270px;
+  width: 450px;
+  height: 340px;
 }
 
 .opentok-hardware-setup-loading {
@@ -45,9 +48,9 @@
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-label {
-  color: #ffffff;
+  color: #1f1f1f;
   float: left;
-  width: 90px;
+  width: auto;
   padding-right: 10px;
   padding-top: 1px;
   line-height: 31px;
@@ -55,7 +58,7 @@
 
 .opentok-hardware-setup .opentok-hardware-setup-selector {
   padding: 0;
-  margin: 0 0 10px 100px;
+  margin: 0 0 10px 0;
   border: 1px solid #9A9A9A;
   overflow: hidden;
   background-color: #fff;
@@ -104,13 +107,17 @@
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-preview {
-  margin-left: 100px;
-  width: 220px;
+  /*margin-left: 100px;*/
+  width: 450px;
 }
 
+.opentok-hardware-setup-preview div {
+  width: 450px !important;
+  height: 340px !important;
+}
 
 .opentok-hardware-setup .opentok-hardware-setup-camera .opentok-hardware-setup-preview {
-  height: 170px;
+  height: 340px;
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-activity-bg {

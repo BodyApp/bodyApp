@@ -1,3 +1,94 @@
+/*------CLASS STARTING-------*/
+.startingText, .startingBtn {
+  display: inline-block;
+  vertical-align: top;
+}
+.startingText {
+  padding-right: 20px;
+}
+.trainer-circle-image {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  border: 5px solid #CCCCCC;
+  float: left;
+  margin-right: 20px;
+}
+.trainerInfo {
+  display: block;
+  height: 180px;
+  vertical-align: middle;
+}
+.teammateContent {
+  display: inline-block;
+  padding: 10px 10px;
+}
+.teammateContent span {
+  font-size: 16px;
+  line-height: 20px;
+}
+.allTeammates {
+  display: block;
+}
+.waitTabs {
+  border-bottom: 1px solid #0D1c45;
+}
+.waitTabs a {
+  color: #0D1c45;
+  background: white;
+  border-top: 1px solid #0D1c45;
+  border-right: 1px solid #0D1c45;
+  border-left: 1px solid #0D1c45;
+  width: auto;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+  width: 30%;
+  text-align: center;
+}
+.waitTabs a:hover {
+  color: #fff;
+  background: #224893;
+  cursor: pointer;
+}
+.waitSection {
+  height: 600px;
+}
+.waitTab1 {
+  display: block;
+  position: absolute;
+}
+.waitTab1 span {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 18px;
+}
+.waitTab1 a {
+  font-size: 14px;
+  line-height: 18px;
+}
+.cameraOverlay {
+  position: absolute;
+  top: 94px;
+  width: 450px;
+  height: 340px;
+}
+.user-circle-image {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border: 3px solid #CCCCCC;  
+}
+.funFacts {
+  font-size: 12px;
+  line-height: 16px;
+}
+.trainer-info h4 {
+  font-weight: 400;
+}
+
 /*------PROFILE-------*/
 .friendList li {
   padding: 10px 0px;
@@ -38,6 +129,9 @@
 @media all and (max-width: 767px) {
   .container {
     padding: 0 20px;
+  }
+  .image-xxs {
+    margin-bottom: 20px;
   }
 }
 
@@ -112,6 +206,10 @@ h1 {
   font-weight: 400;
   color: #A2B2E3;
 }
+.lightblueSection2 {
+  background: #22498E;
+  color: #fff;
+}
 .banner {
   background: #224893;
   color: white;
@@ -144,24 +242,10 @@ h1 {
 .white {
   color: #fff;
 }
-.trainer-circle-image {
-  background-repeat: no-repeat;
-  background-position: 50%;
-  border-radius: 50%;
-  width: 180px;
-  height: 180px;
-  border: 6px solid #CCCCCC;
-}
-.user-circle-image {
-  background-repeat: no-repeat;
-  background-position: 50%;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  border: 3px solid #CCCCCC;  
-}
+
 .user-list li {
-  text-align: center;
+  text-align: left;
+  display: inline-block;
 }
 .av-audio {
   height: auto;
@@ -178,8 +262,9 @@ h1 {
   margin-bottom: 0px;
 }
 .teammates-col {
-  width: 50%;
-  display: inline-block;
+  width: 100%;
+  text-align: left;
+  display: block;
 }
 .fullscreen-section {
   height: 100vh;
