@@ -493,7 +493,7 @@ angular.module('bodyAppApp')
 
 				  	//Need to check if this user is already in the consumerList or not
 						if (!instructorStream) {
-							if (classToJoin.bookedUsers[streamId]) {
+							if (classToJoin.bookedusers && classToJoin.bookedUsers[streamId]) {
 								// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
 								subscriberObjects[streamId] = subscriber;
 								$scope.consumerObjects[streamId] = classToJoin.bookedUsers[streamId]
@@ -668,6 +668,7 @@ angular.module('bodyAppApp')
 		    });
 
 		    publisher.on('streamCreated', function (event) {
+		    	// console.log(event)
 				    console.log('The publisher started streaming with id ' + event.stream.id);
 
 				    var classRef = ref.child(weekOf)
