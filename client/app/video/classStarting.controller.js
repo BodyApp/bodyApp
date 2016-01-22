@@ -4,6 +4,13 @@ angular.module('bodyAppApp')
   .controller('ClassStartingCtrl', function ($scope, $location, $interval, $firebaseObject, Schedule, Auth, User, Video) {
   	var classToJoin = Schedule.classUserJustJoined;
 
+      $scope.overlay1 = true;
+      $scope.overlay2 = false;
+      $scope.overlay3 = false;
+      $scope.tab1 = true;
+      $scope.tab2 = false;
+      $scope.instructorBio = false;
+
     if (!classToJoin) {
       $location.path('/')
     }
@@ -130,6 +137,30 @@ angular.module('bodyAppApp')
       var element = document.querySelector('#audioVideoSetup');
       var component = Video.hardwareSetup(element);
     }
+
+    $scope.setToSee = function(pageToView) {
+      $scope.overlay1 = false;
+      $scope.overlay2 = false;
+      $scope.overlay3 = false;
+      switch (pageToView) {
+        case 0: return $scope.overlay1 = true; break;
+        case 1: return $scope.overlay2 = true; break;
+        case 2: return $scope.overlay3 = true; break;
+        default: break;
+      }
+    }
+
+    $scope.setToSee2 = function(pageToView) {
+      $scope.tab1 = false;
+      $scope.tab2 = false;
+      // $scope.tab3 = false;
+      switch (pageToView) {
+        case 0: return $scope.tab1 = true; break;
+        case 1: return $scope.tab2 = true; break;
+        // case 2: return $scope.tab3 = true; break;
+        default: break;
+      }
+    }        
 
     // load cookie, or start new tour
     // $scope.currentStep = 0;
