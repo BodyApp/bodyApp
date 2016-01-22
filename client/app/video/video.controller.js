@@ -3,15 +3,15 @@
 angular.module('bodyAppApp')
   .controller('VideoCtrl', function ($scope, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
 
-  	var classToJoin = Schedule.classUserJustJoined;
-  	if (!classToJoin) {
-			return $location.path('/')
+  	var classToJoin = Schedule.classUserJustJoined; //Saved in the Schedule factory
+  	if (!classToJoin) { //If there isn't any class
+			return $location.path('/') //Go to the home page (index)
 		}
 
-		$scope.classTime = classToJoin.date;
+		$scope.classTime = classToJoin.date; //trainer_video:180 - Timer is set to the class to join date.
 		$scope.trainer = classToJoin.trainer;
 
-		var lastConsumerTrainerCouldHear;
+		// var lastConsumerTrainerCouldHear;
 
 		var classClosesTime = (classToJoin.date + 1000*60*70);
 		var classHalfway = (classToJoin.date + 1000*60*30);

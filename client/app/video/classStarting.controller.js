@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $firebaseObject, Schedule, Auth, User, Video) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $uibModal, $firebaseObject, Schedule, Auth, User, Video) {
   	var classToJoin = Schedule.classUserJustJoined;
 
       $scope.overlay1 = true;
@@ -13,6 +13,24 @@ angular.module('bodyAppApp')
 
     if (!classToJoin) {
       $location.path('/')
+    }
+
+    //Check that using Chrome or Firefox
+    if (OT.checkSystemRequirements() != 1) {
+      // The client does not support WebRTC.
+      var modalInstance = $uibModal.open({
+        animation: true,
+        backdrop: "static",
+        keyboard: false,
+        templateUrl: 'app/video/wrongBrowser.html',
+        controller: 'WrongBrowserCtrl',
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
     }
 
     // $scope.instructor = classToJoin.trainer

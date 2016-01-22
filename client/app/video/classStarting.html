@@ -18,7 +18,7 @@
 			<h3 class="darkblue bold mb16">Instructor</h3>
 			<img class="trainer-circle-image" src="{{class.trainer.picture}}">
 			<div class="trainer-info">
-				<h4 class="darkblue mb0">Justin Mendelson</h4>
+				<h4 class="darkblue mb0">{{class.trainer.firstName}} {{class.trainer.lastName}}</h4>
 				<h4 class="royalblue mb0">User Rating: 
 					<span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5
 				</h4>
@@ -44,48 +44,56 @@
 					<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[0].injuries}}</span><br>
 					</div>
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 1">
 					<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[1].injuries}}</span><br>
 					</div>		    							
 				</li>				
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 2">
 					<img class="user-circle-image" src="{{bookedUsers[2].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[2].firstName}} {{bookedUsers[2].lastName.charAt(0)}}.</span><br>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[2].injuries}}</span><br>
 					</div>		    							
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 3">
 					<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[3].injuries}}</span><br>
 					</div>		    							
 				</li>				
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 4">
 					<img class="user-circle-image" src="{{bookedUsers[4].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[4].firstName}} {{bookedUsers[4].lastName.charAt(0)}}.</span><br>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[4].injuries}}</span><br>
 					</div>		    							
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 5">
 					<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[5].injuries}}</span><br>
 					</div>		    							
 				</li>				
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 6">
 					<img class="user-circle-image" src="{{bookedUsers[6].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[6].firstName}} {{bookedUsers[6].lastName.charAt(0)}}.</span><br>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[6].injuries}}</span><br>
 					</div>		    							
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 7">
 					<img class="user-circle-image" src="{{bookedUsers[7].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span>
+						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[7].injuries}}</span><br>
 					</div>		    							
 				</li>				
 			</ul>
@@ -123,153 +131,5 @@
 		</div>
 	</div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <section class="banner pt8 pb8">
-    <div class="col-sm-8">
-      <h1 class="mt56 mb16 white">{{class.level}} Class</h1>
-      <h3 class="purpleblue startingText" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
-      <h3 class="purpleblue startingText" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
-      <h3 class="purpleblue startingText" ng-if = "minutesUntilClass < 0">Class has started!</h3>
-
-      <div ng-if = "minutesUntilClass <= 0">
-      	<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
-      </div>       
-
-    </div>
-    <div class="col-sm-4 text-center" id = "audioVideoSetup">
-    	<p class="mb8 bold purpleblue">Tech Setup:</p>
-    </div>
-      <!-- Audio/video setup<br><span class="purpleblue">Microphone: </span><select class="av-audio" ng-model = "audioInput" ng-options = "value.label for value in audioInputDevices" ng-change = "setAudioInput(audioInput)"></select>&nbsp;<span class="purpleblue">Camera: </span><select class="av-video" ng-model = "videoInput" ng-options = "value.label for value in videoInputDevices" ng-change = "setVideoInput(videoInput)"></select>) <span style = "color:red;" ng-if = "!videoInput">No Camera Detected</span></span> -->
-  </section>
-
-  <section class="container">
-    <div class="col-sm-6 text-left">
-      <h3 class="text-left mb16 darkblue bold">Instructor</h3>
-      <p class="text-left mb16"><img class="trainer-circle-image" src="{{class.trainer.picture}}"></p>
-      <h4 class="mb24 bold">{{classCompleted.trainer.firstName}} {{classCompleted.trainer.lastName}}</h4>
-
-
-      <h5 class="text-left mb8" ng-if = "class.trainer.trainerCredential1">Qualifications: {{class.trainer.trainerCredential1}}<span ng-if = "class.trainer.trainerCredential2">, {{class.trainer.trainerCredential2}}</span><span ng-if = "class.trainer.trainerCredential3">, {{class.trainer.trainerCredential3}}</span><span ng-if = "class.trainer.trainerCredential4">, {{class.trainer.trainerCredential4}}</span></h5>
-
-
-      <h4 class="text-left">User Rating: <span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5</h4>      
-    </div>
-
-    <div class="col-sm-6">
-    	<h3 class="text-left mb16 darkblue bold">Teammates</h3>
-    	<div class="teammates-col">
-			<ul class="user-list">
-				<li ng-if = "numBookedUsers > 0">
-					<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[0].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 2</span> -->
-					</div>
-				</li>
-				<li ng-if = "numBookedUsers > 1">
-					<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
-					<div class="user-name text-center">
-						<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span>
-						<!-- <span id="dark-text">Level 2</span> -->
-					</div>		    							
-				</li>				
-				<li ng-if = "numBookedUsers > 2">
-					<img class="user-circle-image" src="{{bookedUsers[2].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[2].firstName}} {{bookedUsers[2].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[2].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>
-				<li ng-if = "numBookedUsers > 3">
-					<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
-					<div class="user-name text-center">
-						<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>				
-				<li ng-if = "numBookedUsers > 4">
-					<img class="user-circle-image" src="{{bookedUsers[4].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[4].firstName}} {{bookedUsers[4].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[4].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 3</span> -->
-					</div>		    							
-				</li>
-				<li ng-if = "numBookedUsers > 5">
-					<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
-					<div class="user-name text-center">
-						<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>				
-				<li ng-if = "numBookedUsers > 6">
-					<img class="user-circle-image" src="{{bookedUsers[6].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[6].firstName}} {{bookedUsers[6].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[6].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>
-<<<<<<< HEAD
-			</ul>    		
-    	</div>
-    	<div class="teammates-col">
-			<ul class="user-list">
-				<li ng-if = "numBookedUsers > 1">
-					<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[1].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 2</span> -->
-					</div>		    							
-				</li>		    						
-				<li ng-if = "numBookedUsers > 3">
-					<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span><br>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>
-				<li ng-if = "numBookedUsers > 5">
-					<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
-					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[5].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>
-				<li ng-if = "numBookedUsers > 7">
-					<img class="user-circle-image" src="{{bookedUsers[7].picture}}">
-					<div class="user-name text-center">
-						<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[7].injuries}}</span><br>
-						<!-- <span id="dark-text">Level 1</span> -->
-					</div>		    							
-				</li>				
-			</ul>    		
-    	</div>
-    </div>
-  </section>
 	
 <div ng-include="'components/footer/footer.html'"></div>

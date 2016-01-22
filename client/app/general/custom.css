@@ -313,12 +313,12 @@ h1 {
 }
 .cancel-modal {
     text-align: center;
-    background: #BDBDBD;
-    color: #fff !important;
+    /*background: #BDBDBD;*/
+    /*color: #fff !important;*/
     position: relative;
-    padding: 0 5px;
-    width: 22px;
-    height: 22px;
+    /*padding: 0 5px;*/
+    /*width: 22px;*/
+    /*height: 22px;*/
     float: right;
     top: -13px;
     left: 13px;
