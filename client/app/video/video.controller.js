@@ -668,7 +668,22 @@ angular.module('bodyAppApp')
 		    });
 
 		    publisher.on('streamCreated', function (event) {
-				    console.log('The publisher started streaming.');
+				    console.log('The publisher started streaming with id ' + event.stream.id);
+
+				    var classRef = ref.child(weekOf)
+			      .child(classDate.getDay())
+			      .child("slots")
+			      .child(classDate.getTime())
+				    
+				    //Sets Stream IDs in the class object for easier diagnosis of tokbox stream issues
+				    if (userIsInstructor) {
+				    	classRef.child("trainer")
+				    	.update({tokboxStreamId: event.stream.id})
+				    } else {
+				    	classRef.child("bookedUsers")
+				    	.child(currentUser._id)
+				    	.update({tokboxStreamId: event.stream.id})
+				    }
 				});
 
 			  publisher.on("streamDestroyed", function (event) {
