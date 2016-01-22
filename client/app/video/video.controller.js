@@ -738,14 +738,16 @@ angular.module('bodyAppApp')
 			$scope.hover14 = false;
 			$scope.hover15 = false;
 			
-			consumerBoxNumber -=1;
+			consumerBoxNumber -= 1;
 
 			// console.log(subscriberArray)
 			// console.log(lastConsumerTrainerCouldHear)
 			// console.log(consumerBoxNumber)
 
 			for (var i = 0; i < subscriberArray.length; i++) {
-				subscriberArray[i].subscribeToAudio(false);
+				if (i != consumerBoxNumber) {
+					subscriberArray[i].subscribeToAudio(false);
+				}
 				if (i === consumerBoxNumber) {
 					console.log("subscribing to audio from "+subscriberArray[i].streamId)
 					subscriberArray[i].subscribeToAudio(true);	
