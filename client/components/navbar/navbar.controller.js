@@ -29,10 +29,14 @@ angular.module('bodyAppApp')
 
     $scope.clicked = false;
 
-    if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
+    var currentUser = Auth.getCurrentUser();
+
+    if (Auth.isLoggedIn() && Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(user) {
         $scope.completedNewUserFlow = user.completedNewUserFlow;
       })
+    } else if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
+      $scope.completedNewUserFlow = Auth.getCurrentUser().completedNewUserFlow;
     }
 
     $scope.logoStyle = {"background-color": "white"};
