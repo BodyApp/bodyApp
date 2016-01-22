@@ -66,7 +66,8 @@ angular.module('bodyAppApp')
       console.log(wod);
       classDate = date;
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-      wod.dateTime = date.getTime();
+      wod.dateTime = new Date(date).setHours(10) //Makes sure it's set in the middle of the day to avoid timezone issues
+      // wod.dateTime = tempDate.getTime();
       wod.date = classKey;
       wodRef.child(classKey).set(wod);
     }

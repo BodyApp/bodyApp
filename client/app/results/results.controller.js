@@ -11,6 +11,7 @@ angular.module('bodyAppApp')
 
     $scope.today = new Date();
     var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
+    // var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
     var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate());
 
     $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
@@ -26,13 +27,14 @@ angular.module('bodyAppApp')
 
     $scope.dayList = [];
     setupDayList();
-    $scope.selectedDate = new Date();     
+    // $scope.selectedDate = new Date();     
 
     $scope.wods;
     var wodsRef = new Firebase("https://bodyapp.firebaseio.com/WODs");
     wodsRef.once('value', function(snapshot) {
       $scope.wods = snapshot.val();  
       $scope.wodToDisplay = $scope.wods[classKey];
+      console.log($scope.wodToDisplay);
       loadResultsList(classDate);
       if(!$scope.$$phase) $scope.$apply();
     })
