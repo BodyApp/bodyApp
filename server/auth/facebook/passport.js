@@ -50,12 +50,12 @@ exports.setup = function (User, config) {
           });
           user.friendListObject = {}
           for (var i = 0; i < user.friendList.length; i++) {
-            user.friendListObject[user.friendList[i].id] = {}
-            user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
-            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
+            user.friendListObject[user.friendList[i].id] = {};
+            user.friendListObject[user.friendList[i].id].name = user.friendList[i].name;
+            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture;
           }
 
-          user.level = 0;
+          user.level = user.level || 0;
 
           user.save(function(err) {
             if (err) return done(err);
@@ -66,6 +66,10 @@ exports.setup = function (User, config) {
           });
         } else {
           if (profile._json) {
+            // console.log(accessToken)
+            // console.log(refreshToken)
+            // console.log(done)
+            // console.log(profile)
             // console.log(profile);
             user.facebook = profile._json;
             if (profile._json.friends) user.friendList = profile._json.friends.data;

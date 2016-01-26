@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, $firebaseArray, $firebaseObject) {
+  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, $firebaseArray, $uibModal, $firebaseObject) {
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
@@ -65,20 +65,20 @@ angular.module('bodyAppApp')
             Auth.updateUser(user)
 
             //Check that using Chrome or Firefox
-            if (OT.checkSystemRequirements() != 1) {
-              // The client does not support WebRTC.
-              var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: 'app/video/wrongBrowser.html',
-                controller: 'WrongBrowserCtrl',
-              });
+            // if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
+            //   // The client does not support WebRTC.
+            //   var modalInstance = $uibModal.open({
+            //     animation: true,
+            //     templateUrl: 'app/video/wrongBrowser.html',
+            //     controller: 'WrongBrowserCtrl',
+            //   });
 
-              modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-              }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-              });
-            }
+            //   modalInstance.result.then(function (selectedItem) {
+            //     $scope.selected = selectedItem;
+            //   }, function () {
+            //     $log.info('Modal dismissed at: ' + new Date());
+            //   });
+            // }
 
 
         }, function(err) {

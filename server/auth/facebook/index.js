@@ -13,6 +13,13 @@ router
     session: false
   }))
 
+  .get('/askfordeclined', passport.authenticate('facebook', {
+    authType: 'rerequest',
+    scope: ['email', 'user_about_me', 'user_friends', 'user_birthday'], // Permissions asked to user
+    failureRedirect: '/signup',
+    session: false
+  }))
+
   .get('/callback', passport.authenticate('facebook', {
     failureRedirect: '/signup',
     session: false

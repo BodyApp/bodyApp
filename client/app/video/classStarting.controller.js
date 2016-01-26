@@ -16,12 +16,10 @@ angular.module('bodyAppApp')
     }
 
     //Check that using Chrome or Firefox
-    if (OT.checkSystemRequirements() != 1) {
+  if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
       // The client does not support WebRTC.
       var modalInstance = $uibModal.open({
         animation: true,
-        backdrop: "static",
-        keyboard: false,
         templateUrl: 'app/video/wrongBrowser.html',
         controller: 'WrongBrowserCtrl',
       });
