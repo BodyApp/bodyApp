@@ -9,6 +9,9 @@
 		<div class="startingBtn" ng-if = "minutesUntilClass <= 0">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
 		</div>
+		<div class="startingBtn" ng-if = "minutesUntilClass > 0">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click Here Once Class Begins!</a>
+		</div>
 	</div>
 </section>
 
