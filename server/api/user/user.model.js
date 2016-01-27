@@ -41,6 +41,8 @@ var UserSchema = new Schema({
   tourtipShown: String,
   shippingAddress: Object,
   level: Number,
+  signUpDate: Date,
+  lastLoginDate: Date,
   results: Schema.Types.Mixed,
   facebook: {},
   twitter: {},

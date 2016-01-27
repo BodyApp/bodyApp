@@ -32,23 +32,23 @@ var User = require('../api/user/user.model');
 
 User.find({}).remove(function() {
   User.create({
-    firstName: "Daniel",
-    lastName: "Liebeskind",
-    nickName: "Daniel",
-    gender: "male",
-    picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
-    facebookId: "10100958748247716",
-    email: "daniel.liebeskind@gmail.com",
-    provider: "facebook",
-    role: "admin",
-    __v: 51,
-    injuries: "Nope",
-    bookedIntroClass: false,
-    completedNewUserFlow: false,
-    introClassTaken: false,
-    level: 1
-    }, 
-    {
+    // firstName: "Daniel",
+    // lastName: "Liebeskind",
+    // nickName: "Daniel",
+    // gender: "male",
+    // picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
+    // facebookId: "10100958748247716",
+    // email: "daniel.liebeskind@gmail.com",
+    // provider: "facebook",
+    // role: "admin",
+    // __v: 51,
+    // injuries: "Nope",
+    // bookedIntroClass: false,
+    // completedNewUserFlow: false,
+    // introClassTaken: false,
+    // level: 1
+    // }, 
+    // {
     "firstName": "Justin",
     "lastName": "Mendelson",
     "nickName": "Justin",

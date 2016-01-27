@@ -14,7 +14,7 @@ exports.setup = function (User, config) {
       'emails',
       'gender',
       'picture.type(large)',
-      'friends',
+      'friends.limit(5000)',
       'birthday'
       ]
     },
@@ -28,6 +28,7 @@ exports.setup = function (User, config) {
         if (err) {
           return done(err);
         }
+        console.log(profile._json.friends)
         if (!user) {
           user = new User({
             name: profile.displayName,
@@ -48,11 +49,11 @@ exports.setup = function (User, config) {
             trainerNumRatings: 0,
             signUpDate: new Date()
           });
-          user.friendListObject = {}
+          user.friendListObject = user.friendListObject || {};
           for (var i = 0; i < user.friendList.length; i++) {
             user.friendListObject[user.friendList[i].id] = {};
             user.friendListObject[user.friendList[i].id].name = user.friendList[i].name;
-            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture;
+            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
           }
 
           user.level = user.level || 0;
@@ -66,12 +67,8 @@ exports.setup = function (User, config) {
           });
         } else {
           if (profile._json) {
-            // console.log(accessToken)
-            // console.log(refreshToken)
-            // console.log(done)
-            // console.log(profile)
-            // console.log(profile);
             user.facebook = profile._json;
+            user.lastLoginDate = new Date()
             if (profile._json.friends) user.friendList = profile._json.friends.data;
             user.friendListObject = user.friendListObject || {};
             for (var i = 0; i < user.friendList.length; i++) {
@@ -81,14 +78,11 @@ exports.setup = function (User, config) {
             }
           }          
           user.save(function(err) {
-            console.log("Saved updated user")
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
             var userId = user._id.toString()
             usersRef.child(profile.id).set({mongoId: userId, picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName})
-
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
-
             return done(err, user);
           })
         }
