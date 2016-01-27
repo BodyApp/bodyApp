@@ -21,16 +21,30 @@ angular.module('bodyAppApp')
     var ref = new Firebase("https://bodyapp.firebaseio.com");
     pullFriendPictures()
 
+    function pullFriendsFromFbObjects() {
+
+    }
+
+
     function pullFriendPictures() {
-      for (var user in currentUser.friendListObject) {
-        var userRef = ref.child("fbUsers").child(user)
-        userRef.once('value', function(snapshot) {
-          var userPulled = snapshot.val()
-          if (userPulled) $scope.friendList.push(userPulled)
-          if(!$scope.$$phase) $scope.$apply();
-        })
+      // for (var user in currentUser.friendListObject) {
+      //   var userRef = ref.child("fbUsers").child(user)
+      //   userRef.once('value', function(snapshot) {
+      //     var userPulled = snapshot.val()
+      //     if (userPulled) $scope.friendList.push(userPulled)
+      //     if(!$scope.$$phase) $scope.$apply();
+      //   })
+      // }
+      if (currentUser.friendList) {
+        for (var i = 0; i < currentUser.friendList.length; i++) {
+          var userRef = ref.child("fbUsers").child(currentUser.friendList[i].id)
+          userRef.once('value', function(snapshot) {
+            var userPulled = snapshot.val()
+            if (userPulled) $scope.friendList.push(userPulled)
+            if(!$scope.$$phase) $scope.$apply();
+          })
+        }     
       }
-      
     }
 
     $scope.cancelSubscription = function() {
