@@ -28,9 +28,11 @@ angular.module('bodyAppApp')
         console.log(classDate.getDay())
         console.log(classDate.getTime())
 
-        var todayDate = new Date(classDate);        
-        var sunDate = new Date();
-        sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+        var todayDate = new Date(classDate);
+        var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+
+        // var sunDate = new Date();
+        // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
         var sunGetDate = sunDate.getDate();
         var sunGetMonth = sunDate.getMonth()+1;
         var sunGetYear = sunDate.getFullYear();

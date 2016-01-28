@@ -12,8 +12,9 @@ angular.module('bodyAppApp')
 
   	var classDate = new Date($scope.classCompleted.date);        
   	var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-    var sunDate = new Date();
-    sunDate.setDate(classDate.getDate() - classDate.getDay());
+    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    // var sunDate = new Date();
+    // sunDate.setDate(classDate.getDate() - classDate.getDay());
     var sunGetDate = sunDate.getDate();
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();

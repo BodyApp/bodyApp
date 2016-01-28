@@ -60,8 +60,9 @@ var socketServer = require('socket.io').listen(server, {"log level":1})
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {
 	var todayDate = new Date();
-  var sunDate = new Date();
-  sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+  var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+  // var sunDate = new Date();
+  // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
   var sunGetDate = sunDate.getDate();
   var sunGetMonth = sunDate.getMonth()+1;
   var sunGetYear = sunDate.getFullYear();

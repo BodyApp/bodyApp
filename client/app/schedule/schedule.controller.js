@@ -95,8 +95,9 @@ angular.module('bodyAppApp')
           
           $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate();
 
-          var sunDate = new Date();
-          sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+          var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+          // var sunDate = new Date();
+          // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
           var sunGetDate = sunDate.getDate();
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();
@@ -114,8 +115,9 @@ angular.module('bodyAppApp')
           var todayDate = new Date();
           var nextWeekTime = todayDate.getTime() + 1000*60*60*24*7;
           var nextWeekDate = new Date(nextWeekTime);
-          var sunDate = new Date();
-          sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
+          var sunDate = new Date(nextWeekDate.getFullYear(), nextWeekDate.getMonth(), nextWeekDate.getDate() - nextWeekDate.getDay(), 11, 0, 0);
+          // var sunDate = new Date();
+          // sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
           var sunGetDate = sunDate.getDate();
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();
@@ -131,8 +133,9 @@ angular.module('bodyAppApp')
           var nextWeekDate = new Date(nextWeekTime);
           $scope.dateToday = "" + nextWeekDate.getMonth() + nextWeekDate.getDate();
 
-          var sunDate = new Date();
-          sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
+          var sunDate = new Date(nextWeekDate.getFullYear(), nextWeekDate.getMonth(), nextWeekDate.getDate() - nextWeekDate.getDay(), 11, 0, 0);
+          // var sunDate = new Date();
+          // sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
           var sunGetDate = sunDate.getDate();
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();

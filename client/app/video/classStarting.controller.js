@@ -40,8 +40,9 @@ angular.module('bodyAppApp')
     $scope.currentUser = currentUser;
 
     var classDate = new Date(classToJoin.date)
-    var sunDate = new Date();
-    sunDate.setDate(classDate.getDate() - classDate.getDay());
+    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    // var sunDate = new Date();
+    // sunDate.setDate(classDate.getDate() - classDate.getDay());
     var sunGetDate = sunDate.getDate();
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();

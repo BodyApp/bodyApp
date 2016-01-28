@@ -137,8 +137,9 @@ angular.module('bodyAppApp')
 
       // $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
 
-      var sunDate = new Date();
-      sunDate.setDate(classDate.getDate() - classDate.getDay());
+      var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+      // var sunDate = new Date();
+      // sunDate.setDate(classDate.getDate() - classDate.getDay());
       var sunGetDate = sunDate.getDate();
       var sunGetMonth = sunDate.getMonth()+1;
       var sunGetYear = sunDate.getFullYear();

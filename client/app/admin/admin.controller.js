@@ -138,8 +138,13 @@ angular.module('bodyAppApp')
       // $scope.workoutDate = workoutDate
       var todayDayOfWeek = workoutDate.getDay();
 
-      var sunDate = new Date();
-      sunDate.setDate(workoutDate.getDate() - workoutDate.getDay());
+      console.log(workoutDate.getDate())
+
+      // var monthToSet = workoutDate.getDate - workoutDate.getDay() <= 0 ? workoutDate.getMonth() - 1 : workoutDate.getMonth;
+
+      var sunDate = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate() - workoutDate.getDay(), 11, 0, 0);
+      // sunDate.setDate(workoutDate.getDate() - workoutDate.getDay());
+      console.log(sunDate)
       var sunGetDate = sunDate.getDate();
       var sunGetMonth = sunDate.getMonth()+1;
       var sunGetYear = sunDate.getFullYear();

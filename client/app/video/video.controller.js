@@ -11,6 +11,8 @@ angular.module('bodyAppApp')
 		$scope.classTime = classToJoin.date; //trainer_video:180 - Timer is set to the class to join date.
 		$scope.trainer = classToJoin.trainer;
 
+		var session;
+
 		// var lastConsumerTrainerCouldHear;
 
 		var classClosesTime = (classToJoin.date + 1000*60*70);
@@ -18,6 +20,8 @@ angular.module('bodyAppApp')
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
+				session.disconnect()
+				// session.destroy();
 				console.log("class is over, booting people out");
 				$location.path('/classfeedback');
 			} else if (classHalfway < currentTime ) {
@@ -43,7 +47,7 @@ angular.module('bodyAppApp')
 		$scope.consumerObjects = {};
 		var maxCALLERS = 10;
 		var connectionCount = 0;
-		var session;
+		
 		var publisher;
 
 		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer._id.toString()
@@ -60,8 +64,9 @@ angular.module('bodyAppApp')
 
 		var classDate = new Date(classToJoin.date)
 		var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-    var sunDate = new Date();
-    sunDate.setDate(classDate.getDate() - classDate.getDay());
+    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    // var sunDate = new Date();
+    // sunDate.setDate(classDate.getDate() - classDate.getDay());
     var sunGetDate = sunDate.getDate();
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();
@@ -395,8 +400,9 @@ angular.module('bodyAppApp')
 				session = OT.initSession(apiKey, sessionId);
 				$scope.$on("$destroy", function() { // destroys the session when navigate away
         	console.log("Disconnecting session because navigated away.")
-          publisher.destroy();
-          session.destroy();
+          // publisher.destroy();
+          session.disconnect()
+          // session.destroy();
 		    });
 			} else {
 			  // The client does not support WebRTC.
@@ -418,6 +424,8 @@ angular.module('bodyAppApp')
 					  connected = true;
 				    publish();
 				    if (session.capabilities.publish != 1) {
+				    	session.disconnect()
+				    	// session.destroy();
 		  				alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 		  				$location.path('/');
 		  			}
@@ -622,7 +630,7 @@ angular.module('bodyAppApp')
 				if (userIsInstructor) {
 					vidWidth = "16.67%";
 					vidHeight = "16.67%";
-					suggestedResolution = "1280x720";
+					suggestedResolution = "640x480";
 					suggestedFPS = 30;
 				} else {
 					vidWidth = "100%"
@@ -802,8 +810,9 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.exitClass = function() {
-			publisher.destroy();
-      session.destroy();
+			// publisher.disconnect();
+			session.disconnect()
+      // session.destroy();
 			$location.path('/classfeedback');
 		}
 
