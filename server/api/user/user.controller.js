@@ -51,6 +51,16 @@ exports.getUser = function(req, res, next) {
   });
 }
 
+exports.getUserAndInjuries = function(req, res, next) {
+  var userId = req.body.userToGet;
+  console.log("getting user " + userId)
+  User.findOne({_id: userId}, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+    if (err) return next(err);
+    if (!user) return res.status(200).send('No user found');
+    if (user) return res.json({profile: user.profile, injuries: user.injuries});
+  });
+}
+
 //Saves email address if there wasn't one provided by Facebook
 exports.saveEmail = function (req, res, next) {
   var userId = req.user._id;

@@ -17,7 +17,7 @@ angular.module('bodyAppApp')
     }
 
     //Check that using Chrome or Firefox
-  if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
+    if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
       // The client does not support WebRTC.
       var modalInstance = $uibModal.open({
         animation: true,
@@ -32,12 +32,17 @@ angular.module('bodyAppApp')
       });
     }
 
+
     // $scope.instructor = classToJoin.trainer
     // $scope.instructorPicUrl = $scope.instructor.picture
 
     var classTime = classToJoin.date;
     var currentUser = Auth.getCurrentUser();
     $scope.currentUser = currentUser;
+
+    if (currentUser._id != classToJoin.trainer._id) {
+
+    }
 
     var classDate = new Date(classToJoin.date)
     var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
@@ -110,8 +115,12 @@ angular.module('bodyAppApp')
 
         for (var bookedUser in classJoined.bookedUsers) {
           if (bookedUser) {
-            User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-              $scope.bookedUsers.push(data);
+            User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+              console.log(data)
+              var userToAdd = data.profile
+              userToAdd.injuries = data.injuries
+              console.log(userToAdd)
+              $scope.bookedUsers.push(userToAdd);
               if(!$scope.$$phase) $scope.$apply();  
             }).catch(function(err) {
               console.log(err);

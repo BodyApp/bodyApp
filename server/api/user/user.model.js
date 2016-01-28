@@ -89,6 +89,13 @@ UserSchema
     };
   });
 
+// Injury information kept out of public profile
+UserSchema
+  .virtual('injuryInfo')
+  .get(function() {
+    return this.injuries
+  });
+
 // Non-sensitive info we'll be putting in the token
 UserSchema
   .virtual('token')

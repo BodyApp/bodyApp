@@ -194,6 +194,11 @@
   line-height: 12px;
 }
 
+#dark-text.injuryText {
+  font-size: 11px;
+  margin-top: 0px;
+}
+
 #box0,
 #box1,
 #box2,

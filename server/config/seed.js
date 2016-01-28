@@ -49,6 +49,23 @@ User.find({}).remove(function() {
     level: 1
     }, 
     {
+    firstName: "Donna",
+    lastName: "Letuch",
+    nickName: "Donna",
+    gender: "female",
+    picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
+    facebookId: "112747679089662",
+    email: "donna_mhsvoea_letuch@tfbnw.net",
+    provider: "facebook",
+    role: "admin",
+    __v: 51,
+    injuries: "No problemos",
+    bookedIntroClass: false,
+    completedNewUserFlow: false,
+    introClassTaken: false,
+    level: 1
+    },
+    {
     "firstName": "Justin",
     "lastName": "Mendelson",
     "nickName": "Justin",
