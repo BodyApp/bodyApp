@@ -1,7 +1,7 @@
 // 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
         var currentUser;
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
@@ -46,6 +46,8 @@ angular.module('bodyAppApp')
             loadTour();
           }
         })
+
+        if (Video.devices) Video.destroyHardwareSetup()
 
         function getInfo(prop) {
           // var newDate = new Date(prop * 1)

@@ -400,9 +400,10 @@ angular.module('bodyAppApp')
 				session = OT.initSession(apiKey, sessionId);
 				$scope.$on("$destroy", function() { // destroys the session when navigate away
         	console.log("Disconnecting session because navigated away.")
-          // publisher.destroy();
           session.disconnect()
-          // session.destroy();
+          Video.destroyHardwareSetup()
+          publisher.destroy();
+          session.destroy();
 		    });
 			} else {
 			  // The client does not support WebRTC.
