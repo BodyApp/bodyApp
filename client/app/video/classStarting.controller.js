@@ -3,6 +3,7 @@
 angular.module('bodyAppApp')
   .controller('ClassStartingCtrl', function ($scope, $location, $interval, $uibModal, $firebaseObject, Schedule, Auth, User, Video) {
   	var classToJoin = Schedule.classUserJustJoined;
+    $scope.classToJoin = classToJoin;
 
       $scope.overlay1 = true;
       $scope.overlay2 = false;
