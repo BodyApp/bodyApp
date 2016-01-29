@@ -374,19 +374,21 @@ angular.module('bodyAppApp')
 		  bandwidthCalculator.start(function(stats) {
 		    console.log(stats);
 		   	if (stats.video.bitsPerSecond < 300000 || stats.video.packetLossRatioPerSecond > 0.03) {
+		   		bandwidthCalculator.stop()
 		   		//Pop up modal with warning that internet isn't going to work.
-		   		alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
-		  // var modalInstance = $uibModal.open({
-    //     animation: true,
-    //     templateUrl: 'app/video/wrongBrowser.html',
-    //     controller: 'WrongBrowserCtrl',
-    //   });
+		   		// alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
+				  var modalInstance = $uibModal.open({
+		        animation: true,
+		        backdrop: "static",
+		        keyboard: false,
+		        templateUrl: 'app/video/badInternet.html',
+		        controller: 'BadInternetCtrl',
+		        windowClass: "modal-tall"
+		      });
 
-    //   modalInstance.result.then(function (selectedItem) {
-    //     $scope.selected = selectedItem;
-    //   }, function () {
-    //     $log.info('Modal dismissed at: ' + new Date());
-    //   });
+		      modalInstance.result.then(function (selectedItem) {
+		      }, function () {
+		      });
 		   		return false;
 		   	}
 

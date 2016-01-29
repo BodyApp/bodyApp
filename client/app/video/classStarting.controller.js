@@ -21,14 +21,14 @@ angular.module('bodyAppApp')
       // The client does not support WebRTC.
       var modalInstance = $uibModal.open({
         animation: true,
+        backdrop: "static",
+        keyboard: false,
         templateUrl: 'app/video/wrongBrowser.html',
         controller: 'WrongBrowserCtrl',
       });
 
       modalInstance.result.then(function (selectedItem) {
-        $scope.selected = selectedItem;
       }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
       });
     }
 

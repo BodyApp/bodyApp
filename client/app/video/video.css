@@ -428,3 +428,7 @@ iframe#audioPlayer {
   left: -999px;
   /*display: none !important;*/
 }
+
+.modal.modal-tall .modal-body {
+  height: 90%;
+}
