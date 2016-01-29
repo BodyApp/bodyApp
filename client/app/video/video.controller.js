@@ -403,7 +403,7 @@ angular.module('bodyAppApp')
           session.disconnect()
           Video.destroyHardwareSetup()
           publisher.destroy();
-          session.destroy();
+          // session.destroy();
 		    });
 			} else {
 			  // The client does not support WebRTC.

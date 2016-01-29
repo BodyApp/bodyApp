@@ -47,7 +47,7 @@ angular.module('bodyAppApp')
           }
         })
 
-        if (Video.devices) Video.destroyHardwareSetup()
+        if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
 
         function getInfo(prop) {
           // var newDate = new Date(prop * 1)

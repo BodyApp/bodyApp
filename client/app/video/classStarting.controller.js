@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $uibModal, $firebaseObject, Schedule, Auth, User, Video) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $uibModal, $firebaseObject, Schedule, Auth, User, Video, NetworkTest) {
   	var classToJoin = Schedule.classUserJustJoined;
     $scope.classToJoin = classToJoin;
 
@@ -41,7 +41,8 @@ angular.module('bodyAppApp')
     $scope.currentUser = currentUser;
 
     if (currentUser._id != classToJoin.trainer._id) {
-
+      var testResults = NetworkTest.conductTest(classToJoin.sessionId)
+      console.log(testResults);
     }
 
     var classDate = new Date(classToJoin.date)
