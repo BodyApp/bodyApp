@@ -1,7 +1,7 @@
-<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+<div ng-include="'components/navbar/navbar.html'"></div>
 
 <section>
-	<div class="lightblueSection2 pt32 pb32 text-center">
+	<div class="lightblueSection2 pt104 pb32 text-center">
 		<h1 class="white mb16">{{class.level}} Class</h1>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
@@ -38,7 +38,7 @@
 				</p>
 			</div>
 			<div ng-show="instructorBio" class="mt32">
-				<p class="funFacts">Justin hails from the second smallest (yet generally the least known) state in the US - Delaware. He's a self proclaimed geekathlete. When he's not exercising or teaching BODY classes, you can often find him coding, constructing things, or reading Game of Thrones. Justin's passion for fitness spans over a decade and his most memorable achievement (as he'll most likely tell you at some point in class) was completing an IRONMAN race in 2014. Justin's love for HIIT, CrossFit and bodyweight training has helped sculpt his coaching style. He is a Crossfit Level 1 Trainer and specializes helping trainees develop strong mechanics and functional movement foundations.</p>
+				<p class="funFacts">Justin hails from the second smallest (yet generally the least known) state in the US - Delaware. He's a self proclaimed geekathlete. When he's not exercising or teaching BODY classes, you can often find him coding, constructing things, or reading Game of Thrones. Justin's passion for fitness spans over a decade and his most memorable achievement (as he'll most likely tell you at some point in class) was completing an IRONMAN race in 2014. Justin's love for HIIT, CrossFit and bodyweight training has helped sculpt his coaching style. He is a Crossfit Level 1 Trainer and specializes in helping trainees develop strong functional movement foundations.</p>
 			</div>
 
 			<h3 class="darkblue bold mb8 mt32">Teammates</h3>
@@ -107,23 +107,24 @@
 			<div class="waitSection">
 				<div class="waitTabs mb16">
 					<a href="" ng-click = "setToSee2(0)">Setup your A/V</a>
-					<a href="" ng-click = "setToSee2(1)">Learn Something New</a>
+					<!-- <a href="" ng-click = "setToSee2(1)">Learn Something New</a> -->
 					<!-- <a href="" ng-click = "setToSee2(3)">Get Warmed Up</a> -->
 				</div>
 				
 
 				<div ng-show="tab1" class="waitTab1">
-					<span class="gray">Setup your camera view by positioning yourself to one of our overlays:<br><a href="" ng-click = "setToSee(0)">Overlay 1</a>, <a href="" ng-click = "setToSee(1)">Overlay 2</a>, <a href="" ng-click = "setToSee(2)">Overlay 3</a></span>
+					<span class="gray">Setup your camera view by lining yourself up with: <br><a href="" ng-click = "setToSee(0)">Meagan</a>, <a href="" ng-click = "setToSee(1)">Sam</a>, or <a href="" ng-click = "setToSee(2)">Erica</a>. All set? <a href="" ng-click = "setToSee(4)">Turn off overlay</a>.</span>
 					<div class="pt8 previewVideo" id = "audioVideoSetup"></div>
 					<img ng-show="overlay1" class="cameraOverlay" src="/assets/images/fit-mom-overlay.png">
 					<img ng-show="overlay2" class="cameraOverlay" src="/assets/images/big-guy-overlay.png">
 					<img ng-show="overlay3" class="cameraOverlay" src="/assets/images/girl-overlay.png">
+					<div ng-show="overlay4" class="cameraOverlay"></div>
 				</div>
 
-				<div ng-show="tab2"> 
+<!-- 				<div ng-show="tab2"> 
 					<h4 class="royalblue mb16">(#35) Did you know</h4>
 					<p class="mb0">Bruce Lee’s kicks were so fast that while filming for one scene in Enter the Dragon, they had to re-film it in slow motion (34 frames) so that it wouldn’t appear fake.</p>
-				</div>
+				</div> -->
 				
 <!-- 				<div ng-show="tab3">
 					<iframe width="560" height="315" src="https://www.youtube.com/embed/R0mMyV5OtcM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>

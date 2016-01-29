@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 40px;"></div>
 
-<div class="main-container" ng-hide = "newUserStep != 1">
+<!-- <div class="main-container" ng-hide = "newUserStep != 1">
   <section>
     <div class="container white-section">
       <div class="col-sm-12 text-center margins">
@@ -52,14 +52,14 @@
       </div>      
     </div>
   </section>
-</div>
+</div> -->
 
-<div class="main-container" ng-hide = "newUserStep != 2">
+<div class="main-container" ng-hide = "newUserStep != 1">
   <section>
     <div class="container white-section">
       <div class="col-sm-12 text-center margins">
         <h1 class="darkblue mb8">Welcome to BODY!</h1>
-        <h4 class="mb48">Help us get to know you a bit better</h4>        
+        <h4 class="mb40">Help us get to know you a bit better</h4>        
       </div>      
       <div class="col-sm-5 col-xs-12 text-center">
         <h3 class="royalblue mb16">Your profile info</h3>
@@ -69,34 +69,68 @@
         <h5 class="gray">{{currentUser.email}}</h2>
       </div>
       <div class="col-sm-7 hidden-xs">
-        <h3 class="royalblue mb16">Important health info</h3>
-        <p class="darkblue mb0">Do you have any prior injuries or health conditions?</p>
+        <h3 class="royalblue mb0">Important health info</h3>
         <p class="darkgray mb16 medical-disclaimer">This information is confidential and only shared with your BODY instructor.</p>
-            <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
-        <textarea ng-model = "injuries" class="large-input-box mb16" cols="40" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
 
-        <a href="" class="btn" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
+        <p class="darkblue mb0">Do you have any prior injuries or health conditions?</p>
+            <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
+        <textarea ng-model = "injuries" class="large-input-box mb8" cols="30" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
+
+        <p class="darkblue mb0">In the next three months, what health goals can we help you achieve?</p>
+            <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
+        <textarea ng-model = "fitGoals" class="large-input-box mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
+
+        <p class="darkblue mb0">Emergency Contact Information</p>
+            <div style = "color: red" ng-show = "errorDiv">Information required</div>
+        <textarea ng-model = "emergencyFirst" class="small-input-box mb8" cols="10" rows="1" name="emergency-first" placeholder="First Name"></textarea>
+
+        <textarea ng-model = "emergencyLast" class="small-input-box mb8" cols="10" rows="1" name="emergency-last" placeholder="Last Name"></textarea>
+
+        <textarea ng-model = "emergencyRelationship" class="small-input-box mb8" cols="10" rows="1" name="emergency-relationship" placeholder="Relationship"></textarea>
+
+        <textarea ng-model = "emergencyPhone" class="small-input-box mb8" cols="10" rows="1" name="emergency-phone" placeholder="Phone"></textarea>        
+
+        <a href="" class="btn mt16" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
         <p class="darkgray medical-disclaimer">Before continuing, please review our <a href="/terms" target="_blank">medical disclaimer</a>.</p>
       </div>
+
+
       <div class="col-sm-12 visible-xs text-center">
-        <hr style="padding-top: 15px; border: none;">
-        <h3 class="royalblue mb16">Do you have any prior injuries or health conditions?</h3>
+        <hr>
+        <h3 class="royalblue mb0">Important health info</h3>
         <p class="darkgray mb16 medical-disclaimer">This information is confidential and only shared with your BODY instructor.</p>
-        <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
-        <textarea ng-model = "injuries" class="large-input-box mb16" cols="40" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
-        <a href="" class="btn" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
+
+        <h5 class="darkblue mb8 mt16">Do you have any prior injuries or health conditions?</h5>
+            <div style = "color: red" ng-show = "errorDiv">Required</div>
+        <textarea ng-model = "injuries" class="mb8" cols="30" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
+
+        <h5 class="darkblue mb8 mt16">In the next three months, what health goals can we help you achieve?</h5>
+            <div style = "color: red" ng-show = "errorDiv">Required</div>
+        <textarea ng-model = "fitGoals" class="mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
+
+        <h5 class="darkblue mb8 mt16">Emergency Contact Information</h5>
+            <div style = "color: red" ng-show = "errorDiv">Required</div>
+        <textarea ng-model = "emergencyFirst" class="mb8" cols="10" rows="1" name="emergency-first" placeholder="First Name"></textarea>
+
+        <textarea ng-model = "emergencyLast" class="mb8" cols="10" rows="1" name="emergency-last" placeholder="Last Name"></textarea>
+
+        <textarea ng-model = "emergencyRelationship" class="mb8" cols="10" rows="1" name="emergency-relationship" placeholder="Relationship"></textarea>
+
+        <textarea ng-model = "emergencyPhone" class="mb8" cols="10" rows="1" name="emergency-phone" placeholder="Phone"></textarea>        
+
+        <a href="" class="btn mt32" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
         <p class="darkgray medical-disclaimer">Before continuing, please review our <a href="/terms" target="_blank">medical disclaimer</a>.</p>
       </div>      
     </div>
   </section>
 </div>
 
-<div class="main-container" ng-hide = "newUserStep != 3">
+<div class="main-container" ng-hide = "newUserStep != 2">
   <section>
     <div class="container white-section">
         <div class="col-sm-12 mb32">
-          <h3 class="royalblue mb16">Great! Now let's get you registered for that free Intro Class.</h3>
-          <h4>The purpose of this session is to help us serve you better by getting to know your goals and expectations, fitness level, and experience. At the end of your session, we will answer any questions you may have regarding programming, nutrition, mobility, scaling, etc.</h4>                               
+          <h3 class="royalblue mb16">Thanks! Since this is your first time with us, let’s get you started with an Intro Session</h3>
+          <h4>The purpose of this session is to help us serve you better by getting to know your goals and expectations, fitness level, and experience. At the end of your session, we can answer any detailed questions you may have.</h4>
         </div>
 
         <div class="col-sm-12">
@@ -127,7 +161,7 @@
   </section>
 </div>
 
-<div class="main-container" ng-hide = "newUserStep != 4">
+<div class="main-container" ng-hide = "newUserStep != 3">
   <section>
     <div class="container white-section page-4">
       <div class="col-sm-12 mb56 text-center">
@@ -149,11 +183,11 @@
       <div class="col-sm-6">
         <h3 class="royalblue mb16">A few tips before your first class</h3>
         <ul id="bullet-list">
-          <li><h5 class="mb0">To help instructors see you clearly during class, set your computer low to the ground and about 6ft in front of your workout space.</h5></li>
-          <li><h5 class="mb0">You will need the Google Chrome browser to actually take classes.</h5></li>
-          <li><h5 class="mb0">Intro classes are bodyweight only. So don't worry about equipment.</h5></li>
-          <li><h5 class="mb0">Make sure you’re connected to the internet</h5></li>
-          <li><h5 class="mb0">Clear a safe space to move freely</h5></li>
+          <li><h5 class="mb0">Set your computer low to the ground and about 6ft in front of your workout space.</h5></li>
+          <li><h5 class="mb0">You'll need to use Google Chrome during class.</h5></li>
+          <li><h5 class="mb0">Intro classes are bodyweight only, so don't worry about equipment.</h5></li>
+          <li><h5 class="mb0">Make sure your computer is connected to the internet.</h5></li>
+          <li><h5 class="mb0">Clear a safe space to move freely.</h5></li>
         </ul>
       </div>
       <div class="col-sm-6">

@@ -1,23 +1,58 @@
   <section>
     <div class="container">
-        <div class="col-sm-12 half-way-down text-center">
-          <h1 class="darkblue">Join our pilot for just 10 bucks a month</h1>
-          <h4 class="margins">BODY couldn’t be simpler. Pay one monthly membership and access unlimited classes every month.</h4>
+      <div class="row half-way-down">
+        <div class="visible-sm col-sm-12 pt72"></div>
+        <div class="col-sm-6 col-md-7 text-center">
+          <div class="visible-lg visible-md pt72"></div>
+          <h1 class="darkblue">Just 10 bucks per month</h1>
+          <h4 class="margins">Pay one monthly membership and access unlimited classes every month. Join the pilot and lock in $10/mo for the next year.</h4>
           <a class="join-btn btn mt16 mb64" ng-click = "joinClicked()" href="#">Join</a>
+          <div class="hidden-sm hidden-xs arrow" style="bottom: 0px;">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="37" height="16" viewBox="0 0 37 16" class="js-svg replaced-svg"><path d="M19.075 15.43c-.35.366-.926.414-1.334.097L.76 2.08C.326 1.743.248 1.115.587.68.926.242 1.553.163 1.99.502L18.35 13.46 34.864.617c.436-.34 1.064-.26 1.403.175.34.436.26 1.065-.175 1.404L19.075 15.43z" fill="#909090" fill-rule="evenodd"></path></svg>
+            </span>
+          </div>          
         </div>
-        <div class="arrow" style="bottom: 0px;">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="37" height="16" viewBox="0 0 37 16" class="js-svg replaced-svg"><path d="M19.075 15.43c-.35.366-.926.414-1.334.097L.76 2.08C.326 1.743.248 1.115.587.68.926.242 1.553.163 1.99.502L18.35 13.46 34.864.617c.436-.34 1.064-.26 1.403.175.34.436.26 1.065-.175 1.404L19.075 15.43z" fill="#909090" fill-rule="evenodd"></path></svg>
-          </span>
+        <div class="visible-xs pt72"></div>
+        <div class="col-sm-6 col-md-4 col-membership">
+          <div class="stripeBlue"></div>
+          <div class="membershipFeatures">
+            <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
+            <div class="text-center" style="margin-bottom: 14px;">
+              <div style="width: 40%; display: inline-block;">
+                <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">10</h1>
+                <span class="pricingTime royalblue">/mo</span>
+                <span class="pricingType royalblue">Pilot pricing</span>
+              </div>
+              <div style="width: 40%; display: inline-block;">
+                <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">40</h1>
+                <span class="pricingTime lightgray">/mo</span>
+                <span class="pricingType lightgray">Regular pricing</span>
+              </div>            
+            </div>
+            <div class="bulletFeatures">
+              <hr>
+              <ul class="bulletChecks">
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Introductory session</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Progression tracking</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Wellness hotline</span></li>
+              </ul>
+              <hr>
+            </div>
+          </div>        
         </div>
+      </div>
     </div>
   </section>
 
-  <section id="scroll-link" class="white-section">
+  <section class="white-section scroll-to">
     <div class="container mt72">
         <div class="col-sm-7">
           <h1 class="darkblue">We send you everything you need</h1>
-          <h4 class="mb72">As part of your membership, you’ll receive a kit with a full set of strength bands and a foam roller. As you level up in our program, we’ll send you additional equipment kits.</h4>
+          <h4 class="mb72">As part of your membership, you’ll receive a kit with a full set of resistance bands and a foam roller. As you level up in our program, we’ll send you additional equipment kits.</h4>
         </div>        
         <div class="col-sm-5 text-center">
           <img class="mt16" src="assets/images/icons/box-icon.png">
@@ -27,14 +62,14 @@
 
   <section id="scroll-link2" class="white-section">
     <div class="container mt72">
-        <div class="col-sm-5 text-center">
-          <span style="font-size: 22px; font-style: italic; color: #8D8D8D;">Programming impact on fat loss<sup>1</sup></span>
-          <img class="mt16" src="assets/images/icons/fat-loss-graph.jpg">
-        </div>
-        <div class="col-sm-7">
+        <div class="col-sm-7 col-sm-push-5">
           <h1 class="darkblue">Unlimited classes monthly</h1>
           <h4>It’s a fact that group training increases results, burning more calories and improving heart health.<sup>2,3</sup> Start seeing serious results by taking just three classes per week.</h4>
-        </div>        
+        </div>
+        <div class="col-sm-5 col-sm-pull-7 text-center">
+          <span style="font-size: 22px; font-style: italic; color: #8D8D8D;">Programming impact on fat loss<sup>1</sup></span>
+          <img class="mt16" src="assets/images/icons/fat-loss-graph.jpg">
+        </div>    
     </div>
   </section>
 
@@ -46,9 +81,9 @@
 
       <div class="col-sm-offset-1 col-sm-5 text-center">
         <div class="divider-side"></div>
-        <img src="assets/images/icons/call-us.png">
+        <img src="assets/images/icons/contact-us2.png">
         <h4 class="mt16 mini-header">Consult a coach anytime</h4>
-        <p class="margins">Questions about an injury? Meal choice? No problem. Call us anytime.</p>
+        <p class="margins">Questions about an injury? Meal choice? No problem. Contact us anytime.</p>
       </div>
 
       <div class="col-sm-5 text-center">
@@ -64,7 +99,7 @@
     <div class="container">
       <div class="col-sm-12 text-center">
         <h1>Join our pilot for just 10 bucks a month</h1>
-        <h4 class="mb72 margins">Join us at the very beginning and help shape the future of home fitness. Lock in $10/mo for the next year.</h4>
+        <h4 class="mb72 margins">Join us at the very beginning and help shape the future of home fitness.<br>Lock in $10/mo for the next year.</h4>
         <a class="join-btn btn-white" ng-click = "joinClicked()" href="#">Join</a>
       </div> 
     </div>

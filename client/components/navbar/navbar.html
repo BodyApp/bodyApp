@@ -56,6 +56,11 @@
                             </li> -->
                             <li ng-show="isLoggedIn() && completedNewUserFlow">
                               <p ng-class="{active: isActive('/schedule')}">
+                                <a href="/schedule">Add Membership</a>
+                              </p>
+                            </li>
+                            <li ng-show="isLoggedIn() && completedNewUserFlow">
+                              <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/schedule">Dashboard</a>
                               </p>
                             </li>
@@ -73,8 +78,11 @@
                               <a href="" ng-click="logout()">Logout</a>
                             </li>
                             <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                              <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Login with Facebook</a>
+                              <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
                             </li>
+                            <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
+                              <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
+                            </li>                                                        
                         </ul>
                     </div>
                 </div>
@@ -84,6 +92,11 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
+                        <li ng-show="isLoggedIn() && completedNewUserFlow">
+                          <p ng-class="{active: isActive('/schedule')}">
+                            <a href="/schedule">Add Membership</a>
+                          </p>
+                        </li>                        
                         <li ng-show="isLoggedIn() && completedNewUserFlow">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/schedule">Dashboard</a>
@@ -103,8 +116,11 @@
                           <a href="" ng-click="logout()">Logout</a>
                         </li>
                         <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                          <a href="#" ng-click="loginOauth('facebook')">Login with Facebook</a>
+                          <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
                         </li>
+                        <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
+                          <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
+                        </li>                        
                     </ul>
                   </div>
               </div>

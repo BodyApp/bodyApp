@@ -18,8 +18,16 @@
 }
 
 .large-input-box {
-  width: 100%;
+  width: 85%;
   height: 100px;
+  border: 2px solid #0D1c45;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff
+}
+.small-input-box {
+  width: 22%;
+  height: auto;
   border: 2px solid #0D1c45;
   border-radius: 8px;
   padding: 10px;
@@ -30,6 +38,13 @@
   line-height: 14px;
 }
 .large-input-box::-webkit-input-placeholder {
+ font-size: 14px !important;
+ font-weight: 400 !important;
+ color: #525252 !important;
+ text-transform: none !important;
+ font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+}
+.small-input-box::-webkit-input-placeholder {
  font-size: 14px !important;
  font-weight: 400 !important;
  color: #525252 !important;

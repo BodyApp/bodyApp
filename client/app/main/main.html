@@ -2,17 +2,16 @@
 
   <section>
     <div class="container hero-banner">
-        <div class="col-sm-8">
+        <div class="col-sm-12 col-md-8">
           <img src="assets/images/user-video-on-laptop.jpg">
         </div>
-        <div class="col-sm-4 mt16 text-center">
-          <div class="">
-            <h1>Reimagine home workouts</h1>
+        <div class="col-sm-12 col-md-4 mt16 text-center">
+          <div class="pt16">
+            <h1 class="darkblue">Reimagine home workouts</h1>
             <h4 class="subheader">Your live social fitness experience<br>accessible anywhere</h4>
           </div>
           <div class="">
-            <a href="#" ng-click="loginOauth('facebook')" class="btn mb8">Sign Up with Facebook</a>
-            <p class="disclaimer">We'll never post to your account</p>
+            <a href="#" ng-click="signUp()" class="btn mb8" style="padding: 5px 50px;">Get started</a>
           </div>
         </div>
         <div class="arrow">
@@ -26,7 +25,7 @@
   <section id="home-row-3" class="scroll-to">
     <div class="container">
       <div class="col-sm-12 text-center margins">
-        <h1>Better results. More convenient.</h1>
+        <h1 class="mb72 darkblue">Better results. More convenient.</h1>
         <!-- <h4 class="mb72">We’re revolutionizing home fitness through technology, service, and design. Join classes in real-time without leaving your living room.</h4>         -->
       </div>
 
@@ -47,32 +46,43 @@
       </div>  
 
       <div class="col-sm-12 text-center">
-        <a href="#" ng-click="loginOauth('facebook')" class="btn mb8">Sign Up with Facebook</a>     
+        <a href="#" ng-click="loginOauth('facebook')" class="btn mb8" style="padding: 5px 50px;">Get started</a>     
       </div>
     </div>
   </section>
 
   <section>
-    <div class="col-sm-6 col-xs-12 lightblue-section-half">
-      <h1 class="white">Take classes right at home</h1>
-      <h4 class="white">We’re using technology to enhance your home fitness experience. BODY is a leader in multi-way video technology, so you can join classes with your favorite instructors and teammates in real-time.</h4>
+    <div class="container white-section">
+      <div class="col-sm-12 col-md-6">
+        <h1 class="darkblue" style="font-size:42px;">Take classes right at home</h1>
+        <h4>We’re using technology to enhance your home fitness experience. BODY is a leader in multi-way video technology, so you can join classes with your favorite instructors and teammates in real-time.</h4>
+      </div>
+      <div class="col-sm-12 col-md-6 text-center">
+        <img class="mt16" src="assets/images/living-room-workout.png">
+      </div>
     </div>
-    <div class="col-sm-6 col-xs-12 girl-home-fitness"></div>
-    <div class="col-sm-6 hidden-xs strong-girl"></div>    
-    <div class="col-sm-6 col-xs-12 gray-section-half-wimage">
-      <h1 class="darkblue">A program with you in mind</h1>
-      <h4>BODY is a strength and conditioning program that blends high intensity training with functional movements to increase your body’s response and achieve results in less time. Through our live classes, you’ll develop an unshakeable bond with teammates from around the world and accomplish extraordinary things.</h4>
-    </div>    
+
+    <div class="visible-xs pt32"></div>
+
+    <div class="container white-section">
+      <div class="col-sm-12 col-md-6 col-md-push-6">
+        <h1 class="darkblue" style="font-size:42px;">A program with you in mind</h1>
+        <h4>BODY is a strength and conditioning program that blends high intensity training with functional movements to increase your body’s response and achieve results in less time. Through our live classes, you’ll develop an unshakeable bond with teammates from around the world and accomplish extraordinary things.</h4>
+      </div>
+      <div class="col-sm-12 col-md-6 col-md-pull-6 text-center">
+        <img src="assets/images/body-clients.png">
+      </div>        
+    </div>            
   </section>
 
   <section class="white-section">
-    <div class="container">
+    <div class="container pb32">
       <div class="col-sm-12 text-center margins">
-        <h1 class="darkblue">Participate in our pilot program</h1>
-        <h4 class="mb72">Join us at the very beginning and help shape the future of home fitness.</h4>
+        <h1 class="darkblue">How membership works</h1>
+        <h4 class="mb72">Join us and help shape the future of home fitness.</h4>
       </div>
 
-      <div class="col-sm-3 col-xs-12 text-center">
+<!--       <div class="col-sm-3 col-xs-12 text-center">
           <h4 class="mb32 purpleblue bold">Lock in our pilot rate for a year</h4>
           <div style="height: 100px">
             <div class="col-xs-6 no-margin">
@@ -88,35 +98,111 @@
           </div>
           <p class="mt8 hidden-xs">One simple membership. Always unlimited classes per month.</p>
           <p class="mt8 visible-xs" style="margin: 0px 10% 50px 10%;">One simple membership. Always unlimited classes per month.</p>          
+      </div> -->
+
+      <div class="col-sm-4 col-xs-12 text-center margins-half">
+          <h4 class="mb32 royalblue bold">Start with a free introductory session</h4>
+          <img src="assets/images/icons/fit-girl.png">
+          <p class="mt16 hidden-xs">An intro to the BODY program and a great free workout.</p>
+          <p class="mt16 visible-xs" style="margin: 0px 10% 50px 10%;">An intro to the BODY program and a great free workout.</p>          
+      </div>
+      <div class="col-sm-4 col-xs-12 text-center margins-half">
+          <h4 class="mb32 royalblue bold">We send all the equipment you’ll need</h4>
+          <img src="assets/images/icons/box.png">
+          <p class="mt16 hidden-xs">Receive a set of resistance bands and foam roller to get started.</p>
+          <p class="mt16 visible-xs" style="margin: 0px 10% 50px 10%;">Receive a set of resistance bands and foam roller to get started.</p>
+      </div>
+      <div class="col-sm-4 col-xs-12 text-center margins-half">
+        <h4 class="mb32 royalblue bold hidden-xs">No strings<br>attached</h4>
+        <h4 class="mb32 royalblue bold visible-xs">No strings attached</h4>
+        <img src="assets/images/icons/thumbsUp.png">
+        <p class="mt16 hidden-xs">No hidden fees, no annual contracts. Cancel at any time.</p> 
+        <p class="mt16 visible-xs" style="margin: 0px 10% 50px 10%;">No hidden fees, no annual contracts. Cancel at any time.</p>
+      </div>
+    </div>
+    
+    <div class="container pt96">
+      <div class="row">
+        <div class="col-sm-6 col-sm-push-6 col-md-4 col-md-push-6 col-membership">
+          <div class="stripeBlue"></div>
+          <div class="membershipFeatures">
+            <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
+            <div class="text-center" style="margin-bottom: 14px;">
+              <div style="width: 40%; display: inline-block;">
+                <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">10</h1>
+                <span class="pricingTime royalblue">/mo</span>
+                <span class="pricingType royalblue">Pilot pricing</span>
+              </div>
+              <div style="width: 40%; display: inline-block;">
+                <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">49</h1>
+                <span class="pricingTime lightgray">/mo</span>
+                <span class="pricingType lightgray">Regular pricing</span>
+              </div>            
+            </div>
+            <div class="bulletFeatures">
+              <hr>
+              <ul class="bulletChecks">
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Introductory session</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Progression tracking</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Wellness hotline</span></li>
+              </ul>
+              <hr>
+            </div>
+          </div>        
+        </div>
+        <div class="visible-xs pt32"></div>
+        <div class="col-sm-6 col-sm-pull-6 col-md-4 col-md-pull-2">
+          <div class="stripeOrange"></div>
+          <div class="membershipFeatures">
+            <h3 class="orange pt32 mb16 text-center bold">Free Trial</h3>
+            <div class="text-center" style="margin-bottom: 30px;">
+              <h1 class="pricingAmt orange"><sup>$</sup></h1><h1 class="pricingAmt orange">0</h1>
+              <span class="pricingTime orange">/mo</span>
+            </div>
+            
+            <div class="bulletFeatures">
+              <hr>
+              <ul class="bulletChecks">
+                <li><img class="checkMarks" src="assets/images/icons/check-orange.png"><span>Introductory session</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Unlimited classes per month</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">$50 starter kit of equipment</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Classes with friends</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Progression tracking</span></li>
+                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Wellness hotline</span></li>
+              </ul>
+              <hr>
+            </div> 
+          </div>
+        </div>              
       </div>
 
-      <div class="col-sm-3 col-xs-12 text-center">
-          <h4 class="mb32 purpleblue bold">Get a free introductory class</h4>
-          <img src="assets/images/icons/fit-girl_small.png">
-          <p class="mt8 hidden-xs">An intro to the BODY program and a great free workout.</p>
-          <p class="mt8 visible-xs" style="margin: 0px 10% 50px 10%;">An intro to the BODY program and a great free workout.</p>          
-      </div>
-      <div class="col-sm-3 col-xs-12 text-center">
-          <h4 class="mb32 purpleblue bold">Receive your gear, no extra cost</h4>
-          <img src="assets/images/icons/box.png">
-          <p class="mt8 hidden-xs">A set of strength bands and foam roller to get started.</p>
-          <p class="mt8 visible-xs" style="margin: 0px 10% 50px 10%;">A set of strength bands and foam roller to get started.</p>          
-      </div>
-      <div class="col-sm-3 col-xs-12 text-center">
-        <h4 class="mb32 purpleblue bold hidden-xs">No strings<br>attached</h4>
-        <h4 class="mb32 purpleblue bold visible-xs">No strings attached</h4>
-        <img src="assets/images/icons/thumbsup.png">
-        <p class="mt8 hidden-xs">No hidden fees, no annual contracts. Cancel at any time.</p> 
-        <p class="mt8 visible-xs" style="margin: 0px 10% 50px 10%;">No hidden fees, no annual contracts. Cancel at any time.</p>
-      </div>            
+    </div>
+  </section>
+
+  <section class="lightblue-section">
+    <div class="container text-center">
+      <div class="visible-xs mt32"></div>
+      <h1 class="white mb24">Take a complimentary intro session</h1>
+      <h4 class="purpleblue margins hidden-xs">The BODY Intro Class is completely free and designed to introduce you to the BODY program and have some fun – all while getting fitter. The purpose of this session is to help us serve you better by getting to know your goals and expectations, fitness level, and experience.</h4>
+      <h4 class="purpleblue visible-xs">The BODY Intro Class is completely free and designed to introduce you to the BODY program and have some fun – all while getting fitter. The purpose of this session is to help us serve you better by getting to know your goals and expectations, fitness level, and experience.</h4>
 
       <div class="col-sm-12 text-center mt32 hidden-xs">
-        <a href="#" ng-click="loginOauth('facebook')" class="big-btn btn">Take Your Free Intro Class</a>     
+        <a href="#" ng-click="loginOauth('facebook')" class="btn-white" style="padding: 20px 50px;"><span style="font-size: 20px;">Get started</span></a>     
       </div>
       <div class="col-sm-12 text-center mt32 mb56 visible-xs">
-        <a href="#" ng-click="loginOauth('facebook')" class="btn">Take Your Free Intro Class</a>     
-      </div>      
+        <a href="#" ng-click="loginOauth('facebook')" class="btn-white">Get started</a>     
+      </div>
     </div>
-  </section>  
+
+  </section>
+
+
+
+
+
+
 
 <div ng-include="'components/footer/footer.html'"></div>

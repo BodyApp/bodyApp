@@ -1,10 +1,24 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MainCtrl', function ($scope, $http, $window, $state, Auth) {
+  .controller('MainCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
+
+    $scope.signUp = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/account/login/login.html',
+        controller: 'LoginCtrl',
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        // openStripePayment()
+      }, function () {
+        $window.location.href = '/auth/' + 'facebook';
+      });
+    }
 
     Auth.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
@@ -21,7 +35,7 @@ angular.module('bodyAppApp')
     // *****************SCROLL DOWN*****************
     $(".arrow").click(function() {
         $('html,body').animate({
-            scrollTop: $(".scroll-to").offset().top + -50},
+            scrollTop: $(".scroll-to").offset().top + -100},
             600);
     });
 
