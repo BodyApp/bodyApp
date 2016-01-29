@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $uibModal, $firebaseObject, Schedule, Auth, User, Video, NetworkTest) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, NetworkTest) {
   	var classToJoin = Schedule.classUserJustJoined;
     $scope.classToJoin = classToJoin;
 
@@ -32,6 +32,8 @@ angular.module('bodyAppApp')
       });
     }
 
+    var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality "]
+    $scope.phrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]
 
     // $scope.instructor = classToJoin.trainer
     // $scope.instructorPicUrl = $scope.instructor.picture
@@ -41,8 +43,14 @@ angular.module('bodyAppApp')
     $scope.currentUser = currentUser;
 
     if (currentUser._id != classToJoin.trainer._id) {
-      var testResults = NetworkTest.conductTest(classToJoin.sessionId)
-      console.log(testResults);
+      var countdownTime = NetworkTest.timeoutMs + 10000;
+      $scope.networkTestCountdown = countdownTime
+      $scope.testingNetwork = true;
+      NetworkTest.conductTest(classToJoin.sessionId)
+      $timeout(function() {
+        $scope.testingNetwork = !NetworkTest.testSuccess;
+      }, countdownTime)
+      // console.log(testResults);
     }
 
     var classDate = new Date(classToJoin.date)

@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .factory('NetworkTest', function(User, Auth) {
+  .factory('NetworkTest', function(User, Auth, $uibModal) {
 
   	var test = {};
 
@@ -8,6 +8,9 @@ angular.module('bodyAppApp')
   	var TOKEN;
 
 		var TEST_TIMEOUT_MS = 15000; // 15 seconds
+
+		test.timeoutMs = TEST_TIMEOUT_MS;
+		test.testSuccess = false;
 
 		var publisherEl = document.createElement('div');
 		var subscriberEl = document.createElement('div');
@@ -33,8 +36,6 @@ angular.module('bodyAppApp')
       	publisher = OT.initPublisher(publisherEl, {}, callbacks.onInitPublisher);
 			  session = OT.initSession(API_KEY, SESSION_ID);
 			  session.connect(TOKEN, callbacks.onConnect);
-      	
-      	testStreamingCapability()
       }, function(err) {
           console.log(err);
       }).$promise;
@@ -44,12 +45,16 @@ angular.module('bodyAppApp')
 		  performQualityTest({subscriber: subscriber, timeout: TEST_TIMEOUT_MS}, function(error, results) {
 		    console.log('Test concluded', results);
 
-		    var audioVideoSupported = results.video.bitsPerSecond > 250000 &&
+		    var audioVideoSupported = results.video.bitsPerSecond > 300000 &&
 		      results.video.packetLossRatioPerSecond < 0.03 &&
 		      results.audio.bitsPerSecond > 25000 &&
 		      results.audio.packetLossRatioPerSecond < 0.05;
 
+	      session.disconnect()
+        publisher.destroy();
+
 		    if (audioVideoSupported) {
+		    	test.testSuccess = true;
 		      return callback(false, {
 		        text: 'You\'re all set!',
 		        icon: 'assets/icon_tick.svg'
@@ -368,7 +373,22 @@ angular.module('bodyAppApp')
 
 		  bandwidthCalculator.start(function(stats) {
 		    console.log(stats);
-		   	// if (stats.video.bitsPerSecond < 300000)
+		   	if (stats.video.bitsPerSecond < 300000 || stats.video.packetLossRatioPerSecond > 0.03) {
+		   		//Pop up modal with warning that internet isn't going to work.
+		   		alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
+		  // var modalInstance = $uibModal.open({
+    //     animation: true,
+    //     templateUrl: 'app/video/wrongBrowser.html',
+    //     controller: 'WrongBrowserCtrl',
+    //   });
+
+    //   modalInstance.result.then(function (selectedItem) {
+    //     $scope.selected = selectedItem;
+    //   }, function () {
+    //     $log.info('Modal dismissed at: ' + new Date());
+    //   });
+		   		return false;
+		   	}
 
 		    // you could do something smart here like determine if the bandwidth is
 		    // stable or acceptable and exit early
