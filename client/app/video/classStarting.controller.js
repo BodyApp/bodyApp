@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, NetworkTest) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video) {
   	var classToJoin = Schedule.classUserJustJoined;
     $scope.classToJoin = classToJoin;
 
@@ -46,7 +46,7 @@ angular.module('bodyAppApp')
     var SESSION_ID;
     var TOKEN;
 
-    var TEST_TIMEOUT_MS = 15000; // 15 seconds
+    var TEST_TIMEOUT_MS = 25000; // Internet test lasts 15 seconds.  Increase to increase reliability of the test.
 
     var timeoutMs = TEST_TIMEOUT_MS;
     // test.testSuccess = false;
@@ -64,14 +64,9 @@ angular.module('bodyAppApp')
     var callbacks;
 
     if (currentUser._id != classToJoin.trainer._id) {
-      // var countdownTime = timeoutMs;
       $scope.networkTestCountdown = timeoutMs + 5000
       $scope.testingNetwork = true;
       conductInternetTest(classToJoin.sessionId);
-      // $timeout(function() {
-      //   $scope.testingNetwork = !NetworkTest.testSuccess;
-      // }, countdownTime)
-      // console.log(testResults);
     }
 
     var classDate = new Date(classToJoin.date)
@@ -84,12 +79,19 @@ angular.module('bodyAppApp')
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/");
-    $scope.class = $firebaseObject(
+    var classObjRef = $firebaseObject(
       ref.child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
     )
+
+    var userRef = ref.child(weekOf)
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("bookedUsers")
+      .child(currentUser._id)
 
     $scope.numBookedUsers;
     $scope.bookedUsers;
@@ -98,10 +100,10 @@ angular.module('bodyAppApp')
 
     getBookedUsers(classToJoin);
 
-    $scope.class.$loaded().then(function() {
-      $scope.trainerRatingRounded = Math.round($scope.class.trainer.trainerRating * 10)/10
-      $scope.class.$watch(function(e) {
-        getBookedUsers($scope.class);
+    classObjRef.$loaded().then(function() {
+      $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
+      classObjRef.$watch(function(e) {
+        getBookedUsers(classObjRef);
       })
       setupVidAud()
     });
@@ -227,6 +229,8 @@ angular.module('bodyAppApp')
       }
     }      
 
+    //Internet Test
+
     function conductInternetTest(sessionId) {  
       publisherEl = document.createElement('div');
       subscriberEl = document.createElement('div');
@@ -252,6 +256,8 @@ angular.module('bodyAppApp')
           results.video.packetLossRatioPerSecond < 0.03 &&
           results.audio.bitsPerSecond > 25000 &&
           results.audio.packetLossRatioPerSecond < 0.05;
+
+        userRef.child("passedNetworkTest").push({time: new Date().getTime(), results: results})
 
         session.disconnect()
         publisher.disconnect();
@@ -536,6 +542,11 @@ angular.module('bodyAppApp')
           session.disconnect()
           publisher.disconnect();
           publisher.destroy();
+          userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats})
+          // classRef.bookedUsers[currentUser._id]["failedNetworkTest"] = classRef.bookedUsers[currentUser._id]["failedNetworkTest"] || []
+          // classRef.bookedUsers[currentUser._id]["failedNetworkTest"].push({time: new Date().getTime(), results: stats})
+          // classRef.$save()
+          // classRef.child("bookedUsers").child(currentUser._id).child("failedNetworkTest").update(stats)
           //Pop up modal with warning that internet isn't going to work.
           // alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
           var modalInstance = $uibModal.open({
