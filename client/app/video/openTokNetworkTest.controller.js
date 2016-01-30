@@ -12,8 +12,8 @@ angular.module('bodyAppApp')
 		test.timeoutMs = TEST_TIMEOUT_MS;
 		test.testSuccess = false;
 
-		var publisherEl = document.createElement('div');
-		var subscriberEl = document.createElement('div');
+		var publisherEl;
+		var subscriberEl;
 
 		var session;
 		var publisher;
@@ -27,6 +27,10 @@ angular.module('bodyAppApp')
 		var currentUser = Auth.getCurrentUser()
 
 		test.conductTest = function(sessionId) {	
+			publisherEl = document.createElement('div');
+			subscriberEl = document.createElement('div');
+			test.testSuccess = false;
+
 			SESSION_ID = sessionId;
 			User.createTokBoxToken({ id: currentUser._id }, {
         sessionId: sessionId
@@ -51,6 +55,7 @@ angular.module('bodyAppApp')
 		      results.audio.packetLossRatioPerSecond < 0.05;
 
 	      session.disconnect()
+	      publisher.disconnect();
         publisher.destroy();
 
 		    if (audioVideoSupported) {
@@ -373,8 +378,12 @@ angular.module('bodyAppApp')
 
 		  bandwidthCalculator.start(function(stats) {
 		    console.log(stats);
-		   	if (stats.video.bitsPerSecond < 300000 || stats.video.packetLossRatioPerSecond > 0.03) {
-		   		bandwidthCalculator.stop()
+		   	if (stats.video.bitsPerSecond < 1000000 || stats.video.packetLossRatioPerSecond > 0.03) {
+		   		window.clearTimeout(testTimeout);
+			    bandwidthCalculator.stop();
+  	      session.disconnect()
+		      publisher.disconnect();
+	        publisher.destroy();
 		   		//Pop up modal with warning that internet isn't going to work.
 		   		// alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
 				  var modalInstance = $uibModal.open({

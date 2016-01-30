@@ -42,14 +42,35 @@ angular.module('bodyAppApp')
     var currentUser = Auth.getCurrentUser();
     $scope.currentUser = currentUser;
 
+    var API_KEY = 45425152;;
+    var SESSION_ID;
+    var TOKEN;
+
+    var TEST_TIMEOUT_MS = 15000; // 15 seconds
+
+    var timeoutMs = TEST_TIMEOUT_MS;
+    // test.testSuccess = false;
+
+    var publisherEl;
+    var subscriberEl;
+
+    var session;
+    var publisher;
+    var subscriber;
+    var statusContainerEl;
+    var statusMessageEl;
+    var statusIconEl;
+
+    var callbacks;
+
     if (currentUser._id != classToJoin.trainer._id) {
-      var countdownTime = NetworkTest.timeoutMs + 10000;
-      $scope.networkTestCountdown = countdownTime
+      // var countdownTime = timeoutMs;
+      $scope.networkTestCountdown = timeoutMs + 5000
       $scope.testingNetwork = true;
-      NetworkTest.conductTest(classToJoin.sessionId)
-      $timeout(function() {
-        $scope.testingNetwork = !NetworkTest.testSuccess;
-      }, countdownTime)
+      conductInternetTest(classToJoin.sessionId);
+      // $timeout(function() {
+      //   $scope.testingNetwork = !NetworkTest.testSuccess;
+      // }, countdownTime)
       // console.log(testResults);
     }
 
@@ -83,6 +104,13 @@ angular.module('bodyAppApp')
         getBookedUsers($scope.class);
       })
       setupVidAud()
+    });
+
+    $scope.$on("$destroy", function() { // destroys the session when navigate away
+      console.log("Disconnecting session because navigated away.")
+      session.disconnect()
+      publisher.destroy();
+      // session.destroy();
     });
 
     // $scope.audioInputDevices;
@@ -197,7 +225,339 @@ angular.module('bodyAppApp')
         // case 2: return $scope.tab3 = true; break;
         default: break;
       }
-    }        
+    }      
+
+    function conductInternetTest(sessionId) {  
+      publisherEl = document.createElement('div');
+      subscriberEl = document.createElement('div');
+
+      SESSION_ID = sessionId;
+      User.createTokBoxToken({ id: currentUser._id }, {
+        sessionId: sessionId
+      }, function(token) {
+        TOKEN = token.token;
+        publisher = OT.initPublisher(publisherEl, {}, callbacks.onInitPublisher);
+        session = OT.initSession(API_KEY, SESSION_ID);
+        session.connect(TOKEN, callbacks.onConnect);
+      }, function(err) {
+          console.log(err);
+      }).$promise;
+    }
+
+    var testStreamingCapability = function(subscriber, callback) {
+      performQualityTest({subscriber: subscriber, timeout: TEST_TIMEOUT_MS}, function(error, results) {
+        console.log('Test concluded', results);
+
+        var audioVideoSupported = results.video.bitsPerSecond > 300000 &&
+          results.video.packetLossRatioPerSecond < 0.03 &&
+          results.audio.bitsPerSecond > 25000 &&
+          results.audio.packetLossRatioPerSecond < 0.05;
+
+        session.disconnect()
+        publisher.disconnect();
+        publisher.destroy();
+
+        if (audioVideoSupported) {
+          $scope.testingNetwork = false;
+          // test.testSuccess = true;
+          return callback(false, {
+            text: 'You\'re all set!',
+            icon: 'assets/icon_tick.svg'
+          });
+        }
+
+        // if (results.audio.packetLossRatioPerSecond < 0.05) {
+        //   return callback(false, {
+        //     text: 'Your bandwidth can support audio only',
+        //     icon: 'assets/icon_warning.svg'
+        //   });
+        // }
+      });
+    };
+
+    callbacks = {
+      onInitPublisher: function onInitPublisher(error) {
+        if (error) {
+          setText(statusMessageEl, 'Could not acquire your camera');
+          return;
+        }
+
+        setText(statusMessageEl, 'Connecting to session');
+      },
+
+      onPublish: function onPublish(error) {
+        if (error) {
+          // handle publishing errors here
+          setText(
+            statusMessageEl,
+            'Could not publish video'
+          );
+          return;
+        }
+
+        setText(
+          statusMessageEl,
+          'Subscribing to video'
+        );
+
+        subscriber = session.subscribe(
+          publisher.stream,
+          subscriberEl,
+          {
+            audioVolume: 0,
+            testNetwork: true
+          },
+          callbacks.onSubscribe
+        );
+      },
+
+      cleanup: function() {
+        session.unsubscribe(subscriber);
+        session.unpublish(publisher);
+      },
+
+      onSubscribe: function onSubscribe(error, subscriber) {
+        if (error) {
+          setText(statusMessageEl, 'Could not subscribe to video');
+          return;
+        }
+
+        setText(statusMessageEl, 'Checking your available bandwidth');
+
+        console.log(subscriber)
+
+        testStreamingCapability(subscriber, function(error, message) {
+          callbacks.cleanup();
+        });
+      },
+
+      onConnect: function onConnect(error) {
+        if (error) {
+          setText(statusMessageEl, 'Could not connect to OpenTok');
+        }
+      }
+    };
+
+    compositeOfCallbacks(
+      callbacks,
+      ['onInitPublisher', 'onConnect'],
+      function(error) {
+        if (error) {
+          return;
+        }
+
+        setText(statusMessageEl, 'Publishing video');
+        session.publish(publisher, callbacks.onPublish);
+      }
+    );
+
+    // Helpers
+    function setText(el, text) {
+      if (!el) {
+        return;
+      }
+
+      if (el.textContent) {
+        el.textContent = text;
+      }
+
+      if (el.innerText) {
+        el.innerText = text;
+      }
+    }
+
+    function pluck(arr, propertName) {
+      return arr.map(function(value) {
+        return value[propertName];
+      });
+    }
+
+    function sum(arr, propertyName) {
+      if (typeof propertyName !== 'undefined') {
+        arr = pluck(arr, propertyName);
+      }
+
+      return arr.reduce(function(previous, current) {
+        return previous + current;
+      }, 0);
+    }
+
+    function max(arr) {
+      return Math.max.apply(undefined, arr);
+    }
+
+    function min(arr) {
+      return Math.min.apply(undefined, arr);
+    }
+
+    function calculatePerSecondStats(statsBuffer, seconds) {
+      var stats = {};
+      ['video', 'audio'].forEach(function(type) {
+        stats[type] = {
+          packetsPerSecond: sum(pluck(statsBuffer, type), 'packetsReceived') / seconds,
+          bitsPerSecond: (sum(pluck(statsBuffer, type), 'bytesReceived') * 8) / seconds,
+          packetsLostPerSecond: sum(pluck(statsBuffer, type), 'packetsLost') / seconds
+        };
+        stats[type].packetLossRatioPerSecond = (
+          stats[type].packetsLostPerSecond / stats[type].packetsPerSecond
+        );
+      });
+
+      stats.windowSize = seconds;
+      return stats;
+    }
+
+    function getSampleWindowSize(samples) {
+      var times = pluck(samples, 'timestamp');
+      return (max(times) - min(times)) / 1000;
+    }
+
+    if (!Array.prototype.forEach) {
+      Array.prototype.forEach = function(fn, scope) {
+        for (var i = 0, len = this.length; i < len; ++i) {
+          fn.call(scope, this[i], i, this);
+        }
+      };
+    }
+
+    function compositeOfCallbacks(obj, fns, callback) {
+      var results = {};
+      var hasError = false;
+
+      var checkDone = function checkDone() {
+        if (Object.keys(results).length === fns.length) {
+          callback(hasError, results);
+          callback = function() {};
+        }
+      };
+
+      fns.forEach(function(key) {
+        var originalCallback = obj[key];
+
+        obj[key] = function(error) {
+          results[key] = {
+            error: error,
+            args: Array.prototype.slice.call(arguments, 1)
+          };
+
+          if (error) {
+            hasError = true;
+          }
+
+          originalCallback.apply(obj, arguments);
+          checkDone();
+        };
+      });
+    }
+
+    function bandwidthCalculatorObj(config) {
+      var intervalId;
+
+      config.pollingInterval = config.pollingInterval || 500;
+      config.windowSize = config.windowSize || 2000;
+      if (!config.subscriber) return
+      config.subscriber = config.subscriber || undefined;
+
+      return {
+        start: function(reportFunction) {
+          var statsBuffer = [];
+          var last = {
+            audio: {},
+            video: {}
+          };
+
+          intervalId = window.setInterval(function() {
+            config.subscriber.getStats(function(error, stats) {
+              var snapshot = {};
+              var nowMs = new Date().getTime();
+              var sampleWindowSize;
+
+              ['audio', 'video'].forEach(function(type) {
+                snapshot[type] = Object.keys(stats[type]).reduce(function(result, key) {
+                  result[key] = stats[type][key] - (last[type][key] || 0);
+                  last[type][key] = stats[type][key];
+                  return result;
+                }, {});
+              });
+
+              // get a snapshot of now, and keep the last values for next round
+              snapshot.timestamp = stats.timestamp;
+
+              statsBuffer.push(snapshot);
+              statsBuffer = statsBuffer.filter(function(value) {
+                return nowMs - value.timestamp < config.windowSize;
+              });
+
+              sampleWindowSize = getSampleWindowSize(statsBuffer);
+
+              if (sampleWindowSize !== 0) {
+                reportFunction(calculatePerSecondStats(
+                  statsBuffer,
+                  sampleWindowSize
+                ));
+              }
+            });
+          }, config.pollingInterval);
+        },
+
+        stop: function() {
+          window.clearInterval(intervalId);
+        }
+      };
+    }
+
+    function performQualityTest(config, callback) {
+      var startMs = new Date().getTime();
+      var testTimeout;
+      var currentStats;
+
+      var bandwidthCalculator = bandwidthCalculatorObj({
+        subscriber: config.subscriber
+      });
+
+      var cleanupAndReport = function() {
+        currentStats.elapsedTimeMs = new Date().getTime() - startMs;
+        callback(undefined, currentStats);
+
+        window.clearTimeout(testTimeout);
+        bandwidthCalculator.stop();
+
+        callback = function() {};
+      };
+
+      // bail out of the test after 30 seconds
+      window.setTimeout(cleanupAndReport, config.timeout);
+
+      bandwidthCalculator.start(function(stats) {
+        console.log(stats);
+        if (stats.video.bitsPerSecond < 300000 || stats.video.packetLossRatioPerSecond > 0.03) {
+          window.clearTimeout(testTimeout);
+          bandwidthCalculator.stop();
+          session.disconnect()
+          publisher.disconnect();
+          publisher.destroy();
+          //Pop up modal with warning that internet isn't going to work.
+          // alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
+          var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: "static",
+            keyboard: false,
+            templateUrl: 'app/video/badInternet.html',
+            controller: 'BadInternetCtrl',
+            windowClass: "modal-tall"
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+          }, function () {
+          });
+          return false;
+        }
+
+        // you could do something smart here like determine if the bandwidth is
+        // stable or acceptable and exit early
+        currentStats = stats;
+      });
+    }  
 
     // load cookie, or start new tour
     // $scope.currentStep = 0;
