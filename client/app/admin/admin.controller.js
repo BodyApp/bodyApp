@@ -63,12 +63,17 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveWod = function(wod, date) {
-      console.log(wod);
       classDate = date;
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
       wod.dateTime = new Date(date).setHours(10) //Makes sure it's set in the middle of the day to avoid timezone issues
       // wod.dateTime = tempDate.getTime();
       wod.date = classKey;
+      for (var bullet in wod.challenge.bullets) {
+        console.log(wod.challenge.bullets[bullet]);
+        if (!wod.challenge.bullets[bullet]) {
+          delete wod.challenge.bullets[bullet]
+        }
+      }
       wodRef.child(classKey).set(wod);
     }
     
