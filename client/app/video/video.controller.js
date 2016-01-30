@@ -21,7 +21,8 @@ angular.module('bodyAppApp')
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
 				session.disconnect()
-				// session.destroy();
+        Video.destroyHardwareSetup()
+        publisher.destroy();
 				console.log("class is over, booting people out");
 				$location.path('/classfeedback');
 			} else if (classHalfway < currentTime ) {
@@ -71,7 +72,7 @@ angular.module('bodyAppApp')
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")g
     
     setTabataOptions()
 
