@@ -912,11 +912,17 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.setTabata = function() {
-			$scope.tabata.isOn = true
-			document.getElementById('tabata').stop();
-			document.getElementById('tabata').reset();
 			$scope.tabata.lastSet = new Date().getTime();
+
 			$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1;
+
+			$timeout(function() { 
+				$scope.tabata.isOn = true 
+				document.getElementById('tabata').stop();
+				document.getElementById('tabata').reset();
+			}, 500) //Makes sure that lastSet is already set before isOn called.  Otherwise may wind up doing something screwy.
+
+
 			if(!$scope.$$phase) $scope.$apply();
 			// $scope.tabata.lastResetTime = new Date().getTime();
 			// $scope.tabata.lastButtonPress = "Set";
