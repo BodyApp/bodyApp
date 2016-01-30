@@ -153,13 +153,19 @@ angular.module('bodyAppApp')
         $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
 
         for (var bookedUser in classJoined.bookedUsers) {
-          if (bookedUser) {
+          if (bookedUser && (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id)) {
             User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-              console.log(data)
               var userToAdd = data.profile
               userToAdd.injuries = data.injuries
               console.log(userToAdd)
               $scope.bookedUsers.push(userToAdd);
+              if(!$scope.$$phase) $scope.$apply();  
+            }).catch(function(err) {
+              console.log(err);
+            })
+          } else {
+            User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+              $scope.bookedUsers.push(data);
               if(!$scope.$$phase) $scope.$apply();  
             }).catch(function(err) {
               console.log(err);
@@ -324,7 +330,7 @@ angular.module('bodyAppApp')
 
       onSubscribe: function onSubscribe(error, subscriber) {
         if (error) {
-          setText(statusMessageEl, 'Could not subscribe to video');
+          // setText(statusMessageEl, 'Could not subscribe to video');
           return;
         }
 
@@ -339,7 +345,7 @@ angular.module('bodyAppApp')
 
       onConnect: function onConnect(error) {
         if (error) {
-          setText(statusMessageEl, 'Could not connect to OpenTok');
+          // setText(statusMessageEl, 'Could not connect to OpenTok');
         }
       }
     };
@@ -349,6 +355,18 @@ angular.module('bodyAppApp')
       ['onInitPublisher', 'onConnect'],
       function(error) {
         if (error) {
+          var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: "static",
+            keyboard: false,
+            templateUrl: 'app/video/badInternet.html',
+            controller: 'BadInternetCtrl',
+            windowClass: "modal-tall"
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+          }, function () {
+          });
           return;
         }
 
