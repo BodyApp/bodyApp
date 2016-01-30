@@ -16,7 +16,8 @@ module.exports = function (grunt) {
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
-    buildcontrol: 'grunt-build-control'
+    buildcontrol: 'grunt-build-control',
+    htmlSnapshot: 'grunt-html-snapshot'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -140,6 +141,54 @@ module.exports = function (grunt) {
           '<%= yeoman.client %>/{app,components}/**/*.spec.js',
           '<%= yeoman.client %>/{app,components}/**/*.mock.js'
         ]
+      }
+    },
+
+    //Used for Google Crawler  
+    htmlSnapshot: {
+      debug: {
+        options: {
+          snapshotPath: 'server/config/snapshots/',
+          sitePath: 'http://127.0.0.1:9000/',
+          msWaitForPages: 1000,
+          urls: [
+            '/',
+            '/classstarting',
+            '/terms',
+            '/schedule',
+            '/membership',
+            '/newuser',
+            '/results',
+            '/faq',
+            '/settings',
+            '/index',
+            '/team',
+            '/consumervideo',
+            '/trainervideo'
+          ]
+        }
+      },
+      prod: {
+        options: {
+          snapshotPath: 'server/config/snapshots/',
+          sitePath: 'https://www.getbodyapp.com/',
+          msWaitForPages: 1000,
+          urls: [
+            '/',
+            '/classstarting',
+            '/terms',
+            '/schedule',
+            '/membership',
+            '/newuser',
+            '/results',
+            '/index',
+            '/faq',
+            '/settings',
+            '/team',
+            '/consumervideo',
+            '/trainervideo'
+          ]
+        }
       }
     },
 
@@ -340,7 +389,7 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.client %>',
           dest: '<%= yeoman.dist %>/public',
           src: [
-            '*.{ico,png,txt}',
+            '*.{ico,png,txt,xml}',
             '.htaccess',
             'bower_components/**/*',
             'assets/**/*',

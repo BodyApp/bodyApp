@@ -30,7 +30,10 @@
     "cron": "*",
     "firebase": "*",
     "request": "*",
-    "opentok": "*"
+    "opentok": "*",
+    "grunt-html-snapshot": "*",
+    "express-seojs": "*",
+    "prerender-node": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

@@ -20,6 +20,7 @@ angular.module('bodyAppApp', [
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
+    // $locationProvider.hashPrefix('#!');
     $httpProvider.interceptors.push('authInterceptor');
   })
 

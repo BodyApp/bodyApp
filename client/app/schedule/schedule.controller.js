@@ -33,6 +33,7 @@ angular.module('bodyAppApp')
           Schedule.setCurrentUser(currentUser);
           $scope.pictureData = {};
 
+          // $rootScope.htmlReady() //For PhantomJS
 
           // $scope.myBookedClasses = currentUser.classesBooked;
           // for (prop in currentUser.classesBooked) {

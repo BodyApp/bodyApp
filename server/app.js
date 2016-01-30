@@ -12,6 +12,7 @@ var mongoose = require('mongoose');
 var config = require('./config/environment');
 var CronJob = require('cron').CronJob;
 var Firebase = require('firebase');
+var seojs = require('express-seojs');
 
 // Module to call XirSys servers
 var request = require("request");
@@ -28,6 +29,12 @@ if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
 var app = express();
+
+app.use(require('prerender-node').set('prerenderToken', '0xk2UugZ3MhosEzMYKrg'));
+
+//For google crawler
+// app.use(seojs('0c4rjwdahyypq4vvuiz1jnibo'));
+
 var forceSsl = function (req, res, next) {
   if (req.headers['x-forwarded-proto'] !== 'https') {
     return res.redirect(['https://', req.get('Host'), req.url].join(''));
