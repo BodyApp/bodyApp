@@ -72,7 +72,7 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
-
+    
     setTabataOptions()
 
     // $scope.tabata = $firebaseObject(
@@ -133,6 +133,9 @@ angular.module('bodyAppApp')
   	
   	stopwatchRef.$watch(function() {
   		if (stopwatchRef.$value) {
+  			document.getElementById('stopwatch').stop();
+  			document.getElementById('stopwatch').reset();
+  			$scope.stopwatchStartTime = stopwatchRef.$value
   			document.getElementById('stopwatch').start();
   		} else {
   			document.getElementById('stopwatch').stop();
