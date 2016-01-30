@@ -90,7 +90,7 @@ angular.module('bodyAppApp')
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
       	if (userIsInstructor) {
       		$scope.tabata.timeOnMinutes = "0"
-      		$scope.tabata.timeOnSeconds = "0"
+      		$scope.tabata.timeOnSeconds = "20"
       		$scope.tabata.timeOffSeconds = "10"
       		$scope.tabata.rounds = "1"
       		return $scope.tabata.tabataActive = true
@@ -102,7 +102,9 @@ angular.module('bodyAppApp')
 						document.getElementById('tabata').reset();
 						if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
 							console.log("Starting consumer tabata")
-							document.getElementById('tabata').start();
+							$timeout(function() {
+								document.getElementById('tabata').start();
+							}, 1000)
 						}
 	        });
       		
@@ -883,9 +885,12 @@ angular.module('bodyAppApp')
 	  // });		
 		
 		$scope.startTabata = function() {
-			$scope.tabata.lastStart = new Date().getTime();
+			
 			// document.getElementById('tabata').start()
-			$timeout(function() {document.getElementById('tabata').start();}, 1000)
+			$timeout(function() {
+				$scope.tabata.lastStart = new Date().getTime();
+				document.getElementById('tabata').start();
+			}, 1000)
 	    // $scope.tabata.lastStartTime = new Date().getTime();
 	    // $scope.tabata.lastStateTime = new Date().getTime();
 	    // $scope.tabata.lastButtonPress = "Start";
@@ -987,26 +992,36 @@ angular.module('bodyAppApp')
 					if ($scope.tabata.rounds > 0) {
 						$scope.tabata.rounds -= 1;
 						$scope.tabata.currentTabataTime = $scope.tabata.timeOffSeconds*1;
-						$scope.tabata.isOn = false;
+						
 						console.log("Setting tabata to off");
 						if(!$scope.$$phase) $scope.$apply();
-												
-						document.getElementById('tabata').stop();
-						document.getElementById('tabata').reset();
+						
 						// document.getElementById('tabata').start();
-						$timeout(function() {document.getElementById('tabata').start();}, 1000)
+						$timeout(function() {
+							$scope.tabata.isOn = false;
+							document.getElementById('tabata').stop();
+							document.getElementById('tabata').reset();
+						}, 1000)
+						$timeout(function() {
+							document.getElementById('tabata').start();
+						}, 2000)
 					}
 					// document.getElementById('tabata').start();
 				} else {
 					if ($scope.tabata.rounds > 0) {
 						$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1
-						$scope.tabata.isOn = true;
+						
 						console.log("Setting tabata to on");
 						if(!$scope.$$phase) $scope.$apply();
-						document.getElementById('tabata').stop();
-						document.getElementById('tabata').reset();
 						// document.getElementById('tabata').start();
-						$timeout(function() {document.getElementById('tabata').start();}, 1000)
+						$timeout(function() {
+							$scope.tabata.isOn = true;
+							document.getElementById('tabata').stop();
+							document.getElementById('tabata').reset();
+						}, 1000)
+						$timeout(function() {
+							document.getElementById('tabata').start();
+						}, 2000)
 						// document.getElementById('tabata').start();
 					}
 				}
