@@ -91,7 +91,7 @@ angular.module('bodyAppApp')
       	if (userIsInstructor) {
       		$scope.tabata.timeOnMinutes = "0"
       		$scope.tabata.timeOnSeconds = "0"
-      		$scope.tabata.timeOffSeconds = "0"
+      		$scope.tabata.timeOffSeconds = "10"
       		$scope.tabata.rounds = "1"
       		return $scope.tabata.tabataActive = true
       	}
