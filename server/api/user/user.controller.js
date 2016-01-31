@@ -629,7 +629,6 @@ exports.createTokBoxToken = function(req, res, next) {
 // The index redirects here
 exports.sendWelcomeEmail = function(req,res) {
   var emailAddress = req.body.email;
-  console.log("trying to submit email")
     //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 
@@ -639,7 +638,7 @@ exports.sendWelcomeEmail = function(req,res) {
     //The email to contact
       to: emailAddress,
     //Subject and text data  
-      subject: 'Hello from Mailgun',
+      subject: 'Your BODY Account is Active!',
       html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://0.0.0.0:3030/validate?' + req.params.mail + '">Click here to add your email address to a mailing list</a>'
     }
 
@@ -647,17 +646,18 @@ exports.sendWelcomeEmail = function(req,res) {
     mailgun.messages().send(data, function (err, body) {
         //If there is an error, render the error page
         if (err) {
-          console.log("Error sending welcome email to " + emailAddress)
-            // res.render('error', { error : err});
-            // console.log("got an error: ", err);
+          console.log("Error sending welcome email to " + email)
         }
-        //Else we can greet    and leave
         else {
-          res.status(200).json(data);
-            //Here "submitted.jade" is the view file for this landing page 
-            //We pass the variable "email" from the url parameter in an object rendered by Jade
-            // res.render('submitted', { email : req.params.mail });
-            // console.log(body);
+          User.findById(req.user._id, function (err, user) {
+            if(err) { return err } else { 
+              user.welcomeEmailSent = new Date();
+              user.save(function(err) {
+                if (err) return validationError(res, err);
+                res.status(200).json(user);
+              });
+            } 
+          });
         }
     });
 };

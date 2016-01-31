@@ -5,6 +5,7 @@ angular.module('bodyAppApp')
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
+    var currentUser;
     $scope.upcomingIntros;
     $scope.bookedIntroClass;
     var injuries = "";
@@ -14,6 +15,17 @@ angular.module('bodyAppApp')
       var tzName = jstz().timezone_name;
       $scope.timezone = moment().tz(tzName).format('z');
     }
+
+    Auth.getCurrentUser().$promise.then(function(user) {
+        currentUser = user
+        if (!currentUser.welcomeEmailSent) {
+            User.sendWelcomeEmail({ id: currentUser._id }, {email: currentUser.email}, function(data) {
+                console.log(data)
+            }, function(err) {
+                console.log("Error: " + err)
+            }).$promise;  
+        }
+    })
 
     var ref = new Firebase("https://bodyapp.firebaseio.com")
     $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros').orderByKey().limitToFirst(12))

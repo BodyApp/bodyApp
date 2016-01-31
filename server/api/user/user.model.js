@@ -43,6 +43,7 @@ var UserSchema = new Schema({
   level: Number,
   signUpDate: Date,
   lastLoginDate: Date,
+  welcomeEmailSent: Date,
   results: Schema.Types.Mixed,
   facebook: {},
   twitter: {},
