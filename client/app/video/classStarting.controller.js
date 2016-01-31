@@ -8,6 +8,7 @@ angular.module('bodyAppApp')
       $scope.overlay1 = true;
       $scope.overlay2 = false;
       $scope.overlay3 = false;
+      $scope.overlay4 = false
       $scope.tab1 = true;
       $scope.tab2 = false;
       $scope.instructorBio = false;
@@ -215,10 +216,12 @@ angular.module('bodyAppApp')
       $scope.overlay1 = false;
       $scope.overlay2 = false;
       $scope.overlay3 = false;
+      $scope.overlay3 = false;
       switch (pageToView) {
         case 0: return $scope.overlay1 = true; break;
         case 1: return $scope.overlay2 = true; break;
         case 2: return $scope.overlay3 = true; break;
+        case 3: return $scope.overlay4 = true; break;
         default: break;
       }
     }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NavbarCtrl', function ($scope, $location, $state, $window, Auth) {
+  .controller('NavbarCtrl', function ($scope, $location, $state, $uibModal, $window, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -60,6 +60,20 @@ angular.module('bodyAppApp')
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
+
+    $scope.signUp = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/account/login/login.html',
+        controller: 'LoginCtrl',
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        // openStripePayment()
+      }, function () {
+        $window.location.href = '/auth/' + 'facebook';
+      });
+    }
 
     $scope.isActive = function(route) {
       return route === $location.path();

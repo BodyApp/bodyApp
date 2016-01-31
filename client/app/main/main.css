@@ -25,6 +25,9 @@
 .margins {
   padding: 0 12%;
 }
+.margins-half {
+  padding: 0 5%;
+}
 .card {
   max-width: 490px;
   margin: 0 auto;
@@ -119,3 +122,46 @@
 .no-margin {
   padding: 0px !important;
 }
+
+.membershipFeatures {
+  border-right: 1px solid #D3D3D3;
+  border-left: 1px solid #D3D3D3;
+  border-bottom: 1px solid #D3D3D3;
+}
+.stripeOrange {
+  height: 10px;
+  background: #FF6638;
+}
+.stripeBlue {
+  height: 10px;
+  background: #1F3F88;
+}
+.stripeBlue img {
+  position: relative;
+  bottom: 69px;
+}
+.bulletFeatures {
+  padding: 0 10%;
+}
+.bulletChecks li {
+  padding: 5px 0;
+}
+.bulletChecks li span {
+  font-size: 0.9em;
+}
+.checkMarks {
+  padding-right: 30px;
+}
+.col-membership:before {
+  background-image: url("../../assets/images/icons/premium-burst.png");
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-top: -100px;
+  padding-top: 100px;
+  content: '';
+  display: block;
+}
+
+
+

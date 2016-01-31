@@ -242,6 +242,9 @@ h1 {
 .white {
   color: #fff;
 }
+.orange {
+  color: #FF6638;
+}
 
 .user-list li {
   text-align: left;
@@ -306,7 +309,7 @@ h1 {
 
 /*------MODALS-------*/
 .modal-body {
-  height: 360px;
+  height: auto;
 }
 .modal-body .darkblue {
   color: #0D1C45 !important;
