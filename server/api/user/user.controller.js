@@ -6,6 +6,7 @@ var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
 // var flash = require('req-flash');
+var fs = require('fs')
 
 var OpenTok = require('opentok'),
     opentok = new OpenTok(config.tokBoxApiKey, config.tokBoxApiSecret);
@@ -14,6 +15,13 @@ var Mailgun = require('mailgun-js');
 var api_key = config.mailgunApiKey;
 var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
+var welcomeEmailHeader;
+var welcomeEmailTemplate;
+
+  // console.log(__dirname)
+
+// var welcomeEmailHtml = require('../emails/welcomeEmail')
+// console.log(welcomeEmailHtml)
 
 var validationError = function(res, err) {
   return res.status(422).json(err);
@@ -629,35 +637,41 @@ exports.createTokBoxToken = function(req, res, next) {
 // The index redirects here
 exports.sendWelcomeEmail = function(req,res) {
   var emailAddress = req.body.email;
-    //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
-    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
-
-    var data = {
-    //Specify email data
-      from: from_who,
-    //The email to contact
-      to: emailAddress,
-    //Subject and text data  
-      subject: 'Your BODY Account is Active!',
-      html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://0.0.0.0:3030/validate?' + req.params.mail + '">Click here to add your email address to a mailing list</a>'
-    }
-
-    //Invokes the method to send emails given the above data with the helper library
-    mailgun.messages().send(data, function (err, body) {
-        //If there is an error, render the error page
-        if (err) {
-          console.log("Error sending welcome email to " + email)
-        }
-        else {
-          User.findById(req.user._id, function (err, user) {
-            if(err) { return err } else { 
-              user.welcomeEmailSent = new Date();
-              user.save(function(err) {
-                if (err) return validationError(res, err);
-                res.status(200).json(user);
-              });
-            } 
-          });
-        }
-    });
+  var recipientName = req.body.firstName;
+  var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+  fs.readFile(__dirname + '/welcomeEmail.html', function (err, html) {
+    if (err) throw err; 
+    welcomeEmailTemplate = html
+    fs.readFile(__dirname + '/welcomeEmailHeader.html', function (err, html) {
+      if (err) throw err; 
+      welcomeEmailHeader = html
+      var data = {
+      //Specify email data
+        from: from_who,
+      //The email to contact
+        to: emailAddress,
+      //Subject and text data  
+        subject: 'Welcome To The Club',
+        html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+recipientName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
+      }
+      //Invokes the method to send emails given the above data with the helper library
+      mailgun.messages().send(data, function (err, body) {
+          //If there is an error, render the error page
+          if (err) {
+            console.log("Error sending welcome email to " + emailAddress)
+          }
+          else {
+            User.findById(req.user._id, function (err, user) {
+              if(err) { return err } else { 
+                user.welcomeEmailSent = new Date();
+                user.save(function(err) {
+                  if (err) return validationError(res, err);
+                  res.status(200).json(user);
+                });
+              } 
+            });
+          }
+      });
+    }); 
+  });   
 };
