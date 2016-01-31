@@ -44,8 +44,9 @@ User.find({}).remove(function() {
     __v: 51,
     injuries: "Nope",
     bookedIntroClass: false,
-    completedNewUserFlow: false,
+    completedNewUserFlow: true,
     introClassTaken: false,
+    welcomeEmailSent: new Date(),
     level: 1
     }, 
     {
@@ -63,6 +64,7 @@ User.find({}).remove(function() {
     bookedIntroClass: false,
     completedNewUserFlow: false,
     introClassTaken: false,
+    welcomeEmailSent: true,
     level: 1
     },
     {
@@ -145,6 +147,7 @@ User.find({}).remove(function() {
     "injuries": "asdf",
     "bookedIntroClass": false,
     "tourtipShown": "1452838410731",
+    welcomeEmailSent: true,
     "classesBooked": {
         "1452898800000": true
     },

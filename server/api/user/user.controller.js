@@ -427,10 +427,44 @@ exports.addIntroClass = function(req, res, next) {
       user.completedNewUserFlow = true;
       user.save(function(err) {
         if (err) return validationError(res, err);
+        sendEmail(user)
         res.status(200).json(user);
       });
     } 
   });
+
+  function sendEmail(user) {
+    var emailAddress = user.email;
+    var recipientName = user.firstName;
+    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
+      if (err) throw err; 
+      var classReservedTemplate = html
+      fs.readFile(__dirname + '/emails/classReservedHeader.html', function (err, html) {
+        if (err) throw err; 
+        var classReservedHeader = html
+        var data = {
+        //Specify email data
+          from: from_who,
+        //The email to contact
+          to: emailAddress,
+        //Subject and text data  
+          subject: 'Your Intro Class Is Booked!',
+          html: classReservedHeader.toString() + '<h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+        }
+        //Invokes the method to send emails given the above data with the helper library
+        mailgun.messages().send(data, function (err, body) {
+            //If there is an error, render the error page
+            if (err) {
+              console.log("Error sending welcome email to " + emailAddress)
+            }
+            else {
+              console.log("Sent booking confirmation email to " + emailAddress)
+            }
+        });
+      }); 
+    });   
+  }
 };
 
 exports.cancelIntroClass = function(req, res, next) {
@@ -479,10 +513,43 @@ exports.addBookedClass = function(req, res, next) {
       user.classesBooked[classToAdd.date] = true;
       user.save(function(err) {
         if (err) return validationError(res, err);
+        sendEmail(user)
         res.status(200).json(user);
       });
     } 
   });
+  function sendEmail(user) {
+    var emailAddress = user.email;
+    var recipientName = user.firstName;
+    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
+      if (err) throw err; 
+      var classReservedTemplate = html
+      fs.readFile(__dirname + '/emails/classReservedHeader.html', function (err, html) {
+        if (err) throw err; 
+        var classReservedHeader = html
+        var data = {
+        //Specify email data
+          from: from_who,
+        //The email to contact
+          to: emailAddress,
+        //Subject and text data  
+          subject: 'Your Class Is Booked!',
+          html: classReservedHeader.toString() + '<h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+        }
+        //Invokes the method to send emails given the above data with the helper library
+        mailgun.messages().send(data, function (err, body) {
+            //If there is an error, render the error page
+            if (err) {
+              console.log("Error sending welcome email to " + emailAddress)
+            }
+            else {
+              console.log("Sent booking confirmation email to " + emailAddress)
+            }
+        });
+      }); 
+    });   
+  }
 };
 
 exports.cancelBookedClass = function(req, res, next) {
@@ -639,10 +706,10 @@ exports.sendWelcomeEmail = function(req,res) {
   var emailAddress = req.body.email;
   var recipientName = req.body.firstName;
   var mailgun = new Mailgun({apiKey: api_key, domain: domain});
-  fs.readFile(__dirname + '/welcomeEmail.html', function (err, html) {
+  fs.readFile(__dirname + '/emails/welcomeEmail.html', function (err, html) {
     if (err) throw err; 
     welcomeEmailTemplate = html
-    fs.readFile(__dirname + '/welcomeEmailHeader.html', function (err, html) {
+    fs.readFile(__dirname + '/emails/welcomeEmailHeader.html', function (err, html) {
       if (err) throw err; 
       welcomeEmailHeader = html
       var data = {
@@ -655,23 +722,79 @@ exports.sendWelcomeEmail = function(req,res) {
         html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+recipientName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
       }
       //Invokes the method to send emails given the above data with the helper library
-      mailgun.messages().send(data, function (err, body) {
-          //If there is an error, render the error page
-          if (err) {
-            console.log("Error sending welcome email to " + emailAddress)
-          }
-          else {
-            User.findById(req.user._id, function (err, user) {
-              if(err) { return err } else { 
+      
+      //Makes sure intro email wasn't sent.  Extra server-side security to prevent spamming.
+      User.findById(req.user._id, function (err, user) {
+        if(err) { return err } else { 
+          if (!user.welcomeEmailSent) {
+            mailgun.messages().send(data, function (err, body) {
+              //If there is an error, render the error page
+              if (err) {
+                console.log("Error sending welcome email to " + emailAddress)
+              }
+              else {
                 user.welcomeEmailSent = new Date();
                 user.save(function(err) {
                   if (err) return validationError(res, err);
                   res.status(200).json(user);
-                });
-              } 
+                });    
+              }
             });
           }
+        } 
       });
     }); 
   });   
 };
+
+function formattedDateTime(dateTime) {
+  var newDate = new Date(dateTime);
+  var formatted = {}
+  var noToday = false
+
+  if (newDate.getHours() == 12) {
+      formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
+  } else if (newDate.getHours() == 0) {
+      formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
+  } else {
+      formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
+  } 
+  
+  formatted.day = newDate.getDate();
+  formatted.year = newDate.getFullYear();
+  
+  // $scope.dayOfWeek;
+  
+  switch (newDate.getDay()) {
+      case 0: formatted.dayOfWeek = "Sunday"; break;
+      case 1: formatted.dayOfWeek = "Monday"; break;
+      case 2: formatted.dayOfWeek = "Tuesday"; break;
+      case 3: formatted.dayOfWeek = "Wednesday"; break;
+      case 4: formatted.dayOfWeek = "Thursday"; break;
+      case 5: formatted.dayOfWeek = "Friday"; break;
+      case 6: formatted.dayOfWeek = "Saturday"; break;
+      default: break;
+  }
+
+  if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
+      formatted.dayOfWeek = "Today"
+  }
+
+  var month = new Array();
+  month[0] = "Jan";
+  month[1] = "Feb";
+  month[2] = "Mar";
+  month[3] = "Apr";
+  month[4] = "May";
+  month[5] = "Jun";
+  month[6] = "Jul";
+  month[7] = "Aug";
+  month[8] = "Sept";
+  month[9] = "Oct";
+  month[10] = "Nov";
+  month[11] = "Dec";
+
+  formatted.month = month[newDate.getMonth()]    
+  // console.log(formatted);       
+  return formatted;
+}
