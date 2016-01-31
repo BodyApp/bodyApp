@@ -456,7 +456,7 @@ exports.addIntroClass = function(req, res, next) {
           else {
             console.log("Sent booking confirmation email to " + emailAddress)
             if (classToAdd > new Date().getTime() + 6*60*60*1000) { //If it's further than 6 hours out
-              var deliveryDate = new Date(classToAdd.getTime - 2*60*60*1000)
+              var deliveryDate = new Date(classToAdd - 2*60*60*1000)
               var delayedData = {
                 from: from_who,
                 to: emailAddress,
@@ -589,7 +589,7 @@ exports.addBookedClass = function(req, res, next) {
           else {
             console.log("Sent booking confirmation email to " + emailAddress)
             if (classToAdd > new Date().getTime() + 6*60*60*1000) { //If it's further than 6 hours out
-              var deliveryDate = new Date(classToAdd.getTime - 2*60*60*1000)
+              var deliveryDate = new Date(classToAdd - 2*60*60*1000)
               var delayedData = {
                 from: from_who,
                 to: emailAddress,
