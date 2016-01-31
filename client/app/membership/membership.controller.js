@@ -2,12 +2,57 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $uibModal, $uibModalInstance, Auth, slot, User) {
-    $(".arrow").click(function() {
-      $('html,body').animate({
-        scrollTop: $(".scroll-to").offset().top},
-        600);
-    });
+  .controller('MembershipCtrl', function ($scope, $document, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
+
+  	$scope.scrollDown = function() {
+
+  		// var container = angular.element(document.getElementById('membershipModal'));
+  		// var section2 = angular.element(document.getElementById('scroll-link2'));
+  		// $uibModalInstance.scrollTo(section2, 0, 1000);
+
+
+  		// // var top = 400;
+	   //  var duration = 2000; //milliseconds
+
+	   //  //Scroll to the exact position
+	   //  // $document.scrollTop(top, duration).then(function() {
+	   //  //   console && console.log('You just scrolled to the top!');
+	   //  // });
+
+	   //  var offset = 30; //pixels; adjust for floating menu, context etc
+	   //  //Scroll to #some-id with 30 px "padding"
+	   //  //Note: Use this in a directive, not with document.getElementById 
+	   //  var someElement = angular.element(document.getElementById('scroll-link2'));
+	   //  $document.scrollToElement(someElement, offset, duration, someElement);
+
+
+  		// var someElement = angular.element(document.getElementById('scroll-link2'));
+    // 	$document.scrollToElementAnimated(someElement);
+  		// var elem = document.getElementById('scroll-link2')
+	  	// var pos = 100;
+  		
+  		// function scrollTo(elem, pos) {
+	  	// 	var y = elem.scrollTop;
+		  //   y += (pos - y) * 0.3;
+		  //   if (Math.abs(y-pos) < 2)
+		  //   {
+		  //       elem.scrollTop = pos;
+		  //       return;
+		  //   }
+		  //   elem.scrollTop = y;
+		  //   setTimeout(scrollTo, 40, elem, pos); 
+		  // }
+  		document.getElementById('scroll-link1').scrollIntoView()
+  		// $scope.scrollPosition = 100;
+  		// $location.hash(idToScrollTo);
+    //   anchorSmoothScroll.scrollTo(idToScrollTo);
+  	}
+    // $(".arrow").click(function() {
+    // 	console.log("Clicked arrow.")
+    //   $('html,body,membershipModal').animate({
+    //     scrollTop: $(".scroll-to").offset().top},
+    //     600);
+    // });
 
 	  var currentUser = Auth.getCurrentUser();
 	  console.log(slot);

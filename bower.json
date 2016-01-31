@@ -28,7 +28,8 @@
     "humanize-duration": "*",
     "momentjs": "*",
     "moment-timezone": "*",
-    "checklist-model": "*"
+    "checklist-model": "*",
+    "angular-scroll": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
