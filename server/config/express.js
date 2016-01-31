@@ -34,7 +34,7 @@ module.exports = function(app) {
   app.use(passport.initialize());
 
   //Allow Javascript website to be crawled perfectly by search engines.
-  app.use(require('prerender-node').set('prerenderToken', '0xk2UugZ3MhosEzMYKrg'));
+  app.use(require('prerender-node').set('prerenderToken', '0xk2UugZ3MhosEzMYK0rg'));
 
   // Persist sessions with mongoStore
   // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
@@ -98,4 +98,5 @@ module.exports = function(app) {
     app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last
   }
+
 };

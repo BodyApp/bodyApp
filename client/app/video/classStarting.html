@@ -1,13 +1,8 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <section>
-<<<<<<< HEAD
-	<div class="lightblueSection2 pt32 pb32 text-center">
-		<h1 class="white mb16">{{classToJoin.level}} Class</h1>
-=======
 	<div class="lightblueSection2 pt104 pb32 text-center">
-		<h1 class="white mb16">{{class.level}} Class</h1>
->>>>>>> bc7c94ddb6f1e94678265ed8edbae3da154daf17
+		<h1 class="white mb16">{{classToJoin.level}} Class</h1>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass < 0">Class has started!</h3>

@@ -49,7 +49,10 @@ var all = {
   iceDomain: process.env.iceDomain,
 
   tokBoxApiSecret: process.env.tokBoxApiSecret || 'secret',
-  tokBoxApiKey: process.env.tokBoxApiKey || 'key',   
+  tokBoxApiKey: process.env.tokBoxApiKey || 'key',
+
+  mailgunApiKey: process.env.mailgunApiKey || 'key',
+  mailgunFromWho: 'daniel@getbodyapp.com',
 
   stripeOptions: {
     apiKey: process.env.STRIPE_KEY || 'key',

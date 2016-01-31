@@ -33,7 +33,8 @@
     "opentok": "*",
     "grunt-html-snapshot": "*",
     "express-seojs": "*",
-    "prerender-node": "*"
+    "prerender-node": "*",
+    "mailgun-js":"^0.7"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
