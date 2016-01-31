@@ -19,8 +19,9 @@ angular.module('bodyAppApp')
     Auth.getCurrentUser().$promise.then(function(user) {
         currentUser = user
         if (!currentUser.welcomeEmailSent) {
-            User.sendWelcomeEmail({ id: currentUser._id }, {email: currentUser.email, firstName: currentUser.firstName}, function(data) {
-                console.log(data)
+            User.sendWelcomeEmail({ id: currentUser._id }, {
+            }, function(user) {
+                console.log(user)
             }, function(err) {
                 console.log("Error: " + err)
             }).$promise;  

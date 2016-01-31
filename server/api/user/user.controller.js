@@ -15,8 +15,6 @@ var Mailgun = require('mailgun-js');
 var api_key = config.mailgunApiKey;
 var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
-var welcomeEmailHeader;
-var welcomeEmailTemplate;
 
   // console.log(__dirname)
 
@@ -444,23 +442,38 @@ exports.addIntroClass = function(req, res, next) {
         if (err) throw err; 
         var classReservedHeader = html
         var data = {
-        //Specify email data
           from: from_who,
-        //The email to contact
           to: emailAddress,
-        //Subject and text data  
           subject: 'Your Intro Class Is Booked!',
-          html: classReservedHeader.toString() + '<h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+          html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">High fives!</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">You’ve registered for the following class:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
         }
         //Invokes the method to send emails given the above data with the helper library
         mailgun.messages().send(data, function (err, body) {
-            //If there is an error, render the error page
-            if (err) {
-              console.log("Error sending welcome email to " + emailAddress)
+          //If there is an error, render the error page
+          if (err) {
+            console.log("Error sending welcome email to " + emailAddress)
+          }
+          else {
+            console.log("Sent booking confirmation email to " + emailAddress)
+            if (classToAdd > new Date().getTime() + 6*60*60*1000) { //If it's further than 6 hours out
+              var deliveryDate = new Date(classToAdd.getTime - 2*60*60*1000)
+              var delayedData = {
+                from: from_who,
+                to: emailAddress,
+                o:deliveryTime: deliveryDate, // Send 2 hours before class
+                subject: 'Reminder: Your Intro Class',
+                html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Your class reminder</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">Looks like you have a class coming up:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+              }
+              mailgun.messages().send(data, function (err, body) {
+              //If there is an error, render the error page
+              if (err) {
+                console.log("Error scheduling reminder email for " + emailAddress)
+              }
+              else {
+                console.log("Class reminder email will be sent to "+emailAddress+" at " +deliveryDate)
+              }
             }
-            else {
-              console.log("Sent booking confirmation email to " + emailAddress)
-            }
+          }
         });
       }); 
     });   
@@ -497,10 +510,42 @@ exports.takeIntroClass = function(req, res, next) {
       user.level = 1;
       user.save(function(err) {
         if (err) return validationError(res, err);
+        sendEmail(user)
         res.status(200).json(user);
       });
     } 
   });
+
+  function sendEmail(user) {
+    var emailAddress = user.email;
+    var recipientName = user.firstName;
+    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    fs.readFile(__dirname + '/emails/postIntroEmail.html', function (err, html) {
+      if (err) throw err; 
+      var postIntroTemplate = html
+      fs.readFile(__dirname + '/emails/postIntroEmailHeader.html', function (err, html) {
+        if (err) throw err; 
+        var postIntroHeader = html
+        var data = {
+          from: from_who,
+          to: emailAddress,
+          subject: 'Your Intro Class Is Booked!',
+          html: postIntroHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+user.firstName+',<br><br>We hope you had a wonderful time getting gleefully fit during our Introductory Session. After class, we hired the local high school marching band and threw a parade in your honor, waving a giant banner with your name for all to see. In commemoration of your achievements today in class, we have placed your picture on our wall as “Client of the Year.” We’re totally exhausted but can’t wait for you to come back and join the BODY club.<br><br>Thank you, thank you, thank you!<br><br>Sigh...<br><br>We miss you already. We’ll be right here at <a style="color: #224893; text-decoration: none;" href="https://www.getbodyapp.com" target="_blank">getbodyapp.com</a> patiently awaiting your return.<br><br>Love,<br>Your besties at BODY</p>' + postIntroTemplate.toString()
+        }
+        //Invokes the method to send emails given the above data with the helper library
+        mailgun.messages().send(data, function (err, body) {
+            //If there is an error, render the error page
+            if (err) {
+              console.log("Error sending welcome email to " + emailAddress)
+            }
+            else {
+              console.log("Sent booking confirmation email to " + emailAddress)
+            }
+        });
+      }); 
+    });   
+  }
+
 };
 
 exports.addBookedClass = function(req, res, next) {
@@ -529,11 +574,8 @@ exports.addBookedClass = function(req, res, next) {
         if (err) throw err; 
         var classReservedHeader = html
         var data = {
-        //Specify email data
           from: from_who,
-        //The email to contact
           to: emailAddress,
-        //Subject and text data  
           subject: 'Your Class Is Booked!',
           html: classReservedHeader.toString() + '<h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
         }
@@ -703,35 +745,32 @@ exports.createTokBoxToken = function(req, res, next) {
  // Send a message to the specified email address when you navigate to /submit/someaddr@email.com
 // The index redirects here
 exports.sendWelcomeEmail = function(req,res) {
-  var emailAddress = req.body.email;
-  var recipientName = req.body.firstName;
   var mailgun = new Mailgun({apiKey: api_key, domain: domain});
-  fs.readFile(__dirname + '/emails/welcomeEmail.html', function (err, html) {
-    if (err) throw err; 
-    welcomeEmailTemplate = html
-    fs.readFile(__dirname + '/emails/welcomeEmailHeader.html', function (err, html) {
+
+  //Makes sure intro email wasn't sent.  Extra server-side security to prevent spamming.
+  User.findById(req.user._id, function (err, user) {
+    if(err) { return err } else { 
+      sendEmail(user)
+    } 
+  });
+
+  function sendEmail(user) {
+    fs.readFile(__dirname + '/emails/welcomeEmail.html', function (err, html) {
       if (err) throw err; 
-      welcomeEmailHeader = html
-      var data = {
-      //Specify email data
-        from: from_who,
-      //The email to contact
-        to: emailAddress,
-      //Subject and text data  
-        subject: 'Welcome To The Club',
-        html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+recipientName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
-      }
-      //Invokes the method to send emails given the above data with the helper library
-      
-      //Makes sure intro email wasn't sent.  Extra server-side security to prevent spamming.
-      User.findById(req.user._id, function (err, user) {
-        if(err) { return err } else { 
+      var welcomeEmailTemplate = html
+      fs.readFile(__dirname + '/emails/welcomeEmailHeader.html', function (err, html) {
+        if (err) throw err; 
+        var welcomeEmailHeader = html
+        var data = {
+          from: from_who,
+          to: user.email,
+          subject: 'Welcome To The Club',
+          html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+user.firstName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
+          
           if (!user.welcomeEmailSent) {
             mailgun.messages().send(data, function (err, body) {
               //If there is an error, render the error page
-              if (err) {
-                console.log("Error sending welcome email to " + emailAddress)
-              }
+              if (err) console.log("Error sending welcome email to " + emailAddress)
               else {
                 user.welcomeEmailSent = new Date();
                 user.save(function(err) {
@@ -741,10 +780,10 @@ exports.sendWelcomeEmail = function(req,res) {
               }
             });
           }
-        } 
-      });
-    }); 
-  });   
+        }
+      }); 
+    });  
+  } 
 };
 
 function formattedDateTime(dateTime) {
