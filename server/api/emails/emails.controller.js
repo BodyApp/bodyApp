@@ -41,7 +41,6 @@ exports.submitEmail = function(req,res) {
             console.log(body);
         }
     });
-
 });
 
 exports.validateEmail = function(req,res) {

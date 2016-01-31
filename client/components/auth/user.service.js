@@ -128,6 +128,12 @@ angular.module('bodyAppApp')
           controller: 'createTokBoxSession'
         }
       },
+      sendWelcomeEmail: {
+        method: 'PUT',
+        params: {
+          controller:'sendWelcomeEmail'
+        }
+      },
       createTokBoxToken: {
         method: 'PUT',
         params: {

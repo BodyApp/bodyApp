@@ -12,6 +12,8 @@ angular.module('bodyAppApp')
         $scope.thisWeek;
         $scope.chosenDay;
 
+        
+
         setTimezone()
         function setTimezone() {
           var tzName = jstz().timezone_name;
@@ -28,6 +30,12 @@ angular.module('bodyAppApp')
         Auth.getCurrentUser().$promise.then(function(user) {
           currentUser = user
           console.log(currentUser)
+
+          User.sendWelcomeEmail({ id: currentUser._id }, {email: currentUser.email}, function(data) {
+            console.log(data)
+          }, function(err) {
+              console.log("Error: " + err)
+          }).$promise;
 
           $scope.currentUser = currentUser;
           Schedule.setCurrentUser(currentUser);

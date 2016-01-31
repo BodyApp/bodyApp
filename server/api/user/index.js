@@ -27,6 +27,8 @@ router.put('/:id/saveEmailAddress', auth.isAuthenticated(), controller.saveEmail
 router.put('/:id/getUser', auth.isAuthenticated(), controller.getUser);
 router.put('/:id/getUserAndInjuries', auth.isAuthenticated(), controller.getUserAndInjuries);
 
+router.put('/:id/sendWelcomeEmail', auth.isAuthenticated(), controller.sendWelcomeEmail);
+
 router.get('/:id/getSubscription', controller.getSubscription);
 
 router.get('/:id/createTokBoxSession', controller.createTokBoxSession);
