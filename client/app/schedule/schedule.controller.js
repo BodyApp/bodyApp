@@ -222,116 +222,119 @@ angular.module('bodyAppApp')
               templateUrl: 'app/membership/membership.html',
               controller: 'MembershipCtrl',
               windowClass: "modal-wide",
+              scope: {classToJoin: slot} //passed current scope to the modal
             });
 
-            modalInstance.result.then(function (selectedItem) {
-              // openStripePayment()
-            }, function () {
-              openStripePayment()
-            });
-
-            function openStripePayment() {
-              var handler = StripeCheckout.configure({
-                key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-                image: '../../assets/images/body-app-logo-header.png',
-                locale: 'auto',
-                token: function(token, args) {
-                    var modalInstance = openPaymentConfirmedModal()
-                    $http.post('/api/users/charge', {
-                      user: currentUser,
-                      stripeToken: token,
-                      shippingAddress: args,
-                    })
-                    .success(function(data) {
-                        console.log("Successfully posted to /user/charge");
-                        Auth.updateUser(data)
-                        currentUser = data
-                        $scope.currentUser = currentUser
-                        modalInstance.close()
-                        bookClass(slot)
-                    })
-                    .error(function(err) {
-                        console.log(err)
-                        modalInstance.close();
-                        if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
-                        return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
-                    }.bind(this));
-
-                  // Use the token to create the charge with a server-side script.
-                  // You can access the token ID with `token.id`
-                }
-              });
-              if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
-                //If user has already signed up previously
-                  if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-                      handler.open({
-                        name: 'BODY SUBSCRIPTION',
-                        description: '$10/mo Pilot Price!',
-                        panelLabel: "Pay {{amount}} / Month",
-                        shippingAddress: true,
-                        zipCode: true,
-                        amount: 1000
-                      });    
-                  } else {
-                      handler.open({
-                        name: 'BODY SUBSCRIPTION',
-                        email: currentUser.email,
-                        description: '$10/mo Pilot Price!',
-                        panelLabel: "Pay {{amount}} / Month",
-                        shippingAddress: true,
-                        zipCode: true,
-                        amount: 1000
-                      });
-                  }
-              } else {
-                  if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-                      handler.open({
-                        name: 'BODY SUBSCRIPTION',
-                        description: '$10/mo Pilot Price!',
-                        panelLabel: "Pay {{amount}} / Month",
-                        zipCode: true,
-                        shippingAddress: true,
-                        amount: 1000
-                      });    
-                  } else {
-                      handler.open({
-                        name: 'BODY SUBSCRIPTION',
-                        email: currentUser.email,
-                        description: '$10/mo Pilot Price!',
-                        panelLabel: "Pay {{amount}} / Month",
-                        zipCode: true,
-                        shippingAddress: true,
-                        amount: 1000
-                      });
-                  }
-              }
-            }
-          } 
+            // modalInstance.result.then(function () {
+            //   // openStripePayment()
+            // }, function () {
+            //   // openStripePayment() //Killed here because moved into the membership modal's controller
+            // });
+          }
         }
 
-        function openPaymentConfirmedModal() {
-            var modalInstance = $uibModal.open({
-              animation: true,
-              templateUrl: 'app/account/payment/paymentThanks.html',
-              controller: 'PaymentCtrl',
-              backdrop: "static",
-              keyboard: false
-              // size: size,
-              // resolve: {
-              //   currentUser: function () {
-              //     return currentUser;
-              //   }
-              // }
-            });
+        //     function openStripePayment() {
+        //       var handler = StripeCheckout.configure({
+        //         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+        //         image: '../../assets/images/body-app-logo-header.png',
+        //         locale: 'auto',
+        //         token: function(token, args) {
+        //             var modalInstance = openPaymentConfirmedModal()
+        //             $http.post('/api/users/charge', {
+        //               user: currentUser,
+        //               stripeToken: token,
+        //               shippingAddress: args,
+        //             })
+        //             .success(function(data) {
+        //                 console.log("Successfully posted to /user/charge");
+        //                 Auth.updateUser(data)
+        //                 currentUser = data
+        //                 $scope.currentUser = currentUser
+        //                 modalInstance.close()
+        //                 bookClass(slot)
+        //             })
+        //             .error(function(err) {
+        //                 console.log(err)
+        //                 modalInstance.close();
+        //                 if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+        //                 return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+        //             }.bind(this));
 
-            modalInstance.result.then(function (selectedItem) {
-              $scope.selected = selectedItem;
-            }, function () {
-              $log.info('Modal dismissed at: ' + new Date());
-            });
+        //           // Use the token to create the charge with a server-side script.
+        //           // You can access the token ID with `token.id`
+        //         }
+        //       });
+        //       if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
+        //         //If user has already signed up previously
+        //           if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+        //               handler.open({
+        //                 name: 'BODY SUBSCRIPTION',
+        //                 description: '$10/mo Pilot Price!',
+        //                 panelLabel: "Pay {{amount}} / Month",
+        //                 shippingAddress: true,
+        //                 zipCode: true,
+        //                 amount: 1000
+        //               });    
+        //           } else {
+        //               handler.open({
+        //                 name: 'BODY SUBSCRIPTION',
+        //                 email: currentUser.email,
+        //                 description: '$10/mo Pilot Price!',
+        //                 panelLabel: "Pay {{amount}} / Month",
+        //                 shippingAddress: true,
+        //                 zipCode: true,
+        //                 amount: 1000
+        //               });
+        //           }
+        //       } else {
+        //           if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+        //               handler.open({
+        //                 name: 'BODY SUBSCRIPTION',
+        //                 description: '$10/mo Pilot Price!',
+        //                 panelLabel: "Pay {{amount}} / Month",
+        //                 zipCode: true,
+        //                 shippingAddress: true,
+        //                 amount: 1000
+        //               });    
+        //           } else {
+        //               handler.open({
+        //                 name: 'BODY SUBSCRIPTION',
+        //                 email: currentUser.email,
+        //                 description: '$10/mo Pilot Price!',
+        //                 panelLabel: "Pay {{amount}} / Month",
+        //                 zipCode: true,
+        //                 shippingAddress: true,
+        //                 amount: 1000
+        //               });
+        //           }
+        //       }
+        //     }
+        //   } 
+        // }
 
-            return modalInstance;
-        }
+        // function openPaymentConfirmedModal() {
+        //     var modalInstance = $uibModal.open({
+        //       animation: true,
+        //       templateUrl: 'app/account/payment/paymentThanks.html',
+        //       controller: 'PaymentCtrl',
+        //       backdrop: "static",
+        //       keyboard: false
+        //       // size: size,
+        //       // resolve: {
+        //       //   currentUser: function () {
+        //       //     return currentUser;
+        //       //   }
+        //       // }
+        //     });
+
+        //     modalInstance.result.then(function (selectedItem) {
+        //       $scope.selected = selectedItem;
+        //     }, function () {
+        //       $log.info('Modal dismissed at: ' + new Date());
+        //     });
+
+        //     return modalInstance;
+        // }
 
         // function openLoginModal() {
         //     var modalInstance = $modal.open({

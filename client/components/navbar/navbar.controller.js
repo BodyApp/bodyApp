@@ -82,4 +82,24 @@ angular.module('bodyAppApp')
     $scope.checkClickCorrect = function() {
       $scope.clicked = !$scope.clicked;
     }
+
+    $scope.showMembershipModal = function() {
+      var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/membership/membership.html',
+          controller: 'MembershipCtrl',
+          windowClass: "modal-wide",
+          resolve: {
+            slot: function() {
+              return "yeah baby"
+            }
+          }
+        });
+
+        modalInstance.result.then(function () {
+          // openStripePayment()
+        }, function () {
+          // openStripePayment()
+        });
+      }
   });

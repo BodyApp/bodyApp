@@ -72,7 +72,7 @@ angular.module('bodyAppApp')
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-    var ref = new Firebase("https://bodyapp.firebaseio.com/")g
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
     
     setTabataOptions()
 

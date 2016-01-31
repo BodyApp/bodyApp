@@ -309,7 +309,7 @@ h1 {
 
 /*------MODALS-------*/
 .modal-body {
-  height: auto;
+  height: 400px;
 }
 .modal-body .darkblue {
   color: #0D1C45 !important;
