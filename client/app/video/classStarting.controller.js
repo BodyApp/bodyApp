@@ -156,11 +156,13 @@ angular.module('bodyAppApp')
         for (var bookedUser in classJoined.bookedUsers) {
           if (bookedUser && (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id)) {
             User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-              var userToAdd = data.profile
-              userToAdd.injuries = data.injuries
-              console.log(userToAdd)
-              $scope.bookedUsers.push(userToAdd);
-              if(!$scope.$$phase) $scope.$apply();  
+              if (data.profile) {
+                var userToAdd = data.profile
+                userToAdd.injuries = data.injuries
+                console.log(userToAdd)
+                $scope.bookedUsers.push(userToAdd);
+                if(!$scope.$$phase) $scope.$apply();  
+              }
             }).catch(function(err) {
               console.log(err);
             })

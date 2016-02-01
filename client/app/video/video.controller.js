@@ -48,6 +48,7 @@ angular.module('bodyAppApp')
 		$scope.consumerObjects = {};
 		var maxCALLERS = 10;
 		var connectionCount = 0;
+		var previousConsumerClicked;
 		
 		var publisher;
 
@@ -766,7 +767,6 @@ angular.module('bodyAppApp')
 		connect()
 
 		$scope.hoveredOverConsumer = function(consumerBoxNumber, consumerId) {
-			console.log(consumerId)
 			$scope.hover0 = false;
 			$scope.hover1 = false;
 			$scope.hover2 = false;
@@ -784,19 +784,28 @@ angular.module('bodyAppApp')
 			$scope.hover14 = false;
 			$scope.hover15 = false;
 
-			if (!$scope.consumersCanHearEachOther) {
-				for (var prop in subscriberObjects) {
-					if (prop != consumerId) {
-						console.log("Unsubscribed from audio from " +subscriberObjects[prop].streamId)
-						subscriberObjects[prop].subscribeToAudio(false)
-					}
-					if (prop === consumerId) {
-						console.log("subscribing to audio from "+subscriberObjects[prop].streamId)
-						subscriberObjects[prop].subscribeToAudio(true)
-					}
+			if (consumerId) { // Won't do anything if trainer clicks his/her own video
+				if (!$scope.consumersCanHearEachOther) {
+					console.log("subscribing to audio from "+subscriberObjects[consumerId].streamId)
+					subscriberObjects[consumerId].subscribeToAudio(true)
+					
+					if (previousConsumerClicked && previousConsumerClicked != consumerId) { //Prevents issue first time click a consumer
+						console.log("Unsubscribing from audio stream "+subscriberObjects[previousConsumerClicked].streamId)
+						subscriberObjects[previousConsumerClicked].subscribeToAudio(false)
+					} 
+					
+					previousConsumerClicked = consumerId
+					
+					// for (var prop in subscriberObjects) {
+					// 	if (prop != consumerId) {
+					// 		console.log("Unsubscribed from audio from " +subscriberObjects[prop].streamId)
+					// 		subscriberObjects[prop].subscribeToAudio(false)
+					// 	}
+					// }
 				}
+			} else { //If trainer clicks on himself
+				
 			}
-			
 			// subscriberObjects[consumerId].subscribeToAudio(true)
 
 			// consumerBoxNumber -= 1;
