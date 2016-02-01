@@ -802,6 +802,8 @@ exports.sendWelcomeEmail = function(req,res) {
               });    
             }
           });
+        } else {
+          res.status(400).send("User welcome already sent.")
         }
       }); 
     });  

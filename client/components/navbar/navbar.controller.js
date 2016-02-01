@@ -34,6 +34,7 @@ angular.module('bodyAppApp')
     if (Auth.isLoggedIn() && Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(user) {
         $scope.completedNewUserFlow = user.completedNewUserFlow;
+        $scope.isMember = Auth.getCurrentUser().stripe.subscription.status === "active";
       })
     } else if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
       $scope.completedNewUserFlow = Auth.getCurrentUser().completedNewUserFlow;

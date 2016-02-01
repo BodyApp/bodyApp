@@ -19,7 +19,7 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="isLoggedIn() && completedNewUserFlow">
+                            <li ng-show="isLoggedIn() && completedNewUserFlow && !isMember">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                               </p>
@@ -57,7 +57,7 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="isLoggedIn() && completedNewUserFlow">
+                        <li ng-show="isLoggedIn() && completedNewUserFlow && !isMember">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                           </p>

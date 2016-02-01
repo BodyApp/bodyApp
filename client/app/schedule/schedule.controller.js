@@ -31,12 +31,6 @@ angular.module('bodyAppApp')
           currentUser = user
           console.log(currentUser)
 
-          User.sendWelcomeEmail({ id: currentUser._id }, {email: currentUser.email}, function(data) {
-            console.log(data)
-          }, function(err) {
-              console.log("Error: " + err)
-          }).$promise;
-
           $scope.currentUser = currentUser;
           Schedule.setCurrentUser(currentUser);
           $scope.pictureData = {};
