@@ -803,7 +803,7 @@ exports.sendWelcomeEmail = function(req,res) {
             }
           });
         } else {
-          res.status(400).send("User welcome already sent.")
+          res.status(500).send("User welcome email has previously been sent.")
         }
       }); 
     });  
