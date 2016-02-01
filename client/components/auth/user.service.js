@@ -139,6 +139,12 @@ angular.module('bodyAppApp')
         params: {
           controller: 'createTokBoxToken'
         }
+      },
+      saveTimezone: {
+        method: 'PUT',
+        params: {
+          controller: 'saveTimezone'
+        }
       }
 	  });
   });

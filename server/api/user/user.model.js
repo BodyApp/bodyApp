@@ -44,6 +44,7 @@ var UserSchema = new Schema({
   signUpDate: Date,
   lastLoginDate: Date,
   welcomeEmailSent: Date,
+  timezone: String,
   results: Schema.Types.Mixed,
   facebook: {},
   twitter: {},

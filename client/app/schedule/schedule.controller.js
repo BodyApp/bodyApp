@@ -9,14 +9,12 @@ angular.module('bodyAppApp')
         $scope.windowWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         // $scope.myBookedClasses = {};
 
+        var tzName = jstz().timezone_name;
         $scope.thisWeek;
         $scope.chosenDay;
 
-        
-
         setTimezone()
-        function setTimezone() {
-          var tzName = jstz().timezone_name;
+        function setTimezone() {          
           $scope.timezone = moment().tz(tzName).format('z');
         }
 
@@ -47,6 +45,17 @@ angular.module('bodyAppApp')
           if (currentUser && !currentUser.tourtipShown) {
             console.log(currentUser)
             loadTour();
+          }
+
+          if (currentUser.timezone != tzName) {
+            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
+              console.log("Updated user timezone preference")
+              currentUser = user;
+              Auth.updateUser(currentUser);
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error saving Timezone: " + err)
+            }).$promise;
           }
         })
 

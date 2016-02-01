@@ -10,9 +10,10 @@ angular.module('bodyAppApp')
     $scope.bookedIntroClass;
     var injuries = "";
     $scope.timezone;
+    var tzName = jstz().timezone_name;
+
     setTimezone();
     function setTimezone() {
-      var tzName = jstz().timezone_name;
       $scope.timezone = moment().tz(tzName).format('z');
     }
 
@@ -25,6 +26,16 @@ angular.module('bodyAppApp')
             }, function(err) {
                 console.log("Error: " + err)
             }).$promise;  
+        }
+        if (currentUser.timezone != tzName) {
+            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
+              console.log("Updated user timezone preference")
+              currentUser = user;
+              Auth.updateUser(currentUser);
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error saving Timezone: " + err)
+            }).$promise;
         }
     })
 

@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
 // var flash = require('req-flash');
 var fs = require('fs')
+var moment = require('moment-timezone')
 
 var OpenTok = require('opentok'),
     opentok = new OpenTok(config.tokBoxApiKey, config.tokBoxApiSecret);
@@ -412,6 +413,21 @@ exports.cancelSubscription = function(req, res, next) {
     };
 }
 
+exports.saveTimezone = function(req, res, next) {
+  var userId = req.user._id;
+  var timezone = req.body.timezone;
+
+  User.findById(userId, function (err, user) {
+    if(err) { return err } else { 
+      user.timezone = timezone;
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+}
+
 exports.addIntroClass = function(req, res, next) {
   console.log(req.body);
   var userId = req.user._id;
@@ -435,17 +451,18 @@ exports.addIntroClass = function(req, res, next) {
     var emailAddress = user.email;
     var recipientName = user.firstName;
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    var dateTime = formattedDateTime(classToAdd, user)
     fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
       if (err) throw err; 
       var classReservedTemplate = html
       fs.readFile(__dirname + '/emails/classReservedHeader.html', function (err, html) {
-        if (err) throw err; 
+        if (err) throw err;
         var classReservedHeader = html
         var data = {
           from: from_who,
           to: emailAddress,
           subject: 'Your Intro Class Is Booked!',
-          html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">High fives!</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">You’ve registered for the following class:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+          html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">High fives!</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">You’ve registered for the following class:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;"><a>' + dateTime.date+'<br>'+ dateTime.classTime +'</a><br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
         }
         //Invokes the method to send emails given the above data with the helper library
         mailgun.messages().send(data, function (err, body) {
@@ -462,7 +479,7 @@ exports.addIntroClass = function(req, res, next) {
                 to: emailAddress,
                 "o:deliverytime": deliveryDate.toUTCString(), // Send 2 hours before class
                 subject: 'Reminder: Your Intro Class',
-                html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Your class reminder</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">Looks like you have a class coming up:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+                html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Your class reminder</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">Looks like you have a class coming up:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">Introductory Session<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;"><a>' + dateTime.date+'<br>'+ dateTime.classTime +'</a><br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
               }
               mailgun.messages().send(delayedData, function (err, body) {
               //If there is an error, render the error page
@@ -567,6 +584,7 @@ exports.addBookedClass = function(req, res, next) {
     } 
   });
   function sendEmail(user) {
+    var dateTime = formattedDateTime(classToAdd, user)
     var emailAddress = user.email;
     var recipientName = user.firstName;
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
@@ -580,7 +598,7 @@ exports.addBookedClass = function(req, res, next) {
           from: from_who,
           to: emailAddress,
           subject: 'Your BODY Class Is Booked!',
-          html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">High fives!</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">You’ve registered for the following class:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+          html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">High fives!</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">You’ve registered for the following class:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;"><a>' + dateTime.date+'<br>'+ dateTime.classTime +'</a><br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
         }
         //Invokes the method to send emails given the above data with the helper library
         mailgun.messages().send(data, function (err, body) {
@@ -597,7 +615,7 @@ exports.addBookedClass = function(req, res, next) {
                 to: emailAddress,
                 "o:deliverytime": deliveryDate.toUTCString(), // Send 2 hours before class
                 subject: 'Reminder: Your Intro Class',
-                html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Your class reminder</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">Looks like you have a class coming up:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;">' + formattedDateTime(classToAdd).dayOfWeek+', ' + formattedDateTime(classToAdd).month + ' ' + formattedDateTime(classToAdd).day +'<br>'+ formattedDateTime(classToAdd).classTime +'<br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
+                html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Your class reminder</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">Looks like you have a class coming up:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;"><a>' + dateTime.date+'<br>'+ dateTime.classTime +'</a><br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits</a>' + classReservedTemplate.toString()
               }
               mailgun.messages().send(delayedData, function (err, body) {
                 //If there is an error, render the error page
@@ -810,54 +828,58 @@ exports.sendWelcomeEmail = function(req,res) {
   } 
 };
 
-function formattedDateTime(dateTime) {
-  var newDate = new Date(dateTime);
+function formattedDateTime(dateTime, user) {
+  var timezoneName = user.timezone || "America/New_York"; //Defaults to ET if no timezone set on user.
   var formatted = {}
-  var noToday = false
 
-  if (newDate.getHours() == 12) {
-      formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
-  } else if (newDate.getHours() == 0) {
-      formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
-  } else {
-      formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
-  } 
+  formatted.date = moment.tz(dateTime, timezoneName).format('dddd, MMM Do');
+  formatted.classTime = moment.tz(dateTime, timezoneName).format('h:mma z');
+
+  // formatted.timezone = moment.tz.zone(timezoneName).abbr(newDate.getTime())
+
+  // if (newDate.getHours() == 12) {
+  //     formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
+  // } else if (newDate.getHours() == 0) {
+  //     formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
+  // } else {
+  //     formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
+  // } 
   
-  formatted.day = newDate.getDate();
-  formatted.year = newDate.getFullYear();
+  // formatted.day = newDate.getDate();
+  // formatted.year = newDate.getFullYear();
   
-  // $scope.dayOfWeek;
+  // // $scope.dayOfWeek;
   
-  switch (newDate.getDay()) {
-      case 0: formatted.dayOfWeek = "Sunday"; break;
-      case 1: formatted.dayOfWeek = "Monday"; break;
-      case 2: formatted.dayOfWeek = "Tuesday"; break;
-      case 3: formatted.dayOfWeek = "Wednesday"; break;
-      case 4: formatted.dayOfWeek = "Thursday"; break;
-      case 5: formatted.dayOfWeek = "Friday"; break;
-      case 6: formatted.dayOfWeek = "Saturday"; break;
-      default: break;
-  }
+  // switch (newDate.getDay()) {
+  //     case 0: formatted.dayOfWeek = "Sunday"; break;
+  //     case 1: formatted.dayOfWeek = "Monday"; break;
+  //     case 2: formatted.dayOfWeek = "Tuesday"; break;
+  //     case 3: formatted.dayOfWeek = "Wednesday"; break;
+  //     case 4: formatted.dayOfWeek = "Thursday"; break;
+  //     case 5: formatted.dayOfWeek = "Friday"; break;
+  //     case 6: formatted.dayOfWeek = "Saturday"; break;
+  //     default: break;
+  // }
 
-  if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
-      formatted.dayOfWeek = "Today"
-  }
+  // if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
+  //     formatted.dayOfWeek = "Today"
+  // }
 
-  var month = new Array();
-  month[0] = "Jan";
-  month[1] = "Feb";
-  month[2] = "Mar";
-  month[3] = "Apr";
-  month[4] = "May";
-  month[5] = "Jun";
-  month[6] = "Jul";
-  month[7] = "Aug";
-  month[8] = "Sept";
-  month[9] = "Oct";
-  month[10] = "Nov";
-  month[11] = "Dec";
+  // var month = new Array();
+  // month[0] = "Jan";
+  // month[1] = "Feb";
+  // month[2] = "Mar";
+  // month[3] = "Apr";
+  // month[4] = "May";
+  // month[5] = "Jun";
+  // month[6] = "Jul";
+  // month[7] = "Aug";
+  // month[8] = "Sept";
+  // month[9] = "Oct";
+  // month[10] = "Nov";
+  // month[11] = "Dec";
 
-  formatted.month = month[newDate.getMonth()]    
-  // console.log(formatted);       
+  // formatted.month = month[newDate.getMonth()]    
+  // // console.log(formatted);       
   return formatted;
 }
