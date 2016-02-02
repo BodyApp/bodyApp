@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ResultsCtrl', function ($scope, Schedule, Auth) {
+  .controller('ResultsCtrl', function ($scope, Schedule, Auth, DayOfWeekSetter) {
     
     $scope.currentUser = Auth.getCurrentUser()
     console.log($scope.currentUser);
@@ -145,7 +145,7 @@ angular.module('bodyAppApp')
       var sunGetYear = sunDate.getFullYear();
       var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
       var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
-      var dayRef = weekOfRef.child(classDate.getDay())
+      var dayRef = weekOfRef.child(DayOfWeekSetter(classDate.getDay()))
 
       dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
         if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType.id === 1) { 

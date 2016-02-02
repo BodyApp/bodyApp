@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, $firebaseObject, $firebaseArray) {
+  .controller('AdminCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray) {
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
@@ -173,13 +173,13 @@ angular.module('bodyAppApp')
 
       syncObject.$loaded().then(function() {
         //Set up the week if this is first class of week
-        if (!syncObject[date.getDay()]) {
+        if (!syncObject[DayOfWeekSetter.setDay(date.getDay())]) {
           console.log("Setting up week for first time.")
           for (var i = 0; i < 7; i++) {
             var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + i, 11, 0, 0);
             // thisDate.setDate(sunDate.getDate() + i)
 
-            syncObject[i] = {    
+            syncObject[DayOfWeekSetter.setDay(i)] = {    
               dayOfWeek: i,
               formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
               name: getDayOfWeek(i),
@@ -189,8 +189,9 @@ angular.module('bodyAppApp')
         }
 
         //Set up the class
-        syncObject[date.getDay()].slots = syncObject[date.getDay()].slots || {}; 
-        syncObject[date.getDay()].slots[date.getTime()] = {
+        var dayToSet = DayOfWeekSetter.setDay(date.getDay())
+        syncObject[dayToSet].slots = syncObject[dayToSet].slots || {}; 
+        syncObject[dayToSet].slots[date.getTime()] = {
           time: timeFormatter(date),
           date: date.getTime(),
           booked: false,
@@ -235,8 +236,9 @@ angular.module('bodyAppApp')
           }
 
           User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-            syncObject[date.getDay()].slots[date.getTime()] = syncObject[date.getDay()].slots[date.getTime()] || {}
-            syncObject[date.getDay()].slots[date.getTime()].sessionId = session.sessionId;
+            var dayToSet = DayOfWeekSetter.setDay(date.getDay())
+            syncObject[dayToSet].slots[date.getTime()] = syncObject[dayToSet].slots[date.getTime()] || {}
+            syncObject[dayToSet].slots[date.getTime()].sessionId = session.sessionId;
             syncObject.$save().then(function() {
               console.log("Tokbox session added to class object.")
               User.saveClassTaught({

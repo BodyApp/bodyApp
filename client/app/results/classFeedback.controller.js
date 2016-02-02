@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassFeedbackCtrl', function ($scope, $state, $location, $uibModalInstance, Schedule, Auth, User) {
+  .controller('ClassFeedbackCtrl', function ($scope, $state, $location, $uibModalInstance, Schedule, Auth, User, DayOfWeekSetter) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
   	console.log($scope.classCompleted)
 
@@ -21,7 +21,7 @@ angular.module('bodyAppApp')
     var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
     var weekOfRef = ref.child("classes").child(weekOf)
-    var dayRef = weekOfRef.child(classDate.getDay())
+    var dayRef = weekOfRef.child(DayOfWeekSetter(classDate.getDay()))
 
     var currentUser = Auth.getCurrentUser()
 

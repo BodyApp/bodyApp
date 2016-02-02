@@ -77,7 +77,6 @@ ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
 // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
 }); 
 
-
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {
 	var todayDate = new Date();

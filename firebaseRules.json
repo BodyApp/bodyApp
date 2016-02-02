@@ -1,0 +1,61 @@
+//These don't actually do anything.  Need to be loaded into firebase.
+
+{
+    "rules": {
+      "classes": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+      },
+      "fbUsers": {
+        "$user_id": {
+          ".write": "$user_id === auth.uid",
+          ".read": "auth !== null"
+        }
+      },
+      "feedback": {
+        ".read": false,
+        ".write": "auth !== null"
+        },
+      "upcomingIntros": {
+        ".read": "auth !== null",
+        ".write": "auth.role === 'admin'"
+      },
+      "WODs": {
+        ".read": "auth !== null",
+        ".write": "auth.role === 'admin'"
+      }
+    }
+}
+
+
+      "classes": {
+        //".write": "auth !== null",
+        ".read": "auth !== null",
+        "$classWeek":  {
+          ".write": "auth.role === 'admin'",
+          "$classDay": {
+            "dayofWeek":{".write":"auth.role === 'admin'"},
+            "formattedDate":{".write":"auth.role === 'admin'"},
+            "slots": {
+              "consumersCanHearEachOther":{".write": "auth.role === 'admin' || auth.role==='instructor'"},
+              "tabata":{".write": false},
+              "level":{".write": "auth.role === 'admin' || auth.role==='instructor'"},
+              "date":{".write": "auth.role === 'admin'"},
+              "musicVolume":{".write": "auth.role === 'admin' || auth.role==='instructor'"},
+              //"tabata":{".write": "auth.role === 'admin' || auth.role==='instructor'"},
+              "sessionId":{".write": "auth.role === 'admin'"},
+              "time":{".write": "auth.role === 'admin'"},
+              "trainer":{".write": "auth.role === 'admin' || auth.role==='instructor'"},
+              "$slot_timestamp": {
+                "tabata":{".write": false},
+                "bookedUsers": {
+                  "$user_id": {
+                    ".write": "$user_id === auth.mdbId",
+                    ".read": "auth !== null"     
+                  }
+                }
+              }
+            }  
+          }
+        }
+      },

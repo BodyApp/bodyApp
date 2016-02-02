@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $uibModal, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
+  .controller('VideoCtrl', function ($scope, $uibModal, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video, DayOfWeekSetter) {
 
   	var classToJoin = Schedule.classUserJustJoined; //Saved in the Schedule factory
   	if (!classToJoin) { //If there isn't any class
@@ -85,8 +85,10 @@ angular.module('bodyAppApp')
     //   .child("tabata"));
 
 		//3-way data bind for tabata time and rounds
+		var dayOfWeek = DayOfWeekSetter(classDate.getDay())
+
     $firebaseObject(ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(dayOfWeek)
       .child("slots")
       .child(classDate.getTime())
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
@@ -127,7 +129,7 @@ angular.module('bodyAppApp')
 
     var stopwatchRef = $firebaseObject(
     	ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(dayOfWeek)
       .child("slots")
       .child(classDate.getTime())
       .child("stopwatch")
@@ -148,7 +150,7 @@ angular.module('bodyAppApp')
     // //2-way data bind for tabata controls
     // var tabataIsOnRef = $firebaseObject(
     // 	ref.child(weekOf)
-    //   .child(classDate.getDay())
+    //   .child(dayOfWeek)
     //   .child("slots")
     //   .child(classDate.getTime())
     //   .child("tabata")
@@ -160,13 +162,13 @@ angular.module('bodyAppApp')
 
     var canHearRef = $firebaseObject(
     	ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(dayOfWeek)
       .child("slots")
       .child(classDate.getTime())
       .child("consumersCanHearEachOther"));
 
     var feedbackModal = ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(dayOfWeek)
       .child("slots")
       .child(classDate.getTime())
       .child("feedbackModal")
@@ -193,7 +195,7 @@ angular.module('bodyAppApp')
 
     var volumeRef = $firebaseObject(
       ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(dayOfWeek)
       .child("slots")
       .child(classDate.getTime())
       .child("musicVolume"));
@@ -714,7 +716,7 @@ angular.module('bodyAppApp')
 				    console.log('The publisher started streaming with id ' + event.stream.id);
 
 				    var classRef = ref.child("classes").child(weekOf)
-			      .child(classDate.getDay())
+			      .child(dayOfWeek)
 			      .child("slots")
 			      .child(classDate.getTime())
 				    

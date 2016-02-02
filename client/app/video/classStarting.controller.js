@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, DayOfWeekSetter) {
   	var classToJoin = Schedule.classUserJustJoined;
     $scope.classToJoin = classToJoin;
 
@@ -82,13 +82,13 @@ angular.module('bodyAppApp')
     var ref = new Firebase("https://bodyapp.firebaseio.com/");
     var classObjRef = $firebaseObject(
       ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(DayOfWeekSetter(classDate.getDay()))
       .child("slots")
       .child(classDate.getTime())
     )
 
     var userRef = ref.child("classes").child(weekOf)
-      .child(classDate.getDay())
+      .child(DayOfWeekSetter(classDate.getDay()))
       .child("slots")
       .child(classDate.getTime())
       .child("bookedUsers")

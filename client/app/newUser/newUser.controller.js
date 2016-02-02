@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, $firebaseArray, $uibModal, $firebaseObject) {
+  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, DayOfWeekSetter, $firebaseArray, $uibModal, $firebaseObject) {
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
@@ -82,7 +82,7 @@ angular.module('bodyAppApp')
         var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
 
 		var classToBook = $firebaseObject(
-	      weekOfRef.child(classDate.getDay())
+	      weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
 	      .child("slots")
 	      .child(classDate.getTime())
     	)
