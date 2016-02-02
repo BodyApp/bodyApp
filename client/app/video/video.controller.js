@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
+  .controller('VideoCtrl', function ($scope, $uibModal, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video) {
 
   	var classToJoin = Schedule.classUserJustJoined; //Saved in the Schedule factory
   	if (!classToJoin) { //If there isn't any class
@@ -152,6 +152,32 @@ angular.module('bodyAppApp')
       .child("slots")
       .child(classDate.getTime())
       .child("consumersCanHearEachOther"));
+
+    var feedbackModal = ref.child(weekOf)
+      .child(classDate.getDay())
+      .child("slots")
+      .child(classDate.getTime())
+      .child("feedbackModal")
+
+    	feedbackModal.child("displayed").on('value', function(snapshot) {
+      	// if (snapshot && !userIsInstructor) {
+      	if (snapshot) {
+      		var modalInstance = $uibModal.open({
+              animation: true,
+              templateUrl: 'app/results/classFeedbackModal.html',
+              controller: 'ClassFeedbackCtrl',
+              windowClass: "modal-wide",
+            });
+
+            modalInstance.result.then(function () {
+            	currentUser = Auth.getCurrentUser()
+            	console.log(currentUser)
+            }, function () {
+            	currentUser = Auth.getCurrentUser()
+            	console.log(currentUser)
+            });
+      	}
+      });
 
     var volumeRef = $firebaseObject(
       ref.child(weekOf)
@@ -804,7 +830,11 @@ angular.module('bodyAppApp')
 		$scope.exitClass = function() {
 			publisher.destroy();
       session.destroy();
-			$location.path('/classfeedback');
+      		if (!user.results[classKey]) {
+				$location.path('/classfeedback');
+			} else {
+				$location.path('/results');
+			}
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.
@@ -1033,6 +1063,10 @@ angular.module('bodyAppApp')
 		      }).$promise;
 				}
 			}
+		}
+
+		$scope.popupFeedbackModal = function() {
+			 feedbackModal.update({displayed: true})
 		}
 	})
 
