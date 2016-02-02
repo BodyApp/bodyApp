@@ -9,6 +9,8 @@ angular.module('bodyAppApp')
     $scope.upcomingIntros;
     $scope.bookedIntroClass;
     var injuries = "";
+    var goals = "";
+    var emergencyContact = {};
     $scope.timezone;
     var tzName = jstz().timezone_name;
 
@@ -127,18 +129,22 @@ angular.module('bodyAppApp')
     	$state.go('schedule');
     }
 
-    $scope.saveInjuries = function(injuryString) {
-    	injuries = injuryString || ""
-    	if (injuries.length < 2) {
-    		$scope.errorDiv = true
-    		console.log("Didn't enter any information!")
-    	} else {
-    		User.saveInjuries({id: $scope.currentUser}, {injuryString: injuries}).$promise.then(function(user) {
-				  console.log("Successfully saved injury info.");
-				  Auth.getUpdatedUser();
-			  })
-			  $scope.newUserStep++;	
-    	}
+    $scope.saveInjuriesGoalsEmergency = function(injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
+    	injuries = injuryString || "";
+        goals = goals || "";
+        emergencyContact = {firstName: emergencyFirst, lastName: emergencyLast, relationship: emergencyRelationship, phone: emergencyPhone};
+
+    	// if (injuries.length < 2) {
+    	// 	$scope.errorDiv = true
+    	// 	console.log("Didn't enter any injury information!")
+    	// } else {
+		User.saveInjuriesGoalsEmergency({id: $scope.currentUser}, {injuryString: injuries, goals: goals, emergencyContact: emergencyContact})
+        .$promise.then(function(user) {
+			console.log("Successfully saved injury info.");
+			Auth.getUpdatedUser();
+            $scope.newUserStep++;   
+		})
+    	// }
     }
 
     $scope.getDate = function(classSent) {

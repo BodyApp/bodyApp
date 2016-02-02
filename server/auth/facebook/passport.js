@@ -19,7 +19,6 @@ exports.setup = function (User, config) {
       ]
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(profile)
       //Will have to change to email check if incorporate authentication other than facebook.  Changed to this because there was an issue if email wasn't properly set in facebook.
       User.findOne({
         // 'email': profile.emails[0].value.toLowerCase()

@@ -46,7 +46,7 @@ angular.module('bodyAppApp')
             console.log(currentUser)
             loadTour();
           }
-
+          
           if (currentUser.timezone != tzName) {
             User.saveTimezone({ id: "56b0bf6d225c2c6a2f6d3bd7" }, {timezone: tzName}, function(user) {
               console.log("Updated user timezone preference")

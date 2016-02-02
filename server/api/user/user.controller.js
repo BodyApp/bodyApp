@@ -73,6 +73,20 @@ exports.getUserAndInjuries = function(req, res, next) {
   });
 }
 
+exports.getInjuries = function(req, res, next) {
+  var toFindId = req.body.userToGet;
+  User.findOne({_id: req.user._id}, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+    if (user.role === "admin" || user.role === "instructor") {
+      User.findOne({_id: toFindId}, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+        if (err) return next(err);
+        if (!user) return res.status(200).send('No user found');
+        if (user) return res.json({injuries: user.injuries});
+      });    
+    }
+  })
+}
+
 //Saves email address if there wasn't one provided by Facebook
 exports.saveEmail = function (req, res, next) {
   var userId = req.user._id;
@@ -197,7 +211,7 @@ exports.authCallback = function(req, res, next) {
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;
-  console.log(req.body)
+  var shippingAddress = req.body.shippingAddress;
 
   if(!stripeToken){
     return console.log("error retrieving stripe token.")
@@ -205,7 +219,7 @@ exports.postBilling = function(req, res, next){
     // res.redirect(req.redirect.failure);
   }
 
-  User.findById(req.body.user._id, function(err, user) {
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
     
     var cb = function(err) {
@@ -235,7 +249,7 @@ exports.postBilling = function(req, res, next){
         //   user.stripe = {};
         // }
 
-        if (req.body.shippingAddress) user.shippingAddress = req.body.shippingAddress;
+        if (shippingAddress) user.shippingAddress = shippingAddress;
 
         if(!user.stripe.customer.customerId){
         //   // user.stripe.customer = {};
@@ -329,7 +343,7 @@ exports.postBilling = function(req, res, next){
 };
 
 exports.getSubscription = function(req, res, next){
-  User.findById(req.params.id, function(err, user) {
+  User.findById(req.params.id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
     
     var cb = function(err) {
@@ -375,8 +389,8 @@ exports.getSubscription = function(req, res, next){
 };
 
 exports.cancelSubscription = function(req, res, next) {
-  var currentUser = req.body.user
-  User.findById(currentUser._id, function(err, user) {
+  var userId = req.user._id
+  User.findById(userId, '-salt -hashedPassword', function(err, user) {
     stripe.customers.cancelSubscription(
       user.stripe.customer.customerId,
       user.stripe.subscription.id,
@@ -418,7 +432,7 @@ exports.saveTimezone = function(req, res, next) {
   var timezone = req.body.timezone;
   console.log(userId);
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.timezone = timezone;
       user.save(function(err) {
@@ -430,11 +444,10 @@ exports.saveTimezone = function(req, res, next) {
 }
 
 exports.addIntroClass = function(req, res, next) {
-  console.log(req.body);
   var userId = req.user._id;
   var classToAdd = req.body.classToAdd;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
       user.classesBooked[classToAdd] = true;
@@ -503,11 +516,10 @@ exports.addIntroClass = function(req, res, next) {
 };
 
 exports.cancelIntroClass = function(req, res, next) {
-  console.log(req.body)
   var userId = req.user._id;
   var classToCancel = req.body.classToCancel;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.bookedIntroClass = false;
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
@@ -523,7 +535,7 @@ exports.takeIntroClass = function(req, res, next) {
   var userId = req.user._id;
   var introClassTaken = req.body.introClassTaken;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       console.log(user);
       user.introClassTaken = true
@@ -576,7 +588,7 @@ exports.addBookedClass = function(req, res, next) {
   var userId = req.user._id;
   var classToAdd = req.body.classToAdd;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
       user.classesBooked[classToAdd.date] = true;
@@ -645,7 +657,7 @@ exports.cancelBookedClass = function(req, res, next) {
   var userId = req.user._id;
   var classToCancel = req.body.classToCancel;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
@@ -660,7 +672,7 @@ exports.pushTakenClass = function(req, res, next) {
   var userId = req.user._id;
   var classToPush = req.body.classToPush;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.classesTaken.push(classToPush);
       if (user.classesBooked && user.classesBooked[classToPush]) delete user.classesBooked[classToPush];
@@ -676,7 +688,7 @@ exports.tourtipShown = function(req, res, next) {
   var userId = req.user._id;
   var dateShown = req.body.date;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.tourtipShown = dateShown;
       user.save(function(err) {
@@ -689,10 +701,11 @@ exports.tourtipShown = function(req, res, next) {
 
 exports.saveClassTaught = function(req, res, next) {
   var classToAdd = req.body.classToAdd;
-  var userToAddClassTo = req.body.userToAddClassTo
+  var userId = req.user._id
+  // var userToAddClassTo = req.body.userToAddClassTo
   var userId = userToAddClassTo._id
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.classesTaught.push(classToAdd);
       user.save(function(err) {
@@ -704,27 +717,33 @@ exports.saveClassTaught = function(req, res, next) {
 };
 
 exports.addRating = function(req, res, next) {
+  var userId = req.user._id;
   //Should add something to prevent single user from submitting more than 1 rating per day.  Could be abused otherwise since giving access to trainer object.
-  console.log(req.body)
+  //Added ratingsSubmitted array, so will be easier to Dx if someone abusing.
   // var userId = req.user._id;
   var trainerId = req.body.trainer;
   var rating = req.body.rating
 
-  User.findById(trainerId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else {
       if (!user) return res.status(401).send('Unauthorized');
-      var currentRating = user.trainerRating * user.trainerNumRatings;
-      console.log(currentRating)
-      var newTotal = currentRating + Number(rating);
-      console.log(newTotal)
-      user.trainerNumRatings += 1;
-      console.log(user.trainerNumRatings)
-      user.trainerRating = newTotal / user.trainerNumRatings;
-      console.log(user.trainerRating)
+      user.ratingsSubmitted = user.ratingsSubmitted || [];
+      user.ratingsSubmitted.push({trainer: trainerId, rating: rating})
       user.save(function(err) {
         if (err) return validationError(res, err);
-        res.status(200).json({trainerRating: user.trainerRating, trainerNumRatings: user.trainerNumRatings});
-        // res.status(200).json({user});
+        User.findById(trainerId, '-salt -hashedPassword', function (err, user) {
+          if(err) { return err } else {
+            if (!user) return res.status(401).send('Unauthorized');
+            var currentRating = user.trainerRating * user.trainerNumRatings;
+            var newTotal = currentRating + Number(rating);
+            user.trainerNumRatings += 1;
+            user.trainerRating = newTotal / user.trainerNumRatings;
+            user.save(function(err) {
+              if (err) return validationError(res, err);
+              res.status(200).json({trainerRating: user.trainerRating, trainerNumRatings: user.trainerNumRatings});
+            });
+          } 
+        });
       });
     } 
   });
@@ -733,7 +752,7 @@ exports.addRating = function(req, res, next) {
 exports.saveResult = function(req, res, next) {
   var userId = req.user._id;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else {
       if (!user) return res.status(401).send('Unauthorized');
       user.results = user.results || {};
@@ -754,13 +773,17 @@ exports.saveResult = function(req, res, next) {
   });
 };
 
-exports.saveInjuries = function(req, res, next) {
+exports.saveInjuriesGoalsEmergency = function(req, res, next) {
+  var userId = req.user._id;
   var injuries = req.body.injuryString;
-  var userId = req.user._id
+  var goals = req.body.goals;
+  var emergencyContact = req.body.emergencyContact;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.injuries = injuries;
+      user.goals = goals;
+      user.emergencyContact = emergencyContact;
       user.save(function(err) {
         if (err) return validationError(res, err);
         res.status(200).json(user);
@@ -780,7 +803,7 @@ exports.createTokBoxSession = function(req, res, next) {
 
 exports.createTokBoxToken = function(req, res, next) {
   var token;
-  User.findById(req.user._id, function (err, user) {
+  User.findById(req.user._id, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       if (user.role === "admin") {
         token = opentok.generateToken(req.body.sessionId, {
@@ -806,7 +829,7 @@ exports.sendWelcomeEmail = function(req,res) {
   var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 
   //Makes sure intro email wasn't sent.  Extra server-side security to prevent spamming.
-  User.findById(req.user._id, function (err, user) {
+  User.findById(req.user._id, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       sendEmail(user)
     } 

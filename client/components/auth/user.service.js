@@ -78,10 +78,10 @@ angular.module('bodyAppApp')
           controller:'saveResult'
         }
       },
-      saveInjuries: {
+      saveInjuriesGoalsEmergency: {
         method: 'PUT',
         params: {
-          controller:'saveInjuries'
+          controller:'saveInjuriesGoalsEmergency'
         }
       },
       getInstructors: {

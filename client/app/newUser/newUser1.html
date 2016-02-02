@@ -79,7 +79,7 @@
 
         <p class="darkblue mb0">In the next three months, what health goals can we help you achieve?</p>
             <div style = "color: red" ng-show = "errorDiv">Please tell us something! Anything!</div>
-        <textarea ng-model = "fitGoals" class="large-input-box mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
+        <textarea ng-model = "goals" class="large-input-box mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
 
         <p class="darkblue mb0">Emergency Contact Information</p>
             <div style = "color: red" ng-show = "errorDiv">Information required</div>
@@ -91,7 +91,7 @@
 
         <textarea ng-model = "emergencyPhone" class="small-input-box mb8" cols="10" rows="1" name="emergency-phone" placeholder="Phone"></textarea>        
 
-        <a href="" class="btn mt16" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
+        <a href="" class="btn mt16" ng-click = "saveInjuriesGoalsEmergency(injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
         <p class="darkgray medical-disclaimer">Before continuing, please review our <a href="/terms" target="_blank">medical disclaimer</a>.</p>
       </div>
 
@@ -107,7 +107,7 @@
 
         <h5 class="darkblue mb8 mt16">In the next three months, what health goals can we help you achieve?</h5>
             <div style = "color: red" ng-show = "errorDiv">Required</div>
-        <textarea ng-model = "fitGoals" class="mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
+        <textarea ng-model = "goals" class="mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
 
         <h5 class="darkblue mb8 mt16">Emergency Contact Information</h5>
             <div style = "color: red" ng-show = "errorDiv">Required</div>
@@ -119,7 +119,7 @@
 
         <textarea ng-model = "emergencyPhone" class="mb8" cols="10" rows="1" name="emergency-phone" placeholder="Phone"></textarea>        
 
-        <a href="" class="btn mt32" ng-click = "saveInjuries(injuries)">Submit health info and continue</a>
+        <a href="" class="btn mt32" ng-click = "saveInjuriesGoalsEmergency(injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
         <p class="darkgray medical-disclaimer">Before continuing, please review our <a href="/terms" target="_blank">medical disclaimer</a>.</p>
       </div>      
     </div>
