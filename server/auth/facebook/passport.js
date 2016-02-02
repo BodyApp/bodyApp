@@ -61,7 +61,7 @@ exports.setup = function (User, config) {
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
             var userId = user._id.toString()
-            usersRef.child(profile.id).set({mongoId: userId, picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName})
+            usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
             done(err, user);
           });
         } else {
@@ -80,7 +80,7 @@ exports.setup = function (User, config) {
             if (err) return done(err);
             var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
             var userId = user._id.toString()
-            usersRef.child(profile.id).set({mongoId: userId, picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName})
+            usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
             return done(err, user);
           })
