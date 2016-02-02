@@ -416,6 +416,7 @@ exports.cancelSubscription = function(req, res, next) {
 exports.saveTimezone = function(req, res, next) {
   var userId = req.user._id;
   var timezone = req.body.timezone;
+  console.log(userId);
 
   User.findById(userId, function (err, user) {
     if(err) { return err } else { 
@@ -448,6 +449,7 @@ exports.addIntroClass = function(req, res, next) {
   });
 
   function sendEmail(user) {
+    if (!user.email) return;
     var emailAddress = user.email;
     var recipientName = user.firstName;
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
@@ -468,7 +470,8 @@ exports.addIntroClass = function(req, res, next) {
         mailgun.messages().send(data, function (err, body) {
           //If there is an error, render the error page
           if (err) {
-            console.log("Error sending welcome email to " + emailAddress)
+            console.log(err)
+            console.log("Error sending intro booking email to " + emailAddress)
           }
           else {
             console.log("Sent booking confirmation email to " + emailAddress)
@@ -536,6 +539,7 @@ exports.takeIntroClass = function(req, res, next) {
   });
 
   function sendEmail(user) {
+    if (!user.email) return;
     var emailAddress = user.email;
     var recipientName = user.firstName;
     var mailgun = new Mailgun({apiKey: api_key, domain: domain});
@@ -584,6 +588,7 @@ exports.addBookedClass = function(req, res, next) {
     } 
   });
   function sendEmail(user) {
+    if (!user.email) return;
     var dateTime = formattedDateTime(classToAdd, user)
     var emailAddress = user.email;
     var recipientName = user.firstName;
@@ -604,6 +609,7 @@ exports.addBookedClass = function(req, res, next) {
         mailgun.messages().send(data, function (err, body) {
           //If there is an error, render the error page
           if (err) {
+            console.log(err)
             console.log("Error sending class booked email to " + emailAddress)
           }
           else {
@@ -698,6 +704,7 @@ exports.saveClassTaught = function(req, res, next) {
 };
 
 exports.addRating = function(req, res, next) {
+  //Should add something to prevent single user from submitting more than 1 rating per day.  Could be abused otherwise since giving access to trainer object.
   console.log(req.body)
   // var userId = req.user._id;
   var trainerId = req.body.trainer;
@@ -772,15 +779,25 @@ exports.createTokBoxSession = function(req, res, next) {
 };
 
 exports.createTokBoxToken = function(req, res, next) {
-
-  var token = opentok.generateToken(req.body.sessionId, {
-    expireTime: (new Date().getTime() / 1000)+(24 * 60 * 60), // in one day, which is the default
-    data: req.user._id.toString(),
-    role: "publisher"
-  })
-  // , function(token) {
-    res.json({ token: token }); 
-  // })
+  var token;
+  User.findById(req.user._id, function (err, user) {
+    if(err) { return err } else { 
+      if (user.role === "admin") {
+        token = opentok.generateToken(req.body.sessionId, {
+          expireTime: (new Date().getTime() / 1000)+(24 * 60 * 60), // in one day, which is the default
+          data: req.user._id.toString(),
+          role: "moderator"
+        })
+      } else {
+        token = opentok.generateToken(req.body.sessionId, {
+          expireTime: (new Date().getTime() / 1000)+(24 * 60 * 60), // in one day, which is the default
+          data: req.user._id.toString(),
+          role: "publisher"
+        })
+      }
+      res.json({ token: token }); 
+    } 
+  });
 }
 
  // Send a message to the specified email address when you navigate to /submit/someaddr@email.com
@@ -796,6 +813,8 @@ exports.sendWelcomeEmail = function(req,res) {
   });
 
   function sendEmail(user) {
+    if (!user.email) return;
+    var emailAddress = user.email
     fs.readFile(__dirname + '/emails/welcomeEmail.html', function (err, html) {
       if (err) throw err; 
       var welcomeEmailTemplate = html
@@ -804,7 +823,7 @@ exports.sendWelcomeEmail = function(req,res) {
         var welcomeEmailHeader = html
         var data = {
           from: from_who,
-          to: user.email,
+          to: emailAddress,
           subject: 'Welcome To The Club',
           html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+user.firstName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
         }
@@ -833,53 +852,6 @@ function formattedDateTime(dateTime, user) {
   var formatted = {}
 
   formatted.date = moment.tz(dateTime, timezoneName).format('dddd, MMM Do');
-  formatted.classTime = moment.tz(dateTime, timezoneName).format('h:mma z');
-
-  // formatted.timezone = moment.tz.zone(timezoneName).abbr(newDate.getTime())
-
-  // if (newDate.getHours() == 12) {
-  //     formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
-  // } else if (newDate.getHours() == 0) {
-  //     formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
-  // } else {
-  //     formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
-  // } 
-  
-  // formatted.day = newDate.getDate();
-  // formatted.year = newDate.getFullYear();
-  
-  // // $scope.dayOfWeek;
-  
-  // switch (newDate.getDay()) {
-  //     case 0: formatted.dayOfWeek = "Sunday"; break;
-  //     case 1: formatted.dayOfWeek = "Monday"; break;
-  //     case 2: formatted.dayOfWeek = "Tuesday"; break;
-  //     case 3: formatted.dayOfWeek = "Wednesday"; break;
-  //     case 4: formatted.dayOfWeek = "Thursday"; break;
-  //     case 5: formatted.dayOfWeek = "Friday"; break;
-  //     case 6: formatted.dayOfWeek = "Saturday"; break;
-  //     default: break;
-  // }
-
-  // if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
-  //     formatted.dayOfWeek = "Today"
-  // }
-
-  // var month = new Array();
-  // month[0] = "Jan";
-  // month[1] = "Feb";
-  // month[2] = "Mar";
-  // month[3] = "Apr";
-  // month[4] = "May";
-  // month[5] = "Jun";
-  // month[6] = "Jul";
-  // month[7] = "Aug";
-  // month[8] = "Sept";
-  // month[9] = "Oct";
-  // month[10] = "Nov";
-  // month[11] = "Dec";
-
-  // formatted.month = month[newDate.getMonth()]    
-  // // console.log(formatted);       
+  formatted.classTime = moment.tz(dateTime, timezoneName).format('h:mma z');      
   return formatted;
 }

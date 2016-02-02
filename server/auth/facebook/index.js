@@ -8,14 +8,14 @@ var router = express.Router();
 
 router
   .get('/', passport.authenticate('facebook', {
-    scope: ['email', 'user_about_me', 'user_friends', 'user_birthday'], // Permissions asked to user
+    scope: ['email', 'public_profile', 'user_friends'], // Permissions asked to user
     failureRedirect: '/signup',
     session: false
   }))
 
   .get('/askfordeclined', passport.authenticate('facebook', {
     authType: 'rerequest',
-    scope: ['email', 'user_about_me', 'user_friends', 'user_birthday'], // Permissions asked to user
+    scope: ['email', 'public_profile', 'user_friends'], // Permissions asked to user
     failureRedirect: '/signup',
     session: false
   }))

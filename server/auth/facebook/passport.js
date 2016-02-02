@@ -15,10 +15,11 @@ exports.setup = function (User, config) {
       'gender',
       'picture.type(large)',
       'friends.limit(5000)',
-      'birthday'
+      'age_range'
       ]
     },
     function(accessToken, refreshToken, profile, done) {
+      console.log(profile)
       //Will have to change to email check if incorporate authentication other than facebook.  Changed to this because there was an issue if email wasn't properly set in facebook.
       User.findOne({
         // 'email': profile.emails[0].value.toLowerCase()
@@ -28,7 +29,6 @@ exports.setup = function (User, config) {
         if (err) {
           return done(err);
         }
-        console.log(profile._json.friends)
         if (!user) {
           user = new User({
             name: profile.displayName,
@@ -38,7 +38,7 @@ exports.setup = function (User, config) {
             gender: profile.gender,
             picture: profile.photos ? profile.photos[0].value: "#",
             facebookId: profile.id,
-            birthday: profile.birthday,
+            // birthday: profile.birthday,
             friendList: profile._json.friends ? profile._json.friends.data : [],
             email: profile.emails ? profile.emails[0].value : "", //Getting cannot read property 0 of undefined here.  Crashed server.
             role: 'user',

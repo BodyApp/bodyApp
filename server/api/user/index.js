@@ -8,8 +8,8 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', auth.hasRole('admin'), controller.index);
-router.get('/instructors', controller.getInstructors);
-router.get('/admins', controller.getAdmins);
+router.get('/instructors', auth.hasRole('admin'), controller.getInstructors);
+router.get('/admins', auth.hasRole('admin'), controller.getAdmins);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/me', auth.isAuthenticated(), controller.me);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
@@ -30,9 +30,9 @@ router.put('/:id/saveTimezone', auth.isAuthenticated(), controller.saveTimezone)
 
 router.put('/:id/sendWelcomeEmail', auth.isAuthenticated(), controller.sendWelcomeEmail);
 
-router.get('/:id/getSubscription', controller.getSubscription);
+router.get('/:id/getSubscription', auth.isAuthenticated(), controller.getSubscription);
 
-router.get('/:id/createTokBoxSession', controller.createTokBoxSession);
+router.get('/:id/createTokBoxSession', auth.hasRole('admin'), controller.createTokBoxSession);
 router.put('/:id/createTokBoxToken', auth.isAuthenticated(), controller.createTokBoxToken);
 
 router.put('/:id/addRating', auth.isAuthenticated(), controller.addRating);
@@ -40,13 +40,9 @@ router.put('/:id/saveResult', auth.isAuthenticated(), controller.saveResult);
 
 router.put('/:id/tourtipShown', auth.isAuthenticated(), controller.tourtipShown);
 
-router.post('/charge',
-//   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
-//   // auth.isAuthenticated(),
-  controller.postBilling);
+router.post('/charge', auth.isAuthenticated(), controller.postBilling);
 
-router.post('/cancelsub', controller.cancelSubscription);
-
+router.post('/cancelsub', auth.isAuthenticated(), controller.cancelSubscription);
 
 // router.post('/charge',
   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
