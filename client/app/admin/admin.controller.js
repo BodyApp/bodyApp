@@ -176,8 +176,8 @@ angular.module('bodyAppApp')
         if (!syncObject[date.getDay()]) {
           console.log("Setting up week for first time.")
           for (var i = 0; i < 7; i++) {
-            var thisDate = new Date();
-            thisDate.setDate(sunDate.getDate() + i)
+            var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + i, 11, 0, 0);
+            // thisDate.setDate(sunDate.getDate() + i)
 
             syncObject[i] = {    
               dayOfWeek: i,
