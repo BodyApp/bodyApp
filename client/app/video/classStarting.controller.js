@@ -103,19 +103,22 @@ angular.module('bodyAppApp')
     }
 
     function getBookedUsers(classJoined) {
+      console.log(classJoined);
       $scope.bookedUsers = [];
       if (classJoined.bookedUsers) {
         $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
 
         for (var bookedUser in classJoined.bookedUsers) {
-          if (bookedUser) {
-            User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-              $scope.bookedUsers.push(data);
-              if(!$scope.$$phase) $scope.$apply();  
-            }).catch(function(err) {
-              console.log(err);
-            })
-          }    
+          console.log(classJoined.bookedUsers[bookedUser])
+          $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
+          // if (bookedUser) {
+          //   User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+          //     $scope.bookedUsers.push(data);
+          //     if(!$scope.$$phase) $scope.$apply();  
+          //   }).catch(function(err) {
+          //     console.log(err);
+          //   })
+          // }    
         }
       }
     }
