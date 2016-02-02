@@ -58,7 +58,7 @@ exports.setup = function (User, config) {
           }
 
           user.level = user.level || 0;
-          var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
+          var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, role: user.role, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
           user.firebaseToken = firebaseToken;
 
           user.save(function(err) {
@@ -84,7 +84,7 @@ exports.setup = function (User, config) {
           });
         } else {
           //Generate client firebase token.  Set user to admin if their role is admin
-          var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture }) 
+          var firebaseToken = tokenGenerator.createToken({ uid: profile.id, role: user.role, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture }) 
             // {admin: user.role === "admin"});
           user.firebaseToken = firebaseToken;
           
