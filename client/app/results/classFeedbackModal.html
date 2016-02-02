@@ -1,0 +1,86 @@
+<section class="banner">
+    <div class="col-md-12 text-center">
+      <h2 class="class-type mb0 mt16">{{classCompleted.level}} Class Wrap-up</h2>
+      <h4 class="page-description mb16">Enter your results</h4>
+    </div>
+  </section>
+
+  <div class="container">
+
+  <section class="mt32 mb32">
+    <div class="col-md-6 text-center">
+      <h3 class="text-center mb16">Instructor Rating</h3>
+      <p class="text-center mb16"><img class="trainer-circle-image" src="{{classCompleted.trainer.picture}}"></p>
+      <h4 class="mb24 bold">{{classCompleted.trainer.firstName}} {{classCompleted.trainer.lastName}}</h4>
+      <h5 class="text-center mb8">Provide your feedback</h5>
+      <!--Rating-->
+      <fieldset class="rating">
+
+          <input ng-model = "rating" type="radio" id="star5" name="rating" value="5.0" />
+          <label class = "full" for="star5" title="Awesome - 5 stars"></label>
+
+          <input ng-model = "rating" type="radio" id="star4half" name="rating" value="4.5" />
+          <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star4" name="rating" value="4.0" />
+          <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star3half" name="rating" value="3.5" />
+          <label class="half" for="star3half" title="Above-Average - 3.5 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star3" name="rating" value="3.0" />
+          <label class = "full" for="star3" title="Average - 3 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star2half" name="rating" value="2.5" />
+          <label class="half" for="star2half" title="Not great - 2.5 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star2" name="rating" value="2.0" />
+          <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star1half" name="rating" value="1.5" />
+          <label class="half" for="star1half" title="Kinda bad - 1.5 stars"></label>
+          
+          <input ng-model = "rating" type="radio" id="star1" name="rating" value="1.0" />
+          <label class = "full" for="star1" title="Big problem - 1 star"></label>
+          
+          <input ng-model = "rating" type="radio" id="starhalf" name="rating" value="0.5" />
+          <label class="half" for="starhalf" title="Big problem - 0.5 stars"></label>
+
+      </fieldset>
+      <!--end ratings-->
+      <div>
+        <input class="feedback" ng-model = "feedback" type="text" name="feedback" placeholder="Please provide any feedback for {{classCompleted.trainer.firstName}} or BODY"/>
+      </div>        
+    </div>
+
+    <div class="col-md-6">
+      <h3 class="text-center mb16">Your Results</h3>
+
+      <span class="mb0">Score ({{classWod.scoreType.label}}):</span>
+      <input class="classFeedback-score" ng-model = "score" type="number" name="score" placeholder="Enter Score" ng-show = "classWod.scoreType.id === 1"/>
+      <span ng-show = "classWod.scoreType.id === 0">
+        <br>
+        <input class="classFeedback-score" ng-model = "minutes" type="number" name="score"/> Minutes
+        <br>
+        <input class="classFeedback-score" ng-model = "seconds" type="number" name="score"/> Seconds
+      </span>
+    
+
+      <h5 class="mt8 mb0">Comments:</h5>
+      <input class="comments" ng-model = "comment" type="text" name="comments" placeholder="i.e. Feeling great, killer workout!"/>
+
+      <div class="onoffswitch">
+          <input type="checkbox" ng-model = "postToPublic" ng-init = "postToPublic = true" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" >
+          <label class="onoffswitch-label" for="myonoffswitch">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+      </div>      
+    </div>
+
+    <div class="col-sm-12 mt32 text-center">
+      <button class="btn" ng-click = "submitRatingAndResultsModal(rating, score, comment, feedback, postToPublic, minutes, seconds)">Submit rating and results</button>
+    </div>
+
+  </section>
+</div>  

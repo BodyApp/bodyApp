@@ -184,7 +184,7 @@
               <h3 class="white mb8 mt16">Admin:</h3>
               <a class = "btn btn-success" id="cantHearButton" ng-show = "!consumersCanHearEachOther" ng-click = "letConsumersHearEachOther()" href="#">Audio Isolated</a>
               <a class = "btn btn-danger" id="canHearButton" ng-show = "consumersCanHearEachOther" ng-click = "stopConsumersFromHearingEachOther()">Audio Shared</a>
-              <a class="btn" href="#">Collect Scores</a>
+              <a class="btn" ng-click = "popupFeedbackModal()" href="#">Collect Scores</a>
             </div>
             <div class="classControls text-center">
               <h3 class="white mb8 mt16">Music {{musicVolume}}</h3>
