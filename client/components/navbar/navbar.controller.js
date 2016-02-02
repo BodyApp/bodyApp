@@ -34,6 +34,7 @@ angular.module('bodyAppApp')
     if (Auth.isLoggedIn() && Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(user) {
         $scope.completedNewUserFlow = user.completedNewUserFlow;
+        if (Auth.getCurrentUser().stripe) $scope.isMember = Auth.getCurrentUser().stripe.subscription.status === "active";
       })
     } else if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
       $scope.completedNewUserFlow = Auth.getCurrentUser().completedNewUserFlow;
@@ -82,4 +83,24 @@ angular.module('bodyAppApp')
     $scope.checkClickCorrect = function() {
       $scope.clicked = !$scope.clicked;
     }
+
+    $scope.showMembershipModal = function() {
+      var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/membership/membership.html',
+          controller: 'MembershipCtrl',
+          windowClass: "modal-wide",
+          resolve: {
+            slot: function() {
+              return "yeah baby"
+            }
+          }
+        });
+
+        modalInstance.result.then(function () {
+          // openStripePayment()
+        }, function () {
+          // openStripePayment()
+        });
+      }
   });

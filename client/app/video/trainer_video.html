@@ -2,7 +2,7 @@
   <section>
     <div class="trainer-video-screen">
     
-        <div class="smallscreen" id="trainer0" ng-class = "{megascreen: hover0}" ng-click = "hoveredOverConsumer(); hover0 = true">
+        <div class="smallscreen" id="trainer0" ng-class = "{megascreen: hover0}" ng-click = "hoveredOverConsumer(); hover0 = true; toggleListeningToEverybody()">
           <div class="name-overlay">
             <span>You</span>
           </div>
@@ -159,7 +159,7 @@
 
           <div ng-hide="tabata.tabataActive">
             <h1 id="timer">
-              <timer id = "stopwatch" autostart="false" interval="1000" ng-class = "{workColor: true}">{{minutes}}:{{sseconds}}</timer>
+              <timer id = "stopwatch" autostart="false" start-time = "stopwatchStartTime" interval="1000" ng-class = "{workColor: true}">{{minutes}}:{{sseconds}}</timer>
             </h1>
           </div>
 

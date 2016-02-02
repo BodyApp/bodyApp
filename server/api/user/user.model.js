@@ -43,6 +43,8 @@ var UserSchema = new Schema({
   level: Number,
   signUpDate: Date,
   lastLoginDate: Date,
+  welcomeEmailSent: Date,
+  timezone: String,
   results: Schema.Types.Mixed,
   facebook: {},
   twitter: {},
@@ -87,6 +89,13 @@ UserSchema
       'trainerRating': this.trainerRating,
       'trainerNumRatings': this.trainerNumRatings,
     };
+  });
+
+// Injury information kept out of public profile
+UserSchema
+  .virtual('injuryInfo')
+  .get(function() {
+    return this.injuries
   });
 
 // Non-sensitive info we'll be putting in the token

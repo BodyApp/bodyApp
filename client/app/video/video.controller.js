@@ -11,6 +11,8 @@ angular.module('bodyAppApp')
 		$scope.classTime = classToJoin.date; //trainer_video:180 - Timer is set to the class to join date.
 		$scope.trainer = classToJoin.trainer;
 
+		var session;
+
 		// var lastConsumerTrainerCouldHear;
 
 		var classClosesTime = (classToJoin.date + 1000*60*70);
@@ -18,6 +20,9 @@ angular.module('bodyAppApp')
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
+				session.disconnect()
+        Video.destroyHardwareSetup()
+        publisher.destroy();
 				console.log("class is over, booting people out");
 				$location.path('/classfeedback');
 			} else if (classHalfway < currentTime ) {
@@ -43,7 +48,8 @@ angular.module('bodyAppApp')
 		$scope.consumerObjects = {};
 		var maxCALLERS = 10;
 		var connectionCount = 0;
-		var session;
+		var previousConsumerClicked;
+		
 		var publisher;
 
 		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer._id.toString()
@@ -60,14 +66,15 @@ angular.module('bodyAppApp')
 
 		var classDate = new Date(classToJoin.date)
 		var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-    var sunDate = new Date();
-    sunDate.setDate(classDate.getDate() - classDate.getDay());
+    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    // var sunDate = new Date();
+    // sunDate.setDate(classDate.getDate() - classDate.getDay());
     var sunGetDate = sunDate.getDate();
     var sunGetMonth = sunDate.getMonth()+1;
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
-
+    
     setTabataOptions()
 
     // $scope.tabata = $firebaseObject(
@@ -85,8 +92,8 @@ angular.module('bodyAppApp')
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
       	if (userIsInstructor) {
       		$scope.tabata.timeOnMinutes = "0"
-      		$scope.tabata.timeOnSeconds = "0"
-      		$scope.tabata.timeOffSeconds = "0"
+      		$scope.tabata.timeOnSeconds = "20"
+      		$scope.tabata.timeOffSeconds = "10"
       		$scope.tabata.rounds = "1"
       		return $scope.tabata.tabataActive = true
       	}
@@ -97,7 +104,9 @@ angular.module('bodyAppApp')
 						document.getElementById('tabata').reset();
 						if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
 							console.log("Starting consumer tabata")
-							document.getElementById('tabata').start();
+							$timeout(function() {
+								document.getElementById('tabata').start();
+							}, 1000)
 						}
 	        });
       		
@@ -126,6 +135,9 @@ angular.module('bodyAppApp')
   	
   	stopwatchRef.$watch(function() {
   		if (stopwatchRef.$value) {
+  			document.getElementById('stopwatch').stop();
+  			document.getElementById('stopwatch').reset();
+  			$scope.stopwatchStartTime = stopwatchRef.$value
   			document.getElementById('stopwatch').start();
   		} else {
   			document.getElementById('stopwatch').stop();
@@ -421,8 +433,10 @@ angular.module('bodyAppApp')
 				session = OT.initSession(apiKey, sessionId);
 				$scope.$on("$destroy", function() { // destroys the session when navigate away
         	console.log("Disconnecting session because navigated away.")
+          session.disconnect()
+          Video.destroyHardwareSetup()
           publisher.destroy();
-          session.destroy();
+          // session.destroy();
 		    });
 			} else {
 			  // The client does not support WebRTC.
@@ -444,6 +458,8 @@ angular.module('bodyAppApp')
 					  connected = true;
 				    publish();
 				    if (session.capabilities.publish != 1) {
+				    	session.disconnect()
+				    	// session.destroy();
 		  				alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 		  				$location.path('/');
 		  			}
@@ -648,7 +664,7 @@ angular.module('bodyAppApp')
 				if (userIsInstructor) {
 					vidWidth = "16.67%";
 					vidHeight = "16.67%";
-					suggestedResolution = "1280x720";
+					suggestedResolution = "640x480";
 					suggestedFPS = 30;
 				} else {
 					vidWidth = "100%"
@@ -777,7 +793,6 @@ angular.module('bodyAppApp')
 		connect()
 
 		$scope.hoveredOverConsumer = function(consumerBoxNumber, consumerId) {
-			console.log(consumerId)
 			$scope.hover0 = false;
 			$scope.hover1 = false;
 			$scope.hover2 = false;
@@ -795,19 +810,28 @@ angular.module('bodyAppApp')
 			$scope.hover14 = false;
 			$scope.hover15 = false;
 
-			if (!$scope.consumersCanHearEachOther) {
-				for (var prop in subscriberObjects) {
-					if (prop != consumerId) {
-						console.log("Unsubscribed from audio from " +subscriberObjects[prop].streamId)
-						subscriberObjects[prop].subscribeToAudio(false)
-					}
-					if (prop === consumerId) {
-						console.log("subscribing to audio from "+subscriberObjects[prop].streamId)
-						subscriberObjects[prop].subscribeToAudio(true)
-					}
+			if (consumerId) { // Won't do anything if trainer clicks his/her own video
+				if (!$scope.consumersCanHearEachOther) {
+					console.log("subscribing to audio from "+subscriberObjects[consumerId].streamId)
+					subscriberObjects[consumerId].subscribeToAudio(true)
+					
+					if (previousConsumerClicked && previousConsumerClicked != consumerId) { //Prevents issue first time click a consumer
+						console.log("Unsubscribing from audio stream "+subscriberObjects[previousConsumerClicked].streamId)
+						subscriberObjects[previousConsumerClicked].subscribeToAudio(false)
+					} 
+					
+					previousConsumerClicked = consumerId
+					
+					// for (var prop in subscriberObjects) {
+					// 	if (prop != consumerId) {
+					// 		console.log("Unsubscribed from audio from " +subscriberObjects[prop].streamId)
+					// 		subscriberObjects[prop].subscribeToAudio(false)
+					// 	}
+					// }
 				}
+			} else { //If trainer clicks on himself
+				
 			}
-			
 			// subscriberObjects[consumerId].subscribeToAudio(true)
 
 			// consumerBoxNumber -= 1;
@@ -828,13 +852,15 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.exitClass = function() {
-			publisher.destroy();
-      session.destroy();
-      		if (!user.results[classKey]) {
+			// publisher.disconnect();
+			session.disconnect()
+      // session.destroy();
+    if (!user.results[classKey]) {
 				$location.path('/classfeedback');
 			} else {
 				$location.path('/results');
 			}
+
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.
@@ -903,9 +929,12 @@ angular.module('bodyAppApp')
 	  // });		
 		
 		$scope.startTabata = function() {
-			$scope.tabata.lastStart = new Date().getTime();
+			
 			// document.getElementById('tabata').start()
-			$timeout(function() {document.getElementById('tabata').start();}, 1000)
+			$timeout(function() {
+				$scope.tabata.lastStart = new Date().getTime();
+				document.getElementById('tabata').start();
+			}, 1000)
 	    // $scope.tabata.lastStartTime = new Date().getTime();
 	    // $scope.tabata.lastStateTime = new Date().getTime();
 	    // $scope.tabata.lastButtonPress = "Start";
@@ -927,11 +956,17 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.setTabata = function() {
-			$scope.tabata.isOn = true
-			document.getElementById('tabata').stop();
-			document.getElementById('tabata').reset();
 			$scope.tabata.lastSet = new Date().getTime();
+
 			$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1;
+
+			$timeout(function() { 
+				$scope.tabata.isOn = true 
+				document.getElementById('tabata').stop();
+				document.getElementById('tabata').reset();
+			}, 500) //Makes sure that lastSet is already set before isOn called.  Otherwise may wind up doing something screwy.
+
+
 			if(!$scope.$$phase) $scope.$apply();
 			// $scope.tabata.lastResetTime = new Date().getTime();
 			// $scope.tabata.lastButtonPress = "Set";
@@ -1007,26 +1042,36 @@ angular.module('bodyAppApp')
 					if ($scope.tabata.rounds > 0) {
 						$scope.tabata.rounds -= 1;
 						$scope.tabata.currentTabataTime = $scope.tabata.timeOffSeconds*1;
-						$scope.tabata.isOn = false;
+						
 						console.log("Setting tabata to off");
 						if(!$scope.$$phase) $scope.$apply();
-												
-						document.getElementById('tabata').stop();
-						document.getElementById('tabata').reset();
+						
 						// document.getElementById('tabata').start();
-						$timeout(function() {document.getElementById('tabata').start();}, 1000)
+						$timeout(function() {
+							$scope.tabata.isOn = false;
+							document.getElementById('tabata').stop();
+							document.getElementById('tabata').reset();
+						}, 1000)
+						$timeout(function() {
+							document.getElementById('tabata').start();
+						}, 2000)
 					}
 					// document.getElementById('tabata').start();
 				} else {
 					if ($scope.tabata.rounds > 0) {
 						$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1
-						$scope.tabata.isOn = true;
+						
 						console.log("Setting tabata to on");
 						if(!$scope.$$phase) $scope.$apply();
-						document.getElementById('tabata').stop();
-						document.getElementById('tabata').reset();
 						// document.getElementById('tabata').start();
-						$timeout(function() {document.getElementById('tabata').start();}, 1000)
+						$timeout(function() {
+							$scope.tabata.isOn = true;
+							document.getElementById('tabata').stop();
+							document.getElementById('tabata').reset();
+						}, 1000)
+						$timeout(function() {
+							document.getElementById('tabata').start();
+						}, 2000)
 						// document.getElementById('tabata').start();
 					}
 				}

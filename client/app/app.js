@@ -13,13 +13,15 @@ angular.module('bodyAppApp', [
   'timer',
   "checklist-model",
   "angularScreenfull",
-  'angular-tour'
+  'angular-tour',
+  'duScroll'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
+    // $locationProvider.hashPrefix('#!');
     $httpProvider.interceptors.push('authInterceptor');
   })
 

@@ -9,9 +9,9 @@ angular.module('bodyAppApp')
     service.hardwareSetup = function(element) {
       devices = createOpentokHardwareSetupComponent(element, {
         insertMode: 'append'
-      }, function(error) {
+      }, function(error, hardwareSetup) {
         if (!error) {
-          console.log(devices)
+          return devices
           // service.setVideoInput(devices.videoSource());
           // service.setAudioInput(devices.audioSource());
           // setVideoInput(component.videoSource());
@@ -24,6 +24,11 @@ angular.module('bodyAppApp')
           return;
         }
       })
+    }
+
+    service.destroyHardwareSetup = function() {
+      console.log("Destroying hardware setup");
+      devices.destroy();
     }
 
   	// service.setVideoInput = function(videoInput) {

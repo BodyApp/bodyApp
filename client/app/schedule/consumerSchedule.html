@@ -1,3 +1,4 @@
+<meta name="fragment" content="!">
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 <tour step = "currentStep">
 <div class="container">
@@ -36,8 +37,8 @@
               <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*15)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
-              <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*15)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
+              <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
@@ -65,8 +66,8 @@
               <span>You</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*15)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach</a>
-              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*15)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">View</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach</a>
+              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">View</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
@@ -96,7 +97,7 @@
             <div class="instr-col mb8">
               <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
             </div>
-            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*15)"> <!-- This will always be true -->
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*30)"> <!-- This will always be true -->
               <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
@@ -305,7 +306,7 @@
   tourtip-offset-horizontal = "0"
   tourtip-offset-vertical = "0">
 </span>
-<span tourtip-step = "3"
+<!-- <span tourtip-step = "3"
   tourtip="Tip #4: Check out the results tab to learn about past workouts as well as your scores for classes you took." 
   tourtip-element="#tour-results"
   tourtip-next-label="Finish tour"
@@ -313,7 +314,7 @@
   tourtip-animation="false"
   tourtip-offset-horizontal = "0"
   tourtip-offset-vertical = "0">
-</span>
+</span> -->
 </tour>
 
 <div ng-include="'components/footer/footer.html'"></div>

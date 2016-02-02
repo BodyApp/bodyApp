@@ -5,15 +5,39 @@ angular.module('bodyAppApp')
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
+    var currentUser;
     $scope.upcomingIntros;
     $scope.bookedIntroClass;
     var injuries = "";
     $scope.timezone;
+    var tzName = jstz().timezone_name;
+
     setTimezone();
     function setTimezone() {
-      var tzName = jstz().timezone_name;
       $scope.timezone = moment().tz(tzName).format('z');
     }
+
+    Auth.getCurrentUser().$promise.then(function(user) {
+        currentUser = user
+        if (!currentUser.welcomeEmailSent) {
+            User.sendWelcomeEmail({ id: currentUser._id }, {
+            }, function(user) {
+                console.log(user)
+            }, function(err) {
+                console.log("Error: " + err)
+            }).$promise;  
+        }
+        if (currentUser.timezone != tzName) {
+            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
+              console.log("Updated user timezone preference")
+              currentUser = user;
+              Auth.updateUser(currentUser);
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error saving Timezone: " + err)
+            }).$promise;
+        }
+    })
 
     var ref = new Firebase("https://bodyapp.firebaseio.com")
     $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros').orderByKey().limitToFirst(12))
@@ -28,9 +52,11 @@ angular.module('bodyAppApp')
         console.log(classDate.getDay())
         console.log(classDate.getTime())
 
-        var todayDate = new Date(classDate);        
-        var sunDate = new Date();
-        sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+        var todayDate = new Date(classDate);
+        var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+
+        // var sunDate = new Date();
+        // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
         var sunGetDate = sunDate.getDate();
         var sunGetMonth = sunDate.getMonth()+1;
         var sunGetYear = sunDate.getFullYear();

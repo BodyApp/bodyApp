@@ -7,9 +7,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
+    <!-- <base href="/#!"> -->
+    <meta name="fragment" content="!" />
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <meta name="google-site-verification" content="g5rZ4Xr8QQnxxgD3iDKQuwhgsX2evNYjphygAgUa85Q" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
@@ -60,8 +63,10 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-XXXXX-X');
+      ga('create', 'UA-73076141-1', 'auto');
+      ga('require', 'linkid');
       ga('send', 'pageview');
+
     </script>
 
     <!--[if lt IE 9]>
@@ -102,6 +107,7 @@
       
       <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
       <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+      <script src="bower_components/angular-scroll/angular-scroll.min.js"></script>
       <script src="bower_components/screenfull/dist/screenfull.js"></script>
       <script src="bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
       <script src="bower_components/angular-timer/dist/angular-timer.min.js"></script>
@@ -147,16 +153,21 @@
           <script src="app/terms/terms.controller.js"></script>
           <script src="app/terms/terms.js"></script>
           <script src="app/utilities/addtocalendar.js"></script>
+          <script src="app/utilities/angular-seo.js"></script>
           <script src="app/utilities/angular-soundcloud.js"></script>
           <script src="app/utilities/ics.js"></script>
           <script src="app/utilities/openTokHardwareSetup.js"></script>
+          <script src="app/utilities/scrollService.js"></script>
+          <script src="app/video/badInternet.controller.js"></script>
           <script src="app/video/classStarting.controller.js"></script>
+          <script src="app/video/openTokNetworkTest.controller.js"></script>
           <script src="app/video/video.controller.js"></script>
           <script src="app/video/video.js"></script>
           <script src="app/video/video.services.js"></script>
           <script src="app/video/wrongBrowser.controller.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
+          <script src="components/emails.service.js"></script>
           <script src="components/footer/footer.controller.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>

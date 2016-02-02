@@ -63,12 +63,17 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveWod = function(wod, date) {
-      console.log(wod);
       classDate = date;
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
       wod.dateTime = new Date(date).setHours(10) //Makes sure it's set in the middle of the day to avoid timezone issues
       // wod.dateTime = tempDate.getTime();
       wod.date = classKey;
+      for (var bullet in wod.challenge.bullets) {
+        console.log(wod.challenge.bullets[bullet]);
+        if (!wod.challenge.bullets[bullet]) {
+          delete wod.challenge.bullets[bullet]
+        }
+      }
       wodRef.child(classKey).set(wod);
     }
     
@@ -138,8 +143,13 @@ angular.module('bodyAppApp')
       // $scope.workoutDate = workoutDate
       var todayDayOfWeek = workoutDate.getDay();
 
-      var sunDate = new Date();
-      sunDate.setDate(workoutDate.getDate() - workoutDate.getDay());
+      console.log(workoutDate.getDate())
+
+      // var monthToSet = workoutDate.getDate - workoutDate.getDay() <= 0 ? workoutDate.getMonth() - 1 : workoutDate.getMonth;
+
+      var sunDate = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate() - workoutDate.getDay(), 11, 0, 0);
+      // sunDate.setDate(workoutDate.getDate() - workoutDate.getDay());
+      console.log(sunDate)
       var sunGetDate = sunDate.getDate();
       var sunGetMonth = sunDate.getMonth()+1;
       var sunGetYear = sunDate.getFullYear();

@@ -104,6 +104,12 @@ angular.module('bodyAppApp')
           controller: 'getUser'
         }
       },
+      getUserAndInjuries: {
+        method: 'PUT',
+        params: {
+          controller: 'getUserAndInjuries'
+        }
+      },
       getSubscription: {
         method: 'GET',
         params: {
@@ -122,10 +128,22 @@ angular.module('bodyAppApp')
           controller: 'createTokBoxSession'
         }
       },
+      sendWelcomeEmail: {
+        method: 'PUT',
+        params: {
+          controller:'sendWelcomeEmail'
+        }
+      },
       createTokBoxToken: {
         method: 'PUT',
         params: {
           controller: 'createTokBoxToken'
+        }
+      },
+      saveTimezone: {
+        method: 'PUT',
+        params: {
+          controller: 'saveTimezone'
         }
       }
 	  });

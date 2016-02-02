@@ -2,15 +2,27 @@
 
 <section>
 	<div class="lightblueSection2 pt104 pb32 text-center">
-		<h1 class="white mb16">{{class.level}} Class</h1>
+		<h1 class="white mb16">{{classToJoin.level}} Class</h1>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass < 0">Class has started!</h3>
-		<div class="startingBtn" ng-if = "minutesUntilClass <= 0">
-			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click To Join!</a>
+		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer._id && minutesUntilClass <= 30">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to train!</a>
 		</div>
-		<div class="startingBtn" ng-if = "minutesUntilClass > 0">
-			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click Here Once Class Begins!</a>
+		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer._id && minutesUntilClass > 30">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click to join up to 30 minutes ahead</a>
+		</div>
+		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">Your {{phrase}} will be ready in <timer class = "clock" interval="1000" countdown="networkTestCountdown/1000">{{countdown}}</timer></a>
+		</div>
+		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">We're preparing your {{phrase}}</a>
+		</div>
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to join!</a>
+		</div>
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click this 5 minutes before class!</a>
 		</div>
 	</div>
 </section>
@@ -19,17 +31,17 @@
 	<div class="container pt32 pb32">
 		<div class="col-sm-6">
 			<h3 class="darkblue bold mb16">Instructor</h3>
-			<img class="trainer-circle-image" src="{{class.trainer.picture}}">
+			<img class="trainer-circle-image" src="{{classToJoin.trainer.picture}}">
 			<div class="trainer-info">
-				<h4 class="darkblue mb0">{{class.trainer.firstName}} {{class.trainer.lastName}}</h4>
+				<h4 class="darkblue mb0">{{classToJoin.trainer.firstName}} {{classToJoin.trainer.lastName}}</h4>
 				<h4 class="royalblue mb0">User Rating: 
-					<span id="blue" class="bold"><span ng-show="class.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "class.trainer.trainerRating">5</span></span>/5
+					<span id="blue" class="bold"><span ng-show="classToJoin.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "classToJoin.trainer.trainerRating">5</span></span>/5
 				</h4>
-				<h4 class="royalblue mb8" ng-if = "class.trainer.trainerCredential1">
-					<span>{{class.trainer.trainerCredential1}}</span>
-					<span ng-if = "class.trainer.trainerCredential2">, {{class.trainer.trainerCredential2}}</span>
-					<span ng-if = "class.trainer.trainerCredential3">, {{class.trainer.trainerCredential3}}</span>
-					<span ng-if = "class.trainer.trainerCredential4">, {{class.trainer.trainerCredential4}}</span>
+				<h4 class="royalblue mb8" ng-if = "classToJoin.trainer.trainerCredential1">
+					<span>{{classToJoin.trainer.trainerCredential1}}</span>
+					<span ng-if = "classToJoin.trainer.trainerCredential2">, {{classToJoin.trainer.trainerCredential2}}</span>
+					<span ng-if = "classToJoin.trainer.trainerCredential3">, {{classToJoin.trainer.trainerCredential3}}</span>
+					<span ng-if = "classToJoin.trainer.trainerCredential4">, {{classToJoin.trainer.trainerCredential4}}</span>
 				</h4>
 				<p class="gray mb0 funFacts">
 					<span class="bold">Fun fact: </span>
@@ -47,56 +59,56 @@
 					<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[0].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[0].injuries}}</span><br>
 					</div>
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 1">
 					<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[1].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[1].injuries}}</span><br>
 					</div>		    							
 				</li>				
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 2">
 					<img class="user-circle-image" src="{{bookedUsers[2].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[2].firstName}} {{bookedUsers[2].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[2].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[2].injuries}}</span><br>
 					</div>		    							
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 3">
 					<img class="user-circle-image" src="{{bookedUsers[3].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[3].firstName}} {{bookedUsers[3].lastName.charAt(0)}}.</span>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[3].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[3].injuries}}</span><br>
 					</div>		    							
 				</li>				
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 4">
 					<img class="user-circle-image" src="{{bookedUsers[4].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[4].firstName}} {{bookedUsers[4].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[4].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[4].injuries}}</span><br>
 					</div>		    							
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 5">
 					<img class="user-circle-image" src="{{bookedUsers[5].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[5].firstName}} {{bookedUsers[5].lastName.charAt(0)}}.</span>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[5].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[5].injuries}}</span><br>
 					</div>		    							
 				</li>				
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 6">
 					<img class="user-circle-image" src="{{bookedUsers[6].picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{bookedUsers[6].firstName}} {{bookedUsers[6].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[6].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[6].injuries}}</span><br>
 					</div>		    							
 				</li>
 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 7">
 					<img class="user-circle-image" src="{{bookedUsers[7].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span>
-						<span ng-if = "currentUser.role === 'admin'" id="dark-text">Injuries: {{bookedUsers[7].injuries}}</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[7].injuries}}</span><br>
 					</div>		    							
 				</li>				
 			</ul>

@@ -30,7 +30,12 @@
     "cron": "*",
     "firebase": "*",
     "request": "*",
-    "opentok": "*"
+    "opentok": "*",
+    "grunt-html-snapshot": "*",
+    "express-seojs": "*",
+    "prerender-node": "*",
+    "mailgun-js":"^0.7",
+    "moment-timezone": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

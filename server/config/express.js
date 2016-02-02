@@ -33,6 +33,9 @@ module.exports = function(app) {
   app.use(cookieParser());
   app.use(passport.initialize());
 
+  //Allow Javascript website to be crawled perfectly by search engines.
+  app.use(require('prerender-node').set('prerenderToken', '0xk2UugZ3MhosEzMYK0rg'));
+
   // Persist sessions with mongoStore
   // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
   app.use(session({
@@ -44,6 +47,41 @@ module.exports = function(app) {
       db: 'body-app'
     })
   }));
+
+// app.use(function(req, res, next) {
+//   var fragment = req.query._escaped_fragment_;
+ 
+//   // If there is no fragment in the query params
+//   // then we're not serving a crawler
+//   if (!fragment) return next();
+ 
+//   // If the fragment is empty, serve the
+//   // index page
+//   if (fragment === "" || fragment === "/")
+//     fragment = "/snapshot__index.html";
+ 
+//   // If fragment does not start with '/'
+//   // prepend it to our fragment
+//   if (fragment.charAt(0) !== "/") {
+//     fragment = '/snapshot__' + fragment;
+//   } else if (fragment.charAt(0) === "/") {
+//     fragment = '/snapshot__' + fragment.substring(1);
+//   }
+ 
+//   // If fragment does not end with '.html'
+//   // append it to the fragment
+//   if (fragment.indexOf('.html') == -1)
+//     fragment += ".html";
+ 
+//   // Serve the static html snapshot
+//   try {
+//     var file = __dirname + "/snapshots" + fragment;
+//     console.log(file)
+//     res.sendFile(file);
+//   } catch (err) {
+//     res.send(404);
+//   }
+// });
   
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
@@ -60,4 +98,5 @@ module.exports = function(app) {
     app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last
   }
+
 };
