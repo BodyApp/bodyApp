@@ -12,6 +12,8 @@ angular.module('bodyAppApp')
         $scope.thisWeek;
         $scope.chosenDay;
 
+        console.warn = function(str){}
+
         setTimezone()
         function setTimezone() {
           var tzName = jstz().timezone_name;
