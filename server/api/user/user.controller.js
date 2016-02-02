@@ -703,7 +703,7 @@ exports.saveClassTaught = function(req, res, next) {
   var classToAdd = req.body.classToAdd;
   var userId = req.user._id
   // var userToAddClassTo = req.body.userToAddClassTo
-  var userId = userToAddClassTo._id
+  // var userId = userToAddClassTo._id
 
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 

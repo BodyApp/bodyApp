@@ -155,37 +155,28 @@ angular.module('bodyAppApp')
         $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
 
         for (var bookedUser in classJoined.bookedUsers) {
-          //Adds security where injuries aren't available everywhere.
-          // if (bookedUser && (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id)) {
-          //   User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-          //     if (data.profile) {
-          //       var userToAdd = data.profile
-          //       userToAdd.injuries = data.injuries
-          //       console.log(userToAdd)
-          //       $scope.bookedUsers.push(userToAdd);
-          //       if(!$scope.$$phase) $scope.$apply();  
-          //     }
-          //   }).catch(function(err) {
-          //     console.log(err);
-          //   })
-          // } else {
-          //   User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-          //     $scope.bookedUsers.push(data);
-          //     if(!$scope.$$phase) $scope.$apply();  
-          //   }).catch(function(err) {
-          //     console.log(err);
-          //   })
-          // }    
-          console.log(classJoined.bookedUsers[bookedUser])
-          $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
-          // if (bookedUser) {
-          //   User.getUser({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-          //     $scope.bookedUsers.push(data);
-          //     if(!$scope.$$phase) $scope.$apply();  
-          //   }).catch(function(err) {
-          //     console.log(err);
-          //   })
-          // }    
+          if (bookedUser) {
+            //Adds security where injuries aren't available unless current user is admin or instructor.
+            if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
+              User.getInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+                if (data.injuries) {
+                  var userToAdd = classJoined.bookedUsers[bookedUser]
+                  userToAdd.injuries = data.injuries
+                  $scope.bookedUsers.push(userToAdd);
+                  if(!$scope.$$phase) $scope.$apply();  
+                } else {
+                  $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);    
+                  if(!$scope.$$phase) $scope.$apply();  
+                }
+              }).catch(function(err) {
+                $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
+                console.log(err);
+              })
+            } else {
+              $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
+              if(!$scope.$$phase) $scope.$apply();  
+            }    
+          }
         }
       }
     }

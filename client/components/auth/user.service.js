@@ -110,6 +110,12 @@ angular.module('bodyAppApp')
           controller: 'getUserAndInjuries'
         }
       },
+      getInjuries: {
+        method: 'PUT',
+        params: {
+          controller: 'getInjuries'
+        }
+      },
       getSubscription: {
         method: 'GET',
         params: {
