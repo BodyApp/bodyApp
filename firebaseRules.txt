@@ -1,0 +1,26 @@
+{
+    "rules": {
+      "classes": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+      },
+      "fbUsers": {
+        "$user_id": {
+          ".write": "$user_id === auth.uid",
+          ".read": "auth !== null"
+        }
+      },
+      "feedback": {
+        ".read": false,
+        ".write": "auth !== null"
+        },
+      "upcomingIntros": {
+        ".read": "auth !== null",
+        ".write": "auth.role === 'admin'"
+      },
+      "WODs": {
+        ".read": "auth !== null",
+        ".write": "auth.role === 'admin'"
+      }
+    }
+}
