@@ -55,9 +55,13 @@
   color: #0d1c45;
   font-weight: 600;
 }
-.card .learnmore {
+.trio-btn {
   color: #0d1c45;
+  font-size: 14px;
+  line-height: 14px;
+  font-style: italic;
 }
+
 #home-row-5 {
   padding: 8% 0;
 }

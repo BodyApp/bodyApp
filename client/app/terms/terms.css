@@ -28,3 +28,13 @@
   font-weight: 600;
   margin: 0px;
 }
+.terms-links li {
+  display: inline-block;
+  padding-right: 30px;
+}
+.terms-links li a {
+  color: #a1a4aa;
+}
+.terms-links li a:hover {
+  color: #224893;
+}

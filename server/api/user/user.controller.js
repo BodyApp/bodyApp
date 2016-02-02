@@ -468,7 +468,8 @@ exports.addIntroClass = function(req, res, next) {
         mailgun.messages().send(data, function (err, body) {
           //If there is an error, render the error page
           if (err) {
-            console.log("Error sending welcome email to " + emailAddress)
+            console.log(err)
+            console.log("Error sending intro booked email to " + emailAddress)
           }
           else {
             console.log("Sent booking confirmation email to " + emailAddress)
@@ -796,6 +797,7 @@ exports.sendWelcomeEmail = function(req,res) {
   });
 
   function sendEmail(user) {
+    var emailAddress = user.email;
     fs.readFile(__dirname + '/emails/welcomeEmail.html', function (err, html) {
       if (err) throw err; 
       var welcomeEmailTemplate = html
@@ -804,14 +806,17 @@ exports.sendWelcomeEmail = function(req,res) {
         var welcomeEmailHeader = html
         var data = {
           from: from_who,
-          to: user.email,
+          to: emailAddress,
           subject: 'Welcome To The Club',
           html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+user.firstName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
         }
         if (!user.welcomeEmailSent) {
           mailgun.messages().send(data, function (err, body) {
             //If there is an error, render the error page
-            if (err) console.log("Error sending welcome email to " + emailAddress)
+            if (err) {
+              console.log("Error sending welcome email to " + emailAddress)
+              console.log(err)
+            }
             else {
               user.welcomeEmailSent = new Date();
               user.save(function(err) {

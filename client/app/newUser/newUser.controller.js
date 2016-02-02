@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, $firebaseArray, $uibModal, $firebaseObject) {
+  .controller('NewUserCtrl', function ($scope, $http, $state, $timeout, User, Auth, $firebaseArray, $uibModal, $firebaseObject) {
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
@@ -19,14 +19,17 @@ angular.module('bodyAppApp')
 
     Auth.getCurrentUser().$promise.then(function(user) {
         currentUser = user
-        if (!currentUser.welcomeEmailSent) {
-            User.sendWelcomeEmail({ id: currentUser._id }, {
-            }, function(user) {
-                console.log(user)
-            }, function(err) {
-                console.log("Error: " + err)
-            }).$promise;  
-        }
+        console.log(currentUser);
+        $timeout(function() {
+            if (!currentUser.welcomeEmailSent) {
+                User.sendWelcomeEmail({ id: currentUser._id }, {
+                }, function(user) {
+                    console.log(user)
+                }, function(err) {
+                    console.log("Error: " + err)
+                }).$promise;  
+            }
+        }, 2000)
         if (currentUser.timezone != tzName) {
             User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
               console.log("Updated user timezone preference")

@@ -28,6 +28,7 @@ exports.setup = function (User, config) {
         if (err) {
           return done(err);
         }
+        console.log(profile.emails)
         console.log(profile._json.friends)
         if (!user) {
           user = new User({
