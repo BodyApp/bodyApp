@@ -85,7 +85,7 @@ angular.module('bodyAppApp')
     //   .child("tabata"));
 
 		//3-way data bind for tabata time and rounds
-    $firebaseObject(ref.child(weekOf)
+    $firebaseObject(ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
@@ -126,7 +126,7 @@ angular.module('bodyAppApp')
       })
 
     var stopwatchRef = $firebaseObject(
-    	ref.child(weekOf)
+    	ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
@@ -159,13 +159,13 @@ angular.module('bodyAppApp')
     $scope.consumersCanHearEachOther;
 
     var canHearRef = $firebaseObject(
-    	ref.child(weekOf)
+    	ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
       .child("consumersCanHearEachOther"));
 
-    var feedbackModal = ref.child(weekOf)
+    var feedbackModal = ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
@@ -192,7 +192,7 @@ angular.module('bodyAppApp')
       });
 
     var volumeRef = $firebaseObject(
-      ref.child(weekOf)
+      ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
@@ -713,7 +713,7 @@ angular.module('bodyAppApp')
 		    	// console.log(event)
 				    console.log('The publisher started streaming with id ' + event.stream.id);
 
-				    var classRef = ref.child(weekOf)
+				    var classRef = ref.child("classes").child(weekOf)
 			      .child(classDate.getDay())
 			      .child("slots")
 			      .child(classDate.getTime())

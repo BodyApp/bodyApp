@@ -20,7 +20,7 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
-    var weekOfRef = ref.child(weekOf)
+    var weekOfRef = ref.child("classes").child(weekOf)
     var dayRef = weekOfRef.child(classDate.getDay())
 
     var currentUser = Auth.getCurrentUser()

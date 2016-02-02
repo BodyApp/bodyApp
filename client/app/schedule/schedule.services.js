@@ -27,7 +27,7 @@ angular.module('bodyAppApp')
   	}
 
   	service.setFirebaseObject = function(weekRef) {
-	    var weekRef = ref.child(weekRef);
+	    var weekRef = ref.child("classes").child(weekRef);
       fbObject = $firebaseObject(weekRef);
 			return fbObject;
   	}

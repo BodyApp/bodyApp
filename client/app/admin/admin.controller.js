@@ -155,7 +155,7 @@ angular.module('bodyAppApp')
       var sunGetYear = sunDate.getFullYear();
       var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
-      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf);  
+      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf);  
       var syncObject = $firebaseObject(weekOfRef);
       
       var trainerInfoToSave = {firstName: workoutToCreate.trainer.firstName, lastName: workoutToCreate.trainer.lastName, _id: workoutToCreate.trainer._id, facebookId: workoutToCreate.trainer.facebookId, gender: workoutToCreate.trainer.gender, picture: workoutToCreate.trainer.picture};

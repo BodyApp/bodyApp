@@ -81,13 +81,13 @@ angular.module('bodyAppApp')
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/");
     var classObjRef = $firebaseObject(
-      ref.child(weekOf)
+      ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())
     )
 
-    var userRef = ref.child(weekOf)
+    var userRef = ref.child("classes").child(weekOf)
       .child(classDate.getDay())
       .child("slots")
       .child(classDate.getTime())

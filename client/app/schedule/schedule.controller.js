@@ -141,7 +141,7 @@ angular.module('bodyAppApp')
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
 
-          if (!$scope.currentWeek) $firebaseObject(ref.child(weekOf)).$bindTo($scope, 'currentWeek')
+          if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
           
           unbindMethod()
           Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
@@ -160,7 +160,7 @@ angular.module('bodyAppApp')
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-          if (!$scope.nextWeek) $firebaseObject(ref.child(weekOf)).$bindTo($scope, 'nextWeek')
+          if (!$scope.nextWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'nextWeek')
         }
 
         $scope.setCalendarToNextWeek = function() { nextWeek() }

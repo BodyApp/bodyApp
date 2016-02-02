@@ -88,7 +88,7 @@ new CronJob('29 * * * * *', function() {
   var sunGetMonth = sunDate.getMonth()+1;
   var sunGetYear = sunDate.getFullYear();
   var weekOf = "weekof"+ (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate) + sunGetYear;
-  var firebaseRef = new Firebase("https://bodyapp.firebaseio.com/")
+  var firebaseRef = new Firebase("https://bodyapp.firebaseio.com/classes/")
 	var weeklyFirebaseRef = firebaseRef.child(weekOf);
 
 	weeklyFirebaseRef.once("value", function(currentWeek) {
