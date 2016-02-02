@@ -158,6 +158,8 @@ angular.module('bodyAppApp')
       var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf);  
       var syncObject = $firebaseObject(weekOfRef);
       
+      var trainerInfoToSave = {firstName: workoutToCreate.trainer.firstName, lastName: workoutToCreate.trainer.lastName, _id: workoutToCreate.trainer._id, facebookId: workoutToCreate.trainer.facebookId, gender: workoutToCreate.trainer.gender, picture: workoutToCreate.trainer.picture, trainerCredential1: workoutToCreate.trainer.trainerCredential1, trainerCredential2: workoutToCreate.trainer.trainerCredential2, trainerCredential3: workoutToCreate.trainer.trainerCredential3, trainerCredential4: workoutToCreate.trainer.trainerCredential4, trainerRating: workoutToCreate.trainer.trainerRating, funFacts: workoutToCreate.trainer.funFacts, otherTidbits: workoutToCreate.trainer.otherTidbits};
+
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 
       syncObject.$loaded().then(function() {
@@ -204,7 +206,7 @@ angular.module('bodyAppApp')
           //   stop: date.getTime(),
           //   currentState: "stop"
           // },
-          trainer: workoutToCreate.trainer,
+          trainer: trainerInfoToSave,
           classFull: false,
           consumersCanHearEachOther: false,
           musicVolume: 50,
@@ -231,7 +233,7 @@ angular.module('bodyAppApp')
               User.saveClassTaught({
                 id: Auth.getCurrentUser()
               }, {
-                classToAdd: date.getTime(), userToAddClassTo: workoutToCreate.trainer
+                classToAdd: date.getTime(), userToAddClassTo: trainerInfoToSave
               }).$promise.then(function(confirmation) {
                 console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
                 // $location.path('/');
