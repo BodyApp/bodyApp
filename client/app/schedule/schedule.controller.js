@@ -27,7 +27,6 @@ angular.module('bodyAppApp')
 
         Auth.getCurrentUser().$promise.then(function(user) {
           currentUser = user
-          console.log(currentUser)
 
           $scope.currentUser = currentUser;
           Schedule.setCurrentUser(currentUser);
@@ -43,12 +42,11 @@ angular.module('bodyAppApp')
           
 
           if (currentUser && !currentUser.tourtipShown) {
-            console.log(currentUser)
             loadTour();
           }
-          
+
           if (currentUser.timezone != tzName) {
-            User.saveTimezone({ id: "56b0bf6d225c2c6a2f6d3bd7" }, {timezone: tzName}, function(user) {
+            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
               console.log("Updated user timezone preference")
               currentUser = user;
               Auth.updateUser(currentUser);
@@ -429,7 +427,7 @@ angular.module('bodyAppApp')
               slot.bookedUsers = slot.bookedUsers || {};
               // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
               slot.cancelledUsers = slot.cancelledUsers || {};
-              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeCancelled: new Date().getTime()};
+              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeCancelled: new Date().getTime()};
               delete slot.bookedUsers[currentUser._id];
               // delete slot.bookedFbUserIds[currentUser.facebook.id];
               // slot.$save();
@@ -448,7 +446,7 @@ angular.module('bodyAppApp')
               slot.bookedUsers = slot.bookedUsers || {};
               // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
               slot.cancelledUsers = slot.cancelledUsers || {};
-              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeCancelled: new Date().getTime()};
+              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeCancelled: new Date().getTime()};
               delete slot.bookedUsers[currentUser._id];
               // delete slot.bookedFbUserIds[currentUser.facebook.id];
               Auth.updateUser(user);
@@ -493,7 +491,7 @@ angular.module('bodyAppApp')
                 // getInfo(slot.date);
                 slot.bookedUsers = slot.bookedUsers || {};
                 // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
+                slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
                 // slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
               }, function(err) {
                   console.log("Error adding class: " + err)
@@ -532,7 +530,7 @@ angular.module('bodyAppApp')
             // getInfo(slot.date);
             slot.bookedUsers = slot.bookedUsers || {};
             // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-            slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
+            slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
             // slot.bookedFbUserIds[currentUser.facebook.id] = true
             // slot.$save();
             currentUser = user;

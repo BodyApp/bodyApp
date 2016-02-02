@@ -174,7 +174,7 @@ angular.module('bodyAppApp')
         // getInfo(slot.date);
         slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-        slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName, timeBooked: new Date().getTime(), injuries: currentUser.injuries, picture: currentUser.picture, facebookId: currentUser.facebookId};
+        slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
         // slot.bookedFbUserIds[currentUser.facebook.id] = true
         // slot.$save();
         currentUser = user;

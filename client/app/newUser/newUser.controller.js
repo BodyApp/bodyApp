@@ -80,7 +80,7 @@ angular.module('bodyAppApp')
 
     	classToBook.$loaded(function() {
     		classToBook.bookedUsers = classToBook.bookedUsers || {};
-			classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName, timeBooked: new Date().getTime(), injuries: injuries, picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
+			classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
             // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
             // classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
 			classToBook.$save()
@@ -140,7 +140,7 @@ angular.module('bodyAppApp')
     	// } else {
 		User.saveInjuriesGoalsEmergency({id: $scope.currentUser}, {injuryString: injuries, goals: goals, emergencyContact: emergencyContact})
         .$promise.then(function(user) {
-			console.log("Successfully saved injury info.");
+			console.log("Successfully saved injury, goals and emergency contact info.");
 			Auth.getUpdatedUser();
             $scope.newUserStep++;   
 		})
