@@ -32,6 +32,32 @@ angular.module('bodyAppApp')
           Schedule.setCurrentUser(currentUser);
           $scope.pictureData = {};
 
+          //Firebase authentication check
+          var ref = new Firebase("https://bodyapp.firebaseio.com/");
+          ref.onAuth(function(authData) {
+            console.log(authData)
+            if (authData) {
+              console.log("User " + authData.uid + " is logged in ");
+            } else {
+              console.log("User is logged out");
+              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                if (error) {
+                  console.log("Firebase user authentication failed", error);
+                } else {
+                  console.log("Firebase user authentication succeeded!", authData);
+                }
+              }); 
+            }
+          })
+          // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+          //   if (error) {
+          //     console.log("Firebase user authentication failed", error);
+          //   } else {
+          //     console.log("Firebase user authentication succeeded!", authData);
+          //   }
+          // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+          // }); 
+
           // $rootScope.htmlReady() //For PhantomJS
 
           // $scope.myBookedClasses = currentUser.classesBooked;

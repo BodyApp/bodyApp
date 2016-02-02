@@ -47,6 +47,8 @@ angular.module('bodyAppApp')
       logout: function() {
         $cookieStore.remove('token');
         currentUser = {};
+        var ref = new Firebase("https://bodyapp.firebaseio.com/");
+        ref.unauth();
       },
 
       /**

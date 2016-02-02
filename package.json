@@ -35,7 +35,8 @@
     "express-seojs": "*",
     "prerender-node": "*",
     "mailgun-js":"^0.7",
-    "moment-timezone": "*"
+    "moment-timezone": "*",
+    "firebase-token-generator": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

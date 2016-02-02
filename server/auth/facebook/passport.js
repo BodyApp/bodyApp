@@ -3,6 +3,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('../../config/environment');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
 var Firebase = require('firebase');
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 
 exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
@@ -56,15 +58,36 @@ exports.setup = function (User, config) {
           }
 
           user.level = user.level || 0;
+          var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
+          user.firebaseToken = firebaseToken;
 
           user.save(function(err) {
             if (err) return done(err);
-            var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
+            //Firebase authentication
+            var ref = new Firebase("https://bodyapp.firebaseio.com/");
+            var usersRef = ref.child("fbUsers");  
             var userId = user._id.toString()
+            
+            // console.log(token)
+            ref.authWithCustomToken(firebaseToken, function(error, authData) {
+              if (error) {
+                console.log("Firebase authentication failed", error);
+              } else {
+                console.log("Firebase authentication succeeded!", authData);
+              }
+            // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+            }); 
+
             usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
-            done(err, user);
+            done(err, user);  
+            
           });
         } else {
+          //Generate client firebase token.  Set user to admin if their role is admin
+          var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture }) 
+            // {admin: user.role === "admin"});
+          user.firebaseToken = firebaseToken;
+          
           if (profile._json) {
             user.facebook = profile._json;
             user.lastLoginDate = new Date()
@@ -78,8 +101,22 @@ exports.setup = function (User, config) {
           }          
           user.save(function(err) {
             if (err) return done(err);
-            var usersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");  
+            //Firebase authentication
+            var ref = new Firebase("https://bodyapp.firebaseio.com/");
+            var usersRef = ref.child("fbUsers");  
             var userId = user._id.toString()
+            
+            // var token = tokenGenerator.createToken({ uid: profile.id, some: "arbitrary", data: "here" },
+            //   {admin: user.role === "admin"});
+            // user.firebaseToken = token;
+            ref.authWithCustomToken(firebaseToken, function(error, authData) {
+              if (error) {
+                console.log("Firebase authentication failed", error);
+              } else {
+                console.log("Firebase authentication succeeded!", authData);
+              }
+            // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+            }); 
             usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
             return done(err, user);

@@ -26,7 +26,7 @@
         <!-- Classes booked for this current week -->
           <!-- If user is not the instructor -->
         <div ng-repeat="day in currentWeek">
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
+          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -55,7 +55,7 @@
           </div>
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -87,7 +87,7 @@
         <!-- Classes booked for next week -->
           <!-- If user is not the instructor -->
         <div ng-repeat="nextWeekDay in nextWeek">
-          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
+          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -115,7 +115,7 @@
           </div>
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="(slot.trainer._id === currentUser._id) && !slot.past">
+          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>

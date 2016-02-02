@@ -13,6 +13,8 @@ var config = require('./config/environment');
 var CronJob = require('cron').CronJob;
 var Firebase = require('firebase');
 var seojs = require('express-seojs');
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 
 // Module to call XirSys servers
 var request = require("request");
@@ -63,6 +65,18 @@ var socketio = require('socket.io')(server, {
 });
 
 var socketServer = require('socket.io').listen(server, {"log level":1})
+
+// var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
+var ref = new Firebase("https://bodyapp.firebaseio.com/");
+ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
+  if (error) {
+    console.log("Firebase server authentication failed", error);
+  } else {
+    console.log("Firebase server authentication succeeded!", authData);
+  }
+// }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+}); 
+
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {

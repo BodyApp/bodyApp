@@ -158,7 +158,16 @@ angular.module('bodyAppApp')
       var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/" + weekOf);  
       var syncObject = $firebaseObject(weekOfRef);
       
-      var trainerInfoToSave = {firstName: workoutToCreate.trainer.firstName, lastName: workoutToCreate.trainer.lastName, _id: workoutToCreate.trainer._id, facebookId: workoutToCreate.trainer.facebookId, gender: workoutToCreate.trainer.gender, picture: workoutToCreate.trainer.picture, trainerCredential1: workoutToCreate.trainer.trainerCredential1, trainerCredential2: workoutToCreate.trainer.trainerCredential2, trainerCredential3: workoutToCreate.trainer.trainerCredential3, trainerCredential4: workoutToCreate.trainer.trainerCredential4, trainerRating: workoutToCreate.trainer.trainerRating, funFacts: workoutToCreate.trainer.funFacts, otherTidbits: workoutToCreate.trainer.otherTidbits};
+      var trainerInfoToSave = {firstName: workoutToCreate.trainer.firstName, lastName: workoutToCreate.trainer.lastName, _id: workoutToCreate.trainer._id, facebookId: workoutToCreate.trainer.facebookId, gender: workoutToCreate.trainer.gender, picture: workoutToCreate.trainer.picture};
+      if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
+      if (workoutToCreate.trainer.trainerCredential2) trainerInfoToSave.trainerCredential2 = workoutToCreate.trainer.trainerCredential2;
+      if (workoutToCreate.trainer.trainerCredential3) trainerInfoToSave.trainerCredential3 = workoutToCreate.trainer.trainerCredential3;
+      if (workoutToCreate.trainer.trainerCredential4) trainerInfoToSave.trainerCredential4 = workoutToCreate.trainer.trainerCredential4;
+      if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
+      if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
+      if (workoutToCreate.trainer.trainerRating) trainerInfoToSave.trainerRating = workoutToCreate.trainer.trainerRating;
+      if (workoutToCreate.trainer.funFacts) trainerInfoToSave.funFacts = workoutToCreate.trainer.funFacts;
+      if (workoutToCreate.trainer.otherTidbits) trainerInfoToSave.otherTidbits = workoutToCreate.trainer.otherTidbits;
 
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 

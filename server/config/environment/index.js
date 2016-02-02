@@ -67,6 +67,8 @@ var all = {
     // }
   },
 
+  firebaseSecret: process.env.firebaseSecret,
+
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
