@@ -11,12 +11,12 @@ angular.module('bodyAppApp')
         animation: true,
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginCtrl',
+        windowClass: "modal-tall"
       });
 
       modalInstance.result.then(function (selectedItem) {
-        // openStripePayment()
-      }, function () {
         $window.location.href = '/auth/' + 'facebook';
+      }, function () {
       });
     }
 
