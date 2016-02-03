@@ -128,60 +128,64 @@
     
     <div class="container pt96">
       <div class="row">
-        <div class="col-sm-6 col-sm-push-6 col-md-4 col-md-push-6 col-membership">
-          <div class="stripeBlue"></div>
-          <div class="membershipFeatures">
-            <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
-            <div class="text-center" style="margin-bottom: 14px;">
-              <div style="width: 40%; display: inline-block;">
-                <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">10</h1>
-                <span class="pricingTime royalblue">/mo</span>
-                <span class="pricingType royalblue">Pilot pricing</span>
+        <a href="#" ng-click="loginOauth('facebook')" class="memberCard">
+          <div class="col-sm-6 col-sm-push-6 col-md-4 col-md-push-6 col-membership">
+            <div class="stripeBlue"></div>
+            <div class="membershipFeatures">
+              <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
+              <div class="text-center" style="margin-bottom: 14px;">
+                <div style="width: 40%; display: inline-block;">
+                  <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">10</h1>
+                  <span class="pricingTime royalblue">/mo</span>
+                  <span class="pricingType royalblue">Pilot pricing</span>
+                </div>
+                <div style="width: 40%; display: inline-block;">
+                  <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">49</h1>
+                  <span class="pricingTime lightgray">/mo</span>
+                  <span class="pricingType lightgray">Regular pricing</span>
+                </div>            
               </div>
-              <div style="width: 40%; display: inline-block;">
-                <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">49</h1>
-                <span class="pricingTime lightgray">/mo</span>
-                <span class="pricingType lightgray">Regular pricing</span>
-              </div>            
-            </div>
-            <div class="bulletFeatures">
-              <hr>
-              <ul class="bulletChecks">
-                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Introductory session</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Progression tracking</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Wellness hotline</span></li>
-              </ul>
-              <hr>
-            </div>
-          </div>        
-        </div>
-        <div class="visible-xs pt32"></div>
-        <div class="col-sm-6 col-sm-pull-6 col-md-4 col-md-pull-2">
-          <div class="stripeOrange"></div>
-          <div class="membershipFeatures">
-            <h3 class="orange pt32 mb16 text-center bold">Free Trial</h3>
-            <div class="text-center" style="margin-bottom: 30px;">
-              <h1 class="pricingAmt orange"><sup>$</sup></h1><h1 class="pricingAmt orange">0</h1>
-              <span class="pricingTime orange">/mo</span>
-            </div>
-            
-            <div class="bulletFeatures">
-              <hr>
-              <ul class="bulletChecks">
-                <li><img class="checkMarks" src="assets/images/icons/check-orange.png"><span>Introductory session</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Unlimited classes per month</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">$50 starter kit of equipment</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Classes with friends</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Progression tracking</span></li>
-                <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Wellness hotline</span></li>
-              </ul>
-              <hr>
-            </div> 
+              <div class="bulletFeatures">
+                <hr>
+                <ul class="bulletChecks mb16">
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Introductory session</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Progression tracking</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Wellness hotline</span></li>
+                </ul>
+                <p class="membershipCard-btn pb16">Get started</p>
+              </div>
+            </div>        
           </div>
-        </div>              
+        </a>
+        <div class="visible-xs pt32"></div>
+        <a href="#" ng-click="loginOauth('facebook')" class="trialCard">
+          <div class="col-sm-6 col-sm-pull-6 col-md-4 col-md-pull-2">
+            <div class="stripeOrange"></div>
+            <div class="membershipFeatures">
+              <h3 class="orange pt32 mb16 text-center bold">Free Trial</h3>
+              <div class="text-center" style="margin-bottom: 30px;">
+                <h1 class="pricingAmt orange"><sup>$</sup></h1><h1 class="pricingAmt orange">0</h1>
+                <span class="pricingTime orange">/mo</span>
+              </div>
+              
+              <div class="bulletFeatures">
+                <hr>
+                <ul class="bulletChecks mb16">
+                  <li><img class="checkMarks" src="assets/images/icons/check-orange.png"><span>Introductory session</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Unlimited classes per month</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">$50 starter kit of equipment</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Classes with friends</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Progression tracking</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Wellness hotline</span></li>
+                </ul>
+                <p class="trialCard-btn pb16">Get started</p>
+              </div> 
+            </div>
+          </div>
+        </a>
       </div>     
 
     </div>
