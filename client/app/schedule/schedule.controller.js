@@ -2,7 +2,7 @@
 
 angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
-        var currentUser;
+        var currentUser = Auth.getCurrentUser();
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
         $scope.todayDayOfWeek = todayDate.getDay();

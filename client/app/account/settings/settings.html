@@ -73,12 +73,12 @@
 				<h4 class="royalblue mb8">Membership</h4>	
 				<div ng-if = "currentUser.stripe.subscription.status === 'active'" >
 					<p class="mb16">Thanks for being on the team! Your next payment is {{formatEndDate(subEndDate)}}</p>
-				  <button ng-click = "cancelSubscription()" class="btn btn-lg btn-primary">
+				  <a href="#" class = "gray" ng-click = "cancelSubscription()">
 				    Cancel Membership
-				  </button>	
+				  </a>	
 				</div>
 			  <div ng-if = "currentUser.stripe.subscription.status != 'active'">
-					<p class="mb16">Not currently a member</p>
+					<p class="mb24">Not currently a member</p>
 					<button ng-click = "addSubscription()" class="btn btn-lg btn-primary">Add Membership</button>
 				</div>
 			</div>		
