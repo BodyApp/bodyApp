@@ -61,6 +61,28 @@
   line-height: 14px;
   font-style: italic;
 }
+a.trialCard:hover {
+  color: #FF6638 !important;
+}
+a.memberCard:hover {
+  color: #224893 !important;
+}
+
+.membershipCard-btn, .trialCard-btn {
+  color: #fff;
+  padding: 10px 15px;
+  background-color: #0d1c45;
+  font-size: 14px;
+  line-height: 14px;
+  width: 125px;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+.trialCard-btn {
+  background-color: #FF6638;
+
+}
 
 #home-row-5 {
   padding: 8% 0;
