@@ -1,5 +1,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
+		<loc>https://www.getbodyapp.com/program</loc>
+	</url>
+	<url>
+		<loc>https://www.getbodyapp.com/coaching</loc>
+	</url>
+	<url>
+		<loc>https://www.getbodyapp.com/experience</loc>
+	</url>
+	<url>
+		<loc>https://www.getbodyapp.com/about</loc>
+	</url>
+	<url>
+		<loc>https://www.getbodyapp.com/faq</loc>
+	</url>
+	<url>
 		<loc>https://www.getbodyapp.com/membership</loc>
 	</url>
 	<url>
@@ -7,9 +22,6 @@
 	</url>
 	<url>
 		<loc>https://www.getbodyapp.com/schedule</loc>
-	</url>
-	<url>
-		<loc>https://www.getbodyapp.com/faq</loc>
 	</url>
 	<url>
 		<loc>https://www.getbodyapp.com/newuser</loc>
