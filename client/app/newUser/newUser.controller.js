@@ -40,7 +40,6 @@ angular.module('bodyAppApp')
         if (!currentUser.welcomeEmailSent) {
             User.sendWelcomeEmail({ id: currentUser._id }, {
             }, function(user) {
-                console.log(user)
             }, function(err) {
                 console.log("Error: " + err)
             }).$promise;  
@@ -67,9 +66,6 @@ angular.module('bodyAppApp')
 		$scope.bookedIntroClass = classBooked
 
         var classDate = new Date(classBooked.$id*1)
-        console.log(classDate.getDay())
-        console.log(classDate.getTime())
-
         var todayDate = new Date(classDate);
         var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
 
@@ -86,8 +82,6 @@ angular.module('bodyAppApp')
 	      .child("slots")
 	      .child(classDate.getTime())
     	)
-
-    	console.log(classToBook)
 
         // var date = new Date(classBooked.$id*1)
         // $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"

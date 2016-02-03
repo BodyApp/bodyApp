@@ -92,15 +92,15 @@ angular.module('bodyAppApp')
           windowClass: "modal-wide",
           resolve: {
             slot: function() {
-              return "yeah baby"
+              return undefined
             }
           }
         });
 
         modalInstance.result.then(function () {
-          // openStripePayment()
+          if (Auth.getCurrentUser().stripe) $scope.isMember = Auth.getCurrentUser().stripe.subscription.status === "active";
         }, function () {
-          // openStripePayment()
+          if (Auth.getCurrentUser().stripe) $scope.isMember = Auth.getCurrentUser().stripe.subscription.status === "active";
         });
       }
   });

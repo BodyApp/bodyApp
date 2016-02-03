@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
 
     $scope.closeModal = function() {
       $uibModalInstance.close()
@@ -59,7 +59,6 @@ angular.module('bodyAppApp')
     // });
 
 	  var currentUser = Auth.getCurrentUser();
-	  console.log(slot);
 
 		$scope.joinClicked = function() {
 			$uibModalInstance.dismiss('join');
@@ -69,7 +68,7 @@ angular.module('bodyAppApp')
 		function openStripePayment() {
       var handler = StripeCheckout.configure({
         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-        image: '../../assets/images/body-app-logo-header.png',
+        image: '../../assets/images/body-stripe.jpg',
         locale: 'auto',
         token: function(token, args) {
           var modalInstance = openPaymentConfirmedModal()
@@ -84,7 +83,7 @@ angular.module('bodyAppApp')
               currentUser = data
               $scope.currentUser = currentUser
               modalInstance.close()
-              bookClass(slot)
+              if (slot) bookClass(slot)  
           })
           .error(function(err) {
               console.log(err)

@@ -4,7 +4,6 @@ angular.module('bodyAppApp')
   .controller('ResultsCtrl', function ($scope, Schedule, Auth, DayOfWeekSetter) {
     
     $scope.currentUser = Auth.getCurrentUser()
-    console.log($scope.currentUser);
 
     $scope.classCompleted = Schedule.classUserJustJoined;
     $scope.wodToDisplay;
@@ -34,7 +33,6 @@ angular.module('bodyAppApp')
     wodsRef.once('value', function(snapshot) {
       $scope.wods = snapshot.val();  
       $scope.wodToDisplay = $scope.wods[classKey];
-      console.log($scope.wodToDisplay);
       loadResultsList(classDate);
       if(!$scope.$$phase) $scope.$apply();
     })
@@ -185,7 +183,6 @@ angular.module('bodyAppApp')
 
       function loadClassmates() {
         if ($scope.userResultsToday && $scope.userResultsToday.classDateTime) {
-          console.log($scope.userResultsToday)
           dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
             if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType && $scope.wodToDisplay.scoreType.id === 1) { 
               var i = snapshot.numChildren()

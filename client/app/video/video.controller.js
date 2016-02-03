@@ -20,11 +20,12 @@ angular.module('bodyAppApp')
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
-				session.disconnect()
-        Video.destroyHardwareSetup()
-        publisher.destroy();
-				console.log("class is over, booting people out");
-				$location.path('/classfeedback');
+				// session.disconnect()
+    //     Video.destroyHardwareSetup()
+    //     publisher.destroy();
+				console.log("class is over");
+				$scope.exitClass()
+				// $location.path('/classfeedback');
 			} else if (classHalfway < currentTime ) {
 				classTaken()
 			} else {
@@ -184,11 +185,9 @@ angular.module('bodyAppApp')
             });
 
             modalInstance.result.then(function () {
-            	currentUser = Auth.getCurrentUser()
-            	console.log(currentUser)
+            	currentUser = Auth.getCurrentUser();
             }, function () {
-            	currentUser = Auth.getCurrentUser()
-            	console.log(currentUser)
+            	currentUser = Auth.getCurrentUser();
             });
       	}
       });
@@ -215,12 +214,10 @@ angular.module('bodyAppApp')
 			$scope.consumersCanHearEachOther = canHearRef.$value
 			if ($scope.consumersCanHearEachOther) {
 	 			for (var prop in subscriberObjects) {
-						console.log("subscribing to audio from "+subscriberObjects[prop].streamId)
 						subscriberObjects[prop].subscribeToAudio(true)
 				}
 	  	} else {
 	  		for (var prop in subscriberObjects) {
-					console.log("Unsubscribing from audio "+subscriberObjects[prop].streamId)
 					subscriberObjects[prop].subscribeToAudio(false)
 				}
 	  		// for (var i = 0; i < subscriberArray.length; i++) {
@@ -234,12 +231,10 @@ angular.module('bodyAppApp')
 			$scope.consumersCanHearEachOther = canHearRef.$value
 			if ($scope.consumersCanHearEachOther) {
 				for (var prop in subscriberObjects) {
-					console.log("subscribing to audio from "+subscriberObjects[prop].streamId)
 					subscriberObjects[prop].subscribeToAudio(true)
 				}
 	  	} else {
 	  		for (var prop in subscriberObjects) {
-					console.log("Unsubscribing from audio "+subscriberObjects[prop].streamId)
 					subscriberObjects[prop].subscribeToAudio(false)
 				}
 	  		// for (var i = 0; i < subscriberArray.length; i++) {
@@ -489,7 +484,6 @@ angular.module('bodyAppApp')
 					if (!$scope.consumerObjects[streamId]) {
 						$scope.consumerList.push(streamId);
 						streamBoxNumber = $scope.consumerList.length;
-						console.log(streamBoxNumber);
 					} else {
 						streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
 					}
@@ -501,7 +495,6 @@ angular.module('bodyAppApp')
 				}
 
 				var subscriberBox = getIdOfBox(instructorStream ? 0 : streamBoxNumber)
-				console.log(subscriberBox)
 
 			  var subscriber = session.subscribe(event.stream, subscriberBox, {
 			    insertMode: 'replace',
@@ -854,6 +847,9 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.exitClass = function() {
+			// session.disconnect()
+   //    Video.destroyHardwareSetup()
+   //    publisher.destroy();
 			// publisher.disconnect();
 			session.disconnect()
       // session.destroy();
@@ -862,7 +858,6 @@ angular.module('bodyAppApp')
 			} else {
 				$location.path('/results');
 			}
-
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.

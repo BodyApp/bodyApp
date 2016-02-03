@@ -27,62 +27,64 @@ angular.module('bodyAppApp')
           $scope.wod = snapshot.val()
         });
 
-        Auth.getCurrentUser().$promise.then(function(user) {
-          currentUser = user
+        if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
+          Auth.getCurrentUser().$promise.then(function(user) {
+            currentUser = user
 
-          $scope.currentUser = currentUser;
-          Schedule.setCurrentUser(currentUser);
-          $scope.pictureData = {};
+            $scope.currentUser = currentUser;
+            Schedule.setCurrentUser(currentUser);
+            $scope.pictureData = {};
 
-          //Firebase authentication check
-          var ref = new Firebase("https://bodyapp.firebaseio.com/");
-          ref.onAuth(function(authData) {
-            if (authData) {
-              console.log("User is authenticated with fb ");
-            } else {
-              console.log("User is logged out");
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                if (error) {
-                  console.log("Firebase user authentication failed", error);
-                } else {
-                  if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                }
-              }); 
+            //Firebase authentication check
+            var ref = new Firebase("https://bodyapp.firebaseio.com/");
+            ref.onAuth(function(authData) {
+              if (authData) {
+                console.log("User is authenticated with fb ");
+              } else {
+                console.log("User is logged out");
+                ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                  if (error) {
+                    console.log("Firebase user authentication failed", error);
+                  } else {
+                    if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                  }
+                }); 
+              }
+            })
+            // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+            //   if (error) {
+            //     console.log("Firebase user authentication failed", error);
+            //   } else {
+            //     console.log("Firebase user authentication succeeded!", authData);
+            //   }
+            // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+            // }); 
+
+            // $rootScope.htmlReady() //For PhantomJS
+
+            // $scope.myBookedClasses = currentUser.classesBooked;
+            // for (prop in currentUser.classesBooked) {
+            //   console.log(prop);
+            //   getInfo(prop)
+            // }
+            
+
+            if (currentUser && !currentUser.tourtipShown) {
+              loadTour();
+            }
+
+            if (currentUser.timezone != tzName) {
+              User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
+                console.log("Updated user timezone preference")
+                currentUser = user;
+                Auth.updateUser(currentUser);
+                $scope.currentUser = currentUser;
+              }, function(err) {
+                  console.log("Error saving Timezone: " + err)
+              }).$promise;
             }
           })
-          // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-          //   if (error) {
-          //     console.log("Firebase user authentication failed", error);
-          //   } else {
-          //     console.log("Firebase user authentication succeeded!", authData);
-          //   }
-          // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-          // }); 
-
-          // $rootScope.htmlReady() //For PhantomJS
-
-          // $scope.myBookedClasses = currentUser.classesBooked;
-          // for (prop in currentUser.classesBooked) {
-          //   console.log(prop);
-          //   getInfo(prop)
-          // }
-          
-
-          if (currentUser && !currentUser.tourtipShown) {
-            loadTour();
-          }
-
-          if (currentUser.timezone != tzName) {
-            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
-              console.log("Updated user timezone preference")
-              currentUser = user;
-              Auth.updateUser(currentUser);
-              $scope.currentUser = currentUser;
-            }, function(err) {
-                console.log("Error saving Timezone: " + err)
-            }).$promise;
-          }
-        })
+        }
 
         if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
 
@@ -447,7 +449,6 @@ angular.module('bodyAppApp')
         // }
 
         $scope.cancelClass = function(slot) {
-          console.log(slot)
           if (slot.level === "Intro") {
             User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
               // delete $scope.myBookedClasses[slot.date];

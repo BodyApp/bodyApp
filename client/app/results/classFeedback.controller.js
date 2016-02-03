@@ -33,8 +33,6 @@ angular.module('bodyAppApp')
     })
 
   	$scope.submitRatingAndResults = function(rating, score, comment, feedback, postToPublic, minutes, seconds) {
-  		console.log(score);
-  		console.log(minutes);
 	  	if (!rating) rating = 5.0
   		if (!score) score = ""
   		if (!comment) comment = ""
@@ -61,7 +59,6 @@ angular.module('bodyAppApp')
         weekOf: weekOf,
         date: classKey
       }, function(data) {
-        console.log(data.user);
         Auth.updateUser(data.user);
       }, function(err) {
           console.log(err)

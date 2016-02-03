@@ -183,7 +183,6 @@ angular.module('bodyAppApp')
     }
     
   	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
-    console.log($scope.minutesUntilClass)
   	// $scope.trainer = "Mendelson";
   	// $scope.joinClassActive = false;
 
@@ -194,7 +193,6 @@ angular.module('bodyAppApp')
 
   	function checkTime() {
   		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
-  		console.log($scope.minutesUntilClass + " minutes until class begins");
   		// $scope.$apply();
   		// if ($scope.minutesUntilClass <= 0) {
   			// $scope.joinClassActive = true;
@@ -203,7 +201,6 @@ angular.module('bodyAppApp')
   	}
 
     $scope.navigateToVideo = function() {
-      console.log(currentUser)
       if (currentUser._id === classToJoin.trainer._id) {
         clearInterval(checkTimeInterval)
         $location.path('/trainervideo')
@@ -344,8 +341,6 @@ angular.module('bodyAppApp')
         }
 
         setText(statusMessageEl, 'Checking your available bandwidth');
-
-        console.log(subscriber)
 
         testStreamingCapability(subscriber, function(error, message) {
           callbacks.cleanup();
@@ -562,13 +557,13 @@ angular.module('bodyAppApp')
       window.setTimeout(cleanupAndReport, config.timeout);
 
       bandwidthCalculator.start(function(stats) {
-        console.log(stats);
         if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
           window.clearTimeout(testTimeout);
           bandwidthCalculator.stop();
           session.disconnect()
           publisher.disconnect();
           publisher.destroy();
+          console.log(stats);
           userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats})
           // classRef.bookedUsers[currentUser._id]["failedNetworkTest"] = classRef.bookedUsers[currentUser._id]["failedNetworkTest"] || []
           // classRef.bookedUsers[currentUser._id]["failedNetworkTest"].push({time: new Date().getTime(), results: stats})
