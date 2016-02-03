@@ -145,7 +145,7 @@ angular.module('bodyAppApp')
       var sunGetYear = sunDate.getFullYear();
       var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
       var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
-      var dayRef = weekOfRef.child(DayOfWeekSetter(classDate.getDay()))
+      var dayRef = weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
 
       dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
         if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType.id === 1) { 

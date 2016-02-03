@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassFeedbackCtrl', function ($scope, $state, $location, Schedule, Auth, User, DayOfWeekSetter) {
+  .controller('ClassFeedbackModalCtrl', function ($scope, $state, $location, $uibModalInstance, Schedule, Auth, User, DayOfWeekSetter) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
   	console.log($scope.classCompleted)
 
@@ -72,7 +72,7 @@ angular.module('bodyAppApp')
 	        rating: rating
 	      }, function(data) {
 	        console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
-	        $location.path('/results')
+	        $uibModalInstance.close()
 	      }, function(err) {
 	          console.log(err)
 	      }).$promise;	

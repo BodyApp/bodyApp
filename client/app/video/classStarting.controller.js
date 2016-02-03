@@ -80,15 +80,17 @@ angular.module('bodyAppApp')
     var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/");
-    var classObjRef = $firebaseObject(
-      ref.child("classes").child(weekOf)
-      .child(DayOfWeekSetter(classDate.getDay()))
+    var classObjRef = $firebaseObject(ref
+      .child("classes")
+      .child(weekOf)
+      .child(DayOfWeekSetter.setDay(classDate.getDay()))
       .child("slots")
       .child(classDate.getTime())
     )
 
-    var userRef = ref.child("classes").child(weekOf)
-      .child(DayOfWeekSetter(classDate.getDay()))
+    var userRef = ref.child("classes")
+      .child(weekOf)
+      .child(DayOfWeekSetter.setDay(classDate.getDay()))
       .child("slots")
       .child(classDate.getTime())
       .child("bookedUsers")
@@ -149,7 +151,6 @@ angular.module('bodyAppApp')
     }
 
     function getBookedUsers(classJoined) {
-      console.log(classJoined);
       $scope.bookedUsers = [];
       if (classJoined.bookedUsers) {
         $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
@@ -562,7 +563,7 @@ angular.module('bodyAppApp')
 
       bandwidthCalculator.start(function(stats) {
         console.log(stats);
-        if (stats.video.bitsPerSecond < 300000 || stats.video.packetLossRatioPerSecond > 0.03) {
+        if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
           window.clearTimeout(testTimeout);
           bandwidthCalculator.stop();
           session.disconnect()

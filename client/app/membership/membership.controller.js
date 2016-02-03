@@ -4,6 +4,10 @@
 angular.module('bodyAppApp')
   .controller('MembershipCtrl', function ($scope, $document, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
 
+    $scope.closeModal = function() {
+      $uibModalInstance.close()
+    }
+
   	$scope.scrollDown = function() {
 
   		// var container = angular.element(document.getElementById('membershipModal'));

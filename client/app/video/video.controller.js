@@ -85,7 +85,7 @@ angular.module('bodyAppApp')
     //   .child("tabata"));
 
 		//3-way data bind for tabata time and rounds
-		var dayOfWeek = DayOfWeekSetter(classDate.getDay())
+		var dayOfWeek = DayOfWeekSetter.setDay(classDate.getDay())
 
     $firebaseObject(ref.child("classes").child(weekOf)
       .child(dayOfWeek)
@@ -175,11 +175,11 @@ angular.module('bodyAppApp')
 
     	feedbackModal.child("displayed").on('value', function(snapshot) {
       	// if (snapshot && !userIsInstructor) {
-      	if (snapshot) {
+      	if (snapshot.val()) {
       		var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'app/results/classFeedbackModal.html',
-              controller: 'ClassFeedbackCtrl',
+              controller: 'ClassFeedbackModalCtrl',
               windowClass: "modal-wide",
             });
 
@@ -857,7 +857,7 @@ angular.module('bodyAppApp')
 			// publisher.disconnect();
 			session.disconnect()
       // session.destroy();
-    if (!user.results[classKey]) {
+    if (!currentUser.results || !currentUser.results[classKey]) {
 				$location.path('/classfeedback');
 			} else {
 				$location.path('/results');
