@@ -20,17 +20,17 @@ angular.module('bodyAppApp')
       });
     }
 
-    Auth.isLoggedInAsync(function(loggedIn) {
-        if (loggedIn) {
-          if (Auth.getCurrentUser().completedNewUserFlow) {
-            // event.preventDefault();
-            $state.go('schedule');
-          } else {
-            // event.preventDefault;
-            $state.go('newuser');
-          }
-        }
-    });
+    // Auth.isLoggedInAsync(function(loggedIn) {
+    //     if (loggedIn) {
+    //       if (Auth.getCurrentUser().completedNewUserFlow) {
+    //         // event.preventDefault();
+    //         $state.go('schedule');
+    //       } else {
+    //         // event.preventDefault;
+    //         $state.go('newuser');
+    //       }
+    //     }
+    // });
 
     // *****************SCROLL DOWN*****************
     $(".arrow").click(function() {
