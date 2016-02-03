@@ -21,7 +21,7 @@
 .large-input-box {
   width: 85%;
   height: 100px;
-  border: 2px solid #0D1c45;
+  border: 2px solid #ddd;
   border-radius: 8px;
   padding: 10px;
   background: #fff
@@ -29,13 +29,13 @@
 .small-input-box {
   width: 22%;
   height: auto;
-  border: 2px solid #0D1c45;
+  border: 2px solid #ddd;
   border-radius: 8px;
   padding: 10px;
   background: #fff
 }
 .medical-disclaimer {
-  font-size: 11px;
+  font-size: 13px;
   line-height: 14px;
 }
 .large-input-box::-webkit-input-placeholder {
