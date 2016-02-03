@@ -29,17 +29,6 @@ angular.module('bodyAppApp')
 
     $scope.clicked = false;
 
-    var currentUser = Auth.getCurrentUser();
-
-    if (Auth.isLoggedIn() && Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
-      Auth.getCurrentUser().$promise.then(function(user) {
-        $scope.completedNewUserFlow = user.completedNewUserFlow;
-        if (Auth.getCurrentUser().stripe) $scope.isMember = Auth.getCurrentUser().stripe.subscription.status === "active";
-      })
-    } else if (Auth.isLoggedIn() && Auth.getCurrentUser()) {
-      $scope.completedNewUserFlow = Auth.getCurrentUser().completedNewUserFlow;
-    }
-
     $scope.logoStyle = {"background-color": "white"};
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
 

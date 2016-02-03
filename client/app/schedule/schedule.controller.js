@@ -260,7 +260,12 @@ angular.module('bodyAppApp')
               templateUrl: 'app/membership/membership.html',
               controller: 'MembershipCtrl',
               windowClass: "modal-wide",
-              scope: {classToJoin: slot} //passed current scope to the modal
+              resolve: {
+                slot: function() {
+                  return slot
+                }
+              }
+              // scope: {classToJoin: slot} //passed current scope to the modal
             });
 
             // modalInstance.result.then(function () {
