@@ -171,7 +171,7 @@
     <div class="col-sm-3">
       <h4 class="week-selector darkblue bold" ng-show = "days">
         <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="right" uib-popover="This Week"></i></a>
-        &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+        &nbsp;{{days["0Sun"].formattedDate}} - {{days["6Sat"].formattedDate}}&nbsp;
         <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="left" uib-popover="Next Week"></i></a>
       </h4>
     </div>
@@ -220,7 +220,7 @@
   <h1 id="tour-classes" class="darkblue">BODY Class Schedule</h1>
   <h4 class="week-selector darkblue bold text-center" ng-show = "days" ng-click="changeWeek()">
     <a href=""><span ng-hide = "thisWeek"> &larr; </span></a>
-      &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+      &nbsp;{{days["0Sun"].formattedDate}} - {{days["6Sat"].formattedDate}}&nbsp;
     <a href=""><span ng-show = "thisWeek" > &rarr; </span></a>
   </h4>
   <div class="col-day" ng-repeat="day in days" ng-if = "!thisWeek || day.dayOfWeek >= todayDayOfWeek">
