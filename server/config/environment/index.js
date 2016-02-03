@@ -52,7 +52,7 @@ var all = {
   tokBoxApiKey: process.env.tokBoxApiKey || 'key',
 
   mailgunApiKey: process.env.mailgunApiKey || 'key',
-  mailgunFromWho: 'daniel@getbodyapp.com',
+  mailgunFromWho: 'concierge@getbodyapp.com',
 
   stripeOptions: {
     apiKey: process.env.STRIPE_KEY || 'key',
