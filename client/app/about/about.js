@@ -3,9 +3,24 @@
 angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('team', {
-        url: '/team',
-        templateUrl: 'app/about/team.html',
+      .state('about', {
+        url: '/about',
+        templateUrl: 'app/about/about.html',
         controller: 'AboutCtrl'
-      });
+      })
+      .state('coaching', {
+        url: '/coaching',
+        templateUrl: 'app/about/coaching.html',
+        controller: 'AboutCtrl'
+      })
+      .state('experience', {
+        url: '/experience',
+        templateUrl: 'app/about/experience.html',
+        controller: 'AboutCtrl'
+      })
+      .state('program', {
+        url: '/program',
+        templateUrl: 'app/about/program.html',
+        controller: 'AboutCtrl'
+      })
   });

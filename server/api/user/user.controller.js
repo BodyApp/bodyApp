@@ -484,7 +484,7 @@ exports.addIntroClass = function(req, res, next) {
           //If there is an error, render the error page
           if (err) {
             console.log(err)
-            console.log("Error sending intro booking email to " + emailAddress)
+            console.log("Error sending intro booked email to " + emailAddress)
           }
           else {
             console.log("Sent booking confirmation email to " + emailAddress)
@@ -853,7 +853,10 @@ exports.sendWelcomeEmail = function(req,res) {
         if (!user.welcomeEmailSent) {
           mailgun.messages().send(data, function (err, body) {
             //If there is an error, render the error page
-            if (err) console.log("Error sending welcome email to " + emailAddress)
+            if (err) {
+              console.log("Error sending welcome email to " + emailAddress)
+              console.log(err)
+            }
             else {
               user.welcomeEmailSent = new Date();
               user.save(function(err) {

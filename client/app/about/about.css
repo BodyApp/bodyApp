@@ -1,0 +1,26 @@
+.hero-banner2 {
+  margin-top: 8%;
+  margin-bottom: 8%;
+}
+.divider-middle {
+    top: 0;
+    width: 1px;
+  background: #efefef;
+  bottom: 0;
+  display: inline-block;
+  position: absolute;
+  right: 0; 
+}
+.sup {
+  font-size: 12px;
+  line-height: 12px;
+  top: -0.9em;
+  left: 0.3em;
+}
+
+@media all and (max-width: 767px) {
+  .hero-banner2 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
