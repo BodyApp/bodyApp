@@ -82,7 +82,7 @@ angular.module('bodyAppApp')
               Auth.updateUser(data)
               currentUser = data
               $scope.currentUser = currentUser
-              modalInstance.close()
+              // modalInstance.close() //Added an x to the modal, so can close that way
               if (slot) bookClass(slot)  
           })
           .error(function(err) {

@@ -57,7 +57,7 @@ angular.module('bodyAppApp')
             console.log("Successfully posted to /user/cancelsub");
             $scope.currentUser = data
             Auth.updateUser(data)
-            modalInstance.close()
+            // modalInstance.close() //Adds x so they can close themselves
         })
         .error(function(err) {
             console.log("Error posting to /user/cancelsub: " + err)
@@ -88,7 +88,7 @@ angular.module('bodyAppApp')
                 currentUser = data
                 $scope.currentUser = currentUser
                 $scope.subEndDate = new Date($scope.currentUser.stripe.subscription.endDate*1000)
-                modalInstance.close()
+                // modalInstance.close() //Added x to this, so user can close themselves once they've read it.
             })
             .error(function(err) {
                 console.log(err)
@@ -171,9 +171,7 @@ angular.module('bodyAppApp')
         var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'app/account/settings/cancellation.html',
-          controller: 'SettingsCtrl',
-          backdrop: "static",
-          keyboard: false
+          controller: 'CancellationCtrl',
           // size: size,
           // resolve: {
           //   currentUser: function () {

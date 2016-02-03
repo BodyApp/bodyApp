@@ -2,6 +2,12 @@
 	<img ng-src = "../assets/images/icons/x_button.png" class="cancel-modal" href="#" ng-click = "closeModal()"></img>
     <div class="col-sm-12 text-center">
         <h3 class="mb16 darkblue" style = "color: #ffffff;">Thank you for signing up</h3>
-		<p class="darkblue">You will receive an email shortly with your payment receipt. Your Level One equipment kit is now on its way and should arrive in 2-5 business days. While you're waiting, be sure to sign up for a few Level One classes!</p>        
+				
+        <p ng-show = "!paymentComplete && !errorProcessingPayment" class="darkblue">This is the best day of our lives!  Welcome to the club!  Hold tight - we're processing your payment.</p>        
+
+        <p ng-show = "paymentComplete && !errorProcessingPayment" class="darkblue">There we go - all set! You will receive an email shortly with your payment receipt. Your Level One equipment kit is now on its way and should arrive in 2-5 business days. While you're waiting, be sure to sign up for a few Level One classes!</p>        
+
+        <p ng-show = "!paymentComplete && errorProcessingPayment" class="darkblue">There seems to be an issue processing your billing information.  Sorry about that!  Please try again or email support@getbodyapp.com for some assistance. </p>        
+
     </div>
 </div>
