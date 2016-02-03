@@ -65,10 +65,15 @@ angular.module('bodyAppApp')
       }
     }
 
+    $scope.formatEndDate = function(dateToFormat) {
+      moment.locale('en')
+      return moment(dateToFormat).format('LL');   // February 3, 2016
+    }
+
     $scope.addSubscription = function() {
       var handler = StripeCheckout.configure({
-          key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
-          image: '../../assets/images/body-app-logo-header.png',
+          key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+          image: '../../assets/images/body-stripe.jpg',
           locale: 'auto',
           token: function(token, args) {
             var modalInstance = openPaymentConfirmedModal()
@@ -82,6 +87,7 @@ angular.module('bodyAppApp')
                 Auth.updateUser(data)
                 currentUser = data
                 $scope.currentUser = currentUser
+                $scope.subEndDate = new Date($scope.currentUser.stripe.subscription.endDate*1000)
                 modalInstance.close()
             })
             .error(function(err) {
