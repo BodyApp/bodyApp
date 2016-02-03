@@ -142,6 +142,7 @@ angular.module('bodyAppApp')
     $scope.saveInjuriesGoalsEmergency = function(injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
     	injuries = injuryString || "";
         goals = goals || "";
+        if (!(emergencyFirst && emergencyLast && emergencyPhone)) return $scope.emergencyContactNotEntered = true;
         emergencyContact = {firstName: emergencyFirst, lastName: emergencyLast, relationship: emergencyRelationship, phone: emergencyPhone};
 
     	// if (injuries.length < 2) {

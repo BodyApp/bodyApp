@@ -82,7 +82,7 @@
         <textarea ng-model = "goals" class="large-input-box mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
 
         <p class="darkblue mb0">Emergency Contact Information</p>
-            <div style = "color: red" ng-show = "errorDiv">Information required</div>
+            <div ng-show="emergencyContactNotEntered" style = "color: red">Required</div>
         <textarea ng-model = "emergencyFirst" class="small-input-box mb8" cols="10" rows="1" name="emergency-first" placeholder="First Name"></textarea>
 
         <textarea ng-model = "emergencyLast" class="small-input-box mb8" cols="10" rows="1" name="emergency-last" placeholder="Last Name"></textarea>
@@ -110,14 +110,15 @@
         <textarea ng-model = "goals" class="mb8" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
 
         <h5 class="darkblue mb8 mt16">Emergency Contact Information</h5>
-            <div style = "color: red" ng-show = "errorDiv">Required</div>
-        <textarea ng-model = "emergencyFirst" class="mb8" cols="10" rows="1" name="emergency-first" placeholder="First Name"></textarea>
+            <div ng-show="emergencyContactNotEntered" style = "color: red">Required</div>
 
-        <textarea ng-model = "emergencyLast" class="mb8" cols="10" rows="1" name="emergency-last" placeholder="Last Name"></textarea>
+        <textarea ng-model = "emergencyFirst" class="mb8" cols="10" rows="1" name="emergencyFirst" placeholder="First Name" required></textarea>
+
+        <textarea ng-model = "emergencyLast" class="mb8" cols="10" rows="1" name="emergencyLast" placeholder="Last Name" required></textarea>
 
         <textarea ng-model = "emergencyRelationship" class="mb8" cols="10" rows="1" name="emergency-relationship" placeholder="Relationship"></textarea>
 
-        <textarea ng-model = "emergencyPhone" class="mb8" cols="10" rows="1" name="emergency-phone" placeholder="Phone"></textarea>        
+        <textarea ng-model = "emergencyPhone" class="mb8" cols="10" rows="1" name="emergencyPhone" placeholder="Phone" required></textarea>        
 
         <a href="" class="btn mt32" ng-click = "saveInjuriesGoalsEmergency(injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
         <p class="darkgray medical-disclaimer">Before continuing, please review our <a href="/medical-disclaimer" target="_blank">medical disclaimer</a>.</p>
