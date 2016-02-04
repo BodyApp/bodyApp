@@ -34,6 +34,11 @@
                                 <a href="/results">Results</a>
                               </p>
                             </li>
+                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                              <p ng-class="{active: isActive('/results')}">
+                                <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
+                              </p>
+                            </li>
                             <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
                                 Hi {{getCurrentUser().nickName}}
@@ -70,6 +75,11 @@
                         <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
                           <p ng-class="{active: isActive('/results')}">
                             <a href="/results">Results</a>
+                          </p>
+                        </li>
+                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                          <p ng-class="{active: isActive('/results')}">
+                            <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
                           </p>
                         </li>
                         <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow" ng-class="{active: isActive('/settings')}">
