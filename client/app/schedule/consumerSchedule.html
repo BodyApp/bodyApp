@@ -25,8 +25,8 @@
 
         <!-- Classes booked for this current week -->
           <!-- If user is not the instructor -->
-        <div ng-repeat="day in currentWeek">
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
+        <div>
+          <div class="reservation-listing" ng-repeat="slot in userBookings" ng-if="true">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -86,7 +86,7 @@
 
         <!-- Classes booked for next week -->
           <!-- If user is not the instructor -->
-        <div ng-repeat="nextWeekDay in nextWeek">
+<!--         <div ng-repeat="nextWeekDay in nextWeek">
           <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
@@ -97,7 +97,7 @@
             <div class="instr-col mb8">
               <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
             </div>
-            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*30)"> <!-- This will always be true -->
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*30)">
               <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
@@ -110,12 +110,11 @@
                 btn-text="Add to calendar"           
               ></addtocalendarimage>
               <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
-              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>        
-          </div>
+          </div> -->
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
+          <!-- <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -126,7 +125,6 @@
               <span>You</span>
             </div>
             <div class="action-col mb8" >
-              <!-- Doesn't let instructor look further out than 24 hours as a lot can change in that amount of time -->
               <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*60*24)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">View</a>
               <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*60*24)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
@@ -140,13 +138,11 @@
                 btn-text="Add to calendar"           
               ></addtocalendarimage>
               <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
-              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
           </div>
-        </div>  
+        </div> -->  
       </div>
       <div class="mt24 text-center hidden-xs"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
-
     </div>
 
   <!-- END RESERVATION SECTION -->

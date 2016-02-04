@@ -122,23 +122,20 @@ angular.module('bodyAppApp')
           return friendList;
         }
 
+        getBookings()
+
+        function getBookings() {
+          ref.child("userBookings").child(currentUser._id).on('value', function(snapshot) {
+            $scope.userBookings = snapshot.val()
+          })
+        }
+
         $scope.changeWeek = function() {
           if ($scope.thisWeek) {
             $scope.setCalendarToNextWeek()
           } else {
             $scope.setCalendarToThisWeek()
           }
-        }
-
-        function setThisWeek() {
-          var todayDate = new Date();
-          var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
-          var sunGetDate = sunDate.getDate();
-          var sunGetMonth = sunDate.getMonth()+1;
-          var sunGetYear = sunDate.getFullYear();
-          var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-
-          if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
         }
 
         $scope.setCalendarToThisWeek = function() { thisWeek() }
@@ -156,13 +153,8 @@ angular.module('bodyAppApp')
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
           if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
-          // $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
-          // $scope.currentWeek.$bindTo($scope, 'days')
-
-          // $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'days')
-          if(!$scope.$$phase) $scope.$apply();
-
-          // unbindMethod()
+          
+          unbindMethod()
           Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
             unbindMethod = unbind
           });
@@ -197,14 +189,8 @@ angular.module('bodyAppApp')
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-          if (!$scope.nextWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'nextWeek')
-          // $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
-          // $scope.nextWeek.$bindTo($scope, 'days')
-          // $scope.days = $firebaseObject(ref.child("classes").child(weekOf));
-          // $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'days')
-          if(!$scope.$$phase) $scope.$apply();
 
-          // unbindMethod()
+          unbindMethod()
           Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
             unbindMethod = unbind
           });
@@ -476,16 +462,13 @@ angular.module('bodyAppApp')
         // }
 
         $scope.cancelClass = function(slot) {
+          console.log(slot)
           if (slot.level === "Intro") {
+            console.log()
             User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
-              // delete $scope.myBookedClasses[slot.date];
-              slot.bookedUsers = slot.bookedUsers || {};
-              // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-              slot.cancelledUsers = slot.cancelledUsers || {};
-              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeCancelled: new Date().getTime()};
-              delete slot.bookedUsers[currentUser._id];
-              // delete slot.bookedFbUserIds[currentUser.facebook.id];
-              // slot.$save();
+              ref.child("bookings").child(slot.date).child(currentUser._id).remove()
+              ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+              ref.child("cancellations").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
               currentUser = user;
               Auth.updateUser(currentUser);
               $scope.currentUser = currentUser;
@@ -495,15 +478,11 @@ angular.module('bodyAppApp')
             }).$promise;
           } else {
             User.cancelBookedClass({ id: currentUser._id }, {
-              classToCancel: slot.date
+              classToCancel: slot.date.getTime()
             }, function(user) {
-              // delete $scope.myBookedClasses[slot.date];
-              slot.bookedUsers = slot.bookedUsers || {};
-              // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-              slot.cancelledUsers = slot.cancelledUsers || {};
-              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeCancelled: new Date().getTime()};
-              delete slot.bookedUsers[currentUser._id];
-              // delete slot.bookedFbUserIds[currentUser.facebook.id];
+              ref.child("bookings").child(slot.date.getTime()).child(currentUser._id).remove()
+              ref.child("userBookings").child(currentUser._id).child(slot.date.getTime()).remove()
+              ref.child("cancellations").child(slot.date.getTime()).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
               Auth.updateUser(user);
               currentUser = user;
               $scope.currentUser = currentUser;
@@ -543,10 +522,12 @@ angular.module('bodyAppApp')
                 Auth.updateUser(user);
                 currentUser = user;
                 $scope.currentUser = user;
+                ref.child("bookings").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+                ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
                 // getInfo(slot.date);
-                slot.bookedUsers = slot.bookedUsers || {};
+                // slot.bookedUsers = slot.bookedUsers || {};
                 // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+                // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
                 // slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
               }, function(err) {
                   console.log("Error adding class: " + err)
@@ -582,19 +563,20 @@ angular.module('bodyAppApp')
           User.addBookedClass({ id: currentUser._id }, {
             classToAdd: slot.date
           }, function(user) {
+            ref.child("bookings").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+            ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
             // getInfo(slot.date);
-            slot.bookedUsers = slot.bookedUsers || {};
+            // slot.bookedUsers = slot.bookedUsers || {};
             // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-            slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
-
+            // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
             // slot.bookedFbUserIds[currentUser.facebook.id] = true
             // slot.$save();
             currentUser = user;
             $scope.currentUser = currentUser;
           }, function(err) {
               console.log("Error adding class: " + err)
-              slot.bookedUsers = slot.bookedUsers || {};
-              delete slot.bookedUsers[currentUser._id];
+              // slot.bookedUsers = slot.bookedUsers || {};
+              // delete slot.bookedUsers[currentUser._id];
               // delete slot.bookedFbUserIds[currentUser.facebook.id];
               alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
           }).$promise;
