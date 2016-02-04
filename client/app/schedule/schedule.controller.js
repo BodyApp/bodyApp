@@ -128,6 +128,9 @@ angular.module('bodyAppApp')
           ref.child("userBookings").child(currentUser._id).on('value', function(snapshot) {
             $scope.userBookings = snapshot.val()
           })
+          ref.child("trainerClasses").child(currentUser._id).child("classesTeaching").on('value', function(snapshot) {
+            $scope.classesTeaching = snapshot.val()
+          })        
         }
 
         $scope.changeWeek = function() {

@@ -45,6 +45,16 @@ angular.module('bodyAppApp')
     loadDefaultPlaylist();
 
     $scope.createdClass = {};
+    var nextSessionToSave;
+
+    createInitialTokBoxSession()
+
+    function createInitialTokBoxSession() {
+      User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+        console.log(session)
+        nextSessionToSave = session;
+      })
+    }
 
     $scope.changeDate = function(date) {
       classDate = date;
@@ -156,7 +166,22 @@ angular.module('bodyAppApp')
       var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
       var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf);  
-      var syncObject = $firebaseObject(weekOfRef);
+      //This is a good way to do this, but functionality is slightly broken and it's dangerous.
+      // weekOfRef.once('value', function(snapshot) {
+      //   if (!snapshot.exists()) {
+      //     //Sets up week for first time if doesn't exist
+      //     console.log("Setting up week for first time.")
+      //     for (var i = 0; i < 7; i++) {
+      //       var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + i, 11, 0, 0);
+      //       weekOfRef.child(DayOfWeekSetter.setDay(i)).update({    
+      //         dayOfWeek: i,
+      //         formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
+      //         name: getDayOfWeek(i)
+      //       })
+      //     }
+      //   }
+      // })
+      // var syncObject = $firebaseObject(weekOfRef);
       
       var trainerInfoToSave = {firstName: workoutToCreate.trainer.firstName, lastName: workoutToCreate.trainer.lastName, _id: workoutToCreate.trainer._id, facebookId: workoutToCreate.trainer.facebookId, gender: workoutToCreate.trainer.gender, picture: workoutToCreate.trainer.picture};
       if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
@@ -171,33 +196,21 @@ angular.module('bodyAppApp')
 
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 
-      syncObject.$loaded().then(function() {
+      // syncObject.$loaded().then(function() {
         //Set up the week if this is first class of week
-        if (!syncObject[DayOfWeekSetter.setDay(date.getDay())]) {
-          console.log("Setting up week for first time.")
-          for (var i = 0; i < 7; i++) {
-            var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + i, 11, 0, 0);
-            // thisDate.setDate(sunDate.getDate() + i)
-
-            syncObject[DayOfWeekSetter.setDay(i)] = {    
-              dayOfWeek: i,
-              formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
-              name: getDayOfWeek(i),
-              slots: {}
-            };
-          }
-        }
+        // if (!syncObject[DayOfWeekSetter.setDay(date.getDay())]) {
+          
+        // }
 
         //Set up the class
         var dayToSet = DayOfWeekSetter.setDay(date.getDay())
-        syncObject[dayToSet].slots = syncObject[dayToSet].slots || {}; 
-        syncObject[dayToSet].slots[date.getTime()] = {
+        var classToSetRef = weekOfRef.child(dayToSet).child("slots").child(date.getTime())
+        // syncObject[dayToSet].slots = syncObject[dayToSet].slots || {}; 
+        classToSetRef.set({
           time: timeFormatter(date),
           date: date.getTime(),
-          booked: false,
           playlistSource: 'SoundCloud',
           level: workoutToCreate.level,
-          bookedUsers: {},
           // playlist: workoutToCreate.playlistUrl,
           playlist: {
             soundcloudUrl: workoutToCreate.playlistUrl.uri,
@@ -220,13 +233,13 @@ angular.module('bodyAppApp')
           classFull: false,
           consumersCanHearEachOther: false,
           musicVolume: 50,
+          sessionId: nextSessionToSave.sessionId, 
           past: false,
           spots: 15
-        }
-
-        syncObject.$save().then(function() {
-          console.log("New workout saved prior to creating tokbox session")
+        }, function() {
+          console.log("New workout saved.  Creating tokbox session.")
           if (workoutToCreate.level === "Intro") {
+            console.log("Setting to upcomingIntros.")
             var introToSet = {};
             introToSet[date.getTime()] = true
             var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
@@ -234,27 +247,34 @@ angular.module('bodyAppApp')
             var dateKey = ""+date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())
             upcomingIntroRef.set(dateKey, function(){console.log("Saved Intro class to intro list")})
           }
+          var trainerClassesRef = new Firebase("https://bodyapp.firebaseio.com/trainerClasses/");
+          trainerClassesRef.child(trainerInfoToSave._id).child("classesTeaching").child(date.getTime()).set({date: date.getTime(), level: workoutToCreate.level}, function() {
+            modalInstance.close();
+          })
 
           User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-            var dayToSet = DayOfWeekSetter.setDay(date.getDay())
-            syncObject[dayToSet].slots[date.getTime()] = syncObject[dayToSet].slots[date.getTime()] || {}
-            syncObject[dayToSet].slots[date.getTime()].sessionId = session.sessionId;
-            syncObject.$save().then(function() {
-              console.log("Tokbox session added to class object.")
-              User.saveClassTaught({
-                id: Auth.getCurrentUser()
-              }, {
-                classToAdd: date.getTime(), userToAddClassTo: trainerInfoToSave
-              }).$promise.then(function(confirmation) {
-                console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
-                // $location.path('/');
-                console.log("new workout saved");
-                modalInstance.close();
-              })
-            })  
-          }).catch(function(err) {
-            console.log("error saving new workout: " + err)
-          })
+            nextSessionToSave = session;
+              //Need to add class to trainer object somehow
+            
+          //   var dayToSet = DayOfWeekSetter.setDay(date.getDay())
+          //   syncObject[dayToSet].slots[date.getTime()] = syncObject[dayToSet].slots[date.getTime()] || {}
+          //   syncObject[dayToSet].slots[date.getTime()].sessionId = session.sessionId;
+          //   syncObject.$save().then(function() {
+          //     console.log("Tokbox session added to class object.")
+          //     User.saveClassTaught({
+          //       id: Auth.getCurrentUser()
+          //     }, {
+          //       classToAdd: date.getTime(), userToAddClassTo: trainerInfoToSave
+          //     }).$promise.then(function(confirmation) {
+          //       console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
+          //       // $location.path('/');
+          //       console.log("new workout saved");
+                
+          //     })
+          //   })  
+          // }).catch(function(err) {
+          //   console.log("error saving new workout: " + err)
+          // })
         })
       })   
     }

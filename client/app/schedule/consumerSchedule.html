@@ -26,7 +26,7 @@
         <!-- Classes booked for this current week -->
           <!-- If user is not the instructor -->
         <div>
-          <div class="reservation-listing" ng-repeat="slot in userBookings" ng-if="true">
+          <div class="reservation-listing" ng-repeat="slot in userBookings">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -55,7 +55,7 @@
           </div>
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
+          <div class="reservation-listing" ng-repeat="slot in classesTeaching">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
