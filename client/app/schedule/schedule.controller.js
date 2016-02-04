@@ -130,6 +130,17 @@ angular.module('bodyAppApp')
           }
         }
 
+        function setThisWeek() {
+          var todayDate = new Date();
+          var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+          var sunGetDate = sunDate.getDate();
+          var sunGetMonth = sunDate.getMonth()+1;
+          var sunGetYear = sunDate.getFullYear();
+          var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+
+          if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
+        }
+
         $scope.setCalendarToThisWeek = function() { thisWeek() }
         function thisWeek() {
           $scope.thisWeek = true; 
@@ -145,8 +156,13 @@ angular.module('bodyAppApp')
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
           if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
-          
-          unbindMethod()
+          // $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
+          // $scope.currentWeek.$bindTo($scope, 'days')
+
+          // $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'days')
+          if(!$scope.$$phase) $scope.$apply();
+
+          // unbindMethod()
           Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
             unbindMethod = unbind
           });
@@ -181,8 +197,14 @@ angular.module('bodyAppApp')
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+          if (!$scope.nextWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'nextWeek')
+          // $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
+          // $scope.nextWeek.$bindTo($scope, 'days')
+          // $scope.days = $firebaseObject(ref.child("classes").child(weekOf));
+          // $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'days')
+          if(!$scope.$$phase) $scope.$apply();
 
-          unbindMethod()
+          // unbindMethod()
           Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
             unbindMethod = unbind
           });
@@ -564,6 +586,7 @@ angular.module('bodyAppApp')
             slot.bookedUsers = slot.bookedUsers || {};
             // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
             slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+
             // slot.bookedFbUserIds[currentUser.facebook.id] = true
             // slot.$save();
             currentUser = user;
