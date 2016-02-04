@@ -89,11 +89,13 @@ angular.module('bodyAppApp')
         // $scope.timeZone = jstz().timezone_name;
 
     	classToBook.$loaded(function() {
-    		classToBook.bookedUsers = classToBook.bookedUsers || {};
-			classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
+            ref.child("bookings").child(classToBook.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+            ref.child("userBookings").child(currentUser._id).child(classToBook.date).update({date: classToBook.date, trainer: classToBook.trainer, level: classToBook.level})
+   //  		classToBook.bookedUsers = classToBook.bookedUsers || {};
+			// classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
             // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
             // classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
-			classToBook.$save()
+			// classToBook.$save()
             $scope.classDetails = classToBook;
     	})
 		
@@ -121,8 +123,10 @@ angular.module('bodyAppApp')
 
         }, function(err) {
             console.log("Error adding class: " + err)
-            classToBook.bookedUsers = classToBook.bookedUsers || {};
-            delete classToBook.bookedUsers[$scope.currentUser._id]
+            // classToBook.bookedUsers = classToBook.bookedUsers || {};
+            // delete classToBook.bookedUsers[$scope.currentUser._id]
+            ref.child("bookings").child(classToBook.date).child(currentUser._id).remove()
+            ref.child("userBookings").child(currentUser._id).child(classToBook.date).remove()
             // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
             // delete classToBook.bookedFbUserIds[$scope.currentUser.facebook.id]
 
