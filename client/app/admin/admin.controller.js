@@ -47,7 +47,11 @@ angular.module('bodyAppApp')
     $scope.createdClass = {};
     var nextSessionToSave;
 
-    createInitialTokBoxSession()
+    Auth.getCurrentUser().$promise.then(function() {
+      createInitialTokBoxSession()
+    })
+
+    // createInitialTokBoxSession()
 
     function createInitialTokBoxSession() {
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {

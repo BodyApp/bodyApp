@@ -175,17 +175,21 @@ angular.module('bodyAppApp')
         classToAdd: slot.date
       }, function(user) {
         // getInfo(slot.date);
-        slot.bookedUsers = slot.bookedUsers || {};
+        ref.child("bookings").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+        ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
+        // slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-        slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+        // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
         // slot.bookedFbUserIds[currentUser.facebook.id] = true
         // slot.$save();
         currentUser = user;
         $scope.currentUser = currentUser;
       }, function(err) {
           console.log("Error adding class: " + err)
-          slot.bookedUsers = slot.bookedUsers || {};
-          delete slot.bookedUsers[currentUser._id];
+          ref.child("bookings").child(slot.date).child(currentUser._id).remove()
+          ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+          // slot.bookedUsers = slot.bookedUsers || {};
+          // delete slot.bookedUsers[currentUser._id];
           // delete slot.bookedFbUserIds[currentUser.facebook.id];
           alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
       }).$promise;

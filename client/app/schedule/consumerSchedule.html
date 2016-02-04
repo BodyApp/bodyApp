@@ -38,7 +38,7 @@
             </div>
             <div class="action-col mb8">
               <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
-              <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
