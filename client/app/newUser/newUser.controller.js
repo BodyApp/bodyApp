@@ -139,10 +139,12 @@ angular.module('bodyAppApp')
     	$state.go('schedule');
     }
 
-    $scope.saveInjuriesGoalsEmergency = function(injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
-    	injuries = injuryString || "";
-        goals = goals || "";
-        if (!(emergencyFirst && emergencyLast && emergencyPhone)) return $scope.emergencyContactNotEntered = true;
+    $scope.saveInjuriesGoalsEmergency = function(boxChecked, injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
+        if (!injuryString) {return $scope.injuriesNotEntered = true;} else {$scope.injuriesNotEntered = false;}
+        if (!goals) {return $scope.goalsNotEntered = true;} else {$scope.goalsNotEntered = false;}
+        if (!(emergencyFirst && emergencyLast && emergencyPhone)) {return $scope.emergencyContactNotEntered = true;} else {$scope.emergencyContactNotEntered = false;}
+        if (!boxChecked) {return $scope.boxNotChecked = true;} else {$scope.boxNotChecked = false;}
+
         emergencyContact = {firstName: emergencyFirst, lastName: emergencyLast, relationship: emergencyRelationship, phone: emergencyPhone};
 
     	// if (injuries.length < 2) {

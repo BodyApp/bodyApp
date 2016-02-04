@@ -2,9 +2,15 @@
 
 angular.module('bodyAppApp')
   .controller('MainCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+    // $window.scrollTo(0,0);
+
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
+
+    $scope.scrollDown = function() {
+      document.getElementById('scroll-link').scrollIntoView()
+    }
 
     $scope.signUp = function() {
       var modalInstance = $uibModal.open({
@@ -32,11 +38,11 @@ angular.module('bodyAppApp')
         }
     });
 
-    // *****************SCROLL DOWN*****************
-    $(".arrow").click(function() {
-        $('html,body').animate({
-            scrollTop: $(".scroll-to").offset().top + -100},
-            600);
-    });
+    // // *****************SCROLL DOWN*****************
+    // $(".arrow").click(function() {
+    //     $('html,body').animate({
+    //         scrollTop: $(".scroll-to").offset().top + -100},
+    //         600);
+    // });
 
   });

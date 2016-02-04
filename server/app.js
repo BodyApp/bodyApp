@@ -79,6 +79,7 @@ ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {
+  var introRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros/")
 	var todayDate = new Date();
   var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
   // var sunDate = new Date();
@@ -97,7 +98,7 @@ new CronJob('29 * * * * *', function() {
         if (!currentWeek[day].slots[slot].past && slot <= (todayDate.getTime() - 45*60*1000)) { //Can book (and join) a class up to 45 minutes into class starting
           weeklyFirebaseRef.child(day).child("slots").child(slot).update({past: true})
           console.log("class " + slot + " is now in the past")
-          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){
+          introRef.child(slot).remove(function(error){
             if (!error) return console.log(slot + " removed from intro classes because in past");
             if (error) return console.log(error);
           })

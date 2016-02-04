@@ -44,7 +44,7 @@ User.find({}).remove(function() {
     __v: 51,
     injuries: "Nope",
     bookedIntroClass: false,
-    completedNewUserFlow: true,
+    completedNewUserFlow: false,
     introClassTaken: false,
     // welcomeEmailSent: false,
     welcomeEmailSent: new Date(),

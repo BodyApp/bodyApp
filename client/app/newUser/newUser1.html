@@ -74,15 +74,15 @@
         <p class="darkgray mb24 medical-disclaimer">This information is confidential and only shared with your BODY instructor.</p>
 
         <p class="darkblue mb0">Do you have any prior injuries or health conditions?</p>
-            <div style = "color: red" ng-show = "errorDiv">*Please tell us something! Anything!</div>
+            <div style = "color: red" ng-show = "injuriesNotEntered">*Please tell us something! Anything!</div>
         <textarea ng-model = "injuries" class="large-input-box mb16" cols="30" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
 
         <p class="darkblue mb0">In the next three months, what health goals can we help you achieve?</p>
-            <div style = "color: red" ng-show = "errorDiv">*Don't leave us in the dark! Fill in something here.</div>
-        <textarea ng-model = "fitGoals" class="large-input-box mb16" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
+            <div style = "color: red" ng-show = "goalsNotEntered">*Don't leave us in the dark! Fill in something here.</div>
+        <textarea ng-model = "goals" class="large-input-box mb16" cols="30" rows="3" name="goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
 
         <p class="darkblue mb0">Emergency Contact Information</p>
-            <div style = "color: red" ng-show = "errorDiv">*Required</div>
+            <div style = "color: red" ng-show = "emergencyContactNotEntered">*Required</div>
         <textarea ng-model = "emergencyFirst" class="small-input-box mb16" cols="10" rows="1" name="emergency-first" placeholder="First Name"></textarea>
         <textarea ng-model = "emergencyLast" class="small-input-box mb16" cols="10" rows="1" name="emergency-last" placeholder="Last Name"></textarea>
 
@@ -90,12 +90,12 @@
 
         <textarea ng-model = "emergencyPhone" class="small-input-box mb16" cols="10" rows="1" name="emergency-phone" placeholder="Phone"></textarea>
 
-          <div style = "color: red" ng-show = "errorDiv">*Required</div>
+          <div style = "color: red" ng-show = "boxNotChecked">*Required</div>
         <p class="darkblue mb0">Please review our <a href="/medical_disclaimer" target="_blank">medical disclaimer (click here to view)</a>.</p>
 
-        <form action=""><input type="checkbox" name="medicalDisclaimer" value="medicalDisclaimer"><span class="darkgray medical-disclaimer">&nbsp;&nbsp;I confirm have reviewed the BODY Medical Disclaimer</span></form>
+        <form action=""><input type="checkbox" name="medicalDisclaimer" ng-model="boxChecked" value="medicalDisclaimer"><span class="darkgray medical-disclaimer">&nbsp;&nbsp;I confirm have reviewed the BODY Medical Disclaimer</span></form>
 
-        <a href="" class="btn mt24" ng-click = "saveInjuriesGoalsEmergency(injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
+        <a href="" class="btn mt24" ng-click = "saveInjuriesGoalsEmergency(boxChecked, injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
       </div>
 
 
@@ -105,12 +105,12 @@
         <p class="darkgray mb24 medical-disclaimer text-left">This information is confidential and only shared with your BODY instructor.</p>
 
         <h5 class="darkblue mb8 mt16">Do you have any prior injuries or health conditions?</h5>
-            <div style = "color: red" ng-show = "errorDiv">*Required</div>
+            <div style = "color: red" ng-show = "injuriesNotEntered">*Required</div>
         <textarea ng-model = "injuries" class="mb16" cols="30" rows="3" name="health-conditions" placeholder="e.g. I broke my wrist six months ago and still have trouble placing my full weight on it."></textarea>
 
         <h5 class="darkblue mb8 mt16">In the next three months, what health goals can we help you achieve?</h5>
-            <div style = "color: red" ng-show = "errorDiv">*Required</div>
-        <textarea ng-model = "fitGoals" class="mb16" cols="30" rows="3" name="fit-goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
+            <div style = "color: red" ng-show = "goalsNotEntered">*Required</div>
+        <textarea ng-model = "goals" class="mb16" cols="30" rows="3" name="goals" placeholder="e.g. To lose 10 lbs, To gain 10 lbs, To look better naked, To be healthier, Get ready for my wedding, etc."></textarea>
 
         <h5 class="darkblue mb8 mt16">Emergency Contact Information</h5>
             <div style = "color: red" ng-show="emergencyContactNotEntered">*Required</div>
@@ -122,11 +122,11 @@
 
         <textarea ng-model = "emergencyPhone" class="mb16" cols="10" rows="1" name="emergencyPhone" placeholder="Phone"></textarea>
 
-          <div style = "color: red" ng-show = "errorDiv">*Required</div>
+          <div style = "color: red" ng-show = "boxNotChecked">*Required</div>
         <h5 class="darkblue mb0">Please review our <a href="/medical_disclaimer" target="_blank">medical disclaimer (click here to view)</a>.</h5>
 
-        <form action=""><input type="checkbox" name="medicalDisclaimer" value="medicalDisclaimer"><span class="darkgray medical-disclaimer">&nbsp;&nbsp;I confirm have reviewed the Medical Disclaimer</span></form>          
-        <a href="" class="btn mt32" ng-click = "saveInjuriesGoalsEmergency(injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
+        <form action=""><input type="checkbox" name="medicalDisclaimer" ng-model="boxChecked" value="medicalDisclaimer"><span class="darkgray medical-disclaimer">&nbsp;&nbsp;I confirm have reviewed the Medical Disclaimer</span></form>          
+        <a href="" class="btn mt32" ng-click = "saveInjuriesGoalsEmergency(boxChecked, injuries, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone)">Submit health info and continue</a>
       </div>      
     </div>
   </section>

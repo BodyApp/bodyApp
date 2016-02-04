@@ -2,6 +2,7 @@
 
 angular.module('bodyAppApp')
   .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+    $(window).scrollTop()
   	$scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
@@ -20,6 +21,10 @@ angular.module('bodyAppApp')
       });
     }
 
+    $scope.scrollDown = function() {
+      document.getElementById('scroll-link').scrollIntoView()
+    }
+
     // Auth.isLoggedInAsync(function(loggedIn) {
     //     if (loggedIn) {
     //       if (Auth.getCurrentUser().completedNewUserFlow) {
@@ -32,10 +37,10 @@ angular.module('bodyAppApp')
     //     }
     // });
 
-    // *****************SCROLL DOWN*****************
-    $(".arrow").click(function() {
-        $('html,body').animate({
-            scrollTop: $(".scroll-to").offset().top + -100},
-            600);
-    });
+    // // *****************SCROLL DOWN*****************
+    // $(".arrow").click(function() {
+    //     $('html,body').animate({
+    //         scrollTop: $(".scroll-to").offset().top + -100},
+    //         600);
+    // });
   });
