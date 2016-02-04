@@ -2,44 +2,8 @@
 
 angular.module('bodyAppApp')
   .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, DayOfWeekSetter) {
-  	var classToJoin = Schedule.classUserJustJoined;
-    $scope.classToJoin = classToJoin;
-
-      $scope.overlay1 = true;
-      $scope.overlay2 = false;
-      $scope.overlay3 = false;
-      $scope.overlay4 = false
-      $scope.tab1 = true;
-      $scope.tab2 = false;
-      $scope.instructorBio = false;
-
-    if (!classToJoin) {
-      $location.path('/')
-    }
-
-    //Check that using Chrome or Firefox
-    if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
-      // The client does not support WebRTC.
-      var modalInstance = $uibModal.open({
-        animation: true,
-        backdrop: "static",
-        keyboard: false,
-        templateUrl: 'app/video/wrongBrowser.html',
-        controller: 'WrongBrowserCtrl',
-      });
-
-      modalInstance.result.then(function (selectedItem) {
-      }, function () {
-      });
-    }
-
-    var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
-    $scope.phrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]
-
-    // $scope.instructor = classToJoin.trainer
-    // $scope.instructorPicUrl = $scope.instructor.picture
-
-    var classTime = classToJoin.date;
+  	
+    var classTime;
     var currentUser = Auth.getCurrentUser();
     $scope.currentUser = currentUser;
 
@@ -64,31 +28,50 @@ angular.module('bodyAppApp')
 
     var callbacks;
 
-    if (currentUser._id != classToJoin.trainer._id) {
-      $scope.networkTestCountdown = timeoutMs + 5000
-      $scope.testingNetwork = true;
-      conductInternetTest(classToJoin.sessionId);
-    }
+    var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
 
-    var classDate = new Date(classToJoin.date)
-    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    var classToJoin;
+    var classDate;
+    var sunDate;
     // var sunDate = new Date();
     // sunDate.setDate(classDate.getDate() - classDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+    var sunGetDate;
+    var sunGetMonth;
+    var sunGetYear;
+    var weekOf;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/");
-    var classObjRef = $firebaseObject(ref
-      .child("classes")
-      .child(weekOf)
-      .child(DayOfWeekSetter.setDay(classDate.getDay()))
-      .child("slots")
-      .child(classDate.getTime())
-    )
+    var classObjRef;
 
-    var userRef = ref.child("classes")
+    var userRef;
+
+    //This should be turned into a $promise
+    var setupInterval = $interval(function() {
+      if (Schedule.classUserJustJoined) {
+        $interval.cancel(setupInterval)
+        setup()
+      }
+    }, 250, 20);
+
+    function setup() {
+      classToJoin = Schedule.classUserJustJoined;
+      classTime = classToJoin.date;
+      classDate = new Date(classToJoin.date)
+      sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+      sunGetDate = sunDate.getDate();
+      sunGetMonth = sunDate.getMonth()+1;
+      sunGetYear = sunDate.getFullYear();
+      weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+      
+      classObjRef = $firebaseObject(ref
+        .child("classes")
+        .child(weekOf)
+        .child(DayOfWeekSetter.setDay(classDate.getDay()))
+        .child("slots")
+        .child(classDate.getTime())
+      )
+
+      userRef = ref.child("classes")
       .child(weekOf)
       .child(DayOfWeekSetter.setDay(classDate.getDay()))
       .child("slots")
@@ -96,27 +79,72 @@ angular.module('bodyAppApp')
       .child("bookedUsers")
       .child(currentUser._id)
 
-    $scope.numBookedUsers;
-    $scope.bookedUsers;
 
-    $scope.trainerRatingRounded;
+      console.log(classToJoin)
+      $scope.classToJoin = classToJoin;
 
-    getBookedUsers(classToJoin);
+        $scope.overlay1 = true;
+        $scope.overlay2 = false;
+        $scope.overlay3 = false;
+        $scope.overlay4 = false
+        $scope.tab1 = true;
+        $scope.tab2 = false;
+        $scope.instructorBio = false;
 
-    classObjRef.$loaded().then(function() {
-      $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
-      classObjRef.$watch(function(e) {
-        getBookedUsers(classObjRef);
-      })
-      setupVidAud()
-    });
+      if (!classToJoin) {
+        $location.path('/')
+      }
 
-    $scope.$on("$destroy", function() { // destroys the session when navigate away
-      console.log("Disconnecting session because navigated away.")
-      session.disconnect()
-      publisher.destroy();
-      // session.destroy();
-    });
+      //Check that using Chrome or Firefox
+      if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
+        // The client does not support WebRTC.
+        var modalInstance = $uibModal.open({
+          animation: true,
+          backdrop: "static",
+          keyboard: false,
+          templateUrl: 'app/video/wrongBrowser.html',
+          controller: 'WrongBrowserCtrl',
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+        }, function () {
+        });
+      }
+      
+      $scope.phrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]
+
+      // $scope.instructor = classToJoin.trainer
+      // $scope.instructorPicUrl = $scope.instructor.picture
+
+      if (currentUser._id != classToJoin.trainer._id) {
+        $scope.networkTestCountdown = timeoutMs + 5000
+        $scope.testingNetwork = true;
+        conductInternetTest(classToJoin.sessionId);
+      }
+
+      $scope.numBookedUsers;
+      $scope.bookedUsers;
+
+      $scope.trainerRatingRounded;
+
+      getBookedUsers(classToJoin);
+
+      classObjRef.$loaded().then(function() {
+        $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
+        classObjRef.$watch(function(e) {
+          getBookedUsers(classObjRef);
+        })
+        setupVidAud()
+      });
+
+      $scope.$on("$destroy", function() { // destroys the session when navigate away
+        console.log("Disconnecting session because navigated away.")
+        session.disconnect()
+        publisher.destroy();
+        // session.destroy();
+      });
+    }
+    
 
     // $scope.audioInputDevices;
     // $scope.videoInputDevices;

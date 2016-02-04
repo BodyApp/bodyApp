@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .factory('Schedule', function($firebaseObject) {
+  .factory('Schedule', function($firebaseObject, DayOfWeekSetter) {
   	
   	var service = {};
   	var currentUser;
@@ -23,7 +23,22 @@ angular.module('bodyAppApp')
   	}
 
   	service.setClassUserJustJoined = function(classJoined) {
-  		service.classUserJustJoined = classJoined
+      // var q = new Promise()
+
+      var workoutDate = new Date(classJoined.date);
+      var sunDate = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate() - workoutDate.getDay(), 11, 0, 0);
+      var sunGetDate = sunDate.getDate();
+      var sunGetMonth = sunDate.getMonth()+1;
+      var sunGetYear = sunDate.getFullYear();
+      var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf);
+      var dayOfWeek = DayOfWeekSetter.setDay(workoutDate.getDay())
+      var classRef = weekOfRef.child(dayOfWeek).child("slots").child(classJoined.date) 
+
+      classRef.on('value', function(snapshot) {
+        console.log(snapshot.val())
+        service.classUserJustJoined = snapshot.val()  
+      })
   	}
 
   	service.setFirebaseObject = function(weekRef) {
