@@ -78,7 +78,7 @@
                 description="Teaching an Intro BODY Class"
                 btn-text="Add to calendar"           
               ></addtocalendarimage>
-              <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img> -->
               <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
           </div>
@@ -187,8 +187,9 @@
       <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
-        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
+        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+        <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         <div class="my-friends mt16 mb8" >
@@ -235,8 +236,9 @@
       <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <div class="col-xs-12 text-center">
           <span class="class-time mb8">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
-          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
-          <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
+          <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">teaching</a></div>
+          <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
           <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>          
         </div>
         <div class="col-xs-6 text-center">

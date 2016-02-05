@@ -175,7 +175,7 @@ angular.module('bodyAppApp')
         classToAdd: slot.date
       }, function(user) {
         // getInfo(slot.date);
-        ref.child("bookings").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+        ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
         ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
         // slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};

@@ -39,6 +39,7 @@ angular.module('bodyAppApp')
             var ref = new Firebase("https://bodyapp.firebaseio.com/");
             ref.onAuth(function(authData) {
               if (authData) {
+                getBookings()
                 console.log("User is authenticated with fb ");
               } else {
                 console.log("User is logged out");
@@ -46,6 +47,7 @@ angular.module('bodyAppApp')
                   if (error) {
                     console.log("Firebase user authentication failed", error);
                   } else {
+                    getBookings()
                     if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
                   }
                 }); 
@@ -108,6 +110,7 @@ angular.module('bodyAppApp')
           // $window.open('https://www.facebook.com/'+friend.facebookId, '_blank');
         }
 
+        //Need to fix this
         $scope.checkIfFriends = function(slot) {
           var friendList = [];
           for (var prop in slot.bookedUsers) {
@@ -121,8 +124,6 @@ angular.module('bodyAppApp')
           }
           return friendList;
         }
-
-        getBookings()
 
         function getBookings() {
           ref.child("userBookings").child(currentUser._id).on('value', function(snapshot) {
@@ -471,7 +472,7 @@ angular.module('bodyAppApp')
             User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
               ref.child("bookings").child(slot.date).child(currentUser._id).remove()
               ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
-              ref.child("cancellations").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+              ref.child("cancellations").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
               currentUser = user;
               Auth.updateUser(currentUser);
               $scope.currentUser = currentUser;
@@ -481,11 +482,11 @@ angular.module('bodyAppApp')
             }).$promise;
           } else {
             User.cancelBookedClass({ id: currentUser._id }, {
-              classToCancel: slot.date.getTime()
+              classToCancel: slot.date
             }, function(user) {
-              ref.child("bookings").child(slot.date.getTime()).child(currentUser._id).remove()
-              ref.child("userBookings").child(currentUser._id).child(slot.date.getTime()).remove()
-              ref.child("cancellations").child(slot.date.getTime()).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+              ref.child("bookings").child(slot.date).child(currentUser._id).remove()
+              ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+              ref.child("cancellations").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
               Auth.updateUser(user);
               currentUser = user;
               $scope.currentUser = currentUser;
@@ -525,8 +526,9 @@ angular.module('bodyAppApp')
                 Auth.updateUser(user);
                 currentUser = user;
                 $scope.currentUser = user;
-                ref.child("bookings").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
-                ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
+                ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId});
+                ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+                ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
                 // getInfo(slot.date);
                 // slot.bookedUsers = slot.bookedUsers || {};
                 // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
@@ -566,8 +568,9 @@ angular.module('bodyAppApp')
           User.addBookedClass({ id: currentUser._id }, {
             classToAdd: slot.date
           }, function(user) {
-            ref.child("bookings").child(slot.date).child(currentUser._id).update({facebookIdfirstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
-            ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
+            ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId});
+            ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+            ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
             // getInfo(slot.date);
             // slot.bookedUsers = slot.bookedUsers || {};
             // slot.bookedFbUserIds = slot.bookedFbUserIds || {};

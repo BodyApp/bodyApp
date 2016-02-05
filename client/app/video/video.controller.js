@@ -528,9 +528,9 @@ angular.module('bodyAppApp')
 
 				  	// console.log(subscriber.getStats())
 
-				  	//Need to check if this user is already in the consumerList or not
+				  	//Need to check if this user is already in the consumerList or not.  This whole thing seems broken, need to fix
 						if (!instructorStream) {
-							if (classToJoin.bookedusers && classToJoin.bookedUsers[streamId]) {
+							if (classToJoin.bookedUsers && classToJoin.bookedUsers[streamId]) {
 								// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
 								subscriberObjects[streamId] = subscriber;
 								$scope.consumerObjects[streamId] = classToJoin.bookedUsers[streamId]

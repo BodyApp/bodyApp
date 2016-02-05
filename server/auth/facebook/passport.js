@@ -104,7 +104,7 @@ exports.setup = function (User, config) {
             //Firebase authentication
             var ref = new Firebase("https://bodyapp.firebaseio.com/");
             var usersRef = ref.child("fbUsers");  
-            var userId = user._id.toString()
+            var userId = user._id.toString();
             
             // var token = tokenGenerator.createToken({ uid: profile.id, some: "arbitrary", data: "here" },
             //   {admin: user.role === "admin"});
@@ -113,7 +113,7 @@ exports.setup = function (User, config) {
               if (error) {
                 console.log("Firebase authentication failed", error);
               } else {
-                console.log("Firebase authentication succeeded!", authData);
+                console.log("Firebase authentication succeeded!", authData);                     
               }
             // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             }); 

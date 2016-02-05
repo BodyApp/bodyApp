@@ -45,6 +45,8 @@ angular.module('bodyAppApp')
 
     var userRef;
 
+    var checkTimeInterval;
+
     //This should be turned into a $promise
     var setupInterval = $interval(function() {
       if (Schedule.classUserJustJoined) {
@@ -63,6 +65,8 @@ angular.module('bodyAppApp')
       sunGetYear = sunDate.getFullYear();
       weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
       
+      $scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
+
       classObjRef = $firebaseObject(ref
         .child("classes")
         .child(weekOf)
@@ -71,16 +75,10 @@ angular.module('bodyAppApp')
         .child(classDate.getTime())
       )
 
-      userRef = ref.child("classes")
-      .child(weekOf)
-      .child(DayOfWeekSetter.setDay(classDate.getDay()))
-      .child("slots")
-      .child(classDate.getTime())
-      .child("bookedUsers")
+      userRef = ref.child("bookings")
+      .child(classToJoin.date)
       .child(currentUser._id)
 
-
-      console.log(classToJoin)
       $scope.classToJoin = classToJoin;
 
         $scope.overlay1 = true;
@@ -131,17 +129,21 @@ angular.module('bodyAppApp')
 
       classObjRef.$loaded().then(function() {
         $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
-        classObjRef.$watch(function(e) {
-          getBookedUsers(classObjRef);
-        })
+        // classObjRef.$watch(function(e) {
+        //   getBookedUsers(classObjRef);
+        // })
         setupVidAud()
       });
+
+      checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
 
       $scope.$on("$destroy", function() { // destroys the session when navigate away
         console.log("Disconnecting session because navigated away.")
         session.disconnect()
         publisher.destroy();
         // session.destroy();
+        if (checkTimeInterval) clearInterval(checkTimeInterval)
+        $interval.cancel(checkTimeInterval);
       });
     }
     
@@ -180,46 +182,46 @@ angular.module('bodyAppApp')
 
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];
-      if (classJoined.bookedUsers) {
-        $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
 
-        for (var bookedUser in classJoined.bookedUsers) {
-          if (bookedUser) {
-            //Adds security where injuries aren't available unless current user is admin or instructor.
-            if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
-              User.getInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-                if (data.injuries) {
-                  var userToAdd = classJoined.bookedUsers[bookedUser]
-                  userToAdd.injuries = data.injuries
-                  $scope.bookedUsers.push(userToAdd);
-                  if(!$scope.$$phase) $scope.$apply();  
-                } else {
-                  $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);    
-                  if(!$scope.$$phase) $scope.$apply();  
-                }
-              }).catch(function(err) {
-                $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
-                console.log(err);
-              })
-            } else {
-              $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
-              if(!$scope.$$phase) $scope.$apply();  
-            }    
+      var bookedUsersRef = ref.child("bookings").child(classToJoin.date);
+
+      bookedUsersRef.on('value', function(snapshot) {
+        console.log(snapshot.val())
+        var bookedUsersReturned = snapshot.val();
+        if (snapshot.exists()) {
+          $scope.numBookedUsers = Object.keys(snapshot.val()).length;
+          $scope.bookedUsers = [];
+          for (var bookedUser in snapshot.val()) {
+            if (bookedUser) {
+              //Adds security where injuries aren't available unless current user is admin or instructor.
+              if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
+                console.log(bookedUser)
+                User.getInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+                  if (data.injuries) {
+                    var userToAdd = bookedUsersReturned[bookedUser]
+                    userToAdd.injuries = data.injuries
+                    $scope.bookedUsers.push(userToAdd);
+                    if(!$scope.$$phase) $scope.$apply();  
+                  } else {
+                    $scope.bookedUsers.push(bookedUsersReturned[bookedUser]);    
+                    if(!$scope.$$phase) $scope.$apply();  
+                  }
+                }).catch(function(err) {
+                  $scope.bookedUsers.push(bookedUsersReturned[bookedUser]);
+                  console.log(err);
+                })
+              } else {
+                $scope.bookedUsers.push(bookedUsersReturned[bookedUser]);
+                if(!$scope.$$phase) $scope.$apply();  
+              }    
+            }
           }
         }
-      }
+      })
     }
-    
-  	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
-  	// $scope.trainer = "Mendelson";
-  	// $scope.joinClassActive = false;
-
-  	var checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
-    $scope.$on('$destroy', function() {
-      $interval.cancel(checkTimeInterval);      
-    });
 
   	function checkTime() {
+      if (!classToJoin) $location.path('/');
   		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
   		// $scope.$apply();
   		// if ($scope.minutesUntilClass <= 0) {
@@ -230,10 +232,10 @@ angular.module('bodyAppApp')
 
     $scope.navigateToVideo = function() {
       if (currentUser._id === classToJoin.trainer._id) {
-        clearInterval(checkTimeInterval)
+        if (checkTimeInterval) clearInterval(checkTimeInterval)
         $location.path('/trainervideo')
       } else {
-        clearInterval(checkTimeInterval)
+        if (checkTimeInterval) clearInterval(checkTimeInterval)
         $location.path('/consumervideo')
       }
     }
@@ -585,7 +587,8 @@ angular.module('bodyAppApp')
       window.setTimeout(cleanupAndReport, config.timeout);
 
       bandwidthCalculator.start(function(stats) {
-        if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
+        if (stats.video.bitsPerSecond < 50000 || stats.video.packetLossRatioPerSecond > 0.2) { //Made much less stringent for this iteration.
+        // if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
           window.clearTimeout(testTimeout);
           bandwidthCalculator.stop();
           session.disconnect()
