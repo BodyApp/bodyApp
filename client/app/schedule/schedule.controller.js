@@ -542,8 +542,8 @@ angular.module('bodyAppApp')
               }).$promise;
             // }
           } else {
-            // if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
-            bookClass(slot)
+            if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
+            // bookClass(slot)
           }
         };
 

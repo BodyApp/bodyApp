@@ -79,6 +79,19 @@ ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {
+  var ref = new Firebase("https://bodyapp.firebaseio.com/");
+  ref.onAuth(function(authData) {
+    if (!authData) {
+      console.log("Server authenticating with firebase.");
+      ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
+        if (error) {
+          console.log("Firebase server authentication failed", error);
+        } else {
+          console.log("Firebase server authentication successful")
+        }
+      }); 
+    }
+  })
   var introRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros/")
 	var todayDate = new Date();
   var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);

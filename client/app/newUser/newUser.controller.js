@@ -38,6 +38,7 @@ angular.module('bodyAppApp')
             }
           })
         if (!currentUser.welcomeEmailSent) {
+            currentUser.welcomeEmailSent = true;
             User.sendWelcomeEmail({ id: currentUser._id }, {
             }, function(user) {
             }, function(err) {
@@ -91,6 +92,7 @@ angular.module('bodyAppApp')
     	classToBook.$loaded(function() {
             ref.child("bookings").child(classToBook.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
             ref.child("userBookings").child(currentUser._id).child(classToBook.date).update({date: classToBook.date, trainer: classToBook.trainer, level: classToBook.level})
+            ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
    //  		classToBook.bookedUsers = classToBook.bookedUsers || {};
 			// classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
             // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
