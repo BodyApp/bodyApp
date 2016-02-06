@@ -12,6 +12,7 @@ angular.module('bodyAppApp')
         var tzName = jstz().timezone_name;
         $scope.thisWeek;
         $scope.chosenDay;
+        $scope.timeNow = new Date().getTime();
 
         console.warn = function(str){}
 
@@ -43,14 +44,19 @@ angular.module('bodyAppApp')
                 console.log("User is authenticated with fb ");
               } else {
                 console.log("User is logged out");
-                ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                  if (error) {
-                    console.log("Firebase user authentication failed", error);
-                  } else {
-                    getBookings()
-                    if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                  }
-                }); 
+                if (currentUser.firebaseToken) {
+                  ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                    if (error) {
+                      console.log("Firebase user authentication failed", error);
+                    } else {
+                      getBookings()
+                      if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                    }
+                  }); 
+                } else {
+                  Auth.logout();
+                  $window.location.reload()
+                }
               }
             })
             // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
@@ -134,12 +140,10 @@ angular.module('bodyAppApp')
           // })
           ref.child("userBookings").child(currentUser._id).on('value', function(snapshot) {
             $scope.userBookings = snapshot.val()
-            console.log($scope.userBookings)
             if(!$scope.$$phase) $scope.$apply();
           })
           ref.child("trainerClasses").child(currentUser._id).child("classesTeaching").on('value', function(snapshot) {
             $scope.classesTeaching = snapshot.val()
-            console.log($scope.classesTeaching)
             if(!$scope.$$phase) $scope.$apply();
           })        
         }
@@ -214,7 +218,7 @@ angular.module('bodyAppApp')
         setNextWeek();
 
         $scope.availableClasses = true;
-        $scope.timeNow = new Date().getTime();
+        
         $interval(function() {
             $scope.timeNow = new Date().getTime();
         }, 1000*30)
@@ -476,9 +480,7 @@ angular.module('bodyAppApp')
         // }
 
         $scope.cancelClass = function(slot) {
-          console.log(slot)
           if (slot.level === "Intro") {
-            console.log()
             User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
               ref.child("bookings").child(slot.date).child(currentUser._id).remove()
               ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
@@ -509,7 +511,6 @@ angular.module('bodyAppApp')
 
         $scope.openBookingConfirmation = function (slot) {
           if (slot.level === "Intro") {
-            console.log(currentUser)
             if (currentUser.introClassTaken) {
               return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
             } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime()) {
