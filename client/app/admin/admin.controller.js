@@ -238,7 +238,6 @@ angular.module('bodyAppApp')
           consumersCanHearEachOther: false,
           musicVolume: 50,
           sessionId: nextSessionToSave.sessionId, 
-          past: false,
           spots: 15
         }, function() {
           console.log("New workout saved.  Creating tokbox session.")

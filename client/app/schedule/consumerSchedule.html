@@ -87,7 +87,7 @@
         <!-- Classes booked for next week -->
           <!-- If user is not the instructor -->
 <!--         <div ng-repeat="nextWeekDay in nextWeek">
-          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
+          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !isPast(slot) && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -114,7 +114,7 @@
           </div> -->
 
             <!-- If user is the instructor -->
-          <!-- <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
+          <!-- <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !isPast(slot)">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -184,10 +184,10 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
-        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && slot.date*1 > timeNow*1-45*60*1000" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.date < timeNow-45*60*1000">reserve</a></div>
+        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
@@ -233,10 +233,10 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <div class="col-xs-12 text-center">
           <span class="class-time mb8">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
-          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && slot.date*1 > timeNow*1-45*60*1000" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
+          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)">reserve</a></div>
           <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">teaching</a></div>
           <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
           <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>          

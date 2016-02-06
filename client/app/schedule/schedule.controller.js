@@ -148,6 +148,10 @@ angular.module('bodyAppApp')
           })        
         }
 
+        $scope.isPast = function(slot) {
+          return slot.date*1 < new Date().getTime() - 45*60*1000
+        }
+
         $scope.changeWeek = function() {
           if ($scope.thisWeek) {
             $scope.setCalendarToNextWeek()
