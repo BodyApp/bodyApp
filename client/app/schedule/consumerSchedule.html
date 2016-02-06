@@ -187,7 +187,7 @@
       <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
-        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !slot.date*1 > timeNow*1-45*60*1000" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.date < timeNow-45*60*1000">reserve</a></div>
+        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && slot.date*1 > timeNow*1-45*60*1000" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.date < timeNow-45*60*1000">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>

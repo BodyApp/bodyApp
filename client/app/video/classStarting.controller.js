@@ -195,7 +195,7 @@ angular.module('bodyAppApp')
             if (bookedUser) {
               //Adds security where injuries aren't available unless current user is admin or instructor.
               if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
-                console.log(bookedUser)
+                console.log(bookedUser);
                 User.getInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
                   if (data.injuries) {
                     var userToAdd = bookedUsersReturned[bookedUser]

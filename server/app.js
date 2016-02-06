@@ -67,15 +67,15 @@ var socketio = require('socket.io')(server, {
 var socketServer = require('socket.io').listen(server, {"log level":1})
 
 // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
-var ref = new Firebase("https://bodyapp.firebaseio.com/");
-ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
-  if (error) {
-    console.log("Firebase server authentication failed", error);
-  } else {
-    console.log("Firebase server authentication succeeded!", authData);
-  }
-// }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-}); 
+// var ref = new Firebase("https://bodyapp.firebaseio.com/");
+// ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
+//   if (error) {
+//     console.log("Firebase server authentication failed", error);
+//   } else {
+//     console.log("Firebase server authentication succeeded!", authData);
+//   }
+// // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+// }); 
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 new CronJob('29 * * * * *', function() {
@@ -94,35 +94,46 @@ new CronJob('29 * * * * *', function() {
   })
   var introRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros/")
 	var todayDate = new Date();
-  var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
-  // var sunDate = new Date();
-  // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-  var sunGetDate = sunDate.getDate();
-  var sunGetMonth = sunDate.getMonth()+1;
-  var sunGetYear = sunDate.getFullYear();
-  var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-  var firebaseRef = new Firebase("https://bodyapp.firebaseio.com/classes/")
-	var weeklyFirebaseRef = firebaseRef.child(weekOf);
+ //  var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+ //  // var sunDate = new Date();
+ //  // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
+ //  var sunGetDate = sunDate.getDate();
+ //  var sunGetMonth = sunDate.getMonth()+1;
+ //  var sunGetYear = sunDate.getFullYear();
+ //  var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+ //  var firebaseRef = new Firebase("https://bodyapp.firebaseio.com/classes/")
+	// var weeklyFirebaseRef = firebaseRef.child(weekOf);
 
-	weeklyFirebaseRef.once("value", function(currentWeek) {
-		currentWeek = currentWeek.val()
-	  for (var day in currentWeek) {
-    	for (var slot in currentWeek[day].slots) {
-        if (!currentWeek[day].slots[slot].past && slot <= (todayDate.getTime() - 45*60*1000)) { //Can book (and join) a class up to 45 minutes into class starting
-          weeklyFirebaseRef.child(day).child("slots").child(slot).update({past: true})
-          console.log("class " + slot + " is now in the past")
-          introRef.child(slot).remove(function(error){
-            if (!error) return console.log(slot + " removed from intro classes because in past");
-            if (error) return console.log(error);
-          })
-	      } else if (!currentWeek[day].slots[slot].past && currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= slot.spots) { //Prevents more than 15 people from joining
-          weeklyFirebaseRef.child(day).child("slots").child(slot).update({classFull: true})
-          console.log("class " + slot + " is now full")
-          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){if (!error)console.log(slot + " removed from intro classes because full")})
-	      }
-	    }
+  introRef.once('value', function(snapshot) {
+    for (var introClass in snapshot.val()) {
+      if (introClass < todayDate.getTime() - 45*60*1000) {
+        introRef.child(introClass).remove(function(error) {
+          if (error) console.log(error)
+          if (!error) console.log("Removed " + introClass + " from intro classes because in past.")
+        })
+      }
     }
-	})
+  })
+
+	// weeklyFirebaseRef.once("value", function(currentWeek) {
+	// 	currentWeek = currentWeek.val()
+	//   for (var day in currentWeek) {
+ //    	for (var slot in currentWeek[day].slots) {
+ //        if (!currentWeek[day].slots[slot].past && slot <= (todayDate.getTime() - 45*60*1000)) { //Can book (and join) a class up to 45 minutes into class starting
+ //          weeklyFirebaseRef.child(day).child("slots").child(slot).update({past: true})
+ //          console.log("class " + slot + " is now in the past")
+ //          introRef.child(slot).remove(function(error){
+ //            if (!error) return console.log(slot + " removed from intro classes because in past");
+ //            if (error) return console.log(error);
+ //          })
+	//       } else if (!currentWeek[day].slots[slot].past && currentWeek[day].slots[slot].bookedUsers && Object.keys(currentWeek[day].slots[slot].bookedUsers).length >= slot.spots) { //Prevents more than 15 people from joining
+ //          weeklyFirebaseRef.child(day).child("slots").child(slot).update({classFull: true})
+ //          console.log("class " + slot + " is now full")
+ //          firebaseRef.child("upcomingIntros").child(slot).remove(function(error){if (!error)console.log(slot + " removed from intro classes because full")})
+	//       }
+	//     }
+ //    }
+	// })
 
   // var upcomingIntroFirebaseRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros");  
   // upcomingIntroFirebaseRef.once('value', function(upcomingIntros) {
