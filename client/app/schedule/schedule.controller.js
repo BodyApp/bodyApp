@@ -126,11 +126,19 @@ angular.module('bodyAppApp')
         }
 
         function getBookings() {
+          // ref.child("userBookings").child(currentUser._id).startAt(todayDate.getTime() - 60*60*1000).on('value', function(snapshot) {
+          //   $scope.userBookings = snapshot.val()
+          // })
+          // ref.child("trainerClasses").child(currentUser._id).child("classesTeaching").startAt(todayDate.getTime() - 60*60*1000).on('value', function(snapshot) {
+          //   $scope.classesTeaching = snapshot.val()
+          // })
           ref.child("userBookings").child(currentUser._id).on('value', function(snapshot) {
             $scope.userBookings = snapshot.val()
+            console.log($scope.userBookings)
           })
           ref.child("trainerClasses").child(currentUser._id).child("classesTeaching").on('value', function(snapshot) {
             $scope.classesTeaching = snapshot.val()
+            console.log($scope.classesTeaching)
           })        
         }
 
@@ -499,12 +507,12 @@ angular.module('bodyAppApp')
 
         $scope.openBookingConfirmation = function (slot) {
           if (slot.level === "Intro") {
-
-            // if (currentUser.introClassTaken) {
-            //   return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
-            // } else if (currentUser.bookedIntroClass) {
-            //   return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
-            // } else {
+            console.log(currentUser)
+            if (currentUser.introClassTaken) {
+              return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
+            } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime()) {
+              return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
+            } else {
               return User.addIntroClass({ id: $scope.currentUser._id }, {classToAdd: slot.date}, function(user) {
                 var modalInstance = $uibModal.open({
                   animation: true,
@@ -528,7 +536,7 @@ angular.module('bodyAppApp')
                 $scope.currentUser = user;
                 ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId});
                 ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
-                ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
+                // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
                 // getInfo(slot.date);
                 // slot.bookedUsers = slot.bookedUsers || {};
                 // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
@@ -540,7 +548,7 @@ angular.module('bodyAppApp')
                   // classToBook.$save()
                   alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
               }).$promise;
-            // }
+            }
           } else {
             if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
             // bookClass(slot)
@@ -569,7 +577,7 @@ angular.module('bodyAppApp')
             classToAdd: slot.date
           }, function(user) {
             ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId});
-            ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+            // ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
             ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
             // getInfo(slot.date);
             // slot.bookedUsers = slot.bookedUsers || {};

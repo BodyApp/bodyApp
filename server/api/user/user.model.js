@@ -36,6 +36,7 @@ var UserSchema = new Schema({
   trainerRating: Number,
   trainerNumRatings: Number,
   bookedIntroClass: Boolean,
+  introClassBooked: Number,
   completedNewUserFlow: Boolean,
   introClassTaken: Boolean,
   tourtipShown: String,

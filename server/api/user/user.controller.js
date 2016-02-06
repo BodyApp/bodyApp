@@ -451,6 +451,7 @@ exports.addIntroClass = function(req, res, next) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
       user.classesBooked[classToAdd] = true;
+      user.introClassBooked = classToAdd,
       user.bookedIntroClass = true;
       user.completedNewUserFlow = true;
       user.save(function(err) {
@@ -538,7 +539,7 @@ exports.takeIntroClass = function(req, res, next) {
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       console.log(user);
-      user.introClassTaken = true
+      user.introClassTaken = true;
       user.classesTaken.push(introClassTaken);
       if (user.classesBooked && user.classesBooked[introClassTaken]) delete user.classesBooked[introClassTaken];
       user.level = 1;
