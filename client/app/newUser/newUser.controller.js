@@ -146,8 +146,8 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveInjuriesGoalsEmergency = function(boxChecked, injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
-        if (!injuryString) {return $scope.injuriesNotEntered = true;} else {$scope.injuriesNotEntered = false;}
-        if (!goals) {return $scope.goalsNotEntered = true;} else {$scope.goalsNotEntered = false;}
+        if (!injuryString || injuryString.length < 2) {return $scope.injuriesNotEntered = true;} else {$scope.injuriesNotEntered = false;}
+        if (!goals || goals.length < 2) {return $scope.goalsNotEntered = true;} else {$scope.goalsNotEntered = false;}
         if (!(emergencyFirst && emergencyLast && emergencyPhone)) {return $scope.emergencyContactNotEntered = true;} else {$scope.emergencyContactNotEntered = false;}
         if (!boxChecked) {return $scope.boxNotChecked = true;} else {$scope.boxNotChecked = false;}
 
