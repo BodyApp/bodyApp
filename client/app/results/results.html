@@ -103,7 +103,7 @@
 	<h4 class="bold">Rankings</h4>
 	<div class="mb16">
 		<a class="filter-btn" ng-class = "{active: communityActive}" ng-mouseover = "showCommunity()" href="">Community</a>		
-		<a class="filter-btn" ng-class = "{active: classmateActive}" ng-mouseover = "showClassmates()" href="">Classmates</a>
+		<a class="filter-btn" ng-show = "userResultsToday" ng-class = "{active: classmateActive}" ng-mouseover = "showClassmates()" href="">Classmates</a>
 	</div>
 	<ul class="public-results" >
 		<li ng-repeat = "result in rankings">
