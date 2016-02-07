@@ -22,6 +22,16 @@ angular.module('bodyAppApp')
   		return service.userHasClassNow;	
   	}
 
+    service.auditClass = function() {
+      service.auditingClass = true;
+      return service.auditingClass;
+    }
+
+    service.cancelAuditClass = function()  {
+      service.auditingClass = false;
+      return service.auditingClass;
+    }
+
   	service.setClassUserJustJoined = function(classJoined) {
       // var q = new Promise()
 

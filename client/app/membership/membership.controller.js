@@ -4,6 +4,8 @@
 angular.module('bodyAppApp')
   .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
 
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+
     $scope.closeModal = function() {
       $uibModalInstance.close()
     }

@@ -614,7 +614,7 @@ angular.module('bodyAppApp')
 			});
 
   		var publish = function() {
-			  if (connected && publisherInitialized) {
+			  if (connected && publisherInitialized && !Schedule.auditingClass) {
 			    session.publish(publisher, function(err) {
 					  if(err) {
 					  	console.log(err);
@@ -708,19 +708,16 @@ angular.module('bodyAppApp')
 		    	// console.log(event)
 				    console.log('The publisher started streaming with id ' + event.stream.id);
 
-				    var classRef = ref.child("classes").child(weekOf)
-			      .child(dayOfWeek)
-			      .child("slots")
-			      .child(classDate.getTime())
+				    // var classRef = ref.child("classes").child(weekOf)
+			     //  .child(dayOfWeek)
+			     //  .child("slots")
+			     //  .child(classDate.getTime())
 				    
 				    //Sets Stream IDs in the class object for easier diagnosis of tokbox stream issues
 				    if (userIsInstructor) {
-				    	classRef.child("trainer")
-				    	.update({tokboxStreamId: event.stream.id})
+				    	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.date).update({tokboxStreamId: event.stream.id})
 				    } else {
-				    	classRef.child("bookedUsers")
-				    	.child(currentUser._id)
-				    	.update({tokboxStreamId: event.stream.id})
+				    	ref.child("bookings").child(currentUser._id).update({tokboxStreamId: event.stream.id})
 				    }
 				});
 

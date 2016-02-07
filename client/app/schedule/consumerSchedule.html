@@ -43,7 +43,7 @@
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
@@ -55,7 +55,7 @@
           </div>
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in classesTeaching">
+          <div class="reservation-listing" ng-repeat="slot in classesTeaching" ng-if="slot.date > (timeNow - 60*60*1000)">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -72,7 +72,7 @@
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Teaching Intro BODY Class"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Teaching an Intro BODY Class"
@@ -103,7 +103,7 @@
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
@@ -131,7 +131,7 @@
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"

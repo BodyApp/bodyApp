@@ -47,6 +47,8 @@ angular.module('bodyAppApp')
                 if (currentUser.firebaseToken) {
                   ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
                     if (error) {
+                      Auth.logout();
+                      $window.location.reload()
                       console.log("Firebase user authentication failed", error);
                     } else {
                       getBookings()
@@ -298,11 +300,12 @@ angular.module('bodyAppApp')
               // scope: {classToJoin: slot} //passed current scope to the modal
             });
 
-            // modalInstance.result.then(function () {
-            //   // openStripePayment()
-            // }, function () {
-            //   // openStripePayment() //Killed here because moved into the membership modal's controller
-            // });
+            modalInstance.result.then(function () {
+              currentUser = Auth.getCurrentUser()
+            }, function () {
+              currentUser = Auth.getCurrentUser()
+              // openStripePayment() //Killed here because moved into the membership modal's controller
+            });
           }
         }
 

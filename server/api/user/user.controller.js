@@ -576,7 +576,7 @@ exports.takeIntroClass = function(req, res, next) {
               console.log("Error sending booking confirmation email to " + emailAddress)
             }
             else {
-              console.log("Sent booking confirmation email to " + emailAddress)
+              console.log("Sent 'intro class taken' email to " + emailAddress)
             }
         });
       }); 

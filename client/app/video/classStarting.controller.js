@@ -28,6 +28,9 @@ angular.module('bodyAppApp')
 
     var callbacks;
 
+    var networkBitsThreshold = 30000;
+    var networkDroppedPackets = 0.2;
+
     var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
 
     var classToJoin;
@@ -114,7 +117,7 @@ angular.module('bodyAppApp')
       // $scope.instructor = classToJoin.trainer
       // $scope.instructorPicUrl = $scope.instructor.picture
 
-      if (currentUser._id != classToJoin.trainer._id) {
+      if (currentUser._id != classToJoin.trainer._id && currentUser.role != 'admin') {
         $scope.networkTestCountdown = timeoutMs + 5000
         $scope.testingNetwork = true;
         conductInternetTest(classToJoin.sessionId);
@@ -186,7 +189,6 @@ angular.module('bodyAppApp')
       var bookedUsersRef = ref.child("bookings").child(classToJoin.date);
 
       bookedUsersRef.on('value', function(snapshot) {
-        console.log(snapshot.val())
         var bookedUsersReturned = snapshot.val();
         if (snapshot.exists()) {
           $scope.numBookedUsers = Object.keys(snapshot.val()).length;
@@ -195,12 +197,15 @@ angular.module('bodyAppApp')
             if (bookedUser) {
               //Adds security where injuries aren't available unless current user is admin or instructor.
               if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
-                console.log(bookedUser);
-                User.getInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+                console.log(bookedUser)
+                var something = User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
                   if (data.injuries) {
-                    var userToAdd = bookedUsersReturned[bookedUser]
+                    var userToAdd = data.profile;
+                    // console.log(userToAdd)
+                    // console.log(data)
                     userToAdd.injuries = data.injuries
                     $scope.bookedUsers.push(userToAdd);
+                    // console.log($scope.bookedUsers);
                     if(!$scope.$$phase) $scope.$apply();  
                   } else {
                     $scope.bookedUsers.push(bookedUsersReturned[bookedUser]);    
@@ -294,10 +299,10 @@ angular.module('bodyAppApp')
       performQualityTest({subscriber: subscriber, timeout: TEST_TIMEOUT_MS}, function(error, results) {
         console.log('Test concluded', results);
 
-        var audioVideoSupported = results.video.bitsPerSecond > 300000 &&
-          results.video.packetLossRatioPerSecond < 0.03 &&
-          results.audio.bitsPerSecond > 25000 &&
-          results.audio.packetLossRatioPerSecond < 0.05;
+        var audioVideoSupported = results.video.bitsPerSecond > networkBitsThreshold &&
+          results.video.packetLossRatioPerSecond < networkDroppedPackets
+          // results.audio.bitsPerSecond > 25000 &&
+          // results.audio.packetLossRatioPerSecond < 0.05;
 
         userRef.child("passedNetworkTest").push({time: new Date().getTime(), results: results})
 
@@ -587,7 +592,7 @@ angular.module('bodyAppApp')
       window.setTimeout(cleanupAndReport, config.timeout);
 
       bandwidthCalculator.start(function(stats) {
-        if (stats.video.bitsPerSecond < 50000 || stats.video.packetLossRatioPerSecond > 0.2) { //Made much less stringent for this iteration.
+        if (stats.video.bitsPerSecond < networkBitsThreshold || stats.video.packetLossRatioPerSecond > networkDroppedPackets) { //Made much less stringent for this iteration.
         // if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
           window.clearTimeout(testTimeout);
           bandwidthCalculator.stop();
@@ -622,6 +627,14 @@ angular.module('bodyAppApp')
         currentStats = stats;
       });
     }  
+
+    $scope.auditClass = function() {
+      $scope.auditingClass = Schedule.auditClass()
+    }
+
+    $scope.cancelAuditClass = function() {
+      $scope.auditingClass = Schedule.cancelAuditClass()
+    }
 
     // load cookie, or start new tour
     // $scope.currentStep = 0;
