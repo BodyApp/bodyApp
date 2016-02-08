@@ -62,8 +62,8 @@
 			</div>
 
 			<h3 class="darkblue bold mb8 mt32">Teammates</h3>
-			<ul class="allTeammates" ng-repeat = "(key, value) in bookedUsers">
-				<li class="teammateContent text-center">
+			<ul class="allTeammates">
+				<li class="teammateContent text-center" ng-repeat = "(key, value) in bookedUsers">
 					<img class="user-circle-image" src="{{value.picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{value.firstName}} {{value.lastName.charAt(0)}}.</span><br>
