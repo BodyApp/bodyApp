@@ -86,6 +86,7 @@ UserSchema
       'gender': this.gender,
       'role': this.role,
       'picture': this.picture,
+      'facebookId': this.facebookId,
       'trainerCredential1': this.trainerCredential1,
       'trainerCredential2': this.trainerCredential2,
       'trainerCredential3': this.trainerCredential3,

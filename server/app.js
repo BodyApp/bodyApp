@@ -15,6 +15,7 @@ var Firebase = require('firebase');
 var seojs = require('express-seojs');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
+var helmet = require('helmet')
 
 // Module to call XirSys servers
 var request = require("request");
@@ -31,6 +32,8 @@ if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
 var app = express();
+
+app.use(helmet()) //Sets various HTTP headers for increased security
 
 app.use(require('prerender-node').set('prerenderToken', '0xk2UugZ3MhosEzMYKrg'));
 

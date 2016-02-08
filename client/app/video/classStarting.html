@@ -62,15 +62,15 @@
 			</div>
 
 			<h3 class="darkblue bold mb8 mt32">Teammates</h3>
-			<ul class="allTeammates">
-				<li class="teammateContent text-center" ng-if = "numBookedUsers > 0">
-					<img class="user-circle-image" src="{{bookedUsers[0].picture}}">
+			<ul class="allTeammates" ng-repeat = "(key, value) in bookedUsers">
+				<li class="teammateContent text-center">
+					<img class="user-circle-image" src="{{value.picture}}">
 					<div class="user-name">
-						<span id="dark-text">{{bookedUsers[0].firstName}} {{bookedUsers[0].lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[0].injuries}}</span><br>
+						<span id="dark-text">{{value.firstName}} {{value.lastName.charAt(0)}}.</span><br>
+						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{value.injuries}}</span><br>
 					</div>
 				</li>
-				<li class="teammateContent text-center" ng-if = "numBookedUsers > 1">
+<!-- 				<li class="teammateContent text-center" ng-if = "numBookedUsers > 1">
 					<img class="user-circle-image" src="{{bookedUsers[1].picture}}">
 					<div class="user-name text-center">
 						<span id="dark-text">{{bookedUsers[1].firstName}} {{bookedUsers[1].lastName.charAt(0)}}.</span>
@@ -118,7 +118,7 @@
 						<span id="dark-text">{{bookedUsers[7].firstName}} {{bookedUsers[7].lastName.charAt(0)}}.</span>
 						<span ng-if = "currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{bookedUsers[7].injuries}}</span><br>
 					</div>		    							
-				</li>				
+				</li>		 -->		
 			</ul>
 		</div>
 
