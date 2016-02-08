@@ -120,17 +120,21 @@ angular.module('bodyAppApp')
 
         //Need to fix this
         $scope.checkIfFriends = function(slot) {
-          var friendList = [];
-          for (var prop in slot.bookedUsers) {
-            var user = slot.bookedUsers[prop];
-            if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
-              friendList.push(user);
-              if (!$scope.pictureData[user.facebookId]) {
-                $scope.pictureData[user.facebookId] = user;
+          ref.child("bookings").child(slot.date).once('value', function(snapshot) {
+            if (!snapshot.exists()) return
+            slot.friendList = [];
+            for (var prop in snapshot.val()) {
+              var user = snapshot.val()[prop];
+              if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
+                slot.friendList.push(user);
+                if (!$scope.pictureData[user.facebookId]) {
+                  $scope.pictureData[user.facebookId] = user;
+                }
               }
             }
-          }
-          return friendList;
+            console.log(slot.friendList)
+            // return friendList;
+          })
         }
 
         function getBookings() {

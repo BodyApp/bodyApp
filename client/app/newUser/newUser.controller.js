@@ -157,7 +157,7 @@ angular.module('bodyAppApp')
     	// 	$scope.errorDiv = true
     	// 	console.log("Didn't enter any injury information!")
     	// } else {
-		User.saveInjuriesGoalsEmergency({id: $scope.currentUser}, {injuryString: injuries, goals: goals, emergencyContact: emergencyContact})
+		User.saveInjuriesGoalsEmergency({id: $scope.currentUser}, {injuryString: injuryString, goals: goals, emergencyContact: emergencyContact})
         .$promise.then(function(user) {
 			console.log("Successfully saved injury, goals and emergency contact info.");
 			Auth.getUpdatedUser();
