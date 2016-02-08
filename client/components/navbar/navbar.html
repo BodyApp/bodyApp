@@ -19,27 +19,27 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow && getCurrentUser().stripe.subscription.status !== 'active'">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().stripe.subscription.status !== 'active'">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                               </p>
                             </li>                    
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/schedule">Dashboard</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/results')}">
                                 <a href="/results">Results</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/results')}">
                                 <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow" ng-class="{active: isActive('/settings')}">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
                                 Hi {{getCurrentUser().nickName}}
                               </a>
@@ -62,27 +62,27 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow && getCurrentUser().stripe.subscription.status !== 'active'">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().stripe.subscription.status !== 'active'">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                           </p>
                         </li>                    
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/schedule">Dashboard</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/results')}">
                             <a href="/results">Results</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/results')}">
                             <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow" ng-class="{active: isActive('/settings')}">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                           <a href="/settings">
                             <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().nickName}}
                           </a>

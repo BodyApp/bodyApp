@@ -21,7 +21,8 @@ angular.module('bodyAppApp')
     $scope.wod = {};
     var classDate;
     var classKey;
-    var wodRef = new Firebase("https://bodyapp.firebaseio.com/WODs");
+    var ref = new Firebase("https://bodyapp.firebaseio.com/");
+    var wodRef = ref.child("WODs");
 
     $scope.scoreTypes = []
     $scope.scoreTypes.push({label: "Time To Complete", id: 0})
@@ -200,6 +201,19 @@ angular.module('bodyAppApp')
 
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 
+      ref.child("playlists").child(workoutToCreate.playlistUrl.id).update({
+        soundcloudUrl: workoutToCreate.playlistUrl.uri,
+        duration: workoutToCreate.playlistUrl.duration,
+        id: workoutToCreate.playlistUrl.id,
+        lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
+        title: workoutToCreate.playlistUrl.title,
+        trackCount: workoutToCreate.playlistUrl.track_count,
+        tracks: workoutToCreate.playlistUrl.tracks,
+        // secretUri: workoutToCreate.playlistUrl.secret_uri,
+        sharing: workoutToCreate.playlistUrl.sharing,
+        user_id: workoutToCreate.playlistUrl.user_id
+      }, function(err){if (err) console.log(err)})
+
       // syncObject.$loaded().then(function() {
         //Set up the week if this is first class of week
         // if (!syncObject[DayOfWeekSetter.setDay(date.getDay())]) {
@@ -215,19 +229,19 @@ angular.module('bodyAppApp')
           date: date.getTime(),
           playlistSource: 'SoundCloud',
           level: workoutToCreate.level,
-          // playlist: workoutToCreate.playlistUrl,
-          playlist: {
-            soundcloudUrl: workoutToCreate.playlistUrl.uri,
-            duration: workoutToCreate.playlistUrl.duration,
-            id: workoutToCreate.playlistUrl.id,
-            lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
-            title: workoutToCreate.playlistUrl.title,
-            trackCount: workoutToCreate.playlistUrl.track_count,
-            tracks: workoutToCreate.playlistUrl.tracks,
-            // secretUri: workoutToCreate.playlistUrl.secret_uri,
-            sharing: workoutToCreate.playlistUrl.sharing,
-            user_id: workoutToCreate.playlistUrl.user_id
-          },
+          playlist: workoutToCreate.playlistUrl.id,
+          // playlist: {
+          //   soundcloudUrl: workoutToCreate.playlistUrl.uri,
+          //   duration: workoutToCreate.playlistUrl.duration,
+          //   id: workoutToCreate.playlistUrl.id,
+          //   lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
+          //   title: workoutToCreate.playlistUrl.title,
+          //   trackCount: workoutToCreate.playlistUrl.track_count,
+          //   tracks: workoutToCreate.playlistUrl.tracks,
+          //   // secretUri: workoutToCreate.playlistUrl.secret_uri,
+          //   sharing: workoutToCreate.playlistUrl.sharing,
+          //   user_id: workoutToCreate.playlistUrl.user_id
+          // },
           // stopwatch: {
           //   start: date.getTime(),
           //   stop: date.getTime(),
@@ -239,8 +253,9 @@ angular.module('bodyAppApp')
           musicVolume: 50,
           sessionId: nextSessionToSave.sessionId, 
           spots: 15
-        }, function() {
-          console.log("New workout saved.  Creating tokbox session.")
+        }, function(err) {
+          if (err) return console.log(err)
+          console.log("New workout saved to classes object.")
           if (workoutToCreate.level === "Intro") {
             console.log("Setting to upcomingIntros.")
             var introToSet = {};
@@ -251,8 +266,9 @@ angular.module('bodyAppApp')
             upcomingIntroRef.set(dateKey, function(){console.log("Saved Intro class to intro list")})
           }
           var trainerClassesRef = new Firebase("https://bodyapp.firebaseio.com/trainerClasses/");
-          trainerClassesRef.child(trainerInfoToSave._id).child("classesTeaching").child(date.getTime()).set({date: date.getTime(), level: workoutToCreate.level}, function() {
+          trainerClassesRef.child(trainerInfoToSave._id).child("classesTeaching").child(date.getTime()).set({date: date.getTime(), level: workoutToCreate.level}, function(err) {
             modalInstance.close();
+            if (err) console.log(err)
           })
 
           User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {

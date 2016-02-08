@@ -184,7 +184,7 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot), intro: slot.level === 'Intro', lvl1: slot.level === 'Level One'}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
         <div class="class-type lvl1"><span>{{slot.level}}</span></div>
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)">reserve</a></div>
@@ -194,19 +194,19 @@
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         <div class="my-friends mt16 mb8" >
           <div class="qty" ng-init = "checkIfFriends(slot)">
-            <span ng-show = "slot.friendList.length > 0">{{slot.friendList.length}}</span>
-            <span ng-show = "!slot.friendList || slot.friendList.length < 1">No friends in class</span> 
-            <span ng-show = "slot.friendList && slot.friendList.length > 1">friends in class</span> 
-            <span ng-show = "slot.friendList.length === 1">friend in class</span> 
+            <span ng-show = "friendList[slot.date].length > 0">{{friendList[slot.date].length}}</span>
+            <span ng-show = "!friendList[slot.date] || friendList[slot.date].length < 1">No friends in class</span> 
+            <span ng-show = "friendList[slot.date] && friendList[slot.date].length > 1">friends in class</span> 
+            <span ng-show = "friendList[slot.date].length === 1">friend in class</span> 
             </div>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[slot.friendList[0].facebookId].firstName?pictureData[slot.friendList[0].facebookId].firstName + ' ':''}}{{pictureData[slot.friendList[0].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[slot.friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[slot.friendList[0].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][0].facebookId].firstName?pictureData[friendList[slot.date][0].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][0].facebookId].lastName}}">
+              <img class="profile" ng-src="{{pictureData[friendList[slot.date][0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][0].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[slot.friendList[1].facebookId].firstName?pictureData[slot.friendList[1].facebookId].firstName + ' ':''}}{{pictureData[slot.friendList[1].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[slot.friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[slot.friendList[1].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][1].facebookId].firstName?pictureData[friendList[slot.date][1].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][1].facebookId].lastName}}">
+              <img class="profile" ng-src="{{pictureData[friendList[slot.date][1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][1].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[slot.friendList[2].facebookId].firstName?pictureData[slot.friendList[2].facebookId].firstName + ' ':''}}{{pictureData[slot.friendList[2].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[slot.friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[slot.friendList[2].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][2].facebookId].firstName?pictureData[friendList[slot.date][2].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][2].facebookId].lastName}}">
+              <img class="profile" ng-src="{{pictureData[friendList[slot.date][2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][2].facebookId])">
             </span>
           <!-- <div class="empty"></div>
           <div class="empty"></div> -->
@@ -249,18 +249,18 @@
         </div>
         <div class="col-xs-6 text-center">
           <div class="my-friends" >
-            <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
-              <span ng-show = "friendList.length != 1">friends in class</span> 
-              <span ng-show = "friendList.length === 1">friend in class</span> 
+            <div class="qty" ng-init = "checkIfFriends(slot)" >{{friendList[slot.date].length}} 
+              <span ng-show = "friendList[slot.date].length != 1">friends in class</span> 
+              <span ng-show = "friendList[slot.date].length === 1">friend in class</span> 
             </div>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][0].facebookId].firstName?pictureData[friendList[slot.date][0].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][0].facebookId].lastName}}">
+              <img class="profile" ng-src="{{pictureData[friendList[slot.date][0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][0].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][1].facebookId].firstName?pictureData[friendList[slot.date][1].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][1].facebookId].lastName}}">
+              <img class="profile" ng-src="{{pictureData[friendList[slot.date][1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][1].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][2].facebookId].firstName?pictureData[friendList[slot.date][2].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][2].facebookId].lastName}}">
+              <img class="profile" ng-src="{{pictureData[friendList[slot.date][2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][2].facebookId])">
             </span>
             <!-- <div class="empty"></div>
             <div class="empty"></div> -->

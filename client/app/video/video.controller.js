@@ -264,52 +264,56 @@ angular.module('bodyAppApp')
 		//   })
 		// }
 
-		if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
-			var element = document.getElementById('audioPlayer')
-			audioPlayer = SC.Widget(element);
-			audioPlayer.load(classToJoin.playlist.soundcloudUrl);
+		ref.child("playlists").child(classToJoin.playlist).once('value', function(snapshot) {
+			if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
+				var element = document.getElementById('audioPlayer')
+				audioPlayer = SC.Widget(element);
+				audioPlayer.load(snapshot.val().soundcloudUrl);
 
-			audioPlayer.bind(SC.Widget.Events.READY, function() {
-				if (firstTimePlayingSong) {
-					elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
-					
-					setMusicVolume($scope.musicVolume);
+				audioPlayer.bind(SC.Widget.Events.READY, function() {
+					if (firstTimePlayingSong) {
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+						
+						setMusicVolume($scope.musicVolume);
 
-					audioPlayer.getSounds(function(soundArray) {
-						songArray = soundArray		
-						for (var i = 0; i < soundArray.length; i++) {
-							if (elapsedTime > soundsLength + soundArray[i].duration) {
-								soundsLength += soundArray[i].duration;
-								audioPlayer.next();
-							} else {
-								console.log("seeking to track " + (i+1));
-								currentSongIndex = i;			
-								return audioPlayer.play()
-							}
-						}	
-					})
-				}
-			})		
+						audioPlayer.getSounds(function(soundArray) {
+							songArray = soundArray		
+							for (var i = 0; i < soundArray.length; i++) {
+								if (elapsedTime > soundsLength + soundArray[i].duration) {
+									soundsLength += soundArray[i].duration;
+									audioPlayer.next();
+								} else {
+									console.log("seeking to track " + (i+1));
+									currentSongIndex = i;			
+									return audioPlayer.play()
+								}
+							}	
+						})
+					}
+				})		
 
-			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-				if (!firstTimePlayingSong && songArray.length > 0) {
-					currentSongIndex++
-					$scope.currentSong = songArray[currentSongIndex];
-					if(!$scope.$$phase) $scope.$apply();
-				}
-				if (firstTimePlayingSong) {
-					elapsedTime = new Date().getTime() - classToJoin.date
-					var seekingTo = elapsedTime - soundsLength
-					audioPlayer.seekTo(seekingTo);
-					console.log("seeking to position " + seekingTo);
-					$scope.currentSong = songArray[currentSongIndex];
-					if(!$scope.$$phase) $scope.$apply();
-					firstTimePlayingSong = false;
-				} 
-			});
-		} else {
-			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
-		}
+				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+					if (!firstTimePlayingSong && songArray.length > 0) {
+						currentSongIndex++
+						$scope.currentSong = songArray[currentSongIndex];
+						if(!$scope.$$phase) $scope.$apply();
+					}
+					if (firstTimePlayingSong) {
+						elapsedTime = new Date().getTime() - classToJoin.date
+						var seekingTo = elapsedTime - soundsLength
+						audioPlayer.seekTo(seekingTo);
+						console.log("seeking to position " + seekingTo);
+						$scope.currentSong = songArray[currentSongIndex];
+						if(!$scope.$$phase) $scope.$apply();
+						firstTimePlayingSong = false;
+					} 
+				});
+			} else {
+				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+			}
+		})
+
+		
 
 		var wodRef = ref.child("WODs").child(classKey)
 		wodRef.once('value', function(snapshot) {

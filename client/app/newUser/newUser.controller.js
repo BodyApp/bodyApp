@@ -24,19 +24,26 @@ angular.module('bodyAppApp')
         //Firebase authentication check
           var ref = new Firebase("https://bodyapp.firebaseio.com/");
           ref.onAuth(function(authData) {
-            if (authData) {
-              console.log("User is authenticated with fb ");
-            } else {
-              console.log("User is logged out");
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                if (error) {
-                  console.log("Firebase user authentication failed", error);
+              if (authData) {
+                console.log("User is authenticated with fb ");
+              } else {
+                console.log("User is logged out");
+                if (currentUser.firebaseToken) {
+                  ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                    if (error) {
+                      Auth.logout();
+                      $window.location.reload()
+                      console.log("Firebase user authentication failed", error);
+                    } else {
+                      if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                    }
+                  }); 
                 } else {
-                  if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                  Auth.logout();
+                  $window.location.reload()
                 }
-              }); 
-            }
-          })
+              }
+        })
         if (!currentUser.welcomeEmailSent) {
             currentUser.welcomeEmailSent = true;
             User.sendWelcomeEmail({ id: currentUser._id }, {

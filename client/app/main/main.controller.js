@@ -28,7 +28,7 @@ angular.module('bodyAppApp')
 
     Auth.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
-          if (Auth.getCurrentUser().completedNewUserFlow) {
+          if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
             // event.preventDefault();
             $state.go('schedule');
           } else {

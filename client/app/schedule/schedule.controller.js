@@ -122,18 +122,19 @@ angular.module('bodyAppApp')
         $scope.checkIfFriends = function(slot) {
           ref.child("bookings").child(slot.date).once('value', function(snapshot) {
             if (!snapshot.exists()) return
-            slot.friendList = [];
+            $scope.friendList = $scope.friendList || {};
+            $scope.friendList[slot.date] = [];
             for (var prop in snapshot.val()) {
               var user = snapshot.val()[prop];
               if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
-                slot.friendList.push(user);
+                $scope.friendList[slot.date].push(user);
+                if(!$scope.$$phase) $scope.$apply();
                 if (!$scope.pictureData[user.facebookId]) {
                   $scope.pictureData[user.facebookId] = user;
+                  if(!$scope.$$phase) $scope.$apply();
                 }
               }
             }
-            console.log(slot.friendList)
-            // return friendList;
           })
         }
 
@@ -521,7 +522,7 @@ angular.module('bodyAppApp')
         }
 
         $scope.openBookingConfirmation = function (slot) {
-          if (slot.level === "Intro") {
+          if (slot.level === "Intro" || slot.level === "Test") {
             if (currentUser.introClassTaken) {
               return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
             } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime()) {
