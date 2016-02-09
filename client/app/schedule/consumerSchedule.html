@@ -184,9 +184,9 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: isPast(slot), intro: slot.level === 'Intro', lvl1: slot.level === 'Level One'}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
-        <div class="class-type lvl1"><span>{{slot.level}}</span></div>
+        <div class="class-type" ng-class = "{intro: slot.level === 'Intro', lvl1: slot.level === 'Level One'}"><span>{{slot.level}}</span></div>
         <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)">reserve</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
