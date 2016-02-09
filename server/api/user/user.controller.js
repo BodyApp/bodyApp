@@ -523,9 +523,12 @@ exports.cancelIntroClass = function(req, res, next) {
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.bookedIntroClass = false;
+      user.classesCancelled = user.classesCancelled || {}
+      user.classesCancelled[classToCancel] = new Date().getTime()
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
         if (err) return validationError(res, err);
+        console.log(user.firstName + " " + user.lastName + " just cancelled an intro class at " + classToCancel)
         res.status(200).json(user);
       });
     } 
@@ -592,7 +595,7 @@ exports.addBookedClass = function(req, res, next) {
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
-      user.classesBooked[classToAdd.date] = true;
+      user.classesBooked[classToAdd] = new Date().getTime();
       user.save(function(err) {
         if (err) return validationError(res, err);
         sendEmail(user)
@@ -663,6 +666,7 @@ exports.cancelBookedClass = function(req, res, next) {
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
         if (err) return validationError(res, err);
+        console.log(user.firstName + " " + user.lastName + " just cancelled a class at " + classToCancel)
         res.status(200).json(user);
       });
     } 

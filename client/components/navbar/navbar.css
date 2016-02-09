@@ -1,0 +1,4 @@
+.loggedinHamburger:before {
+	content: "\e68e";
+	/*font-size: 20px;*/
+}

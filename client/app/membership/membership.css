@@ -61,9 +61,10 @@
     line-height: 20px;
     border-radius: 8px;
     border-radius: 50%;
+    z-index: 100;
 }
 .cancel-modal-membership:hover {
   opacity: 0.8;
-  cursor: pointer;
+  /*cursor: pointer;*/
 
 }

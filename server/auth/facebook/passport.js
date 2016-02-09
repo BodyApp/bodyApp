@@ -90,16 +90,23 @@ exports.setup = function (User, config) {
           
           if (profile._json) {
             user.facebook = profile._json;
-            user.lastLoginDate = new Date()
-            if (profile._json.friends) user.friendList = profile._json.friends.data;
-            user.friendListObject = user.friendListObject || {};
-            for (var i = 0; i < user.friendList.length; i++) {
-              user.friendListObject[user.friendList[i].id] = {}
-              user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
-              // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
-            }
-          }          
+          }
+
+          user.lastLoginDate = new Date()
+          if (profile._json && profile._json.friends) user.friendList = profile._json.friends.data;
+          user.friendListObject = {};
+          for (var i = 0; i < user.friendList.length; i++) {
+            user.friendListObject[user.friendList[i].id] = {name: user.friendList[i].name}
+            // user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
+            // console.log(user.friendListObject)
+            // console.log("hello")
+            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
+          }
+                    
+          console.log("about to save.")
+          console.log(user.friendListObject)
           user.save(function(err) {
+            console.log("save complete")
             if (err) return done(err);
             //Firebase authentication
             var ref = new Firebase("https://bodyapp.firebaseio.com/");
@@ -117,7 +124,7 @@ exports.setup = function (User, config) {
               }
             // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             }); 
-            usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
+            usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
             return done(err, user);
           })

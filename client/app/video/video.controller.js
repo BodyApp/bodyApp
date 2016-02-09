@@ -721,7 +721,7 @@ angular.module('bodyAppApp')
 				    if (userIsInstructor) {
 				    	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.date).update({tokboxStreamId: event.stream.id})
 				    } else {
-				    	ref.child("bookings").child(currentUser._id).update({tokboxStreamId: event.stream.id})
+				    	ref.child("bookings").child(classToJoin.date).child(currentUser._id).update({tokboxStreamId: event.stream.id})
 				    }
 				});
 
