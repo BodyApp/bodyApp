@@ -11,7 +11,7 @@ angular.module('bodyAppApp')
     var SESSION_ID;
     var TOKEN;
 
-    var TEST_TIMEOUT_MS = 25000; // Internet test lasts 15 seconds.  Increase to increase reliability of the test.
+    var TEST_TIMEOUT_MS = 10000; // Internet test lasts 15 seconds.  Increase to increase reliability of the test.
 
     var timeoutMs = TEST_TIMEOUT_MS;
     // test.testSuccess = false;
@@ -28,8 +28,8 @@ angular.module('bodyAppApp')
 
     var callbacks;
 
-    var networkBitsThreshold = 30000;
-    var networkDroppedPackets = 0.2;
+    var networkBitsThreshold = 100000;
+    var networkDroppedPackets = 0.1;
 
     var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
 

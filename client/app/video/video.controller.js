@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 			return $location.path('/') //Go to the home page (index)
 		}
 
-		$scope.classTime = classToJoin.date; //trainer_video:180 - Timer is set to the class to join date.
+		$scope.classTime = new Date(); //trainer_video:180 - Timer is set to the class to join date.
 		$scope.trainer = classToJoin.trainer;
 
 		var session;
