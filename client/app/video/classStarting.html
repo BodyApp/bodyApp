@@ -13,13 +13,16 @@
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click to join up to 30 minutes ahead</a>
 		</div>
 		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
-			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">Your {{phrase}} will be ready in <timer class = "clock" interval="1000" countdown="networkTestCountdown/1000">{{countdown}}</timer></a>
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">Your session will be ready in <timer class = "clock" interval="1000" countdown="networkTestCountdown/1000">{{countdown}}</timer></a>
 		</div>
 		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
-			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">We're preparing your {{phrase}}</a>
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">We're preparing your session.</a>
 		</div>
 		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to join!</a>
+		</div>
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click this 5 minutes before class!</a>
 		</div>
 		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click this 5 minutes before class!</a>

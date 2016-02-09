@@ -137,10 +137,11 @@
   display: inline-block;
   float: right;
 }
-.intro {
+div.intro {
   color: #4DC56B;
+  /*font-weight: 600;*/
 }
-.lvl1 {
+div.lvl1 {
   color: #224893;
 }
 .lvl2 {
@@ -148,6 +149,19 @@
 }
 .lvl3 {
   color: #C82428;
+}
+.introBtn {
+  background-color: #4DC56B;
+  /*color: black;*/
+}
+.lvl1Btn {
+  background-color: #224893;
+}
+.lvl2Btn {
+  background-color: #FF6700;
+}
+.lvl3Btn {
+  background-color: #C82428;
 }
 a.reserve.btn {
   font-size: 10px;
