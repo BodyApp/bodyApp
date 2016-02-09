@@ -118,10 +118,16 @@ angular.module('bodyAppApp')
       // $scope.instructorPicUrl = $scope.instructor.picture
 
       if (currentUser._id != classToJoin.trainer._id && currentUser.role != 'admin') {
-        $scope.networkTestCountdown = timeoutMs + 5000
+        $scope.networkTestCountdown = timeoutMs + 6000
         $scope.testingNetwork = true;
+        $timeout(function() {
+          console.log("Prevented standstill at loading screen.")
+          $scope.testingNetwork = false;
+        }, $scope.networkTestCountdown)
         conductInternetTest(classToJoin.sessionId);
       }
+
+
 
       $scope.numBookedUsers;
       $scope.bookedUsers;
@@ -312,19 +318,36 @@ angular.module('bodyAppApp')
           // results.audio.bitsPerSecond > 25000 &&
           // results.audio.packetLossRatioPerSecond < 0.05;
 
-        userRef.child("passedNetworkTest").push({time: new Date().getTime(), results: results})
-
         session.disconnect()
         publisher.disconnect();
         publisher.destroy();
 
         if (audioVideoSupported) {
+          console.log("Passed network test")
           $scope.testingNetwork = false;
+          if(!$scope.$$phase) $scope.$apply();  
+          userRef.child("passedNetworkTest").push({time: new Date().getTime(), results: results})  
           // test.testSuccess = true;
           return callback(false, {
             text: 'You\'re all set!',
             icon: 'assets/icon_tick.svg'
           });
+        } else {
+          userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats})
+          console.log("Your internet connection is too slow.")
+          var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: "static",
+            keyboard: false,
+            templateUrl: 'app/video/badInternet.html',
+            controller: 'BadInternetCtrl',
+            windowClass: "modal-tall"
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+          }, function () {
+          });
+          return false;
         }
 
         // if (results.audio.packetLossRatioPerSecond < 0.05) {

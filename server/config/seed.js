@@ -40,7 +40,7 @@ User.find({}).remove(function() {
     facebookId: "10100958748247716",
     email: "daniel.liebeskind@gmail.com",
     provider: "facebook",
-    role: "admin",
+    role: "instructor",
     __v: 51,
     // injuries: "Nope",
     bookedIntroClass: false,
