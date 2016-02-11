@@ -9,6 +9,8 @@ angular.module('bodyAppApp')
         $scope.windowWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         // $scope.myBookedClasses = {};
 
+
+
         var tzName = jstz().timezone_name;
         $scope.thisWeek;
         $scope.chosenDay;
@@ -31,6 +33,14 @@ angular.module('bodyAppApp')
         if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
           Auth.getCurrentUser().$promise.then(function(user) {
             currentUser = user
+            olark('api.visitor.updateFullName', {
+                fullName: user.firstName + " " + user.lastName.charAt(0)
+            });
+
+            olark('api.visitor.updateCustomFields', {
+                id: user._id,
+                fbId: user.facebookId
+            });
 
             $scope.currentUser = currentUser;
             Schedule.setCurrentUser(currentUser);
@@ -51,8 +61,9 @@ angular.module('bodyAppApp')
                       $window.location.reload()
                       console.log("Firebase user authentication failed", error);
                     } else {
-                      getBookings()
                       if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                      $window.location.reload()
+                      getBookings()
                     }
                   }); 
                 } else {

@@ -32,12 +32,12 @@ exports.setup = function (User, config) {
         }
         if (!user) {
           user = new User({
-            name: profile.displayName,
-            firstName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
-            lastName: profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1),
-            nickName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
-            gender: profile.gender,
-            picture: profile.photos ? profile.photos[0].value: "#",
+            name: profile.displayName ? profile.dislpayName : "",
+            firstName: profile.displayName ? profile.displayName.substr(0, profile.displayName.indexOf(" ")) : "",
+            lastName: profile.displayName ? profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1) : "",
+            nickName: profile.displayName ? profile.displayName.substr(0, profile.displayName.indexOf(" ")) : "",
+            gender: profile.gender ? profile.gender : "",
+            picture: profile.photos ? profile.photos[0].value : "#",
             facebookId: profile.id,
             // birthday: profile.birthday,
             friendList: profile._json.friends ? profile._json.friends.data : [],
@@ -60,6 +60,7 @@ exports.setup = function (User, config) {
           user.level = user.level || 0;
           var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, role: user.role, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
           user.firebaseToken = firebaseToken;
+          user.lastLoginDate = user.signUpDate;
 
           user.save(function(err) {
             if (err) return done(err);
@@ -92,7 +93,7 @@ exports.setup = function (User, config) {
             user.facebook = profile._json;
           }
 
-          user.lastLoginDate = new Date()
+          user.lastLoginDate = new Date();
           if (profile._json && profile._json.friends) user.friendList = profile._json.friends.data;
           user.friendListObject = {};
           for (var i = 0; i < user.friendList.length; i++) {
@@ -103,8 +104,6 @@ exports.setup = function (User, config) {
             // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
           }
                     
-          console.log("about to save.")
-          console.log(user.friendListObject)
           user.save(function(err) {
             console.log("save complete")
             if (err) return done(err);
