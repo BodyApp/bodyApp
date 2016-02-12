@@ -21,6 +21,7 @@ angular.module('bodyAppApp')
 
     Auth.getCurrentUser().$promise.then(function(user) {
         currentUser = user
+
         //Firebase authentication check
           var ref = new Firebase("https://bodyapp.firebaseio.com/");
           ref.onAuth(function(authData) {
@@ -44,6 +45,31 @@ angular.module('bodyAppApp')
                 }
               }
         })
+
+        // //Olark Integration
+        if (user.firstName && user.lastName) {
+            olark('api.visitor.updateFullName', {
+                fullName: user.firstName + " " + user.lastName.charAt(0)
+            });
+        }
+
+        olark('api.visitor.updateCustomFields', {
+            id: user._id,
+            fbId: user.facebookId
+        });
+
+        //Intercom integration
+        window.intercomSettings = {
+            app_id: "daof2xrs",
+            name: user.firstName + " " + user.lastName, // Full name
+            email: user.email, // Email address
+            user_id: user._id,
+            created_at: Math.floor(Date.now() / 1000), // Signup date as a Unix timestamp,
+            "bookedIntro": user.bookedIntroClass,
+            "introTaken": user.introClassTaken,
+            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0
+        };
+
         if (!currentUser.welcomeEmailSent) {
             currentUser.welcomeEmailSent = true;
             User.sendWelcomeEmail({ id: currentUser._id }, {

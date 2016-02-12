@@ -9,8 +9,6 @@ angular.module('bodyAppApp')
         $scope.windowWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         // $scope.myBookedClasses = {};
 
-
-
         var tzName = jstz().timezone_name;
         $scope.thisWeek;
         $scope.chosenDay;
@@ -33,14 +31,6 @@ angular.module('bodyAppApp')
         if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
           Auth.getCurrentUser().$promise.then(function(user) {
             currentUser = user
-            olark('api.visitor.updateFullName', {
-                fullName: user.firstName + " " + user.lastName.charAt(0)
-            });
-
-            olark('api.visitor.updateCustomFields', {
-                id: user._id,
-                fbId: user.facebookId
-            });
 
             $scope.currentUser = currentUser;
             Schedule.setCurrentUser(currentUser);
@@ -62,8 +52,10 @@ angular.module('bodyAppApp')
                       console.log("Firebase user authentication failed", error);
                     } else {
                       if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                      $window.location.reload()
+                      // $window.location.reload()
                       getBookings()
+                      thisWeek();
+                      setNextWeek();
                     }
                   }); 
                 } else {
@@ -88,7 +80,18 @@ angular.module('bodyAppApp')
             //   console.log(prop);
             //   getInfo(prop)
             // }
-            
+
+            //Intercom integration
+            window.intercomSettings = {
+              app_id: "daof2xrs",
+              name: user.firstName + " " + user.lastName, // Full name
+              email: user.email, // Email address
+              user_id: user._id,
+              "bookedIntro": user.bookedIntroClass,
+              "introTaken": user.introClassTaken,
+              "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+              "newUserFlowComplete": user.completedNewUserFlow
+            };
 
             if (currentUser && !currentUser.tourtipShown) {
               loadTour();

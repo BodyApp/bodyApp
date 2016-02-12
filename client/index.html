@@ -100,7 +100,7 @@
     <!--End of Zopim Live Chat Script-->
 
     <!-- begin olark code -->
-    <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+     <script data-cfasync="false" type='text/javascript'>window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
     f[z]=function(){
     (a.s=a.s||[]).push(arguments)};var a=f[z]._={
     },q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
@@ -116,9 +116,12 @@
     var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
     b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
     loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
-    /* custom configuration goes here (www.olark.com/documentation) */
-    olark.identify('4414-808-10-1720');/*]]>*/</script><noscript><a href="https://www.olark.com/site/4414-808-10-1720/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+    olark.identify('4414-808-10-1720');</script><noscript><a href="https://www.olark.com/site/4414-808-10-1720/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+
     <!-- end olark code -->
+
+    <!-- Intercom Integration -->
+    <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/daof2xrs';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
