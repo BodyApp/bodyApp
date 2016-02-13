@@ -91,12 +91,36 @@ new CronJob('29 * * * * *', function() {
           console.log("Firebase server authentication failed", error);
         } else {
           console.log("Firebase server authentication successful")
+          var introRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros/")
+          var todayDate = new Date();
+          introRef.once('value', function(snapshot) {
+            for (var introClass in snapshot.val()) {
+              if (introClass < todayDate.getTime() - 45*60*1000) {
+                introRef.child(introClass).remove(function(error) {
+                  if (error) console.log(error)
+                  if (!error) console.log("Removed " + introClass + " from intro classes because in past.")
+                })
+              }
+            }
+          })
         }
       }); 
+    } else {
+      var introRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros/")
+      var todayDate = new Date();
+      introRef.once('value', function(snapshot) {
+        for (var introClass in snapshot.val()) {
+          if (introClass < todayDate.getTime() - 45*60*1000) {
+            introRef.child(introClass).remove(function(error) {
+              if (error) console.log(error)
+              if (!error) console.log("Removed " + introClass + " from intro classes because in past.")
+            })
+          }
+        }
+      })
     }
   })
-  var introRef = new Firebase("https://bodyapp.firebaseio.com/upcomingIntros/")
-	var todayDate = new Date();
+  
  //  var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
  //  // var sunDate = new Date();
  //  // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
@@ -106,17 +130,6 @@ new CronJob('29 * * * * *', function() {
  //  var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
  //  var firebaseRef = new Firebase("https://bodyapp.firebaseio.com/classes/")
 	// var weeklyFirebaseRef = firebaseRef.child(weekOf);
-
-  introRef.once('value', function(snapshot) {
-    for (var introClass in snapshot.val()) {
-      if (introClass < todayDate.getTime() - 45*60*1000) {
-        introRef.child(introClass).remove(function(error) {
-          if (error) console.log(error)
-          if (!error) console.log("Removed " + introClass + " from intro classes because in past.")
-        })
-      }
-    }
-  })
 
 	// weeklyFirebaseRef.once("value", function(currentWeek) {
 	// 	currentWeek = currentWeek.val()

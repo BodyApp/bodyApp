@@ -90,7 +90,9 @@ angular.module('bodyAppApp')
               "bookedIntro": user.bookedIntroClass,
               "introTaken": user.introClassTaken,
               "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
-              "newUserFlowComplete": user.completedNewUserFlow
+              "newUserFlowComplete": user.completedNewUserFlow,
+              "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+              "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
             };
 
             if (currentUser && !currentUser.tourtipShown) {
@@ -514,7 +516,13 @@ angular.module('bodyAppApp')
               currentUser = user;
               Auth.updateUser(currentUser);
               $scope.currentUser = currentUser;
-
+              window.intercomSettings = {
+                  app_id: "daof2xrs",
+                  email: user.email, // Email address
+                  user_id: user._id,
+                  "bookedIntro": user.bookedIntroClass,
+                  "introClassBooked": false
+              };
             }, function(err) {
                 console.log("Error cancelling class: " + err)
             }).$promise;
@@ -565,6 +573,15 @@ angular.module('bodyAppApp')
                 $scope.currentUser = user;
                 ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId});
                 ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+                
+                window.intercomSettings = {
+                    app_id: "daof2xrs",
+                    email: user.email, // Email address
+                    user_id: user._id,
+                    "bookedIntro": user.bookedIntroClass,
+                    "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                };
+
                 // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
                 // getInfo(slot.date);
                 // slot.bookedUsers = slot.bookedUsers || {};

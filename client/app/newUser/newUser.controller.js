@@ -138,6 +138,14 @@ angular.module('bodyAppApp')
             classToAdd: classDate.getTime()
         }, function(user) {
             Auth.updateUser(user)
+            //Intercom integration
+            window.intercomSettings = {
+                app_id: "daof2xrs",
+                email: user.email, // Email address
+                user_id: user._id,
+                "bookedIntro": user.bookedIntroClass,
+                "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+            };
 
             //Check that using Chrome or Firefox
             // if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
