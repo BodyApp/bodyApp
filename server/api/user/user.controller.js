@@ -325,7 +325,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "pilotSubscription"
+              plan: "pilot20"
             }, cardHandler
           );
         } else {
@@ -333,7 +333,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "pilotSubscription",
+            plan: "pilot20",
             // coupon: "BODY4AMONTH",
             description: "Created subscription during pilot"
           }, cardHandler);

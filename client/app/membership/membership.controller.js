@@ -100,42 +100,42 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: '$10/mo Pilot Price!',
+            description: '$20/mo Pilot Price!',
             panelLabel: "Pay {{amount}} / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: 1000
+            amount: 2000
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: '$10/mo Pilot Price!',
+            description: '$20/mo Pilot Price!',
             panelLabel: "Pay {{amount}} / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: 1000
+            amount: 2000
           });
         }
       } else {
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: '$10/mo Pilot Price!',
+            description: '$20/mo Pilot Price!',
             panelLabel: "Pay {{amount}} / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: 1000
+            amount: 2000
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: '$10/mo Pilot Price!',
+            description: '$20/mo Pilot Price!',
             panelLabel: "Pay {{amount}} / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: 1000
+            amount: 2000
           });
         }
       }
