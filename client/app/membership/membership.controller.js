@@ -120,20 +120,20 @@ angular.module('bodyAppApp')
           handler.open({
             name: 'BODY SUBSCRIPTION',
             description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
-            panelLabel: "Pay $" + amountToPay + " / Month",
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: amountToPay
+            // amount: amountToPay
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
             description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
-            panelLabelpanelLabel: "Pay $" + amountToPay + " / Month",
+            panelLabelpanelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: amountToPay
+            // amount: amountToPay
           });
         }
       } else {
@@ -141,20 +141,20 @@ angular.module('bodyAppApp')
           handler.open({
             name: 'BODY SUBSCRIPTION',
             description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
-            panelLabel: "Pay $" + amountToPay + " / Month",
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: amountToPay
+            // amount: amountToPay
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
             description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
-            panelLabel: "Pay $" + amountToPay + " / Month",
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: amountToPay
+            // amount: amountToPay
           });
         }
       }
