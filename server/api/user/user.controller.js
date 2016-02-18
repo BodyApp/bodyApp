@@ -208,6 +208,21 @@ exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
 
+exports.checkCoupon = function(req, res, next){
+  var couponString = req.body.couponString;
+
+  if(!couponString){
+    return console.log("error retrieving coupon code.")
+    res.status(400).send("No coupon sent")
+  }
+
+  stripe.coupons.retrieve(couponString, function(err, coupon) {
+    console.log(coupon)
+    res.status(200).json(coupon);
+  })
+  
+};
+
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;

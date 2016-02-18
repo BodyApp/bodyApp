@@ -29,6 +29,8 @@ router.put('/:id/getUserAndInjuries', auth.isAuthenticated(), controller.getUser
 router.put('/:id/getInjuries', auth.isAuthenticated(), controller.getInjuries);
 router.put('/:id/saveTimezone', auth.isAuthenticated(), controller.saveTimezone);
 
+router.put('/:id/checkCoupon', auth.isAuthenticated(), controller.checkCoupon);
+
 router.put('/:id/sendWelcomeEmail', auth.isAuthenticated(), controller.sendWelcomeEmail);
 
 router.get('/:id/getSubscription', auth.isAuthenticated(), controller.getSubscription);

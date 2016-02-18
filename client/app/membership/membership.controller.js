@@ -62,12 +62,27 @@ angular.module('bodyAppApp')
 
 	  var currentUser = Auth.getCurrentUser();
 
-		$scope.joinClicked = function() {
+		$scope.joinClicked = function(couponEntered) {
 			$uibModalInstance.dismiss('join');
-			openStripePayment()
+      if (!couponEntered) {
+  			openStripePayment()
+      } else {
+        User.checkCoupon({ id: currentUser._id }, {
+          couponString: couponEntered
+        }, function(coupon) {
+          // openStripePayment(coupon)
+        }, function(err) {
+            console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
+        }).$promise.then(function(coupon) {
+          openStripePayment(coupon)
+        });
+      }
 		}
 
-		function openStripePayment() {
+		function openStripePayment(coupon) {
+      console.log(coupon)
+      // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
+      // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
       var handler = StripeCheckout.configure({
         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
         image: '../../assets/images/body-stripe.jpg',
