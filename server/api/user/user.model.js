@@ -51,6 +51,7 @@ var UserSchema = new Schema({
   timezone: String,
   results: Schema.Types.Mixed,
   ratingsSubmitted: Array,
+  mostRecentCoupon: String,
   facebook: {},
   twitter: {},
   google: {},

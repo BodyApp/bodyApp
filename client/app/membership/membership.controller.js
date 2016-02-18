@@ -80,7 +80,10 @@ angular.module('bodyAppApp')
 		}
 
 		function openStripePayment(coupon) {
-      console.log(coupon)
+      var amountToPay = 2000;
+      if (coupon) {
+        amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+      }
       // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
       // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
       var handler = StripeCheckout.configure({
@@ -93,6 +96,7 @@ angular.module('bodyAppApp')
             user: currentUser,
             stripeToken: token,
             shippingAddress: args,
+            coupon: coupon
           })
           .success(function(data) {
               console.log("Successfully posted to /user/charge");
@@ -115,42 +119,42 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: '$20/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabel: "Pay $" + amountToPay + " / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: 2000
+            amount: amountToPay
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: '$20/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabelpanelLabel: "Pay $" + amountToPay + " / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: 2000
+            amount: amountToPay
           });
         }
       } else {
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: '$20/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabel: "Pay $" + amountToPay + " / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: 2000
+            amount: amountToPay
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: '$20/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabel: "Pay $" + amountToPay + " / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: 2000
+            amount: amountToPay
           });
         }
       }

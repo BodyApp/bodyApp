@@ -220,13 +220,13 @@ exports.checkCoupon = function(req, res, next){
     console.log(coupon)
     res.status(200).json(coupon);
   })
-  
 };
 
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;
   var shippingAddress = req.body.shippingAddress;
+  var coupon = req.body.coupon;
 
   if(!stripeToken){
     return console.log("error retrieving stripe token.")
@@ -291,7 +291,11 @@ exports.postBilling = function(req, res, next){
           user.stripe.subscription.intervalCount = subData.plan.interval_count;
           user.stripe.subscription.liveMode = subData.plan.livemode;    
           user.stripe.subscription.status = subData.status;    
-        }      
+        }
+
+        if (coupon) {
+          user.mostRecentCoupon = coupon.id
+        }
 
         //If going to add card information, have to pull the card information any time update user subscription / card information.  Otherwise, it's incorrect.
       // if (!user.stripe.card) {
@@ -335,12 +339,13 @@ exports.postBilling = function(req, res, next){
         //   cardHandler);
         // }
       } else {     
-        if (user.stripe.customer.customerId) {
+        if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
           console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "pilot20"
+              plan: "pilot20",
+              coupon: coupon ? coupon.id : ""
             }, cardHandler
           );
         } else {
@@ -349,7 +354,7 @@ exports.postBilling = function(req, res, next){
             email: user.email,
             source: stripeToken,
             plan: "pilot20",
-            // coupon: "BODY4AMONTH",
+            coupon: coupon ? coupon.id : "",
             description: "Created subscription during pilot"
           }, cardHandler);
         }
