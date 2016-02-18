@@ -26,7 +26,7 @@ angular.module('bodyAppApp')
     }
 
   	function checkPaymentStatus() {
-  		return Auth.getCurrentUser().stripe.subscription.status === "active"
+      return Auth.getCurrentUser().stripe ? Auth.getCurrentUser().stripe.subscription.status === "active" : false
   	}
 
   	// $timeout(function(){

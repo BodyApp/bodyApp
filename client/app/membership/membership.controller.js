@@ -63,25 +63,29 @@ angular.module('bodyAppApp')
 	  var currentUser = Auth.getCurrentUser();
 
 		$scope.joinClicked = function(couponEntered) {
-			$uibModalInstance.dismiss('join');
       if (!couponEntered) {
   			openStripePayment()
       } else {
         User.checkCoupon({ id: currentUser._id }, {
           couponString: couponEntered
         }, function(coupon) {
-          // openStripePayment(coupon)
+          if (coupon.valid) {
+            openStripePayment(coupon)
+          } else {
+            $scope.invalidCouponEntered = true;
+          }
         }, function(err) {
             console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
-        }).$promise.then(function(coupon) {
-          openStripePayment(coupon)
-        });
+        }).$promise
       }
 		}
 
 		function openStripePayment(coupon) {
       var amountToPay = 2000;
-      if (coupon) {
+      $scope.invalidCouponEntered = false;
+      $uibModalInstance.dismiss('join');
+      
+      if (coupon && coupon.valid) {
         amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
       }
       // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
@@ -119,7 +123,7 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
@@ -129,7 +133,7 @@ angular.module('bodyAppApp')
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
             panelLabelpanelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
@@ -140,7 +144,7 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
@@ -150,7 +154,7 @@ angular.module('bodyAppApp')
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: "$" + amountToPay / 100 + "/mo" + (coupon ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
