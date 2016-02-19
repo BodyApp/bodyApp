@@ -83,14 +83,15 @@ angular.module('bodyAppApp')
       .child(currentUser._id)
 
       $scope.classToJoin = classToJoin;
+      console.log($scope.classToJoin);
 
-        $scope.overlay1 = true;
-        $scope.overlay2 = false;
-        $scope.overlay3 = false;
-        $scope.overlay4 = false
-        $scope.tab1 = true;
-        $scope.tab2 = false;
-        $scope.instructorBio = false;
+      $scope.overlay1 = true;
+      $scope.overlay2 = false;
+      $scope.overlay3 = false;
+      $scope.overlay4 = false
+      $scope.tab1 = true;
+      $scope.tab2 = false;
+      $scope.instructorBio = false;
 
       if (!classToJoin) {
         $location.path('/')

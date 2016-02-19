@@ -34,6 +34,8 @@ var UserSchema = new Schema({
   trainerCredential2: String,
   trainerCredential3: String,
   trainerCredential4: String,
+  funFact: String,
+  bio: String,
   trainerRating: Number,
   trainerNumRatings: Number,
   bookedIntroClass: Boolean,

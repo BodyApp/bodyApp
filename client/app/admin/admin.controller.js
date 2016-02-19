@@ -196,8 +196,8 @@ angular.module('bodyAppApp')
       if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
       if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
       if (workoutToCreate.trainer.trainerRating) trainerInfoToSave.trainerRating = workoutToCreate.trainer.trainerRating;
-      if (workoutToCreate.trainer.funFacts) trainerInfoToSave.funFacts = workoutToCreate.trainer.funFacts;
-      if (workoutToCreate.trainer.otherTidbits) trainerInfoToSave.otherTidbits = workoutToCreate.trainer.otherTidbits;
+      if (workoutToCreate.trainer.funFact) trainerInfoToSave.funFact = workoutToCreate.trainer.funFact;
+      if (workoutToCreate.trainer.bio) trainerInfoToSave.bio = workoutToCreate.trainer.bio;
 
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
 
