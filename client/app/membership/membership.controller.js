@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User) {
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
@@ -104,9 +104,10 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
               console.log("Successfully posted to /user/charge");
-              Auth.updateUser(data)
-              currentUser = data
-              $scope.currentUser = currentUser
+              Auth.updateUser(data);
+              currentUser = data;
+              $scope.currentUser = currentUser;
+              $rootScope.subscriptionActive = true;
               // modalInstance.close() //Added an x to the modal, so can close that way
               if (slot) bookClass(slot)  
           })

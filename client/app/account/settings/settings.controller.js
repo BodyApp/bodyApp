@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('SettingsCtrl', function ($scope, $http, $uibModal, $state, User, Auth) {
+  .controller('SettingsCtrl', function ($scope, $http, $uibModal, $state, $rootScope, User, Auth) {
     $scope.errors = {};
     $scope.teammates = true;
     $scope.profilePage = false;
@@ -57,6 +57,7 @@ angular.module('bodyAppApp')
             console.log("Successfully posted to /user/cancelsub");
             $scope.currentUser = data
             Auth.updateUser(data)
+            $rootScope.subscriptionActive = false;
             // modalInstance.close() //Adds x so they can close themselves
         })
         .error(function(err) {
