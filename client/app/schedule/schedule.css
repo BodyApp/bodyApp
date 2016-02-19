@@ -144,10 +144,13 @@ div.intro {
 div.lvl1 {
   color: #224893;
 }
-.lvl2 {
+div.open {
   color: #FF6700;
 }
-.lvl3 {
+div.lvl2 {
+  color: #FF6700;
+}
+div.lvl3 {
   color: #C82428;
 }
 .introBtn {
@@ -156,6 +159,9 @@ div.lvl1 {
 }
 .lvl1Btn {
   background-color: #224893;
+}
+.openBtn {
+  background-color: #FF6700;
 }
 .lvl2Btn {
   background-color: #FF6700;
