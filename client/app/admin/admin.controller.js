@@ -29,7 +29,7 @@ angular.module('bodyAppApp')
     $scope.scoreTypes.push({label: "Rounds Completed", id: 1})
 
     $scope.instructors = [];
-    $scope.levels = ["Intro", "Level One", "Level Two", "Level Three", "Test"]
+    $scope.levels = ["Intro", "Level One", "Level Two", "Level Three", "Test", "Open"]
 
     var http = location.protocol;
     var slashes = http.concat("//");
