@@ -251,6 +251,21 @@ angular.module('bodyAppApp')
         }, 1000*30)
         // $scope.classOverTime = $scope.timeNow - 1000*60*45;
 
+        $scope.getDayOfWeek = function(day) {
+          console.log(day)
+          // for (var firstSlot)
+          switch (day) {
+            case 0: return "Sun"; break;
+            case 1: return "Mon"; break;
+            case 2: return "Tue"; break;
+            case 3: return "Wed"; break;
+            case 4: return "Thu"; break;
+            case 5: return "Fri"; break;
+            case 6: return "Sat"; break;
+            default: break;
+          }
+        }
+
         $scope.getFormattedDateTime = function(slot, noToday) {
             slot = slot || {};
             slot.date = slot.date || new Date();

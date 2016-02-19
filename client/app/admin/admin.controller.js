@@ -222,6 +222,15 @@ angular.module('bodyAppApp')
 
         //Set up the class
         var dayToSet = DayOfWeekSetter.setDay(date.getDay())
+
+        //Sets up day metadata
+        var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + date.getDay(), 11, 0, 0);
+        weekOfRef.child(dayToSet).update({    
+          dayOfWeek: date.getDay(),
+          formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
+          name: getDayOfWeek(date.getDay())
+        })
+        
         var classToSetRef = weekOfRef.child(dayToSet).child("slots").child(date.getTime())
         // syncObject[dayToSet].slots = syncObject[dayToSet].slots || {}; 
         classToSetRef.set({
