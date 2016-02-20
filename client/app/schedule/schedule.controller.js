@@ -367,7 +367,6 @@ angular.module('bodyAppApp')
         }
 
         $scope.openBookingConfirmation = function (slot) {
-          console.log(currentUser)
           if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
             return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
           }
