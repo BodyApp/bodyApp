@@ -194,6 +194,11 @@
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         <div class="my-friends mt16 mb8" >
           <div class="qty" ng-init = "checkIfFriends(slot)">
+            <div ng-if = "currentUser.role = 'admin'">
+              <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
+              <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>
+              <span ng-show = "bookingsBySlot[slot.date].length === 1">1 user signed up</span>
+            </div>
             <span ng-show = "friendList[slot.date].length > 0">{{friendList[slot.date].length}}</span>
             <span ng-show = "!friendList[slot.date] || friendList[slot.date].length < 1">No friends in class</span> 
             <span ng-show = "friendList[slot.date] && friendList[slot.date].length > 1">friends in class</span> 
@@ -249,9 +254,16 @@
         </div>
         <div class="col-xs-6 text-center">
           <div class="my-friends" >
-            <div class="qty" ng-init = "checkIfFriends(slot)" >{{friendList[slot.date].length}} 
-              <span ng-show = "friendList[slot.date].length != 1">friends in class</span> 
-              <span ng-show = "friendList[slot.date].length === 1">friend in class</span> 
+            <div class="qty" ng-init = "checkIfFriends(slot)" >
+              <div ng-if = "currentUser.role = 'admin'">
+                <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
+                <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>
+                <span ng-show = "bookingsBySlot[slot.date].length === 1">1 user signed up</span>
+              </div>
+              <span ng-show = "friendList[slot.date].length > 0">{{friendList[slot.date].length}}</span>
+              <span ng-show = "!friendList[slot.date] || friendList[slot.date].length < 1">No friends in class</span>
+              <span ng-show = "friendList[slot.date] && friendList[slot.date].length > 1">friends in class</span>
+              <span ng-show = "friendList[slot.date].length === 1">friend in class</span>
             </div>
             <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][0].facebookId].firstName?pictureData[friendList[slot.date][0].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][0].facebookId].lastName}}">
               <img class="profile" ng-src="{{pictureData[friendList[slot.date][0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][0].facebookId])">
@@ -273,7 +285,7 @@
 </section>
 <h4 class="week-selector darkblue bold text-center" ng-show = "days" ng-click="changeWeek()">
   <a href=""><span ng-hide = "thisWeek"> &larr; </span></a>
-    &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+    &nbsp;{{days["0Sun"].formattedDate}} - {{days["6Sat"].formattedDate}}&nbsp;
   <a href=""><span ng-show = "thisWeek" > &rarr; </span></a>
 </h4>
 

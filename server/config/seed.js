@@ -47,7 +47,7 @@ User.find({}).remove(function() {
             "max": 17
         }
     },
-    role: "instructor",
+    role: "admin",
     __v: 51,
     // injuries: "Nope",
     bookedIntroClass: true,

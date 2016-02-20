@@ -137,11 +137,14 @@ angular.module('bodyAppApp')
         //Need to fix this
         $scope.checkIfFriends = function(slot) {
           ref.child("bookings").child(slot.date).once('value', function(snapshot) {
+            $scope.bookingsBySlot = $scope.bookingsBySlot || {};
+            $scope.bookingsBySlot[slot.date] = [];
             if (!snapshot.exists()) return
             $scope.friendList = $scope.friendList || {};
             $scope.friendList[slot.date] = [];
             for (var prop in snapshot.val()) {
               var user = snapshot.val()[prop];
+              if (currentUser.role === 'admin') $scope.bookingsBySlot[slot.date].push(user);
               if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
                 $scope.friendList[slot.date].push(user);
                 if(!$scope.$$phase) $scope.$apply();
@@ -247,7 +250,7 @@ angular.module('bodyAppApp')
         $scope.availableClasses = true;
         
         $interval(function() {
-            $scope.timeNow = new Date().getTime();
+          $scope.timeNow = new Date().getTime();
         }, 1000*30)
         // $scope.classOverTime = $scope.timeNow - 1000*60*45;
 
