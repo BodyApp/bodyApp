@@ -40,6 +40,13 @@ User.find({}).remove(function() {
     facebookId: "10100958748247716",
     email: "daniel.liebeskind@gmail.com",
     provider: "facebook",
+    facebook: {
+        "id": "598183923663488",
+        "age_range": {
+            "min": 13,
+            "max": 17
+        }
+    },
     role: "instructor",
     __v: 51,
     // injuries: "Nope",
