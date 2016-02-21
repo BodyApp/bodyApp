@@ -338,14 +338,14 @@ exports.postBilling = function(req, res, next){
         //     { plan: "basicSubscription"},
         //   cardHandler);
         // }
-      } else {     
+      } else if (coupon) {     
         if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
           console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
               plan: "pilot20",
-              coupon: coupon ? coupon.id : ""
+              coupon: coupon.id
             }, cardHandler
           );
         } else {
@@ -354,7 +354,25 @@ exports.postBilling = function(req, res, next){
             email: user.email,
             source: stripeToken,
             plan: "pilot20",
-            coupon: coupon ? coupon.id : "",
+            coupon: coupon.id,
+            description: "Created subscription during pilot"
+          }, cardHandler);
+        }
+      } else { //No coupon
+        if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+          console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
+          stripe.customers.createSubscription(
+            user.stripe.customer.customerId, {
+              source: stripeToken,
+              plan: "pilot20"
+            }, cardHandler
+          );
+        } else {
+          console.log("Creating new stripe customer and new subscription.")
+          stripe.customers.create({
+            email: user.email,
+            source: stripeToken,
+            plan: "pilot20",
             description: "Created subscription during pilot"
           }, cardHandler);
         }

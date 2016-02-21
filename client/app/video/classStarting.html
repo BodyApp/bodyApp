@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<section>
+<section class = "fixedAtTop" id = "topBar">
 	<div class="lightblueSection2 pt104 pb32 text-center">
 		<h1 class="white mb16">{{classToJoin.level}} Class</h1>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
@@ -28,17 +28,17 @@
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click this 5 minutes before class!</a>
 		</div>
 	</div>
-	<div class="startingBtn" ng-if = "currentUser.role === 'admin' && !auditingClass">
+	<!-- <div class="startingBtn" ng-if = "currentUser.role === 'admin' && !auditingClass">
 			<a class="btn" ng-click = "auditClass()">Taking class as consumer</a>
 		</div>
 	</div>
 	<div class="startingBtn" ng-if = "currentUser.role === 'admin' && auditingClass">
 			<a class="btn" ng-click = "cancelAuditClass()">Auditing class</a>
 		</div>
-	</div>
+	</div> -->
 </section>
 
-<section>
+<section class = "pageContent">
 	<div class="container pt32 pb32">
 		<div class="col-sm-6">
 			<h3 class="darkblue bold mb16">Instructor</h3>

@@ -687,4 +687,24 @@ angular.module('bodyAppApp')
     //     $scope.currentStep = 0
     //   // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
     // };
+
+    //**********SCROLLING MAGIC*************
+
+      
+        $(window).scroll(function(e){
+          var topBar = $('#topBar').height();
+          
+          var $el = $('.fixedAtTop'); 
+          var isPositionFixed = ($el.css('position') == 'fixed');
+          if ($(this).scrollTop() > topBar/2 && !isPositionFixed){ 
+            $('.fixedAtTop').css({'position': 'fixed', 'top': 0, 'width':'100%', "z-index": 1000 }); 
+            $('.pageContent').css({'padding-top': topBar}); 
+          }
+          if ($(this).scrollTop() < topBar/2 && isPositionFixed){
+            $('.fixedAtTop').css({'position': 'static', 'top': 0, 'width':'100%'}); 
+            // $('.pageContent').css({'position': 'static', 'top': topBar/2, 'width':'100%'}); 
+            $('.pageContent').css({'padding-top': 0,}); 
+          } 
+        });
+      
   })
