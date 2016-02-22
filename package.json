@@ -38,8 +38,7 @@
     "moment-timezone": "*",
     "firebase-token-generator": "*",
     "helmet":"*",
-    "cluster":"*",
-    "os":"*"
+    "throng":"*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

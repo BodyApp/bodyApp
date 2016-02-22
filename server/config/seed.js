@@ -38,6 +38,7 @@ User.find({}).remove(function() {
     gender: "male",
     picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
     facebookId: "10100958748247716",
+    // level: 0,
     email: "daniel.liebeskind@gmail.com",
     provider: "facebook",
     facebook: {
@@ -55,7 +56,7 @@ User.find({}).remove(function() {
     introClassTaken: false,
     // welcomeEmailSent: false,
     welcomeEmailSent: new Date(),
-    level: 1
+    // level: 1
     }, 
     {
     firstName: "Donna",
@@ -73,7 +74,7 @@ User.find({}).remove(function() {
     completedNewUserFlow: false,
     introClassTaken: false,
     welcomeEmailSent: true,
-    level: 1
+    // level: 1
     },
     {
     "firstName": "Justin",
@@ -178,7 +179,7 @@ User.find({}).remove(function() {
     introClassTaken: false,
     // welcomeEmailSent: false,
     welcomeEmailSent: new Date(),
-    level: 1
+    // level: 1
   }, {
     provider: 'local',
     role: 'admin',

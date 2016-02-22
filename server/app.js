@@ -18,6 +18,8 @@ var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 var helmet = require('helmet');
 var cluster = require('cluster'); //For worker clustering.
 const numCPUs = require('os').cpus().length; //For worker clustering
+var throng = require('throng'); //For worker clustering.
+var WORKERS = process.env.WEB_CONCURRENCY || 1;
 
 // Module to call XirSys servers
 var request = require("request");
@@ -57,34 +59,80 @@ if (config.env === 'production') {
 require('./config/express')(app);
 require('./routes')(app);
 
-var server;
-if (cluster.isMaster) {
-  // Fork workers.
-  for (var i = 0; i < numCPUs; i++) {
-    cluster.fork();
+throng(start, {
+  workers: WORKERS,
+  lifetime: Infinity
+});
+
+function start() {
+  var crypto = require('crypto');
+  // var express = require('express');
+  // var blitz = require('blitzkrieg');
+  // var app = express();
+
+  app
+    // .use(blitz(BLITZ_KEY))
+    .get('/cpu', cpuBound)
+    .get('/memory', memoryBound)
+    .get('/io', ioBound)
+    .listen(config.port, onListen);
+
+  function cpuBound(req, res, next) {
+    var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
+    var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
+    var date = Date.now() + '';
+    hmac.setEncoding('base64');
+    hmac.end(date, function() {
+      res.send('A hashed date for you! ' + hmac.read());
+    });
   }
 
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
-} else {
-  // Workers can share any TCP connection
-  // In this case it is an HTTP server
-  //Create server
-  server = require('http').createServer(app);
+  function memoryBound(req, res, next) {
+    var hundredk = new Array(100 * 1024).join('X');
+    setTimeout(function sendResponse() {
+      res.send('Large response: ' + hundredk);
+    }, 20).unref();
+  }
 
-  // Start server
-  server.listen(config.port, config.ip, function () {
-    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-  });
+  function ioBound(req, res, next) {
+    setTimeout(function SimulateDb() {
+      res.send('Got response from fake db!');
+    }, 300).unref();
+  }
 
-  var socketio = require('socket.io')(server, {
-    serveClient: config.env !== 'production',
-    path: '/socket.io-client'
-  });
-
-  var socketServer = require('socket.io').listen(server, {"log level":1})
+  function onListen() {
+    console.log('Listening on', config.port);
+  }
 }
+
+// var server;
+// if (cluster.isMaster) {
+//   // Fork workers.
+//   for (var i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
+
+//   cluster.on('exit', (worker, code, signal) => {
+//     console.log(`worker ${worker.process.pid} died`);
+//   });
+// } else {
+//   // Workers can share any TCP connection
+//   // In this case it is an HTTP server
+//   //Create server
+//   server = require('http').createServer(app);
+
+//   // Start server
+//   server.listen(config.port, config.ip, function () {
+//     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+//   });
+
+//   var socketio = require('socket.io')(server, {
+//     serveClient: config.env !== 'production',
+//     path: '/socket.io-client'
+//   });
+
+//   var socketServer = require('socket.io').listen(server, {"log level":1})
+// }
  
 // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
 // var ref = new Firebase("https://bodyapp.firebaseio.com/");

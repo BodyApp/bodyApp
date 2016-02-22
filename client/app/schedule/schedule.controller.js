@@ -1,7 +1,7 @@
 // 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, $rootScope, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
         var currentUser = Auth.getCurrentUser();
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
@@ -28,88 +28,96 @@ angular.module('bodyAppApp')
           $scope.wod = snapshot.val()
         });
 
-        if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
-          Auth.getCurrentUser().$promise.then(function(user) {
-            currentUser = user
+        var setUser = function(user) {
+          currentUser = user
 
-            $scope.currentUser = currentUser;
-            Schedule.setCurrentUser(currentUser);
-            $scope.pictureData = {};
+          $scope.currentUser = currentUser;
+          Schedule.setCurrentUser(currentUser);
+          $scope.pictureData = {};
+          console.log(currentUser)
 
-            //Firebase authentication check
-            var ref = new Firebase("https://bodyapp.firebaseio.com/");
-            ref.onAuth(function(authData) {
-              if (authData) {
-                getBookings()
-                console.log("User is authenticated with fb ");
+          //Firebase authentication check
+          var ref = new Firebase("https://bodyapp.firebaseio.com/");
+          ref.onAuth(function(authData) {
+            if (authData) {
+              getBookings()
+              console.log("User is authenticated with fb ");
+            } else {
+              console.log("User is logged out");
+              if (currentUser.firebaseToken) {
+                ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                  if (error) {
+                    Auth.logout();
+                    $window.location.reload()
+                    console.log("Firebase user authentication failed", error);
+                  } else {
+                    if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                    // $window.location.reload()
+                    getBookings()
+                    thisWeek();
+                    setNextWeek();
+                  }
+                }); 
               } else {
-                console.log("User is logged out");
-                if (currentUser.firebaseToken) {
-                  ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                    if (error) {
-                      Auth.logout();
-                      $window.location.reload()
-                      console.log("Firebase user authentication failed", error);
-                    } else {
-                      if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                      // $window.location.reload()
-                      getBookings()
-                      thisWeek();
-                      setNextWeek();
-                    }
-                  }); 
-                } else {
-                  Auth.logout();
-                  $window.location.reload()
-                }
+                Auth.logout();
+                $window.location.reload()
               }
-            })
-            // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-            //   if (error) {
-            //     console.log("Firebase user authentication failed", error);
-            //   } else {
-            //     console.log("Firebase user authentication succeeded!", authData);
-            //   }
-            // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-            // }); 
-
-            // $rootScope.htmlReady() //For PhantomJS
-
-            // $scope.myBookedClasses = currentUser.classesBooked;
-            // for (prop in currentUser.classesBooked) {
-            //   console.log(prop);
-            //   getInfo(prop)
-            // }
-
-            //Intercom integration
-            window.intercomSettings = {
-              app_id: "daof2xrs",
-              name: user.firstName + " " + user.lastName, // Full name
-              email: user.email, // Email address
-              user_id: user._id,
-              "bookedIntro": user.bookedIntroClass,
-              "introTaken": user.introClassTaken,
-              "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
-              "newUserFlowComplete": user.completedNewUserFlow,
-              "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
-              "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
-            };
-
-            if (currentUser && !currentUser.tourtipShown) {
-              loadTour();
-            }
-
-            if (currentUser.timezone != tzName) {
-              User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
-                console.log("Updated user timezone preference")
-                currentUser = user;
-                Auth.updateUser(currentUser);
-                $scope.currentUser = currentUser;
-              }, function(err) {
-                  console.log("Error saving Timezone: " + err)
-              }).$promise;
             }
           })
+          // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+          //   if (error) {
+          //     console.log("Firebase user authentication failed", error);
+          //   } else {
+          //     console.log("Firebase user authentication succeeded!", authData);
+          //   }
+          // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+          // }); 
+
+          // $rootScope.htmlReady() //For PhantomJS
+
+          // $scope.myBookedClasses = currentUser.classesBooked;
+          // for (prop in currentUser.classesBooked) {
+          //   console.log(prop);
+          //   getInfo(prop)
+          // }
+
+          //Intercom integration
+          window.intercomSettings = {
+            app_id: "daof2xrs",
+            name: user.firstName + " " + user.lastName, // Full name
+            email: user.email, // Email address
+            user_id: user._id,
+            "bookedIntro": user.bookedIntroClass,
+            "introTaken": user.introClassTaken,
+            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+            "newUserFlowComplete": user.completedNewUserFlow,
+            "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+            "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
+          };
+
+          if (currentUser && !currentUser.tourtipShown) {
+            loadTour();
+          }
+
+          if (currentUser.timezone != tzName) {
+            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
+              console.log("Updated user timezone preference")
+              currentUser = user;
+              Auth.updateUser(currentUser);
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error saving Timezone: " + err)
+            }).$promise;
+          }
+        
+        }
+
+        if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
+          Auth.getCurrentUser().$promise.then(function(user) {
+            setUser(user)
+          })            
+        } else {
+          setUser(Auth.getCurrentUser())
         }
 
         if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.

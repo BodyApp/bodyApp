@@ -256,9 +256,11 @@ exports.postBilling = function(req, res, next){
     };
 
       var cardHandler = function(err, customer) {
+
         // console.log(third);
         if (err) return cb(err);
-
+        
+        user.level = 1;
         // if (!user.stripe) {
         //   console.log("stripe object created on user")
         //   user.stripe = {};
