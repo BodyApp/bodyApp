@@ -15,7 +15,9 @@ var Firebase = require('firebase');
 var seojs = require('express-seojs');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
-var helmet = require('helmet')
+var helmet = require('helmet');
+var cluster = require('cluster'); //For worker clustering.
+const numCPUs = require('os').cpus().length; //For worker clustering
 
 // Module to call XirSys servers
 var request = require("request");
@@ -51,24 +53,39 @@ if (config.env === 'production') {
   app.use(forceSsl);
 }
 
-var server = require('http').createServer(app);
-
 // require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
 
-// Start server
-server.listen(config.port, config.ip, function () {
-  console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-});
+var server;
+if (cluster.isMaster) {
+  // Fork workers.
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
 
-var socketio = require('socket.io')(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
-});
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  // Workers can share any TCP connection
+  // In this case it is an HTTP server
+  //Create server
+  server = require('http').createServer(app);
 
-var socketServer = require('socket.io').listen(server, {"log level":1})
+  // Start server
+  server.listen(config.port, config.ip, function () {
+    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+  });
 
+  var socketio = require('socket.io')(server, {
+    serveClient: config.env !== 'production',
+    path: '/socket.io-client'
+  });
+
+  var socketServer = require('socket.io').listen(server, {"log level":1})
+}
+ 
 // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
 // var ref = new Firebase("https://bodyapp.firebaseio.com/");
 // ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
