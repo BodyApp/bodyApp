@@ -36,6 +36,8 @@ angular.module('bodyAppApp')
           $scope.pictureData = {};
           console.log(currentUser)
 
+          $rootScope.subscriptionActive = user.stripe.subscription.status === 'active';
+
           //Firebase authentication check
           var ref = new Firebase("https://bodyapp.firebaseio.com/");
           ref.onAuth(function(authData) {
