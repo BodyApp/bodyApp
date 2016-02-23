@@ -184,7 +184,7 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && subscriptionActive">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && subscriptionActive && currentUser.role != 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
         <div class="class-type" ng-class = "{intro: slot.level === 'Intro', lvl1: slot.level === 'Level One', open: slot.level === 'Open'}">
           <span ng-if = "slot.level === 'Intro'">Free </span>
@@ -243,7 +243,7 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && subscriptionActive">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && subscriptionActive && currentUser.role != 'admin'">
         <div class="col-xs-12 text-center">
           <span class="class-time mb8">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
           <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)" ng-class = "{introBtn: slot.level === 'Intro', lvl1Btn: slot.level === 'Level One', openBtn: slot.level === 'Open'}">reserve</a></div>

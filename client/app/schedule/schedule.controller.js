@@ -34,7 +34,6 @@ angular.module('bodyAppApp')
           $scope.currentUser = currentUser;
           Schedule.setCurrentUser(currentUser);
           $scope.pictureData = {};
-          console.log(currentUser)
 
           $rootScope.subscriptionActive = user.stripe.subscription.status === 'active';
 
