@@ -394,6 +394,7 @@ angular.module('bodyAppApp')
 		}
 
 		function setMusicVolume(musicVolume) {
+			if (!audioPlayer) return;
 			console.log("Volume percentage changed to " + musicVolume)
 			if (userIsInstructor) {
 				audioPlayer.setVolume(0);
@@ -673,6 +674,40 @@ angular.module('bodyAppApp')
 
 				var audioInputDevice = Video.getAudioInput().deviceId;
 				var videoInputDevice = Video.getVideoInput().deviceId;
+
+				//Prevents accidentally not having an audio device
+				if (!audioInputDevice) {
+					OT.getDevices(function(error, devices) {
+						if (devices) {
+						  var audioInputDevices = devices.filter(function(element) {
+						    return element.kind == "audioInput";
+						  });
+						  audioInputDevice = audioInputDevices[0];
+						  // for (var i = 0; i < audioInputDevices.length; i++) {
+						  //   console.log("audio input device: ", audioInputDevices[i].deviceId);
+						  // }
+						} else {
+							console.log("No devices discovered " + err)
+						}
+					});
+				}
+
+				//Prevents accidentally not having a video device
+				if (!videoInputDevice) {
+					OT.getDevices(function(error, devices) {
+						if (devices) {
+						  var videoInputDevices = devices.filter(function(element) {
+						    return element.kind == "videoInput";
+						  });
+						  videoInputDevice = videoInputDevices[0];
+						  for (i = 0; i < videoInputDevices.length; i++) {
+						    console.log("video input device: ", videoInputDevices[i].deviceId);
+						  }
+						} else {
+							console.log("No devices discovered " + err)
+						}
+					});
+				}
 
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',

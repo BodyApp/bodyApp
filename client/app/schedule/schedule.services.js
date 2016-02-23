@@ -46,7 +46,6 @@ angular.module('bodyAppApp')
       var classRef = weekOfRef.child(dayOfWeek).child("slots").child(classJoined.date) 
 
       classRef.on('value', function(snapshot) {
-        console.log(snapshot.val())
         service.classUserJustJoined = snapshot.val()  
       })
   	}

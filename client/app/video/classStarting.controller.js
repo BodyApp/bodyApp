@@ -83,7 +83,6 @@ angular.module('bodyAppApp')
       .child(currentUser._id)
 
       $scope.classToJoin = classToJoin;
-      console.log($scope.classToJoin);
 
       $scope.overlay1 = true;
       $scope.overlay2 = false;
@@ -149,8 +148,8 @@ angular.module('bodyAppApp')
 
       $scope.$on("$destroy", function() { // destroys the session when navigate away
         console.log("Disconnecting session because navigated away.")
-        session.disconnect()
-        publisher.destroy();
+        if (session) session.disconnect()
+        if (publisher) publisher.destroy();
         // session.destroy();
         if (checkTimeInterval) clearInterval(checkTimeInterval)
         $interval.cancel(checkTimeInterval);

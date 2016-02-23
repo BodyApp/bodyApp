@@ -1,4 +1,26 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="modal-body sign-up-modal">
+  <div class = "row">
+    <div class="text-center">
+      <img class="mt32 mb32" src="assets/images/BodyLogo_blue_large.png">
+      <h3 class="royalblue mb8">Create your account</h3>
+      <hr style="width: 60%; margin: 10px auto;">
+      <p class="mb16 darkgray">View classes your Facebook friends are taking.<br>
+        We never post to your page.</p>
+      <a id = "fb-btn" class="btn btn-filled btn-lg" href="#" ng-click="loginOauth('facebook')">
+        <i class="ti-facebook"></i>&nbsp;Sign up with Facebook
+      </a>
+      <div class="securepayment">
+        <span class="gray">Secured by SSL&nbsp;</span>
+        <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
+          <img src='https://www.expeditedssl.com/assets/lock-logo-70px-8fcd38ddb815b36d2cfdfdb9f67d60cf.png' alt='SSL Test'>
+        </a>
+      </div>
+      <p class="pt64 darkgray">Already have an account? <a href="#" ng-click="loginOauth('facebook')">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- <div ng-include="'components/navbar/navbar.html'"></div> -->
 
 <!-- <div class="container">
   <div class="row">
@@ -83,15 +105,15 @@
 
 
 
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
-      <div class="col-sm-12 text-center mt32">
+      <div class="col-sm-12 text-center mt32"> -->
         <!-- <a id="fb-btn" class="btn btn-filled btn-lg mb48" href="#"><i class="ti-facebook"></i>&nbsp;Sign Up with Facebook</a> -->
         <!-- <hr style="width: 40%; margin-left: 30%;"> -->
-        <span id="dark-text">Sign up with your email address</span>
+        <!-- <span id="dark-text">Sign up with your email address</span>
       </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <!-- <div class="row">
       <div class="col-md-4"></div>
       <div class="col-md-4 mt24">
           <form class="form" name="form" ng-submit="register(form)" novalidate>
@@ -158,8 +180,8 @@
               <span id="dark-text" class = "disclaimer">By clicking sign up you agree to BODY's <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.</span>
             </div>
             <div class = "text-center">
-              <!-- <input type="submit" value="Update Settings" /> -->
-              <button class="btn btn-inverse btn-lg btn-login btn-full" type="submit">
+               <input type="submit" value="Update Settings" /> -->
+              <!-- <button class="btn btn-inverse btn-lg btn-login btn-full" type="submit">
                 Sign up
               </button>
           </div>
@@ -173,4 +195,4 @@
   </div>
 </div>
 <br>
-<div ng-include="'components/footer/footer.html'"></div>
+<div ng-include="'components/footer/footer.html'"></div> -->
