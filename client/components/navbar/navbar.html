@@ -42,7 +42,7 @@
                             </li>
                             <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
-                                Hi {{getCurrentUser().nickName}}
+                                Hi {{getCurrentUser().firstName}}
                               </a>
                             </li>
                             <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
@@ -52,7 +52,7 @@
                               <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
                             </li>
                             <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                              <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
+                              <a id="#nav-fb-login" href="#" ng-click="login()">Log in</a>
                             </li>                                                        
                         </ul>
                     </div>
@@ -85,7 +85,7 @@
                         </li>
                         <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                           <a href="/settings">
-                            <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().nickName}}
+                            <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                           </a>
                         </li>
                         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
@@ -95,7 +95,7 @@
                           <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
                         </li>
                         <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                          <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
+                          <a id="#nav-fb-login" href="#" ng-click="login()">Log in</a>
                         </li>                        
                     </ul>
                   </div>
