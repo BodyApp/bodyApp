@@ -65,7 +65,7 @@
       <div class="col-sm-5 col-xs-12 text-center">
         <h3 class="royalblue mb16">Your profile info</h3>
         <img ng-if = "currentUser.picture" class="user-social-image mb16" src="{{currentUser.picture}}">
-        <img ng-if = "currentUser.picture" class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
+        <img ng-if = "currentUser.facebookId" class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
         <h3 class="darkblue mb8">{{currentUser.firstName}} {{currentUser.lastName}}</h1>
         <h5 class="gray">{{currentUser.email}}</h2>
       </div>

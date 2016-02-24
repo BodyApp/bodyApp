@@ -115,52 +115,45 @@ exports.saveEmail = function (req, res, next) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  console.log(req.bodyx)
-  var newUser = new User(req.body);
-  newUser.provider = 'local';
-  newUser.role = 'user';
-  newUser.level = newUser.level || 0;
+  console.log(req.body)
+  User.findOne({
+    email: req.body.email.toLowerCase()
+  },
+  function(err, user) {
+    if (err) {
+      return done(err);
+    }
+    if (!user) {
+      var newUser = new User(req.body);
+      newUser.provider = 'local';
+      newUser.role = 'user';
+      newUser.level = newUser.level || 0;
 
+      var firebaseToken = tokenGenerator.createToken({ uid: "local", mdbId: newUser._id, role: newUser.role, firstName: newUser.firstName, lastName: newUser.lastName.charAt(0), gender: newUser.gender })
+      newUser.firebaseToken = firebaseToken;
+      newUser.lastLoginDate = newUser.signUpDate;
+      newUser.signUpDate = new Date();
+      newUser.picture = newUser.gender === 'male' ? 'https://www.getbodyapp.com/assets/images/big-guy-overlay.png' : 'https://www.getbodyapp.com/assets/images/icons/fit-girl.png';
 
-  var firebaseToken = tokenGenerator.createToken({ uid: "local", mdbId: newUser._id, role: newUser.role, firstName: newUser.firstName, lastName: newUser.lastName.charAt(0), gender: newUser.gender })
-  newUser.firebaseToken = firebaseToken;
-  newUser.lastLoginDate = newUser.signUpDate;
+      newUser.save(function(err, user) {
+        if (err) return validationError(res, err);
+        var ref = new Firebase("https://bodyapp.firebaseio.com/");
+        ref.authWithCustomToken(firebaseToken, function(error, authData) {
+          if (error) {
+            console.log("Firebase authentication failed", error);
+          } else {
+            console.log("Firebase authentication succeeded!", authData);
+          }
+        // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+        }); 
 
-  // function stripeCallback(err){
-  //   if (err) return next(err);
-  //   next();
-  // }
-
-  // if(!newUser.isNew || newUser.stripe.customerId) return next();
-  // newUser.createCustomer(function(err){
-  //   if (err) return next(err);
-  //   next();
-  // });
-  
-  // stripe.customers.create({
-  //   email: user.email
-  //   }, function(err, customer){
-  //     if (err) return stripeCallback(err);
-
-  //     user.stripe.customerId = customer.id;
-  //     return stripeCallback();
-  // });
-
-  newUser.save(function(err, user) {
-    if (err) return validationError(res, err);
-    var ref = new Firebase("https://bodyapp.firebaseio.com/");
-    ref.authWithCustomToken(firebaseToken, function(error, authData) {
-      if (error) {
-        console.log("Firebase authentication failed", error);
-      } else {
-        console.log("Firebase authentication succeeded!", authData);
-      }
-    // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-    }); 
-
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: '5d'});
-    res.json({ token: token });
-  });
+        var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: '5d'});
+        res.json({ token: token });
+      });
+    } else {
+      res.send("That email address is already in use.")
+    }
+  })
 };
 
 /**

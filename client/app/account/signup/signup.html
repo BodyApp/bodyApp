@@ -44,6 +44,9 @@
             <p class="help-block" ng-show="form.email.$error.required && submitted">
               We need your email address!
             </p>
+            <p class = "help-block" ng-show= "emailInUse">
+              That email address is already in use! Try to login instead!
+            </p>
             <p class="help-block" ng-show="form.email.$error.mongoose">
               {{ errors.email }}
             </p>
@@ -83,7 +86,7 @@
             </button>
         </div>
       </form>
-      <p class="pt32 darkgray">Already have an account? <a href="#" ng-click="loginOauth('facebook')">Log in</a></p>
+      <!-- <p class="pt32 darkgray">Already have an account? <a href="#" ng-click="loginOauth('facebook')">Log in</a></p> -->
     </div>
   </div>
 </div>

@@ -17,12 +17,18 @@ angular.module('bodyAppApp')
           gender: $scope.user.gender,
           password: $scope.user.password
         })
-        .then( function() {
-          $window.location.reload()
+        .then( function(result) {
+          console.log(result.toString())
+          if (!result) {
+            $window.location.reload()
+          } else {
+            $scope.emailInUse = true;
+          }
           // Account created, redirect to home
           // $location.path('/');
         })
         .catch( function(err) {
+          console.log("issue")
           err = err.data;
           $scope.errors = {};
 
