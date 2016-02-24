@@ -17,6 +17,10 @@ var api_key = config.mailgunApiKey;
 var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
 
+var Firebase = require('firebase');
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
+
   // console.log(__dirname)
 
 // var welcomeEmailHtml = require('../emails/welcomeEmail')
@@ -111,20 +115,27 @@ exports.saveEmail = function (req, res, next) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
+  console.log(req.bodyx)
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
+  newUser.level = newUser.level || 0;
+
+
+  var firebaseToken = tokenGenerator.createToken({ uid: "local", mdbId: newUser._id, role: newUser.role, firstName: newUser.firstName, lastName: newUser.lastName.charAt(0), gender: newUser.gender })
+  newUser.firebaseToken = firebaseToken;
+  newUser.lastLoginDate = newUser.signUpDate;
 
   // function stripeCallback(err){
   //   if (err) return next(err);
   //   next();
   // }
 
-  if(!newUser.isNew || newUser.stripe.customerId) return next();
-  newUser.createCustomer(function(err){
-    if (err) return next(err);
-    next();
-  });
+  // if(!newUser.isNew || newUser.stripe.customerId) return next();
+  // newUser.createCustomer(function(err){
+  //   if (err) return next(err);
+  //   next();
+  // });
   
   // stripe.customers.create({
   //   email: user.email
@@ -137,7 +148,17 @@ exports.create = function (req, res, next) {
 
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+    var ref = new Firebase("https://bodyapp.firebaseio.com/");
+    ref.authWithCustomToken(firebaseToken, function(error, authData) {
+      if (error) {
+        console.log("Firebase authentication failed", error);
+      } else {
+        console.log("Firebase authentication succeeded!", authData);
+      }
+    // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+    }); 
+
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: '5d'});
     res.json({ token: token });
   });
 };

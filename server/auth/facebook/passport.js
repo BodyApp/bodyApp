@@ -32,7 +32,7 @@ exports.setup = function (User, config) {
         }
         if (!user) {
           user = new User({
-            name: profile.displayName ? profile.dislpayName : "",
+            name: profile.displayName ? profile.displayName : "",
             firstName: profile.displayName ? profile.displayName.substr(0, profile.displayName.indexOf(" ")) : "",
             lastName: profile.displayName ? profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1) : "",
             nickName: profile.displayName ? profile.displayName.substr(0, profile.displayName.indexOf(" ")) : "",

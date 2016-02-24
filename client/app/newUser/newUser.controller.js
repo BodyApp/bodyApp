@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, DayOfWeekSetter, $firebaseArray, $uibModal, $firebaseObject) {
+  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, $window, DayOfWeekSetter, $firebaseArray, $uibModal, $firebaseObject) {
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
@@ -126,7 +126,7 @@ angular.module('bodyAppApp')
         // $scope.timeZone = jstz().timezone_name;
 
     	classToBook.$loaded(function() {
-            ref.child("bookings").child(classToBook.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId})
+            ref.child("bookings").child(classToBook.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
             ref.child("userBookings").child(currentUser._id).child(classToBook.date).update({date: classToBook.date, trainer: classToBook.trainer, level: classToBook.level})
             // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
    //  		classToBook.bookedUsers = classToBook.bookedUsers || {};

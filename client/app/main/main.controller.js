@@ -27,20 +27,22 @@ angular.module('bodyAppApp')
 
       modalInstance.result.then(function (selectedItem) {
         // $window.location.href = '/auth/' + 'facebook';
+        $window.location.reload()
       }, function () {
+        $window.location.reload()
       });
     }
 
     Auth.isLoggedInAsync(function(loggedIn) {
-        if (loggedIn) {
-          if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
-            // event.preventDefault();
-            $state.go('schedule');
-          } else {
-            // event.preventDefault;
-            $state.go('newuser');
-          }
+      if (loggedIn) {
+        if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
+          // event.preventDefault();
+          $state.go('schedule');
+        } else {
+          // event.preventDefault;
+          $state.go('newuser');
         }
+      }
     });
 
     // // *****************SCROLL DOWN*****************
