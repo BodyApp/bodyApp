@@ -155,7 +155,7 @@ angular.module('bodyAppApp')
 
     // console.log(tabataIsOnRef);
 
-    $scope.consumersCanHearEachOther;
+    $scope.consumersCanHearEachOther = false;
 
     var canHearRef = $firebaseObject(
     	ref.child("realTimeControls")
@@ -163,7 +163,7 @@ angular.module('bodyAppApp')
       .child("consumersCanHearEachOther"));
 
     if (userIsInstructor) {
-    	canHearRef.$value = true;
+    	canHearRef.$value = false;
 			canHearRef.$save()
     }
 
@@ -193,6 +193,11 @@ angular.module('bodyAppApp')
       ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("musicVolume"));
+
+    if (userIsInstructor) {
+    	volumeRef.$value = 50;
+    	volumeRef.$save()
+    }
 
 		volumeRef.$loaded().then(function() {
 			$scope.musicVolume = volumeRef.$value
