@@ -117,6 +117,7 @@ angular.module('bodyAppApp')
       // $scope.instructor = classToJoin.trainer
       // $scope.instructorPicUrl = $scope.instructor.picture
 
+      //Network Test
       if (currentUser._id != classToJoin.trainer._id && currentUser.role != 'admin') {
         $scope.networkTestCountdown = timeoutMs + 6000
         $scope.testingNetwork = true;
@@ -124,6 +125,7 @@ angular.module('bodyAppApp')
           console.log("Prevented standstill at loading screen.")
           $scope.testingNetwork = false;
         }, $scope.networkTestCountdown)
+        
         conductInternetTest(classToJoin.sessionId);
       }
 

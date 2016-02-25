@@ -258,8 +258,8 @@ angular.module('bodyAppApp')
           // },
           trainer: trainerInfoToSave,
           classFull: false,
-          consumersCanHearEachOther: false,
-          musicVolume: 50,
+          // consumersCanHearEachOther: false,
+          // musicVolume: 50,
           sessionId: nextSessionToSave.sessionId, 
           spots: 15
         }, function(err) {

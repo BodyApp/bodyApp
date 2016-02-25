@@ -59,7 +59,7 @@ angular.module('bodyAppApp')
 		if (!userIsInstructor) {
 			$scope.consumerList.push(currentUser._id);
 			$scope.consumerObjects[currentUser._id] = currentUser;
-		}
+		} 
 
 		var audioPlayer;
 		$scope.musicVolume = 50;
@@ -88,9 +88,7 @@ angular.module('bodyAppApp')
 		//3-way data bind for tabata time and rounds
 		var dayOfWeek = DayOfWeekSetter.setDay(classDate.getDay())
 
-    $firebaseObject(ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    $firebaseObject(ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
       	if (userIsInstructor) {
@@ -129,9 +127,7 @@ angular.module('bodyAppApp')
       })
 
     var stopwatchRef = $firebaseObject(
-    	ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    	ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("stopwatch")
       .child("running"));
@@ -162,15 +158,16 @@ angular.module('bodyAppApp')
     $scope.consumersCanHearEachOther;
 
     var canHearRef = $firebaseObject(
-    	ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    	ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("consumersCanHearEachOther"));
 
-    var feedbackModal = ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    if (userIsInstructor) {
+    	canHearRef.$value = true;
+			canHearRef.$save()
+    }
+
+    var feedbackModal = ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("feedbackModal")
 
@@ -193,9 +190,7 @@ angular.module('bodyAppApp')
       });
 
     var volumeRef = $firebaseObject(
-      ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+      ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("musicVolume"));
 
