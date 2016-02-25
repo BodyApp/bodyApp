@@ -75,6 +75,11 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
+
+    var bookedUsers = {};
+    ref.child("bookings").child(classToJoin.date).on('value', function(snapshot) {
+    	bookedUsers = snapshot.val()
+    })
     
     setTabataOptions()
 
@@ -535,16 +540,17 @@ angular.module('bodyAppApp')
 
 				  	//Need to check if this user is already in the consumerList or not.  This whole thing seems broken, need to fix
 						if (!instructorStream) {
-							if (classToJoin.bookedUsers && classToJoin.bookedUsers[streamId]) {
+							subscriberObjects[streamId] = subscriber;
+							if (bookedUsers && bookedUsers[streamId]) {
 								// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
-								subscriberObjects[streamId] = subscriber;
-								$scope.consumerObjects[streamId] = classToJoin.bookedUsers[streamId]
+								// subscriberObjects[streamId] = subscriber;
+								$scope.consumerObjects[streamId] = bookedUsers[streamId]
 	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
 	            	if(!$scope.$$phase) $scope.$apply();
 							} else {
 						  	var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 						  		// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
-						  		subscriberObjects[streamId] = subscriber;
+						  		// subscriberObjects[streamId] = subscriber;
 		            	$scope.consumerObjects[streamId] = data;
 		            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
 		            	if(!$scope.$$phase) $scope.$apply();
