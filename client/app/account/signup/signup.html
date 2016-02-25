@@ -16,7 +16,7 @@
         </a>
       </div>
 
-      <form class="form" name="form" ng-submit="register(form)" novalidate>
+      <!-- <form class="form" name="form" ng-submit="register(form)" novalidate>
           <div>
             <span ng-class="{ 'has-success': form.firstName.$valid && submitted, 'has-error': form.firstName.$invalid && submitted }">
               <span class="help-block" ng-show="form.firstName.$error.required && submitted">
@@ -31,12 +31,6 @@
               <input id="dark-text" class="text-input-half textInput" type="text" ng-model= "user.lastName" name="lastName" placeholder="Last name" required/>
             </span>
           </div>
-          <!-- <div ng-class="{ 'has-success': form.nickName.$valid && submitted, 'has-error': form.nickName.$invalid && submitted }">
-            <p class="help-block" ng-show="form.nickName.$error.required && submitted">
-              A nickName is required.  Can just be your first name!
-            </p>
-            <input id="dark-text" type="text" class = "textInput" name="nickName" ng-model= "user.nickName" placeholder="Nickname" required/>
-          </div> -->
           <div ng-class="{ 'has-success': form.email.$valid && submitted, 'has-error': form.email.$invalid && submitted }">
             <p class="help-block" ng-show="form.email.$error.email && submitted">
               Doesn't look like a valid email.
@@ -61,18 +55,7 @@
             </p>
             <input id="dark-text" type="password" name="password" class = "textInput" ng-model= "user.password" ng-minlength="3" placeholder="Password" required mongoose-error/>
           </div>
-          <!-- <div class = "datefield" ng-class="{ 'has-success': form.birthday.$valid && submitted, 'has-error': form.birthday.$invalid && submitted }">
-            <p class="help-block" ng-show="form.birthday.$error.required && submitted">
-              We need your birthdate!
-            </p>
-            <p class="help-block" ng-show="form.birthday.$valid && submitted">
-              Please enter a valid birthday.
-            </p>
-            <label id = "birthdayDatefield" for="day">Birthday:</label>
-            <input name="birthday" ng-model="user.birthday.day" min = "1" max = "31" id="day" type="tel" maxlength="2" placeholder="DD" required/> /
-            <input name="birthday" ng-model="user.birthday.month" id="month" min = "1" max = "12" type="tel" maxlength="2" placeholder="MM" required/> /
-            <input name="birthday" ng-model="user.birthday.year" id="year" min = "1900" max = "2015" type="tel" maxlength="4" placeholder="YYYY" required/>
-          </div>   -->
+
           <div class = "mb32" ng-class="{ 'has-success': form.gender.$valid && submitted, 'has-error': form.gender.$invalid && submitted }">
             <p class="help-block" ng-show="form.gender.$error.required && submitted">
               Please select a gender!
@@ -80,13 +63,12 @@
             <input type="radio" name="gender" ng-model="user.gender" value="male" required><span id="dark-text">&nbsp;&nbsp;Male&nbsp;&nbsp;</span><input type="radio" name="gender" value="female" ng-model="user.gender" required><span id="dark-text">&nbsp;&nbsp;Female&nbsp;&nbsp;</span><br>
           </div>
           <div class = "text-center">
-             <!-- <input type="submit" value="Update Settings" /> -->
             <button class="btn btn-inverse btn-lg btn-login btn-full" type="submit">
               Sign up with email
             </button>
         </div>
-      </form>
-      <!-- <p class="pt32 darkgray">Already have an account? <a href="#" ng-click="loginOauth('facebook')">Log in</a></p> -->
+      </form> -->
+      <p class="pt32 darkgray">Already have an account? <a href="#" ng-click="loginOauth('facebook')">Log in</a></p>
     </div>
   </div>
 </div>

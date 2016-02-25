@@ -709,6 +709,8 @@ angular.module('bodyAppApp')
 					});
 				}
 
+				console.log(audioInputDevice)
+
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
 		      audioSource: audioInputDevice, 

@@ -52,7 +52,7 @@
                               <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
                             </li>
                             <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                              <a id="#nav-fb-login" href="#" ng-click="login()">Log in</a>
+                              <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
                             </li>                                                        
                         </ul>
                     </div>
@@ -95,7 +95,7 @@
                           <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
                         </li>
                         <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                          <a id="#nav-fb-login" href="#" ng-click="login()">Log in</a>
+                          <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
                         </li>                        
                     </ul>
                   </div>

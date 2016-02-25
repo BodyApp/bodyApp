@@ -4,19 +4,24 @@
       <img class="mt32 mb32" src="assets/images/BodyLogo_blue_large.png">
       <h3 class="royalblue mb8">Login to your account</h3>
       <hr style="width: 60%; margin: 10px auto;">
+      <p class="mb16 darkgray">We will never post to your page.</p>
       <a id = "fb-btn" class="btn btn-filled btn-lg" href="#" ng-click="loginOauth('facebook')">
         <i class="ti-facebook"></i>&nbsp;Login with Facebook
       </a>
-      <div class = "text-center mt32">or</div>
+      <div class="securepayment mb32">
+        <span class="gray">Secured by SSL&nbsp;</span>
+        <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
+          <img src='https://www.expeditedssl.com/assets/lock-logo-70px-8fcd38ddb815b36d2cfdfdb9f67d60cf.png' alt='SSL Test'>
+        </a>
+      </div>
+      <!-- <div class = "text-center mt32">or</div>
       <h4 class = "text-center">Login With Email</h4>
       <form class="form" name="form" ng-submit="login(form)" novalidate>
         <div>
-          <!-- <label>Email</label> -->
           <input id="dark-text" type="text" name="email" class="form-control textInput" ng-model="user.email" placeholder="Email" required>
         </div>
 
         <div>
-          <!-- <label>Password</label> -->
           <input id="dark-text" type="password" name="password" class="form-control textInput" ng-model="user.password" placeholder="Password" required>
         </div>
 
@@ -35,7 +40,7 @@
             Login
           </button>
         </div>
-      </form>
+      </form> -->
     </div>
   </div>
 </div>
