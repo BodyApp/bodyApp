@@ -29,7 +29,6 @@ angular.module('bodyAppApp')
         });
 
         var setUser = function(user) {
-          console.log(user)
           currentUser = user
 
           $scope.currentUser = currentUser;

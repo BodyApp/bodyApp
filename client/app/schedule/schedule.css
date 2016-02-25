@@ -221,6 +221,9 @@ a.full.btn {
   vertical-align: middle;
   margin-right: 5px !important;
 }
+.my-friends .transparent {
+  opacity: 0.0;
+}
 .unavailable div, .unavailable span {
   opacity: 0.1;
 }
