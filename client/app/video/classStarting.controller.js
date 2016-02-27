@@ -28,8 +28,10 @@ angular.module('bodyAppApp')
 
     var callbacks;
 
-    var networkBitsThreshold = 100000;
-    var networkDroppedPackets = 0.1;
+    // var networkBitsThreshold = 50000;
+    // var networkDroppedPackets = 0.5;
+    var networkBitsThreshold = 20000; //Incredibly low.  Should be more like 150000
+    var networkDroppedPackets = 2.0; //Incredibly high.  Should be more like 0.5
 
     var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
 
@@ -201,7 +203,6 @@ angular.module('bodyAppApp')
         if (snapshot.exists()) {
           $scope.numBookedUsers = Object.keys(snapshot.val()).length;
           $scope.bookedUsers = {};
-          console.log(snapshot.val())
           for (var bookedUser in snapshot.val()) {
             if (bookedUser) {
             $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];

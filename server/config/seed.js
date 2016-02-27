@@ -48,7 +48,7 @@ User.find({}).remove(function() {
             "max": 17
         }
     },
-    role: "user",
+    role: "admin",
     __v: 51,
     // injuries: "Nope",
     bookedIntroClass: true,
@@ -70,9 +70,9 @@ User.find({}).remove(function() {
     role: "admin",
     __v: 51,
     injuries: "No problemos",
-    bookedIntroClass: false,
-    completedNewUserFlow: false,
-    introClassTaken: false,
+    bookedIntroClass: true,
+    completedNewUserFlow: true,
+    introClassTaken: true,
     welcomeEmailSent: true,
     // level: 1
     },

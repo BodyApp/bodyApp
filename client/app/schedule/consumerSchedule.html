@@ -195,8 +195,8 @@
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
-        <div class="my-friends mt16 mb8" >
-          <div class="qty" ng-init = "checkIfFriends(slot)">
+        <div class="my-friends mt16 mb0" >
+          <div class="qty mb4" ng-init = "checkIfFriends(slot)">
             <div ng-if = "currentUser.role === 'admin'">
               <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
               <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>

@@ -50,6 +50,8 @@ angular.module('bodyAppApp')
 		var maxCALLERS = 10;
 		var connectionCount = 0;
 		var previousConsumerClicked;
+
+		var trainerListeningToEverybody = false;
 		
 		var publisher;
 
@@ -286,7 +288,7 @@ angular.module('bodyAppApp')
 							for (var i = 0; i < soundArray.length; i++) {
 								if (elapsedTime > soundsLength + soundArray[i].duration) {
 									soundsLength += soundArray[i].duration;
-									audioPlayer.next();
+									if (audioPlayer) audioPlayer.next();
 								} else {
 									console.log("seeking to track " + (i+1));
 									currentSongIndex = i;			
@@ -306,7 +308,7 @@ angular.module('bodyAppApp')
 					if (firstTimePlayingSong) {
 						elapsedTime = new Date().getTime() - classToJoin.date
 						var seekingTo = elapsedTime - soundsLength
-						audioPlayer.seekTo(seekingTo);
+						if (audioPlayer) audioPlayer.seekTo(seekingTo);
 						console.log("seeking to position " + seekingTo);
 						$scope.currentSong = songArray[currentSongIndex];
 						if(!$scope.$$phase) $scope.$apply();
@@ -317,8 +319,6 @@ angular.module('bodyAppApp')
 				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 			}
 		})
-
-		
 
 		var wodRef = ref.child("WODs").child(classKey)
 		wodRef.once('value', function(snapshot) {
@@ -486,11 +486,13 @@ angular.module('bodyAppApp')
 				var streamId = event.stream.connection.data.toString()
 				var streamBoxNumber = 1
 
+
 				if (streamId === classToJoin.trainer._id.toString()) {
 					instructorStream = true
 					vidWidth = "100%";
 				} else {
 					vidHeight = 70;
+					//This may not be working properly
 					if (!$scope.consumerObjects[streamId]) {
 						$scope.consumerList.push(streamId);
 						streamBoxNumber = $scope.consumerList.length;
@@ -530,7 +532,7 @@ angular.module('bodyAppApp')
 						});
 
 				  	if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
-				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer
+				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
 				  	} else {
 				  		subscriber.subscribeToAudio(true); // Audio on in any other case
 				  		subscriber.setAudioVolume(100);
@@ -850,6 +852,12 @@ angular.module('bodyAppApp')
 			$scope.hover15 = false;
 
 			if (consumerId) { // Won't do anything if trainer clicks his/her own video
+				if (trainerListeningToEverybody) {
+					trainerListeningToEverybody = false;
+					for (var subscriber in subscriberObjects) {
+						subscriberObjects[subscriber].subscribeToAudio(false);
+					}
+				}
 				if (!$scope.consumersCanHearEachOther) {
 					console.log("subscribing to audio from "+subscriberObjects[consumerId].streamId)
 					subscriberObjects[consumerId].subscribeToAudio(true)
@@ -869,7 +877,10 @@ angular.module('bodyAppApp')
 					// }
 				}
 			} else { //If trainer clicks on himself
-				
+				for (var subscriber in subscriberObjects) {
+					subscriberObjects[subscriber].subscribeToAudio(true);
+				}
+				trainerListeningToEverybody = true;
 			}
 			// subscriberObjects[consumerId].subscribeToAudio(true)
 
