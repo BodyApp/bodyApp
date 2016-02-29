@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ResultsCtrl', function ($scope, Schedule, Auth, DayOfWeekSetter) {
+  .controller('ResultsCtrl', function ($scope, Schedule, Auth, DayOfWeekSetter, Video) {
     
     $scope.currentUser = Auth.getCurrentUser()
 
@@ -23,6 +23,8 @@ angular.module('bodyAppApp')
     $scope.myCommunityRank;
     $scope.myClassRank;
     // $scope.myFriendsRank;
+
+    Video.destroyHardwareSetup()
 
     $scope.dayList = [];
     setupDayList();

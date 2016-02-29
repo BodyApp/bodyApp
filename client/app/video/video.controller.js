@@ -83,7 +83,7 @@ angular.module('bodyAppApp')
     	bookedUsers = snapshot.val()
     })
     
-    setTabataOptions()
+    if (userIsInstructor) setTabataOptions()
 
     // $scope.tabata = $firebaseObject(
     // 	ref.child(weekOf)
@@ -136,18 +136,18 @@ angular.module('bodyAppApp')
     var stopwatchRef = $firebaseObject(
     	ref.child("realTimeControls")
       .child(classDate.getTime())
-      .child("stopwatch")
-      .child("running"));
+      .child("stopwatch"));
   	
   	stopwatchRef.$watch(function() {
-  		if (stopwatchRef.$value) {
+  		if (stopwatchRef.running > stopwatchRef.stopped) {
   			document.getElementById('stopwatch').stop();
   			document.getElementById('stopwatch').reset();
-  			$scope.stopwatchStartTime = stopwatchRef.$value
+  			$scope.stopwatchStartTime = stopwatchRef.running
   			document.getElementById('stopwatch').start();
   		} else {
   			document.getElementById('stopwatch').stop();
   			document.getElementById('stopwatch').reset();
+  			$scope.stopwatchStartTime = new Date().getTime()
   		}
   	})
 
@@ -1076,14 +1076,14 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.startStopwatch = function() {
-			stopwatchRef.$value = new Date().getTime();
+			stopwatchRef.running = new Date().getTime();
 			stopwatchRef.$save();
 
 			// document.getElementById('stopwatch').start();
 		}
 
 		$scope.stopStopwatch = function() {
-			stopwatchRef.$value = false;
+			stopwatchRef.stopped = new Date().getTime();
 			stopwatchRef.$save();
 			// document.getElementById('stopwatch').stop();
 			// document.getElementById('stopwatch').reset();
