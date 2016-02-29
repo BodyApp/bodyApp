@@ -51,6 +51,7 @@ angular.module('bodyAppApp')
     var userRef;
 
     var checkTimeInterval;
+    var intervalId;
 
     var setupSuccessful = false;
 
@@ -60,7 +61,7 @@ angular.module('bodyAppApp')
         $interval.cancel(setupInterval)
         setup()
       }
-    }, 250, 16);
+    }, 100, 50);
 
     //If haven't retrieved class in 4 seconds, navigate back to dashboard to avoid confusion.
     $timeout(function() {
@@ -68,7 +69,7 @@ angular.module('bodyAppApp')
         $location.path('/');
         $interval.cancel(setupInterval)
       }
-    }, 4000)
+    }, 5000)
 
     function setup() {
       setupSuccessful = true
@@ -82,6 +83,8 @@ angular.module('bodyAppApp')
       weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
       
       $scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
+
+      setupVidAud()
 
       classObjRef = $firebaseObject(ref
         .child("classes")
@@ -156,7 +159,6 @@ angular.module('bodyAppApp')
         // classObjRef.$watch(function(e) {
         //   getBookedUsers(classObjRef);
         // })
-        setupVidAud()
       });
 
       checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
@@ -168,6 +170,7 @@ angular.module('bodyAppApp')
         // session.destroy();
         if (checkTimeInterval) clearInterval(checkTimeInterval)
         $interval.cancel(checkTimeInterval);
+        if (intervalId) window.clearInterval(intervalId);
       });
     }
     
@@ -196,13 +199,13 @@ angular.module('bodyAppApp')
     //   }
     // });
 
-    function setVideoInput(videoInput) {
-      Video.setVideoInput(videoInput);
-    }
+    // function setVideoInput(videoInput) {
+    //   Video.setVideoInput(videoInput);
+    // }
 
-    function setAudioInput(audioInput) {
-      Video.setAudioInput(audioInput);
-    }
+    // function setAudioInput(audioInput) {
+    //   Video.setAudioInput(audioInput);
+    // }
 
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];
@@ -575,7 +578,6 @@ angular.module('bodyAppApp')
     }
 
     function bandwidthCalculatorObj(config) {
-      var intervalId;
 
       config.pollingInterval = config.pollingInterval || 500;
       config.windowSize = config.windowSize || 2000;

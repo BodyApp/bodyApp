@@ -14,6 +14,8 @@ angular.module('bodyAppApp')
         $scope.chosenDay;
         $scope.timeNow = new Date().getTime();
 
+        Video.destroyHardwareSetup()
+
         console.warn = function(str){}
 
         setTimezone()
@@ -121,7 +123,7 @@ angular.module('bodyAppApp')
           setUser(Auth.getCurrentUser())
         }
 
-        if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
+        // if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
 
         function getInfo(prop) {
           // var newDate = new Date(prop * 1)
