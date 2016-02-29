@@ -90,6 +90,7 @@ angular.module('bodyAppApp')
             name: user.firstName + " " + user.lastName, // Full name
             email: user.email, // Email address
             user_id: user._id,
+            user_hash: user.intercomHash,
             "bookedIntro": user.bookedIntroClass,
             "introTaken": user.introClassTaken,
             "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
@@ -357,6 +358,7 @@ angular.module('bodyAppApp')
                   app_id: "daof2xrs",
                   email: user.email, // Email address
                   user_id: user._id,
+                  user_hash: user.intercomHash,
                   "bookedIntro": user.bookedIntroClass,
                   "introClassBooked": false
               };
@@ -418,6 +420,7 @@ angular.module('bodyAppApp')
                     app_id: "daof2xrs",
                     email: user.email, // Email address
                     user_id: user._id,
+                    user_hash: user.intercomHash,
                     "bookedIntro": user.bookedIntroClass,
                     "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
                 };

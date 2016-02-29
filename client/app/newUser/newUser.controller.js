@@ -64,6 +64,7 @@ angular.module('bodyAppApp')
             name: user.firstName + " " + user.lastName, // Full name
             email: user.email, // Email address
             user_id: user._id,
+            user_hash: user.intercomHash,
             created_at: Math.floor(Date.now() / 1000), // Signup date as a Unix timestamp,
             "bookedIntro": user.bookedIntroClass,
             "introTaken": user.introClassTaken,

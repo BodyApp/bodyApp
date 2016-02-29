@@ -47,6 +47,7 @@ var UserSchema = new Schema({
   level: Number,
   goals: String,
   emergencyContact: Object,
+  intercomHash: Object,
   signUpDate: Date,
   lastLoginDate: Date,
   welcomeEmailSent: Date,

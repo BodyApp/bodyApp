@@ -27,7 +27,7 @@ angular.module('bodyAppApp')
     }
 
     service.destroyHardwareSetup = function() {
-      if (devices) devices.destroy(); console.log("Destroying hardware setup");
+      if (devices) devices.destroy(); console.log("Clearing hardware setup");
     }
 
   	// service.setVideoInput = function(videoInput) {
