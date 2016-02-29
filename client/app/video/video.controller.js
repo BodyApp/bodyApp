@@ -79,7 +79,7 @@ angular.module('bodyAppApp')
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
     var bookedUsers = {};
-    ref.child("bookings").child(classToJoin.date).on('value', function(snapshot) {
+    ref.child("bookings").child(classToJoin.date).on('child_added', function(snapshot) {
     	bookedUsers = snapshot.val()
     })
     
@@ -483,21 +483,32 @@ angular.module('bodyAppApp')
 				var vidHeight;
 				// var vidHeight = 70;
 
-				var streamId = event.stream.connection.data.toString()
+				var streamId = event.stream.connection.data.toString();
 				var streamBoxNumber = 1
 
-
 				if (streamId === classToJoin.trainer._id.toString()) {
+					console.log("Received trainer stream")
 					instructorStream = true
 					vidWidth = "100%";
 				} else {
 					vidHeight = 70;
-					//This may not be working properly
-					if (!$scope.consumerObjects[streamId]) {
-						$scope.consumerList.push(streamId);
+					if (!$scope.consumerObjects[streamId]) { //check if the ID is already in consumerList array
+						$scope.consumerList.push(streamId); //Add to consumerListArray if this ID hasn't been seen before
 						streamBoxNumber = $scope.consumerList.length;
 					} else {
 						streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
+					}
+					//If user is in the bookedUsers object.  This should happen 100% of the time, but have the if/else just in case.  May have issue if pull from Firebase hasn't finished yet.
+					if (bookedUsers && bookedUsers[streamId]) {
+						$scope.consumerObjects[streamId] = bookedUsers[streamId]
+          	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+          	if(!$scope.$$phase) $scope.$apply();
+					} else {
+						var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
+            	$scope.consumerObjects[streamId] = data;
+            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+            	if(!$scope.$$phase) $scope.$apply();
+            })
 					}
 				}
 
@@ -519,9 +530,16 @@ angular.module('bodyAppApp')
 			  		console.log(err)
 			  	} else {
 			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-				  	console.log("Received stream");
+				  	console.log("Received stream with streamId " +streamId);
+				  	console.log(subscriber);
 
-				  	SpeakerDetection(subscriber, function() {
+				  	if (!instructorStream) {
+							if (!subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
+							if (subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
+							subscriberObjects[streamId] = subscriber; //Add subscriber to subscriberObjects (used to turn audio on/off)				
+						}
+
+				  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
 						  console.log('started talking');
 						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
 						  setMusicVolume($scope.musicVolume/2.5)
@@ -532,37 +550,39 @@ angular.module('bodyAppApp')
 						});
 
 				  	if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
+				  		subscriber.setAudioVolume(100);
 				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
 				  	} else {
-				  		subscriber.subscribeToAudio(true); // Audio on in any other case
 				  		subscriber.setAudioVolume(100);
+				  		subscriber.subscribeToAudio(true); // Audio on in any other case
 				  	}
 
 				  	// console.log(subscriber.getStats())
 
 				  	//Need to check if this user is already in the consumerList or not.  This whole thing seems broken, need to fix
-						if (!instructorStream) {
-							subscriberObjects[streamId] = subscriber;
-							if (bookedUsers && bookedUsers[streamId]) {
+						// if (!instructorStream) {
+						// 	subscriberObjects[streamId] = subscriber;
+							// if (bookedUsers && bookedUsers[streamId]) {
 								// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
 								// subscriberObjects[streamId] = subscriber;
-								$scope.consumerObjects[streamId] = bookedUsers[streamId]
-	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-	            	if(!$scope.$$phase) $scope.$apply();
-							} else {
-						  	var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
+								// $scope.consumerObjects[streamId] = bookedUsers[streamId]
+	            	// $scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+	            	// if(!$scope.$$phase) $scope.$apply();
+							// } else {
+						  	// var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 						  		// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
 						  		// subscriberObjects[streamId] = subscriber;
-		            	$scope.consumerObjects[streamId] = data;
-		            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-		            	if(!$scope.$$phase) $scope.$apply();
-		            })
-		          }
-						} else {
-							User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
-	            	instructorInfo = data;
-	            })
-						}
+		            // 	$scope.consumerObjects[streamId] = data;
+		            // 	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+		            // 	if(!$scope.$$phase) $scope.$apply();
+		            // })
+		          // }
+						// } 
+						// else {
+						// 	User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
+	     //        	instructorInfo = data;
+	     //        })
+						// }
 
 						if (userIsInstructor) {
 							subscriber.setStyle("nameDisplayMode", "on");
@@ -574,12 +594,14 @@ angular.module('bodyAppApp')
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
 				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
+				  		console.log("Video temporarily disabled due to internet quality being low.")
 						  // Set picture overlay
 						  // domElement = document.getElementById(subscriber.id);
 						  // domElement.style["visibility"] = "hidden";
 						});
 
 						subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
+							console.log("Video re-enabled due to internet quality being high enough.")
 							// Remove picture overlay
 						  // domElement = document.getElementById(subscriber.id);
 						  // domElement.style["visibility"] = "visible";
@@ -856,14 +878,19 @@ angular.module('bodyAppApp')
 					trainerListeningToEverybody = false;
 					for (var subscriber in subscriberObjects) {
 						subscriberObjects[subscriber].subscribeToAudio(false);
+						console.log("Unsubscribing from audio of user "+subscriberObjects[subscriber].stream.connection.data.toString())
+						console.log("with stream id of "+subscriberObjects[subscriber].streamId)
 					}
 				}
 				if (!$scope.consumersCanHearEachOther) {
-					console.log("subscribing to audio from "+subscriberObjects[consumerId].streamId)
+					console.log("subscribing to audio from user "+subscriberObjects[consumerId].stream.connection.data.toString())
+					console.log("with stream id of "+subscriberObjects[consumerId].streamId)
 					subscriberObjects[consumerId].subscribeToAudio(true)
+					subscriberObjects[consumerId].setAudioVolume(100);
 					
 					if (previousConsumerClicked && previousConsumerClicked != consumerId) { //Prevents issue first time click a consumer
-						console.log("Unsubscribing from audio stream "+subscriberObjects[previousConsumerClicked].streamId)
+						console.log("Unsubscribing from audio of user "+subscriberObjects[previousConsumerClicked].stream.connection.data.toString())
+						console.log("with stream id of "+subscriberObjects[previousConsumerClicked].streamId)
 						subscriberObjects[previousConsumerClicked].subscribeToAudio(false)
 					} 
 					
@@ -879,6 +906,9 @@ angular.module('bodyAppApp')
 			} else { //If trainer clicks on himself
 				for (var subscriber in subscriberObjects) {
 					subscriberObjects[subscriber].subscribeToAudio(true);
+					subscriberObjects[subscriber].setAudioVolume(100);
+					console.log("subscribing to audio from user "+subscriberObjects[subscriber].stream.connection.data.toString())
+					console.log("with stream id "+subscriberObjects[subscriber].streamId)
 				}
 				trainerListeningToEverybody = true;
 			}
