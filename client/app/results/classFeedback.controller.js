@@ -3,7 +3,6 @@
 angular.module('bodyAppApp')
   .controller('ClassFeedbackCtrl', function ($scope, $state, $location, Schedule, Auth, User, DayOfWeekSetter) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
-  	console.log($scope.classCompleted)
 
   	if (!$scope.classCompleted) {
   		$state.go('schedule')

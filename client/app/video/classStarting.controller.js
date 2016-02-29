@@ -30,8 +30,8 @@ angular.module('bodyAppApp')
 
     // var networkBitsThreshold = 50000;
     // var networkDroppedPackets = 0.5;
-    var networkBitsThreshold = 20000; //Incredibly low.  Should be more like 150000
-    var networkDroppedPackets = 2.0; //Incredibly high.  Should be more like 0.5
+    var networkBitsThreshold = 15000; //Should be more like 150000
+    var networkDroppedPackets = 0.5; //Should be more like 0.5
 
     var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
 
@@ -52,15 +52,26 @@ angular.module('bodyAppApp')
 
     var checkTimeInterval;
 
+    var setupSuccessful = false;
+
     //This should be turned into a $promise
     var setupInterval = $interval(function() {
       if (Schedule.classUserJustJoined) {
         $interval.cancel(setupInterval)
         setup()
       }
-    }, 250, 20);
+    }, 250, 16);
+
+    //If haven't retrieved class in 4 seconds, navigate back to dashboard to avoid confusion.
+    $timeout(function() {
+      if (!setupSuccessful) {
+        $location.path('/');
+        $interval.cancel(setupInterval)
+      }
+    }, 4000)
 
     function setup() {
+      setupSuccessful = true
       classToJoin = Schedule.classUserJustJoined;
       classTime = classToJoin.date;
       classDate = new Date(classToJoin.date)
@@ -340,11 +351,19 @@ angular.module('bodyAppApp')
           console.log("Your internet connection is too slow.")
           var modalInstance = $uibModal.open({
             animation: true,
-            backdrop: "static",
-            keyboard: false,
+            // backdrop: "static",
+            // keyboard: false,
             templateUrl: 'app/video/badInternet.html',
             controller: 'BadInternetCtrl',
-            windowClass: "modal-tall"
+            windowClass: "modal-tall",
+            resolve: {
+              classToJoin: function() {
+                return classToJoin
+              },
+              currentUser: function() {
+                return currentUser
+              }
+            }
           });
 
           modalInstance.result.then(function (selectedItem) {
@@ -430,11 +449,19 @@ angular.module('bodyAppApp')
         if (error) {
           var modalInstance = $uibModal.open({
             animation: true,
-            backdrop: "static",
-            keyboard: false,
+            // backdrop: "static",
+            // keyboard: false,
             templateUrl: 'app/video/badInternet.html',
             controller: 'BadInternetCtrl',
-            windowClass: "modal-tall"
+            windowClass: "modal-tall",
+            resolve: {
+              classToJoin: function() {
+                return classToJoin
+              },
+              currentUser: function() {
+                return currentUser
+              }
+            }
           });
 
           modalInstance.result.then(function (selectedItem) {
@@ -643,11 +670,19 @@ angular.module('bodyAppApp')
           // alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
           var modalInstance = $uibModal.open({
             animation: true,
-            backdrop: "static",
-            keyboard: false,
+            // backdrop: "static",
+            // keyboard: false,
             templateUrl: 'app/video/badInternet.html',
             controller: 'BadInternetCtrl',
-            windowClass: "modal-tall"
+            windowClass: "modal-tall",
+            resolve: {
+              classToJoin: function() {
+                return classToJoin
+              },
+              currentUser: function() {
+                return currentUser
+              }
+            }
           });
 
           modalInstance.result.then(function (selectedItem) {

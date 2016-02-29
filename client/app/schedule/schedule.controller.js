@@ -382,7 +382,7 @@ angular.module('bodyAppApp')
           if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
             return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
           }
-          if (slot.level === "Intro" || slot.level === "Test") {
+          if (slot.level === "Intro") {
             if (currentUser.introClassTaken) {
               return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
             } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime()) {
@@ -433,7 +433,7 @@ angular.module('bodyAppApp')
                   alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
               }).$promise;
             }
-          } else if (slot.level === "Open") {
+          } else if (slot.level === "Open" || slot.level === "Test") {
             bookClass(slot);
           } else {
             if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
