@@ -32,12 +32,12 @@ exports.setup = function (User, config) {
         }
         if (!user) {
           user = new User({
-            name: profile.displayName,
-            firstName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
-            lastName: profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1),
-            nickName: profile.displayName.substr(0, profile.displayName.indexOf(" ")),
-            gender: profile.gender,
-            picture: profile.photos ? profile.photos[0].value: "#",
+            name: profile.displayName ? profile.displayName : "",
+            firstName: profile.displayName ? profile.displayName.substr(0, profile.displayName.indexOf(" ")) : "",
+            lastName: profile.displayName ? profile.displayName.substring(profile.displayName.lastIndexOf(" ")+1) : "",
+            nickName: profile.displayName ? profile.displayName.substr(0, profile.displayName.indexOf(" ")) : "",
+            gender: profile.gender ? profile.gender : "",
+            picture: profile.photos ? profile.photos[0].value : "#",
             facebookId: profile.id,
             // birthday: profile.birthday,
             friendList: profile._json.friends ? profile._json.friends.data : [],
@@ -60,6 +60,7 @@ exports.setup = function (User, config) {
           user.level = user.level || 0;
           var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, role: user.role, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
           user.firebaseToken = firebaseToken;
+          user.lastLoginDate = user.signUpDate;
 
           user.save(function(err) {
             if (err) return done(err);
@@ -90,21 +91,26 @@ exports.setup = function (User, config) {
           
           if (profile._json) {
             user.facebook = profile._json;
-            user.lastLoginDate = new Date()
-            if (profile._json.friends) user.friendList = profile._json.friends.data;
-            user.friendListObject = user.friendListObject || {};
-            for (var i = 0; i < user.friendList.length; i++) {
-              user.friendListObject[user.friendList[i].id] = {}
-              user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
-              // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
-            }
-          }          
+          }
+
+          user.lastLoginDate = new Date();
+          if (profile._json && profile._json.friends) user.friendList = profile._json.friends.data;
+          user.friendListObject = {};
+          for (var i = 0; i < user.friendList.length; i++) {
+            user.friendListObject[user.friendList[i].id] = {name: user.friendList[i].name}
+            // user.friendListObject[user.friendList[i].id].name = user.friendList[i].name
+            // console.log(user.friendListObject)
+            // console.log("hello")
+            // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
+          }
+                    
           user.save(function(err) {
+            console.log("save complete")
             if (err) return done(err);
             //Firebase authentication
             var ref = new Firebase("https://bodyapp.firebaseio.com/");
             var usersRef = ref.child("fbUsers");  
-            var userId = user._id.toString()
+            var userId = user._id.toString();
             
             // var token = tokenGenerator.createToken({ uid: profile.id, some: "arbitrary", data: "here" },
             //   {admin: user.role === "admin"});
@@ -113,11 +119,11 @@ exports.setup = function (User, config) {
               if (error) {
                 console.log("Firebase authentication failed", error);
               } else {
-                console.log("Firebase authentication succeeded!", authData);
+                console.log("Firebase authentication succeeded!", authData);                     
               }
             // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             }); 
-            usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
+            usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0)})
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
             return done(err, user);
           })

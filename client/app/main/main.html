@@ -9,13 +9,14 @@
         <div class="col-sm-12 col-md-4 mt16 text-center">
           <div class="pt16">
             <h1 class="darkblue">Reimagine home workouts</h1>
-            <h4 class="subheader">Your live social fitness experience<br>accessible anywhere</h4>
+            <h4 class="subheader">Your live social fitness experience<div>accessible anywhere</div></h4>
           </div>
           <div class="">
-            <a href="#" ng-click="signUp()" class="btn mb8" style="padding: 5px 50px;">Get started</a>
+            <a href="#" ng-click="signUp()" class="btn mb4" style="padding: 5px 50px;">Get started</a>
+            <div class="subheader" style = "font-size: 12px">No credit card required</div>
           </div>
         </div>
-        <div class="arrow">
+        <div ng-click = "scrollDown()" class="arrow">
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="37" height="16" viewBox="0 0 37 16" class="js-svg replaced-svg"><path d="M19.075 15.43c-.35.366-.926.414-1.334.097L.76 2.08C.326 1.743.248 1.115.587.68.926.242 1.553.163 1.99.502L18.35 13.46 34.864.617c.436-.34 1.064-.26 1.403.175.34.436.26 1.065-.175 1.404L19.075 15.43z" fill="#909090" fill-rule="evenodd"></path></svg>
           </span>
@@ -23,8 +24,8 @@
     </div>
   </section>
 
-  <section id="home-row-3" class="scroll-to">
-    <div class="container">
+  <section id="home-row-3" >
+    <div class="container" id="scroll-link">
       <div class="col-sm-12 text-center margins">
         <h1 class="mb72 darkblue">Better results. More convenient.</h1>
         <!-- <h4 class="mb72">We’re revolutionizing home fitness through technology, service, and design. Join classes in real-time without leaving your living room.</h4>         -->
@@ -128,14 +129,14 @@
     
     <div class="container pt96">
       <div class="row">
-        <a href="#" ng-click="loginOauth('facebook')" class="memberCard">
+        <a href="#" ng-click="signUp()" class="memberCard">
           <div class="col-sm-6 col-sm-push-6 col-md-4 col-md-push-6 col-membership">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
               <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
               <div class="text-center" style="margin-bottom: 14px;">
                 <div style="width: 40%; display: inline-block;">
-                  <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">10</h1>
+                  <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">20</h1>
                   <span class="pricingTime royalblue">/mo</span>
                   <span class="pricingType royalblue">Pilot pricing</span>
                 </div>
@@ -161,14 +162,15 @@
           </div>
         </a>
         <div class="visible-xs pt32"></div>
-        <a href="#" ng-click="loginOauth('facebook')" class="trialCard">
+        <a href="#" ng-click="signUp()" class="trialCard">
           <div class="col-sm-6 col-sm-pull-6 col-md-4 col-md-pull-2">
             <div class="stripeOrange"></div>
             <div class="membershipFeatures">
-              <h3 class="orange pt32 mb16 text-center bold">Free Trial</h3>
-              <div class="text-center" style="margin-bottom: 30px;">
+              <h3 class="orange pt32 mb8 text-center bold">Free Trial</h3>
+              <div class="text-center" style="margin-bottom: 14px;">
                 <h1 class="pricingAmt orange"><sup>$</sup></h1><h1 class="pricingAmt orange">0</h1>
                 <span class="pricingTime orange">/mo</span>
+                <span class="pricingType orange">No credit card required</span>
               </div>
               
               <div class="bulletFeatures">
@@ -199,19 +201,12 @@
       <h4 class="purpleblue visible-xs">The BODY Intro Class is completely free and designed to introduce you to the BODY program and have some fun – all while getting fitter. The purpose of this session is to help us serve you better by getting to know your goals and expectations, fitness level, and experience.</h4>
 
       <div class="col-sm-12 text-center mt32 hidden-xs">
-        <a href="#" ng-click="loginOauth('facebook')" class="btn-white" style="padding: 20px 50px;"><span style="font-size: 20px;">Get started</span></a>     
+        <a href="#" ng-click="signUp()" class="btn-white" style="padding: 20px 50px;"><span style="font-size: 20px;">Get started</span></a>     
       </div>
       <div class="col-sm-12 text-center mt32 mb56 visible-xs">
-        <a href="#" ng-click="loginOauth('facebook')" class="btn-white">Get started</a>     
+        <a href="#" ng-click="signUp()" class="btn-white">Get started</a> 
       </div>
     </div>
 
   </section>
-
-
-
-
-
-
-
 <div ng-include="'components/footer/footer.html'"></div>

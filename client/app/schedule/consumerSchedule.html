@@ -25,8 +25,8 @@
 
         <!-- Classes booked for this current week -->
           <!-- If user is not the instructor -->
-        <div ng-repeat="day in currentWeek">
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
+        <div>
+          <div class="reservation-listing" ng-repeat="slot in userBookings" ng-if="slot.date > (timeNow - 60*60*1000)">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -38,12 +38,12 @@
             </div>
             <div class="action-col mb8">
               <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
-              <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
+              <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
@@ -55,7 +55,7 @@
           </div>
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
+          <div class="reservation-listing" ng-repeat="slot in classesTeaching" ng-if="slot.date > (timeNow - 60*60*1000)">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -72,13 +72,13 @@
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Teaching Intro BODY Class"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Teaching an Intro BODY Class"
                 btn-text="Add to calendar"           
               ></addtocalendarimage>
-              <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
+              <!-- <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img> -->
               <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
           </div>
@@ -86,8 +86,8 @@
 
         <!-- Classes booked for next week -->
           <!-- If user is not the instructor -->
-        <div ng-repeat="nextWeekDay in nextWeek">
-          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !slot.past && slot.trainer._id != currentUser._id">
+<!--         <div ng-repeat="nextWeekDay in nextWeek">
+          <div class="reservation-listing" ng-repeat="slot in nextWeekDay.slots" ng-if="slot.bookedUsers && slot.bookedUsers[currentUser._id] && !isPast(slot) && slot.trainer._id != currentUser._id">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -97,25 +97,24 @@
             <div class="instr-col mb8">
               <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
             </div>
-            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*30)"> <!-- This will always be true -->
+            <div class="action-col mb8" ng-if = "slot.date > (timeNow + 1000*60*30)">
               <a class="btn" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
                 btn-text="Add to calendar"           
               ></addtocalendarimage>
               <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
-              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>        
-          </div>
+          </div> -->
 
             <!-- If user is the instructor -->
-          <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !slot.past">
+          <!-- <div class="reservation-listing" ng-repeat="slot in day.slots" ng-if="slot.trainer && (slot.trainer._id === currentUser._id) && !isPast(slot)">
             <div class="date-col mb8">
               <span>{{getFormattedDateTime(slot).dayOfWeek}}, {{getFormattedDateTime(slot).month}} {{getFormattedDateTime(slot).day}} at {{getFormattedDateTime(slot).classTime}} {{timezone}}</span>
             </div>
@@ -126,27 +125,24 @@
               <span>You</span>
             </div>
             <div class="action-col mb8" >
-              <!-- Doesn't let instructor look further out than 24 hours as a lot can change in that amount of time -->
               <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*60*24)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting">View</a>
               <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*60*24)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" href="#" ng-disabled="true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
                 title="Intro BODY Class with {{slot.trainer.firstName}} {{slot.trainer.lastName}}"
-                location="https://getbodyapp.com/"
+                location="https://www.getbodyapp.com/"
                 
                 class-name="btn btn-sm btn-default dropdown-toggle"
                 description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{slot.trainer.firstName}} is excited to workout with you!"
                 btn-text="Add to calendar"           
               ></addtocalendarimage>
               <img src="../assets/images/icons/x_button.png" style = "height: 14px;" popover-animation="true" popover-trigger="mouseenter" popover-placement="bottom" uib-popover="Remove" ng-click = "cancelClass(slot)"></img>
-              <!-- <span ng-show="removeText" class="animate-show" style = "font-size: 8px; float:right; padding-top:4px;">Remove</span> -->
             </div>
           </div>
-        </div>  
+        </div> -->  
       </div>
       <div class="mt24 text-center hidden-xs"><a class="scroller arrow-scroll" href="#">Add more classes&nbsp;&nbsp;<i class="ti-arrow-circle-down"></i></a></div>
-
     </div>
 
   <!-- END RESERVATION SECTION -->
@@ -188,26 +184,37 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && subscriptionActive && currentUser.role != 'admin'">
         <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
-        <div class="class-type lvl1"><span>{{slot.level}}</span></div>
-        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
-        <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+        <div class="class-type" ng-class = "{intro: slot.level === 'Intro', lvl1: slot.level === 'Level One', open: slot.level === 'Open'}">
+          <span ng-if = "slot.level === 'Intro'">Free </span>
+          <span>{{slot.level}}</span>
+        </div>
+        <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)" ng-class = "{introBtn: slot.level === 'Intro', lvl1Btn: slot.level === 'Level One', openBtn: slot.level === 'Open'}">reserve</a></div>
+        <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+        <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
         <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>
         <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
-        <div class="my-friends mt16 mb8" >
-          <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
-            <span ng-show = "friendList.length != 1">friends in class</span> 
-            <span ng-show = "friendList.length === 1">friend in class</span> 
+        <div class="my-friends mt16 mb0" >
+          <div class="qty mb4" ng-init = "checkIfFriends(slot)">
+            <div ng-if = "currentUser.role === 'admin'">
+              <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
+              <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>
+              <span ng-show = "bookingsBySlot[slot.date].length === 1">1 user signed up</span>
             </div>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+            <span ng-show = "friendList[slot.date].length > 0">{{friendList[slot.date].length}}</span>
+            <span ng-show = "!friendList[slot.date] || friendList[slot.date].length < 1">Get your friends to join!</span> 
+            <span ng-show = "friendList[slot.date] && friendList[slot.date].length > 1">friends in class</span> 
+            <span ng-show = "friendList[slot.date].length === 1">friend in class</span> 
+            </div>
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][0].facebookId].firstName?pictureData[friendList[slot.date][0].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][0].facebookId].lastName}}">
+              <img ng-class = "{transparent: !friendList[slot.date][0]}" class="profile" ng-src="{{pictureData[friendList[slot.date][0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][0].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][1].facebookId].firstName?pictureData[friendList[slot.date][1].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][1].facebookId].lastName}}">
+              <img ng-class = "{transparent: !friendList[slot.date][1]}" class="profile" ng-src="{{pictureData[friendList[slot.date][1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][1].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][2].facebookId].firstName?pictureData[friendList[slot.date][2].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][2].facebookId].lastName}}">
+              <img ng-class = "{transparent: !friendList[slot.date][2]}" class="profile" ng-src="{{pictureData[friendList[slot.date][2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][2].facebookId])">
             </span>
           <!-- <div class="empty"></div>
           <div class="empty"></div> -->
@@ -216,6 +223,7 @@
     </div>
   </div>
 </section>
+<!-- Mobile version -->
 <section class="visible-xs" style = "padding-bottom:32px; padding-top:32px;">
   <h1 id="tour-classes" class="darkblue">BODY Class Schedule</h1>
   <h4 class="week-selector darkblue bold text-center" ng-show = "days" ng-click="changeWeek()">
@@ -235,31 +243,42 @@
       </div> -->
     </div>
     <div ng-repeat="slot in day.slots">
-      <div class="sched-class" ng-class = "{unavailable: slot.past}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin'">
+      <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && subscriptionActive && currentUser.role != 'admin'">
         <div class="col-xs-12 text-center">
           <span class="class-time mb8">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
-          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "openBookingConfirmation(slot);" ng-disabled = "slot.past">reserve</a></div>
-          <div class="class-booking"><a class="booked btn" href="#" ng-if = "slot.bookedUsers[currentUser._id] && !slot.classFull" ng-click = "scrollToTop()">booked</a></div>
+          <div class="class-booking"><a class="reserve btn" href="#" ng-if = "!userBookings[slot.date] && !classesTeaching[slot.date] && !slot.classFull && !isPast(slot)" ng-click = "openBookingConfirmation(slot);" ng-disabled = "isPast(slot)" ng-class = "{introBtn: slot.level === 'Intro', lvl1Btn: slot.level === 'Level One', openBtn: slot.level === 'Open'}">reserve</a></div>
+          <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date] && !slot.classFull" ng-click = "scrollToTop()">teaching</a></div>
+          <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
           <div class="class-booking"><a class="full btn" href="#" ng-if = "slot.classFull" ng-disabled = "true">class full</a></div>          
         </div>
         <div class="col-xs-6 text-center">
-          <div class="class-type lvl1"><span>{{slot.level}}</span></div>
+          <div class="class-type" ng-class = "{intro: slot.level === 'Intro', lvl1: slot.level === 'Level One', open: slot.level === 'Open'}">
+            <span ng-if = "slot.level === 'Intro'">Free </span>
+            <span>{{slot.level}}</span>
+          </div>
           <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
         </div>
         <div class="col-xs-6 text-center">
           <div class="my-friends" >
-            <div class="qty" ng-init = "friendList = checkIfFriends(slot)" >{{friendList.length}} 
-              <span ng-show = "friendList.length != 1">friends in class</span> 
-              <span ng-show = "friendList.length === 1">friend in class</span> 
+            <div class="qty" ng-init = "checkIfFriends(slot)" >
+              <div ng-if = "currentUser.role === 'admin'">
+                <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
+                <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>
+                <span ng-show = "bookingsBySlot[slot.date].length === 1">1 user signed up</span>
+              </div>
+              <span ng-show = "friendList[slot.date].length > 0">{{friendList[slot.date].length}}</span>
+              <span ng-show = "!friendList[slot.date] || friendList[slot.date].length < 1">Get your friends to join!</span>
+              <span ng-show = "friendList[slot.date] && friendList[slot.date].length > 1">friends in class</span>
+              <span ng-show = "friendList[slot.date].length === 1">friend in class</span>
             </div>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[0].facebookId].firstName?pictureData[friendList[0].facebookId].firstName + ' ':''}}{{pictureData[friendList[0].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[0].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][0].facebookId].firstName?pictureData[friendList[slot.date][0].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][0].facebookId].lastName}}">
+              <img ng-class = "{transparent: !friendList[slot.date][0]}" class="profile" ng-src="{{pictureData[friendList[slot.date][0].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][0].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[1].facebookId].firstName?pictureData[friendList[1].facebookId].firstName + ' ':''}}{{pictureData[friendList[1].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[1].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][1].facebookId].firstName?pictureData[friendList[slot.date][1].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][1].facebookId].lastName}}">
+              <img ng-class = "{transparent: !friendList[slot.date][1]}" class="profile" ng-src="{{pictureData[friendList[slot.date][1].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][1].facebookId])">
             </span>
-            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[2].facebookId].firstName?pictureData[friendList[2].facebookId].firstName + ' ':''}}{{pictureData[friendList[2].facebookId].lastName}}">
-              <img class="profile" ng-src="{{pictureData[friendList[2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[2].facebookId])">
+            <span popover-animation="true" popover-trigger="mouseenter" popover-placement="top" uib-popover="{{pictureData[friendList[slot.date][2].facebookId].firstName?pictureData[friendList[slot.date][2].facebookId].firstName + ' ':''}}{{pictureData[friendList[slot.date][2].facebookId].lastName}}">
+              <img ng-class = "{transparent: !friendList[slot.date][2]}" class="profile" ng-src="{{pictureData[friendList[slot.date][2].facebookId].picture}}" ng-click = "openFriendFbLink(pictureData[friendList[slot.date][2].facebookId])">
             </span>
             <!-- <div class="empty"></div>
             <div class="empty"></div> -->
@@ -272,7 +291,7 @@
 </section>
 <h4 class="week-selector darkblue bold text-center" ng-show = "days" ng-click="changeWeek()">
   <a href=""><span ng-hide = "thisWeek"> &larr; </span></a>
-    &nbsp;{{days[0].formattedDate}} - {{days[6].formattedDate}}&nbsp;
+    &nbsp;{{days["0Sun"].formattedDate}} - {{days["6Sat"].formattedDate}}&nbsp;
   <a href=""><span ng-show = "thisWeek" > &rarr; </span></a>
 </h4>
 

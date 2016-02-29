@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, DayOfWeekSetter, $firebaseArray, $uibModal, $firebaseObject) {
+  .controller('NewUserCtrl', function ($scope, $http, $state, User, Auth, $window, DayOfWeekSetter, $firebaseArray, $uibModal, $firebaseObject) {
     $scope.newUserStep = 1;
     $scope.errorDiv = false
     $scope.currentUser = Auth.getCurrentUser();
@@ -21,23 +21,57 @@ angular.module('bodyAppApp')
 
     Auth.getCurrentUser().$promise.then(function(user) {
         currentUser = user
+
         //Firebase authentication check
           var ref = new Firebase("https://bodyapp.firebaseio.com/");
           ref.onAuth(function(authData) {
-            if (authData) {
-              console.log("User is authenticated with fb ");
-            } else {
-              console.log("User is logged out");
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                if (error) {
-                  console.log("Firebase user authentication failed", error);
+              if (authData) {
+                console.log("User is authenticated with fb ");
+              } else {
+                console.log("User is logged out");
+                if (currentUser.firebaseToken) {
+                  ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                    if (error) {
+                      Auth.logout();
+                      $window.location.reload()
+                      console.log("Firebase user authentication failed", error);
+                    } else {
+                      if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                    }
+                  }); 
                 } else {
-                  if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                  Auth.logout();
+                  $window.location.reload()
                 }
-              }); 
-            }
-          })
+              }
+        })
+
+        // //Olark Integration
+        if (user.firstName && user.lastName) {
+            olark('api.visitor.updateFullName', {
+                fullName: user.firstName + " " + user.lastName.charAt(0)
+            });
+        }
+
+        olark('api.visitor.updateCustomFields', {
+            id: user._id,
+            fbId: user.facebookId
+        });
+
+        //Intercom integration
+        window.intercomSettings = {
+            app_id: "daof2xrs",
+            name: user.firstName + " " + user.lastName, // Full name
+            email: user.email, // Email address
+            user_id: user._id,
+            created_at: Math.floor(Date.now() / 1000), // Signup date as a Unix timestamp,
+            "bookedIntro": user.bookedIntroClass,
+            "introTaken": user.introClassTaken,
+            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0
+        };
+
         if (!currentUser.welcomeEmailSent) {
+            currentUser.welcomeEmailSent = true;
             User.sendWelcomeEmail({ id: currentUser._id }, {
             }, function(user) {
             }, function(err) {
@@ -62,6 +96,9 @@ angular.module('bodyAppApp')
     // $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
 
 	$scope.bookIntroClass = function(classBooked) {
+        if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
+            return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
+        }
 		$scope.newUserStep++;
 		$scope.bookedIntroClass = classBooked
 
@@ -89,11 +126,14 @@ angular.module('bodyAppApp')
         // $scope.timeZone = jstz().timezone_name;
 
     	classToBook.$loaded(function() {
-    		classToBook.bookedUsers = classToBook.bookedUsers || {};
-			classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
+            ref.child("bookings").child(classToBook.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+            ref.child("userBookings").child(currentUser._id).child(classToBook.date).update({date: classToBook.date, trainer: classToBook.trainer, level: classToBook.level})
+            // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
+   //  		classToBook.bookedUsers = classToBook.bookedUsers || {};
+			// classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
             // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
             // classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
-			classToBook.$save()
+			// classToBook.$save()
             $scope.classDetails = classToBook;
     	})
 		
@@ -101,6 +141,14 @@ angular.module('bodyAppApp')
             classToAdd: classDate.getTime()
         }, function(user) {
             Auth.updateUser(user)
+            //Intercom integration
+            window.intercomSettings = {
+                app_id: "daof2xrs",
+                email: user.email, // Email address
+                user_id: user._id,
+                "bookedIntro": user.bookedIntroClass,
+                "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+            };
 
             //Check that using Chrome or Firefox
             // if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
@@ -121,8 +169,10 @@ angular.module('bodyAppApp')
 
         }, function(err) {
             console.log("Error adding class: " + err)
-            classToBook.bookedUsers = classToBook.bookedUsers || {};
-            delete classToBook.bookedUsers[$scope.currentUser._id]
+            // classToBook.bookedUsers = classToBook.bookedUsers || {};
+            // delete classToBook.bookedUsers[$scope.currentUser._id]
+            ref.child("bookings").child(classToBook.date).child(currentUser._id).remove()
+            ref.child("userBookings").child(currentUser._id).child(classToBook.date).remove()
             // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
             // delete classToBook.bookedFbUserIds[$scope.currentUser.facebook.id]
 
@@ -139,17 +189,19 @@ angular.module('bodyAppApp')
     	$state.go('schedule');
     }
 
-    $scope.saveInjuriesGoalsEmergency = function(injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
-    	injuries = injuryString || "";
-        goals = goals || "";
-        if (!(emergencyFirst && emergencyLast && emergencyPhone)) return $scope.emergencyContactNotEntered = true;
+    $scope.saveInjuriesGoalsEmergency = function(boxChecked, injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
+        if (!injuryString || injuryString.length < 2) {return $scope.injuriesNotEntered = true;} else {$scope.injuriesNotEntered = false;}
+        if (!goals || goals.length < 2) {return $scope.goalsNotEntered = true;} else {$scope.goalsNotEntered = false;}
+        if (!(emergencyFirst && emergencyLast && emergencyPhone)) {return $scope.emergencyContactNotEntered = true;} else {$scope.emergencyContactNotEntered = false;}
+        if (!boxChecked) {return $scope.boxNotChecked = true;} else {$scope.boxNotChecked = false;}
+
         emergencyContact = {firstName: emergencyFirst, lastName: emergencyLast, relationship: emergencyRelationship, phone: emergencyPhone};
 
     	// if (injuries.length < 2) {
     	// 	$scope.errorDiv = true
     	// 	console.log("Didn't enter any injury information!")
     	// } else {
-		User.saveInjuriesGoalsEmergency({id: $scope.currentUser}, {injuryString: injuries, goals: goals, emergencyContact: emergencyContact})
+		User.saveInjuriesGoalsEmergency({id: $scope.currentUser}, {injuryString: injuryString, goals: goals, emergencyContact: emergencyContact})
         .$promise.then(function(user) {
 			console.log("Successfully saved injury, goals and emergency contact info.");
 			Auth.getUpdatedUser();

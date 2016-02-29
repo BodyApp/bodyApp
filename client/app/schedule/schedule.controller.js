@@ -1,7 +1,7 @@
 // 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, $rootScope, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window) {
         var currentUser = Auth.getCurrentUser();
         var ref = new Firebase("https://bodyapp.firebaseio.com");
         var todayDate = new Date();
@@ -12,6 +12,9 @@ angular.module('bodyAppApp')
         var tzName = jstz().timezone_name;
         $scope.thisWeek;
         $scope.chosenDay;
+        $scope.timeNow = new Date().getTime();
+
+        Video.destroyHardwareSetup()
 
         console.warn = function(str){}
 
@@ -27,66 +30,100 @@ angular.module('bodyAppApp')
           $scope.wod = snapshot.val()
         });
 
-        if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
-          Auth.getCurrentUser().$promise.then(function(user) {
-            currentUser = user
+        var setUser = function(user) {
+          currentUser = user
 
-            $scope.currentUser = currentUser;
-            Schedule.setCurrentUser(currentUser);
-            $scope.pictureData = {};
+          $scope.currentUser = currentUser;
+          Schedule.setCurrentUser(currentUser);
+          $scope.pictureData = {};
 
-            //Firebase authentication check
-            var ref = new Firebase("https://bodyapp.firebaseio.com/");
-            ref.onAuth(function(authData) {
-              if (authData) {
-                console.log("User is authenticated with fb ");
-              } else {
-                console.log("User is logged out");
+          if (user.stripe) $rootScope.subscriptionActive = user.stripe.subscription.status === 'active';
+
+          //Firebase authentication check
+          var ref = new Firebase("https://bodyapp.firebaseio.com/");
+          ref.onAuth(function(authData) {
+            if (authData) {
+              getBookings()
+              console.log("User is authenticated with fb ");
+            } else {
+              console.log("User is logged out");
+              if (currentUser.firebaseToken) {
                 ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
                   if (error) {
+                    Auth.logout();
+                    $window.location.reload()
                     console.log("Firebase user authentication failed", error);
                   } else {
                     if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                    // $window.location.reload()
+                    getBookings()
+                    thisWeek();
+                    setNextWeek();
                   }
                 }); 
+              } else {
+                Auth.logout();
+                $window.location.reload()
               }
-            })
-            // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-            //   if (error) {
-            //     console.log("Firebase user authentication failed", error);
-            //   } else {
-            //     console.log("Firebase user authentication succeeded!", authData);
-            //   }
-            // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-            // }); 
-
-            // $rootScope.htmlReady() //For PhantomJS
-
-            // $scope.myBookedClasses = currentUser.classesBooked;
-            // for (prop in currentUser.classesBooked) {
-            //   console.log(prop);
-            //   getInfo(prop)
-            // }
-            
-
-            if (currentUser && !currentUser.tourtipShown) {
-              loadTour();
-            }
-
-            if (currentUser.timezone != tzName) {
-              User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
-                console.log("Updated user timezone preference")
-                currentUser = user;
-                Auth.updateUser(currentUser);
-                $scope.currentUser = currentUser;
-              }, function(err) {
-                  console.log("Error saving Timezone: " + err)
-              }).$promise;
             }
           })
+          // ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+          //   if (error) {
+          //     console.log("Firebase user authentication failed", error);
+          //   } else {
+          //     console.log("Firebase user authentication succeeded!", authData);
+          //   }
+          // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+          // }); 
+
+          // $rootScope.htmlReady() //For PhantomJS
+
+          // $scope.myBookedClasses = currentUser.classesBooked;
+          // for (prop in currentUser.classesBooked) {
+          //   console.log(prop);
+          //   getInfo(prop)
+          // }
+
+          //Intercom integration
+          window.intercomSettings = {
+            app_id: "daof2xrs",
+            name: user.firstName + " " + user.lastName, // Full name
+            email: user.email, // Email address
+            user_id: user._id,
+            "bookedIntro": user.bookedIntroClass,
+            "introTaken": user.introClassTaken,
+            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+            "newUserFlowComplete": user.completedNewUserFlow,
+            "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+            "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
+          };
+
+          if (currentUser && !currentUser.tourtipShown) {
+            loadTour();
+          }
+
+          if (currentUser.timezone != tzName) {
+            User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
+              console.log("Updated user timezone preference")
+              currentUser = user;
+              Auth.updateUser(currentUser);
+              $scope.currentUser = currentUser;
+            }, function(err) {
+                console.log("Error saving Timezone: " + err)
+            }).$promise;
+          }
+        
         }
 
-        if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
+        if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
+          Auth.getCurrentUser().$promise.then(function(user) {
+            setUser(user)
+          })            
+        } else {
+          setUser(Auth.getCurrentUser())
+        }
+
+        // if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
 
         function getInfo(prop) {
           // var newDate = new Date(prop * 1)
@@ -108,18 +145,48 @@ angular.module('bodyAppApp')
           // $window.open('https://www.facebook.com/'+friend.facebookId, '_blank');
         }
 
+        //Need to fix this
         $scope.checkIfFriends = function(slot) {
-          var friendList = [];
-          for (var prop in slot.bookedUsers) {
-            var user = slot.bookedUsers[prop];
-            if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
-              friendList.push(user);
-              if (!$scope.pictureData[user.facebookId]) {
-                $scope.pictureData[user.facebookId] = user;
+          ref.child("bookings").child(slot.date).once('value', function(snapshot) {
+            $scope.bookingsBySlot = $scope.bookingsBySlot || {};
+            $scope.bookingsBySlot[slot.date] = [];
+            if (!snapshot.exists()) return
+            $scope.friendList = $scope.friendList || {};
+            $scope.friendList[slot.date] = [];
+            for (var prop in snapshot.val()) {
+              var user = snapshot.val()[prop];
+              if (currentUser.role === 'admin') $scope.bookingsBySlot[slot.date].push(user);
+              if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
+                $scope.friendList[slot.date].push(user);
+                if(!$scope.$$phase) $scope.$apply();
+                if (!$scope.pictureData[user.facebookId]) {
+                  $scope.pictureData[user.facebookId] = user;
+                  if(!$scope.$$phase) $scope.$apply();
+                }
               }
             }
-          }
-          return friendList;
+          })
+        }
+
+        function getBookings() {
+          // ref.child("userBookings").child(currentUser._id).startAt(todayDate.getTime() - 60*60*1000).on('value', function(snapshot) {
+          //   $scope.userBookings = snapshot.val()
+          // })
+          // ref.child("trainerClasses").child(currentUser._id).child("classesTeaching").startAt(todayDate.getTime() - 60*60*1000).on('value', function(snapshot) {
+          //   $scope.classesTeaching = snapshot.val()
+          // })
+          ref.child("userBookings").child(currentUser._id).on('value', function(snapshot) {
+            $scope.userBookings = snapshot.val()
+            if(!$scope.$$phase) $scope.$apply();
+          })
+          ref.child("trainerClasses").child(currentUser._id).child("classesTeaching").on('value', function(snapshot) {
+            $scope.classesTeaching = snapshot.val()
+            if(!$scope.$$phase) $scope.$apply();
+          })        
+        }
+
+        $scope.isPast = function(slot) {
+          return slot.date*1 < new Date().getTime() - 45*60*1000
         }
 
         $scope.changeWeek = function() {
@@ -192,9 +259,9 @@ angular.module('bodyAppApp')
         setNextWeek();
 
         $scope.availableClasses = true;
-        $scope.timeNow = new Date().getTime();
+        
         $interval(function() {
-            $scope.timeNow = new Date().getTime();
+          $scope.timeNow = new Date().getTime();
         }, 1000*30)
         // $scope.classOverTime = $scope.timeNow - 1000*60*45;
 
@@ -202,7 +269,7 @@ angular.module('bodyAppApp')
             slot = slot || {};
             slot.date = slot.date || new Date();
             var newDate = new Date(slot.date);
-            var formatted = {}
+            var formatted = {};
 
             if (newDate.getHours() == 12) {
                 formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
@@ -268,206 +335,31 @@ angular.module('bodyAppApp')
               // scope: {classToJoin: slot} //passed current scope to the modal
             });
 
-            // modalInstance.result.then(function () {
-            //   // openStripePayment()
-            // }, function () {
-            //   // openStripePayment() //Killed here because moved into the membership modal's controller
-            // });
+            modalInstance.result.then(function () {
+              currentUser = Auth.getCurrentUser()
+            }, function () {
+              currentUser = Auth.getCurrentUser()
+              // openStripePayment() //Killed here because moved into the membership modal's controller
+            });
           }
         }
-
-        //     function openStripePayment() {
-        //       var handler = StripeCheckout.configure({
-        //         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-        //         image: '../../assets/images/body-app-logo-header.png',
-        //         locale: 'auto',
-        //         token: function(token, args) {
-        //             var modalInstance = openPaymentConfirmedModal()
-        //             $http.post('/api/users/charge', {
-        //               user: currentUser,
-        //               stripeToken: token,
-        //               shippingAddress: args,
-        //             })
-        //             .success(function(data) {
-        //                 console.log("Successfully posted to /user/charge");
-        //                 Auth.updateUser(data)
-        //                 currentUser = data
-        //                 $scope.currentUser = currentUser
-        //                 modalInstance.close()
-        //                 bookClass(slot)
-        //             })
-        //             .error(function(err) {
-        //                 console.log(err)
-        //                 modalInstance.close();
-        //                 if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
-        //                 return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
-        //             }.bind(this));
-
-        //           // Use the token to create the charge with a server-side script.
-        //           // You can access the token ID with `token.id`
-        //         }
-        //       });
-        //       if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
-        //         //If user has already signed up previously
-        //           if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-        //               handler.open({
-        //                 name: 'BODY SUBSCRIPTION',
-        //                 description: '$10/mo Pilot Price!',
-        //                 panelLabel: "Pay {{amount}} / Month",
-        //                 shippingAddress: true,
-        //                 zipCode: true,
-        //                 amount: 1000
-        //               });    
-        //           } else {
-        //               handler.open({
-        //                 name: 'BODY SUBSCRIPTION',
-        //                 email: currentUser.email,
-        //                 description: '$10/mo Pilot Price!',
-        //                 panelLabel: "Pay {{amount}} / Month",
-        //                 shippingAddress: true,
-        //                 zipCode: true,
-        //                 amount: 1000
-        //               });
-        //           }
-        //       } else {
-        //           if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-        //               handler.open({
-        //                 name: 'BODY SUBSCRIPTION',
-        //                 description: '$10/mo Pilot Price!',
-        //                 panelLabel: "Pay {{amount}} / Month",
-        //                 zipCode: true,
-        //                 shippingAddress: true,
-        //                 amount: 1000
-        //               });    
-        //           } else {
-        //               handler.open({
-        //                 name: 'BODY SUBSCRIPTION',
-        //                 email: currentUser.email,
-        //                 description: '$10/mo Pilot Price!',
-        //                 panelLabel: "Pay {{amount}} / Month",
-        //                 zipCode: true,
-        //                 shippingAddress: true,
-        //                 amount: 1000
-        //               });
-        //           }
-        //       }
-        //     }
-        //   } 
-        // }
-
-        // function openPaymentConfirmedModal() {
-        //     var modalInstance = $uibModal.open({
-        //       animation: true,
-        //       templateUrl: 'app/account/payment/paymentThanks.html',
-        //       controller: 'PaymentCtrl',
-        //       backdrop: "static",
-        //       keyboard: false
-        //       // size: size,
-        //       // resolve: {
-        //       //   currentUser: function () {
-        //       //     return currentUser;
-        //       //   }
-        //       // }
-        //     });
-
-        //     modalInstance.result.then(function (selectedItem) {
-        //       $scope.selected = selectedItem;
-        //     }, function () {
-        //       $log.info('Modal dismissed at: ' + new Date());
-        //     });
-
-        //     return modalInstance;
-        // }
-
-        // function openLoginModal() {
-        //     var modalInstance = $modal.open({
-        //       animation: true,
-        //       templateUrl: 'app/account/login/login.html',
-        //       controller: 'LoginCtrl',
-        //       backdrop: "static",
-        //       windowClass: "loginModal",
-        //       keyboard: false
-        //     });
-
-        //     modalInstance.result.then(function (selectedItem) {
-        //       $scope.selected = selectedItem;
-        //     }, function () {
-        //         currentUser = Auth.getCurrentUser();
-        //         $scope.currentUser = currentUser;
-        //         Schedule.setCurrentUser(currentUser);
-        //       $log.info('Modal dismissed at: ' + new Date());
-        //       if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-        //         openEmailEntryModal();
-        //       }
-        //     });
-
-        //     return modalInstance;
-        // }
-
-        // function openEmailEntryModal() {
-        //     var modalInstance = $modal.open({
-        //       animation: true,
-        //       templateUrl: 'app/account/login/enterEmail.html',
-        //       controller: 'LoginCtrl'
-        //       // backdrop: "static",
-        //       // windowClass: "loginModal",
-        //       // keyboard: false
-        //     });
-
-        //     modalInstance.result.then(function (userObj) {
-        //         // User.saveEmailAddress({ id: currentUser._id }, {
-        //         //   email: userObj.email
-        //         // }, function(user) {
-        //         //   currentUser = user;
-        //         //   $scope.currentUser = currentUser;
-        //         //   modalInstance.close()
-        //         // }, function(err) {
-        //         //     console.log("Error saving email: " + err)
-        //         //     slot.bookedUsers[currentUser._id] = false
-        //         //     alert("sorry, there was an issue saving your email.  Some features may not function properly.  Contact the BODY help team at (216) 408-2902 to get this squared away.")    
-        //         // }).$promise;
-        //     }, function () {
-        //       $log.info('Modal dismissed at: ' + new Date());
-        //     });
-
-        //     return modalInstance;
-        // }
-
-        // function openPaymentModal() {
-        //     var modalInstance = $modal.open({
-        //       animation: true,
-        //       templateUrl: 'app/membership/membership.html',
-        //       controller: 'MembershipCtrl'
-        //       size: size,
-        //       resolve: {
-        //         slot: function () {
-        //           return slot;
-        //         }
-        //       }
-        //     });
-
-        //     modalInstance.result.then(function (selectedItem) {
-        //       $scope.selected = selectedItem;
-        //     }, function () {
-        //       $log.info('Modal dismissed at: ' + new Date());
-        //     });
-        // }
 
         $scope.cancelClass = function(slot) {
           if (slot.level === "Intro") {
             User.cancelIntroClass({ id: currentUser._id }, {classToCancel: slot.date}, function(user) {
-              // delete $scope.myBookedClasses[slot.date];
-              slot.bookedUsers = slot.bookedUsers || {};
-              // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-              slot.cancelledUsers = slot.cancelledUsers || {};
-              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeCancelled: new Date().getTime()};
-              delete slot.bookedUsers[currentUser._id];
-              // delete slot.bookedFbUserIds[currentUser.facebook.id];
-              // slot.$save();
+              ref.child("bookings").child(slot.date).child(currentUser._id).remove()
+              ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+              ref.child("cancellations").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
               currentUser = user;
               Auth.updateUser(currentUser);
               $scope.currentUser = currentUser;
-
+              window.intercomSettings = {
+                  app_id: "daof2xrs",
+                  email: user.email, // Email address
+                  user_id: user._id,
+                  "bookedIntro": user.bookedIntroClass,
+                  "introClassBooked": false
+              };
             }, function(err) {
                 console.log("Error cancelling class: " + err)
             }).$promise;
@@ -475,13 +367,9 @@ angular.module('bodyAppApp')
             User.cancelBookedClass({ id: currentUser._id }, {
               classToCancel: slot.date
             }, function(user) {
-              // delete $scope.myBookedClasses[slot.date];
-              slot.bookedUsers = slot.bookedUsers || {};
-              // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-              slot.cancelledUsers = slot.cancelledUsers || {};
-              slot.cancelledUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeCancelled: new Date().getTime()};
-              delete slot.bookedUsers[currentUser._id];
-              // delete slot.bookedFbUserIds[currentUser.facebook.id];
+              ref.child("bookings").child(slot.date).child(currentUser._id).remove()
+              ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+              ref.child("cancellations").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
               Auth.updateUser(user);
               currentUser = user;
               $scope.currentUser = currentUser;
@@ -493,13 +381,15 @@ angular.module('bodyAppApp')
         }
 
         $scope.openBookingConfirmation = function (slot) {
+          if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
+            return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
+          }
           if (slot.level === "Intro") {
-
-            // if (currentUser.introClassTaken) {
-            //   return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
-            // } else if (currentUser.bookedIntroClass) {
-            //   return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
-            // } else {
+            if (currentUser.introClassTaken) {
+              return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
+            } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime()) {
+              return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
+            } else {
               return User.addIntroClass({ id: $scope.currentUser._id }, {classToAdd: slot.date}, function(user) {
                 var modalInstance = $uibModal.open({
                   animation: true,
@@ -521,10 +411,22 @@ angular.module('bodyAppApp')
                 Auth.updateUser(user);
                 currentUser = user;
                 $scope.currentUser = user;
+                ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""});
+                ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+                
+                window.intercomSettings = {
+                    app_id: "daof2xrs",
+                    email: user.email, // Email address
+                    user_id: user._id,
+                    "bookedIntro": user.bookedIntroClass,
+                    "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                };
+
+                // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
                 // getInfo(slot.date);
-                slot.bookedUsers = slot.bookedUsers || {};
+                // slot.bookedUsers = slot.bookedUsers || {};
                 // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+                // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
                 // slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
               }, function(err) {
                   console.log("Error adding class: " + err)
@@ -532,10 +434,12 @@ angular.module('bodyAppApp')
                   // classToBook.$save()
                   alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
               }).$promise;
-            // }
+            }
+          } else if (slot.level === "Open" || slot.level === "Test") {
+            bookClass(slot);
           } else {
-            // if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
-            bookClass(slot)
+            if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
+            // bookClass(slot)
           }
         };
 
@@ -560,18 +464,21 @@ angular.module('bodyAppApp')
           User.addBookedClass({ id: currentUser._id }, {
             classToAdd: slot.date
           }, function(user) {
+            ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""});
+            ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+            // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
             // getInfo(slot.date);
-            slot.bookedUsers = slot.bookedUsers || {};
+            // slot.bookedUsers = slot.bookedUsers || {};
             // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-            slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+            // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
             // slot.bookedFbUserIds[currentUser.facebook.id] = true
             // slot.$save();
             currentUser = user;
             $scope.currentUser = currentUser;
           }, function(err) {
               console.log("Error adding class: " + err)
-              slot.bookedUsers = slot.bookedUsers || {};
-              delete slot.bookedUsers[currentUser._id];
+              // slot.bookedUsers = slot.bookedUsers || {};
+              // delete slot.bookedUsers[currentUser._id];
               // delete slot.bookedFbUserIds[currentUser.facebook.id];
               alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
           }).$promise;

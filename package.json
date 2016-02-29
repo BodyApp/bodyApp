@@ -36,7 +36,9 @@
     "prerender-node": "*",
     "mailgun-js":"^0.7",
     "moment-timezone": "*",
-    "firebase-token-generator": "*"
+    "firebase-token-generator": "*",
+    "helmet":"*",
+    "throng":"*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

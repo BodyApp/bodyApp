@@ -137,17 +137,37 @@
   display: inline-block;
   float: right;
 }
-.intro {
+div.intro {
   color: #4DC56B;
+  /*font-weight: 600;*/
 }
-.lvl1 {
+div.lvl1 {
   color: #224893;
 }
-.lvl2 {
+div.open {
   color: #FF6700;
 }
-.lvl3 {
+div.lvl2 {
+  color: #FF6700;
+}
+div.lvl3 {
   color: #C82428;
+}
+.introBtn {
+  background-color: #4DC56B;
+  /*color: black;*/
+}
+.lvl1Btn {
+  background-color: #224893;
+}
+.openBtn {
+  background-color: #FF6700;
+}
+.lvl2Btn {
+  background-color: #FF6700;
+}
+.lvl3Btn {
+  background-color: #C82428;
 }
 a.reserve.btn {
   font-size: 10px;
@@ -200,6 +220,9 @@ a.full.btn {
   border-radius: 12.5px;
   vertical-align: middle;
   margin-right: 5px !important;
+}
+.my-friends .transparent {
+  opacity: 0.0;
 }
 .unavailable div, .unavailable span {
   opacity: 0.1;

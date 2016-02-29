@@ -3,7 +3,6 @@
 angular.module('bodyAppApp')
   .controller('ClassFeedbackCtrl', function ($scope, $state, $location, Schedule, Auth, User, DayOfWeekSetter) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
-  	console.log($scope.classCompleted)
 
   	if (!$scope.classCompleted) {
   		$state.go('schedule')
@@ -12,16 +11,16 @@ angular.module('bodyAppApp')
 
   	var classDate = new Date($scope.classCompleted.date);        
   	var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    // var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
     // var sunDate = new Date();
     // sunDate.setDate(classDate.getDate() - classDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+    // var sunGetDate = sunDate.getDate();
+    // var sunGetMonth = sunDate.getMonth()+1;
+    // var sunGetYear = sunDate.getFullYear();
+    // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
-    var weekOfRef = ref.child("classes").child(weekOf)
-    var dayRef = weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
+    // var weekOfRef = ref.child("classes").child(weekOf)
+    // var dayRef = weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
 
     var currentUser = Auth.getCurrentUser()
 
@@ -56,12 +55,19 @@ angular.module('bodyAppApp')
         feedback: feedback,
         wod: "WodData", //This needs to be changed once the day's wod data has been implemented
         dateTime: classDate.getTime(),
-        weekOf: weekOf,
+        // weekOf: weekOf,
         date: classKey
       }, function(data) {
         Auth.updateUser(data.user);
+        ref.child("resultsByUser").child(currentUser._id).child(classKey).update({
+          score: score*1,
+          comment: comment,
+          classDateTime: $scope.classCompleted.date,
+          classDayKey: classKey,
+          timePosted: (new Date()).getTime()        
+        }, function(err) {if (!err) console.log("results saved to user's profile")})
       }, function(err) {
-          console.log(err)
+        console.log(err)
       }).$promise.then(function() {
       	//Add rating to trainer object
       	User.addRating({ id: currentUser._id }, {
@@ -77,9 +83,8 @@ angular.module('bodyAppApp')
 
       //Post result to public list
   		if (postToPublic) {
-  			var dayList;
   			var classList;
-  			dayList = dayRef.child("resultList").push({
+  			var dayList = ref.child("resultsByDay").child(classKey).push({
   				score: score*1,
   				comment: comment,
   				userId: currentUser._id,
@@ -98,7 +103,7 @@ angular.module('bodyAppApp')
   				// 	dayList.setPriority(-score);
   				// }
 
-	  			classList = dayRef.child('slots').child($scope.classCompleted.date).child("classResultsList").push({
+	  			classList = ref.child("resultsByClass").child($scope.classCompleted.date).push({
 	  				score: score,
 	  				comment: comment,
 	  				userId: currentUser._id,

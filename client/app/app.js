@@ -51,7 +51,10 @@ angular.module('bodyAppApp', [
     };
   })
 
-  .run(function ($rootScope, $state, Auth) {
+  .run(function ($rootScope, $state, $window, Auth) {
+    $rootScope.$on('$routeChangeSuccess', function(evt, absNewUrl, absOldUrl){
+      $window.scrollTo(0,0);    //scroll to top of page after each route change
+    })
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
@@ -60,5 +63,6 @@ angular.module('bodyAppApp', [
           $state.go('main');
         }
       });
+      $window.scrollTo(0,0);    //scroll to top of page after each route change
     });
   });

@@ -116,6 +116,12 @@ angular.module('bodyAppApp')
           controller: 'getInjuries'
         }
       },
+      checkCoupon: {
+        method: 'PUT',
+        params: {
+          controller:'checkCoupon'
+        }
+      },
       getSubscription: {
         method: 'GET',
         params: {

@@ -2,44 +2,8 @@
 
 angular.module('bodyAppApp')
   .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, DayOfWeekSetter) {
-  	var classToJoin = Schedule.classUserJustJoined;
-    $scope.classToJoin = classToJoin;
-
-      $scope.overlay1 = true;
-      $scope.overlay2 = false;
-      $scope.overlay3 = false;
-      $scope.overlay4 = false
-      $scope.tab1 = true;
-      $scope.tab2 = false;
-      $scope.instructorBio = false;
-
-    if (!classToJoin) {
-      $location.path('/')
-    }
-
-    //Check that using Chrome or Firefox
-    if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
-      // The client does not support WebRTC.
-      var modalInstance = $uibModal.open({
-        animation: true,
-        backdrop: "static",
-        keyboard: false,
-        templateUrl: 'app/video/wrongBrowser.html',
-        controller: 'WrongBrowserCtrl',
-      });
-
-      modalInstance.result.then(function (selectedItem) {
-      }, function () {
-      });
-    }
-
-    var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
-    $scope.phrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]
-
-    // $scope.instructor = classToJoin.trainer
-    // $scope.instructorPicUrl = $scope.instructor.picture
-
-    var classTime = classToJoin.date;
+  	
+    var classTime;
     var currentUser = Auth.getCurrentUser();
     $scope.currentUser = currentUser;
 
@@ -47,7 +11,7 @@ angular.module('bodyAppApp')
     var SESSION_ID;
     var TOKEN;
 
-    var TEST_TIMEOUT_MS = 25000; // Internet test lasts 15 seconds.  Increase to increase reliability of the test.
+    var TEST_TIMEOUT_MS = 10000; // Internet test lasts 15 seconds.  Increase to increase reliability of the test.
 
     var timeoutMs = TEST_TIMEOUT_MS;
     // test.testSuccess = false;
@@ -64,59 +28,152 @@ angular.module('bodyAppApp')
 
     var callbacks;
 
-    if (currentUser._id != classToJoin.trainer._id) {
-      $scope.networkTestCountdown = timeoutMs + 5000
-      $scope.testingNetwork = true;
-      conductInternetTest(classToJoin.sessionId);
-    }
+    // var networkBitsThreshold = 50000;
+    // var networkDroppedPackets = 0.5;
+    var networkBitsThreshold = 15000; //Should be more like 150000
+    var networkDroppedPackets = 0.5; //Should be more like 0.5
 
-    var classDate = new Date(classToJoin.date)
-    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
+
+    var classToJoin;
+    var classDate;
+    var sunDate;
     // var sunDate = new Date();
     // sunDate.setDate(classDate.getDate() - classDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+    var sunGetDate;
+    var sunGetMonth;
+    var sunGetYear;
+    var weekOf;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/");
-    var classObjRef = $firebaseObject(ref
-      .child("classes")
-      .child(weekOf)
-      .child(DayOfWeekSetter.setDay(classDate.getDay()))
-      .child("slots")
-      .child(classDate.getTime())
-    )
+    var classObjRef;
 
-    var userRef = ref.child("classes")
-      .child(weekOf)
-      .child(DayOfWeekSetter.setDay(classDate.getDay()))
-      .child("slots")
-      .child(classDate.getTime())
-      .child("bookedUsers")
+    var userRef;
+
+    var checkTimeInterval;
+    var intervalId;
+
+    var setupSuccessful = false;
+
+    //This should be turned into a $promise
+    var setupInterval = $interval(function() {
+      if (Schedule.classUserJustJoined) {
+        $interval.cancel(setupInterval)
+        setup()
+      }
+    }, 100, 50);
+
+    //If haven't retrieved class in 4 seconds, navigate back to dashboard to avoid confusion.
+    $timeout(function() {
+      if (!setupSuccessful) {
+        $location.path('/');
+        $interval.cancel(setupInterval)
+      }
+    }, 5000)
+
+    function setup() {
+      setupSuccessful = true
+      classToJoin = Schedule.classUserJustJoined;
+      classTime = classToJoin.date;
+      classDate = new Date(classToJoin.date)
+      sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+      sunGetDate = sunDate.getDate();
+      sunGetMonth = sunDate.getMonth()+1;
+      sunGetYear = sunDate.getFullYear();
+      weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+      
+      $scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
+
+      setupVidAud()
+
+      classObjRef = $firebaseObject(ref
+        .child("classes")
+        .child(weekOf)
+        .child(DayOfWeekSetter.setDay(classDate.getDay()))
+        .child("slots")
+        .child(classDate.getTime())
+      )
+
+      userRef = ref.child("bookings")
+      .child(classToJoin.date)
       .child(currentUser._id)
 
-    $scope.numBookedUsers;
-    $scope.bookedUsers;
+      $scope.classToJoin = classToJoin;
 
-    $scope.trainerRatingRounded;
+      $scope.overlay1 = true;
+      $scope.overlay2 = false;
+      $scope.overlay3 = false;
+      $scope.overlay4 = false
+      $scope.tab1 = true;
+      $scope.tab2 = false;
+      $scope.instructorBio = false;
 
-    getBookedUsers(classToJoin);
+      if (!classToJoin) {
+        $location.path('/')
+      }
 
-    classObjRef.$loaded().then(function() {
-      $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
-      classObjRef.$watch(function(e) {
-        getBookedUsers(classObjRef);
-      })
-      setupVidAud()
-    });
+      //Check that using Chrome or Firefox
+      if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
+        // The client does not support WebRTC.
+        var modalInstance = $uibModal.open({
+          animation: true,
+          backdrop: "static",
+          keyboard: false,
+          templateUrl: 'app/video/wrongBrowser.html',
+          controller: 'WrongBrowserCtrl',
+        });
 
-    $scope.$on("$destroy", function() { // destroys the session when navigate away
-      console.log("Disconnecting session because navigated away.")
-      session.disconnect()
-      publisher.destroy();
-      // session.destroy();
-    });
+        modalInstance.result.then(function (selectedItem) {
+        }, function () {
+        });
+      }
+      
+      $scope.phrase = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]
+
+      // $scope.instructor = classToJoin.trainer
+      // $scope.instructorPicUrl = $scope.instructor.picture
+
+      //Network Test
+      if (currentUser._id != classToJoin.trainer._id) {
+        $scope.networkTestCountdown = timeoutMs + 6000
+        $scope.testingNetwork = true;
+        $timeout(function() {
+          console.log("Prevented standstill at loading screen.")
+          $scope.testingNetwork = false;
+        }, $scope.networkTestCountdown)
+
+        conductInternetTest(classToJoin.sessionId);
+      }
+
+
+
+      $scope.numBookedUsers;
+      $scope.bookedUsers;
+
+      $scope.trainerRatingRounded;
+
+      getBookedUsers(classToJoin);
+
+      classObjRef.$loaded().then(function() {
+        $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
+        // classObjRef.$watch(function(e) {
+        //   getBookedUsers(classObjRef);
+        // })
+      });
+
+      checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
+
+      $scope.$on("$destroy", function() { // destroys the session when navigate away
+        console.log("Disconnecting session because navigated away.")
+        if (session) session.disconnect()
+        if (publisher) publisher.destroy();
+        // session.destroy();
+        if (checkTimeInterval) clearInterval(checkTimeInterval)
+        $interval.cancel(checkTimeInterval);
+        if (intervalId) window.clearInterval(intervalId);
+      });
+    }
+    
 
     // $scope.audioInputDevices;
     // $scope.videoInputDevices;
@@ -142,56 +199,65 @@ angular.module('bodyAppApp')
     //   }
     // });
 
-    function setVideoInput(videoInput) {
-      Video.setVideoInput(videoInput);
-    }
+    // function setVideoInput(videoInput) {
+    //   Video.setVideoInput(videoInput);
+    // }
 
-    function setAudioInput(audioInput) {
-      Video.setAudioInput(audioInput);
-    }
+    // function setAudioInput(audioInput) {
+    //   Video.setAudioInput(audioInput);
+    // }
 
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];
-      if (classJoined.bookedUsers) {
-        $scope.numBookedUsers = Object.keys(classJoined.bookedUsers).length  
 
-        for (var bookedUser in classJoined.bookedUsers) {
-          if (bookedUser) {
-            //Adds security where injuries aren't available unless current user is admin or instructor.
-            if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
-              User.getInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-                if (data.injuries) {
-                  var userToAdd = classJoined.bookedUsers[bookedUser]
-                  userToAdd.injuries = data.injuries
-                  $scope.bookedUsers.push(userToAdd);
-                  if(!$scope.$$phase) $scope.$apply();  
-                } else {
-                  $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);    
-                  if(!$scope.$$phase) $scope.$apply();  
-                }
-              }).catch(function(err) {
-                $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
-                console.log(err);
-              })
-            } else {
-              $scope.bookedUsers.push(classJoined.bookedUsers[bookedUser]);
-              if(!$scope.$$phase) $scope.$apply();  
-            }    
+      var bookedUsersRef = ref.child("bookings").child(classToJoin.date);
+
+      bookedUsersRef.on('value', function(snapshot) {
+        var bookedUsersReturned = snapshot.val();
+        if (snapshot.exists()) {
+          $scope.numBookedUsers = Object.keys(snapshot.val()).length;
+          $scope.bookedUsers = {};
+          for (var bookedUser in snapshot.val()) {
+            if (bookedUser) {
+            $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
+              // Adds security where injuries aren't available unless current user is admin or instructor.
+              if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
+                // console.log(bookedUser)
+                var something = User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+                  if (data.injuries && data.profile) {
+                    // console.log(userToAdd)
+                    // console.log(data)
+                    // var userToAdd = data.profile;
+                    if ($scope.bookedUsers[data.profile.facebookId]) $scope.bookedUsers[data.profile.facebookId].injuries = data.injuries;
+                    // userToAdd.injuries = data.injuries
+                    // if (data.profile && data.profile.facebookId) $scope.bookedUsers[data.profile.facebookId] = userToAdd;
+                    // console.log($scope.bookedUsers);
+                    if(!$scope.$$phase) $scope.$apply();  
+                  } 
+                  // else {
+                  //   // if (data.profile && data.profile.facebookId) $scope.bookedUsers[data.profile.facebookId] = data.profile;
+                  //   console.log($scope.bookedUsers)
+                  //   if(!$scope.$$phase) $scope.$apply();  
+                  // }
+                }).catch(function(err) {
+                  // $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
+                  // console.log($scope.bookedUsers)
+                  console.log(err);
+                })
+              } 
+              // else {
+              //   $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
+
+              //   if(!$scope.$$phase) $scope.$apply();  
+              // }    
+            }
           }
         }
-      }
+      })
     }
-    
-  	$scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
-  	// $scope.trainer = "Mendelson";
-  	// $scope.joinClassActive = false;
-
-  	var checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
-    $scope.$on('$destroy', function() {
-      $interval.cancel(checkTimeInterval);      
-    });
 
   	function checkTime() {
+      if (!classToJoin) $location.path('/');
   		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
   		// $scope.$apply();
   		// if ($scope.minutesUntilClass <= 0) {
@@ -202,10 +268,10 @@ angular.module('bodyAppApp')
 
     $scope.navigateToVideo = function() {
       if (currentUser._id === classToJoin.trainer._id) {
-        clearInterval(checkTimeInterval)
+        if (checkTimeInterval) clearInterval(checkTimeInterval)
         $location.path('/trainervideo')
       } else {
-        clearInterval(checkTimeInterval)
+        if (checkTimeInterval) clearInterval(checkTimeInterval)
         $location.path('/consumervideo')
       }
     }
@@ -264,24 +330,49 @@ angular.module('bodyAppApp')
       performQualityTest({subscriber: subscriber, timeout: TEST_TIMEOUT_MS}, function(error, results) {
         console.log('Test concluded', results);
 
-        var audioVideoSupported = results.video.bitsPerSecond > 300000 &&
-          results.video.packetLossRatioPerSecond < 0.03 &&
-          results.audio.bitsPerSecond > 25000 &&
-          results.audio.packetLossRatioPerSecond < 0.05;
-
-        userRef.child("passedNetworkTest").push({time: new Date().getTime(), results: results})
+        var audioVideoSupported = results.video.bitsPerSecond > networkBitsThreshold &&
+          results.video.packetLossRatioPerSecond < networkDroppedPackets
+          // results.audio.bitsPerSecond > 25000 &&
+          // results.audio.packetLossRatioPerSecond < 0.05;
 
         session.disconnect()
         publisher.disconnect();
         publisher.destroy();
 
         if (audioVideoSupported) {
+          console.log("Passed network test")
           $scope.testingNetwork = false;
+          if(!$scope.$$phase) $scope.$apply();  
+          userRef.child("passedNetworkTest").push({time: new Date().getTime(), results: results})  
           // test.testSuccess = true;
           return callback(false, {
             text: 'You\'re all set!',
             icon: 'assets/icon_tick.svg'
           });
+        } else {
+          userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats})
+          console.log("Your internet connection is too slow.")
+          var modalInstance = $uibModal.open({
+            animation: true,
+            // backdrop: "static",
+            // keyboard: false,
+            templateUrl: 'app/video/badInternet.html',
+            controller: 'BadInternetCtrl',
+            windowClass: "modal-tall",
+            resolve: {
+              classToJoin: function() {
+                return classToJoin
+              },
+              currentUser: function() {
+                return currentUser
+              }
+            }
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+          }, function () {
+          });
+          return false;
         }
 
         // if (results.audio.packetLossRatioPerSecond < 0.05) {
@@ -361,11 +452,19 @@ angular.module('bodyAppApp')
         if (error) {
           var modalInstance = $uibModal.open({
             animation: true,
-            backdrop: "static",
-            keyboard: false,
+            // backdrop: "static",
+            // keyboard: false,
             templateUrl: 'app/video/badInternet.html',
             controller: 'BadInternetCtrl',
-            windowClass: "modal-tall"
+            windowClass: "modal-tall",
+            resolve: {
+              classToJoin: function() {
+                return classToJoin
+              },
+              currentUser: function() {
+                return currentUser
+              }
+            }
           });
 
           modalInstance.result.then(function (selectedItem) {
@@ -479,7 +578,6 @@ angular.module('bodyAppApp')
     }
 
     function bandwidthCalculatorObj(config) {
-      var intervalId;
 
       config.pollingInterval = config.pollingInterval || 500;
       config.windowSize = config.windowSize || 2000;
@@ -557,7 +655,8 @@ angular.module('bodyAppApp')
       window.setTimeout(cleanupAndReport, config.timeout);
 
       bandwidthCalculator.start(function(stats) {
-        if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
+        if (stats.video.bitsPerSecond < networkBitsThreshold || stats.video.packetLossRatioPerSecond > networkDroppedPackets) { //Made much less stringent for this iteration.
+        // if (stats.video.bitsPerSecond < 250000 || stats.video.packetLossRatioPerSecond > 0.05) {
           window.clearTimeout(testTimeout);
           bandwidthCalculator.stop();
           session.disconnect()
@@ -573,11 +672,19 @@ angular.module('bodyAppApp')
           // alert("Your internet connection is too low quality to participate in BODY classes.  Please improve your connection and try joining this class again.")
           var modalInstance = $uibModal.open({
             animation: true,
-            backdrop: "static",
-            keyboard: false,
+            // backdrop: "static",
+            // keyboard: false,
             templateUrl: 'app/video/badInternet.html',
             controller: 'BadInternetCtrl',
-            windowClass: "modal-tall"
+            windowClass: "modal-tall",
+            resolve: {
+              classToJoin: function() {
+                return classToJoin
+              },
+              currentUser: function() {
+                return currentUser
+              }
+            }
           });
 
           modalInstance.result.then(function (selectedItem) {
@@ -591,6 +698,14 @@ angular.module('bodyAppApp')
         currentStats = stats;
       });
     }  
+
+    $scope.auditClass = function() {
+      $scope.auditingClass = Schedule.auditClass()
+    }
+
+    $scope.cancelAuditClass = function() {
+      $scope.auditingClass = Schedule.cancelAuditClass()
+    }
 
     // load cookie, or start new tour
     // $scope.currentStep = 0;
@@ -611,4 +726,24 @@ angular.module('bodyAppApp')
     //     $scope.currentStep = 0
     //   // ipCookie('dashboardTour', $scope.currentStep, { expires: 3000 });
     // };
+
+    //**********SCROLLING MAGIC*************
+
+      
+        // $(window).scroll(function(e){
+        //   var topBar = $('#topBar').height();
+          
+        //   var $el = $('.fixedAtTop'); 
+        //   var isPositionFixed = ($el.css('position') == 'fixed');
+        //   if ($(this).scrollTop() > topBar/2 && !isPositionFixed){ 
+        //     $('.fixedAtTop').css({'position': 'fixed', 'top': 0, 'width':'100vh', "z-index": '1000' }); 
+        //     $('.pageContent').css({'padding-top': topBar}); 
+        //   }
+        //   if ($(this).scrollTop() < topBar/2 && isPositionFixed){
+        //     $('.fixedAtTop').css({'position': 'static', 'top': 0, 'width':'100vh'}); 
+        //     // $('.pageContent').css({'position': 'static', 'top': topBar/2, 'width':'100%'}); 
+        //     $('.pageContent').css({'padding-top': 0}); 
+        //   } 
+        // });
+      
   })

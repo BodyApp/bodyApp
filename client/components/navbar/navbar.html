@@ -11,7 +11,8 @@
                     </a>
                 </div>
                 <div class="module widget-handle mobile-toggle right visible-sm visible-xs" ng-click = "checkClickCorrect()">
-                    <i class="ti-menu"></i>
+                    <!-- <i class="ti-menu-alt loggedinHamburger"></i> -->
+                    <a style = "line-height: 55px !important;">&#9776;</a>
                 </div>                
                 <div id="tour-results" class="module-group right" ng-show = "clicked">
                     <div class="module left">
@@ -19,24 +20,29 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow && getCurrentUser().stripe.subscription.status !== 'active'">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().stripe.subscription.status !== 'active'">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                               </p>
                             </li>                    
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/schedule">Dashboard</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/results')}">
                                 <a href="/results">Results</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow" ng-class="{active: isActive('/settings')}">
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
+                              <p ng-class="{active: isActive('/results')}">
+                                <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
+                              </p>
+                            </li>
+                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
-                                Hi {{getCurrentUser().nickName}}
+                                Hi {{getCurrentUser().firstName}}
                               </a>
                             </li>
                             <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
@@ -57,24 +63,29 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow && getCurrentUser().stripe.subscription.status !== 'active'">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().stripe.subscription.status !== 'active'">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                           </p>
                         </li>                    
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/schedule">Dashboard</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/results')}">
                             <a href="/results">Results</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && getCurrentUser().completedNewUserFlow" ng-class="{active: isActive('/settings')}">
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
+                          <p ng-class="{active: isActive('/results')}">
+                            <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
+                          </p>
+                        </li>
+                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                           <a href="/settings">
-                            <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().nickName}}
+                            <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                           </a>
                         </li>
                         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">

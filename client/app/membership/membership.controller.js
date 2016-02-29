@@ -2,7 +2,9 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, Auth, slot, User) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User) {
+
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
     $scope.closeModal = function() {
       $uibModalInstance.close()
@@ -60,28 +62,53 @@ angular.module('bodyAppApp')
 
 	  var currentUser = Auth.getCurrentUser();
 
-		$scope.joinClicked = function() {
-			$uibModalInstance.dismiss('join');
-			openStripePayment()
+		$scope.joinClicked = function(couponEntered) {
+      if (!couponEntered) {
+  			openStripePayment()
+      } else {
+        User.checkCoupon({ id: currentUser._id }, {
+          couponString: couponEntered
+        }, function(coupon) {
+          if (coupon.valid) {
+            openStripePayment(coupon)
+          } else {
+            $scope.invalidCouponEntered = true;
+          }
+        }, function(err) {
+            console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
+        }).$promise
+      }
 		}
 
-		function openStripePayment() {
+		function openStripePayment(coupon) {
+      var amountToPay = 2000;
+      $scope.invalidCouponEntered = false;
+      $uibModalInstance.dismiss('join');
+      
+      if (coupon && coupon.valid) {
+        amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+      }
+      // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
+      // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
       var handler = StripeCheckout.configure({
         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
         image: '../../assets/images/body-stripe.jpg',
         locale: 'auto',
         token: function(token, args) {
           var modalInstance = openPaymentConfirmedModal()
+          
           $http.post('/api/users/charge', {
             user: currentUser,
             stripeToken: token,
             shippingAddress: args,
+            coupon: coupon
           })
           .success(function(data) {
               console.log("Successfully posted to /user/charge");
-              Auth.updateUser(data)
-              currentUser = data
-              $scope.currentUser = currentUser
+              Auth.updateUser(data);
+              currentUser = data;
+              $scope.currentUser = currentUser;
+              $rootScope.subscriptionActive = true;
               // modalInstance.close() //Added an x to the modal, so can close that way
               if (slot) bookClass(slot)  
           })
@@ -98,42 +125,42 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: '$10/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: 1000
+            // amount: amountToPay
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: '$10/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabelpanelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
-            amount: 1000
+            // amount: amountToPay
           });
         }
       } else {
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: '$10/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: 1000
+            // amount: amountToPay
           });    
         } else {
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: '$10/mo Pilot Price!',
-            panelLabel: "Pay {{amount}} / Month",
+            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
-            amount: 1000
+            // amount: amountToPay
           });
         }
       }
@@ -175,17 +202,22 @@ angular.module('bodyAppApp')
         classToAdd: slot.date
       }, function(user) {
         // getInfo(slot.date);
-        slot.bookedUsers = slot.bookedUsers || {};
+        ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+        ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
+        // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId})           
+        // slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-        slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+        // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
         // slot.bookedFbUserIds[currentUser.facebook.id] = true
         // slot.$save();
         currentUser = user;
         $scope.currentUser = currentUser;
       }, function(err) {
           console.log("Error adding class: " + err)
-          slot.bookedUsers = slot.bookedUsers || {};
-          delete slot.bookedUsers[currentUser._id];
+          ref.child("bookings").child(slot.date).child(currentUser._id).remove()
+          ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+          // slot.bookedUsers = slot.bookedUsers || {};
+          // delete slot.bookedUsers[currentUser._id];
           // delete slot.bookedFbUserIds[currentUser.facebook.id];
           alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
       }).$promise;

@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 			return $location.path('/') //Go to the home page (index)
 		}
 
-		$scope.classTime = classToJoin.date; //trainer_video:180 - Timer is set to the class to join date.
+		$scope.classTime = new Date(); //trainer_video:180 - Timer is set to the class to join date.
 		$scope.trainer = classToJoin.trainer;
 
 		var session;
@@ -50,6 +50,8 @@ angular.module('bodyAppApp')
 		var maxCALLERS = 10;
 		var connectionCount = 0;
 		var previousConsumerClicked;
+
+		var trainerListeningToEverybody = false;
 		
 		var publisher;
 
@@ -59,7 +61,7 @@ angular.module('bodyAppApp')
 		if (!userIsInstructor) {
 			$scope.consumerList.push(currentUser._id);
 			$scope.consumerObjects[currentUser._id] = currentUser;
-		}
+		} 
 
 		var audioPlayer;
 		$scope.musicVolume = 50;
@@ -75,8 +77,13 @@ angular.module('bodyAppApp')
     var sunGetYear = sunDate.getFullYear();
     var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
+
+    var bookedUsers = {};
+    ref.child("bookings").child(classToJoin.date).on('child_added', function(snapshot) {
+    	bookedUsers = snapshot.val()
+    })
     
-    setTabataOptions()
+    if (userIsInstructor) setTabataOptions()
 
     // $scope.tabata = $firebaseObject(
     // 	ref.child(weekOf)
@@ -88,9 +95,7 @@ angular.module('bodyAppApp')
 		//3-way data bind for tabata time and rounds
 		var dayOfWeek = DayOfWeekSetter.setDay(classDate.getDay())
 
-    $firebaseObject(ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    $firebaseObject(ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
       	if (userIsInstructor) {
@@ -129,22 +134,20 @@ angular.module('bodyAppApp')
       })
 
     var stopwatchRef = $firebaseObject(
-    	ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    	ref.child("realTimeControls")
       .child(classDate.getTime())
-      .child("stopwatch")
-      .child("running"));
+      .child("stopwatch"));
   	
   	stopwatchRef.$watch(function() {
-  		if (stopwatchRef.$value) {
+  		if (stopwatchRef.running > stopwatchRef.stopped) {
   			document.getElementById('stopwatch').stop();
   			document.getElementById('stopwatch').reset();
-  			$scope.stopwatchStartTime = stopwatchRef.$value
+  			$scope.stopwatchStartTime = stopwatchRef.running
   			document.getElementById('stopwatch').start();
   		} else {
   			document.getElementById('stopwatch').stop();
   			document.getElementById('stopwatch').reset();
+  			$scope.stopwatchStartTime = new Date().getTime()
   		}
   	})
 
@@ -159,18 +162,19 @@ angular.module('bodyAppApp')
 
     // console.log(tabataIsOnRef);
 
-    $scope.consumersCanHearEachOther;
+    $scope.consumersCanHearEachOther = false;
 
     var canHearRef = $firebaseObject(
-    	ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    	ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("consumersCanHearEachOther"));
 
-    var feedbackModal = ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+    if (userIsInstructor) {
+    	canHearRef.$value = false;
+			canHearRef.$save()
+    }
+
+    var feedbackModal = ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("feedbackModal")
 
@@ -193,11 +197,14 @@ angular.module('bodyAppApp')
       });
 
     var volumeRef = $firebaseObject(
-      ref.child("classes").child(weekOf)
-      .child(dayOfWeek)
-      .child("slots")
+      ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("musicVolume"));
+
+    if (userIsInstructor) {
+    	volumeRef.$value = 50;
+    	volumeRef.$save()
+    }
 
 		volumeRef.$loaded().then(function() {
 			$scope.musicVolume = volumeRef.$value
@@ -264,52 +271,54 @@ angular.module('bodyAppApp')
 		//   })
 		// }
 
-		if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
-			var element = document.getElementById('audioPlayer')
-			audioPlayer = SC.Widget(element);
-			audioPlayer.load(classToJoin.playlist.soundcloudUrl);
+		ref.child("playlists").child(classToJoin.playlist).once('value', function(snapshot) {
+			if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
+				var element = document.getElementById('audioPlayer')
+				audioPlayer = SC.Widget(element);
+				audioPlayer.load(snapshot.val().soundcloudUrl);
 
-			audioPlayer.bind(SC.Widget.Events.READY, function() {
-				if (firstTimePlayingSong) {
-					elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
-					
-					setMusicVolume($scope.musicVolume);
+				audioPlayer.bind(SC.Widget.Events.READY, function() {
+					if (firstTimePlayingSong) {
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+						
+						setMusicVolume($scope.musicVolume);
 
-					audioPlayer.getSounds(function(soundArray) {
-						songArray = soundArray		
-						for (var i = 0; i < soundArray.length; i++) {
-							if (elapsedTime > soundsLength + soundArray[i].duration) {
-								soundsLength += soundArray[i].duration;
-								audioPlayer.next();
-							} else {
-								console.log("seeking to track " + (i+1));
-								currentSongIndex = i;			
-								return audioPlayer.play()
-							}
-						}	
-					})
-				}
-			})		
+						audioPlayer.getSounds(function(soundArray) {
+							songArray = soundArray		
+							for (var i = 0; i < soundArray.length; i++) {
+								if (elapsedTime > soundsLength + soundArray[i].duration) {
+									soundsLength += soundArray[i].duration;
+									if (audioPlayer) audioPlayer.next();
+								} else {
+									console.log("seeking to track " + (i+1));
+									currentSongIndex = i;			
+									return audioPlayer.play()
+								}
+							}	
+						})
+					}
+				})		
 
-			audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-				if (!firstTimePlayingSong && songArray.length > 0) {
-					currentSongIndex++
-					$scope.currentSong = songArray[currentSongIndex];
-					if(!$scope.$$phase) $scope.$apply();
-				}
-				if (firstTimePlayingSong) {
-					elapsedTime = new Date().getTime() - classToJoin.date
-					var seekingTo = elapsedTime - soundsLength
-					audioPlayer.seekTo(seekingTo);
-					console.log("seeking to position " + seekingTo);
-					$scope.currentSong = songArray[currentSongIndex];
-					if(!$scope.$$phase) $scope.$apply();
-					firstTimePlayingSong = false;
-				} 
-			});
-		} else {
-			alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
-		}
+				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+					if (!firstTimePlayingSong && songArray.length > 0) {
+						currentSongIndex++
+						$scope.currentSong = songArray[currentSongIndex];
+						if(!$scope.$$phase) $scope.$apply();
+					}
+					if (firstTimePlayingSong) {
+						elapsedTime = new Date().getTime() - classToJoin.date
+						var seekingTo = elapsedTime - soundsLength
+						if (audioPlayer) audioPlayer.seekTo(seekingTo);
+						console.log("seeking to position " + seekingTo);
+						$scope.currentSong = songArray[currentSongIndex];
+						if(!$scope.$$phase) $scope.$apply();
+						firstTimePlayingSong = false;
+					} 
+				});
+			} else {
+				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+			}
+		})
 
 		var wodRef = ref.child("WODs").child(classKey)
 		wodRef.once('value', function(snapshot) {
@@ -390,6 +399,7 @@ angular.module('bodyAppApp')
 		}
 
 		function setMusicVolume(musicVolume) {
+			if (!audioPlayer) return;
 			console.log("Volume percentage changed to " + musicVolume)
 			if (userIsInstructor) {
 				audioPlayer.setVolume(0);
@@ -473,19 +483,32 @@ angular.module('bodyAppApp')
 				var vidHeight;
 				// var vidHeight = 70;
 
-				var streamId = event.stream.connection.data.toString()
+				var streamId = event.stream.connection.data.toString();
 				var streamBoxNumber = 1
 
 				if (streamId === classToJoin.trainer._id.toString()) {
+					console.log("Received trainer stream")
 					instructorStream = true
 					vidWidth = "100%";
 				} else {
 					vidHeight = 70;
-					if (!$scope.consumerObjects[streamId]) {
-						$scope.consumerList.push(streamId);
+					if (!$scope.consumerObjects[streamId]) { //check if the ID is already in consumerList array
+						$scope.consumerList.push(streamId); //Add to consumerListArray if this ID hasn't been seen before
 						streamBoxNumber = $scope.consumerList.length;
 					} else {
 						streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
+					}
+					//If user is in the bookedUsers object.  This should happen 100% of the time, but have the if/else just in case.  May have issue if pull from Firebase hasn't finished yet.
+					if (bookedUsers && bookedUsers[streamId]) {
+						$scope.consumerObjects[streamId] = bookedUsers[streamId]
+          	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+          	if(!$scope.$$phase) $scope.$apply();
+					} else {
+						var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
+            	$scope.consumerObjects[streamId] = data;
+            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+            	if(!$scope.$$phase) $scope.$apply();
+            })
 					}
 				}
 
@@ -507,9 +530,16 @@ angular.module('bodyAppApp')
 			  		console.log(err)
 			  	} else {
 			  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-				  	console.log("Received stream");
+				  	console.log("Received stream with streamId " +streamId);
+				  	console.log(subscriber);
 
-				  	SpeakerDetection(subscriber, function() {
+				  	if (!instructorStream) {
+							if (!subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
+							if (subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
+							subscriberObjects[streamId] = subscriber; //Add subscriber to subscriberObjects (used to turn audio on/off)				
+						}
+
+				  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
 						  console.log('started talking');
 						  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
 						  setMusicVolume($scope.musicVolume/2.5)
@@ -520,36 +550,39 @@ angular.module('bodyAppApp')
 						});
 
 				  	if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
-				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer
-				  	} else {
-				  		subscriber.subscribeToAudio(true); // Audio on in any other case
 				  		subscriber.setAudioVolume(100);
+				  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
+				  	} else {
+				  		subscriber.setAudioVolume(100);
+				  		subscriber.subscribeToAudio(true); // Audio on in any other case
 				  	}
 
 				  	// console.log(subscriber.getStats())
 
-				  	//Need to check if this user is already in the consumerList or not
-						if (!instructorStream) {
-							if (classToJoin.bookedusers && classToJoin.bookedUsers[streamId]) {
+				  	//Need to check if this user is already in the consumerList or not.  This whole thing seems broken, need to fix
+						// if (!instructorStream) {
+						// 	subscriberObjects[streamId] = subscriber;
+							// if (bookedUsers && bookedUsers[streamId]) {
 								// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
-								subscriberObjects[streamId] = subscriber;
-								$scope.consumerObjects[streamId] = classToJoin.bookedUsers[streamId]
-	            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-	            	if(!$scope.$$phase) $scope.$apply();
-							} else {
-						  	var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
+								// subscriberObjects[streamId] = subscriber;
+								// $scope.consumerObjects[streamId] = bookedUsers[streamId]
+	            	// $scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+	            	// if(!$scope.$$phase) $scope.$apply();
+							// } else {
+						  	// var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
 						  		// if (!$scope.consumerObjects[streamId]) subscriberArray.push(subscriber);
-						  		subscriberObjects[streamId] = subscriber;
-		            	$scope.consumerObjects[streamId] = data;
-		            	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-		            	if(!$scope.$$phase) $scope.$apply();
-		            })
-		          }
-						} else {
-							User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
-	            	instructorInfo = data;
-	            })
-						}
+						  		// subscriberObjects[streamId] = subscriber;
+		            // 	$scope.consumerObjects[streamId] = data;
+		            // 	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
+		            // 	if(!$scope.$$phase) $scope.$apply();
+		            // })
+		          // }
+						// } 
+						// else {
+						// 	User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
+	     //        	instructorInfo = data;
+	     //        })
+						// }
 
 						if (userIsInstructor) {
 							subscriber.setStyle("nameDisplayMode", "on");
@@ -561,12 +594,14 @@ angular.module('bodyAppApp')
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
 				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
+				  		console.log("Video temporarily disabled due to internet quality being low.")
 						  // Set picture overlay
 						  // domElement = document.getElementById(subscriber.id);
 						  // domElement.style["visibility"] = "hidden";
 						});
 
 						subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
+							console.log("Video re-enabled due to internet quality being high enough.")
 							// Remove picture overlay
 						  // domElement = document.getElementById(subscriber.id);
 						  // domElement.style["visibility"] = "visible";
@@ -614,7 +649,7 @@ angular.module('bodyAppApp')
 			});
 
   		var publish = function() {
-			  if (connected && publisherInitialized) {
+			  if (connected && publisherInitialized && !Schedule.auditingClass) {
 			    session.publish(publisher, function(err) {
 					  if(err) {
 					  	console.log(err);
@@ -670,6 +705,42 @@ angular.module('bodyAppApp')
 				var audioInputDevice = Video.getAudioInput().deviceId;
 				var videoInputDevice = Video.getVideoInput().deviceId;
 
+				//Prevents accidentally not having an audio device
+				if (!audioInputDevice) {
+					OT.getDevices(function(error, devices) {
+						if (devices) {
+						  var audioInputDevices = devices.filter(function(element) {
+						    return element.kind == "audioInput";
+						  });
+						  audioInputDevice = audioInputDevices[0];
+						  // for (var i = 0; i < audioInputDevices.length; i++) {
+						  //   console.log("audio input device: ", audioInputDevices[i].deviceId);
+						  // }
+						} else {
+							console.log("No devices discovered " + err)
+						}
+					});
+				}
+
+				//Prevents accidentally not having a video device
+				if (!videoInputDevice) {
+					OT.getDevices(function(error, devices) {
+						if (devices) {
+						  var videoInputDevices = devices.filter(function(element) {
+						    return element.kind == "videoInput";
+						  });
+						  videoInputDevice = videoInputDevices[0];
+						  for (i = 0; i < videoInputDevices.length; i++) {
+						    console.log("video input device: ", videoInputDevices[i].deviceId);
+						  }
+						} else {
+							console.log("No devices discovered " + err)
+						}
+					});
+				}
+
+				console.log(audioInputDevice)
+
 				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
 		      insertMode: 'replace',
 		      audioSource: audioInputDevice, 
@@ -708,19 +779,16 @@ angular.module('bodyAppApp')
 		    	// console.log(event)
 				    console.log('The publisher started streaming with id ' + event.stream.id);
 
-				    var classRef = ref.child("classes").child(weekOf)
-			      .child(dayOfWeek)
-			      .child("slots")
-			      .child(classDate.getTime())
+				    // var classRef = ref.child("classes").child(weekOf)
+			     //  .child(dayOfWeek)
+			     //  .child("slots")
+			     //  .child(classDate.getTime())
 				    
 				    //Sets Stream IDs in the class object for easier diagnosis of tokbox stream issues
 				    if (userIsInstructor) {
-				    	classRef.child("trainer")
-				    	.update({tokboxStreamId: event.stream.id})
+				    	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.date).update({tokboxStreamId: event.stream.id})
 				    } else {
-				    	classRef.child("bookedUsers")
-				    	.child(currentUser._id)
-				    	.update({tokboxStreamId: event.stream.id})
+				    	ref.child("bookings").child(classToJoin.date).child(currentUser._id).update({tokboxStreamId: event.stream.id})
 				    }
 				});
 
@@ -806,12 +874,23 @@ angular.module('bodyAppApp')
 			$scope.hover15 = false;
 
 			if (consumerId) { // Won't do anything if trainer clicks his/her own video
+				if (trainerListeningToEverybody) {
+					trainerListeningToEverybody = false;
+					for (var subscriber in subscriberObjects) {
+						subscriberObjects[subscriber].subscribeToAudio(false);
+						console.log("Unsubscribing from audio of user "+subscriberObjects[subscriber].stream.connection.data.toString())
+						console.log("with stream id of "+subscriberObjects[subscriber].streamId)
+					}
+				}
 				if (!$scope.consumersCanHearEachOther) {
-					console.log("subscribing to audio from "+subscriberObjects[consumerId].streamId)
+					console.log("subscribing to audio from user "+subscriberObjects[consumerId].stream.connection.data.toString())
+					console.log("with stream id of "+subscriberObjects[consumerId].streamId)
 					subscriberObjects[consumerId].subscribeToAudio(true)
+					subscriberObjects[consumerId].setAudioVolume(100);
 					
 					if (previousConsumerClicked && previousConsumerClicked != consumerId) { //Prevents issue first time click a consumer
-						console.log("Unsubscribing from audio stream "+subscriberObjects[previousConsumerClicked].streamId)
+						console.log("Unsubscribing from audio of user "+subscriberObjects[previousConsumerClicked].stream.connection.data.toString())
+						console.log("with stream id of "+subscriberObjects[previousConsumerClicked].streamId)
 						subscriberObjects[previousConsumerClicked].subscribeToAudio(false)
 					} 
 					
@@ -825,7 +904,13 @@ angular.module('bodyAppApp')
 					// }
 				}
 			} else { //If trainer clicks on himself
-				
+				for (var subscriber in subscriberObjects) {
+					subscriberObjects[subscriber].subscribeToAudio(true);
+					subscriberObjects[subscriber].setAudioVolume(100);
+					console.log("subscribing to audio from user "+subscriberObjects[subscriber].stream.connection.data.toString())
+					console.log("with stream id "+subscriberObjects[subscriber].streamId)
+				}
+				trainerListeningToEverybody = true;
 			}
 			// subscriberObjects[consumerId].subscribeToAudio(true)
 
@@ -991,14 +1076,14 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.startStopwatch = function() {
-			stopwatchRef.$value = new Date().getTime();
+			stopwatchRef.running = new Date().getTime();
 			stopwatchRef.$save();
 
 			// document.getElementById('stopwatch').start();
 		}
 
 		$scope.stopStopwatch = function() {
-			stopwatchRef.$value = false;
+			stopwatchRef.stopped = new Date().getTime();
 			stopwatchRef.$save();
 			// document.getElementById('stopwatch').stop();
 			// document.getElementById('stopwatch').reset();

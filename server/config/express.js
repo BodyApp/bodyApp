@@ -18,6 +18,7 @@ var passport = require('passport');
 var session = require('express-session');
 var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
+var helmet = require('helmet')
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -32,6 +33,7 @@ module.exports = function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
+  app.use(helmet()) //Sets various HTTP headers for increased security
 
   //Allow Javascript website to be crawled perfectly by search engines.
   app.use(require('prerender-node').set('prerenderToken', '0xk2UugZ3MhosEzMYK0rg'));

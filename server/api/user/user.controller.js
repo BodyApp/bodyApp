@@ -17,6 +17,10 @@ var api_key = config.mailgunApiKey;
 var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
 
+var Firebase = require('firebase');
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
+
   // console.log(__dirname)
 
 // var welcomeEmailHtml = require('../emails/welcomeEmail')
@@ -111,35 +115,45 @@ exports.saveEmail = function (req, res, next) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  var newUser = new User(req.body);
-  newUser.provider = 'local';
-  newUser.role = 'user';
+  console.log(req.body)
+  User.findOne({
+    email: req.body.email.toLowerCase()
+  },
+  function(err, user) {
+    if (err) {
+      return done(err);
+    }
+    if (!user) {
+      var newUser = new User(req.body);
+      newUser.provider = 'local';
+      newUser.role = 'user';
+      newUser.level = newUser.level || 0;
 
-  // function stripeCallback(err){
-  //   if (err) return next(err);
-  //   next();
-  // }
+      var firebaseToken = tokenGenerator.createToken({ uid: "local", mdbId: newUser._id, role: newUser.role, firstName: newUser.firstName, lastName: newUser.lastName.charAt(0), gender: newUser.gender })
+      newUser.firebaseToken = firebaseToken;
+      newUser.lastLoginDate = newUser.signUpDate;
+      newUser.signUpDate = new Date();
+      newUser.picture = newUser.gender === 'male' ? 'https://www.getbodyapp.com/assets/images/big-guy-overlay.png' : 'https://www.getbodyapp.com/assets/images/icons/fit-girl.png';
 
-  if(!newUser.isNew || newUser.stripe.customerId) return next();
-  newUser.createCustomer(function(err){
-    if (err) return next(err);
-    next();
-  });
-  
-  // stripe.customers.create({
-  //   email: user.email
-  //   }, function(err, customer){
-  //     if (err) return stripeCallback(err);
+      newUser.save(function(err, user) {
+        if (err) return validationError(res, err);
+        var ref = new Firebase("https://bodyapp.firebaseio.com/");
+        ref.authWithCustomToken(firebaseToken, function(error, authData) {
+          if (error) {
+            console.log("Firebase authentication failed", error);
+          } else {
+            console.log("Firebase authentication succeeded!", authData);
+          }
+        // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+        }); 
 
-  //     user.stripe.customerId = customer.id;
-  //     return stripeCallback();
-  // });
-
-  newUser.save(function(err, user) {
-    if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    res.json({ token: token });
-  });
+        var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: '5d'});
+        res.json({ token: token });
+      });
+    } else {
+      res.send("That email address is already in use.")
+    }
+  })
 };
 
 /**
@@ -208,10 +222,25 @@ exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
 
+exports.checkCoupon = function(req, res, next){
+  var couponString = req.body.couponString;
+
+  if(!couponString){
+    return console.log("error retrieving coupon code.")
+    res.status(400).send("No coupon sent")
+  }
+
+  stripe.coupons.retrieve(couponString, function(err, coupon) {
+    console.log(coupon)
+    res.status(200).json(coupon);
+  })
+};
+
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;
   var shippingAddress = req.body.shippingAddress;
+  var coupon = req.body.coupon;
 
   if(!stripeToken){
     return console.log("error retrieving stripe token.")
@@ -241,9 +270,11 @@ exports.postBilling = function(req, res, next){
     };
 
       var cardHandler = function(err, customer) {
+
         // console.log(third);
         if (err) return cb(err);
-
+        
+        user.level = 1;
         // if (!user.stripe) {
         //   console.log("stripe object created on user")
         //   user.stripe = {};
@@ -276,7 +307,11 @@ exports.postBilling = function(req, res, next){
           user.stripe.subscription.intervalCount = subData.plan.interval_count;
           user.stripe.subscription.liveMode = subData.plan.livemode;    
           user.stripe.subscription.status = subData.status;    
-        }      
+        }
+
+        if (coupon) {
+          user.mostRecentCoupon = coupon.id
+        }
 
         //If going to add card information, have to pull the card information any time update user subscription / card information.  Otherwise, it's incorrect.
       // if (!user.stripe.card) {
@@ -319,13 +354,14 @@ exports.postBilling = function(req, res, next){
         //     { plan: "basicSubscription"},
         //   cardHandler);
         // }
-      } else {     
-        if (user.stripe.customer.customerId) {
+      } else if (coupon) {     
+        if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
           console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "pilotSubscription"
+              plan: "pilot20",
+              coupon: coupon.id
             }, cardHandler
           );
         } else {
@@ -333,8 +369,26 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "pilotSubscription",
-            // coupon: "BODY4AMONTH",
+            plan: "pilot20",
+            coupon: coupon.id,
+            description: "Created subscription during pilot"
+          }, cardHandler);
+        }
+      } else { //No coupon
+        if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+          console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
+          stripe.customers.createSubscription(
+            user.stripe.customer.customerId, {
+              source: stripeToken,
+              plan: "pilot20"
+            }, cardHandler
+          );
+        } else {
+          console.log("Creating new stripe customer and new subscription.")
+          stripe.customers.create({
+            email: user.email,
+            source: stripeToken,
+            plan: "pilot20",
             description: "Created subscription during pilot"
           }, cardHandler);
         }
@@ -451,6 +505,7 @@ exports.addIntroClass = function(req, res, next) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
       user.classesBooked[classToAdd] = true;
+      user.introClassBooked = classToAdd,
       user.bookedIntroClass = true;
       user.completedNewUserFlow = true;
       user.save(function(err) {
@@ -522,9 +577,12 @@ exports.cancelIntroClass = function(req, res, next) {
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.bookedIntroClass = false;
+      user.classesCancelled = user.classesCancelled || {}
+      user.classesCancelled[classToCancel] = new Date().getTime()
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
         if (err) return validationError(res, err);
+        console.log(user.firstName + " " + user.lastName + " just cancelled an intro class at " + classToCancel)
         res.status(200).json(user);
       });
     } 
@@ -538,7 +596,7 @@ exports.takeIntroClass = function(req, res, next) {
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       console.log(user);
-      user.introClassTaken = true
+      user.introClassTaken = true;
       user.classesTaken.push(introClassTaken);
       if (user.classesBooked && user.classesBooked[introClassTaken]) delete user.classesBooked[introClassTaken];
       user.level = 1;
@@ -575,7 +633,7 @@ exports.takeIntroClass = function(req, res, next) {
               console.log("Error sending booking confirmation email to " + emailAddress)
             }
             else {
-              console.log("Sent booking confirmation email to " + emailAddress)
+              console.log("Sent 'intro class taken' email to " + emailAddress)
             }
         });
       }); 
@@ -591,7 +649,7 @@ exports.addBookedClass = function(req, res, next) {
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
-      user.classesBooked[classToAdd.date] = true;
+      user.classesBooked[classToAdd] = new Date().getTime();
       user.save(function(err) {
         if (err) return validationError(res, err);
         sendEmail(user)
@@ -662,6 +720,7 @@ exports.cancelBookedClass = function(req, res, next) {
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
         if (err) return validationError(res, err);
+        console.log(user.firstName + " " + user.lastName + " just cancelled a class at " + classToCancel)
         res.status(200).json(user);
       });
     } 

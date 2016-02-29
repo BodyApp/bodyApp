@@ -2,6 +2,7 @@
 
 angular.module('bodyAppApp')
   .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+    $(window).scrollTop()
   	$scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
@@ -9,15 +10,19 @@ angular.module('bodyAppApp')
     $scope.signUp = function() {
       var modalInstance = $uibModal.open({
         animation: true,
-        templateUrl: 'app/account/login/login.html',
-        controller: 'LoginCtrl',
+        templateUrl: 'app/account/signup/signup.html',
+        controller: 'SignupCtrl',
         windowClass: "modal-tall"
       });
 
       modalInstance.result.then(function (selectedItem) {
-        $window.location.href = '/auth/' + 'facebook';
+        // $window.location.href = '/auth/' + 'facebook';
       }, function () {
       });
+    }
+
+    $scope.scrollDown = function() {
+      document.getElementById('scroll-link').scrollIntoView()
     }
 
     // Auth.isLoggedInAsync(function(loggedIn) {
@@ -32,10 +37,10 @@ angular.module('bodyAppApp')
     //     }
     // });
 
-    // *****************SCROLL DOWN*****************
-    $(".arrow").click(function() {
-        $('html,body').animate({
-            scrollTop: $(".scroll-to").offset().top + -100},
-            600);
-    });
+    // // *****************SCROLL DOWN*****************
+    // $(".arrow").click(function() {
+    //     $('html,body').animate({
+    //         scrollTop: $(".scroll-to").offset().top + -100},
+    //         600);
+    // });
   });

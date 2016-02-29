@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ResultsCtrl', function ($scope, Schedule, Auth, DayOfWeekSetter) {
+  .controller('ResultsCtrl', function ($scope, Schedule, Auth, DayOfWeekSetter, Video) {
     
     $scope.currentUser = Auth.getCurrentUser()
 
@@ -24,12 +24,16 @@ angular.module('bodyAppApp')
     $scope.myClassRank;
     // $scope.myFriendsRank;
 
+    Video.destroyHardwareSetup()
+
     $scope.dayList = [];
     setupDayList();
     // $scope.selectedDate = new Date();     
 
+    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+
     $scope.wods;
-    var wodsRef = new Firebase("https://bodyapp.firebaseio.com/WODs");
+    var wodsRef = ref.child("WODs");
     wodsRef.once('value', function(snapshot) {
       $scope.wods = snapshot.val();  
       $scope.wodToDisplay = $scope.wods[classKey];
@@ -133,20 +137,26 @@ angular.module('bodyAppApp')
 
       classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
 
+      ref.child("resultsByUser").child($scope.currentUser._id).child(classKey).once('value', function(snapshot) {
+        $scope.userResultsToday = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
+      }, function(err) {if (!err) console.log("User results loaded for " + classKey)})  
+
       // $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;
 
-      var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+      // var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
       // var sunDate = new Date();
       // sunDate.setDate(classDate.getDate() - classDate.getDay());
-      var sunGetDate = sunDate.getDate();
-      var sunGetMonth = sunDate.getMonth()+1;
-      var sunGetYear = sunDate.getFullYear();
-      var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
-      var dayRef = weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
+      // var sunGetDate = sunDate.getDate();
+      // var sunGetMonth = sunDate.getMonth()+1;
+      // var sunGetYear = sunDate.getFullYear();
+      // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+      // var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
+      // var dayRef = weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
 
-      dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
-        if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType.id === 1) { 
+      // dayRef.child("resultList").orderByChild("score").once('value', function(snapshot) {  
+      ref.child("resultsByDay").child(classKey).orderByChild("score").once('value', function(snapshot) {  
+        if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType.id === 1) { // If wod is AMRAP
           var i = snapshot.numChildren()
           snapshot.forEach(function(childSnapshot) {
             var val = childSnapshot.val();
@@ -156,12 +166,14 @@ angular.module('bodyAppApp')
             // if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
             if (val.userId === $scope.currentUser._id) {
               $scope.myCommunityRank = val.rank;
-              $scope.userResultsToday = val;
+              if(!$scope.$$phase) $scope.$apply();
+              // $scope.userResultsToday = val;
               // loadClassmates()
             }
           })
           $scope.rankings = communityResultsArray;
-        } else { 
+          if(!$scope.$$phase) $scope.$apply();
+        } else { // If wod is 'for time'
           var i = 1;
           snapshot.forEach(function(childSnapshot) {
             var val = childSnapshot.val();
@@ -171,7 +183,8 @@ angular.module('bodyAppApp')
             // if (val.userId === $scope.currentUser._id && !$scope.myCommunityRank) {
             if (val.userId === $scope.currentUser._id) {
               $scope.myCommunityRank = val.rank;
-              $scope.userResultsToday = val;
+              if(!$scope.$$phase) $scope.$apply();
+              // $scope.userResultsToday = val;
               // loadClassmates()
             }
           })
@@ -183,8 +196,10 @@ angular.module('bodyAppApp')
 
       function loadClassmates() {
         if ($scope.userResultsToday && $scope.userResultsToday.classDateTime) {
-          dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
-            if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType && $scope.wodToDisplay.scoreType.id === 1) { 
+          // dayRef.child('slots').child($scope.userResultsToday.classDateTime).child("classResultsList").orderByChild("score").once('value', function(snapshot) {    
+          ref.child("resultsByClass").child($scope.userResultsToday.classDateTime).orderByChild("score").once('value', function(snapshot) {    
+            //All the work below determines ranking
+            if ($scope.wodToDisplay && $scope.wodToDisplay.scoreType && $scope.wodToDisplay.scoreType.id === 1) { //If wod is AMRAP
               var i = snapshot.numChildren()
               snapshot.forEach(function(childSnapshot) {
                 var val = childSnapshot.val();
@@ -194,9 +209,10 @@ angular.module('bodyAppApp')
                 // if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
                 if (val.userId === $scope.currentUser._id) {
                   $scope.myClassRank = val.rank;
+                  if(!$scope.$$phase) $scope.$apply();
                 }
               })
-            } else { 
+            } else { //If wod is 'for time'
               var i = 1;
               snapshot.forEach(function(childSnapshot) {
                 var val = childSnapshot.val();
@@ -206,6 +222,7 @@ angular.module('bodyAppApp')
                 // if (val.userId === $scope.currentUser._id && !$scope.myClassRank) {
                 if (val.userId === $scope.currentUser._id) {
                   $scope.myClassRank = val.rank;
+                  if(!$scope.$$phase) $scope.$apply();
                 }
               })
             }
