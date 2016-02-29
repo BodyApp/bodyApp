@@ -1041,6 +1041,7 @@ angular.module('bodyAppApp')
 			$scope.tabata.lastSet = new Date().getTime();
 
 			$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1;
+			$scope.tabata.rounds = $scope.tabata.roundsToSet * 1;
 
 			$timeout(function() { 
 				$scope.tabata.isOn = true 
