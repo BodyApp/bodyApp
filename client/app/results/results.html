@@ -4,7 +4,7 @@
 
 <div class="container white-section">
 <section class="mt32">
-	<h1>Workout History</h1>
+	<h1 class="darkblue">Workout History</h1>
 </section>
 
 <section class="col-md-2">
@@ -59,8 +59,8 @@
 
 <section class="col-sm-10 mb16" ng-if = "wodToDisplay">
 	<!-- The workout of the day -->
-	<h2 class = "mb0">{{wodToDisplay.title}}</h2>
-	<h4>{{formattedDayOfWeek(wodToDisplay.dateTime)}} {{formattedMonth(wodToDisplay.dateTime)}} {{fixDate(wodToDisplay.dateTime).getDate()}}, {{fixDate(wodToDisplay.dateTime).getFullYear()}}</h4>
+	<h2 class = "mb0 royalblue">{{wodToDisplay.title}}</h2>
+	<h4 class="gray">{{formattedDayOfWeek(wodToDisplay.dateTime)}} {{formattedMonth(wodToDisplay.dateTime)}} {{fixDate(wodToDisplay.dateTime).getDate()}}, {{fixDate(wodToDisplay.dateTime).getFullYear()}}</h4>
 	<p ng-show = "wodToDisplay.description">{{wodToDisplay.description}}</p>
 	<ul class="workoutModules">
 		<li ng-show = "wodToDisplay.challenge">
