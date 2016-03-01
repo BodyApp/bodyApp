@@ -62,7 +62,14 @@
 			</div>
 			<div class="col-sm-12">
 				<h4 class="royalblue mb8">Email</h4>
-				<p>{{currentUser.email}}</p>				
+				<textarea ng-show = "editingEmail" class="medium-input-box" ng-model = "currentUser.email"></textarea>
+          <a ng-show = "editingEmail" ng-click = "saveNewEmail(currentUser.email)" class = "mt0 btn" style = "font-size: 12px; padding-left: 6px; padding-right: 6px; min-width: 0px">
+            <span>Submit</span>
+          </a>
+          <span ng-show = "!editingEmail">{{currentUser.email}}</span> 
+          <a ng-show = "!editingEmail" ng-click = "editingEmail = true" class = "mt0 btn" style = "font-size: 12px; padding-left: 6px; padding-right: 6px; min-width: 0px">
+            <span>Change</span>
+          </a>        				
 			</div>			
 		</div>
 		<!-- PROFILE END -->

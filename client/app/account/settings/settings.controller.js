@@ -25,6 +25,15 @@ angular.module('bodyAppApp')
 
     }
 
+   $scope.saveNewEmail = function(emailToSave) {
+      console.log(emailToSave)
+      User.saveEmailAddress({id: $scope.currentUser._id}, {email: emailToSave}, function(user){
+          console.log("Email successfull updated.")
+          $scope.currentUser = user;
+          Auth.updateUser(user)
+          $scope.editingEmail = false;
+      }, function(err){console.log('error saving new email: ' + err)})
+    }
 
     function pullFriendPictures() {
       // for (var user in currentUser.friendListObject) {

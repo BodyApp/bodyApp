@@ -100,7 +100,7 @@ exports.getInjuries = function(req, res, next) {
 //Saves email address if there wasn't one provided by Facebook
 exports.saveEmail = function (req, res, next) {
   var userId = req.user._id;
-  email = req.body.email.toLowerCase()  
+  var email = req.body.email.toLowerCase()  
 
   User.findOne({
     _id: userId

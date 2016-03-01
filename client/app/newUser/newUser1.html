@@ -66,8 +66,17 @@
         <h3 class="royalblue mb16">Your profile info</h3>
         <img ng-if = "currentUser.picture" class="user-social-image mb16" src="{{currentUser.picture}}">
         <img ng-if = "currentUser.facebookId" class="facebook-social-image" src="assets/images/icons/facebook-circle.png">
-        <h3 class="darkblue mb8">{{currentUser.firstName}} {{currentUser.lastName}}</h1>
-        <h5 class="gray">{{currentUser.email}}</h2>
+        <h3 class="darkblue mb8">{{currentUser.firstName}} {{currentUser.lastName}}</h3>
+        <h5 class="gray">
+          <textarea ng-show = "editingEmail" class="medium-input-box" ng-model = "currentUser.email"></textarea>
+          <a ng-show = "editingEmail" ng-click = "saveNewEmail(currentUser.email)" class = "mt0 btn" style = "font-size: 12px; padding-left: 6px; padding-right: 6px; min-width: 0px">
+            <span>Submit</span>
+          </a>
+          <span ng-show = "!editingEmail">{{currentUser.email}}</span> 
+          <a ng-show = "!editingEmail" ng-click = "editingEmail = true" class = "mt0 btn" style = "font-size: 12px; padding-left: 6px; padding-right: 6px; min-width: 0px">
+            <span>Change</span>
+          </a>        
+        </h5>
       </div>
       <div class="col-sm-7 hidden-xs">
         <h3 class="royalblue mb0">Important health info</h3>

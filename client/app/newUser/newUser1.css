@@ -26,6 +26,14 @@
   padding: 10px;
   background: #fff
 }
+.medium-input-box {
+  width: 90%;
+  height: 50px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff
+}
 .small-input-box {
   width: 22%;
   height: auto;

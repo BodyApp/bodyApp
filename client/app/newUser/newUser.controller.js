@@ -207,6 +207,16 @@ angular.module('bodyAppApp')
     	$state.go('schedule');
     }
 
+    $scope.saveNewEmail = function(emailToSave) {
+        console.log(emailToSave)
+        User.saveEmailAddress({id: $scope.currentUser._id}, {email: emailToSave}, function(user){
+            console.log("Email successfull updated.")
+            $scope.currentUser = user;
+            Auth.updateUser(user)
+            $scope.editingEmail = false;
+        }, function(err){console.log('error saving new email: ' + err)})
+    }
+
     $scope.saveInjuriesGoalsEmergency = function(boxChecked, injuryString, goals, emergencyFirst, emergencyLast, emergencyRelationship, emergencyPhone) {
         if (!injuryString || injuryString.length < 2) {return $scope.injuriesNotEntered = true;} else {$scope.injuriesNotEntered = false;}
         if (!goals || goals.length < 2) {return $scope.goalsNotEntered = true;} else {$scope.goalsNotEntered = false;}
