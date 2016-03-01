@@ -16,10 +16,16 @@ var Mailgun = require('mailgun-js');
 var api_key = config.mailgunApiKey;
 var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
+var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+// var classBookedMailingList = mailgun.lists('classbooked@getbodyapp.com').info().address;
 
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
+
+var ref = new Firebase("https://bodyapp.firebaseio.com/");
+
+const crypto = require("crypto");
 
   // console.log(__dirname)
 
@@ -137,7 +143,7 @@ exports.create = function (req, res, next) {
 
       newUser.save(function(err, user) {
         if (err) return validationError(res, err);
-        var ref = new Firebase("https://bodyapp.firebaseio.com/");
+        
         ref.authWithCustomToken(firebaseToken, function(error, authData) {
           if (error) {
             console.log("Firebase authentication failed", error);
@@ -497,6 +503,39 @@ exports.saveTimezone = function(req, res, next) {
   });
 }
 
+exports.createIntercomHash = function(req, res, next) {
+  var userId = req.user._id;
+  var hmac = crypto.createHmac('sha256', config.intercomSecret);
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
+    if(err) { return err } else { 
+     //Used for intercom secure mode
+      if (!user.intercomHash) {
+        hmac.update(user._id.toString());
+        user.intercomHash = hmac.digest('hex');
+      }
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+
+}
+
+function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime, level) {
+  var dateTime = formattedDateTime(classDateTime)
+  var data = {
+    from: from_who,
+    to: 'classbooked@getbodyapp.com',
+    subject: dateTime.date + " " + dateTime.classTime + " " + level + " Class Booked",
+    text: userFirstName + ' ' + userLastName + " booked a " + level + " class for " + dateTime.date + " at " + dateTime.classTime 
+  };
+
+  mailgun.messages().send(data, function (error, body) {
+    console.log("Sent email to admins that " + userFirstName + " " + userLastName + " booked a " + level + " class.");
+  });
+}
+
 exports.addIntroClass = function(req, res, next) {
   var userId = req.user._id;
   var classToAdd = req.body.classToAdd;
@@ -511,16 +550,22 @@ exports.addIntroClass = function(req, res, next) {
       user.save(function(err) {
         if (err) return validationError(res, err);
         sendEmail(user)
+        ref.child("bookings").child(classToAdd).once('value', function(snapshot) {
+          console.log("There are " + snapshot.numChildren() + " people booked for this class.")
+          if (snapshot.numChildren() < 2) sendClassBookedEmailToAdmins(user.firstName, user.lastName, classToAdd, "Intro")
+        })
         res.status(200).json(user);
       });
     } 
   });
 
+
+
   function sendEmail(user) {
     if (!user.email) return;
     var emailAddress = user.email;
     var recipientName = user.firstName;
-    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    // var mailgun = new Mailgun({apiKey: api_key, domain: domain});
     var dateTime = formattedDateTime(classToAdd, user)
     fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
       if (err) throw err; 
@@ -612,7 +657,7 @@ exports.takeIntroClass = function(req, res, next) {
     if (!user.email) return;
     var emailAddress = user.email;
     var recipientName = user.firstName;
-    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    // var mailgun = new Mailgun({apiKey: api_key, domain: domain});
     fs.readFile(__dirname + '/emails/postIntroEmail.html', function (err, html) {
       if (err) throw err; 
       var postIntroTemplate = html
@@ -653,6 +698,9 @@ exports.addBookedClass = function(req, res, next) {
       user.save(function(err) {
         if (err) return validationError(res, err);
         sendEmail(user)
+        ref.child("bookings").child(classToAdd).once('value', function(snapshot) {
+          if (snapshot.numChildren() < 2) sendClassBookedEmailToAdmins(user.firstName, user.lastName, classToAdd, "Level 1")
+        })
         res.status(200).json(user);
       });
     } 
@@ -662,7 +710,7 @@ exports.addBookedClass = function(req, res, next) {
     var dateTime = formattedDateTime(classToAdd, user)
     var emailAddress = user.email;
     var recipientName = user.firstName;
-    var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+    // var mailgun = new Mailgun({apiKey: api_key, domain: domain});
     fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
       if (err) throw err; 
       var classReservedTemplate = html
@@ -885,7 +933,7 @@ exports.createTokBoxToken = function(req, res, next) {
  // Send a message to the specified email address when you navigate to /submit/someaddr@email.com
 // The index redirects here
 exports.sendWelcomeEmail = function(req,res) {
-  var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+  // var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 
   //Makes sure intro email wasn't sent.  Extra server-side security to prevent spamming.
   User.findById(req.user._id, '-salt -hashedPassword', function (err, user) {
@@ -933,7 +981,12 @@ exports.sendWelcomeEmail = function(req,res) {
 };
 
 function formattedDateTime(dateTime, user) {
-  var timezoneName = user.timezone || "America/New_York"; //Defaults to ET if no timezone set on user.
+  var timezoneName;
+  if (user && user.timezone) {
+    timezoneName = user.timezone;
+  } else {
+    timezoneName = "America/New_York"; //Defaults to ET if no timezone set on user.
+  }
   var formatted = {}
 
   formatted.date = moment.tz(dateTime, timezoneName).format('dddd, MMM Do');

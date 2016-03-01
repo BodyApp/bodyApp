@@ -5,8 +5,6 @@ var stripe = require("stripe")(config.stripeOptions.apiKey);
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
-const crypto = require("crypto");
-const hmac = crypto.createHmac('sha256', config.intercomSecret);
 
 exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
@@ -63,10 +61,6 @@ exports.setup = function (User, config) {
           var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, role: user.role, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
           user.firebaseToken = firebaseToken;
           user.lastLoginDate = user.signUpDate;
-          
-          //Used for intercom secure mode
-          hmac.update(user._id.toString());
-          user.intercomHash = hmac.digest('hex');
 
           user.save(function(err) {
             if (err) return done(err);
@@ -80,7 +74,7 @@ exports.setup = function (User, config) {
               if (error) {
                 console.log("Firebase authentication failed", error);
               } else {
-                console.log("Firebase authentication succeeded!", authData);
+                console.log("Firebase authentication succeeded!");
               }
             // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             }); 
@@ -109,13 +103,8 @@ exports.setup = function (User, config) {
             // console.log("hello")
             // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
           }
-
-          //Used for intercom secure mode
-          hmac.update(user._id.toString());
-          user.intercomHash = hmac.digest('hex');
                     
           user.save(function(err) {
-            console.log("save complete")
             if (err) return done(err);
             //Firebase authentication
             var ref = new Firebase("https://bodyapp.firebaseio.com/");
@@ -129,7 +118,7 @@ exports.setup = function (User, config) {
               if (error) {
                 console.log("Firebase authentication failed", error);
               } else {
-                console.log("Firebase authentication succeeded!", authData);                     
+                console.log("Firebase authentication succeeded!");                     
               }
             // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             }); 

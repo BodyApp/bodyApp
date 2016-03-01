@@ -18,6 +18,12 @@ angular.module('bodyAppApp')
           id:'me'
         }
       },
+      createIntercomHash: {
+        method: 'PUT',
+        params: {
+          controller:'createIntercomHash'
+        }
+      },
       addBookedClass: {
         method: 'PUT',
         params: {

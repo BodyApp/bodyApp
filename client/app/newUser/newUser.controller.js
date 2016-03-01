@@ -59,17 +59,34 @@ angular.module('bodyAppApp')
         });
 
         //Intercom integration
-        window.intercomSettings = {
-            app_id: "daof2xrs",
-            name: user.firstName + " " + user.lastName, // Full name
-            email: user.email, // Email address
-            user_id: user._id,
-            user_hash: user.intercomHash,
-            created_at: Math.floor(Date.now() / 1000), // Signup date as a Unix timestamp,
-            "bookedIntro": user.bookedIntroClass,
-            "introTaken": user.introClassTaken,
-            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0
-        };
+        if (user.intercomHash) {
+            window.intercomSettings = {
+                app_id: "daof2xrs",
+                name: user.firstName + " " + user.lastName, // Full name
+                email: user.email, // Email address
+                user_id: user._id,
+                user_hash: user.intercomHash,
+                created_at: Math.floor(Date.now() / 1000), // Signup date as a Unix timestamp,
+                "bookedIntro": user.bookedIntroClass,
+                "introTaken": user.introClassTaken,
+                "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0
+            };
+        } else {
+            User.createIntercomHash({id: currentUser._id}, {}, function(user) {
+                Auth.updateUser(user);
+                window.intercomSettings = {
+                    app_id: "daof2xrs",
+                    name: user.firstName + " " + user.lastName, // Full name
+                    email: user.email, // Email address
+                    user_id: user._id,
+                    user_hash: user.intercomHash,
+                    created_at: Math.floor(Date.now() / 1000), // Signup date as a Unix timestamp,
+                    "bookedIntro": user.bookedIntroClass,
+                    "introTaken": user.introClassTaken,
+                    "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0
+                };
+            }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
+        }
 
         if (!currentUser.welcomeEmailSent) {
             currentUser.welcomeEmailSent = true;
