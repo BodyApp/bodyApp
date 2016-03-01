@@ -35,11 +35,11 @@
                                 <a href="/results">Results</a>
                               </p>
                             </li>
-                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
+<!--                             <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/results')}">
                                 <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
                               </p>
-                            </li>
+                            </li> -->
                             <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                               <a href="/settings">
                                 Hi {{getCurrentUser().firstName}}
@@ -78,11 +78,11 @@
                             <a href="/results">Results</a>
                           </p>
                         </li>
-                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
+  <!--                       <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/results')}">
                             <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
                           </p>
-                        </li>
+                        </li> -->
                         <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
                           <a href="/settings">
                             <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
