@@ -1,3 +1,10 @@
+.bodystudio {
+    background-image: url("../../assets/images/studio.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 700px;
+}
+
 .hero-banner2 {
   margin-top: 8%;
   margin-bottom: 8%;
