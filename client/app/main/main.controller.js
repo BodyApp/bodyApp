@@ -2,6 +2,8 @@
 
 angular.module('bodyAppApp')
   .controller('MainCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+
+    $scope.videoSee = false;
     // $window.scrollTo(0,0);
 
     //Intercom integration for when users are not yet logged in.

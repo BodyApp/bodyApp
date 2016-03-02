@@ -1,3 +1,11 @@
+.bodylife {
+    background-image: url("../../assets/images/ali.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.video-full-width {
+  width: 100%;
+}
 .subheader {
   font-weight: 400;
   color: #a7a7a7;
@@ -8,13 +16,6 @@
     background: #fff;
     padding-top: 3%;
     padding-bottom: 8%;
-}
-#home-row-4 {
-    background-image: url("../../assets/images/home-workout.jpg");
-    background-repeat: no-repeat;
-    background-position: bottom right;     
-    padding-top: 10%;
-    padding-bottom: 25%;
 }
 #home-row-4 h1 {
   color: #F2AF00;
