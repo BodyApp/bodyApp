@@ -53,7 +53,7 @@ User.find({}).remove(function() {
     // injuries: "Nope",
     bookedIntroClass: true,
     completedNewUserFlow: true,
-    introClassTaken: false,
+    introClassTaken: true,
     welcomeEmailSent: false,
     // welcomeEmailSent: new Date(),
     // level: 1

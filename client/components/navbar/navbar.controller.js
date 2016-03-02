@@ -32,6 +32,8 @@ angular.module('bodyAppApp')
     $scope.logoStyle = {"background-color": "white"};
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
 
+    var modalInstance;
+
     $scope.hover = function(element) {
       $scope.imageSrc = "assets/images/BodyLogo_white_small.png";
       $scope.logoStyle = {"background-color": "black"};
@@ -64,6 +66,19 @@ angular.module('bodyAppApp')
       }, function () {
         // $window.location.href = '/auth/' + 'facebook';
       });
+    }
+
+    $scope.openSpreadTheWordModal = function() {
+      modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'components/navbar/spreadTheWordModal.html',
+        controller: 'SpreadWordCtrl',
+        windowClass: "modal-tall"
+      });
+    }
+
+    $scope.closeModal = function() {
+      if (modalInstance) modalInstance.close()
     }
 
     $scope.login = function() {
