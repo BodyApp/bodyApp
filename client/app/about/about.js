@@ -23,4 +23,9 @@ angular.module('bodyAppApp')
         templateUrl: 'app/about/program.html',
         controller: 'AboutCtrl'
       })
+      .state('blog', {
+        url: '/blog',
+        templateUrl: 'app/about/blog.html',
+        controller: 'AboutCtrl'
+      })      
   });

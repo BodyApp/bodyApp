@@ -4,7 +4,9 @@
   <section>
     <div class="container hero-banner">
         <div class="col-sm-12 col-md-8">
-          <img src="assets/images/user-video-on-laptop.jpg">
+            <video loop autoplay poster="assets/images/user-video-on-laptop.jpg">
+              <source src="assets/images/video/consumer-screen.webm" type="video/webm">
+            </video>
         </div>
         <div class="col-sm-12 col-md-4 mt16 text-center">
           <div class="pt16">
@@ -25,7 +27,7 @@
   </section>
 
   <section id="home-row-3" >
-    <div class="container" id="scroll-link">
+    <div class="container">
       <div class="col-sm-12 text-center margins">
         <h1 class="mb72 darkblue">Better results. More convenient.</h1>
         <!-- <h4 class="mb72">We’re revolutionizing home fitness through technology, service, and design. Join classes in real-time without leaving your living room.</h4>         -->
@@ -191,6 +193,24 @@
       </div>     
 
     </div>
+  </section>  
+
+  <section class="">
+      <div id="scroll-link" class="bodylife" ng-hide = "videoSee">
+        <div class="pt120 pb88 text-center relative" style="background: rgba(34,72,147,0.5);">
+          <h1 class="white bold mb0">#BODYlife</h1>
+          <h3 class="white" style="padding: 0 15%">Meet Ali, a sales engineer, mother of two and proud BODY member.</h3>
+        </div>
+        <a href="#" ng-click = "videoSee = !videoSee">        
+          <div class="pt32 pb32 text-center relative" style="background: rgba(13,28,69,0.5);">
+            <img class="vid-play-btn inline-block" style="vertical-align: middle;" src="assets/images/icons/play_button.png">
+            <h3 class="white inline-block mb0" style="margin-left: 15px; vertical-align: middle;">Find out how BODY brings fitness to busy Moms like Ali</h3>
+          </div>
+        </a>
+      </div>
+      <div class="video-full-width" ng-show = "videoSee">
+        <iframe width="100%" height="470" src="https://www.youtube.com/embed/wPTbSk6JqKY?rel=0" frameborder="0" allowfullscreen></iframe>
+      </div>
   </section>
 
   <section class="lightblue-section">
@@ -207,6 +227,6 @@
         <a href="#" ng-click="signUp()" class="btn-white">Get started</a> 
       </div>
     </div>
-
   </section>
+
 <div ng-include="'components/footer/footer.html'"></div>
