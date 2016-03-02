@@ -28,9 +28,9 @@ angular.module('bodyAppApp')
         templateUrl: 'app/about/blog.html',
         controller: 'AboutCtrl'
       })
-      .state('join-the-team', {
-        url: '/join-the-team',
-        templateUrl: 'app/about/join-the-team.html',
+      .state('jointeam', {
+        url: '/jointeam',
+        templateUrl: 'app/about/jointeam.html',
         controller: 'AboutCtrl'
       })            
   });

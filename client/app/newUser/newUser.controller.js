@@ -90,6 +90,7 @@ angular.module('bodyAppApp')
 
         if (!currentUser.welcomeEmailSent) {
             currentUser.welcomeEmailSent = true;
+            Auth.updateUser(currentUser);
             User.sendWelcomeEmail({ id: currentUser._id }, {
             }, function(user) {
             }, function(err) {
