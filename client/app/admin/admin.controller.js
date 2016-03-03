@@ -261,7 +261,7 @@ angular.module('bodyAppApp')
           // consumersCanHearEachOther: false,
           // musicVolume: 50,
           sessionId: nextSessionToSave.sessionId, 
-          spots: 15
+          spots: 12
         }, function(err) {
           if (err) return console.log(err)
           console.log("New workout saved to classes object.")
