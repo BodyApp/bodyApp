@@ -175,7 +175,7 @@ angular.module('bodyAppApp')
             $scope.friendList[slot.date] = [];
             for (var prop in snapshot.val()) {
               var user = snapshot.val()[prop];
-              if (currentUser.role === 'admin') $scope.bookingsBySlot[slot.date].push(user);
+              $scope.bookingsBySlot[slot.date].push(user);
               if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
                 $scope.friendList[slot.date].push(user);
                 if(!$scope.$$phase) $scope.$apply();
@@ -402,67 +402,81 @@ angular.module('bodyAppApp')
         }
 
         $scope.openBookingConfirmation = function (slot) {
-          if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
-            return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
-          }
-          if (slot.level === "Intro") {
-            if (currentUser.introClassTaken) {
-              return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + currentUser.level + " classes now.");
-            } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime()) {
-              return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
+          ref.child("bookings").child(slot.date).once('value', function(snapshot) {
+            if (snapshot.numChildren() === slot.spots) { // Checks if the class is actually full
+              $scope.bookingsBySlot[slot.date] = [];
+              if (!snapshot.exists()) return
+              for (var prop in snapshot.val()) {
+                var user = snapshot.val()[prop];
+                $scope.bookingsBySlot[slot.date].push(user); // Updates the schedule to show 'class full' if it is full
+              }
+              if(!$scope.$$phase) $scope.$apply();
+              return alert("Unfortunately, this class is now full.  Please choose another.")
             } else {
-              return User.addIntroClass({ id: $scope.currentUser._id }, {classToAdd: slot.date}, function(user) {
-                var modalInstance = $uibModal.open({
-                  animation: true,
-                  templateUrl: 'app/schedule/bookingConfirmation.html',
-                  controller: 'BookingConfirmationCtrl',
-                  resolve: {
-                    slot: function () {
-                      return slot;
-                    }
-                  }
-                });
+              if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
+                return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
+              }
+              if (slot.level === "Intro") {
+                if (currentUser.introClassTaken && currentUser.role != "admin") {
+                  var levelToSuggest = currentUser.level ? currentUser.level : "1"
+                  return alert("You have already completed your intro class. There's no reason to take another!  You should book Level " + levelToSuggest + " classes now.");
+                } else if (currentUser.bookedIntroClass && currentUser.introClassBooked > new Date().getTime() && currentUser.role != "admin") {
+                  return alert("You should only take 1 Intro class! You have to cancel your existing intro class before you can book another.")
+                } else {
+                  return User.addIntroClass({ id: $scope.currentUser._id }, {classToAdd: slot.date}, function(user) {
+                    var modalInstance = $uibModal.open({
+                      animation: true,
+                      templateUrl: 'app/schedule/bookingConfirmation.html',
+                      controller: 'BookingConfirmationCtrl',
+                      resolve: {
+                        slot: function () {
+                          return slot;
+                        }
+                      }
+                    });
 
-                modalInstance.result.then(function (selectedItem) {
-                  $scope.selected = selectedItem;
-                }, function () {
-                  $log.info('Modal dismissed at: ' + new Date());
-                });
+                    modalInstance.result.then(function (selectedItem) {
+                      $scope.selected = selectedItem;
+                    }, function () {
+                      $log.info('Modal dismissed at: ' + new Date());
+                    });
 
-                Auth.updateUser(user);
-                currentUser = user;
-                $scope.currentUser = user;
-                ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""});
-                ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
-                
-                window.intercomSettings = {
-                    app_id: "daof2xrs",
-                    email: user.email, // Email address
-                    user_id: user._id,
-                    user_hash: user.intercomHash,
-                    "bookedIntro": user.bookedIntroClass,
-                    "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
-                };
+                    Auth.updateUser(user);
+                    currentUser = user;
+                    $scope.currentUser = user;
+                    ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""});
+                    ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
+                    
+                    window.intercomSettings = {
+                        app_id: "daof2xrs",
+                        email: user.email, // Email address
+                        user_id: user._id,
+                        user_hash: user.intercomHash,
+                        "bookedIntro": user.bookedIntroClass,
+                        "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                    };
 
-                // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
-                // getInfo(slot.date);
-                // slot.bookedUsers = slot.bookedUsers || {};
-                // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-                // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
-                // slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
-              }, function(err) {
-                  console.log("Error adding class: " + err)
-                  // classToBook.bookedUsers[currentUser._id] = false
-                  // classToBook.$save()
-                  alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
-              }).$promise;
+                    // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
+                    // getInfo(slot.date);
+                    // slot.bookedUsers = slot.bookedUsers || {};
+                    // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+                    // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+                    // slot.bookedFbUserIds[currentUser.facebook.id] = (new Date()).getTime();
+                  }, function(err) {
+                      console.log("Error adding class: " + err)
+                      // classToBook.bookedUsers[currentUser._id] = false
+                      // classToBook.$save()
+                      alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+                  }).$promise;
+                }
+              } else if (slot.level === "Open" || slot.level === "Test") {
+                bookClass(slot);
+              } else {
+                if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
+                // bookClass(slot)
+              }              
             }
-          } else if (slot.level === "Open" || slot.level === "Test") {
-            bookClass(slot);
-          } else {
-            if (checkWhetherUserIsSubscribed(slot)) bookClass(slot);
-            // bookClass(slot)
-          }
+          })
         };
 
         function bookClass(slot) {
