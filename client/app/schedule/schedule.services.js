@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
   	service.classUserJustJoined;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/"); 
-    var fbObject;
+    // var fbObject;
 
   	service.setCurrentUser = function(user) {
   		currentUser = user
@@ -52,8 +52,8 @@ angular.module('bodyAppApp')
 
   	service.setFirebaseObject = function(weekRef) {
 	    var weekRef = ref.child("classes").child(weekRef);
-      fbObject = $firebaseObject(weekRef);
-			return fbObject;
+      return $firebaseObject(weekRef);
+			// return fbObject;
   	}
 
     // service.clearFirebaseObject = function() {

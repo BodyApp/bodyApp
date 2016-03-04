@@ -231,12 +231,14 @@ angular.module('bodyAppApp')
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
-          if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
+          if (!$scope.currentWeek) $scope.currentWeek = $firebaseObject(ref.child("classes").child(weekOf))
+          // if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
           
-          unbindMethod()
-          Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
-            unbindMethod = unbind
-          });
+          $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
+          // unbindMethod()
+          // Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
+          //   unbindMethod = unbind
+          // });
         }
 
         function setNextWeek() {
@@ -250,7 +252,8 @@ angular.module('bodyAppApp')
           var sunGetMonth = sunDate.getMonth()+1;
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-          if (!$scope.nextWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'nextWeek')
+          if (!$scope.nextWeek) $scope.nextWeek = $firebaseObject(ref.child("classes").child(weekOf))
+          // if (!$scope.nextWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'nextWeek')
         }
 
         $scope.setCalendarToNextWeek = function() { nextWeek() }
@@ -269,10 +272,11 @@ angular.module('bodyAppApp')
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
-          unbindMethod()
-          Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
-            unbindMethod = unbind
-          });
+          // unbindMethod()
+          $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
+          // Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
+            // unbindMethod = unbind
+          // });
         }
 
         thisWeek();
