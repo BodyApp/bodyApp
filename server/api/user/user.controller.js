@@ -286,7 +286,10 @@ exports.postBilling = function(req, res, next){
         //   user.stripe = {};
         // }
 
-        if (shippingAddress) user.shippingAddress = shippingAddress;
+        if (shippingAddress) {
+          user.shippingAddress = shippingAddress;
+          sendShippingInfo(user)
+        }
 
         if(!user.stripe.customer.customerId){
         //   // user.stripe.customer = {};
@@ -533,6 +536,20 @@ function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime
 
   mailgun.messages().send(data, function (error, body) {
     console.log("Sent email to admins that " + userFirstName + " " + userLastName + " booked a " + level + " class.");
+  });
+}
+
+function sendShippingInfo(userInfo) {
+  var shippingAddress = userInfo.shippingAddress;
+  var data = {
+    from: from_who,
+    to: 'classbooked@getbodyapp.com',
+    subject: "New subscriber: " + userInfo.firstName + " " + userInfo.lastName,
+    text: "Shipping Information: " + shippingAddress.shipping_name + " " + shippingAddress.shipping_address_line1 + " " + shippingAddress.shipping_address_city + " " + shippingAddress.shipping_address_state + " " + shippingAddress.shipping_address_zip + " " + shippingAddress.shipping_address_country 
+  };
+
+  mailgun.messages().send(data, function (error, body) {
+    console.log("Sent email to admins that " + userInfo.firstName + " " + userInfo.lastName + " became a new subscriber.");
   });
 }
 
