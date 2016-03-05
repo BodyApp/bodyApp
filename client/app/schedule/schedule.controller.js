@@ -108,6 +108,7 @@ angular.module('bodyAppApp')
                 email: user.email, // Email address
                 user_id: user._id,
                 user_hash: user.intercomHash,
+                "goals": user.goals,
                 "bookedIntro": user.bookedIntroClass,
                 "introTaken": user.introClassTaken,
                 "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
