@@ -412,7 +412,7 @@ angular.module('bodyAppApp')
 
         $scope.openBookingConfirmation = function (slot) {
           ref.child("bookings").child(slot.date).once('value', function(snapshot) {
-            if (snapshot.numChildren() === slot.spots) { // Checks if the class is actually full
+            if (snapshot.numChildren() >= slot.spots) { // Checks if the class is actually full
               $scope.bookingsBySlot[slot.date] = [];
               if (!snapshot.exists()) return
               for (var prop in snapshot.val()) {

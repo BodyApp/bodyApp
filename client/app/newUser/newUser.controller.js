@@ -92,9 +92,9 @@ angular.module('bodyAppApp')
             currentUser.welcomeEmailSent = true;
             Auth.updateUser(currentUser);
             User.sendWelcomeEmail({ id: currentUser._id }, {
-            }, function(user) {
-            }, function(err) {
-                console.log("Error: " + err)
+                }, function(user) {
+                }, function(err) {
+                    console.log("Error: " + err)
             }).$promise;  
         }
         if (currentUser.timezone != tzName) {
@@ -115,89 +115,61 @@ angular.module('bodyAppApp')
     // $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
 
 	$scope.bookIntroClass = function(classBooked) {
-        if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
-            return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
-        }
-		$scope.newUserStep++;
-		$scope.bookedIntroClass = classBooked
+        ref.child("bookings").child(classBooked.$id).once('value', function(snapshot) {
+            if (snapshot.numChildren() >= 12) { // Checks if the class is actually full
+              return alert("Unfortunately, this class is now full.  Please choose another.")
+            } else {
+                if (currentUser.facebook && currentUser.facebook.age_range && currentUser.facebook.age_range.max < 18) {
+                    return alert("Unfortunately, you currently need to be 18+ to participate in BODY classes.")
+                }
 
-        var classDate = new Date(classBooked.$id*1)
-        var todayDate = new Date(classDate);
-        var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
+        		$scope.newUserStep++;
+        		$scope.bookedIntroClass = classBooked
 
-        // var sunDate = new Date();
-        // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-        var sunGetDate = sunDate.getDate();
-        var sunGetMonth = sunDate.getMonth()+1;
-        var sunGetYear = sunDate.getFullYear();
-        var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-        var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
+                var classDate = new Date(classBooked.$id*1)
+                var todayDate = new Date(classDate);
+                var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
 
-		var classToBook = $firebaseObject(
-	      weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
-	      .child("slots")
-	      .child(classDate.getTime())
-    	)
+                var sunGetDate = sunDate.getDate();
+                var sunGetMonth = sunDate.getMonth()+1;
+                var sunGetYear = sunDate.getFullYear();
+                var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+                var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf)
 
-        // var date = new Date(classBooked.$id*1)
-        // $scope.calendarDateSetter = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-        // $scope.calendarDateSetterEnd = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-        // $scope.timeZone = jstz().timezone_name;
+        		var classToBook = $firebaseObject(
+        	      weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
+        	      .child("slots")
+        	      .child(classDate.getTime())
+            	)
 
-    	classToBook.$loaded(function() {
-            ref.child("bookings").child(classToBook.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
-            ref.child("userBookings").child(currentUser._id).child(classToBook.date).update({date: classToBook.date, trainer: classToBook.trainer, level: classToBook.level})
-            // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
-   //  		classToBook.bookedUsers = classToBook.bookedUsers || {};
-			// classToBook.bookedUsers[$scope.currentUser._id] = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture, facebookId: $scope.currentUser.facebookId};
-            // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
-            // classToBook.bookedFbUserIds[$scope.currentUser.facebook.id] = true
-			// classToBook.$save()
-            $scope.classDetails = classToBook;
-    	})
-		
-		User.addIntroClass({ id: $scope.currentUser._id }, {
-            classToAdd: classDate.getTime()
-        }, function(user) {
-            Auth.updateUser(user)
-            //Intercom integration
-            window.intercomSettings = {
-                app_id: "daof2xrs",
-                email: user.email, // Email address
-                user_id: user._id,
-                "bookedIntro": user.bookedIntroClass,
-                "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
-            };
+            	classToBook.$loaded(function() {
+                    ref.child("bookings").child(classToBook.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+                    ref.child("userBookings").child(currentUser._id).child(classToBook.date).update({date: classToBook.date, trainer: classToBook.trainer, level: classToBook.level})
+                    $scope.classDetails = classToBook;
+            	})
+        		
+        		User.addIntroClass({ id: $scope.currentUser._id }, {
+                    classToAdd: classDate.getTime()
+                }, function(user) {
+                    Auth.updateUser(user)
+                    //Intercom integration
+                    window.intercomSettings = {
+                        app_id: "daof2xrs",
+                        email: user.email, // Email address
+                        user_id: user._id,
+                        "bookedIntro": user.bookedIntroClass,
+                        "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                    };
+                }, function(err) {
+                    console.log("Error adding class: " + err);
+                    ref.child("bookings").child(classToBook.date).child(currentUser._id).remove();
+                    ref.child("userBookings").child(currentUser._id).child(classToBook.date).remove();
 
-            //Check that using Chrome or Firefox
-            // if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
-            //   // The client does not support WebRTC.
-            //   var modalInstance = $uibModal.open({
-            //     animation: true,
-            //     templateUrl: 'app/video/wrongBrowser.html',
-            //     controller: 'WrongBrowserCtrl',
-            //   });
-
-            //   modalInstance.result.then(function (selectedItem) {
-            //     $scope.selected = selectedItem;
-            //   }, function () {
-            //     $log.info('Modal dismissed at: ' + new Date());
-            //   });
-            // }
-
-
-        }, function(err) {
-            console.log("Error adding class: " + err)
-            // classToBook.bookedUsers = classToBook.bookedUsers || {};
-            // delete classToBook.bookedUsers[$scope.currentUser._id]
-            ref.child("bookings").child(classToBook.date).child(currentUser._id).remove()
-            ref.child("userBookings").child(currentUser._id).child(classToBook.date).remove()
-            // classToBook.bookedFbUserIds = classToBook.bookedFbUserIds || {};    
-            // delete classToBook.bookedFbUserIds[$scope.currentUser.facebook.id]
-
-            classToBook.$save()
-            alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
-        }).$promise;
+                    classToBook.$save()
+                    alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+                }).$promise;
+            }
+        })
 	}
 
     $scope.incrementStep = function() {
