@@ -562,6 +562,8 @@ exports.addIntroClass = function(req, res, next) {
       user.classesBooked = user.classesBooked || {};
       user.classesBooked[classToAdd] = true;
       user.introClassBooked = classToAdd,
+      user.classesBookedArray = user.classesBookedArray || [];
+      user.classesBookedArray.push(classToAdd)
       user.bookedIntroClass = true;
       user.completedNewUserFlow = true;
       user.save(function(err) {
@@ -712,6 +714,8 @@ exports.addBookedClass = function(req, res, next) {
     if(err) { return err } else { 
       user.classesBooked = user.classesBooked || {};
       user.classesBooked[classToAdd] = new Date().getTime();
+      user.classesBookedArray = user.classesBookedArray || [];
+      user.classesBookedArray.push(classToAdd)
       user.save(function(err) {
         if (err) return validationError(res, err);
         sendEmail(user)

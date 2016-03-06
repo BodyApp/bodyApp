@@ -86,12 +86,15 @@ angular.module('bodyAppApp')
 
           //Intercom integration
           if (user.intercomHash) {
+
             window.intercomSettings = {
               app_id: "daof2xrs",
               name: user.firstName + " " + user.lastName, // Full name
               email: user.email, // Email address
               user_id: user._id,
               user_hash: user.intercomHash,
+              "goals": user.goals,
+              // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
               "bookedIntro": user.bookedIntroClass,
               "introTaken": user.introClassTaken,
               "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
@@ -109,6 +112,7 @@ angular.module('bodyAppApp')
                 user_id: user._id,
                 user_hash: user.intercomHash,
                 "goals": user.goals,
+                // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
                 "bookedIntro": user.bookedIntroClass,
                 "introTaken": user.introClassTaken,
                 "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
