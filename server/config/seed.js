@@ -54,8 +54,8 @@ User.find({}).remove(function() {
     bookedIntroClass: false,
     completedNewUserFlow: true,
     introClassTaken: true,
-    welcomeEmailSent: false,
-    // welcomeEmailSent: new Date(),
+    // welcomeEmailSent: false,
+    welcomeEmailSent: new Date(),
     // level: 1
     }, 
     {

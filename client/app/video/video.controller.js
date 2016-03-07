@@ -142,12 +142,12 @@ angular.module('bodyAppApp')
   		if (stopwatchRef.running > stopwatchRef.stopped) {
   			document.getElementById('stopwatch').stop();
   			document.getElementById('stopwatch').reset();
-  			$scope.stopwatchStartTime = stopwatchRef.running
+  			$scope.stopwatchStartTime = stopwatchRef.running;
   			document.getElementById('stopwatch').start();
   		} else {
   			document.getElementById('stopwatch').stop();
   			document.getElementById('stopwatch').reset();
-  			$scope.stopwatchStartTime = new Date().getTime()
+  			$scope.stopwatchStartTime = new Date().getTime();
   		}
   	})
 
@@ -279,7 +279,7 @@ angular.module('bodyAppApp')
 
 				audioPlayer.bind(SC.Widget.Events.READY, function() {
 					if (firstTimePlayingSong) {
-						elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.date + 1000*60*5), 0) //Starts music 5 minutes before official class start time
 						
 						setMusicVolume($scope.musicVolume);
 
@@ -306,7 +306,7 @@ angular.module('bodyAppApp')
 						if(!$scope.$$phase) $scope.$apply();
 					}
 					if (firstTimePlayingSong) {
-						elapsedTime = new Date().getTime() - classToJoin.date
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.date + 1000*60*5), 0) //Starts music 5 minutes before official class start time
 						var seekingTo = elapsedTime - soundsLength
 						if (audioPlayer) audioPlayer.seekTo(seekingTo);
 						console.log("seeking to position " + seekingTo);
@@ -400,6 +400,7 @@ angular.module('bodyAppApp')
 
 		function setMusicVolume(musicVolume) {
 			if (!audioPlayer) return;
+			if (!musicVolume) musicVolume = 50;
 			console.log("Volume percentage changed to " + musicVolume)
 			if (userIsInstructor) {
 				audioPlayer.setVolume(0);
