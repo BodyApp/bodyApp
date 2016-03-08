@@ -400,7 +400,7 @@ angular.module('bodyAppApp')
 
 		function setMusicVolume(musicVolume) {
 			if (!audioPlayer) return;
-			if (!musicVolume) musicVolume = 50;
+			if (!musicVolume && musicVolume != 0) musicVolume = 50;
 			console.log("Volume percentage changed to " + musicVolume)
 			if (userIsInstructor) {
 				audioPlayer.setVolume(0);
