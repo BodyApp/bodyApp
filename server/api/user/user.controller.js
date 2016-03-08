@@ -894,6 +894,7 @@ exports.saveResult = function(req, res, next) {
       }
       user.markModified(req.body.date);
       user.save(function(err) {
+        console.log("Results saved for " + userId)
         if (err) return validationError(res, err);
         res.status(200).json({user});
       });

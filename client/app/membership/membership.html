@@ -14,9 +14,13 @@
             <div class="visible-lg visible-md pt72"></div>
             <h1 class="darkblue">Just 20 bucks per month</h1>
             <h4 class="margins">A simple membership with unlimited classes every month. Join the pilot and lock in $20/mo for the next year.</h4>
-            <div class = "mb4 text-centered">
+            <div style = "font-size: 12px;">
+              <div ng-hide = "enterCoupon" class="darkgray mb8">Have a coupon? <a href="#" ng-click="enterCoupon = true">Click here</a></div>
+              <div ng-show = "enterCoupon" class="darkgray mb8">Nevermind, no coupon <a href="#" ng-click="enterCoupon = false">Click here</a></div>
+            </div>
+            <div class = "text-centered" ng-show = "enterCoupon">
               <div style = "color: red" ng-if = "invalidCouponEntered">Invalid Coupon Entered</div>
-              <input placeholder = "Have a coupon?" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
+              <input placeholder = "Enter coupon here" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
             </div>
             <a class="join-btn btn mt4 mb8" ng-click = "joinClicked(couponEntered)" href="#">Join</a>
             <div class="securepayment">
@@ -119,9 +123,11 @@
       <div class="col-sm-12 text-center">
         <h1>Join our pilot for just 20 bucks a month</h1>
         <h4 class="mb72 margins">Join us at the very beginning and help shape the future of home fitness.<br>Lock in $20/mo for the next year.</h4>
-        <div class = "mb4">
+        <p style = "font-size: 12px" ng-hide = "enterCoupon" class="darkgray">Have a coupon? <a href="#" ng-click="enterCoupon = true">Click here</a></p>
+        <p style = "font-size: 12px" ng-show = "enterCoupon" class="darkgray">Nevermind, no coupon <a href="#" ng-click="enterCoupon = false">Click here</a></p>
+        <div class = "mb4" ng-show = "enterCoupon">
           <div style = "color: red" ng-if = "invalidCouponEntered">Invalid Coupon Entered</div>
-          <input placeholder = "Have a coupon?" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
+          <input placeholder = "Enter coupon here" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
         </div>
         <a class="join-btn btn-white" ng-click = "joinClicked(couponEntered)" href="#">Join</a>
       </div> 

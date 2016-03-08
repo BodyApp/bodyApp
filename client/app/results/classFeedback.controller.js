@@ -5,7 +5,7 @@ angular.module('bodyAppApp')
   	$scope.classCompleted = Schedule.classUserJustJoined;
 
   	if (!$scope.classCompleted) {
-  		$state.go('schedule')
+  		$state.go('results')
   		// $location.path('/')
   	}
 
