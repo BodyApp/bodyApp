@@ -11,10 +11,20 @@ angular.module('bodyAppApp')
     $scope.editingCreditCardInfo = false;
     $scope.currentUser = Auth.getCurrentUser();
     var currentUser = $scope.currentUser;
-    $scope.subEndDate;
-    if ($scope.currentUser.stripe && $scope.currentUser.stripe.subscription) {
-      $scope.subEndDate = new Date($scope.currentUser.stripe.subscription.endDate*1000)
-    }
+    // $scope.subEndDate;
+    // if ($scope.currentUser.stripe && $scope.currentUser.stripe.subscription) {
+    //   if ($scope.currentUser.stripe.subscription.endDate) {
+    //     console.log($scope.currentUser.stripe.subscription.endDate)
+    //     $scope.subEndDate = new Date($scope.currentUser.stripe.subscription.endDate*1000)
+    //   } else { 
+    //     var now = new Date();
+    //     if (now.getMonth() == 11) {
+    //         $scope.subEndDate = new Date(now.getFullYear() + 1, 0, 1);
+    //     } else {
+    //         $scope.subEndDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    //     }
+    //   }
+    // }
 
     $scope.friendList = [];
 
@@ -81,7 +91,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.addSubscription = function() {
-      if (currentUser.stripe && currentUser.stripe.subscription && currentUser.stripe.subscription.status === "active") {
+      if ($rootScope.subscriptionActive) {
             return true;
       } else {
         var modalInstance = $uibModal.open({

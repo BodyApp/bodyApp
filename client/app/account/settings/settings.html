@@ -79,7 +79,7 @@
 			<div class="col-sm-12">
 				<h4 class="royalblue mb8">Membership</h4>	
 				<div ng-if = "currentUser.stripe.subscription.status === 'active' || subscriptionActive" >
-					<p class="mb16">Thanks for being on the team! Your next payment is {{formatEndDate(subEndDate)}}</p>
+					<p class="mb16">Thanks for being on the team! Your next payment is {{formatEndDate(currentUser.stripe.subscription.endDate*1000)}}</p>
 				  <a href="#" class = "gray" ng-click = "cancelSubscription()">
 				    Cancel Membership
 				  </a>	
