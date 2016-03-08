@@ -545,7 +545,7 @@ function sendShippingInfo(userInfo) {
     from: from_who,
     to: 'classbooked@getbodyapp.com',
     subject: "New subscriber: " + userInfo.firstName + " " + userInfo.lastName,
-    text: "Email: " + userInfo.email + ".  Shipping Information: " + shippingAddress.shipping_name + " " + shippingAddress.shipping_address_line1 + " " + shippingAddress.shipping_address_city + " " + shippingAddress.shipping_address_state + " " + shippingAddress.shipping_address_zip + " " + shippingAddress.shipping_address_country 
+    text: "Goals: " + userInfo.goals + ". Email: " + userInfo.email + ". Shipping Information: " + shippingAddress.shipping_name + " " + shippingAddress.shipping_address_line1 + " " + shippingAddress.shipping_address_city + " " + shippingAddress.shipping_address_state + " " + shippingAddress.shipping_address_zip + " " + shippingAddress.shipping_address_country 
   };
 
   mailgun.messages().send(data, function (error, body) {

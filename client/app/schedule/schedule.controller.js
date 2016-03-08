@@ -170,8 +170,35 @@ angular.module('bodyAppApp')
           // $window.open('https://www.facebook.com/'+friend.facebookId, '_blank');
         }
 
+        // function aggregateBookings() {
+        //   var rightNow = new Date().getTime().toString();
+        //   console.log(rightNow)
+        //   ref.child("bookings").orderByKey().startAt(rightNow).once('value', function(snapshot) {
+        //     if (!snapshot.exists()) return
+        //     for (var classSnapshot in snapshot.val()) {
+        //       $scope.bookingsBySlot = $scope.bookingsBySlot || {};
+        //       $scope.bookingsBySlot[classSnapshot] = [];
+        //       $scope.friendList = $scope.friendList || {};
+        //       $scope.friendList[classSnapshot] = [];
+        //       for (var booking in classSnapshot) {
+        //         var user = booking;
+        //         $scope.bookingsBySlot[classSnapshot].push(user);
+        //         if (currentUser.friendListObject && currentUser.friendListObject[user.facebookId]) {
+        //           $scope.friendList[classSnapshot].push(user);
+        //           if(!$scope.$$phase) $scope.$apply();
+        //           if (!$scope.pictureData[user.facebookId]) {
+        //             $scope.pictureData[user.facebookId] = user;
+        //             if(!$scope.$$phase) $scope.$apply();
+        //           }
+        //         }
+        //       }
+        //     }
+        //   })
+        // }
+
         //Need to fix this
         $scope.checkIfFriends = function(slot) {
+          var rightNow = new Date().getTime();
           ref.child("bookings").child(slot.date).once('value', function(snapshot) {
             $scope.bookingsBySlot = $scope.bookingsBySlot || {};
             $scope.bookingsBySlot[slot.date] = [];
