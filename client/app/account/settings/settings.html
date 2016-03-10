@@ -14,6 +14,54 @@
 			<hr>
 		</div>
 
+		<!-- REFERRALS -->
+		<div class="col-sm-9 mb32" ng-show="teammates">
+			<div >
+				<div class="col-sm-9">
+					<h3 class="royalblue shorterMargin">Referrals ({{numReferrals}})</h3>
+				</div>
+				<div class="col-sm-12">
+					<div class="mb16">
+						<span>Give your friends 50% off their first month with referral code: 
+							<span class = "bold">{{currentUser.referralCode}}</span>
+						</span>
+					</div>
+				</div>
+				<div class = "col-sm-12 mb16">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=https://www.getbodyapp.com" target="_blank">
+						<img class = "facebookButton" src="http://bitcoin-catcher.com/wp-content/uploads/2015/09/facebook-share-button.png"></img>
+					</a>
+					<a href="https://twitter.com/home?status=Join%20me%20on%20the%20live%20social%20fitness%20startup%20%40BODYapp%20with%20coupon%20{{currentUser.referralCode}}%20for%2050%25%20off%20your%20first%20month!%20%23bodylife%20http%3A//bit.ly/1nv0iys" target="_blank">
+						<img class = "tweetButton" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRUb8D_rPj2lSOAFmEpD60bDmY_IlzJ-REA8xFWnifacxISMJEZ_X6VFWA7"></img>
+					</a>
+					<a href="mailto:?&bcc=concierge@getbodyapp.com&subject=Check out BODY!&body=Hey%20there,%0A%0AI'd%20love%20for%20you%20to%20join%20me%20on%20BODY!%20%20We'd%20be%20able%20to%20work%20out%20together%20in%20a%20group%20setting%20from%20our%20own%20homes%20and%20have%20a%20live%20instructor%20that%20can%20see%20us%20and%20help%20us%20achieve%20our%20goals.%20%20I%20think%20you'd%20love%20the%20service%20and%20I%20have%20a%20coupon%20code%20that%20can%20give%20you%2050%25%20off%20your%20first%20month%3A%20{{currentUser.referralCode}}.%20%20%0A%0AVisit%20https%3A//www.getbodyapp.com%20to%20take%20a%20free%20intro%20session%20and%20start%20getting%20in%20shape%20on%20your%20own%20schedule!%0A%0A-{{currentUser.firstName}}">
+						<img class = "emailButton" src="http://3.bp.blogspot.com/-csMz-bP4r5g/Ux3m2F9g7jI/AAAAAAAAASc/4Q2GowrKn78/s1600/button_email.png"></img>
+					</a>
+					<div>We'll send you free BODY swag for every 3 friends you refer!</div>
+				</div>
+				<div class="col-sm-12" ng-if = "numReferrals > 0">
+					
+					<div class="friends-User-col"><span class="lightgray">User</span></div>
+					<div class="friends-Action-col"><span class="lightgray">Action</span></div>
+				</div>
+				<div class="col-sm-12" ng-if = "numReferrals > 0">
+					<ul class="friendList">
+						<li ng-repeat = "friend in referrals" ng-show = "referrals.length > 0">
+							<div class="friends-User-col">
+								<div class="friendPhoto"><img src="{{friend.picture}}"></div>
+								<div class="friendName"><span>{{friend.firstName}} {{friend.lastName}}</span></div>
+							</div>
+							<div class="friends-Action-col">
+								<div class="inviteFriend"><span class="lightgray">Invite to class (coming soon)<span></div>
+								<!-- <div class="inviteFriend"><a href=""><span>Invite to class<span></a></div> -->
+							</div>
+						</li>
+					</ul>							
+				</div>
+			</div>
+		</div>
+		<!-- REFERRALS END -->
+
 		<!-- FRIENDS -->
 		<div class="col-sm-9" ng-show="teammates">
 			<div class="mb8">

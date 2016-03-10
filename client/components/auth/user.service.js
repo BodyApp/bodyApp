@@ -152,6 +152,12 @@ angular.module('bodyAppApp')
           controller:'sendWelcomeEmail'
         }
       },
+      generateReferralCode: {
+        method: 'PUT',
+        params: {
+          controller:'generateReferralCode'
+        }
+      },
       createTokBoxToken: {
         method: 'PUT',
         params: {

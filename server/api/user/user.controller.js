@@ -242,6 +242,43 @@ exports.checkCoupon = function(req, res, next){
   })
 };
 
+exports.generateReferralCode = function(req, res, next){
+  var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+  var string_length = 10;
+  var randomString = '';
+  for (var i=0; i<string_length; i++) {
+    var rnum = Math.floor(Math.random() * chars.length);
+    randomString += chars.substring(rnum,rnum+1);
+  }
+
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+
+    stripe.coupons.create({
+      percent_off: 50,
+      duration: 'once',
+      metadata: {
+        "referrerId": user._id.toString(),
+        "referrerFirstName": user.firstName,
+        "referrerLastName": user.lastName,
+        "referrerEmail": user.email
+      }
+      // id: randomString
+    }, function(err, coupon) {
+      
+      // console.log("Coupon " + coupon.id + " created in Stripe")
+      if (err) {console.log(err); return res.status(400).send(err);}
+      console.log(coupon)
+      user.referralCode = coupon.id;
+      user.save(function(err){
+        res.status(200).json(user)
+        if (err) return console.log(err);
+        return
+      });
+    });
+  })
+};
+
 // Adds or updates a users card using Stripe integration.
 exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;
@@ -320,6 +357,19 @@ exports.postBilling = function(req, res, next){
 
         if (coupon) {
           user.mostRecentCoupon = coupon.id
+          console.log(coupon.id)
+          User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
+            if(err) return console.log(err);
+            pulledUser.referrals = pulledUser.referrals || {}
+            pulledUser.referrals[user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
+
+            pulledUser.save(function(err){
+              console.log("Successfully saved referral of user " + user._id + " by user " + pulledUser._id)
+              if (err) return console.log(err);
+              return
+            });
+
+          });
         }
 
         //If going to add card information, have to pull the card information any time update user subscription / card information.  Otherwise, it's incorrect.

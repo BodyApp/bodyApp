@@ -433,6 +433,22 @@ h1 {
   font-style: italic;
 }
 
+.shorterMargin {
+  margin-bottom: 2px;
+}
+
+.tweetButton {
+  height: 40px;
+}
+
+.facebookButton {
+  height: 30px;
+}
+
+.emailButton {
+  height: 30px;
+}
+
 /*.fixedAtTop {
   position:fixed;
   top:0;

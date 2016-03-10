@@ -55,6 +55,8 @@ var UserSchema = new Schema({
   results: Schema.Types.Mixed,
   ratingsSubmitted: Array,
   mostRecentCoupon: String,
+  referralCode: String,
+  referrals: Object,
   facebook: {},
   twitter: {},
   google: {},

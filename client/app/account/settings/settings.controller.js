@@ -2,6 +2,7 @@
 
 angular.module('bodyAppApp')
   .controller('SettingsCtrl', function ($scope, $http, $uibModal, $state, $rootScope, User, Auth) {
+    var ref = new Firebase("https://bodyapp.firebaseio.com");
     $scope.errors = {};
     $scope.teammates = true;
     $scope.profilePage = false;
@@ -9,8 +10,36 @@ angular.module('bodyAppApp')
     $scope.support = false;
 
     $scope.editingCreditCardInfo = false;
-    $scope.currentUser = Auth.getCurrentUser();
-    var currentUser = $scope.currentUser;
+    var currentUser;
+    
+    if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
+      Auth.getCurrentUser().$promise.then(function(user) {
+        setUser(user)
+      })            
+    } else {
+      setUser(Auth.getCurrentUser())
+    }
+
+    function setUser(user) {
+      $scope.currentUser = user;  
+      currentUser = $scope.currentUser;
+      $scope.numReferrals = currentUser.referrals ? Object.keys(currentUser.referrals).length : 0;
+      if ($scope.numReferrals) pullReferrals(currentUser);
+
+      $scope.friendList = [];
+
+      if (!$scope.currentUser.referralCode) {
+        User.generateReferralCode({id: $scope.currentUser._id}, {}, function(user){
+            console.log("Successfully generated referral code " + user.referralCode)
+            $scope.currentUser = user;
+            Auth.updateUser(user)
+        }, function(err){console.log('error generating referral code: ' + err)})
+      }
+      
+      pullFriendPictures()
+    }
+    
+    
     // $scope.subEndDate;
     // if ($scope.currentUser.stripe && $scope.currentUser.stripe.subscription) {
     //   if ($scope.currentUser.stripe.subscription.endDate) {
@@ -26,19 +55,28 @@ angular.module('bodyAppApp')
     //   }
     // }
 
-    $scope.friendList = [];
-
-    var ref = new Firebase("https://bodyapp.firebaseio.com");
-    pullFriendPictures()
-
     function pullFriendsFromFbObjects() {
 
     }
 
+    function pullReferrals(user) {
+      $scope.referrals = []
+      for (var referee in user.referrals) {
+        console.log(user.referrals[referee]);
+    
+        ref.child("fbUsers").child(user.referrals[referee].facebookId).once('value', function(snapshot) {
+          console.log(snapshot.val())
+          $scope.referrals.push(snapshot.val())
+          if(!$scope.$$phase) $scope.$apply();
+        })
+      }
+    }
+
+
    $scope.saveNewEmail = function(emailToSave) {
       console.log(emailToSave)
       User.saveEmailAddress({id: $scope.currentUser._id}, {email: emailToSave}, function(user){
-          console.log("Email successfull updated.")
+          console.log("Email successfully updated.")
           $scope.currentUser = user;
           Auth.updateUser(user)
           $scope.editingEmail = false;
