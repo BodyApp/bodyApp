@@ -141,7 +141,19 @@ angular.module('bodyAppApp')
                 console.log("Error saving Timezone: " + err)
             }).$promise;
           }
-        
+
+          //Olark Integration
+          if (user.firstName && user.lastName) {
+            olark('api.visitor.updateFullName', {
+                fullName: user.firstName + " " + user.lastName.charAt(0)
+            });
+          }
+
+          olark('api.visitor.updateCustomFields', {
+            id: user._id,
+            fbId: user.facebookId
+          });
+
         }
 
         if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
