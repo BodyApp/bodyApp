@@ -28,6 +28,7 @@ router.put('/:id/getUser', auth.isAuthenticated(), controller.getUser);
 router.put('/:id/getUserAndInjuries', auth.isAuthenticated(), controller.getUserAndInjuries);
 router.put('/:id/getInjuries', auth.isAuthenticated(), controller.getInjuries);
 router.put('/:id/generateReferralCode', auth.isAuthenticated(), controller.generateReferralCode);
+router.put('/:id/generateSingleParentCoupon', auth.isAuthenticated(), controller.generateSingleParentCoupon);
 router.put('/:id/saveTimezone', auth.isAuthenticated(), controller.saveTimezone);
 
 router.put('/:id/createIntercomHash', auth.isAuthenticated(), controller.createIntercomHash);

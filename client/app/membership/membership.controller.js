@@ -81,7 +81,7 @@ angular.module('bodyAppApp')
 		}
 
 		function openStripePayment(coupon) {
-      var amountToPay = 2000;
+      var amountToPay = 3000;
       $scope.invalidCouponEntered = false;
       $uibModalInstance.dismiss('join');
       
@@ -114,8 +114,7 @@ angular.module('bodyAppApp')
           })
           .error(function(err) {
               console.log(err)
-              modalInstance.close();
-              if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+              // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
               return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
           }.bind(this));
         }

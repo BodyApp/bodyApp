@@ -259,6 +259,7 @@ exports.generateReferralCode = function(req, res, next){
       duration: 'once',
       metadata: {
         "referrerId": user._id.toString(),
+        "type": "referralCode",
         "referrerFirstName": user.firstName,
         "referrerLastName": user.lastName,
         "referrerEmail": user.email
@@ -270,6 +271,38 @@ exports.generateReferralCode = function(req, res, next){
       if (err) {console.log(err); return res.status(400).send(err);}
       console.log(coupon)
       user.referralCode = coupon.id;
+      user.save(function(err){
+        res.status(200).json(user)
+        if (err) return console.log(err);
+        return
+      });
+    });
+  })
+};
+
+exports.generateSingleParentCoupon = function(req, res, next){
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+
+    stripe.coupons.create({
+      percent_off: 100,
+      duration: 'repeating',
+      duration_in_months: 3,
+      max_redemptions: 1,
+      redeem_by: 1458619199,
+      metadata: {
+        "referrerId": user._id.toString(),
+        "type": "singleParentCampaign",
+        "referrerFirstName": user.firstName,
+        "referrerLastName": user.lastName,
+        "referrerEmail": user.email
+      }
+      // id: randomString
+    }, function(err, coupon) {
+      
+      // console.log("Coupon " + coupon.id + " created in Stripe")
+      if (err) {console.log(err); return res.status(400).send(err);}
+      user.singleParentCode = coupon.id;
       user.save(function(err){
         res.status(200).json(user)
         if (err) return console.log(err);
@@ -360,14 +393,16 @@ exports.postBilling = function(req, res, next){
           console.log(coupon.id)
           User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
             if(err) return console.log(err);
-            pulledUser.referrals = pulledUser.referrals || {}
-            pulledUser.referrals[user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
+            if(pulledUser) {
+              pulledUser.referrals = pulledUser.referrals || {}
+              pulledUser.referrals[user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
 
-            pulledUser.save(function(err){
-              console.log("Successfully saved referral of user " + user._id + " by user " + pulledUser._id)
-              if (err) return console.log(err);
-              return
-            });
+              pulledUser.save(function(err){
+                console.log("Successfully saved referral of user " + user._id + " by user " + pulledUser._id)
+                if (err) return console.log(err);
+                return
+              });
+            }
 
           });
         }
@@ -419,7 +454,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "pilot20",
+              plan: "launch30",
               coupon: coupon.id
             }, cardHandler
           );
@@ -428,7 +463,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "pilot20",
+            plan: "launch30",
             coupon: coupon.id,
             description: "Created subscription during pilot"
           }, cardHandler);
@@ -439,7 +474,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "pilot20"
+              plan: "launch30"
             }, cardHandler
           );
         } else {
@@ -447,7 +482,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "pilot20",
+            plan: "launch30",
             description: "Created subscription during pilot"
           }, cardHandler);
         }

@@ -56,6 +56,7 @@ var UserSchema = new Schema({
   ratingsSubmitted: Array,
   mostRecentCoupon: String,
   referralCode: String,
+  singleParentCode: String,
   referrals: Object,
   facebook: {},
   twitter: {},

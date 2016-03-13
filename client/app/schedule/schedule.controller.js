@@ -44,6 +44,9 @@ angular.module('bodyAppApp')
           ref.onAuth(function(authData) {
             if (authData) {
               getBookings()
+              thisWeek();
+              setNextWeek();
+              setWod();
               console.log("User is authenticated with fb ");
             } else {
               console.log("User is logged out");
@@ -59,6 +62,7 @@ angular.module('bodyAppApp')
                     getBookings()
                     thisWeek();
                     setNextWeek();
+                    setWod();
                   }
                 }); 
               } else {
@@ -149,6 +153,12 @@ angular.module('bodyAppApp')
         }
 
         // if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
+
+        function setWod() {
+          var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
+            $scope.wod = snapshot.val()
+          });
+        }
 
         function getInfo(prop) {
           // var newDate = new Date(prop * 1)
@@ -311,8 +321,8 @@ angular.module('bodyAppApp')
           // });
         }
 
-        thisWeek();
-        setNextWeek();
+        // thisWeek();
+        // setNextWeek();
 
         $scope.availableClasses = true;
         

@@ -158,6 +158,12 @@ angular.module('bodyAppApp')
           controller:'generateReferralCode'
         }
       },
+      generateSingleParentCoupon: {
+        method: 'PUT',
+        params: {
+          controller:'generateSingleParentCoupon'
+        }
+      },
       createTokBoxToken: {
         method: 'PUT',
         params: {
