@@ -75,8 +75,10 @@ angular.module('bodyAppApp')
           rating: rating
         }, function(data) {
           console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
-          $uibModalInstance.close()
-          openAddMembershipQuestionModal()
+          $uibModalInstance.close();
+          if (!currentUser.stripe && ($scope.classCompleted.level === "Test" || $scope.classCompleted.level === "Intro" || $scope.classCompleted.level === "Open")) {
+            openAddMembershipQuestionModal()
+          }
         }, function(err) {
             console.log(err)
         }).$promise;  
