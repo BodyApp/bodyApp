@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassFeedbackModalCtrl', function ($scope, $state, $location, $uibModalInstance, Schedule, Auth, User, DayOfWeekSetter) {
+  .controller('ClassFeedbackModalCtrl', function ($scope, $state, $location, $uibModalInstance, $uibModal, Schedule, Auth, User, DayOfWeekSetter) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
   	console.log($scope.classCompleted)
 
@@ -76,6 +76,7 @@ angular.module('bodyAppApp')
         }, function(data) {
           console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
           $uibModalInstance.close()
+          openAddMembershipQuestionModal()
         }, function(err) {
             console.log(err)
         }).$promise;  
@@ -133,5 +134,14 @@ angular.module('bodyAppApp')
           }).setPriority(priority)
         }).setPriority(priority)
       }
+    }
+    
+    function openAddMembershipQuestionModal() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/results/addMembershipModal.html',
+        controller: 'AddMembershipModalCtrl',
+        windowClass: "modal-short"
+      });
     }
   });

@@ -234,8 +234,10 @@ a.full.btn {
   overflow-y: auto;
 }
 
-
-
+.modal.modal-short .modal-dialog {
+  max-height: 10%;
+  overflow-y: hidden;
+}
 
 
 

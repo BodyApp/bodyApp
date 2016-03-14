@@ -283,32 +283,33 @@ exports.generateReferralCode = function(req, res, next){
 exports.generateSingleParentCoupon = function(req, res, next){
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
-
-    stripe.coupons.create({
-      percent_off: 100,
-      duration: 'repeating',
-      duration_in_months: 3,
-      max_redemptions: 1,
-      redeem_by: 1458619199,
-      metadata: {
-        "referrerId": user._id.toString(),
-        "type": "singleParentCampaign",
-        "referrerFirstName": user.firstName,
-        "referrerLastName": user.lastName,
-        "referrerEmail": user.email
-      }
-      // id: randomString
-    }, function(err, coupon) {
-      
-      // console.log("Coupon " + coupon.id + " created in Stripe")
-      if (err) {console.log(err); return res.status(400).send(err);}
-      user.singleParentCode = coupon.id;
-      user.save(function(err){
-        res.status(200).json(user)
-        if (err) return console.log(err);
-        return
+    if (user.stripe.subscription.status === "active") {
+      stripe.coupons.create({
+        percent_off: 100,
+        duration: 'repeating',
+        duration_in_months: 3,
+        max_redemptions: 1,
+        redeem_by: 1458619199,
+        metadata: {
+          "referrerId": user._id.toString(),
+          "type": "singleParentCampaign",
+          "referrerFirstName": user.firstName,
+          "referrerLastName": user.lastName,
+          "referrerEmail": user.email
+        }
+        // id: randomString
+      }, function(err, coupon) {
+        
+        // console.log("Coupon " + coupon.id + " created in Stripe")
+        if (err) {console.log(err); return res.status(400).send(err);}
+        user.singleParentCode = coupon.id;
+        user.save(function(err){
+          res.status(200).json(user)
+          if (err) return console.log(err);
+          return
+        });
       });
-    });
+    }
   })
 };
 
@@ -937,23 +938,33 @@ exports.addRating = function(req, res, next) {
   var trainerId = req.body.trainer;
   var rating = req.body.rating
 
+  console.log(trainerId);
+  console.log(rating);
+
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else {
       if (!user) return res.status(401).send('Unauthorized');
+      console.log(user)
       user.ratingsSubmitted = user.ratingsSubmitted || [];
       user.ratingsSubmitted.push({trainer: trainerId, rating: rating})
       user.save(function(err) {
+        console.log("user saved")
         if (err) return validationError(res, err);
-        User.findById(trainerId, '-salt -hashedPassword', function (err, user) {
+        User.findById(trainerId, '-salt -hashedPassword', function (err, trainer) {
           if(err) { return err } else {
-            if (!user) return res.status(401).send('Unauthorized');
-            var currentRating = user.trainerRating * user.trainerNumRatings;
+            if (!trainer) return res.status(401).send('Unauthorized');
+            if (!trainer.trainerRating) trainer.trainerRating = 0
+            if (!trainer.trainerNumRatings) trainer.trainerNumRatings = 0
+            var currentRating = trainer.trainerRating * trainer.trainerNumRatings || 0;
             var newTotal = currentRating + Number(rating);
-            user.trainerNumRatings += 1;
-            user.trainerRating = newTotal / user.trainerNumRatings;
-            user.save(function(err) {
+            trainer.trainerNumRatings += 1;
+            trainer.trainerRating = newTotal / trainer.trainerNumRatings;
+            console.log(trainer.trainerNumRatings)
+            console.log(trainer.trainerRating)
+            trainer.save(function(err) {
+              console.log("saved trainer");
               if (err) return validationError(res, err);
-              res.status(200).json({trainerRating: user.trainerRating, trainerNumRatings: user.trainerNumRatings});
+              res.status(200).json({trainerRating: trainer.trainerRating, trainerNumRatings: trainer.trainerNumRatings});
             });
           } 
         });
