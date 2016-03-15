@@ -3,6 +3,7 @@
 angular.module('bodyAppApp')
   .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
     $(window).scrollTop()
+    // window.scrollTo(0, 0);
   	$scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
