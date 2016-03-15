@@ -131,7 +131,7 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
@@ -141,7 +141,7 @@ angular.module('bodyAppApp')
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabelpanelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
@@ -152,7 +152,7 @@ angular.module('bodyAppApp')
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
             name: 'BODY SUBSCRIPTION',
-            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,
@@ -162,7 +162,7 @@ angular.module('bodyAppApp')
           handler.open({
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
-            description: "$" + amountToPay / 100 + "/mo" + (coupon && coupon.valid ? " Discounted Pilot Price!" : " Pilot Price!"),
+            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             zipCode: true,
             shippingAddress: true,

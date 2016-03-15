@@ -15,14 +15,14 @@
 		</div>
 
 		<!-- REFERRALS -->
-		<div class="col-sm-9 mb32" ng-show = "currentUser.singleParentCode">
+		<div class="col-sm-9 mb32" ng-show = "currentUser.singleParentCode && teammates">
 			<div >
 				<div class="col-sm-9">
 					<h3 class="royalblue shorterMargin">Single Parent Referral</h3>
 				</div>
 				<div class="col-sm-12">
 					<div class="mb16">
-						<span>In honor of single parents day on 3/21, you can share this code with a single parents you know on or before 3/21 and they'll get 3 months of BODY ($90 value) for free!
+						<span>In honor of single parents day on 3/21, you can share this code with a single parents you know on or before 3/21 and they'll get 6 months of BODY for free!
 							<span class = "bold">{{currentUser.singleParentCode}}</span>
 						</span>
 					</div>
@@ -51,7 +51,7 @@
 
 
 		<!-- REFERRALS -->
-		<div class="col-sm-9 mb32">
+		<div class="col-sm-9 mb32" ng-show="teammates">
 			<div >
 				<div class="col-sm-9">
 					<h3 class="royalblue shorterMargin">Referrals ({{numReferrals}})</h3>

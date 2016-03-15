@@ -37,7 +37,7 @@ angular.module('bodyAppApp')
       }
 
       //Temporary campaign.  Delete 3/21
-      if (!$scope.currentUser.singleParentCode && $scope.currentUser.stripe.subscription.status === "active") {
+      if (!$scope.currentUser.singleParentCode && $scope.currentUser.stripe && $scope.currentuser.stripe.subscription && $scope.currentUser.stripe.subscription.status === "active") {
         User.generateSingleParentCoupon({id: $scope.currentUser._id}, {}, function(user){
             console.log("Successfully generated single parent code " + user.singleParentCode)
             $scope.currentUser = user;
