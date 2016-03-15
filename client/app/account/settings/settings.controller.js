@@ -33,7 +33,16 @@ angular.module('bodyAppApp')
             console.log("Successfully generated referral code " + user.referralCode)
             $scope.currentUser = user;
             Auth.updateUser(user)
-        }, function(err){console.log('error generating referral code: ' + err)})
+        }, function(err){console.log(err)})
+      }
+
+      //Temporary campaign.  Delete 3/21
+      if (!$scope.currentUser.singleParentCode && $rootScope.subscriptionActive) {
+        User.generateSingleParentCode({id: $scope.currentUser._id}, {}, function(user){
+            console.log("Successfully generated single parent code " + user.singleParentCode)
+            $scope.currentUser = user;
+            Auth.updateUser(user)
+        }, function(err){console.log('error generating single parent code code: ' + err)})
       }
       
       pullFriendPictures()

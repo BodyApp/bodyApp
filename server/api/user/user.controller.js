@@ -303,8 +303,9 @@ exports.generateSingleParentCoupon = function(req, res, next){
         // console.log("Coupon " + coupon.id + " created in Stripe")
         if (err) {console.log(err); return res.status(400).send(err);}
         user.singleParentCode = coupon.id;
-        user.save(function(err){
+        user.save(function(err){          
           res.status(200).json(user)
+          sendSingleParentEmail(user, coupon.id.toString())
           if (err) return console.log(err);
           return
         });
@@ -609,6 +610,36 @@ exports.createIntercomHash = function(req, res, next) {
     } 
   });
 
+}
+
+function sendSingleParentEmail(user, singleParentCouponCode) {
+  if (!user.email) return;
+  var emailAddress = user.email;
+  fs.readFile(__dirname + '/emails/subscribedEmail.html', function (err, html) {
+    if (err) throw err; 
+    var subscribedTemplate = html
+    fs.readFile(__dirname + '/emails/subscribedEmailHeader.html', function (err, html) {
+      if (err) throw err;
+      var subscribedHeader = html
+      var data = {
+        from: from_who,
+        to: emailAddress,
+        subject: "You're a Member Now!",
+        html: subscribedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Thanks for subscribing, ' + user.firstName + '!</h1><h4 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 14px; color: #747475; margin: 0px;">In honor of National Single Parents Day on March 21st, please share this email and coupon code <strong>'+ singleParentCouponCode + '</strong> with a single parent of your choosing and give them 3 months of BODY for free! This code can only be used once and must be redeemed on or before March 21st.</h4></td></tr></tbody></table></td></tr></tbody></table>' + subscribedTemplate.toString()
+      }
+      //Invokes the method to send emails given the above data with the helper library
+      mailgun.messages().send(data, function (err, body) {
+        //If there is an error, render the error page
+        if (err) {
+          console.log(err)
+          console.log("Error sending subscription email to " + emailAddress)
+        }
+        else {
+          console.log("Sent subscription email to " + emailAddress)
+        }
+      });
+    }); 
+  });   
 }
 
 function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime, level) {
@@ -938,9 +969,6 @@ exports.addRating = function(req, res, next) {
   var trainerId = req.body.trainer;
   var rating = req.body.rating
 
-  console.log(trainerId);
-  console.log(rating);
-
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else {
       if (!user) return res.status(401).send('Unauthorized');
@@ -959,8 +987,6 @@ exports.addRating = function(req, res, next) {
             var newTotal = currentRating + Number(rating);
             trainer.trainerNumRatings += 1;
             trainer.trainerRating = newTotal / trainer.trainerNumRatings;
-            console.log(trainer.trainerNumRatings)
-            console.log(trainer.trainerRating)
             trainer.save(function(err) {
               console.log("saved trainer");
               if (err) return validationError(res, err);

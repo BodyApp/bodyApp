@@ -69,13 +69,13 @@ angular.module('bodyAppApp')
 
 		var classDate = new Date(classToJoin.date)
 		var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-    var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
+    // var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
     // var sunDate = new Date();
     // sunDate.setDate(classDate.getDate() - classDate.getDay());
-    var sunGetDate = sunDate.getDate();
-    var sunGetMonth = sunDate.getMonth()+1;
-    var sunGetYear = sunDate.getFullYear();
-    var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+    // var sunGetDate = sunDate.getDate();
+    // var sunGetMonth = sunDate.getMonth()+1;
+    // var sunGetYear = sunDate.getFullYear();
+    // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
     var bookedUsers = {};
@@ -98,6 +98,7 @@ angular.module('bodyAppApp')
     $firebaseObject(ref.child("realTimeControls")
       .child(classDate.getTime())
       .child("tabata")).$bindTo($scope, 'tabata').then(function() {
+      	if (!$scope.tabata) return;
       	if (userIsInstructor) {
       		$scope.tabata.timeOnMinutes = "0"
       		$scope.tabata.timeOnSeconds = "20"
