@@ -48,14 +48,14 @@ User.find({}).remove(function() {
             "max": 17
         }
     },
-    role: "admin",
+    role: "user",
     __v: 51,
     // injuries: "Nope",
     bookedIntroClass: false,
-    completedNewUserFlow: false,
+    completedNewUserFlow: true,
     introClassTaken: false,
     // welcomeEmailSent: false,
-    // welcomeEmailSent: new Date(),
+    welcomeEmailSent: new Date(),
     // level: 1
     }, 
     {

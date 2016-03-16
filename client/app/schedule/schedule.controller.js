@@ -13,6 +13,8 @@ angular.module('bodyAppApp')
         $scope.thisWeek;
         $scope.chosenDay;
         $scope.timeNow = new Date().getTime();
+        $scope.classExists = {};
+        $scope.classDeleted = {};
 
         Video.destroyHardwareSetup()
 
@@ -45,7 +47,7 @@ angular.module('bodyAppApp')
             if (authData) {
               getBookings()
               thisWeek();
-              setNextWeek();
+              // setNextWeek();
               setWod();
               console.log("User is authenticated with fb ");
             } else {
@@ -61,7 +63,7 @@ angular.module('bodyAppApp')
                     // $window.location.reload()
                     getBookings()
                     thisWeek();
-                    setNextWeek();
+                    // setNextWeek();
                     setWod();
                   }
                 }); 
@@ -242,6 +244,31 @@ angular.module('bodyAppApp')
           })
         }
 
+        // $scope.classDeleted = function(dateTime) {
+          // if (!$scope.classDeleted[dateTime]) {
+            // $scope.classDeleted[dateTime] = true
+            // $scope.days.forEach(function(day) {
+            //   console.log(day.val())
+            //   if (day && day.slots && day.slots[dateTime]) {console.log("Hey"); $scope.classDeleted[dateTime] = false; } 
+            // })
+
+            // $scope.nextWeek.forEach(function(day) {
+            //   console.log(day.val())
+            //   if (day && day.slots && day.slots[dateTime]) $scope.classDeleted[dateTime] = false
+            // })
+          // }
+
+          // for (var day in $scope.currentWeek) {
+          //   console.log(day)
+          //   if (day.slots[dateTime]) classExists = true
+          // }
+
+          // for (var day in $scope.nextWeek) {
+          //   if (day.slots[dateTime]) classExists = true
+          // }
+          // return !classExists;
+        // }
+
         function getBookings() {
           // ref.child("userBookings").child(currentUser._id).startAt(todayDate.getTime() - 60*60*1000).on('value', function(snapshot) {
           //   $scope.userBookings = snapshot.val()
@@ -285,8 +312,24 @@ angular.module('bodyAppApp')
           var sunGetYear = sunDate.getFullYear();
           var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
-          if (!$scope.currentWeek) $scope.currentWeek = $firebaseObject(ref.child("classes").child(weekOf))
+          // if (!$scope.currentWeek) $scope.currentWeek = $firebaseObject(ref.child("classes").child(weekOf))
           // if (!$scope.currentWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'currentWeek')
+
+          // for (var day in $scope.currentWeek.val()) {
+            // $scope.currentWeek.forEach(function(day) {
+            // console.log(day)
+            // if ($scope.currentWeek.hasOwnProperty(day)) {
+            //   for (var classDateTime in day.slots) {
+              // day.forEach(function(hello) {
+              //   console.log(classDateTime)
+              //     console.log(classDateTime)
+              //   $scope.classExists[classDateTime] = true
+              //   if(!$scope.$$phase) $scope.$apply();
+              // })
+              
+              
+            
+          // }
           
           $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
           // unbindMethod()
@@ -295,20 +338,29 @@ angular.module('bodyAppApp')
           // });
         }
 
-        function setNextWeek() {
-          var todayDate = new Date();
-          var nextWeekTime = todayDate.getTime() + 1000*60*60*24*7;
-          var nextWeekDate = new Date(nextWeekTime);
-          var sunDate = new Date(nextWeekDate.getFullYear(), nextWeekDate.getMonth(), nextWeekDate.getDate() - nextWeekDate.getDay(), 11, 0, 0);
-          // var sunDate = new Date();
-          // sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
-          var sunGetDate = sunDate.getDate();
-          var sunGetMonth = sunDate.getMonth()+1;
-          var sunGetYear = sunDate.getFullYear();
-          var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-          if (!$scope.nextWeek) $scope.nextWeek = $firebaseObject(ref.child("classes").child(weekOf))
+        // function setNextWeek() {
+          // var todayDate = new Date();
+          // var nextWeekTime = todayDate.getTime() + 1000*60*60*24*7;
+          // var nextWeekDate = new Date(nextWeekTime);
+          // var sunDate = new Date(nextWeekDate.getFullYear(), nextWeekDate.getMonth(), nextWeekDate.getDate() - nextWeekDate.getDay(), 11, 0, 0);
+          // // var sunDate = new Date();
+          // // sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
+          // var sunGetDate = sunDate.getDate();
+          // var sunGetMonth = sunDate.getMonth()+1;
+          // var sunGetYear = sunDate.getFullYear();
+          // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+          // if (!$scope.nextWeek) $scope.nextWeek = $firebaseObject(ref.child("classes").child(weekOf))
           // if (!$scope.nextWeek) $firebaseObject(ref.child("classes").child(weekOf)).$bindTo($scope, 'nextWeek')
-        }
+
+          // $scope.nextWeek.forEach(function(day) {
+          //   for (var classDateTime in day.slots) {
+          //     console.log(classDateTime)
+          //     $scope.classExists[classDateTime] = true
+          //     if(!$scope.$$phase) $scope.$apply();
+          //   }
+          // })
+
+        // }
 
         $scope.setCalendarToNextWeek = function() { nextWeek() }
         function nextWeek() {
