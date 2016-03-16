@@ -52,10 +52,10 @@ User.find({}).remove(function() {
     __v: 51,
     // injuries: "Nope",
     bookedIntroClass: false,
-    completedNewUserFlow: true,
-    introClassTaken: true,
+    completedNewUserFlow: false,
+    introClassTaken: false,
     // welcomeEmailSent: false,
-    welcomeEmailSent: new Date(),
+    // welcomeEmailSent: new Date(),
     // level: 1
     }, 
     {

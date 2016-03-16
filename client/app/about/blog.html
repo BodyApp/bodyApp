@@ -38,7 +38,7 @@
           <p class = "mt0 mb0">&bull; Social features allowing you to share results and compete with friends</p>
           <p class = "mt0 mb0">&bull; A 24/7 coaching and wellness hotline for all of your fitness and nutrition needs</p>          
 
-          <p class = "mt32">
+          <p class = "mt24">
           At only $30 a month,  we’re on a mission to offer the world’s most effective and convenient home fitness training that aligns with your busy schedules, but most importantly, your life.  
           
           </p>
@@ -55,6 +55,23 @@
       </div>
     </div>
 
+  </section>
+  <section class="">
+      <div id="scroll-link" class="bodylife" ng-hide = "videoSee">
+        <div class="pt120 pb88 text-center relative" style="background: rgba(34,72,147,0.5);">
+          <h1 class="white bold mb0">#myBODY</h1>
+          <h3 class="white" style="padding: 0 15%">Meet Ali, a sales engineer, mother of two and proud BODY member.</h3>
+        </div>
+        <a href="#" ng-click = "videoSee = !videoSee">        
+          <div class="pt32 pb32 text-center relative" style="background: rgba(13,28,69,0.5);">
+            <img class="vid-play-btn inline-block" style="vertical-align: middle;" src="assets/images/icons/play_button.png">
+            <h3 class="white inline-block mb0" style="margin-left: 15px; vertical-align: middle;">Find out how BODY brings fitness to busy Moms like Ali</h3>
+          </div>
+        </a>
+      </div>
+      <div class="video-full-width" ng-if = "videoSee">
+        <iframe width="100%" height="470" src="https://www.youtube.com/embed/0MvO3-8CLNc?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+      </div>
   </section>
 
 <div ng-include="'components/footer/footer.html'"></div>

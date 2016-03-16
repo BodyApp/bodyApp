@@ -12,7 +12,7 @@ angular.module('jshor.angular-addtocalendar', [])
 			dateObj.setUTCHours(date.substring(9, 11));
 			dateObj.setUTCMinutes(date.substring(11, 13));
 			dateObj.setUTCSeconds(date.substring(13, 15));
-			console.log(dateObj)
+			console.log(dateObj.getTime())
 			return dateObj.toString();
 		};
 

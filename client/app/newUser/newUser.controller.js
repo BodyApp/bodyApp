@@ -158,7 +158,8 @@ angular.module('bodyAppApp')
                         email: user.email, // Email address
                         user_id: user._id,
                         "bookedIntro": user.bookedIntroClass,
-                        "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                        "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000),
+                        "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
                     };
                 }, function(err) {
                     console.log("Error adding class: " + err);
