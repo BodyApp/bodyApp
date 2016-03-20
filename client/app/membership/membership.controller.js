@@ -65,6 +65,8 @@ angular.module('bodyAppApp')
 		$scope.joinClicked = function(couponEntered) {
       if (!couponEntered) {
   			openStripePayment()
+      } else if (couponEntered === currentUser.referralCode){
+        $scope.userEnteredOwnCoupon = true;
       } else {
         User.checkCoupon({ id: currentUser._id }, {
           couponString: couponEntered

@@ -22,6 +22,7 @@
             </div>
             <div class = "text-centered" ng-show = "enterCoupon">
               <div style = "color: red" ng-if = "invalidCouponEntered">Invalid Code Entered</div>
+              <div style = "color: red" ng-if = "userEnteredOwnCoupon">You can't use you're own code!</div>
               <input placeholder = "Enter code here" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
             </div>
             <a class="join-btn btn mt4 mb8" ng-click = "joinClicked(couponEntered)" href="#">Join</a>
