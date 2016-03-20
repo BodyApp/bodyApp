@@ -33,6 +33,9 @@ angular.module('bodyAppApp')
             console.log("Successfully generated referral code " + user.referralCode)
             $scope.currentUser = user;
             Auth.updateUser(user)
+            Intercom('update', {
+                "referralCode": user.referralCode
+            });
         }, function(err){console.log(err)})
       }
 
@@ -44,8 +47,34 @@ angular.module('bodyAppApp')
             Auth.updateUser(user)
         }, function(err){console.log('error generating single parent code code: ' + err)})
       }
+
+      //Firebase authentication check
+        var ref = new Firebase("https://bodyapp.firebaseio.com/");
+        ref.onAuth(function(authData) {
+          if (authData) {
+            pullFriendPictures()
+            console.log("User is authenticated with fb ");
+          } else {
+            console.log("User is logged out");
+            if (currentUser.firebaseToken) {
+              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                if (error) {
+                  Auth.logout();
+                  $window.location.reload()
+                  console.log("Firebase user authentication failed", error);
+                } else {
+                  if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                  // pullFriendPictures()
+                }
+              }); 
+            } else {
+              Auth.logout();
+              $window.location.reload()
+            }
+          }
+        })
       
-      pullFriendPictures()
+      // pullFriendPictures()
     }
     
     
@@ -102,14 +131,16 @@ angular.module('bodyAppApp')
       //   })
       // }
       if (currentUser.friendList) {
+        
         for (var i = 0; i < currentUser.friendList.length; i++) {
-          var userRef = ref.child("fbUsers").child(currentUser.friendList[i].id)
-          userRef.once('value', function(snapshot) {
-            var userPulled = snapshot.val()
-            if (userPulled) $scope.friendList.push(userPulled)
+          
+          ref.child("fbUsers").child(currentUser.friendList[i].id).once('value', function(snapshot) {
+            if (snapshot.val()) $scope.friendList.push(snapshot.val())
             if(!$scope.$$phase) $scope.$apply();
           })
         }     
+      } else {
+        console.log("Friend list not available.")
       }
     }
 

@@ -5,20 +5,27 @@ angular.module('jshor.angular-addtocalendar', [])
 		var cal = ics();
 
 		var utcToDate = function(date) {
-			var dateObj = new Date(date);
+			var timeOffset = moment().utcOffset();
+			// date = date - timeOffset*60*1000
+			var dateObj = new Date();
+			// var dateObj = new Date(date);
 			dateObj.setFullYear(date.substring(0, 4));
 			dateObj.setDate(date.substring(6, 8));
 			dateObj.setMonth(parseInt(date.substring(4, 6))-1);
-			dateObj.setUTCHours(date.substring(9, 11));
-			dateObj.setUTCMinutes(date.substring(11, 13));
-			dateObj.setUTCSeconds(date.substring(13, 15));
-			console.log(dateObj.getTime())
+			dateObj.setHours(date.substring(9, 11));
+			dateObj.setMinutes(date.substring(11, 13));
+			dateObj.setSeconds(date.substring(13, 15));
+
+			dateObj = new Date(dateObj.getTime() + timeOffset*60*1000)
+			console.log(dateObj)
 			return dateObj.toString();
 		};
 
 		$scope.description = $scope.description || '';
 		$scope.getIcsCalendarUrl = function() {
+			// console.log($scope.startDateReg)
 			cal.addEvent($scope.title, $scope.description, $scope.location, utcToDate($scope.startDate), utcToDate($scope.endDate));
+			// cal.addEvent($scope.title, $scope.description, $scope.location, $scope.startDateReg, $scope.endDateReg);
 			return cal.download();
 		};
 

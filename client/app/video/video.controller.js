@@ -109,7 +109,7 @@ angular.module('bodyAppApp')
       	else if (!userIsInstructor) {
       		console.log("Watching whether tabata is on or off.")
       		$scope.$watch('tabata.isOn', function(data){
-	          document.getElementById('tabata').stop();
+	          document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
 						document.getElementById('tabata').reset();
 						if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
 							console.log("Starting consumer tabata")
@@ -120,7 +120,7 @@ angular.module('bodyAppApp')
 	        });
       		
       		$scope.$watch('tabata.lastSet', function(data){
-	          document.getElementById('tabata').stop();
+	          document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
 						document.getElementById('tabata').reset();
 						console.log("Stopping and resetting tabata")
 	        });
@@ -141,12 +141,12 @@ angular.module('bodyAppApp')
   	
   	stopwatchRef.$watch(function() {
   		if (stopwatchRef.running > stopwatchRef.stopped) {
-  			document.getElementById('stopwatch').stop();
+  			document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
   			document.getElementById('stopwatch').reset();
   			$scope.stopwatchStartTime = stopwatchRef.running;
   			document.getElementById('stopwatch').start();
   		} else {
-  			document.getElementById('stopwatch').stop();
+  			document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
   			document.getElementById('stopwatch').reset();
   			$scope.stopwatchStartTime = new Date().getTime();
   		}
@@ -486,7 +486,7 @@ angular.module('bodyAppApp')
 				// var vidHeight = 70;
 
 				var streamId = event.stream.connection.data.toString();
-				var streamBoxNumber = 1
+				var streamBoxNumber = 1;
 
 				if (streamId === classToJoin.trainer._id.toString()) {
 					console.log("Received trainer stream")
@@ -704,17 +704,24 @@ angular.module('bodyAppApp')
 					suggestedFPS = 7;
 				}
 
-				var audioInputDevice = Video.getAudioInput().deviceId;
-				var videoInputDevice = Video.getVideoInput().deviceId;
+				var audioInputDevice = Video.getAudioInput() ? Video.getAudioInput().deviceId : undefined;
+				var videoInputDevice = Video.getVideoInput() ? Video.getVideoInput().deviceId : undefined; 
 
 				//Prevents accidentally not having an audio device
-				if (!audioInputDevice) {
+				if (audioInputDevice && videoInputDevice) {
+					initPublisher()
+				} else {
 					OT.getDevices(function(error, devices) {
 						if (devices) {
 						  var audioInputDevices = devices.filter(function(element) {
 						    return element.kind == "audioInput";
 						  });
-						  audioInputDevice = audioInputDevices[0];
+						  var videoInputDevices = devices.filter(function(element) {
+						    return element.kind == "videoInput";
+						  });
+						  if (!audioInputDevice) audioInputDevice = audioInputDevices[0];
+						  if (!videoInputDevice) videoInputDevice = videoInputDevices[0];
+						  initPublisher()
 						  // for (var i = 0; i < audioInputDevices.length; i++) {
 						  //   console.log("audio input device: ", audioInputDevices[i].deviceId);
 						  // }
@@ -725,57 +732,57 @@ angular.module('bodyAppApp')
 				}
 
 				//Prevents accidentally not having a video device
-				if (!videoInputDevice) {
-					OT.getDevices(function(error, devices) {
-						if (devices) {
-						  var videoInputDevices = devices.filter(function(element) {
-						    return element.kind == "videoInput";
-						  });
-						  videoInputDevice = videoInputDevices[0];
-						  for (i = 0; i < videoInputDevices.length; i++) {
-						    console.log("video input device: ", videoInputDevices[i].deviceId);
-						  }
-						} else {
-							console.log("No devices discovered " + err)
-						}
-					});
-				}
+				// if (!videoInputDevice) {
+				// 	OT.getDevices(function(error, devices) {
+				// 		if (devices) {
+				// 		  var videoInputDevices = devices.filter(function(element) {
+				// 		    return element.kind == "videoInput";
+				// 		  });
+				// 		  videoInputDevice = videoInputDevices[0];
+				// 		  for (i = 0; i < videoInputDevices.length; i++) {
+				// 		    console.log("video input device: ", videoInputDevices[i].deviceId);
+				// 		  }
+				// 		} else {
+				// 			console.log("No devices discovered " + err)
+				// 		}
+				// 	});
+				// }
 
-				console.log(audioInputDevice)
-
-				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
-		      insertMode: 'replace',
-		      audioSource: audioInputDevice, 
-		      videoSource: videoInputDevice,
-		      resolution: suggestedResolution,
-		      frameRate: suggestedFPS,
-		      publishAudio:true, 
-		      publishVideo:true,
-		      mirror: true,
-		      width: vidWidth,
-				  height: vidHeight,
-		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
-		      style: {
-		      	buttonDisplayMode: 'off', //Mute microphone button
-		      	nameDisplayMode: 'off' //Can also be off or auto
-		      }
-		    }, function(err) {
-		    	if (err) {
-				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
-				      // Access denied can also be handled by the accessDenied event
-				      alert('Please allow access to the Camera and Microphone and try publishing again.');
-				    } else {
-				      alert('Failed to get access to your camera or microphone. Please check that your webcam'
-				        + ' is connected and not being used by another application and try again.');
+				function initPublisher() {
+					publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
+			      insertMode: 'replace',
+			      audioSource: audioInputDevice, 
+			      videoSource: videoInputDevice,
+			      resolution: suggestedResolution,
+			      frameRate: suggestedFPS,
+			      publishAudio:true, 
+			      publishVideo:true,
+			      mirror: true,
+			      width: vidWidth,
+					  height: vidHeight,
+			      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
+			      style: {
+			      	buttonDisplayMode: 'off', //Mute microphone button
+			      	nameDisplayMode: 'off' //Can also be off or auto
+			      }
+			    }, function(err) {
+			    	if (err) {
+					    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
+					      // Access denied can also be handled by the accessDenied event
+					      alert('Please allow access to the Camera and Microphone and try publishing again.');
+					    } else {
+					      alert('Failed to get access to your camera or microphone. Please check that your webcam'
+					        + ' is connected and not being used by another application and try again.');
+					    }
+					    publisher.destroy();
+					    publisher = null;
+			    	} else {
+				    	publisherInitialized = true;
+					    publish();
+				    	console.log("successfully published")
 				    }
-				    publisher.destroy();
-				    publisher = null;
-		    	} else {
-			    	publisherInitialized = true;
-				    publish();
-			    	console.log("successfully published")
-			    }
-		    });
+			    });
+				}	
 
 		    publisher.on('streamCreated', function (event) {
 		    	// console.log(event)
@@ -798,7 +805,8 @@ angular.module('bodyAppApp')
 			  	event.preventDefault();
 				  console.log("The publisher stopped streaming. Reason: " + event.reason);
 				  if (event.reason === 'networkDisconnected') {
-			      alert('Your publisher lost its connection. Please check your internet connection and try publishing again.');
+			      alert('You lost internet connection, so we sent you to the dashboard. Please try joining the class again.');
+			      $location.path('/schedule')
 			    }
 				});
 
@@ -1047,7 +1055,7 @@ angular.module('bodyAppApp')
 
 			$timeout(function() { 
 				$scope.tabata.isOn = true 
-				document.getElementById('tabata').stop();
+				document.getElementById('tabata') ? document.getElementById('tabata').stop() : console.log("tabata not set");
 				document.getElementById('tabata').reset();
 			}, 500) //Makes sure that lastSet is already set before isOn called.  Otherwise may wind up doing something screwy.
 
@@ -1134,7 +1142,7 @@ angular.module('bodyAppApp')
 						// document.getElementById('tabata').start();
 						$timeout(function() {
 							$scope.tabata.isOn = false;
-							document.getElementById('tabata').stop();
+							document.getElementById('tabata').stop() ? document.getElementById('tabata').stop() : console.log("tabata not set");
 							document.getElementById('tabata').reset();
 						}, 1000)
 						$timeout(function() {
@@ -1151,7 +1159,7 @@ angular.module('bodyAppApp')
 						// document.getElementById('tabata').start();
 						$timeout(function() {
 							$scope.tabata.isOn = true;
-							document.getElementById('tabata').stop();
+							document.getElementById('tabata').stop() ? document.getElementById('tabata').stop() : console.log("tabata not set");
 							document.getElementById('tabata').reset();
 						}, 1000)
 						$timeout(function() {

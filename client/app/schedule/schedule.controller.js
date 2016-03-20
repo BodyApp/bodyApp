@@ -106,7 +106,8 @@ angular.module('bodyAppApp')
               "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
               "newUserFlowComplete": user.completedNewUserFlow,
               "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
-              "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
+              "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+              "referralCode" : user.referralCode
             };
           } else {
             User.createIntercomHash({id: currentUser._id}, {}, function(user) {
@@ -124,7 +125,8 @@ angular.module('bodyAppApp')
                 "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
                 "newUserFlowComplete": user.completedNewUserFlow,
                 "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
-                "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+                "referralCode" : user.referralCode
               };
             }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
           }
@@ -557,14 +559,10 @@ angular.module('bodyAppApp')
                     ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""});
                     ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level});
                     
-                    window.intercomSettings = {
-                        app_id: "daof2xrs",
-                        email: user.email, // Email address
-                        user_id: user._id,
-                        user_hash: user.intercomHash,
+                    Intercom('update', {
                         "bookedIntro": user.bookedIntroClass,
-                        "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000)
-                    };
+                        "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
+                    });
 
                     // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
                     // getInfo(slot.date);
@@ -621,6 +619,9 @@ angular.module('bodyAppApp')
             // slot.$save();
             currentUser = user;
             $scope.currentUser = currentUser;
+            Intercom('update', {
+                "latestClassTaken_at": Math.floor(new Date(slot.date*1) / 1000)
+            });
           }, function(err) {
               console.log("Error adding class: " + err)
               // slot.bookedUsers = slot.bookedUsers || {};
@@ -748,17 +749,24 @@ angular.module('bodyAppApp')
 
       $scope.calendarDateSetter = function(slot) {
         // var date = new Date(slot.date);
-        var localDate = new Date(slot.date);
-        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        // console.log(moment().zone())
+        var timeOffset = moment().utcOffset();
+        // var timeOffset = - moment().zone();
+        // var timeOffset = jstz().utc_offset + 60;
+        var date = new Date(slot.date - timeOffset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
       $scope.calendarDateSetterEnd = function(slot) {
         // var date = new Date(slot.date);
-        var localDate = new Date(slot.date);
-        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        // var timeOffset = jstz().utc_offset + 60;
+        var timeOffset = moment().utcOffset();
+        // var timeOffset = - moment().zone();  
+        var date = new Date(slot.date - timeOffset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
-      } 
+      }
+
     })
+
 
     //Currently unused
     // .filter('showAvailable', function() {

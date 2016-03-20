@@ -243,14 +243,6 @@ exports.checkCoupon = function(req, res, next){
 };
 
 exports.generateReferralCode = function(req, res, next){
-  var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
-  var string_length = 10;
-  var randomString = '';
-  for (var i=0; i<string_length; i++) {
-    var rnum = Math.floor(Math.random() * chars.length);
-    randomString += chars.substring(rnum,rnum+1);
-  }
-
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
 
@@ -263,6 +255,7 @@ exports.generateReferralCode = function(req, res, next){
         "referrerFirstName": user.firstName,
         "referrerLastName": user.lastName,
         "referrerEmail": user.email,
+        "referrerFacebookId": user.facebookId,
         "text": "50% off first month!"
       }
       // id: randomString
@@ -288,13 +281,13 @@ exports.generateSingleParentCoupon = function(req, res, next){
       stripe.coupons.create({
         percent_off: 100,
         duration: 'repeating',
-        duration_in_months: 6,
+        duration_in_months: 3,
         max_redemptions: 1,
         redeem_by: 1458619199,
         metadata: {
           "referrerId": user._id.toString(),
           "type": "singleParentCampaign",
-          "text": "6 months free!",
+          "text": "3 months free!",
           "referrerFirstName": user.firstName,
           "referrerLastName": user.lastName,
           "referrerEmail": user.email
@@ -627,7 +620,7 @@ function sendSingleParentEmail(user, singleParentCouponCode) {
         from: from_who,
         to: emailAddress,
         subject: "You're a Member Now!",
-        html: subscribedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Thanks for subscribing, ' + user.firstName + '!</h1><h4 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 14px; color: #747475; margin: 0px;">In honor of National Single Parents Day on March 21st, please share this email and coupon code <strong>'+ singleParentCouponCode + "</strong> with a single parent of your choosing and they'll get 6 months of BODY for free! This code can only be used once and must be redeemed on or before March 21st.</h4></td></tr></tbody></table></td></tr></tbody></table>" + subscribedTemplate.toString()
+        html: subscribedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Thanks for subscribing, ' + user.firstName + '!</h1><h4 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 14px; color: #747475; margin: 0px;">In honor of National Single Parents Day on March 21st, please share this email and coupon code <strong>'+ singleParentCouponCode + "</strong> with a single parent of your choosing and they'll get 3 months of BODY for free! This code can only be used once and must be redeemed on or before March 21st.</h4></td></tr></tbody></table></td></tr></tbody></table>" + subscribedTemplate.toString()
       }
       //Invokes the method to send emails given the above data with the helper library
       mailgun.messages().send(data, function (err, body) {

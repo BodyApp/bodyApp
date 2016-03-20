@@ -91,6 +91,7 @@ exports.setup = function (User, config) {
           
           if (profile._json) {
             user.facebook = profile._json;
+            user.picture = profile.photos ? profile.photos[0].value : user.picture
           }
 
           user.lastLoginDate = new Date();

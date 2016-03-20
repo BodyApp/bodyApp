@@ -153,14 +153,10 @@ angular.module('bodyAppApp')
                 }, function(user) {
                     Auth.updateUser(user)
                     //Intercom integration
-                    window.intercomSettings = {
-                        app_id: "daof2xrs",
-                        email: user.email, // Email address
-                        user_id: user._id,
+                    Intercom('update', {
                         "bookedIntro": user.bookedIntroClass,
-                        "introClassBooked": Math.floor(new Date(user.introClassBooked*1) / 1000),
                         "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000)
-                    };
+                    });
                 }, function(err) {
                     console.log("Error adding class: " + err);
                     ref.child("bookings").child(classToBook.date).child(currentUser._id).remove();
@@ -260,13 +256,15 @@ angular.module('bodyAppApp')
     }
 
     $scope.calendarDateSetter = function(slot) {
-        var localDate = new Date(slot.$id*1);
-        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        // var timeOffset = jstz().utc_offset + 60;
+        var timeOffset = moment().utcOffset();
+        var date = new Date(slot.date - timeOffset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"         
       } 
       $scope.calendarDateSetterEnd = function(slot) {
-        var localDate = new Date(slot.$id*1);
-        var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
+        // var timeOffset = jstz().utc_offset + 60;
+        var timeOffset = moment().utcOffset();
+        var date = new Date(slot.date - timeOffset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+(date.getHours()+1):(date.getHours()+1))+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
   });
