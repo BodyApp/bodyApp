@@ -61,6 +61,20 @@ angular.module('bodyAppApp')
     // });
 
 	  var currentUser = Auth.getCurrentUser();
+    $scope.couponEntered = currentUser.referredBy;
+
+    if ($scope.couponEntered) {
+      User.checkCoupon({ id: currentUser._id }, {
+        couponString: $scope.couponEntered
+      }, function(coupon) {
+        if (!coupon.valid) {
+          $scope.couponEntered = undefined
+        }
+      }, function(err) {
+          $scope.couponEntered = undefined
+          console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
+      }).$promise
+    }
 
 		$scope.joinClicked = function(couponEntered) {
       if (!couponEntered) {
