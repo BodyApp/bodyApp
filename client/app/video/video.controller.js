@@ -1190,14 +1190,20 @@ angular.module('bodyAppApp')
 				if (classToJoin.level === "Intro") {
 					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
 		        Auth.updateUser(user);
+		        Intercom('update', {
+              "lastClassTaken_at": Math.floor(new Date(classToJoin.date*1) / 1000)
+            });
 		      }, function(err) {
 		          console.log("Error setting intro class taken property: " + err)                  
 		      }).$promise;
 				} else {
 					User.pushTakenClass({ id: currentUser._id }, {classToPush: classToJoin.date}, function(user) {
 		        Auth.updateUser(user);
+		        Intercom('update', {
+              "lastClassTaken_at": Math.floor(new Date(classToJoin.date*1) / 1000)
+            });
 		      }, function(err) {
-		          console.log("Error setting class taken property: " + err)                  
+	          console.log("Error setting class taken property: " + err)                  
 		      }).$promise;
 				}
 			}

@@ -57,6 +57,8 @@ var UserSchema = new Schema({
   mostRecentCoupon: String,
   referralCode: String,
   singleParentCode: String,
+  referredBy: String,
+  usersReferred: Object,
   referrals: Object,
   facebook: {},
   twitter: {},

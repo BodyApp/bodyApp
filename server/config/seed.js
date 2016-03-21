@@ -55,7 +55,7 @@ User.find({}).remove(function() {
     completedNewUserFlow: true,
     introClassTaken: false,
     // welcomeEmailSent: false,
-    welcomeEmailSent: new Date(),
+    // welcomeEmailSent: new Date(),
     // level: 1
     }, 
     {

@@ -18,7 +18,19 @@ angular.module('bodyAppApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/');
+      
+    // .rule(function ($injector, $location, Referral) {
+    //  //what this function returns will be set as the $location.url
+    //   var path = $location.path(), normalized = path.toLowerCase();
+      
+    //   if (path != normalized) {
+    //       //instead of returning a new url string, I'll just change the $location.path directly so I don't have to worry about constructing a new url string and so a new state change is not triggered
+    //       $location.replace().path(normalized);
+    //   }
+    //   console.log(path) 
+    //   Referral.setReferralCode(path.slice(1))
+    // })
+    .otherwise('/');
 
     $locationProvider.html5Mode(true);
     // $locationProvider.hashPrefix('#!');

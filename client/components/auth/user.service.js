@@ -175,6 +175,12 @@ angular.module('bodyAppApp')
         params: {
           controller: 'saveTimezone'
         }
+      },
+      referredBy: {
+        method: 'PUT',
+        params: {
+          controller: 'referredBy'
+        }
       }
 	  });
   });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MainCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+  .controller('MainCtrl', function ($scope, $uibModal, $location, $http, $window, $state, Auth, User) {
 
     $scope.videoSee = false;
     // $window.scrollTo(0,0);

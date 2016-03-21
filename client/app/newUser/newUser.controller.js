@@ -174,11 +174,13 @@ angular.module('bodyAppApp')
     }
 
     $scope.goToDashboard = function() {
+        Intercom('update', {
+            "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false
+        });       
     	$state.go('schedule');
     }
 
     $scope.saveNewEmail = function(emailToSave) {
-        console.log(emailToSave)
         User.saveEmailAddress({id: $scope.currentUser._id}, {email: emailToSave}, function(user){
             console.log("Email successfull updated.")
             $scope.currentUser = user;
@@ -203,7 +205,12 @@ angular.module('bodyAppApp')
         .$promise.then(function(user) {
 			console.log("Successfully saved injury, goals and emergency contact info.");
 			Auth.getUpdatedUser();
-            $scope.newUserStep++;   
+            $scope.newUserStep++;
+            Intercom('update', {
+                "goals": user.goals,
+                "injuries": user.injuries,
+                "emergencyContact": user.emergencyContact
+            });   
 		})
     	// }
     }

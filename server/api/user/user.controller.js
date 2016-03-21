@@ -211,7 +211,7 @@ exports.changePassword = function(req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
-  var userId = req.user._id;
+  var userId = req.user._id; 
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
@@ -266,13 +266,32 @@ exports.generateReferralCode = function(req, res, next){
       console.log(coupon)
       user.referralCode = coupon.id;
       user.save(function(err){
-        res.status(200).json(user)
         if (err) return console.log(err);
-        return
+        return res.status(200).json(user)
       });
     });
   })
 };
+
+exports.referredBy = function(req, res, next) {
+  var referredBy = req.body.referredBy;
+
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+    user.referredBy = referredBy;
+    user.save(function(err) {
+    if (err) return console.log(err)
+      User.findById(user._id, '-salt -hashedPassword', function(err, referringUser) {
+        referringUser.usersReferred = referringUser.usersReferred || {};
+        referringUser.usersReferred[user.id];
+        referringUser.save(function(err) {
+          if(err) return console.log(err)
+            return res.status(200).json(user);
+        })
+      })
+    })
+  })
+}
 
 exports.generateSingleParentCoupon = function(req, res, next){
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
