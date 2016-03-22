@@ -14,7 +14,8 @@ angular.module('bodyAppApp', [
   "checklist-model",
   "angularScreenfull",
   'angular-tour',
-  'duScroll'
+  'duScroll',
+  'ngclipboard'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

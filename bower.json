@@ -27,7 +27,8 @@
     "momentjs": "*",
     "moment-timezone": "*",
     "checklist-model": "*",
-    "angular-scroll": "*"
+    "angular-scroll": "*",
+    "ngclipboard": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

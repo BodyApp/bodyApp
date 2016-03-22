@@ -126,12 +126,12 @@ angular.module('bodyAppApp')
               $scope.currentUser = currentUser;
               $rootScope.subscriptionActive = true;
               if (slot) bookClass(slot);
-              User.generateSingleParentCoupon({ id: currentUser._id }, {}, function(user) {
-                Auth.updateUser(user);
-                console.log("generated single parent coupon " + user.singleParentCode)
-              }, function(err) {
-                  console.log("Error generating subscriber coupon and email: " + err)                
-              }).$promise;
+              // User.generateSingleParentCoupon({ id: currentUser._id }, {}, function(user) {
+              //   Auth.updateUser(user);
+              //   console.log("generated single parent coupon " + user.singleParentCode)
+              // }, function(err) {
+              //     console.log("Error generating subscriber coupon and email: " + err)                
+              // }).$promise;
               // modalInstance.close() //Added an x to the modal, so can close that way
               
           })
