@@ -319,7 +319,7 @@ exports.generateSingleParentCoupon = function(req, res, next){
         user.singleParentCode = coupon.id;
         user.save(function(err){          
           res.status(200).json(user)
-          sendSingleParentEmail(user, coupon.id.toString())
+          sendSubscriberEmail(user)
           if (err) return console.log(err);
           return
         });
@@ -444,6 +444,7 @@ exports.postBilling = function(req, res, next){
       // }
 
         user.save(function(err){
+          sendSubscriberEmail(user)
           res.json(user)
           if (err) return cb(err);
           return cb(null);
@@ -626,7 +627,7 @@ exports.createIntercomHash = function(req, res, next) {
 
 }
 
-function sendSingleParentEmail(user, singleParentCouponCode) {
+function sendSubscriberEmail(user) {
   if (!user.email) return;
   var emailAddress = user.email;
   fs.readFile(__dirname + '/emails/subscribedEmail.html', function (err, html) {
@@ -676,7 +677,7 @@ function sendShippingInfo(userInfo) {
     from: from_who,
     to: 'classbooked@getbodyapp.com',
     subject: "New subscriber: " + userInfo.firstName + " " + userInfo.lastName,
-    text: "Referred by code: "+ userInfo.mostRecentCoupon + "Goals: " + userInfo.goals + ". Email: " + userInfo.email + ". Shipping Information: " + shippingAddress.shipping_name + " " + shippingAddress.shipping_address_line1 + " " + shippingAddress.shipping_address_city + " " + shippingAddress.shipping_address_state + " " + shippingAddress.shipping_address_zip + " " + shippingAddress.shipping_address_country 
+    text: "Referred by code: "+ userInfo.mostRecentCoupon + " Goals: " + userInfo.goals + ". Email: " + userInfo.email + ". Shipping Information: " + shippingAddress.shipping_name + " " + shippingAddress.shipping_address_line1 + " " + shippingAddress.shipping_address_city + " " + shippingAddress.shipping_address_state + " " + shippingAddress.shipping_address_zip + " " + shippingAddress.shipping_address_country 
   };
 
   mailgun.messages().send(data, function (error, body) {
@@ -1113,7 +1114,7 @@ exports.sendWelcomeEmail = function(req,res) {
           from: from_who,
           to: emailAddress,
           subject: 'Welcome To The Club',
-          html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+user.firstName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;' + welcomeEmailTemplate.toString()
+          html: welcomeEmailHeader.toString() + '<p style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 16px; font-weight: 400; font-size: 14px; color: #1f1f1f; margin: 0px;">Hi '+user.firstName+',<br /><br />BODY was founded with a rebellious spirit and lofty objective: to offer you the world’s most effective group fitness training that’s both healthy and aligned with your values. We’re excited to have you joining us. Here’s what you can expect as you get started with your BODY fitness journey.</p>&#13;<p>Begin earning rewards by sending your unique referral url to people you think would enjoy BODY! They will get 50% off their first month by using your url. https://www.getbodyapp.com/referral/'+user.referralCode+'</p>' + welcomeEmailTemplate.toString()
         }
         if (!user.welcomeEmailSent) {
           mailgun.messages().send(data, function (err, body) {

@@ -88,15 +88,6 @@ angular.module('bodyAppApp')
             }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
         }
 
-        if (!currentUser.welcomeEmailSent) {
-            currentUser.welcomeEmailSent = true;
-            Auth.updateUser(currentUser);
-            User.sendWelcomeEmail({ id: currentUser._id }, {
-                }, function(user) {
-                }, function(err) {
-                    console.log("Error: " + err)
-            }).$promise;  
-        }
         if (currentUser.timezone != tzName) {
             User.saveTimezone({ id: currentUser._id }, {timezone: tzName}, function(user) {
               console.log("Updated user timezone preference")
@@ -107,6 +98,27 @@ angular.module('bodyAppApp')
                 console.log("Error saving Timezone: " + err)
             }).$promise;
         }
+
+        if (!$scope.currentUser.referralCode) {
+        User.generateReferralCode({id: $scope.currentUser._id}, {}, function(user){
+            console.log("Successfully generated referral code " + user.referralCode)
+            $scope.currentUser = user;
+            Auth.updateUser(user)
+            Intercom('update', {
+                "referralCode": user.referralCode
+            });
+
+            if (!currentUser.welcomeEmailSent) {
+                currentUser.welcomeEmailSent = true;
+                Auth.updateUser(currentUser);
+                User.sendWelcomeEmail({ id: currentUser._id }, {
+                    }, function(user) {
+                    }, function(err) {
+                        console.log("Error: " + err)
+                }).$promise;  
+            }
+        }, function(err){console.log(err)})
+      }
     })
 
     var ref = new Firebase("https://bodyapp.firebaseio.com")
@@ -175,7 +187,7 @@ angular.module('bodyAppApp')
 
     $scope.goToDashboard = function() {
         Intercom('update', {
-            "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false
+            "newUserFlowComplete": currentUser.completedNewUserFlow ? currentUser.completedNewUserFlow : false
         });       
     	$state.go('schedule');
     }
