@@ -88,7 +88,7 @@ angular.module('bodyAppApp')
         // var timeOffset = jstz().utc_offset + 60;
         // var timeOffset = -moment().zone();
         var timeOffset = moment().utcOffset();
-        var date = new Date(slot.date - timeOffset*60*1000); // Subtract additional 100 because otherwise the utc_offset is incorrect after daylight savings change.
+        var date = new Date(slot.date - timeOffset*60*1000);
         // var date = new Date(localDate.getTime() - jstz().utc_offset*60*1000);
         return date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
       } 
