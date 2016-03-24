@@ -2,11 +2,31 @@
 
 angular.module('bodyAppApp')
   .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+    var ref = new Firebase("https://bodyapp.firebaseio.com");
+    $scope.challenges;
     $(window).scrollTop()
+    getWods()
     // window.scrollTo(0, 0);
   	$scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
+
+    function getWods() {
+      var rightNow = new Date().getTime()
+      ref.child('WODs').orderByChild('dateTime').limitToLast(60).endAt(rightNow).once('value', function(snapshot) {
+        $scope.challenges = []
+        for (var i in snapshot.val()) {
+          $scope.challenges.unshift(snapshot.val()[i])
+        }
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    $scope.formatDateTime = function(dateTime) {
+      moment.locale('en')
+      return moment(new Date(dateTime)).format('ll');
+      // return moment(dateTime).format('z')
+    }
 
     $scope.signUp = function() {
       var modalInstance = $uibModal.open({
@@ -44,4 +64,9 @@ angular.module('bodyAppApp')
     //         scrollTop: $(".scroll-to").offset().top + -100},
     //         600);
     // });
-  });
+  })
+// .filter('reverse', function(items) {
+//   return function(items) {
+//     return items.slice().reverse();
+//   };
+// });

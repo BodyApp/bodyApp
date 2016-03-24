@@ -1191,6 +1191,7 @@ angular.module('bodyAppApp')
 					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
 		        Auth.updateUser(user);
 		        Intercom('update', {
+		        	"introTaken":true,
               "lastClassTaken_at": Math.floor(new Date(classToJoin.date*1) / 1000)
             });
 		      }, function(err) {

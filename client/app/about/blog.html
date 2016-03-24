@@ -1,23 +1,33 @@
 <meta name="fragment" content="!">
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 72px;"></div>
 
-  <section class="mb48" style="background: #22498E; padding: 6% 60px;">
+<!--   <section class="mb48" style="background: #22498E; padding: 6% 60px;">
     <div class="text-center">
       <h1 class="white mb0">BODY Launches & Honors 'Super Parents'</h1>
       <h3 class="purpleblue mb0">#myBODY</h3>
     </div>
-  </section>
+  </section> -->
 
   <section class="container">
+    <div class="col-sm-12">
+      <div ng-repeat = "daysInfo in challenges" ng-show = "daysInfo.description">
+        <h1 class = "mb0 mt16">{{formatDateTime(daysInfo.dateTime)}}</h1><h3 class = "mb8">{{daysInfo.title}}</h3>
+        <h4 class = "mb64">{{daysInfo.description}}</h4>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- <section class="container">
     <div class="col-md-8 col-md-push-2 col-sm-12">
       <div class="post text-center mb72">
         <h5 class="royalblue mb16">MARCH 15TH</h5>
-        <h1 class="darkblue mb24">Official Launch</h1>
-        <!-- <div class="col-sm-12 col-md-8"> -->
+        <h1 class="darkblue mb24">Public Launch</h1>
+        
             <video style = "width: 60%" loop autoplay poster="assets/images/user-video-on-laptop.jpg">
               <source src="assets/images/video/consumer-screen.webm" type="video/webm">
             </video>
-        <!-- </div> -->
+        
         <div class = "mt32 text-left">
           <p>
             Today is an exciting day. After nearly a year of hard work, we’re officially launching BODY -- a first-of-its kind fitness & wellness experience that brings high-end group fitness classes and personal coaching to users in real time -- wherever they have an internet connection -- at a price almost anyone can afford!
@@ -54,8 +64,7 @@
         </div>
       </div>
     </div>
-
-  </section>
+  </section> -->
   <section class="">
       <div id="scroll-link" class="bodylife" ng-hide = "videoSee">
         <div class="pt120 pb88 text-center relative" style="background: rgba(34,72,147,0.5);">
