@@ -13,6 +13,11 @@ angular.module('bodyAppApp')
     var emergencyContact = {};
     $scope.timezone;
     var tzName = jstz().timezone_name;
+    var ref = new Firebase("https://bodyapp.firebaseio.com")
+
+    function getUpcomingIntros() {
+        $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros').orderByKey().limitToFirst(12))
+    }
 
     setTimezone();
     function setTimezone() {
@@ -26,6 +31,7 @@ angular.module('bodyAppApp')
           var ref = new Firebase("https://bodyapp.firebaseio.com/");
           ref.onAuth(function(authData) {
               if (authData) {
+                getUpcomingIntros()
                 console.log("User is authenticated with fb ");
               } else {
                 console.log("User is logged out");
@@ -36,6 +42,7 @@ angular.module('bodyAppApp')
                       $window.location.reload()
                       console.log("Firebase user authentication failed", error);
                     } else {
+                      getUpcomingIntros()  
                       if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
                     }
                   }); 
@@ -121,10 +128,11 @@ angular.module('bodyAppApp')
       }
     })
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com")
-    $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros').orderByKey().limitToFirst(12))
+
+    
     // var query = $scope.allIntros.orderByKey().limitToFirst(10);
     // $scope.upcomingIntros = $firebaseArray(ref.child('upcomingIntros'))
+
 
 	$scope.bookIntroClass = function(classBooked) {
         ref.child("bookings").child(classBooked.$id).once('value', function(snapshot) {

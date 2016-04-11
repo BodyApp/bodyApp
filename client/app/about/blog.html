@@ -1,17 +1,17 @@
 <meta name="fragment" content="!">
 <div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 72px;"></div>
 
-<!--   <section class="mb48" style="background: #22498E; padding: 6% 60px;">
+  <section class="mb48" style="background: #22498E; padding: 6% 60px;">
     <div class="text-center">
-      <h1 class="white mb0">BODY Launches & Honors 'Super Parents'</h1>
+      <h1 class="white mb0">BODY Blog & Daily Fitness Advice</h1>
       <h3 class="purpleblue mb0">#myBODY</h3>
     </div>
-  </section> -->
+  </section>
 
   <section class="container">
     <div class="col-sm-12">
       <div ng-repeat = "daysInfo in challenges" ng-show = "daysInfo.description">
-        <h1 class = "mb0 mt16">{{formatDateTime(daysInfo.dateTime)}}</h1><h3 class = "mb8">{{daysInfo.title}}</h3>
+        <h2 class = "mb0 mt16">{{formatDateTime(daysInfo.dateTime)}}</h2><h3 class = "mb8">{{daysInfo.title}}</h3>
         <h4 class = "mb64">{{daysInfo.description}}</h4>
       </div>
     </div>
@@ -68,7 +68,7 @@
   <section class="">
       <div id="scroll-link" class="bodylife" ng-hide = "videoSee">
         <div class="pt120 pb88 text-center relative" style="background: rgba(34,72,147,0.5);">
-          <h1 class="white bold mb0">#myBODY</h1>
+          <h2 class="white bold mb0">#myBODY</h2>
           <h3 class="white" style="padding: 0 15%">Meet Ali, a sales engineer, mother of two and proud BODY member.</h3>
         </div>
         <a href="#" ng-click = "videoSee = !videoSee">        

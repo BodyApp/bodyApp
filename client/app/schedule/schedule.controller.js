@@ -2,7 +2,8 @@
 
 angular.module('bodyAppApp')
     .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, $rootScope, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window, Referral, $cookieStore) {
-      var currentUser = Auth.getCurrentUser();
+      // var currentUser = Auth.getCurrentUser();
+      // var currentUser;
       var ref = new Firebase("https://bodyapp.firebaseio.com");
       var todayDate = new Date();
       $scope.todayDayOfWeek = todayDate.getDay();
@@ -32,6 +33,21 @@ angular.module('bodyAppApp')
         $scope.wod = snapshot.val()
       });
 
+      var currentUser = Auth.getCurrentUser();
+
+      if (currentUser && currentUser.$promise) {
+        currentUser.$promise.then(function(user) {
+          console.log("Calling setuser from promise resolution")
+          setUser(user)
+        })            
+      } else if (currentUser) {
+        console.log("Calling setuser without promise")
+        setUser(currentUser)
+      } else {
+        console.log("Calling setuser without currentuser")
+        setUser(Auth.getCurrentUser())
+      }
+
       var setUser = function(user) {
         currentUser = user
 
@@ -51,8 +67,8 @@ angular.module('bodyAppApp')
             console.log("User is authenticated with fb ");
           } else {
             console.log("User is logged out");
-            if (currentUser.firebaseToken) {
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+            if (user.firebaseToken) {
+              ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
                 if (error) {
                   Auth.logout();
                   $window.location.reload()
@@ -106,12 +122,13 @@ angular.module('bodyAppApp')
             "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false,
             "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
             "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+            "referredBy": user.referredBy,
             "referralCode" : user.referralCode,
             "role": user.role,
             "timezone": user.timezone
           };
         } else {
-          User.createIntercomHash({id: currentUser._id}, {}, function(user) {
+          User.createIntercomHash({id: user._id}, {}, function(user) {
             Auth.updateUser(user);
             window.intercomSettings = {
               app_id: "daof2xrs",
@@ -129,6 +146,7 @@ angular.module('bodyAppApp')
               "newUserFlowComplete": user.completedNewUserFlow,
               "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
               "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+              "referredBy": user.referredBy,
               "referralCode" : user.referralCode,
               "role": user.role,
               "timezone": user.timezone
@@ -177,15 +195,6 @@ angular.module('bodyAppApp')
               console.log(err)
           }).$promise
         }
-
-      }
-
-      if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
-        Auth.getCurrentUser().$promise.then(function(user) {
-          setUser(user)
-        })            
-      } else {
-        setUser(Auth.getCurrentUser())
       }
 
       // if (Video.devices) Video.destroyHardwareSetup() //User may navigate back to schedule from classStarting without actually joining class.
