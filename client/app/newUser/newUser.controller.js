@@ -225,12 +225,13 @@ angular.module('bodyAppApp')
         .$promise.then(function(user) {
 			console.log("Successfully saved injury, goals and emergency contact info.");
 			Auth.getUpdatedUser();
-            $scope.newUserStep++;
             Intercom('update', {
                 "goals": user.goals,
                 "injuries": user.injuries,
                 "emergencyContact": user.emergencyContact
-            });   
+            });
+            $scope.goToDashboard()   
+            $scope.newUserStep++;
 		})
     	// }
     }
