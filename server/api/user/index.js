@@ -49,6 +49,7 @@ router.put('/:id/saveResult', auth.isAuthenticated(), controller.saveResult);
 router.put('/:id/tourtipShown', auth.isAuthenticated(), controller.tourtipShown);
 
 router.post('/charge', auth.isAuthenticated(), controller.postBilling);
+router.post('/chargedropin', auth.isAuthenticated(), controller.postDropInBilling);
 
 router.post('/cancelsub', auth.isAuthenticated(), controller.cancelSubscription);
 

@@ -26,6 +26,7 @@ var UserSchema = new Schema({
   classesTaken: [],
   classesTaught: [],
   classesBooked: Object,
+  dropInClasses: Object,
   classesCancelled: Object,
   facebookId: String,
   friendList: Array,

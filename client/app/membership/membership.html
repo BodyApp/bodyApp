@@ -1,4 +1,4 @@
-<meta name="fragment" content="!"> -->
+<meta name="fragment" content="!">
   <section style = "padding-top: 0px;">
     <div class="membershipModal">
       <div ng-click = "closeModal()">
@@ -40,7 +40,7 @@
           <!-- </div> -->
 
           <div class="visible-xs pt72"></div>
-          <div class = "col-sm-2"></div>
+          <div ng-class = "{'col-sm-2': slot, 'col-sm-4': !slot}"></div>
           <div class="col-sm-6 col-md-4 col-membership">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
@@ -91,7 +91,7 @@
             </div>
           </div>
           <!-- <div class="visible-xs pt72"></div> -->
-          <div class="col-sm-6 col-md-4" ng-disabled = "!slot">
+          <div class="col-sm-6 col-md-4" ng-hide = "!slot">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
               <h3 class="royalblue pt32 mb8 text-center bold">Drop in</h3>
@@ -144,7 +144,7 @@
     </div>
   </section> 
 
-  <!-- <section id="scroll-link2" class="white-section">
+  <section id="scroll-link2" class="white-section">
     <div class="container mt72">
         <div class="col-sm-7 col-sm-push-5">
           <h1 class="darkblue">Unlimited classes monthly</h1>
@@ -155,9 +155,9 @@
           <img class="mt16" src="assets/images/icons/fat-loss-graph.jpg">
         </div>    
     </div>
-  </section> -->
+  </section>
 
-  <!-- <section class="white-section">
+  <section class="white-section">
     <div class="container mb72">
       <div class="col-sm-12 text-center">
         <h1 class="darkblue mb72">Sticking with your routine is now easy</h1>

@@ -5,11 +5,11 @@ angular.module('bodyAppApp')
   .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User) {
 
     $scope.slot = slot;
-    console.log(slot)
-    moment.locale('en')
-    var slotDate = moment(slot.date).format('M/D')
-    var slotTime = moment(slot.date).format('LT')
-
+    if (slot) {
+      moment.locale('en')
+      var slotDate = moment(slot.date).format('M/D')
+      var slotTime = moment(slot.date).format('LT')
+    }
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
@@ -220,7 +220,8 @@ angular.module('bodyAppApp')
           $http.post('/api/users/chargedropin', {
             user: currentUser,
             stripeToken: token,
-            shippingAddress: args
+            shippingAddress: args,
+            slot: slot
           })
           .success(function(data) {
             console.log("Successfully posted to /user/chargedropin");

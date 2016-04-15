@@ -105,7 +105,6 @@ angular.module('bodyAppApp')
 
         //Intercom integration
         if (user.intercomHash) {
-
           window.intercomSettings = {
             app_id: "daof2xrs",
             name: user.firstName + " " + user.lastName, // Full name

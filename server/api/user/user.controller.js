@@ -507,6 +507,103 @@ exports.postBilling = function(req, res, next){
   });
 };
 
+// Adds or updates a users card using Stripe integration.
+exports.postDropInBilling = function(req, res, next){
+  var stripeToken = req.body.stripeToken.id;
+  var shippingAddress = req.body.shippingAddress;
+  var slot = req.body.slot;
+
+  if(!stripeToken){
+    return console.log("error retrieving stripe token.")
+    // req.flash('errors', { msg: 'Please provide a valid card.' });
+    // res.redirect(req.redirect.failure);
+  }
+
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+    
+    var cb = function(err) {
+      if (err && err.statusCode) {
+        res.status(err.statusCode).send(err)
+        if(err.code){
+          console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + ' - Error: ' + err.code);
+        } else {
+          console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + '. Unknown error');
+        }
+      } else if (err) {
+        res.status(400).send(err)
+        console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Unknown error');
+      } else {
+        console.log('Billing has been updated.');
+      }
+      // req.flash('success', { msg: 'Billing has been updated.' });
+      // res.redirect(req.redirect.success);
+    };
+
+      var cardHandler = function(err, customer) {
+
+        // console.log(third);
+        if (err) return cb(err);
+        
+        // user.level = 1;
+        // if (!user.stripe) {
+        //   console.log("stripe object created on user")
+        //   user.stripe = {};
+        // }
+
+        if (shippingAddress) {
+          user.shippingAddress = shippingAddress;
+          // sendShippingInfo(user)
+        }
+
+        if(!user.stripe.customer.customerId){
+        //   // user.stripe.customer = {};
+        //   console.log("Didn't have customer ID yet.  Saving now.")
+          user.stripe.customer.customerId = customer.id;
+        }
+
+        user.dropInClasses = user.dropInClasses || {};
+        user.dropInClasses[slot.date] = true;
+
+        user.save(function(err){
+          res.json(user)
+          if (err) return cb(err);
+          return cb(null);
+          return
+        });
+      };
+
+      if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+        stripe.charges.create({
+          amount: 1000, // amount in cents, again
+          currency: "usd",
+          customer: user.stripe.customer.customerId, // Previously stored, then retrieved
+          metadata: {
+            "classBooked": slot.date,
+            "timeBooked": new Date().getTime()
+          }
+        }, cardHandler);
+      } else {
+        console.log("Creating new stripe customer for drop in class.")
+        stripe.customers.create({
+          email: user.email,
+          source: stripeToken,
+          description: "Created customer for drop in class."
+        }).then(function(customer){
+          stripe.charges.create({
+            amount: 1000, // amount in cents, again
+            currency: "usd",
+            customer: customer.id, // Previously stored, then retrieved
+            metadata: {
+              "classBooked": slot.date,
+              "timeBooked": new Date().getTime()
+            }
+          }, cardHandler)
+        })
+      }
+  });
+};
+
 exports.getSubscription = function(req, res, next){
   User.findById(req.params.id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
