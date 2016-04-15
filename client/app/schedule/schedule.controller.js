@@ -479,7 +479,7 @@ angular.module('bodyAppApp')
       }
 
       function checkWhetherUserIsSubscribed(slot) {
-        if (currentUser.stripe && currentUser.stripe.subscription && currentUser.stripe.subscription.status === "active") {
+        if (currentUser.stripe && currentUser.stripe.subscription && currentUser.stripe.subscription.status === "active") { //Change to rootscope check
             return true;
         } else {
           var modalInstance = $uibModal.open({

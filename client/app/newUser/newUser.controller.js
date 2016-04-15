@@ -231,7 +231,7 @@ angular.module('bodyAppApp')
                 "emergencyContact": user.emergencyContact
             });
             $scope.goToDashboard()   
-            $scope.newUserStep++;
+            // $scope.newUserStep++;
 		})
     	// }
     }

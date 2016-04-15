@@ -108,7 +108,7 @@ angular.module('bodyAppApp')
     }
 
 		function openStripePayment(coupon) {
-      var amountToPay = 3000;
+      var amountToPay = 5000;
       $scope.invalidCouponEntered = false;
       $uibModalInstance.dismiss('join');
       
