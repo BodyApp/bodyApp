@@ -4,6 +4,13 @@
 angular.module('bodyAppApp')
   .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User) {
 
+    $scope.slot = slot;
+    console.log(slot)
+    moment.locale('en')
+    var slotDate = moment(slot.date).format('M/D')
+    var slotTime = moment(slot.date).format('LT')
+
+
     var ref = new Firebase("https://bodyapp.firebaseio.com/")
 
     $scope.closeModal = function() {
@@ -96,6 +103,10 @@ angular.module('bodyAppApp')
       }
 		}
 
+    $scope.payClicked = function() {
+      openStripeDropIn()
+    }
+
 		function openStripePayment(coupon) {
       var amountToPay = 3000;
       $scope.invalidCouponEntered = false;
@@ -158,7 +169,7 @@ angular.module('bodyAppApp')
             name: 'BODY SUBSCRIPTION',
             email: currentUser.email,
             description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-            panelLabelpanelLabel: "Pay $" + amountToPay / 100 + " / Month",
+            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
             zipCode: true,
             // amount: amountToPay
@@ -180,12 +191,96 @@ angular.module('bodyAppApp')
             email: currentUser.email,
             description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-            zipCode: true,
             shippingAddress: true,
+            zipCode: true,
             // amount: amountToPay
           });
         }
       }
+    } 
+
+    function openStripeDropIn() {
+      if (!slot) return
+      var amountToPay = 1000;
+      // $scope.invalidCouponEntered = false;
+      $uibModalInstance.dismiss('join');
+      
+      // if (coupon && coupon.valid) {
+      //   amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+      // }
+      // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
+      // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
+      var handler = StripeCheckout.configure({
+        key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+        image: '../../assets/images/body-stripe.jpg',
+        locale: 'auto',
+        token: function(token, args) {
+          var modalInstance = openDropInPaymentConfirmedModal()
+          
+          $http.post('/api/users/chargedropin', {
+            user: currentUser,
+            stripeToken: token,
+            shippingAddress: args
+          })
+          .success(function(data) {
+            console.log("Successfully posted to /user/chargedropin");
+            Auth.updateUser(data);
+            currentUser = data;
+            $scope.currentUser = currentUser;
+            // $rootScope.subscriptionActive = true;
+            if (slot) bookClass(slot);
+          })
+          .error(function(err) {
+              console.log(err)
+              // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+              return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+          }.bind(this));
+        }
+      });
+      // if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
+        //If user has already signed up previously
+      if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+        handler.open({
+          name: '$'+amountToPay/100 +' DROP IN CLASS',
+          description: "Book " + slotTime + " class on " + slotDate,
+          panelLabel: "Pay $" + amountToPay / 100,
+          shippingAddress: true,
+          zipCode: true,
+          // amount: amountToPay
+        });    
+      } else {
+        handler.open({
+          name: '$'+amountToPay/100 +' DROP IN CLASS',
+          email: currentUser.email,
+          description: "Book " + slotTime + " class on " + slotDate,
+          panelLabel: "Pay $" + amountToPay / 100,
+          shippingAddress: true,
+          zipCode: true,
+          // amount: amountToPay
+        });
+      }
+      // } else {
+        // if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+        //   handler.open({
+        //     name: 'BODY SUBSCRIPTION',
+        //     description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
+        //     panelLabel: "Pay $" + amountToPay / 100 + " / Month",
+        //     zipCode: true,
+        //     shippingAddress: true,
+        //     // amount: amountToPay
+        //   });    
+        // } else {
+        //   handler.open({
+        //     name: 'BODY SUBSCRIPTION',
+        //     email: currentUser.email,
+        //     description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
+        //     panelLabel: "Pay $" + amountToPay / 100 + " / Month",
+        //     zipCode: true,
+        //     shippingAddress: true,
+        //     // amount: amountToPay
+        //   });
+        // }
+      // }
     } 
 
     function openPaymentConfirmedModal() {
@@ -203,6 +298,22 @@ angular.module('bodyAppApp')
 
       return modalInstance;
     }	
+
+    function openDropInPaymentConfirmedModal() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/account/payment/dropInThanks.html',
+        controller: 'PaymentCtrl',
+        backdrop: "static",
+        keyboard: false
+      });
+
+      modalInstance.result.then(function () {
+      }, function () {
+      });
+
+      return modalInstance;
+    } 
 
     function bookClass() {
     	var modalInstance = $uibModal.open({

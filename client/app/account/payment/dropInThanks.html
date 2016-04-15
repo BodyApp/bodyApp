@@ -1,17 +1,17 @@
 <div class="modal-body">
 	<img ng-src = "../assets/images/icons/x_button.png" class="cancel-modal" href="#" ng-click = "closeModal()"></img>
     <div class="col-sm-12 text-left">
-        <h3 class="mb16 darkblue" style = "color: #ffffff;">Thanks for becoming a member!</h3>
+        <h3 class="mb16 darkblue" style = "color: #ffffff;">Thanks for booking a class!</h3>
 				
         <div ng-show = "!errorProcessingPayment && !letIn">
-            <p  class="darkblue">This is the best day of our lives!  Welcome to the club!  Hold tight - we're processing your payment.</p>
+            <p  class="darkblue">Hold tight - we're processing your payment.</p>
             <button ng-show = "paymentComplete" class = "btn" ng-click = "letMeIn()">Let me in already!</button>
         </div>
 
         <p ng-show = "errorProcessingPayment" class="darkblue">There seems to be an issue processing your billing information.  Sorry about that!  Please try again or email support@getbodyapp.com for some assistance. </p>        
 
         <div ng-show = "paymentComplete && !errorProcessingPayment && letIn">
-            <p class="darkblue">There we go - all set! You will receive an email shortly with your payment receipt. Be sure to sign up for a few Level One classes!</p>        
+            <p class="darkblue">There we go - all set! You will receive an email shortly with your payment receipt.</p>        
             <p class="darkblue">If you have any questions, <a href="mailto:concierge@getbodyapp.com?Subject=Question%20About%20BODY">shoot us an email</a> and we'll get back to you within 24 hours.</p>
             <p>Thanks,<br>BODY Member Concierge<br><a href="mailto:concierge@getbodyapp.com?Subject=Question%20About%20BODY">concierge@getbodyapp.com</a></p>
         </div>

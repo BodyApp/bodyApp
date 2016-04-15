@@ -38,57 +38,96 @@
               </span>
             </div> -->          
           <!-- </div> -->
+
           <div class="visible-xs pt72"></div>
+          <div class = "col-sm-2"></div>
           <div class="col-sm-6 col-md-4 col-membership">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
               <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
               <div class="text-center" style="margin-bottom: 14px;">
                 <div style="width: 40%; display: inline-block;">
-                  <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">30</h1>
+                  <h1 class="pricingAmt royalblue"><sup>$</sup></h1><h1 class="pricingAmt royalblue">50</h1>
                   <span class="pricingTime royalblue">/mo</span>
-                  <span class="pricingType royalblue">Pilot pricing</span>
+                  <span class="pricingType royalblue">Unlimited classes</span>
                 </div>
-                <div style="width: 40%; display: inline-block;">
-                  <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">49</h1>
+                <!-- <div style="width: 40%; display: inline-block;">
+                  <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">70</h1>
                   <span class="pricingTime lightgray">/mo</span>
                   <span class="pricingType lightgray">Regular pricing</span>
-                </div>            
+                </div>             -->
               </div>
               <div class="bulletFeatures">
                 <hr>
                 <ul class="bulletChecks">
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Introductory session</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>No contracts, cancel anytime</span></li>
-                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
-                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
+                  <!-- <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li> -->
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Progression tracking</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Wellness hotline</span></li>
                 </ul>
                 <!-- <hr> -->
-              <!-- </div> -->
-              <div class="text-center" style = "font-size: 12px;">
-                <div ng-hide = "enterCoupon" class="darkgray mb8">Have a referral code or coupon? <a href="#" ng-click="enterCoupon = true">Click here</a></div>
-                <div ng-show = "enterCoupon" class="darkgray mb8">Nevermind, no coupon <a href="#" ng-click="enterCoupon = false">Click here</a></div>
-              
-                <div class = "text-centered" ng-show = "enterCoupon">
-                  <div style = "color: red" ng-if = "invalidCouponEntered">Invalid Code Entered</div>
-                  <div style = "color: red" ng-if = "userEnteredOwnCoupon">You can't use you're own code!</div>
-                  <input placeholder = "Enter code here" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
-                </div>
-                <a class="join-btn btn mt4 mb8" ng-click = "joinClicked(couponEntered)" href="#">Join</a>
-                <div class="securepayment">
-                  <span class="gray">Secured SSL Payment&nbsp;</span>
-                  <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
-                    <img src='https://www.expeditedssl.com/assets/lock-logo-70px-8fcd38ddb815b36d2cfdfdb9f67d60cf.png' alt='Expedited SSL Scanner'>
-                  </a>
+                <!-- </div> -->
+                <div class="text-center" style = "font-size: 12px;">
+                  <div ng-hide = "enterCoupon" class="darkgray mb8">Have a referral code or coupon? <a href="#" ng-click="enterCoupon = true">Click here</a></div>
+                  <div ng-show = "enterCoupon" class="darkgray mb8">Nevermind, no coupon <a href="#" ng-click="enterCoupon = false">Click here</a></div>
+                
+                  <div class = "text-centered" ng-show = "enterCoupon">
+                    <div style = "color: red" ng-if = "invalidCouponEntered">Invalid Code Entered</div>
+                    <div style = "color: red" ng-if = "userEnteredOwnCoupon">You can't use you're own code!</div>
+                    <input placeholder = "Enter code here" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
+                  </div>
+                  <a class="join-btn btn mt4 mb8" ng-click = "joinClicked(couponEntered)" href="#">Join</a>
+                  <div class="securepayment">
+                    <span class="gray">Secured SSL Payment&nbsp;</span>
+                    <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
+                      <img src='https://www.expeditedssl.com/assets/lock-logo-70px-8fcd38ddb815b36d2cfdfdb9f67d60cf.png' alt='Expedited SSL Scanner'>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- <div class="visible-xs pt72"></div> -->
+          <div class="col-sm-6 col-md-4" ng-disabled = "!slot">
+            <div class="stripeBlue"></div>
+            <div class="membershipFeatures">
+              <h3 class="royalblue pt32 mb8 text-center bold">Drop in</h3>
+              <div class="text-center" style="margin-bottom: 14px;">
+                <h2 class="pricingAmt royalblue"><sup>$</sup></h2><h2 class="pricingAmt royalblue">10</h2>
+                <span class="pricingTime royalblue">/ class</span>
+                <span class="pricingType royalblue">Join any class</span>
+              </div>
+              
+              <div class="bulletFeatures">
+                <hr>
+                <ul class="bulletChecks">
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Drop-in Class</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>No contract</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Unlimited classes per month</span></li>
+                  <!-- <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">$50 starter kit of equipment</span></li> -->
+                  
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Progression tracking</span></li>
+                  <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Wellness hotline</span></li>
+                </ul>
+                <div class="text-center" style = "font-size: 12px;">
+                  <div class="darkgray mb8">Pay for a single class</div>
+                  <a class="join-btn btn mt4 mb8" ng-click = "payClicked()" href="#">Pay</a>
+                  <div class="securepayment">
+                    <span class="gray">Secured SSL Payment&nbsp;</span>
+                    <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
+                      <img src='https://www.expeditedssl.com/assets/lock-logo-70px-8fcd38ddb815b36d2cfdfdb9f67d60cf.png' alt='Expedited SSL Scanner'>
+                    </a>
+                  </div>
+                </div>
+                <!-- <p class="membershipCard-btn pb16">Get started</p> -->
+              </div> 
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
   </section>
