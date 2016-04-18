@@ -471,7 +471,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "ralabala50",
+              plan: "ralabala30",
               coupon: coupon.id
             }, cardHandler
           );
@@ -480,7 +480,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "ralabala50",
+            plan: "ralabala30",
             coupon: coupon.id,
             description: "Created subscription during pilot"
           }, cardHandler);
@@ -491,7 +491,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.createSubscription(
             user.stripe.customer.customerId, {
               source: stripeToken,
-              plan: "ralabala50"
+              plan: "ralabala30"
             }, cardHandler
           );
         } else {
@@ -499,7 +499,7 @@ exports.postBilling = function(req, res, next){
           stripe.customers.create({
             email: user.email,
             source: stripeToken,
-            plan: "ralabala50",
+            plan: "ralabala30",
             description: "Created subscription during pilot"
           }, cardHandler);
         }
