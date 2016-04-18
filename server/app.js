@@ -59,12 +59,48 @@ if (config.env === 'production') {
 require('./config/express')(app);
 require('./routes')(app);
 
-throng(start, {
+// throng({
+//   workers: WORKERS,
+//   master: startMaster,
+//   start: startWorker
+// });
+
+// // This will only be called once
+// function startMaster() {
+//   console.log('Started master');
+// }
+
+// // This will be called four times
+// function startWorker(id) {
+//   console.log(`Started worker ${ id }`);
+
+//   process.on('SIGTERM', () => {
+//     console.log(`Worker ${ id } exiting...`);
+//     console.log('(cleanup would happen here)');
+//     process.exit();
+//   });
+// }
+
+// app.listen(config.port, function() {console.log("Listening on", config.port)})
+
+throng({
+  start: start,
+  master: startMaster,
   workers: WORKERS,
-  lifetime: Infinity
-});
+  lifetime: Infinity}
+);
+
+function startMaster() {
+  console.log('Started master');
+}
 
 function start() {
+  process.on('SIGTERM', function() {
+    console.log('Worker exiting');
+    process.exit();
+  });
+
+  
   // var crypto = require('crypto');
   // var express = require('express');
   // var blitz = require('blitzkrieg');
@@ -104,6 +140,8 @@ function start() {
     console.log('Listening on', config.port);
   }
 }
+
+
 
 // var server;
 // if (cluster.isMaster) {

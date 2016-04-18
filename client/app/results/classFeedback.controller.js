@@ -146,6 +146,6 @@ angular.module('bodyAppApp')
 	  	// 			// }
 	  	// 		}).setPriority(priority)
   		// 	}).setPriority(priority)
-  		}
+  		// }
   	}
   });
