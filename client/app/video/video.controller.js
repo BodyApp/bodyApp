@@ -794,11 +794,19 @@ angular.module('bodyAppApp')
 			     //  .child(classDate.getTime())
 				    
 				    //Sets Stream IDs in the class object for easier diagnosis of tokbox stream issues
-				    if (userIsInstructor) {
-				    	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.date).update({tokboxStreamId: event.stream.id})
-				    } else {
-				    	ref.child("bookings").child(classToJoin.date).child(currentUser._id).update({tokboxStreamId: event.stream.id})
-				    }
+				    // if (userIsInstructor) {
+				    // 	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.date).update({tokboxStreamId: event.stream.id})
+				    // } else {
+				    // 	ref.child("bookings").child(classToJoin.date).child(currentUser._id).update({tokboxStreamId: event.stream.id})
+				    // }
+				    olark('api.visitor.updateCustomFields', {
+						    "latestTokboxStreamId": event.stream.id
+						});
+
+				    Intercom('update', {
+ 							"latestTokboxStreamId": event.stream.id
+ 						});
+
 				});
 
 			  publisher.on("streamDestroyed", function (event) {
