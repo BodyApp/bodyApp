@@ -1,7 +1,7 @@
 <section class="banner">
     <div class="col-md-12 text-center">
       <h2 class="class-type mb0 mt16">{{classCompleted.level}} Class Wrap-up</h2>
-      <h4 class="page-description mb16">Enter your results</h4>
+      <h4 class="page-description mb16">Give us feedback!</h4>
     </div>
   </section>
 
@@ -53,7 +53,7 @@
       </div>        
     </div>
 
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
       <h3 class="text-center mb16">Your Results</h3>
 
       <span class="mb0">Score ({{classWod.scoreType.label}}):</span>
@@ -76,10 +76,11 @@
               <span class="onoffswitch-switch"></span>
           </label>
       </div>      
-    </div>
+    </div> -->
 
     <div class="col-sm-12 mt32 text-center">
-      <button class="btn" ng-click = "submitRatingAndResults(rating, score, comment, feedback, postToPublic, minutes, seconds)">Submit rating and results</button>
+      <!-- <button class="btn" ng-click = "submitRatingAndResults(rating, feedback, score, comment, postToPublic, minutes, seconds)">Submit rating and feedback</button> -->
+      <button class="btn" ng-click = "submitRatingAndResults(rating, feedback)">Submit rating and feedback</button>
     </div>
 
   </section>

@@ -59,8 +59,7 @@ if (config.env === 'production') {
 require('./config/express')(app);
 require('./routes')(app);
 
-throng({
-  start: start,
+throng(start, {
   workers: WORKERS,
   lifetime: Infinity
 });
