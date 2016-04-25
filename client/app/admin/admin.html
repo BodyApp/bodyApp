@@ -8,26 +8,80 @@
         <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
     </li>
   </ul> -->
-  <div class = "col-sm-2"></div>
-  <form novalidate class="simple-form col-sm-3">
-    <!-- <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br /> -->
-    <select ng-model="workoutToCreate.trainer" ng-options = "(option.firstName + ' ' + option.lastName) for option in instructors" required>
-      <!-- <option ng-options="option in instructors" value="{{option}}">{{option.firstName}} {{option.lastName}}</option> -->
-    </select>
-    <select ng-model="workoutToCreate.level" ng-options = "value for value in levels" required>
-    </select>
-    <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
-    <!-- <input style="color: black" type="text" ng-model="workoutToCreate.soundcloudUrl" placeholder = "Soundcloud Url"/><br /> -->
-     <select ng-if = "playlists" placeholder = "Soundcloud Playlist" ng-model="workoutToCreate.playlistUrl" ng-options = "(option.title + ': ' + option.track_count + ' trcks (' + roundMins(option.duration/1000/60) + ' mins)') for option in playlists | filter: {sharing: 'public'}">
-      <option value="" required>- Login To SoundCloud Below -</option>
-    </select>
-    <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
-    <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
-    <button style="background-image: url(../../assets/images/soundcloudButton.png); width: 245px; height: 32px" ng-click = "soundcloudAuth()"> </button>
-  </form>
+  <!-- <div class = "col-sm-2"></div> -->
+  <div class = "col-sm-12 mb64">
+    <form novalidate class="simple-form row mb72">
+      <!-- <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br /> -->
+      <select ng-model="workoutToCreate.trainer" ng-options = "(option.firstName + ' ' + option.lastName) for option in instructors" required>
+        <!-- <option ng-options="option in instructors" value="{{option}}">{{option.firstName}} {{option.lastName}}</option> -->
+      </select>
+      <select ng-model="workoutToCreate.level" ng-options = "value for value in levels" required>
+      </select>
+      <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
+      <!-- <input style="color: black" type="text" ng-model="workoutToCreate.soundcloudUrl" placeholder = "Soundcloud Url"/><br /> -->
+       <select ng-if = "playlists" placeholder = "Soundcloud Playlist" ng-model="workoutToCreate.playlistUrl" ng-options = "(option.title + ': ' + option.track_count + ' trcks (' + roundMins(option.duration/1000/60) + ' mins)') for option in playlists | filter: {sharing: 'public'}">
+        <option value="" required>- Login To SoundCloud Below -</option>
+      </select>
+      <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
+      <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
+      <button style="background-image: url(../../assets/images/soundcloudButton.png); width: 245px; height: 32px" ng-click = "soundcloudAuth()"> </button>
+    </form>
+
+    <!-- <section class="week-schedule scroll-to mb72"> -->
+        <div class="row">
+          <!-- <div class="col-sm-9">
+            <h1 class="darkblue mb0">{{studioId.toUpperCase()}} Class Schedule</h1>
+          </div> -->
+          <div class="col-sm-9 mb64">
+            <h4 class="week-selector darkblue bold" ng-show = "days">
+              <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="right" uib-popover="This Week"></i></a>
+              &nbsp;{{days["0Sun"].formattedDate}} - {{days["6Sat"].formattedDate}}&nbsp;
+              <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="left" uib-popover="Next Week"></i></a>
+            </h4>
+          </div>
+        </div>
+        <div class="col-day" ng-repeat="day in days">
+          <div class = "fixedAtTop">
+            <div class="day-and-date text-center">
+              <span class="day bold">{{ day.name }}</span>
+              <span class="date bold">{{ day.formattedDate }}</span>
+            </div>
+            <!-- <div class="workout-and-module text-center">
+              <span class="wod-title bold">The Flip Side</span>
+              <span class="wod-module">Hip Openers</span>
+            </div> -->
+          </div>
+          <div ng-repeat="slot in day.slots" ng-init = "checkIfFriends(slot)">
+            <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && currentUser.introClassTaken && subscriptionActive && currentUser.role != 'admin'">
+              <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
+              <div class="class-type" ng-class = "{intro: slot.level === 'Intro', lvl1: slot.level === 'Level One', open: slot.level === 'Open'}">
+                <span ng-if = "slot.level === 'Intro'">Free </span>
+                <span>{{slot.level}}</span>
+              </div>
+              <div class="class-reserve"><a class="reserve btn" href="#" ng-if = "currentUser.role === 'admin' && bookingsBySlot[slot.date].length < 1" ng-click = "deleteClass(slot)">Delete</a></div>
+              <span class="class-instr bold">{{trainers[slot.trainer].firstName}} {{trainers[slot.trainer].lastName.charAt(0)}}.</span>
+              <div class="my-friends mt16 mb0" >
+                <div class="qty mb4">
+                  <div ng-if = "currentUser.role === 'admin'">
+                    <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
+                    <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>
+                    <span ng-show = "bookingsBySlot[slot.date].length === 1">1 user signed up</span>
+                  </div>
+                </div>
+                <!-- <div class="empty"></div>
+                <div class="empty"></div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- </section> -->
+    </div>
+  <!-- </div> -->
+
+  
 
   <!-- Members -->
-    <div class="col-sm-7">
+    <!-- <div class = "col-sm-12"> -->
       <div class="mb8">
         <div class="col-sm-12">
           <h3 class="royalblue">Members ({{memberList.length}})</h3>
@@ -53,7 +107,7 @@
           </li>
         </ul>             
       </div>
-    </div>
+    <!-- </div> -->
     <!-- Memebers END -->
 
   <!-- <form novalidate class="simple-form col-sm-3">
