@@ -46,7 +46,10 @@ angular.module('bodyAppApp')
       var classRef = weekOfRef.child(dayOfWeek).child("slots").child(classJoined.date) 
 
       classRef.on('value', function(snapshot) {
-        service.classUserJustJoined = snapshot.val()  
+        service.classUserJustJoined = snapshot.val()
+        ref.child(studioId).child('trainers').child(service.classUserJustJoined.trainer).once('value', function(snapshot) {
+          service.trainerOfStudioJustJoined = snapshot.val()
+        })
       })
   	}
 

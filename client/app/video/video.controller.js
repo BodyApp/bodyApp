@@ -8,8 +8,21 @@ angular.module('bodyAppApp')
 			return $location.path('/') //Go to the home page (index)
 		}
 
+		var ref;
+    if (studioId) {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+    } else {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    }
+
+		var trainerInfo;
+
+		ref.child("trainers").child(classToJoin.trainer).once('value', function(snapshot) {
+			trainerInfo = snapshot.val();
+			$scope.trainer = trainerInfo;
+		})
+
 		$scope.classTime = new Date(); //trainer_video:180 - Timer is set to the class to join date.
-		$scope.trainer = classToJoin.trainer;
 
 		var session;
 
@@ -55,7 +68,7 @@ angular.module('bodyAppApp')
 		
 		var publisher;
 
-		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer._id.toString()
+		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer.toString()
 		var userIsDan = currentUser.facebookId === "10100958748247716"
 		// if (userIsDan) userIsInstructor = true;
 		if (!userIsInstructor) {
@@ -76,12 +89,7 @@ angular.module('bodyAppApp')
     // var sunGetMonth = sunDate.getMonth()+1;
     // var sunGetYear = sunDate.getFullYear();
     // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-    var ref;
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
-    }
+    
 
     var bookedUsers = {};
     ref.child("bookings").child(classToJoin.date).on('child_added', function(snapshot) {
@@ -493,7 +501,7 @@ angular.module('bodyAppApp')
 				var streamId = event.stream.connection.data.toString();
 				var streamBoxNumber = 1;
 
-				if (streamId === classToJoin.trainer._id.toString()) {
+				if (streamId === classToJoin.trainer.toString()) {
 					console.log("Received trainer stream")
 					instructorStream = true
 					vidWidth = "100%";
@@ -597,7 +605,7 @@ angular.module('bodyAppApp')
 							subscriber.setStyle("nameDisplayMode", "off");	
 						}
 				  	
-				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : classToJoin.trainer.picture); //Sets image to be displayed when no video
+				  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : trainerInfo.picture); //Sets image to be displayed when no video
 				  	subscriber.setStyle('audioLevelDisplayMode', 'off');
 
 				  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
@@ -1199,7 +1207,7 @@ angular.module('bodyAppApp')
 		}
 
 		function classTaken() {
-			if (currentUser._id !== classToJoin.trainer._id) {
+			if (currentUser._id !== classToJoin.trainer) {
 				if (classToJoin.level === "Intro") {
 					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
 		        Auth.updateUser(user);

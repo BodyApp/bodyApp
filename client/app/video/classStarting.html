@@ -6,22 +6,22 @@
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass < 0">Class has started!</h3>
-		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer._id && minutesUntilClass <= 30">
+		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer && minutesUntilClass <= 30">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to train!</a>
 		</div>
-		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer._id && minutesUntilClass > 30">
+		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer && minutesUntilClass > 30">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click to join up to 30 minutes ahead</a>
 		</div>
-		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">Your session will be ready in <timer class = "clock" interval="1000" countdown="networkTestCountdown/1000">{{countdown}}</timer></a>
 		</div>
-		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">We're preparing your session.</a>
 		</div>
-		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to join!</a>
 		</div>
-		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click this 5 minutes before class!</a>
 		</div>
 	</div>
@@ -39,26 +39,26 @@
 	<div class="container pt32 pb32">
 		<div class="col-sm-6">
 			<h3 class="darkblue bold mb16">Instructor</h3>
-			<img class="trainer-circle-image" src="{{classToJoin.trainer.picture}}">
+			<img class="trainer-circle-image" src="{{trainerInfo.picture}}">
 			<div class="trainer-info">
-				<h4 class="darkblue mb0">{{classToJoin.trainer.firstName}} {{classToJoin.trainer.lastName}}</h4>
+				<h4 class="darkblue mb0">{{trainerInfo.firstName}} {{trainerInfo.lastName}}</h4>
 				<h4 class="royalblue mb0">User Rating: 
-					<span id="blue" class="bold"><span ng-show="classToJoin.trainer.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "classToJoin.trainer.trainerRating">5</span></span>/5
+					<span id="blue" class="bold"><span ng-show="trainerInfo.trainerRating">{{trainerRatingRounded}}</span><span ng-hide = "trainerInfo.trainerRating">5</span></span>/5
 				</h4>
-				<h4 class="royalblue mb8" ng-if = "classToJoin.trainer.trainerCredential1">
-					<span>{{classToJoin.trainer.trainerCredential1}}</span>
-					<span ng-if = "classToJoin.trainer.trainerCredential2">, {{classToJoin.trainer.trainerCredential2}}</span>
-					<span ng-if = "classToJoin.trainer.trainerCredential3">, {{classToJoin.trainer.trainerCredential3}}</span>
-					<span ng-if = "classToJoin.trainer.trainerCredential4">, {{classToJoin.trainer.trainerCredential4}}</span>
+				<h4 class="royalblue mb8" ng-if = "trainerInfo.trainerCredential1">
+					<span>{{trainerInfo.trainerCredential1}}</span>
+					<span ng-if = "trainerInfo.trainerCredential2">, {{trainerInfo.trainerCredential2}}</span>
+					<span ng-if = "trainerInfo.trainerCredential3">, {{trainerInfo.trainerCredential3}}</span>
+					<span ng-if = "trainerInfo.trainerCredential4">, {{trainerInfo.trainerCredential4}}</span>
 				</h4>
 				<p class="gray mb0 funFacts">
 					<span class="bold">Fun fact: </span>
-					<span>{{classToJoin.trainer.funFact}}</span>
-					<span><a class="gray" href="#" ng-click = "instructorBio = !instructorBio">Other odd tidbits about {{classToJoin.trainer.firstName}} <i class="ti-arrow-circle-down"></i></a></span>
+					<span>{{trainerInfo.funFact}}</span>
+					<span><a class="gray" href="#" ng-click = "instructorBio = !instructorBio">Other odd tidbits about {{trainerInfo.firstName}} <i class="ti-arrow-circle-down"></i></a></span>
 				</p>
 			</div>
 			<div ng-show="instructorBio" class="mt32">
-				<p class="funFacts">{{classToJoin.trainer.bio}}</p>
+				<p class="funFacts">{{trainerInfo.bio}}</p>
 			</div>
 
 			<h3 class="darkblue bold mb8 mt32">Teammates</h3>
@@ -67,7 +67,7 @@
 					<img class="user-circle-image" src="{{value.picture}}">
 					<div class="user-name">
 						<span id="dark-text">{{value.firstName}} {{value.lastName.charAt(0)}}.</span><br>
-						<span ng-if = "currentUser._id === classToJoin.trainer._id || currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{value.injuries}}</span><br>
+						<span ng-if = "currentUser._id === classToJoin.trainer || currentUser.role === 'admin'" class = "injuryText" id="dark-text">Injuries: {{value.injuries}}</span><br>
 					</div>
 				</li>
 			</ul>
@@ -112,22 +112,22 @@
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass > 1">Class starting in {{minutesUntilClass}} minutes</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass <= 1 && minutesUntilClass >= 0">Class is about to start!</h3>
 		<h3 class="purpleblue startingText mb0" ng-if = "minutesUntilClass < 0">Class has started!</h3>
-		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer._id && minutesUntilClass <= 30">
+		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer && minutesUntilClass <= 30">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to train!</a>
 		</div>
-		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer._id && minutesUntilClass > 30">
+		<div class="startingBtn" ng-if = "currentUser._id === classToJoin.trainer && minutesUntilClass > 30">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click to join up to 30 minutes ahead</a>
 		</div>
-		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">Your session will be ready in <timer class = "clock" interval="1000" countdown="networkTestCountdown/1000">{{countdown}}</timer></a>
 		</div>
-		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">We're preparing your session.</a>
 		</div>
-		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass <= 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "navigateToVideo()">Click to join!</a>
 		</div>
-		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer._id">
+		<div class="startingBtn" ng-if = "!testingNetwork && minutesUntilClass > 5 && currentUser._id != classToJoin.trainer">
 			<a class="btn" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "" ng-disabled = "true">Click this 5 minutes before class!</a>
 		</div>
 	</div>

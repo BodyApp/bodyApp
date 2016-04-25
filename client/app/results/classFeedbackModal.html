@@ -10,8 +10,8 @@
   <section class="mt32 mb32">
     <div class="col-md-6 text-center">
       <h3 class="text-center mb16">Instructor Rating</h3>
-      <p class="text-center mb16"><img class="trainer-circle-image" src="{{classCompleted.trainer.picture}}"></p>
-      <h4 class="mb24 bold">{{classCompleted.trainer.firstName}} {{classCompleted.trainer.lastName}}</h4>
+      <p class="text-center mb16"><img class="trainer-circle-image" src="{{trainerInfo.picture}}"></p>
+      <h4 class="mb24 bold">{{trainerInfo.firstName}} {{trainerInfo.lastName}}</h4>
       <h5 class="text-center mb8">Provide your feedback</h5>
       <!--Rating-->
       <fieldset class="rating">
@@ -49,7 +49,7 @@
       </fieldset>
       <!--end ratings-->
       <div>
-        <input class="feedback" ng-model = "feedback" type="text" name="feedback" placeholder="Please provide any feedback for {{classCompleted.trainer.firstName}} or BODY"/>
+        <input class="feedback" ng-model = "feedback" type="text" name="feedback" placeholder="Please provide any feedback for {{trainerInfo.firstName}} or BODY"/>
       </div>        
     </div>
 

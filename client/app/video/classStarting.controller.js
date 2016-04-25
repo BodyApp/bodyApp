@@ -52,6 +52,8 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
+    var trainerInfo;
+
     var classObjRef;
 
     var userRef;
@@ -88,6 +90,12 @@ angular.module('bodyAppApp')
       sunGetYear = sunDate.getFullYear();
       weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
       
+      ref.child("trainers").child(classToJoin.trainer).once('value', function(snapshot) {
+        $scope.trainerInfo = snapshot.val();
+        $scope.trainerRatingRounded = Math.round(snapshot.val().trainerRating * 10)/10
+        if(!$scope.$$phase) $scope.$apply();
+      })
+
       $scope.minutesUntilClass = Math.round(((classTime - new Date().getTime())/1000)/60, 0);
 
       setupVidAud()
@@ -140,7 +148,7 @@ angular.module('bodyAppApp')
       // $scope.instructorPicUrl = $scope.instructor.picture
 
       //Network Test
-      if (currentUser._id != classToJoin.trainer._id) {
+      if (currentUser._id != classToJoin.trainer) {
         $scope.networkTestCountdown = timeoutMs + 6000
         $scope.testingNetwork = true;
         $timeout(function() {
@@ -151,21 +159,17 @@ angular.module('bodyAppApp')
         conductInternetTest(classToJoin.sessionId);
       }
 
-
-
       $scope.numBookedUsers;
       $scope.bookedUsers;
 
-      $scope.trainerRatingRounded;
-
       getBookedUsers(classToJoin);
 
-      classObjRef.$loaded().then(function() {
-        $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
+      // classObjRef.$loaded().then(function() {
+      //   $scope.trainerRatingRounded = Math.round(classObjRef.trainer.trainerRating * 10)/10
         // classObjRef.$watch(function(e) {
         //   getBookedUsers(classObjRef);
         // })
-      });
+      // });
 
       checkTimeInterval = $interval(function(){ checkTime() }, 20*1000)
 
@@ -227,7 +231,7 @@ angular.module('bodyAppApp')
             if (bookedUser) {
             $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
               // Adds security where injuries aren't available unless current user is admin or instructor.
-              if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
+              if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer) {
                 // console.log(bookedUser)
                 User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
                   if (data.injuries && data.profile) {
@@ -273,7 +277,7 @@ angular.module('bodyAppApp')
   	}
 
     $scope.navigateToVideo = function() {
-      if (currentUser._id === classToJoin.trainer._id) {
+      if (currentUser._id === classToJoin.trainer) {
         if (checkTimeInterval) clearInterval(checkTimeInterval)
         $location.path("/" + studioId + '/trainervideo')
       } else {

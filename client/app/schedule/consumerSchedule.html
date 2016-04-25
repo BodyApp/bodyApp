@@ -34,10 +34,10 @@
               <span>{{slot.level}}</span>
             </div>
             <div class="instr-col mb8">
-              <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
+              <span>{{trainers[slot.trainer].firstName}} {{trainers[slot.trainer].lastName}}</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" ng-href="/{{studioId}}/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" ng-href="/{{studioId}}/classstarting" ng-if = "slot.trainer != currentUser._id">Join Class</a>
               <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
@@ -66,8 +66,8 @@
               <span>You</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/{{studioId}}/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach</a>
-              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/{{studioId}}/classstarting" ng-if = "slot.trainer._id === currentUser._id">View</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/{{studioId}}/classstarting" ng-if = "slot.trainer === currentUser._id">Teach</a>
+              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/{{studioId}}/classstarting" ng-if = "slot.trainer === currentUser._id">View</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
@@ -194,7 +194,7 @@
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "userBookings[slot.date]" ng-click = "scrollToTop()">booked</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "classesTeaching[slot.date]" ng-click = "scrollToTop()">teaching</a></div>
         <div class="class-booking"><a class="booked btn" href="#" ng-if = "bookingsBySlot[slot.date].length >= slot.spots && !userBookings[slot.date]" ng-disabled = "true">class full</a></div>
-        <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
+        <span class="class-instr bold">{{trainers[slot.trainer].firstName}} {{trainers[slot.trainer].lastName.charAt(0)}}.</span>
         <div class="my-friends mt16 mb0" >
           <div class="qty mb4" ng-init = "checkIfFriends(slot)">
             <div ng-if = "currentUser.role === 'admin'">
@@ -256,7 +256,7 @@
             <span ng-if = "slot.level === 'Intro'">Free </span>
             <span>{{slot.level}}</span>
           </div>
-          <span class="class-instr bold">{{slot.trainer.firstName}} {{slot.trainer.lastName.charAt(0)}}.</span>
+          <span class="class-instr bold">{{trainers[slot.trainer].firstName}} {{trainers[slot.trainer].lastName.charAt(0)}}.</span>
         </div>
         <div class="col-xs-6 text-center">
           <div class="my-friends" >

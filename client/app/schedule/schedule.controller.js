@@ -12,6 +12,10 @@ angular.module('bodyAppApp')
         ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
       } 
 
+      ref.child('trainers').once('value', function(snapshot) {
+        $scope.trainers = snapshot.val();
+      })
+
       var fbUsersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");
       
       var todayDate = new Date();
