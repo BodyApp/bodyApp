@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('VideoCtrl', function ($scope, $uibModal, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video, DayOfWeekSetter) {
+  .controller('VideoCtrl', function ($scope, $uibModal, $state, $location, $timeout, $interval, $window, $document, $firebaseObject, Auth, User, Schedule, Video, DayOfWeekSetter, studioId) {
 
   	var classToJoin = Schedule.classUserJustJoined; //Saved in the Schedule factory
   	if (!classToJoin) { //If there isn't any class
@@ -76,7 +76,12 @@ angular.module('bodyAppApp')
     // var sunGetMonth = sunDate.getMonth()+1;
     // var sunGetYear = sunDate.getFullYear();
     // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var ref;
+    if (studioId) {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+    } else {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    }
 
     var bookedUsers = {};
     ref.child("bookings").child(classToJoin.date).on('child_added', function(snapshot) {
@@ -956,11 +961,11 @@ angular.module('bodyAppApp')
 			// publisher.disconnect();
 			session.disconnect()
       // session.destroy();
-    if (!currentUser.results || !currentUser.results[classKey]) {
-				$location.path('/classfeedback');
-			} else {
-				$location.path('/results');
-			}
+    // if (!currentUser.results || !currentUser.results[classKey]) {
+				$location.path('/'+studioId+'/classfeedback');
+			// } else {
+				// $location.path('/results');
+			// }
 		}
 
 		//Stopwatch magic. Prevents issue where NaN was showing up for current time.

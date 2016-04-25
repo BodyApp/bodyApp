@@ -4,15 +4,14 @@ angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('admin', {
-        url: '/admin',
+        url: '/:studioId/admin',
         templateUrl: 'app/admin/admin.html',
+        controller: 'AdminCtrl',
         authenticate: true,
-        controller: 'AdminCtrl'
-      })
-      // .state('createclass', {
-      //   url: '/createclass',
-      //   templateUrl: 'app/admin/createClass.html',
-      //   controller: 'AdminCtrl'
-      // })
-      ;
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      });
   });

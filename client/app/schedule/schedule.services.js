@@ -7,7 +7,7 @@ angular.module('bodyAppApp')
   	service.userHasClassNow = false;
   	service.classUserJustJoined;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/"); 
+    var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     // var fbObject;
 
   	service.setCurrentUser = function(user) {
@@ -32,7 +32,7 @@ angular.module('bodyAppApp')
       return service.auditingClass;
     }
 
-  	service.setClassUserJustJoined = function(classJoined) {
+  	service.setClassUserJustJoined = function(studioId, classJoined) {
       // var q = new Promise()
 
       var workoutDate = new Date(classJoined.date);
@@ -41,7 +41,7 @@ angular.module('bodyAppApp')
       var sunGetMonth = sunDate.getMonth()+1;
       var sunGetYear = sunDate.getFullYear();
       var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf);
+      var weekOfRef = ref.child(studioId).child("classes").child(weekOf);
       var dayOfWeek = DayOfWeekSetter.setDay(workoutDate.getDay())
       var classRef = weekOfRef.child(dayOfWeek).child("slots").child(classJoined.date) 
 

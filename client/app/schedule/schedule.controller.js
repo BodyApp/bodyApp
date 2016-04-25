@@ -1,14 +1,25 @@
 // 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, $rootScope, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window, Referral, $cookieStore) {
+    .controller('ConsumerScheduleCtrl', function ($scope, $http, $location, $firebaseObject, $rootScope, Auth, User, Schedule, Video, $uibModal, $uibTooltip, $log, $interval, $state, tourConfig, $window, Referral, $cookieStore, studioId) {
       // var currentUser = Auth.getCurrentUser();
       // var currentUser;
-      var ref = new Firebase("https://bodyapp.firebaseio.com");
+      var ref;
+      if (studioId) {
+        ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+      } else {
+        $location.path('/ralabala/schedule')
+        ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+      } 
+
+      var fbUsersRef = new Firebase("https://bodyapp.firebaseio.com/fbUsers");
+      
       var todayDate = new Date();
       $scope.todayDayOfWeek = todayDate.getDay();
       $scope.windowWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       // $scope.myBookedClasses = {};
+
+      $scope.studioId = studioId
 
       var tzName = jstz().timezone_name;
       $scope.thisWeek;
@@ -29,9 +40,9 @@ angular.module('bodyAppApp')
       var unbindMethod = function(){};
 
       var classKey = ""+todayDate.getFullYear()+""+((todayDate.getMonth()+1 < 10)?"0"+(todayDate.getMonth()+1):todayDate.getMonth()+1)+""+((todayDate.getDate() < 10)?"0"+todayDate.getDate():todayDate.getDate())
-      var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
-        $scope.wod = snapshot.val()
-      });
+      // var wodRef = ref.child('WODs').child(classKey).once('value', function(snapshot) {
+        // $scope.wod = snapshot.val()
+      // });
 
       var currentUser = Auth.getCurrentUser();
 
@@ -682,7 +693,7 @@ angular.module('bodyAppApp')
       } 
 
       $scope.setClassUserJustJoined = function(classJoined) {
-          Schedule.setClassUserJustJoined(classJoined);
+          Schedule.setClassUserJustJoined(studioId, classJoined);
       }
 
       // load cookie, or start new tour

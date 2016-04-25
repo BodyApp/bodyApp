@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, DayOfWeekSetter) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $interval, $timeout, $uibModal, $firebaseObject, Schedule, Auth, User, Video, DayOfWeekSetter, studioId) {
   	
     var classTime;
     var currentUser = Auth.getCurrentUser();
@@ -45,7 +45,13 @@ angular.module('bodyAppApp')
     var sunGetYear;
     var weekOf;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/");
+    var ref;
+    if (studioId) {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+    } else {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    }
+
     var classObjRef;
 
     var userRef;
@@ -223,7 +229,7 @@ angular.module('bodyAppApp')
               // Adds security where injuries aren't available unless current user is admin or instructor.
               if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer._id) {
                 // console.log(bookedUser)
-                var something = User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+                User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
                   if (data.injuries && data.profile) {
                     // console.log(userToAdd)
                     // console.log(data)
@@ -269,10 +275,10 @@ angular.module('bodyAppApp')
     $scope.navigateToVideo = function() {
       if (currentUser._id === classToJoin.trainer._id) {
         if (checkTimeInterval) clearInterval(checkTimeInterval)
-        $location.path('/trainervideo')
+        $location.path("/" + studioId + '/trainervideo')
       } else {
         if (checkTimeInterval) clearInterval(checkTimeInterval)
-        $location.path('/consumervideo')
+        $location.path("/" + studioId + '/consumervideo')
       }
     }
 

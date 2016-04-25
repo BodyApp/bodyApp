@@ -4,21 +4,36 @@ angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('consumerVideo', {
-        url: '/consumervideo',
+        url: '/:studioId/consumervideo',
         templateUrl: 'app/video/consumer_video.html',
         controller: 'VideoCtrl',
-        authenticate: true
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
       })
       .state('trainerVideo', {
-        url: '/trainervideo',
+        url: '/:studioId/trainervideo',
         templateUrl: 'app/video/trainer_video.html',
         controller: 'VideoCtrl',
-        authenticate: true
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
       })
       .state('classStarting', {
-        url: '/classstarting',
+        url: '/:studioId/classstarting',
         templateUrl: 'app/video/classStarting.html',
         controller: 'ClassStartingCtrl',
-        authenticate: true
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
       });
   })

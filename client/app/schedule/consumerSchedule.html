@@ -37,7 +37,7 @@
               <span>{{slot.trainer.firstName}} {{slot.trainer.lastName}}</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" ng-href="/{{studioId}}/classstarting" ng-if = "slot.trainer._id != currentUser._id">Join Class</a>
               <a class="btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{hovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-disabled = "true">{{formattedWaitTime(slot.date,timeNow)}}</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
@@ -66,8 +66,8 @@
               <span>You</span>
             </div>
             <div class="action-col mb8">
-              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach</a>
-              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/classstarting" ng-if = "slot.trainer._id === currentUser._id">View</a>
+              <a class="starting btn" ng-if = "slot.date <= (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/{{studioId}}/classstarting" ng-if = "slot.trainer._id === currentUser._id">Teach</a>
+              <a class="starting btn" ng-if = "slot.date > (timeNow + 1000*60*30)" ng-class = "{startClassHovering: isHovering}" ng-mouseover = "isHovering = true;" ng-mouseleave = "isHovering = false;" ng-click = "setClassUserJustJoined(slot)" href="/{{studioId}}/classstarting" ng-if = "slot.trainer._id === currentUser._id">View</a>
               <addtocalendarimage
                 start-date= "{{calendarDateSetter(slot)}}"
                 end-date="{{calendarDateSetterEnd(slot)}}"
@@ -147,22 +147,22 @@
 
   <!-- END RESERVATION SECTION -->
 
-    <div id="tour-workout" class="col-sm-5 col-sm-pull-7 sideDivider">
-      <h1 class="darkblue">Today's Challenge</h1>
+    <!-- <div id="tour-workout" class="col-sm-5 col-sm-pull-7 sideDivider">
+      <h1 class="darkblue">{{Today's Challenge}}</h1>
       <h4 class="royalblue bold mb8">{{wod.title}}</h4>
-      <p class="wod-description mb16">{{wod.description}}</p>   
+      <p class="wod-description mb16">{{wod.description}}</p>    -->
       <!-- <span>
         <p class="gray bold theChallenge mb0" ng-if = "wod.scoreType">{{wod.scoreType.label}}</p>
         <div ng-repeat = "bullet in wod.challenge.bullets"><span class="wod-description">{{bullet}}</span></div>
       </span> -->
-    </div>
+    <!-- </div> -->
 </section>
 </div>
 
 <section class="week-schedule hidden-xs scroll-to mb72">
   <div id="tour-classes" class="container">
     <div class="col-sm-9">
-      <h1 class="darkblue mb0">BODY Class Schedule</h1>
+      <h1 class="darkblue mb0">{{studioId.toUpperCase()}} Class Schedule</h1>
     </div>
     <div class="col-sm-3">
       <h4 class="week-selector darkblue bold" ng-show = "days">

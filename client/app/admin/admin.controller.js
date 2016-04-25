@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray) {
+  .controller('AdminCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams) {
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
@@ -21,8 +21,17 @@ angular.module('bodyAppApp')
     $scope.wod = {};
     var classDate;
     var classKey;
-    var ref = new Firebase("https://bodyapp.firebaseio.com/");
+    var ref;
+    var studioId = $stateParams.studioId;
+    if (studioId) {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+    } else {
+      // $location.path('/ralabala/admin')
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    }
+
     var wodRef = ref.child("WODs");
+    var trainerClassesRef = ref.child("trainerClasses");
 
     $scope.scoreTypes = []
     $scope.scoreTypes.push({label: "Time To Complete", id: 0})
@@ -170,7 +179,7 @@ angular.module('bodyAppApp')
       var sunGetYear = sunDate.getFullYear();
       var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
 
-      var weekOfRef = new Firebase("https://bodyapp.firebaseio.com/classes/" + weekOf);  
+      var weekOfRef = ref.child("classes").child(weekOf);  
       //This is a good way to do this, but functionality is slightly broken and it's dangerous.
       // weekOfRef.once('value', function(snapshot) {
       //   if (!snapshot.exists()) {
@@ -200,6 +209,8 @@ angular.module('bodyAppApp')
       if (workoutToCreate.trainer.bio) trainerInfoToSave.bio = workoutToCreate.trainer.bio;
 
       workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
+
+      ref.child("trainers").child(trainerInfoToSave._id).update(trainerInfoToSave)
 
       ref.child("playlists").child(workoutToCreate.playlistUrl.id).update({
         soundcloudUrl: workoutToCreate.playlistUrl.uri,
@@ -256,7 +267,7 @@ angular.module('bodyAppApp')
           //   stop: date.getTime(),
           //   currentState: "stop"
           // },
-          trainer: trainerInfoToSave,
+          trainer: trainerInfoToSave._id,
           classFull: false,
           // consumersCanHearEachOther: false,
           // musicVolume: 50,
@@ -265,16 +276,16 @@ angular.module('bodyAppApp')
         }, function(err) {
           if (err) return console.log(err)
           console.log("New workout saved to classes object.")
-          if (workoutToCreate.level === "Intro") {
-            console.log("Setting to upcomingIntros.")
-            var introToSet = {};
-            introToSet[date.getTime()] = true
-            var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
-            var upcomingIntroRef = fbRef.child('upcomingIntros').child(date.getTime())
-            var dateKey = ""+date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())
-            upcomingIntroRef.set(dateKey, function(){console.log("Saved Intro class to intro list")})
-          }
-          var trainerClassesRef = new Firebase("https://bodyapp.firebaseio.com/trainerClasses/");
+          // if (workoutToCreate.level === "Intro") {
+          //   console.log("Setting to upcomingIntros.")
+          //   var introToSet = {};
+          //   introToSet[date.getTime()] = true
+            // var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
+            // var upcomingIntroRef = fbRef.child('upcomingIntros').child(date.getTime())
+            // var dateKey = ""+date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())
+            // upcomingIntroRef.set(dateKey, function(){console.log("Saved Intro class to intro list")})
+          // }
+
           trainerClassesRef.child(trainerInfoToSave._id).child("classesTeaching").child(date.getTime()).set({date: date.getTime(), level: workoutToCreate.level}, function(err) {
             modalInstance.close();
             if (err) console.log(err)
