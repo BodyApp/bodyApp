@@ -63,6 +63,26 @@ exports.getAdmins = function(req, res) {
   });
 };
 
+exports.getMembersOfStudio = function(req, res) {
+  var studio = req.body.studioId;
+  // User.find({stripe: 
+  //   {
+  //     subscription: {
+  //       status: "active"
+  //     }
+  //   }
+  // }, '-salt -hashedPassword', function (err, users) {
+  //   console.log(users)
+  //   if(err) return res.status(500).send(err);
+  //   res.status(200).json(users);
+  // });
+  User.find({'stripe.subscription.status': 'active'}, '-salt -hashedPassword', function (err, users) {
+    console.log(users)
+    if(err) return res.status(500).send(err);
+    res.status(200).json(users);
+  }).sort('lastName');
+};
+
 exports.getUser = function(req, res, next) {
   var userId = req.body.userToGet;
   console.log("getting user " + userId)

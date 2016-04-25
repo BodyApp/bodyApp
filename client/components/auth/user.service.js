@@ -110,6 +110,13 @@ angular.module('bodyAppApp')
           controller: 'getUser'
         }
       },
+      getMembersOfStudio: {
+        method: 'PUT',
+        isArray: true,
+        params: {
+          controller: 'getMembersOfStudio'
+        }
+      },
       getUserAndInjuries: {
         method: 'PUT',
         params: {

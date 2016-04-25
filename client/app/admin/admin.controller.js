@@ -12,8 +12,16 @@ angular.module('bodyAppApp')
         console.log(data);
         $location.path('/')
       }
-    })
 
+      User.getMembersOfStudio({
+        id: data._id
+      }, {
+        studioId: $stateParams.studioId
+      }).$promise.then(function(memberList) {
+        // console.log(memberList)
+        $scope.memberList = memberList
+      })
+    })
     
     // Use the User $resource to fetch all users
     // $scope.users = User.query();
@@ -65,7 +73,6 @@ angular.module('bodyAppApp')
 
     function createInitialTokBoxSession() {
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-        console.log(session)
         nextSessionToSave = session;
       })
     }

@@ -25,6 +25,7 @@ router.put('/:id/saveClassTaught', auth.isAuthenticated(), controller.saveClassT
 router.put('/:id/saveInjuriesGoalsEmergency', auth.isAuthenticated(), controller.saveInjuriesGoalsEmergency);
 router.put('/:id/saveEmail', auth.isAuthenticated(), controller.saveEmail);
 router.put('/:id/getUser', auth.isAuthenticated(), controller.getUser);
+router.put('/:id/getMembersOfStudio', auth.isAuthenticated(), controller.getMembersOfStudio);
 router.put('/:id/getUserAndInjuries', auth.isAuthenticated(), controller.getUserAndInjuries);
 router.put('/:id/getInjuries', auth.isAuthenticated(), controller.getInjuries);
 router.put('/:id/generateReferralCode', auth.isAuthenticated(), controller.generateReferralCode);
