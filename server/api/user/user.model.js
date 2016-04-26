@@ -65,7 +65,9 @@ var UserSchema = new Schema({
   twitter: {},
   google: {},
   github: {},
-  firebaseToken: String
+  firebaseToken: String,
+  studios: Object,
+  studioSubscriptions: Object
 });
 
 //Sets up Stripe

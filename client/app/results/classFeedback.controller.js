@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassFeedbackCtrl', function ($scope, $state, $location, Schedule, Auth, User, DayOfWeekSetter) {
+  .controller('ClassFeedbackCtrl', function ($scope, $state, $location, Schedule, Auth, User, DayOfWeekSetter, studioId) {
   	$scope.classCompleted = Schedule.classUserJustJoined;
     $scope.trainerInfo = Schedule.trainerOfStudioJustJoined;
 
@@ -77,7 +77,7 @@ angular.module('bodyAppApp')
     //   }).$promise.then(function() {
       	//Add rating to trainer object
       	User.addRating({ id: currentUser._id }, {
-          trainer: $scope.classCompleted.trainer._id, 
+          trainer: $scope.classCompleted.trainer, 
           rating: rating
         }, function(data) {
           console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
@@ -88,7 +88,7 @@ angular.module('bodyAppApp')
               userFirstName: currentUser.firstName,
               timePosted: (new Date()).getTime(),
               classTaken: classDate.getTime(),
-              instructor: $scope.classCompleted.trainer._id,
+              instructor: $scope.classCompleted.trainer,
               rating: rating,
               feedback: feedback
             })

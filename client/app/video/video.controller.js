@@ -200,6 +200,11 @@ angular.module('bodyAppApp')
               templateUrl: 'app/results/classFeedbackModal.html',
               controller: 'ClassFeedbackModalCtrl',
               windowClass: "modal-wide",
+              resolve: {
+			        	studioId: function() {
+			        		return studioId;
+			        	}
+			        }
             });
 
             modalInstance.result.then(function () {
@@ -503,7 +508,7 @@ angular.module('bodyAppApp')
 
 				if (streamId === classToJoin.trainer.toString()) {
 					console.log("Received trainer stream")
-					instructorStream = true
+					instructorStream = true;
 					vidWidth = "100%";
 				} else {
 					vidHeight = 70;

@@ -73,7 +73,6 @@ angular.module('bodyAppApp')
         if (user.stripe) $rootScope.subscriptionActive = user.stripe.subscription.status === 'active';
 
         //Firebase authentication check
-        var ref = new Firebase("https://bodyapp.firebaseio.com/");
         ref.onAuth(function(authData) {
           if (authData) {
             getBookings()

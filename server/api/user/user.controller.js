@@ -788,6 +788,20 @@ function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime
   });
 }
 
+function sendClassCancelledEmailToAdmins(userFirstName, userLastName, classDateTime) {
+  var dateTime = formattedDateTime(classDateTime)
+  var data = {
+    from: from_who,
+    to: 'classbooked@getbodyapp.com',
+    subject: "User cancelled class: " + dateTime.date + " " + dateTime.classTime,
+    text: userFirstName + ' ' + userLastName + " cancelled their class at " + dateTime.date + " at " + dateTime.classTime 
+  };
+
+  mailgun.messages().send(data, function (error, body) {
+    console.log("Sent email to admins that " + userFirstName + " " + userLastName + " cancelled their class.");
+  });
+}
+
 function sendShippingInfo(userInfo) {
   var shippingAddress = userInfo.shippingAddress;
   var data = {
@@ -1039,6 +1053,7 @@ exports.cancelBookedClass = function(req, res, next) {
       user.save(function(err) {
         if (err) return validationError(res, err);
         console.log(user.firstName + " " + user.lastName + " just cancelled a class at " + classToCancel)
+        sendClassCancelledEmailToAdmins(user.firstName, user.lastName, classToCancel)
         res.status(200).json(user);
       });
     } 
