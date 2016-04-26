@@ -392,6 +392,25 @@ exports.postBilling = function(req, res, next){
         //   user.stripe = {};
         // }
 
+        if (coupon) {
+          user.mostRecentCoupon = coupon.id
+          console.log(coupon.id)
+          User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
+            if(err) return console.log(err);
+            if(pulledUser) {
+              pulledUser.referrals = pulledUser.referrals || {}
+              pulledUser.referrals[user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
+
+              pulledUser.save(function(err){
+                console.log("Successfully saved referral of user " + user._id + " by user " + pulledUser._id)
+                if (err) return console.log(err);
+                return
+              });
+            }
+
+          });
+        }
+
         if (shippingAddress) {
           user.shippingAddress = shippingAddress;
           sendShippingInfo(user)
@@ -422,25 +441,6 @@ exports.postBilling = function(req, res, next){
           user.stripe.subscription.intervalCount = subData.plan.interval_count;
           user.stripe.subscription.liveMode = subData.plan.livemode;    
           user.stripe.subscription.status = subData.status;    
-        }
-
-        if (coupon) {
-          user.mostRecentCoupon = coupon.id
-          console.log(coupon.id)
-          User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
-            if(err) return console.log(err);
-            if(pulledUser) {
-              pulledUser.referrals = pulledUser.referrals || {}
-              pulledUser.referrals[user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
-
-              pulledUser.save(function(err){
-                console.log("Successfully saved referral of user " + user._id + " by user " + pulledUser._id)
-                if (err) return console.log(err);
-                return
-              });
-            }
-
-          });
         }
 
         //If going to add card information, have to pull the card information any time update user subscription / card information.  Otherwise, it's incorrect.
@@ -788,18 +788,30 @@ function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime
   });
 }
 
-function sendClassCancelledEmailToAdmins(userFirstName, userLastName, classDateTime) {
+function sendClassCancelledEmailToAdmins(userFirstName, userLastName, classDateTime, studioId) {
+  console.log(classDateTime)
   var dateTime = formattedDateTime(classDateTime)
   var data = {
     from: from_who,
     to: 'classbooked@getbodyapp.com',
     subject: "User cancelled class: " + dateTime.date + " " + dateTime.classTime,
-    text: userFirstName + ' ' + userLastName + " cancelled their class at " + dateTime.date + " at " + dateTime.classTime 
+    text: userFirstName + ' ' + userLastName + " cancelled their class on " + dateTime.date + " at " + dateTime.classTime + "."
   };
-
-  mailgun.messages().send(data, function (error, body) {
-    console.log("Sent email to admins that " + userFirstName + " " + userLastName + " cancelled their class.");
-  });
+  // setTimeout(function() {
+  //   var rightNow = new Date().getTime()
+  //   console.log(rightNow);
+  //   ref.child('studios').child(studioId).child("bookings").orderByKey().startAt(rightNow.toString()).once('value', function(snapshot) { //Have to do this because can't specifically reference something that doesn't exist
+  //     console.log("yeah")
+  //     if (snapshot.child(classDateTime).exists()) { 
+  //       data.text = userFirstName + ' ' + userLastName + " cancelled their class on " + dateTime.date + " at " + dateTime.classTime + ". There are still "+ snapshot.numChildren() + " users booked for the class."
+  //     } else {
+  //       data.text = userFirstName + ' ' + userLastName + " cancelled their class on " + dateTime.date + " at " + dateTime.classTime + ". There is no longer anyone signed up for this class."    
+  //     }
+      mailgun.messages().send(data, function (error, body) {
+        console.log("Sent email to admins that " + userFirstName + " " + userLastName + " cancelled their class.");
+      });
+    // })
+  // }, 1000)
 }
 
 function sendShippingInfo(userInfo) {
@@ -1046,14 +1058,15 @@ exports.addBookedClass = function(req, res, next) {
 exports.cancelBookedClass = function(req, res, next) {
   var userId = req.user._id;
   var classToCancel = req.body.classToCancel;
+  var studioId = req.body.studioId
 
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if(err) { return err } else { 
       if (user.classesBooked && user.classesBooked[classToCancel]) delete user.classesBooked[classToCancel];
       user.save(function(err) {
         if (err) return validationError(res, err);
-        console.log(user.firstName + " " + user.lastName + " just cancelled a class at " + classToCancel)
-        sendClassCancelledEmailToAdmins(user.firstName, user.lastName, classToCancel)
+        console.log(user.firstName + " " + user.lastName + " just cancelled a class at " + classToCancel)        
+        sendClassCancelledEmailToAdmins(user.firstName, user.lastName, classToCancel, studioId)
         res.status(200).json(user);
       });
     } 

@@ -540,7 +540,8 @@ angular.module('bodyAppApp')
           }).$promise;
         } else {
           User.cancelBookedClass({ id: currentUser._id }, {
-            classToCancel: slot.date
+            classToCancel: slot.date,
+            studioId: studioId
           }, function(user) {
             ref.child("bookings").child(slot.date).child(currentUser._id).remove()
             ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
