@@ -52,7 +52,13 @@ angular.module('bodyAppApp')
     $scope.scoreTypes.push({label: "Rounds Completed", id: 1})
 
     $scope.instructors = [];
-    $scope.levels = ["Intro", "Level One", "Level Two", "Level Three", "Test", "Open"]
+    $scope.levels = ["Intro", "Test", "Open"]  
+    ref.child("classTypes").once('value', function(snapshot) {
+      console.log(snapshot.val())
+      snapshot.forEach(function(child) {
+        $scope.levels.push(child.val())  
+      })
+    })
 
     var http = location.protocol;
     var slashes = http.concat("//");

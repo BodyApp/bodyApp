@@ -86,8 +86,9 @@ require('./routes')(app);
 throng({
   start: start,
   master: startMaster,
-  workers: WORKERS,
-  lifetime: Infinity}
+  workers: WORKERS
+  // lifetime: Infinity
+  }
 );
 
 function startMaster() {
