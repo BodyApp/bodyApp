@@ -52,11 +52,11 @@ angular.module('bodyAppApp')
     $scope.scoreTypes.push({label: "Rounds Completed", id: 1})
 
     $scope.instructors = [];
-    $scope.levels = ["Intro", "Test", "Open"]  
+    $scope.levels = ["Test", "Intro", "Open"]  
     ref.child("classTypes").once('value', function(snapshot) {
-      console.log(snapshot.val())
       snapshot.forEach(function(child) {
         $scope.levels.push(child.val())  
+        $scope.workoutToCreate.level = $scope.levels[0];
       })
     })
 
@@ -67,17 +67,19 @@ angular.module('bodyAppApp')
       $scope.levels = ["Test"]      
     }
 
-    $scope.workoutToCreate = {playlistUrl: {title: "Connect with SoundCloud Below"}, level: $scope.levels[0]};
+    $scope.workoutToCreate = {};
     getAdminsAndInstructors()
     
     $scope.playlists = [];
     var defaultPlaylist;
 
-    ref.child('playlists').once('value', function(snapshot) {
+    ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
       snapshot.forEach(function(playlist) {
-        $scope.playlists.push(playlist.val())
+        console.log(playlist.val())
+        $scope.playlists.unshift(playlist.val())
+        $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
       })
-      loadDefaultPlaylist();
+      // loadDefaultPlaylist();
     })
 
     $scope.createdClass = {};
@@ -481,7 +483,6 @@ angular.module('bodyAppApp')
       }
 
       $scope.checkIfFriends = function(slot) {
-        console.log("yo")
         var rightNow = new Date().getTime();
         ref.child("bookings").child(slot.date).once('value', function(snapshot) {
           $scope.bookingsBySlot = $scope.bookingsBySlot || {};
