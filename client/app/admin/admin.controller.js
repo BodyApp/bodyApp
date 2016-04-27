@@ -72,7 +72,13 @@ angular.module('bodyAppApp')
     
     $scope.playlists = [];
     var defaultPlaylist;
-    loadDefaultPlaylist();
+
+    ref.child('playlists').once('value', function(snapshot) {
+      snapshot.forEach(function(playlist) {
+        $scope.playlists.push(playlist.val())
+      })
+      loadDefaultPlaylist();
+    })
 
     $scope.createdClass = {};
     var nextSessionToSave;
