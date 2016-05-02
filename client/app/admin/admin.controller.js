@@ -75,7 +75,6 @@ angular.module('bodyAppApp')
 
     ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
       snapshot.forEach(function(playlist) {
-        console.log(playlist.val())
         $scope.playlists.unshift(playlist.val())
         $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
       })
@@ -136,6 +135,20 @@ angular.module('bodyAppApp')
       SoundCloudLogin.connect().then(function(token) {
         SoundCloudAPI.me().then(function(myInfo) {
           SoundCloudAPI.myPlaylists().then(function(playlists) {
+            for (var i = 0; i < playlists.length; i++) {
+              ref.child("playlists").child(playlists[i].playlistUrl.id).update({
+                soundcloudUrl: playlists[i].playlistUrl.uri,
+                duration: playlists[i].playlistUrl.duration,
+                id: playlists[i].playlistUrl.id,
+                lastModified: new Date(playlists[i].playlistUrl.last_modified),
+                title: playlists[i].playlistUrl.title,
+                trackCount: playlists[i].playlistUrl.track_count,
+                tracks: playlists[i].playlistUrl.tracks,
+                // secretUri: playlists[i].playlistUrl.secret_uri,
+                sharing: playlists[i].playlistUrl.sharing,
+                user_id: playlists[i].playlistUrl.user_id
+              }, function(err){if (err) console.log(err)})
+            }
             $scope.playlists = playlists;
             $scope.playlists.push(defaultPlaylist);
             $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
@@ -243,18 +256,18 @@ angular.module('bodyAppApp')
 
       ref.child("trainers").child(trainerInfoToSave._id).update(trainerInfoToSave)
 
-      ref.child("playlists").child(workoutToCreate.playlistUrl.id).update({
-        soundcloudUrl: workoutToCreate.playlistUrl.uri,
-        duration: workoutToCreate.playlistUrl.duration,
-        id: workoutToCreate.playlistUrl.id,
-        lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
-        title: workoutToCreate.playlistUrl.title,
-        trackCount: workoutToCreate.playlistUrl.track_count,
-        tracks: workoutToCreate.playlistUrl.tracks,
-        // secretUri: workoutToCreate.playlistUrl.secret_uri,
-        sharing: workoutToCreate.playlistUrl.sharing,
-        user_id: workoutToCreate.playlistUrl.user_id
-      }, function(err){if (err) console.log(err)})
+      // ref.child("playlists").child(workoutToCreate.playlistUrl.id).update({
+      //   soundcloudUrl: workoutToCreate.playlistUrl.uri,
+      //   duration: workoutToCreate.playlistUrl.duration,
+      //   id: workoutToCreate.playlistUrl.id,
+      //   lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
+      //   title: workoutToCreate.playlistUrl.title,
+      //   trackCount: workoutToCreate.playlistUrl.track_count,
+      //   tracks: workoutToCreate.playlistUrl.tracks,
+      //   // secretUri: workoutToCreate.playlistUrl.secret_uri,
+      //   sharing: workoutToCreate.playlistUrl.sharing,
+      //   user_id: workoutToCreate.playlistUrl.user_id
+      // }, function(err){if (err) console.log(err)})
 
       // syncObject.$loaded().then(function() {
         //Set up the week if this is first class of week
