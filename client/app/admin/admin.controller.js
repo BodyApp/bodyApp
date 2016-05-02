@@ -136,17 +136,18 @@ angular.module('bodyAppApp')
         SoundCloudAPI.me().then(function(myInfo) {
           SoundCloudAPI.myPlaylists().then(function(playlists) {
             for (var i = 0; i < playlists.length; i++) {
-              ref.child("playlists").child(playlists[i].playlistUrl.id).update({
-                soundcloudUrl: playlists[i].playlistUrl.uri,
-                duration: playlists[i].playlistUrl.duration,
-                id: playlists[i].playlistUrl.id,
-                lastModified: new Date(playlists[i].playlistUrl.last_modified),
-                title: playlists[i].playlistUrl.title,
-                trackCount: playlists[i].playlistUrl.track_count,
-                tracks: playlists[i].playlistUrl.tracks,
-                // secretUri: playlists[i].playlistUrl.secret_uri,
-                sharing: playlists[i].playlistUrl.sharing,
-                user_id: playlists[i].playlistUrl.user_id
+              console.log(playlists[i])
+              ref.child("playlists").child(playlists[i].id).update({
+                soundcloudUrl: playlists[i].uri,
+                duration: playlists[i].duration,
+                id: playlists[i].id,
+                lastModified: new Date(playlists[i].last_modified),
+                title: playlists[i].title,
+                trackCount: playlists[i].track_count,
+                tracks: playlists[i].tracks,
+                // secretUri: playlists[i].secret_uri,
+                sharing: playlists[i].sharing,
+                user_id: playlists[i].user_id
               }, function(err){if (err) console.log(err)})
             }
             $scope.playlists = playlists;
