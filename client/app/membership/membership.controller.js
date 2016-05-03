@@ -2,7 +2,9 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User, Schedule) {
+
+    var studio = Schedule.getCurrentStudio()
 
     $scope.slot = slot;
     if (slot) {
@@ -11,7 +13,7 @@ angular.module('bodyAppApp')
       var slotTime = moment(slot.date).format('LT')
     }
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + studio)
 
     $scope.closeModal = function() {
       $uibModalInstance.close()

@@ -7,6 +7,7 @@ angular.module('bodyAppApp')
       var ref;
       if (studioId) {
         ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+        Schedule.setCurrentStudio(studioId);
       } else {
         $location.path('/ralabala/schedule')
         ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");

@@ -3,12 +3,21 @@ angular.module('bodyAppApp')
   	
   	var service = {};
   	var currentUser;
+    var currentStudio;
   	service.classInNext30Mins;
   	service.userHasClassNow = false;
   	service.classUserJustJoined;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     // var fbObject;
+
+    service.setCurrentStudio = function(studio) {
+      currentStudio = studio
+    }    
+
+    service.getCurrentStudio = function() {
+      return currentStudio;
+    }    
 
   	service.setCurrentUser = function(user) {
   		currentUser = user
