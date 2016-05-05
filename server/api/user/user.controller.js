@@ -362,6 +362,11 @@ exports.postBilling = function(req, res, next){
 
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
+
+    ref.child("studios").child(studioId).child("stripeConnected").once('value', function(snapshot) {
+      if (!snapshot.exists()) return chargeCard()
+      chargeCard(snapshot.val())  
+    })
     
     var cb = function(err) {
       if (err && err.statusCode) {
@@ -471,59 +476,62 @@ exports.postBilling = function(req, res, next){
           return
         });
       };
-
-      if(user.stripe.subscription.status === "active"){
-        console.log("User " + user.stripe.customer.customerId + " already has ID and subscription. Card updated and customer not charged again.");
-        stripe.customers.update(user.stripe.customer.customerId, {source: stripeToken}, cardHandler);
-        // if (user.stripe.subscription.status === "active") {
-        //   return console.log("Customer " + user.stripe.customer.customerId + " already has subscription. Not charged again");
-        // } else {
-        //   console.log("Customer " + user.stripe.customer.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
-        //   stripe.customers.updateSubscription(
-        //     user.stripe.customer.customerId,
-        //     null,
-        //     { plan: "basicSubscription"},
-        //   cardHandler);
-        // }
-      } else if (coupon) {     
-        if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
-          console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
-          stripe.customers.createSubscription(
-            user.stripe.customer.customerId, {
+      
+      var chargeCard = function(connectedAccount) {
+        if(user.stripe.subscription.status === "active"){
+          console.log("User " + user.stripe.customer.customerId + " already has ID and subscription. Card updated and customer not charged again.");
+          stripe.customers.update(user.stripe.customer.customerId, {source: stripeToken}, cardHandler);
+          // if (user.stripe.subscription.status === "active") {
+          //   return console.log("Customer " + user.stripe.customer.customerId + " already has subscription. Not charged again");
+          // } else {
+          //   console.log("Customer " + user.stripe.customer.customerId + " exists, but didn't have subscription.  Resubscribing to basic.")
+          //   stripe.customers.updateSubscription(
+          //     user.stripe.customer.customerId,
+          //     null,
+          //     { plan: "basicSubscription"},
+          //   cardHandler);
+          // }
+        } else if (coupon) {     
+          if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+            console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
+            stripe.customers.createSubscription(
+              user.stripe.customer.customerId, {
+                source: stripeToken,
+                plan: "ralabala30",
+                coupon: coupon.id
+              }, cardHandler
+            );
+          } else {
+            console.log("Creating new stripe customer and new subscription.")
+            stripe.customers.create({
+              email: user.email,
               source: stripeToken,
               plan: "ralabala30",
-              coupon: coupon.id
-            }, cardHandler
-          );
-        } else {
-          console.log("Creating new stripe customer and new subscription.")
-          stripe.customers.create({
-            email: user.email,
-            source: stripeToken,
-            plan: "ralabala30",
-            coupon: coupon.id,
-            description: "Created subscription during pilot"
-          }, cardHandler);
-        }
-      } else { //No coupon
-        if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
-          console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
-          stripe.customers.createSubscription(
-            user.stripe.customer.customerId, {
+              coupon: coupon.id,
+              description: "Created subscription during pilot"
+            }, cardHandler);
+          }
+        } else { //No coupon
+          if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+            console.log("User " + user.stripe.customer.customerId + " didn't have active subscription.  Creating new subscription")
+            stripe.customers.createSubscription(
+              user.stripe.customer.customerId, {
+                source: stripeToken,
+                plan: "ralabala30"
+              }, cardHandler
+            );
+          } else {
+            console.log("Creating new stripe customer and new subscription.")
+            stripe.customers.create({
+              email: user.email,
               source: stripeToken,
-              plan: "ralabala30"
-            }, cardHandler
-          );
-        } else {
-          console.log("Creating new stripe customer and new subscription.")
-          stripe.customers.create({
-            email: user.email,
-            source: stripeToken,
-            plan: "ralabala30",
-            description: "Created subscription during pilot"
-          }, cardHandler);
-        }
+              plan: "ralabala30",
+              description: "Created subscription during pilot"
+            }, cardHandler);
+          }
+        }    
       }
+      
   });
 };
 
