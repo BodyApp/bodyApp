@@ -230,7 +230,8 @@ angular.module('bodyAppApp')
                 "injuries": user.injuries,
                 "emergencyContact": user.emergencyContact
             });
-            $scope.goToDashboard()   
+            // $scope.goToDashboard()
+            $scope.newUserStep++;   
             // $scope.newUserStep++;
 		})
     	// }

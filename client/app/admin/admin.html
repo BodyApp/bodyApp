@@ -10,7 +10,7 @@
   </ul> -->
   <!-- <div class = "col-sm-2"></div> -->
   <div class = "col-sm-12 mb64">
-    <form novalidate class="simple-form row mb72">
+    <form novalidate class="simple-form row mb32">
       <!-- <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br /> -->
       <select ng-model="workoutToCreate.trainer" ng-options = "(option.firstName + ' ' + option.lastName) for option in instructors" required>
         <!-- <option ng-options="option in instructors" value="{{option}}">{{option.firstName}} {{option.lastName}}</option> -->
@@ -26,6 +26,8 @@
       <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
       <button style="background-image: url(../../assets/images/soundcloudButton.png); width: 245px; height: 32px" ng-click = "soundcloudAuth()"> </button>
     </form>
+
+    <button class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button>
 
     <!-- <section class="week-schedule scroll-to mb72"> -->
         <div class="row">
