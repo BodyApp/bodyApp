@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams) {
+  .controller('AdminCtrl', function ($scope, $http, $location, $window, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams) {
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
@@ -530,6 +530,7 @@ angular.module('bodyAppApp')
       }
 
       $scope.beginStripeConnect = function() {
+        $window.location.href = '/auth/stripe';
         // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
         // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       }

@@ -77,6 +77,12 @@ var all = {
     callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
   },
 
+  stripe: {
+    clientID:     process.env.STRIPE_ID || 'id',
+    clientSecret: process.env.STRIPE_KEY || 'secret',
+    callbackURL:  (process.env.DOMAIN || '') + '/auth/stripe/callback'
+  },
+
   twitter: {
     clientID:     process.env.TWITTER_ID || 'id',
     clientSecret: process.env.TWITTER_SECRET || 'secret',
