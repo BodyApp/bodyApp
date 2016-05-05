@@ -108,18 +108,19 @@ Strategy.prototype.authenticate = function(req, options) {
         }
 
         // Generate the additional stripe object
-        var stripe = {};
-        stripe.token_type = params.token_type || null;
-        stripe.stripe_publishable_key = params.stripe_publishable_key || null;
-        stripe.scope = params.scope || null;
-        stripe.livemode = params.livemode || null;
-        stripe.stripe_user_id = params.stripe_user_id || null;
+        // var stripe = {};
+        // console.log(params)
+        // stripe.token_type = params.token_type || null;
+        // stripe.stripe_publishable_key = params.stripe_publishable_key || null;
+        // stripe.scope = params.scope || null;
+        // stripe.livemode = params.livemode || null;
+        // stripe.stripe_user_id = params.stripe_user_id || null;
 
 
         if (self._passReqToCallback) {
-          self._verify(req, accessToken, refreshToken, stripe, verified);
+          self._verify(req, accessToken, refreshToken, params, verified);
         } else {
-          self._verify(accessToken, refreshToken, stripe, verified);
+          self._verify(accessToken, refreshToken, params, verified);
         }
       }
     );
@@ -134,6 +135,7 @@ Strategy.prototype.authenticate = function(req, options) {
     params['response_type'] = 'code';
     params['redirect_uri'] = callbackURL;
     var scope = options.scope || this._scope;
+    var studioId = options.studioId || this._studioId;
     if (scope) {
       if (Array.isArray(scope)) { scope = scope.join(this._scopeSeparator); }
       params.scope = scope;

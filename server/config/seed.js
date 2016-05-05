@@ -51,9 +51,9 @@ User.find({}).remove(function() {
     role: "admin",
     __v: 51,
     // injuries: "Nope",
-    bookedIntroClass: false,
-    // completedNewUserFlow: true,
-    introClassTaken: false,
+    bookedIntroClass: true,
+    completedNewUserFlow: true,
+    introClassTaken: true,
     // welcomeEmailSent: false,
     // welcomeEmailSent: new Date(),
     // level: 1

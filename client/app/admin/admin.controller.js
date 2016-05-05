@@ -530,7 +530,7 @@ angular.module('bodyAppApp')
       }
 
       $scope.beginStripeConnect = function() {
-        $window.location.href = '/auth/stripe';
+        $window.location.href = '/auth/stripe?studioid=' + studioId;
         // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
         // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       }
