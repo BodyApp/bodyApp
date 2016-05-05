@@ -15,7 +15,7 @@ exports.setup = function (User, config) {
     function(req, accessToken, refreshToken, stripe_properties, done) {
       var dataToSave = stripe_properties;
       dataToSave.refreshToken = refreshToken;
-      console.log(dataToSave);
+      dataToSave.applicationFeePercent = 30;
       var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + req.query.state);
       ref.child("stripeConnected").update(dataToSave, function(err) {
         if (err) return console.log(err)
