@@ -156,7 +156,7 @@ angular.module('bodyAppApp')
           $scope.testingNetwork = false;
         }, $scope.networkTestCountdown)
 
-        conductInternetTest(classToJoin.sessionId);
+        // conductInternetTest(classToJoin.sessionId);
       }
 
       $scope.numBookedUsers;
@@ -360,7 +360,7 @@ angular.module('bodyAppApp')
             icon: 'assets/icon_tick.svg'
           });
         } else {
-          userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats})
+          // userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats}) //Temporarily disabled due to packetLossPerSecond being NaN... wtf
           console.log("Your internet connection is too slow.")
           var modalInstance = $uibModal.open({
             animation: true,
@@ -673,7 +673,7 @@ angular.module('bodyAppApp')
           publisher.disconnect();
           publisher.destroy();
           console.log(stats);
-          userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats})
+          // userRef.child("failedNetworkTest").push({time: new Date().getTime(), results: stats}) //Temporarily disabled due to a tokbox error.
           // classRef.bookedUsers[currentUser._id]["failedNetworkTest"] = classRef.bookedUsers[currentUser._id]["failedNetworkTest"] || []
           // classRef.bookedUsers[currentUser._id]["failedNetworkTest"].push({time: new Date().getTime(), results: stats})
           // classRef.$save()

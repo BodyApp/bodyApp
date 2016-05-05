@@ -81,7 +81,7 @@ angular.module('bodyAppApp')
           rating: rating
         }, function(data) {
           console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
-          $uibModalInstance.close();
+          // $uibModalInstance.close();
           if (feedback.length > 2) {
             ref.child('feedback').push({
               userId: currentUser._id,
@@ -93,9 +93,9 @@ angular.module('bodyAppApp')
               feedback: feedback
             })
           }
-          if (!currentUser.stripe && ($scope.classCompleted.level === "Test" || $scope.classCompleted.level === "Intro" || $scope.classCompleted.level === "Open")) {
-            openAddMembershipQuestionModal()
-          }
+          // if (!currentUser.stripe && ($scope.classCompleted.level === "Test" || $scope.classCompleted.level === "Intro" || $scope.classCompleted.level === "Open")) {
+            // openAddMembershipQuestionModal()
+          // }
         }, function(err) {
             console.log(err)
         }).$promise;  
