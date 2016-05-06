@@ -66,7 +66,7 @@ var UserSchema = new Schema({
   google: {},
   github: {},
   firebaseToken: String,
-  studios: Object,
+  studioEmployee: Object,
   studioSubscriptions: Object
 });
 

@@ -28,9 +28,11 @@
     </form>
 
     <button class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button>
-
-    <input ng-model = "subscriptionAmount"></input>
-    <input ng-model = "dropInAmount"></input>
+    <div>
+      <div>Current Active Subscription: <span>{{subscriptionAmount}}</span></div>
+      <!-- <input ng-model = "subscriptionAmount"></input> -->
+      <!-- <input ng-model = "dropInAmount"></input> -->
+    </div>
 
     <!-- <section class="week-schedule scroll-to mb72"> -->
         <div class="row">

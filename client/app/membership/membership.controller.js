@@ -131,7 +131,7 @@ angular.module('bodyAppApp')
             stripeToken: token,
             shippingAddress: args,
             coupon: coupon,
-            studioId: studioId
+            studioId: studio
           })
           .success(function(data) {
               console.log("Successfully posted to /user/charge");
@@ -225,7 +225,7 @@ angular.module('bodyAppApp')
             stripeToken: token,
             shippingAddress: args,
             slot: slot,
-            studioId: studioId
+            studioId: studio
           })
           .success(function(data) {
             console.log("Successfully posted to /user/chargedropin");

@@ -91,6 +91,8 @@ angular.module('bodyAppApp')
               instructor: $scope.classCompleted.trainer,
               rating: rating,
               feedback: feedback
+            }, function() {
+              $location.path('/')
             })
           }
           // if (!currentUser.stripe && ($scope.classCompleted.level === "Test" || $scope.classCompleted.level === "Intro" || $scope.classCompleted.level === "Open")) {

@@ -353,6 +353,7 @@ exports.postBilling = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;
   var shippingAddress = req.body.shippingAddress;
   var coupon = req.body.coupon;
+  var studioId = req.body.studioId;
 
   if(!stripeToken){
     return console.log("error retrieving stripe token.")
@@ -362,11 +363,6 @@ exports.postBilling = function(req, res, next){
 
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
-
-    ref.child("studios").child(studioId).child("stripeConnected").once('value', function(snapshot) {
-      if (!snapshot.exists()) return chargeCard()
-      chargeCard(snapshot.val())  
-    })
     
     var cb = function(err) {
       if (err && err.statusCode) {
@@ -476,7 +472,7 @@ exports.postBilling = function(req, res, next){
           return
         });
       };
-      
+
       var chargeCard = function(connectedAccount) {
         if(user.stripe.subscription.status === "active"){
           console.log("User " + user.stripe.customer.customerId + " already has ID and subscription. Card updated and customer not charged again.");
@@ -531,6 +527,15 @@ exports.postBilling = function(req, res, next){
           }
         }    
       }
+
+    if (studioId) {
+      ref.child("studios").child(studioId).child("stripeConnected").once('value', function(snapshot) {
+        if (!snapshot.exists()) return chargeCard()
+        chargeCard(snapshot.val())  
+      })  
+    } else {
+      chargeCard()
+    }
       
   });
 };
