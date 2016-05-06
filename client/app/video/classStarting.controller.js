@@ -155,8 +155,11 @@ angular.module('bodyAppApp')
           console.log("Prevented standstill at loading screen.")
           $scope.testingNetwork = false;
         }, $scope.networkTestCountdown)
-
-        // conductInternetTest(classToJoin.sessionId);
+        
+        User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+          conductInternetTest(session.sessionId); //Generate new session ID for testing purposes, which then discard.  Best practice.
+        })
+        // conductInternetTest(classToJoin.sessionId); //If uncomment this, generate a new session ID before running the test.  Don't use the actual class session as might screw things up.
       }
 
       $scope.numBookedUsers;
