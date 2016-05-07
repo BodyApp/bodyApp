@@ -536,6 +536,70 @@ angular.module('bodyAppApp')
         // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       }
 
+      $scope.createSubscriptionPlan = function(amount, name) {
+        User.createSubscriptionPlan({
+          id: $scope.currentUser._id
+        }, {
+          studioId: studioId,
+          amount: amount,
+          name: name,
+          currency: "usd",
+          interval: "month",
+          statement_descriptor: studioId + " Subscription",
+          metadata: {}
+        }).$promise.then(function(subscription) {
+          $scope.pricingOptions.push(subscription); 
+          $scope.returnedSubscription = subscription;
+        })
+      }
+
+      $scope.deleteSubscriptionPlan = function(planId) {
+        User.deleteSubscriptionPlan({
+          id: $scope.currentUser._id
+        }, {
+          studioId: studioId,
+          planId: planId
+        }).$promise.then(function(deletedPlanId) {
+          console.log("Deleted subscription plan with id: " + planId);
+        })
+      }
+
+      var listSubscriptionPlans = function() {
+        User.listSubscriptionPlans({
+          id: $scope.currentUser._id
+        }, {
+          studioId: studioId,
+          planId: planId
+        }).$promise.then(function(plans) {
+          console.log("Retrieved " + plans.length + " subscription plans");
+          $scope.subscriptionPlans = plans;
+        })
+      }
+
+      var listActiveSubscriptions = function() { //Can also pass in a particular planId to only get subscriptions for that plan.
+        User.listActiveSubscriptions({
+          id: $scope.currentUser._id
+        }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
+          studioId: studioId,
+          limit: 100
+        }).$promise.then(function(activeSubscriptions) {
+          console.log("Retrieved " + activeSubscriptions.length + " active subscriptions");
+          $scope.activeSubscriptions = activeSubscriptions;
+        })
+      }
+
+      var listCoupons = function() {
+        User.listCoupons({
+          id: $scope.currentUser._id
+        }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
+          studioId: studioId,
+          limit: 100
+        }).$promise.then(function(existingCoupons) {
+          console.log("Retrieved " + existingCoupons.length + " coupons");
+          $scope.existingCoupons = existingCoupons;
+        })
+      }
+
       //Add class Type controller
       $scope.addClassType = function(className, dropinPrice, openTo, requirements, classDescription) {
         ref.child("classTypes").push({'className': className, 'dropinPrice': dropinPrice, 'openTo': openTo, 'requirements': requirements, 'classDescription': classDescription})
