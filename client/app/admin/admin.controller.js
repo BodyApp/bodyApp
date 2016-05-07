@@ -546,7 +546,7 @@ angular.module('bodyAppApp')
           currency: "usd",
           interval: "month",
           statement_descriptor: studioId + " Subscription",
-          metadata: {}
+          userThatCreatedPlan: $scope.currentUser._id
         }).$promise.then(function(subscription) {
           $scope.pricingOptions.push(subscription); 
           $scope.returnedSubscription = subscription;

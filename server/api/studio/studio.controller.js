@@ -12,29 +12,37 @@ var Firebase = require('firebase');
 var ref = new Firebase("https://bodyapp.firebaseio.com/");
 
 exports.createSubsciptionPlan = function(req, res, next){
-  stripe.coupons.create({
-    percent_off: 50,
-    duration: 'once',
+  var studioId = req.body.studioId
+  var amount = req.body.amount
+  var name = req.body.name
+  var currency = req.body.currency
+  var interval = req.body.interval
+  var statement_descriptor = req.body.statement_descriptor
+  var metadata = req.body.metadata
+  var userThatCreatedPlan = req.body.userThatCreatedPlan
+  
+  stripe.plans.create({
+    id: studioId + amount/100 + "v" + new Date().getTime(),
+    amount: amount,
+    interval: interval,
+    name: name,
+    currency: currency,
+    statement_descriptor: statement_descriptor,
     metadata: {
-      "referrerId": user._id.toString(),
-      "type": "referralCode",
-      "referrerFirstName": user.firstName,
-      "referrerLastName": user.lastName,
-      "referrerEmail": user.email,
-      "referrerFacebookId": user.facebookId,
-      "text": "50% off first month!"
+      "studioId": studioId,
+      "userThatCreatedPlan": userThatCreatedPlan,
     }
-    // id: randomString
-  }, function(err, coupon) {
-    
-    // console.log("Coupon " + coupon.id + " created in Stripe")
+  }, function(err, plan) {
     if (err) {console.log(err); return res.status(400).send(err);}
-    console.log(coupon)
+    ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).update(plan, function(err) {
+      if (err) return res.status(400).send(err)
+      res.status(200).json(plan);  
+    })
   });
 };
 
 
-router.put('/:id/createSubscriptionPlan', auth.isAuthenticated(), controller.createSubscriptionPlan);
+
 router.put('/:id/deleteSubscriptionPlan', auth.isAuthenticated(), controller.deleteSubscriptionPlan);
 router.put('/:id/listSubscriptionPlans', auth.isAuthenticated(), controller.listSubscriptionPlans);
 router.put('/:id/listActiveSubscriptions', auth.isAuthenticated(), controller.listActiveSubscriptions);
