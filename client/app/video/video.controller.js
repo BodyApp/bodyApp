@@ -913,18 +913,20 @@ angular.module('bodyAppApp')
 				if (trainerListeningToEverybody) {
 					trainerListeningToEverybody = false;
 					for (var subscriber in subscriberObjects) {
-						subscriberObjects[subscriber].subscribeToAudio(false);
+						if (subscriberObjects && subscriberObjects[subscriber]) subscriberObjects[subscriber].subscribeToAudio(false);
 						console.log("Unsubscribing from audio of user "+subscriberObjects[subscriber].stream.connection.data.toString())
 						console.log("with stream id of "+subscriberObjects[subscriber].streamId)
 					}
 				}
 				if (!$scope.consumersCanHearEachOther) {
-					console.log("subscribing to audio from user "+subscriberObjects[consumerId].stream.connection.data.toString())
-					console.log("with stream id of "+subscriberObjects[consumerId].streamId)
-					subscriberObjects[consumerId].subscribeToAudio(true)
-					subscriberObjects[consumerId].setAudioVolume(100);
-					
-					if (previousConsumerClicked && previousConsumerClicked != consumerId) { //Prevents issue first time click a consumer
+					if (subscriberObjects && subscriberObjects[consumerId]) {
+						console.log("subscribing to audio from user "+subscriberObjects[consumerId].stream.connection.data.toString())
+						console.log("with stream id of "+subscriberObjects[consumerId].streamId)
+						subscriberObjects[consumerId].subscribeToAudio(true)
+						subscriberObjects[consumerId].setAudioVolume(100);	
+					}
+
+					if (subscriberObjects[previousConsumerClicked] && previousConsumerClicked && previousConsumerClicked != consumerId) { //Prevents issue first time click a consumer
 						console.log("Unsubscribing from audio of user "+subscriberObjects[previousConsumerClicked].stream.connection.data.toString())
 						console.log("with stream id of "+subscriberObjects[previousConsumerClicked].streamId)
 						subscriberObjects[previousConsumerClicked].subscribeToAudio(false)
@@ -941,10 +943,12 @@ angular.module('bodyAppApp')
 				}
 			} else { //If trainer clicks on himself
 				for (var subscriber in subscriberObjects) {
-					subscriberObjects[subscriber].subscribeToAudio(true);
-					subscriberObjects[subscriber].setAudioVolume(100);
-					console.log("subscribing to audio from user "+subscriberObjects[subscriber].stream.connection.data.toString())
-					console.log("with stream id "+subscriberObjects[subscriber].streamId)
+					if (subscriberObjects && subscriberObjects[subscriber]) {
+						subscriberObjects[subscriber].subscribeToAudio(true);
+						subscriberObjects[subscriber].setAudioVolume(100);
+						console.log("subscribing to audio from user "+subscriberObjects[subscriber].stream.connection.data.toString())
+						console.log("with stream id "+subscriberObjects[subscriber].streamId)	
+					}
 				}
 				trainerListeningToEverybody = true;
 			}

@@ -54,6 +54,8 @@ router.post('/chargedropin', auth.isAuthenticated(), controller.postDropInBillin
 
 router.post('/cancelsub', auth.isAuthenticated(), controller.cancelSubscription);
 
+router.put('/:id/getInstructorByEmail', auth.isAuthenticated(), controller.getInstructorByEmail);
+
 // router.post('/charge',
   // setRedirect({auth: '/', success: '/billing', failure: '/billing'}),
   // auth.isAuthenticated(),

@@ -83,6 +83,16 @@ exports.getMembersOfStudio = function(req, res) {
   }).sort('lastName');
 };
 
+exports.getInstructorByEmail = function(req, res, next) {
+  var email = req.body.email;
+  console.log("getting instructor with email " + email)
+  User.findOne({email: email}, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+    if (err) return next(err);
+    if (!user) return res.status(200).send('No instructor found');
+    if (user) return res.json(user.profile);
+  });
+}
+
 exports.getUser = function(req, res, next) {
   var userId = req.body.userToGet;
   console.log("getting user " + userId)

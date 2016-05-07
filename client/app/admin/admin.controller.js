@@ -529,9 +529,48 @@ angular.module('bodyAppApp')
         }
       }
 
+      //Add billing controller
       $scope.beginStripeConnect = function() {
         $window.location.href = '/auth/stripe?studioid=' + studioId;
         // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
         // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       }
+
+      //Add class Type controller
+      $scope.addClassType = function(className, dropinPrice, openTo, requirements, classDescription) {
+        ref.child("classTypes").push({'className': className, 'dropinPrice': dropinPrice, 'openTo': openTo, 'requirements': requirements, 'classDescription': classDescription})
+      }
+
+      //Add workout modal
+      $scope.addSet = function(setToAdd) {
+        $scope.sets.push(setToAdd);
+      }
+
+      $scope.createWorkout = function(title, classType, sets) {
+        var pushedWorkout = ref.child("workouts").push({'title': title, 'classType': classType, sets: 'sets'}, function() {
+          ref.child("workoutsByClassType").child(classType).child(pushedWorkout.name).update({'title': title, 'classType': classType, sets: 'sets'});
+        })
+      }
+
+      //Add instructor controller
+      $scope.findInstructorByEmail = function(emailToSearch) {
+        User.getInstructorByEmail({
+          id: $scope.currentUser._id
+        }, {
+          email: emailToSearch
+        }).$promise.then(function(instructor) {
+          $scope.returnedInstructor = instructor;
+        })
+      }
+
+      $scope.addInstructor = function(instructorId, positionTitle, certifications, instructorBio, permission) {
+        if (permission === 'instructor') {
+          ref.child("instructors").update({'instructorId': instructorId, 'positionTitle': positionTitle, 'certifications': certifications, 'instructorBio': instructorBio, 'permission': permission});
+        }
+
+        if (permission === 'admin') {
+          ref.child("studioAdmins").child(instructorId).update({}) 
+        }
+      }
+
   });

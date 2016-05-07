@@ -30,8 +30,8 @@ angular.module('bodyAppApp')
 
     // var networkBitsThreshold = 50000;
     // var networkDroppedPackets = 0.5;
-    var networkBitsThreshold = 15000; //Should be more like 150000
-    var networkDroppedPackets = 0.5; //Should be more like 0.5
+    var networkBitsThreshold = 20000; //Should be more like 150000
+    var networkDroppedPackets = 5.0; //Should be more like 0.5
 
     var funnyPhrases = ["Personal Unicorn Sanctuary", "Internet Iditarod", "Gateway to Sexiness", "Squat Paradise", "Pathway to Fitness and Fame", "Favorite Workout Ever", "Fitness Oasis", "Favorite Workout Class", "Upgraded BODY", "Calorie Burnin' Bonfire", "Fitness in a Bottle", "Great Life Decision", "First Step Turning Your Dreams into Reality"]
 

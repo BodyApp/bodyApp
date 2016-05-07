@@ -110,6 +110,12 @@ angular.module('bodyAppApp')
           controller: 'getUser'
         }
       },
+      getInstructorByEmail: {
+        method: 'PUT',
+        params: {
+          controller: 'getInstructorByEmail'
+        }
+      },
       getMembersOfStudio: {
         method: 'PUT',
         isArray: true,
