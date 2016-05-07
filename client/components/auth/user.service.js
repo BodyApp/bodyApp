@@ -194,6 +194,36 @@ angular.module('bodyAppApp')
         params: {
           controller: 'referredBy'
         }
+      },
+      createSubscriptionPlan: {
+        method: 'PUT',
+        params: {
+          controller: 'createSubscriptionPlan'
+        }
+      },
+      deleteSubscriptionPlan: {
+        method: 'PUT',
+        params: {
+          controller: 'deleteSubscriptionPlan'
+        }
+      },
+      listSubscriptionPlans: {
+        method: 'PUT',
+        params: {
+          controller: 'listSubscriptionPlans'
+        }
+      },
+      listActiveSubscriptions: {
+        method: 'PUT',
+        params: {
+          controller: 'listActiveSubscriptions'
+        }
+      },
+      listCoupons: {
+        method: 'PUT',
+        params: {
+          controller: 'listCoupons'
+        }
       }
 	  });
   });
