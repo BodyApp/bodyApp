@@ -71,7 +71,7 @@ angular.module('bodyAppApp')
         Schedule.setCurrentUser(currentUser);
         $scope.pictureData = {};
 
-        if (user.stripe) $rootScope.subscriptionActive = user.stripe.subscription.status === 'active';
+        if (user.stripe && user.stripe.studios && user.stripe.studios[studioId] && user.stripe.studios[studioId].subscription) $rootScope.subscriptionActive = user.stripe.studios[studioId].subscription.status === 'active';
 
         //Firebase authentication check
         ref.onAuth(function(authData) {
@@ -134,7 +134,7 @@ angular.module('bodyAppApp')
             "introTaken": user.introClassTaken ? user.introClassTaken : false,
             "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
             "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false,
-            "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+            // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
             "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
             "referredBy": user.referredBy,
             "referralCode" : user.referralCode,
@@ -158,7 +158,7 @@ angular.module('bodyAppApp')
               "introTaken": user.introClassTaken,
               "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
               "newUserFlowComplete": user.completedNewUserFlow,
-              "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+              // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
               "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
               "referredBy": user.referredBy,
               "referralCode" : user.referralCode,
@@ -494,7 +494,7 @@ angular.module('bodyAppApp')
       }
 
       function checkWhetherUserIsSubscribed(slot) {
-        if (currentUser.stripe && currentUser.stripe.subscription && currentUser.stripe.subscription.status === "active") { //Change to rootscope check
+        if (currentUser.stripe && currentUser.stripe.studios && currentUser.stripe.studios[studioId] && currentUser.stripe.studios[studioId].subscription && currentUser.stripe.studios[studioId].subscription.status === "active") { //Change to rootscope check
             return true;
         } else {
           var modalInstance = $uibModal.open({
