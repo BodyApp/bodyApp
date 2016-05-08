@@ -20,18 +20,21 @@ angular.module('bodyAppApp')
       },
       listSubscriptionPlans: {
         method: 'PUT',
+        isArray: true,
         params: {
           controller: 'listSubscriptionPlans'
         }
       },
-      listActiveSubscriptions: {
+      listCustomers: {
         method: 'PUT',
+        isArray: true,
         params: {
-          controller: 'listActiveSubscriptions'
+          controller: 'listCustomers'
         }
       },
       listCoupons: {
         method: 'PUT',
+        isArray: true,
         params: {
           controller: 'listCoupons'
         }

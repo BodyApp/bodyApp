@@ -1,6 +1,6 @@
 
 var config = require('../../config/environment');
-var stripe = require("stripe")(config.stripeOptions.apiKey);
+// var stripe = require("stripe")(config.stripeOptions.apiKey);
 
 var Mailgun = require('mailgun-js');
 var api_key = config.mailgunApiKey;
@@ -21,9 +21,11 @@ exports.createSubscriptionPlan = function(req, res, next){
   var metadata = req.body.metadata;
   var userThatCreatedPlan = req.body.userThatCreatedPlan;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
     if (snapshot.exists()) {
       // stripe = require("stripe")(snapshot.val());
+
+      var stripe = require("stripe")(snapshot.val())
 
       stripe.plans.create({
         id: studioId + amount/100 + "v" + new Date().getTime(),
@@ -36,9 +38,11 @@ exports.createSubscriptionPlan = function(req, res, next){
           "studioId": studioId,
           "userThatCreatedPlan": userThatCreatedPlan,
         }
-      }, {
-        stripe_account: snapshot.val()
-      }, function(err, plan) {
+      }, 
+      // {
+      //   stripe_account: snapshot.val()
+      // }, 
+      function(err, plan) {
         if (err) {console.log(err); return res.status(400).send(err);}
         ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).update(plan, function(err) {
           if (err) return res.status(400).send(err);
@@ -55,13 +59,16 @@ exports.deleteSubscriptionPlan = function(req, res, next){
   var studioId = req.body.studioId;
   var planId = req.body.planId;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
     if (snapshot.exists()) {
 
+      var stripe = require("stripe")(snapshot.val())
+
       stripe.plans.del(planId,
-      {
-        stripe_account: snapshot.val()
-      }, function(err, plan) {
+      // {
+      //   stripe_account: snapshot.val()
+      // }, 
+      function(err, plan) {
         if (err) {console.log(err); return res.status(400).send(err);}
         ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).remove(function(err) {
           if (err) return res.status(400).send(err);
@@ -77,10 +84,14 @@ exports.deleteSubscriptionPlan = function(req, res, next){
 exports.listSubscriptionPlans = function(req, res, next){
   var studioId = req.body.studioId;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
     if (snapshot.exists()) {
 
-      stripe.plans.list({ stripe_account: snapshot.val() }, function(err, plans) {
+      var stripe = require("stripe")(snapshot.val())
+
+      stripe.plans.list(
+        // { stripe_account: snapshot.val() }, 
+        function(err, plans) {
         if (err) {console.log(err); return res.status(400).send(err);}
         console.log(plans.data.length + " subscription plans pulled.")
         res.status(200).send(plans.data);  
@@ -91,18 +102,21 @@ exports.listSubscriptionPlans = function(req, res, next){
   })
 };
 
-exports.listActiveSubscriptions = function(req, res, next){
+exports.listCustomers = function(req, res, next){
   var studioId = req.body.studioId;
   var limit = req.body.limit;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
     if (snapshot.exists()) {
 
-      stripe.subscriptions.list( { limit: limit },
-        { stripe_account: snapshot.val() }, function(err, subscriptions) {
+      var stripe = require("stripe")(snapshot.val())
+
+      stripe.customers.list( { limit: limit },
+        // { stripe_account: snapshot.val() }, 
+        function(err, customers) {
         if (err) {console.log(err); return res.status(400).send(err);}
-        console.log(subscriptions.data.length + " active subscriptions pulled.")
-        res.status(200).send(subscriptions.data);  
+        console.log(customers.data.length + " customers pulled.")
+        res.status(200).send(customers.data);  
         
       });
     } else {
@@ -115,11 +129,14 @@ exports.listCoupons = function(req, res, next){
   var studioId = req.body.studioId;
   var limit = req.body.limit;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
     if (snapshot.exists()) {
 
+      var stripe = require("stripe")(snapshot.val())
+
       stripe.coupons.list( { limit: limit },
-        { stripe_account: snapshot.val() }, function(err, coupons) {
+        // { stripe_account: snapshot.val() }, 
+        function(err, coupons) {
         if (err) {console.log(err); return res.status(400).send(err);}
         console.log(coupons.data.length + " active coupons pulled.")
         res.status(200).send(coupons.data);  

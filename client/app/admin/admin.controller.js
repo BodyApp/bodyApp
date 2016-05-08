@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $window, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams) {
+  .controller('AdminCtrl', function ($scope, $http, $location, $window, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams, Studio) {
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }
@@ -15,6 +15,9 @@ angular.module('bodyAppApp')
       $scope.currentUser = data;
 
       thisWeek()
+      listSubscriptionPlans()
+      listCustomers()
+      listCoupons()
 
       User.getMembersOfStudio({
         id: data._id
@@ -537,7 +540,7 @@ angular.module('bodyAppApp')
       }
 
       $scope.createSubscriptionPlan = function(amount, name) {
-        User.createSubscriptionPlan({
+        Studio.createSubscriptionPlan({
           id: $scope.currentUser._id
         }, {
           studioId: studioId,
@@ -554,7 +557,7 @@ angular.module('bodyAppApp')
       }
 
       $scope.deleteSubscriptionPlan = function(planId) {
-        User.deleteSubscriptionPlan({
+        Studio.deleteSubscriptionPlan({
           id: $scope.currentUser._id
         }, {
           studioId: studioId,
@@ -565,7 +568,7 @@ angular.module('bodyAppApp')
       }
 
       var listSubscriptionPlans = function() {
-        User.listSubscriptionPlans({
+        Studio.listSubscriptionPlans({
           id: $scope.currentUser._id
         }, {
           studioId: studioId
@@ -575,20 +578,20 @@ angular.module('bodyAppApp')
         })
       }
 
-      var listActiveSubscriptions = function() { //Can also pass in a particular planId to only get subscriptions for that plan.
-        User.listActiveSubscriptions({
+      var listCustomers = function() { //Can also pass in a particular planId to only get subscriptions for that plan.
+        Studio.listCustomers({
           id: $scope.currentUser._id
         }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
           studioId: studioId,
           limit: 100
-        }).$promise.then(function(activeSubscriptions) {
-          console.log("Retrieved " + activeSubscriptions.length + " active subscriptions");
-          $scope.activeSubscriptions = activeSubscriptions;
+        }).$promise.then(function(customers) {
+          console.log("Retrieved " + customers.length + " customers");
+          $scope.customers = customers;
         })
       }
 
       var listCoupons = function() {
-        User.listCoupons({
+        Studio.listCoupons({
           id: $scope.currentUser._id
         }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
           studioId: studioId,
