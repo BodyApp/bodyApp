@@ -568,8 +568,7 @@ angular.module('bodyAppApp')
         User.listSubscriptionPlans({
           id: $scope.currentUser._id
         }, {
-          studioId: studioId,
-          planId: planId
+          studioId: studioId
         }).$promise.then(function(plans) {
           console.log("Retrieved " + plans.length + " subscription plans");
           $scope.subscriptionPlans = plans;

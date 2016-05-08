@@ -74,7 +74,60 @@ exports.deleteSubscriptionPlan = function(req, res, next){
   })
 };
 
-router.put('/:id/listSubscriptionPlans', auth.isAuthenticated(), controller.listSubscriptionPlans);
-router.put('/:id/listActiveSubscriptions', auth.isAuthenticated(), controller.listActiveSubscriptions);
-router.put('/:id/listCoupons', auth.isAuthenticated(), controller.listCoupons);
+exports.listSubscriptionPlans = function(req, res, next){
+  var studioId = req.body.studioId;
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+    if (snapshot.exists()) {
+
+      stripe.plans.list({ stripe_account: snapshot.val() }, function(err, plans) {
+        if (err) {console.log(err); return res.status(400).send(err);}
+        console.log(plans.data.length + " subscription plans pulled.")
+        res.status(200).send(plans.data);  
+      });
+    } else {
+      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    }
+  })
+};
+
+exports.listActiveSubscriptions = function(req, res, next){
+  var studioId = req.body.studioId;
+  var limit = req.body.limit;
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+    if (snapshot.exists()) {
+
+      stripe.subscriptions.list( { limit: limit },
+        { stripe_account: snapshot.val() }, function(err, subscriptions) {
+        if (err) {console.log(err); return res.status(400).send(err);}
+        console.log(subscriptions.data.length + " active subscriptions pulled.")
+        res.status(200).send(subscriptions.data);  
+        
+      });
+    } else {
+      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    }
+  })
+};
+
+exports.listCoupons = function(req, res, next){
+  var studioId = req.body.studioId;
+  var limit = req.body.limit;
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+    if (snapshot.exists()) {
+
+      stripe.coupons.list( { limit: limit },
+        { stripe_account: snapshot.val() }, function(err, coupons) {
+        if (err) {console.log(err); return res.status(400).send(err);}
+        console.log(coupons.data.length + " active coupons pulled.")
+        res.status(200).send(coupons.data);  
+        
+      });
+    } else {
+      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    }
+  })
+};
 
