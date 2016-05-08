@@ -44,7 +44,7 @@ exports.createSubscriptionPlan = function(req, res, next){
       // }, 
       function(err, plan) {
         if (err) {console.log(err); return res.status(400).send(err);}
-        ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).update(plan, function(err) {
+        ref.child('studios').child(studioId).child('stripeConnected').child('subscriptionPlans').child(plan.id).update(plan, function(err) {
           if (err) return res.status(400).send(err);
           res.status(200).json(plan);  
         })
@@ -147,4 +147,3 @@ exports.listCoupons = function(req, res, next){
     }
   })
 };
-

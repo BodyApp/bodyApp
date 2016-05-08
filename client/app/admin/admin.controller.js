@@ -575,6 +575,9 @@ angular.module('bodyAppApp')
         }).$promise.then(function(plans) {
           console.log("Retrieved " + plans.length + " subscription plans");
           $scope.subscriptionPlans = plans;
+          for (var plan = 0; plan < plans.length; plan++) {
+            ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
+          }
         })
       }
 
@@ -601,6 +604,69 @@ angular.module('bodyAppApp')
           $scope.existingCoupons = existingCoupons;
         })
       }
+
+      function openStripePayment(subscriptionId, coupon) {
+        ref.child('stripeConnected').child('subscriptionPlans').child(subscriptionId).once('value', function(snapshot) {
+          if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
+          var planInfo = snapshot.val()
+          var amountToPay = planInfo.amount;
+          // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
+          // $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
+          
+          if (coupon && coupon.valid) {
+            amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+          }
+
+          var handler = StripeCheckout.configure({
+            key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+            image: '../../assets/images/body-stripe.jpg',
+            locale: 'auto',
+            token: function(token, args) {
+              var modalInstance = openPaymentConfirmedModal()
+              
+              $http.post('/api/payment/addcustomersubscription', {
+                user: currentUser,
+                stripeToken: token,
+                shippingAddress: args,
+                coupon: coupon,
+                studioId: studio,
+                planInfo: planInfo
+              })
+              .success(function(data) {
+                console.log("Successfully create new customer subscription.");
+                // Auth.updateUser(data);
+                // currentUser = data;
+                // $scope.currentUser = currentUser;
+                // $rootScope.subscriptionActive = true; //Need to change this
+                if (slot) bookClass(slot);               
+              })
+              .error(function(err) {
+                console.log(err)
+                return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+              }.bind(this));
+            }
+          });
+
+          if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+            handler.open({
+              name: planInfo.statement_descriptor,
+              description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
+              panelLabel: "Pay $" + amountToPay / 100 + " / Month",
+              shippingAddress: true,
+              zipCode: true
+            });    
+          } else {
+            handler.open({
+              name: planInfo.statement_descriptor,
+              email: currentUser.email,
+              description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
+              panelLabel: "Pay $" + amountToPay / 100 + " / Month",
+              shippingAddress: true,
+              zipCode: true
+            });
+          }
+        })
+      } 
 
       //Add class Type controller
       $scope.addClassType = function(className, dropinPrice, openTo, requirements, classDescription) {
