@@ -3,6 +3,7 @@
 // var Stripe = require('stripe')
 var config = require('../../config/environment');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
+var User = require('../user/user.model');
 
 //Formatted for use with Mongoose plugin (user.model.js)
 module.exports = exports = function stripeCustomer (schema, options) {
@@ -26,6 +27,40 @@ module.exports = exports = function stripeCustomer (schema, options) {
       }
     }
   });
+};
+
+exports.updateCustomerSubscriptionStatus = function(req, res, next){
+  var studioId = req.body.studioId;
+
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+    ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
+      var stripe = require('stripe')(retrievedAccessToken)
+      if (user.stripe && user.stripe.studios && user.stripe.studios[studioId] && user.stripe.studios[studioId].customer) {
+        stripe.customers.retrieve(
+          user.stripe.studios[studioId].customer.customerId,
+          function(err, customer) {
+            var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+            user.stripe.studios[studioId].subscription = user.stripe.studios[studioId].subscription || {};   
+            user.stripe.studios[studioId].subscription.id = subData.id;
+            user.stripe.studios[studioId].subscription.name = subData.plan.id;
+            user.stripe.studios[studioId].subscription.amount = subData.plan.amount;
+            user.stripe.studios[studioId].subscription.startDate = subData.start
+            user.stripe.studios[studioId].subscription.endDate = subData.current_period_end
+            user.stripe.studios[studioId].subscription.currency = subData.plan.currency;
+            user.stripe.studios[studioId].subscription.interval = subData.plan.interval;
+            user.stripe.studios[studioId].subscription.intervalCount = subData.plan.interval_count;
+            user.stripe.studios[studioId].subscription.liveMode = subData.plan.livemode;    
+            user.stripe.studios[studioId].subscription.status = subData.status;    
+
+            user.save(function(err){
+            return res.json(user)
+          });
+          }
+        );
+      }
+    }   
+  })
 };
 
 exports.addCustomerSubscription = function(req, res, next){
@@ -68,7 +103,9 @@ exports.addCustomerSubscription = function(req, res, next){
         user.shippingAddress = shippingAddress;
       }
 
-      if (!user.stripe.customer.customerId){
+      if (!user.stripe || !user.stripe.customer || !user.stripe.customer.customerId){
+        user.stripe = user.stripe || {};
+        user.stripe.customer = user.stripe.customer || {}
         user.stripe.customer.customerId = customer.id;
       }
 
@@ -76,7 +113,7 @@ exports.addCustomerSubscription = function(req, res, next){
         if (studioId) {
           ref.child("studios").child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(retrievedId) {
             if (!retrievedId.exists()) {
-              res.status(200).send("Customer and billing created, but no subscription added.")
+              res.status(201).send("Customer and billing created, but no subscription added.")
               return cb(null)
             }
             ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
@@ -84,7 +121,7 @@ exports.addCustomerSubscription = function(req, res, next){
             })
           })  
         } else {
-          res.status(200).send("Customer and billing created, but no subscription added.")
+          res.status(201).send("Customer and billing created, but no subscription added.")
           return cb(null)
         }
         // sendShippingInfo(user) //Sends email to admins about subscriber
@@ -108,49 +145,63 @@ exports.addCustomerSubscription = function(req, res, next){
       }
     }
 
-    var createCustomerSubscriptionHandler = function(err, customer) {
+    var createCustomerSubscriptionHandler = function(err, customer, connectedAccountId) {
       if (err) return cb(err);
 
-      // if (coupon) {
-      //   user.mostRecentCoupon = coupon.id
-      //   User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
-      //     if(err) return console.log(err);
-      //     if(pulledUser) {
-      //       pulledUser.referrals = pulledUser.referrals || {}
-      //       pulledUser.referrals[user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
+      if (!user.stripe || !user.stripe.studios || !user.stripe.studios[studioId] || !user.stripe.studios[studioId].customer || !user.stripe.studios[studioId].customer.customerId) {
+        user.stripe = user.stripe || {};
+        user.stripe.studios = user.stripe.studios || {};
+        user.stripe.studios[studioId] = user.stripe.studios[studioId] || {};
+        user.stripe.studios[studioId].customer = customer;
+      }
 
-      //       pulledUser.save(function(err){
-      //         console.log("Successfully saved referral of user " + user._id + " by user " + pulledUser._id)
-      //         if (err) return console.log(err);
-      //         return
-      //       });
-      //     }
-      //   });
-      // }
+      if (coupon) {
+        user.firstCouponUsed = user.firstCouponUsed ? userr.firstCouponUsed: coupon.id; 
+        user.mostRecentCoupon = coupon.id;
 
-      
+        ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('usedBy').child(user._id).update({"dateTimeUsed": new Date().getTime(), "customerId": customer.customerId})
 
-      // if(!user.stripe.subscription.status != "active"){
-      //   console.log("Didn't have plan saved yet.  Saving now.")
-      //   //Only part of the 'subscriptions' object when user is first created
-      //   var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
-      //   console.log(subData);    
-      //   // user.stripe.customer.customerId = customer.id;
-      //   user.stripe.subscription.id = subData.id;
-      //   user.stripe.subscription.name = subData.plan.id;
-      //   user.stripe.subscription.amount = subData.plan.amount;
-      //   user.stripe.subscription.startDate = subData.start
-      //   user.stripe.subscription.endDate = subData.current_period_end
-      //   user.stripe.subscription.currency = subData.plan.currency;
-      //   user.stripe.subscription.interval = subData.plan.interval;
-      //   user.stripe.subscription.intervalCount = subData.plan.interval_count;
-      //   user.stripe.subscription.liveMode = subData.plan.livemode;    
-      //   user.stripe.subscription.status = subData.status;    
-      // }
+        User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
+          if(err) return console.log(err);
+          if(pulledUser) {
+            pulledUser.referrals = pulledUser.referrals || {}
+            pulledUser.referrals[studioId] = pulledUser.referrals[studioId] || {};
+            pulledUser.referrals[studioId][user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
+
+            pulledUser.save(function(err){
+              console.log("Successfully saved referral of user " + user._id + " to studio " + studioId + " by user " + pulledUser._id)
+              ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('couponOwner').update({'id': pulledUser._id, 'firstName': pulledUser.firstName, 'lastName': pulledUser.lastName, 'facebookId': pulledUser.facebookId, 'email': pulledUser.email})
+              if (err) return console.log(err);
+              return
+            });
+          }
+        });
+      }    
+
+      if(!user.stripe.studios[studioId].subscription.status != "active"){
+        //Only part of the 'subscriptions' object when user is first created
+        var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+        
+        user.stripe = user.stripe || {};
+        user.stripe.studios = user.stripe.studios || {};
+        user.stripe.studios[studioId] = user.stripe.studios[studioId] || {};
+        user.stripe.studios[studioId].subscription = user.stripe.studios[studioId].subscription || {};   
+
+        user.stripe.studios[studioId].subscription.id = subData.id;
+        user.stripe.studios[studioId].subscription.name = subData.plan.id;
+        user.stripe.studios[studioId].subscription.amount = subData.plan.amount;
+        user.stripe.studios[studioId].subscription.startDate = subData.start
+        user.stripe.studios[studioId].subscription.endDate = subData.current_period_end
+        user.stripe.studios[studioId].subscription.currency = subData.plan.currency;
+        user.stripe.studios[studioId].subscription.interval = subData.plan.interval;
+        user.stripe.studios[studioId].subscription.intervalCount = subData.plan.interval_count;
+        user.stripe.studios[studioId].subscription.liveMode = subData.plan.livemode;    
+        user.stripe.studios[studioId].subscription.status = subData.status;    
+      }
 
       user.save(function(err){
         // sendSubscriberEmail(user) //Email sent to user about how they are a member now.
-        res.json(user)
+        res.status(201).json(user)
         if (err) return cb(err);
         return cb(null);
         return
@@ -179,8 +230,8 @@ exports.addCustomerSubscription = function(req, res, next){
         function(err, newToken) {
           var connectedStripe = require("stripe")(connectedAccountAccessCode)
           //If user already has a customer Id with the connected account
-          if (user.stripe.studios && user.stripe.studios[connectedAccountId] && user.stripe.studios[connectedAccountId].customer && user.stripe.studios[connectedAccountId].customer.customerId) {
-            connectedStripe.customers.update(user.stripe.studios[connectedAccountId].customer.customerId {
+          if (user.stripe.studios && user.stripe.studios[studioId] && user.stripe.studios[studioId].customer && user.stripe.studios[studioId].customer.customerId) {
+            connectedStripe.customers.update(user.stripe.studios[studioId].customer.customerId {
               source: newToken,
               description: "BODY Consumer"
             }, function(err, connectedAccountCustomer) {
@@ -192,13 +243,13 @@ exports.addCustomerSubscription = function(req, res, next){
               source: newToken,
               description: "BODY Consumer"
             }, function(err, connectedAccountCustomer) {
-              createSubscription(newToken, connectedAccountCustomer)
+              createSubscription(newToken, connectedAccountCustomer, connectedAccountId)
             })
           }
         }
       );
 
-      var createSubscription = function(tokenToUse, connectedAccountCustomer) {
+      var createSubscription = function(tokenToUse, connectedAccountCustomer, connectedAccountId) {
         var connectedStripe = require("stripe")(connectedAccountAccessCode)
         ref.child('studios').child(studioId).child('stripeConnected').child('applicationFeePercent').once('value', function(feeSnapshot) {
           stripe.customers.createSubscription(connectedAccountCustomer.customerId, {
@@ -206,7 +257,9 @@ exports.addCustomerSubscription = function(req, res, next){
             plan: planInfo.id,
             application_fee: feeSnapshot.val(),
             coupon: coupon.id || null
-          }, createCustomerSubscriptionHandler);        
+          }, function(err, customer) {
+            createCustomerSubscriptionHandler(err, customer, connectedAccountId);    
+          }    
         })
       }     
     }
