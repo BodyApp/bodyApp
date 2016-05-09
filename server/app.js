@@ -83,35 +83,38 @@ require('./routes')(app);
 
 // app.listen(config.port, function() {console.log("Listening on", config.port)})
 
-throng({
-  start: start,
-  master: startMaster,
-  workers: WORKERS,
-  lifetime: Infinity}
-);
+// throng({
+  // start: start
+  // master: startMaster
+  // workers: WORKERS
+  // lifetime: Infinity
+  // }
+// );
 
-function startMaster() {
-  console.log('Started master');
-}
+// function startMaster() {
+//   console.log('Started master');
+// }
 
-function start() {
-  process.on('SIGTERM', function() {
-    console.log('Worker exiting');
-    process.exit();
-  });
+app.listen(config.port)
+
+// function start() {
+//   process.on('SIGTERM', function() {
+//     console.log('Worker exiting');
+//     process.exit();
+//   });
 
   
   // var crypto = require('crypto');
   // var express = require('express');
   // var blitz = require('blitzkrieg');
   // var app = express();
-
-  app
+  // console.log("hello")
+  // app
     // .use(blitz(BLITZ_KEY))
     // .get('/cpu', cpuBound)
     // .get('/memory', memoryBound)
     // .get('/io', ioBound)
-    .listen(config.port, onListen);
+    // .listen(config.port, onListen);
 
   // function cpuBound(req, res, next) {
   //   var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
@@ -136,10 +139,10 @@ function start() {
   //   }, 300).unref();
   // }
 
-  function onListen() {
-    console.log('Listening on', config.port);
-  }
-}
+  // function onListen() {
+  //   console.log('Listening on', config.port);
+  // }
+// }
 
 // var server;
 // if (cluster.isMaster) {

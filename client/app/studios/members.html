@@ -1,0 +1,348 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNav.html'"></div>
+    </div>
+
+    <div class="col-md-9">
+
+<!--
+******************************************************************************************************************************************** CUSTOMER DETAILS **************************************************************************************************************************************************
+-->
+    <div class="panel">
+      <div class="panel-header">
+        Customer Details
+        <ul class="panel-action-list">
+          <li>
+            <a href="#" class="panel-action-item">Back to Your Members</a>
+          </li>      
+        </ul>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+
+          <div class="col-md-4">
+            <img src="/assets/images/bern-prince.jpg" class="mb0">
+            <div class="panel panel-member">
+              <h5 class="mb0">Full Name</h5>
+              <h5 class="lightgray mb0">Justin Mendelson</h5>
+              <h5 class="mt8 mb0">Email</h5>
+              <h5 class="lightgray mb0">jmendelson22@gmail.com</h5>
+              <h5 class="mt8 mb0">Location</h5>
+              <h5 class="lightgray mb0">Cleveland, OH USA</h5>
+              <h5 class="mt8 mb0">History</h5>
+              <h5 class="lightgray mb0">Member for 3 months</h5>
+              <h5 class="mt8 mb0">Rate</h5>
+              <h5 class="lightgray mb0">$30 per month</h5>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                Actions
+              </div>
+              <div class="panel-body">
+                <ul>
+                  <li class="mb8">
+                    <a href="#">Issue a refund</a>
+                  </li>
+                  <li class="mb8">
+                    <a href="#">Add note to self</a>
+                  </li>
+                  <li>
+                    <a href="#">Send message</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="panel">
+              <div class="panel-header">
+                Additional Information
+              </div>
+              <div class="panel-body">
+                <h5 class="mb0">Total Revenue</h5>
+                <h5 class="lightgray mb0">$90</h5>
+                <h5 class="mt8 mb0">Attendance</h5>
+                <h5 class="lightgray mb0">3x weekly</h5>
+                <h5 class="mt8 mb0">Injuries</h5>
+                <h5 class="lightgray mb0">My ankle hurts and sometimes I throw up on myself by accident.</h5>
+                <h5 class="mt8 mb0">Goals</h5>
+                <h5 class="lightgray mb0">I really hope to get absolutely shredded by Dan's wedding because that would be sick.</h5>
+              </div>
+            </div>
+
+<!-- ACTION FORMS -->
+    <!-- NOTES -->
+
+            <div class="panel">
+              <div class="panel-body">
+                <div class="row mb16">
+                  <label class="col-sm-2" for="add-note">
+                    Note:
+                  </label>
+                  <div class="col-sm-10">
+                    <textarea cols="40" rows="5" id="add-note" placeholder="e.g. Justin had a great class today, but had a rough time with push ups. Work on this next week during class."></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <ul class="panel-action-list">
+                      <li>
+                        <a href="#" class="panel-action-item">Cancel</a>
+                      </li>
+                      <li>
+                        <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                      </li>            
+                    </ul>              
+                  </div>
+                </div>                
+              </div>
+            </div>
+
+    <!-- Messages -->
+
+            <div class="panel">
+              <div class="panel-body">
+                <div class="row mb16">
+                  <label class="col-sm-2" for="add-message-subject">
+                    Subject:
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" id="add-message-subject" placeholder="e.g. Instructor Sub for Friday"></input>
+                  </div>
+                </div>
+                <div class="row mb16">
+                  <label class="col-sm-2" for="add-message-text">
+                    Message:
+                  </label>
+                  <div class="col-sm-10">
+                    <textarea cols="40" rows="5" id="add-message-text" placeholder="e.g. Hey everyone! Justin is subbing for Beth Anne on Friday."></textarea>
+                  </div>
+                </div>                
+                <div class="row">
+                  <div class="col-sm-12">
+                    <ul class="panel-action-list">
+                      <li>
+                        <a href="#" class="panel-action-item">Cancel</a>
+                      </li>
+                      <li>
+                        <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                      </li>            
+                    </ul>              
+                  </div>
+                </div>                
+              </div>
+            </div>
+
+    <!-- Refunds -->
+            <div class="panel">
+              <div class="panel-body">
+
+                <div class="row mb16">
+                  <label class="col-sm-4">
+                    Refund Type
+                  </label>
+                  <div class="col-sm-8">
+                    <div class="select mb8">
+                      <select>
+                        <option>Full Refund</option>
+                        <option>Partial Refund</option>
+                      </select>           
+                    </div>
+                    <h5 class="lightgray">Refund last payment amount: $30.00</h5>
+                    <h5 class="lightgray">Refund partial amount:</h5>
+                    <div class="row mt8">
+                      <div class="col-sm-8">
+                        <div class="input-addon">
+                          <span class="input-prefix">
+                            <span>$</span>
+                          </span>
+                          <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 9.99">
+                        </div>                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  
+                <div class="row mb16">
+                  <div class="col-sm-12">
+                    <h5 class="lightgray">Refunds take 5 to 10 days to appear on your customer's statement. It may take a couple of minutes for a receipt to be sent to your customer.</h5>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <ul class="panel-action-list">
+                      <li>
+                        <a href="#" class="panel-action-item">Cancel</a>
+                      </li>
+                      <li>
+                        <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                      </li>            
+                    </ul>              
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+<!-- COMPLETED ACTIONS -->
+
+            <div class="panel">
+              <div class="panel-body">
+                <div class="member-action-icon member-email">
+                  <i class="ti-email"></i> Message sent on Apr 23, 2016
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h5 class="mb0">Subject:</h5>
+                    <h5 class="lightgray mb0">Class Instructor Change</h5>
+                    <h5 class="mt8 mb0">Message:</h5>
+                    <h5 class="lightgray mb0">Hey everyone! Justin is subbing for Beth Anne on Thursday May 15th. Have a great day.</h5>                     
+                  </div>                
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-body">
+                <div class="member-action-icon member-note">
+                  <i class="ti-pencil-alt"></i> Note added on Apr 21, 2016
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h5 class="mb0">Note:</h5>
+                    <h5 class="lightgray mb0">Justin had a great class today, but had a rough time with push ups. Work on this next week during class.</h5>                   
+                  </div> 
+                </div>           
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-body">
+                <div class="member-action-icon member-refund">
+                  <i class="ti-credit-card"></i> Refunded on Mar 01, 2016
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h5 class="mb0">Refund:</h5>
+                    <h5 class="lightgray mb0">Full refund of $30.00.</h5>                  
+                  </div> 
+                </div>           
+              </div>
+            </div>                                    
+
+          </div>
+
+                    
+
+        </div>
+
+        <div class="subpanel-btn">
+          <a href="#">Back to Your Members</a>
+        </div>        
+        
+      </div>
+    </div>
+
+
+
+
+<!--
+******************************************************************************************************************************************** MEMBER REPORT **************************************************************************************************************************************************
+-->
+
+<!-- PANEL -->
+      <div class="panel mb16">
+        <div class="panel-header">
+          Member Report
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Message</a>
+            </li>
+            <li>
+              <a href="#" class="panel-action-item">Export</a>
+            </li>            
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <h5 class="mb0">Total Studio Members: <span class="lightgray bold">49</span></h5>
+            </div>
+          </div>
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <div class="select">
+                <select>
+                  <option>All Types</option>
+                  <option>Members only</option>
+                  <option>Drop Ins only</option>
+                </select>           
+              </div>
+              <div class="select">
+                <select>
+                  <option>Activity: Last 30 days</option>
+                  <option>Activity: Last 60 days</option>
+                  <option>Activity: Last 90 days</option>
+                  <option>Activity: Last 120 days</option>
+                  <option>Activity: All time</option>
+                </select>           
+              </div>                     
+            </div>
+          </div>
+
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <table class="table mb0 table-condensed table-hover member-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Photo</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Injury</th>
+                    <th>Goal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td><img src="/assets/images/bern-prince.jpg" width="40" height="40" class="profile-photo"></td>
+                    <td>Bern</td>
+                    <td>Prince</td>
+                    <td class="overflow">My ankle hurts and sometimes I throw up on myself by accident.</td>
+                    <td>I really hope to get absolutely shredded by Dan's wedding because that would be sick.</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td><img src="/assets/images/justin-photo.jpg" width="40" height="40" class="profile-photo"></td>
+                    <td>Justin</td>
+                    <td>Mendelson</td>
+                    <td class="overflow">None</td>
+                    <td>I don't set goals. I smash them.</td>
+                  </tr>                  
+                  <tr>
+                    <td colspan="6"><a href="#" class="text-center">View All</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>                      
+          </div>
+
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

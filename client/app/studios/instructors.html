@@ -1,0 +1,196 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNav.html'"></div>
+      <div class="space-top-4 space-4">
+        <a href="#" class="btn btn-block">Add Instructor</a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+
+<!-- FORM PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Add Instructor
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="search-user">
+              Search
+            </label>
+            <div class="col-sm-9">
+              <div class="row col-sm-12">
+                <div class="input-addon">
+                  <input type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="search by email">
+                  <span class="input-suffix">
+                    <a href="#">Add user</a>
+                  </span>                
+                </div>
+              </div>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Your instructor's photo, first and last name are automatically populated when added by email.</h5>
+              </div>
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="profile-details">
+              Profile Details
+            </label>
+            <div class="col-sm-9">
+              <div class="row">
+                <div class="col-sm-3">
+                  <img src="/assets/images/bern-prince.jpg" class="profile-photo">
+                </div>
+                <div class="col-sm-9">
+                  <h5 class="mb0">Instructor Name</h5>
+                  <h5 class="lightgray mb0">Bern Prince</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="position-title">
+              Position Title
+            </label>
+            <div class="col-sm-9">
+              <input id="position-title" name="" size="30" type="text" placeholder="e.g. Head Coach">
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="certifications">
+              Certifications
+            </label>
+            <div class="col-sm-9">
+              <input id="certifications" name="" size="30" type="text" placeholder="e.g CF-L1, ACSM (separate by commas)">
+            </div>            
+          </div>          
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="instructor-bio">
+              Instructor Bio
+            </label>
+            <div class="col-sm-9">
+              <textarea cols="40" rows="5" id="instructor-bio" placeholder="0/100 characters"></textarea>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">BODY is built on relationships. Help your studio's members get to know your staff!</h5>
+              </div>
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="permissions">
+              Permission
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="permissions">
+                  <option>Studio Admin</option>
+                </select>
+              </div>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Permissions restrict actions such as modifying classes or messaging members.</h5>
+              </div>
+            </div>
+          </div>          
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>            
+              </ul>              
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- FORM PANEL END-->
+
+
+<!-- PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Beth Anne Lazaro (You)
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Edit</a>
+            </li>
+            <li>
+              <a href="#" class="panel-action-item hidden">Delete</a>
+            </li>            
+          </ul>
+        </div>
+
+        <div class="panel-body">
+
+          <div class="row mb16">
+            <div class="col-sm-2">
+              <img src="/assets/images/bern-prince.jpg" class="profile-photo">
+            </div>
+            <div class="col-sm-10">
+              <div class="row mb8">
+                <div class="col-sm-4">
+                  <h5 class="mb0">Position</h5>
+                  <h5 class="lightgray mb0">Head Coach</h5>
+                </div>
+                <div class="col-sm-4">
+                  <h5 class="mb0">Permissions</h5>
+                  <h5 class="lightgray mb0">Studio Admin</h5>
+                </div>
+                <div class="col-sm-4">
+                  <h5 class="mb0">Scheduled for</h5>
+                  <h5 class="lightgray mb0">24 classes</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h5 class="mb0">Certifications</h5>
+                  <h5 class="lightgray mb0">CF-L1, ACSM</h5>
+                </div>
+                <div class="col-sm-4">
+                  <h5 class="mb0">Current Rating</h5>
+                  <h5 class="lightgray mb0">5/5</h5>
+                </div>
+                <div class="col-sm-4">
+                </div>
+              </div>              
+            </div>    
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <h5 class="mb0">Instructor Bio</h5>
+              <h5 class="lightgray mb0">Anything I can shake my rump to! "Here I Come" by Fergie. If I played baseball, this is what I would walk out to bat to and point to the outfield with confidence.</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+      <div class="subpanel-btn">
+        <a href="#">Add Instructor<i class="ti-arrow-circle-right icon-spacing"></i></a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>
