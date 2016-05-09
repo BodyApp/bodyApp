@@ -1,0 +1,493 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNav.html'"></div>
+      <div class="space-top-4 space-4">
+        <a href="#" class="btn btn-block">Add Pricing Plan</a>
+        <a href="#" class="mt16 btn btn-block">Add Promotion</a>
+        <a href="#" class="mt16 btn btn-block">Add Coupon</a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+<!-- PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Studio Pricing Plans
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Add new pricing plan</a>
+            </li>
+          </ul>          
+        </div>
+
+        <div class="panel-body">
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="panel">             
+                <div class="panel-body">
+                  <div class="plan-action">
+                    <a href="#">Edit</a> |
+                    <a href="#">Delete</a>
+                  </div>
+                  <h5 class="mb0">Monthly Plan</h5>
+                  <h5 class="lightgray">$30 Monthly</h5>
+                  <h5 class="mt16 mb0">Class Cap</h5>
+                  <h5 class="lightgray">Unlimited per month</h5>
+                </div>
+              </div>  
+            </div>
+
+            <div class="col-md-6">
+              <div class="panel">             
+                <div class="panel-body">
+                  <div class="plan-action">
+                    <a href="#">Edit</a> |
+                    <a href="#">Delete</a>
+                  </div>
+                  <h5 class="mb0">Drop In Plan</h5>
+                  <h5 class="lightgray">$10 Once</h5>
+                  <h5 class="mt16 mb0">Class Cap</h5>
+                  <h5 class="lightgray">1 class</h5>
+                </div>
+              </div>  
+            </div>
+
+    <!-- ADD PRICING PLAN FORM -->            
+            <div class="col-md-6">
+              <div class="panel">             
+                <div class="panel-body">
+
+                  <div class="row mb16">
+                    <label class="col-sm-3">
+                      Type
+                    </label>
+                    <div class="col-sm-9">
+                      <div class="select">
+                        <select>
+                          <option>Monthly</option>
+                          <option>Drop In</option>
+                        </select>           
+                      </div>
+                      <div class="row mt8">
+                        <div class="col-sm-12 hidden">
+                          <h5 class="lightgray bold">Bills: Once</h5>
+                        </div>
+                        <div class="col-sm-12">
+                          <h5 class="lightgray bold">Bills: First of every month</h5>
+                        </div>                        
+                      </div>
+                      <div class="row mt8">
+                        <div class="col-sm-12">
+                          <h5 class="lightgray">How customers pay you. Currently only unlimited monthly and drop in pricing plans are available.</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row mb16">
+                    <label class="col-sm-3">
+                      Price
+                    </label>
+                    <div class="input-addon col-sm-7">
+                      <span class="input-prefix">
+                        <span>$</span>
+                      </span>
+                      <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
+                    </div>
+                    <label class="lightgray text-left">
+                      USD
+                    </label>                             
+                  </div>
+
+                  <div class="row mb16">
+                    <label class="col-sm-3" for="class-cap">
+                      Classes
+                    </label>
+                    <div class="col-sm-9">
+                      <div class="select">
+                        <select>
+                          <option>Unlimited</option>
+                          <option>1 Class</option>
+                          <option class="hidden">10 Class Pack</option>
+                        </select>           
+                      </div>
+                      <div class="row mt8">
+                        <div class="col-sm-12">
+                          <h5 class="lightgray bold">How many classes the customer can register for.</h5>
+                        </div>
+                      </div>                      
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <ul class="panel-action-list">
+                        <li>
+                          <a href="#" class="panel-action-item">Cancel</a>
+                        </li>
+                        <li>
+                          <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                        </li>
+                      </ul>              
+                    </div>
+                  </div>                   
+                </div>
+              </div>  
+            </div>                                             
+
+          </div>
+
+    <!-- DELETE PLAN WARNING -->
+          <div class="row hidden">
+            <div class="col-sm-12">
+              <p class="alert alert-warning">You must have at least one pricing plan available for customers.</p>
+            </div>
+          </div>
+
+    <!-- DELETE FINAL PLAN ERROR -->
+          <div class="row hidden">
+            <div class="col-sm-12">
+              <p class="alert alert-danger">You must have at least one pricing plan available for customers.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+
+<!--
+******************************************************************************************************************************************** Promotions **************************************************************************************************************************************************
+-->
+
+<!-- PROMOTION FORM -->
+      <div class="panel mb16">
+        <div class="panel-header">
+          Add promotion
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+            </li>
+          </ul>          
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <label class="col-sm-3" for="promo-type">
+              Type
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select>
+                  <option>First Class</option>
+                </select>           
+              </div>
+              <div class="row mt8">
+                <div class="col-sm-12">
+                  <h5 class="lightgray bold">Applies to: New customer drop ins</h5>
+                </div>
+              </div>
+              <div class="row mt8">
+                <div class="col-sm-12">
+                  <h5 class="lightgray">Promotions are publicly viewable on your studio storefront page.</h5>
+                </div>
+              </div>              
+            </div> 
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="promo-rate">
+              Promotion Rate
+            </label>
+            <div class="col-sm-9">
+              <div class="row">
+                <div class="input-addon col-sm-3">
+                  <span class="input-prefix">
+                    <span>$</span>
+                  </span>
+                  <input type="text" inputmode="numeric" id="promo-rate" placeholder="e.g. 5.00" class="input-stem">
+                </div>
+                <label class="lightgray">
+                  USD
+                </label>                             
+              </div>
+              <div class="row col-sm-12">
+                <input id="promo-first-class" name="first-timers" size="15" type="checkbox">
+                <label for="promo-first-class" class="check-selector">
+                  First class free
+                </label>               
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>           
+
+        </div>
+      </div>
+<!-- PROMOTION FORM END--> 
+
+
+<!-- PANEL -->
+      <div class="panel mb16">
+        <div class="panel-header">
+          Promotions
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Add new promotion</a>
+            </li>  
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <table class="table mb0 table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>First Class</td>
+                    <td>$5</td>
+                    <td><a href="#">Edit</a> | <a href="#">Delete</a></td>
+                  </tr>                  
+                </tbody>
+              </table>
+            </div>                      
+          </div>
+
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <h5 class="lightgray">Promotions are publicly viewable on your studio storefront page.</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+<!--
+******************************************************************************************************************************************** COUPONS **************************************************************************************************************************************************
+-->
+
+
+<!-- COUPON FORM -->
+      <div class="panel mb16">
+        <div class="panel-header">
+          Add coupon
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+            </li>
+          </ul>          
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <label class="col-sm-3" for="coupon-code">
+              Code
+            </label>
+            <div class="col-sm-9">
+              <input id="coupon-code" name="" size="30" type="text" placeholder="e.g. HALFOFF4SUMMER">
+            </div>
+          </div>
+
+          <div class="row mb16">
+            <label class="col-sm-3">
+              Type
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="class-reg-types">
+                  <option>Percentage off</option>
+                  <option>Dollars off</option>
+                </select>
+              </div>
+        <!-- SHOW WHEN USER SELECTS DOLLARS OFF -->
+              <div class="row mt8">
+                <label class="col-sm-2 lightgray">
+                  Discount
+                </label>
+                <div class="input-addon col-sm-4">
+                  <span class="input-prefix">
+                    <span>$</span>
+                  </span>
+                  <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
+                </div>
+                <label class="lightgray text-left">
+                  USD
+                </label>
+              </div>
+
+        <!-- SHOW WHEN USER SELECTS PERCENTAGE OFF -->
+              <div class="row mt8">
+                <label class="col-sm-2 lightgray">
+                  Discount
+                </label>
+                <div class="col-sm-4">
+                  <div class="row col-sm-12">
+                    <div class="input-addon">
+                      <input type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="e.g. 50">
+                      <span class="input-suffix">%</span>                
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row mb16">
+            <label class="col-sm-3" for="coupon-duration">
+              Duration
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="coupon-duration">
+                  <option>Once</option>
+                  <option>Multi-month</option>
+                  <option>Forever</option>
+                </select>
+              </div>
+              <div class="row mt8">
+                <label class="col-sm-2 lightgray" for="coupon-duration-months">
+                  # Months 
+                </label>
+                <div class="col-sm-4">
+                  <input id="coupon-duration-months" inputmode="numeric" name="" size="30" type="text" placeholder="2">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb16">
+            <label class="col-sm-3">
+              Max Redemptions
+            </label>
+            <div class="col-sm-4">
+              <input id="redemptions" inputmode="numeric" name="" size="30" type="text" placeholder="e.g. 100">
+            </div>
+          </div>  
+
+          <div class="row mb16">
+            <label class="col-sm-3" for="coupon-exp">
+              Expiration
+            </label>
+            <div class="col-sm-9">
+              <input id="coupon-exp" name="" size="30" type="date">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>                                                   
+
+        </div>
+      </div>
+<!-- COUPON FORM END--> 
+
+
+<!-- PANEL -->
+      <div class="panel mb16">
+        <div class="panel-header">
+          Coupons
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Add new coupon</a>
+            </li>  
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <div class="select">
+                <select>
+                  <option>All Types</option>
+                  <option>Percentage off</option>
+                  <option>Dollars off</option>
+                </select>           
+              </div>
+              <div class="select">
+                <select>
+                  <option>Duration: All</option>
+                  <option>Duration: Once</option>
+                  <option>Duration: Monthly</option>
+                  <option>Duration: Forever</option>
+                </select>           
+              </div>                     
+            </div>
+          </div>          
+
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <table class="table mb0 table-condensed">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Discount</th>
+                    <th>Applies</th>
+                    <th>Redemptions</th>
+                    <th>Expiration</th>
+                    <th>Used</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>RALABALA4FREE</td>
+                    <td>100%</td>
+                    <td>1 month</td>
+                    <td>Unlimited</td>
+                    <td>5/30/16</td>
+                    <td>1/1000</td>
+                    <td><a href="#">Delete</a></td>
+                  </tr> 
+                  <tr>
+                    <td>4AFRIEND</td>
+                    <td>$10</td>
+                    <td>Once</td>
+                    <td>100</td>
+                    <td>6/10/16</td>
+                    <td>12/100</td>
+                    <td><a href="#">Delete</a></td>
+                  </tr>                                    
+                </tbody>
+              </table>
+            </div>                      
+          </div>
+
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

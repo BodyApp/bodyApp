@@ -1,0 +1,317 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNav.html'"></div>
+      <div class="space-top-4 space-4">
+        <a href="#" class="btn btn-block">Add Workout</a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+<!--
+******************************************************************************************************************************************** FORM PANEL **************************************************************************************************************************************************
+-->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Add Workout
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="workout-title">
+              Workout Title
+            </label>
+            <div class="col-sm-9">
+              <input id="workout-title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
+              <h5 class="lightgray mt8 mb8">Give your workout a name that will be easy for you to remember. This is only viewable by studio staff, not by clients.</h5>      
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="class-reg-types">
+              Assign To
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="class-reg-types">
+                  <option>Any class</option>
+                  <option>Level One</option>
+                  <option>Strength Workshop (Specialty Class $300)</option>
+                </select>
+              </div>
+              <h5 class="lightgray mt8 mb8">Assign this workout to one or multiple class types.</h5>  
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="equipment-needed">
+              Sets
+            </label>
+            <div class="col-sm-7">
+              <div class="panel workout-card">                
+                <ul class="panel-action-list">
+                  <li>
+                    <a href="#" class="panel-action-item">Edit</a>
+                  </li>
+                  <li>
+                    <a href="#" class="panel-action-item">Delete</a>
+                  </li>            
+                </ul>
+                <h5 class="mb0">Set 1 <span class="success"><i class="ti-check-box bold"></i></span></h5>
+                <h5 class="lightgray">EMOM 10 min</h5>
+                <h5 class="mt8 mb0">Timer Setting</h5>
+                <h5 class="lightgray">60s:0s (10 rds)</h5>
+                <h5 class="mt8 mb0">Exercises</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>                   
+              </div>
+
+              <div class="panel workout-card">
+                <div class="row mb8">
+                  <label class="col-sm-3" for="set-title">
+                    Set Title
+                  </label>
+                  <div class="col-sm-9">
+                    <input id="set-title" name="" size="30" type="text" placeholder="e.g. EMOM 10 min">
+                  </div>
+                </div>
+
+                <div class="row mb8">
+                  <label class="col-sm-3" for="timer-options">
+                    Timer
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="select">
+                      <select id="timer-options">
+                        <option>Tabata</option>
+                        <option>Count Up</option>
+                        <option>No Timer</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>  
+
+                <div class="row">
+                  <label class="col-sm-3 lightgray" for="timer-work-qty">
+                    <i class="ti-timer"></i> Work
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <input id="timer-work-qty" class="timer-input" name="" size="10" type="text" placeholder="e.g. 60">
+                        <div class="select">
+                          <select id="timer-work-type">
+                            <option>seconds</option>
+                            <option>minutes</option>
+                          </select>                        
+                        </div>                        
+                      </div>      
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-sm-3 lightgray" for="timer-work-qty">
+                    <i class="ti-timer"></i> Rest
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <input id="timer-work-qty" class="timer-input" name="" size="10" type="text" placeholder="e.g. 10">
+                        <div class="select">
+                          <select id="timer-work-type">
+                            <option>seconds</option>
+                            <option>minutes</option>
+                          </select>                        
+                        </div>                         
+                      </div>      
+                    </div>
+                  </div>
+                </div>                
+
+                <div class="row mb8">
+                  <label class="col-sm-3 lightgray" for="timer-work-qty">
+                    <i class="ti-timer"></i> Rounds
+                  </label>
+                  <div class="col-sm-9">
+                    <input id="timer-work-qty" name="" size="30" type="text" placeholder="e.g. 3">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-sm-3" for="exercise-1">
+                    Exercise 1
+                  </label>
+                  <div class="col-sm-9">
+                    <input id="exercise-1" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
+                  </div>                 
+                </div>
+                <div class="row">
+                  <label class="col-sm-3" for="exercise-2">
+                    Exercise 2
+                  </label>
+                  <div class="col-sm-9">
+                    <input id="exercise-1" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
+                    <div class="row mt8">
+                      <div class="col-sm-12">
+                        <a href="#">Add Exercise</a>
+                      </div>
+                    </div>
+                  </div>                 
+                </div>                               
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <ul class="panel-action-list">
+                      <li>
+                        <a href="#" class="panel-action-item">Cancel</a>
+                      </li>
+                      <li>
+                        <a href="#" class="panel-action-item btn-primary btn">Add</a>
+                      </li>            
+                    </ul>              
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <a href="#">Add Set</a>
+                </div>
+              </div>
+
+            </div>            
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>          
+
+        </div>
+      </div>
+   
+
+<!--
+******************************************************************************************************************************************** FILTERS **************************************************************************************************************************************************
+-->
+      <div class="row mb16">
+        <div class="col-sm-12">
+          <div class="select">
+            <select>
+              <option>Assigned to: Any class</option>
+              <option>Assigned to: Level One</option>
+            </select>           
+          </div>
+          <div class="select">
+            <select>
+              <option>Created in: Last 30 days</option>
+              <option>Created in: Last 60 days</option>
+              <option>Created in: Last 90 days</option>
+              <option>Created in: Last 120 days</option>
+              <option>All time</option>
+            </select>           
+          </div>                     
+        </div>
+      </div>
+
+<!--
+******************************************************************************************************************************************** PANELS **************************************************************************************************************************************************
+-->
+
+
+      <div class="panel space-4">
+        <div class="panel-header">
+          Workout #34: Fight Gone Bad
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Edit</a>
+            </li>
+            <li>
+              <a href="#" class="panel-action-item">Delete</a>
+            </li>            
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-12 mb16">
+              <h5 class="mb0">Assigned To: <span class="lightgray bold">Level One</span></h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="panel workout-card">
+                <h5 class="mb0">Set 1</h5>
+                <h5 class="lightgray">EMOM 10 min</h5>
+                <h5 class="mt8 mb0">Timer Setting</h5>
+                <h5 class="lightgray">60s:0s (10 rds)</h5>
+                <h5 class="mt8 mb0">Exercises</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>                     
+              </div>              
+            </div>
+            <div class="col-md-4">
+              <div class="panel workout-card">
+                <h5 class="mb0">Set 2</h5>
+                <h5 class="lightgray">EMOM 10 min</h5>
+                <h5 class="mt8 mb0">Timer Setting</h5>
+                <h5 class="lightgray">60s:0s (10 rds)</h5>
+                <h5 class="mt8 mb0">Exercises</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>                    
+              </div>              
+            </div>
+            <div class="col-md-4">
+              <div class="panel workout-card">
+                <h5 class="mb0">Set 3</h5>
+                <h5 class="lightgray">EMOM 10 min</h5>
+                <h5 class="mt8 mb0">Timer Setting</h5>
+                <h5 class="lightgray">60s:0s (10 rds)</h5>
+                <h5 class="mt8 mb0">Exercises</h5>
+                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
+                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
+              </div>              
+            </div>            
+          </div>
+          <div class="row text-center col-sm-12">
+            <a href="#">Show more</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="subpanel-btn">
+        <a href="#">Add Workout<i class="ti-arrow-circle-right icon-spacing"></i></a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

@@ -1,0 +1,221 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNav.html'"></div>
+      <div class="space-top-4 space-4">
+        <a href="#" class="btn btn-block">Add Class Type</a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+<!-- FORM PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Add Class
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="class-name">
+              Class Name
+            </label>
+            <div class="col-sm-9">
+              <input id="class-name" name="" size="30" type="text" placeholder="e.g. Level One">
+              <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
+              <div class="row col-sm-12">
+                <input id="specialty-class-check" name="specialty-class" size="15" type="checkbox">
+                <label for="specialty-class-check" class="check-selector">
+                  Specialty Class
+                </label>              
+              </div>
+              <div class="row col-sm-12">
+                <input id="first-timers" name="first-timers" size="15" type="checkbox">
+                <label for="first-timers" class="check-selector">
+                  Can be taken by first timers
+                </label>               
+              </div>      
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="specialty-class-price">
+              Specialty Rate
+            </label>
+            <div class="col-sm-9">
+              <div class="row">
+                <div class="input-addon col-sm-3">
+                  <span class="input-prefix">
+                    <span>$</span>
+                  </span>
+                  <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem">
+                </div>
+                <label class="lightgray">
+                  USD
+                </label>                             
+              </div>
+              <h5 class="lightgray row col-sm-12 mt8 mb8">Unique pricing for workshops or specialty workouts.</h5>
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="class-reg-types">
+              Open To
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="class-reg-types">
+                  <option>All (Members &amp; Drop Ins)</option>
+                  <option>Members Only</option>
+                  <option>Drop Ins Only</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="equipment-needed">
+              Equipment Required
+            </label>
+            <div class="col-sm-9">
+              <input id="equipment-needed" name="" size="30" type="text" placeholder="e.g. Dumbbells, Mat (separate by commas)">
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="class-description">
+              Class Description
+            </label>
+            <div class="col-sm-9">
+              <textarea cols="40" rows="5" id="class-description" placeholder="0/200 characters"></textarea>
+              <h5 class="lightgray mt8 mb8">Class descriptions help your customers understand what they're getting themselves into. Tell them if it's a beginner or advanced class or if there is prior experience necessary.</h5>     
+            </div>            
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>            
+              </ul>              
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- FORM PANEL END-->
+
+<!-- PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Level One
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Edit</a>
+            </li>
+            <li>
+              <a href="#" class="panel-action-item">Delete</a>
+            </li>            
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-3 mb16">
+              <h5 class="mb0">Open To</h5>
+              <h5 class="lightgray">All</h5>
+            </div>
+            <div class="col-sm-3 mb16">
+              <h5 class="mb0">Requires</h5>
+              <ul>
+                <li>
+                  <h5 class="lightgray">Dumbbells</h5>
+                </li>             
+              </ul>
+            </div>
+  <!--      
+  NOT MVP
+            <div class="col-sm-2">
+              <h5 class="mb0">Scheduled</h5>
+              <h5 class="lightgray">24 Times</h5>
+            </div>
+  -->            
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h5 class="mb0">Description</h5>
+              <h5 class="lightgray mb0">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+<!-- PANEL -->
+      <div class="panel">
+        <div class="panel-header">
+          Strength Workshop (Specialty Class $300)
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Edit</a>
+            </li>
+            <li>
+              <a href="#" class="panel-action-item">Delete</a>
+            </li>            
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-3 mb16">
+              <h5 class="mb0">Open To</h5>
+              <h5 class="lightgray">Members Only</h5>
+            </div>
+            <div class="col-sm-3 mb16">
+              <h5 class="mb0">Requires</h5>
+              <ul>
+                <li>
+                  <h5 class="lightgray">Dumbbells</h5>
+                </li>
+                <li>
+                  <h5 class="lightgray">Yoga Mat</h5>
+                </li>                
+              </ul>
+            </div>
+  <!--      
+  NOT MVP
+            <div class="col-sm-2">
+              <h5 class="mb0">Scheduled</h5>
+              <h5 class="lightgray">24 Times</h5>
+            </div>
+  -->            
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h5 class="mb0">Description</h5>
+              <h5 class="lightgray mb0">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- PANEL END-->
+
+      <div class="subpanel-btn">
+        <a href="#">Add Class Type<i class="ti-arrow-circle-right icon-spacing"></i></a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

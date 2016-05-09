@@ -39,13 +39,14 @@
  36. Spacing
 /*!---------- 1. GLOBAL STYLES ----------*/
 body {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.43;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #565a5c;
+  background-color: #f5f5f5;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
-  line-height: 24px;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #1f1f1f;
-  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;  
 }
 body.boxed-layout {
   background: #eee;
@@ -264,9 +265,8 @@ pre,
 table,
 blockquote,
 input,
-select,
-textarea {
-  margin-bottom: 24px;
+select {
+  margin-bottom: 0;
   margin-top: 0;
   padding: 0;
 }
@@ -291,7 +291,7 @@ h4,
 h5,
 h6 {
   font-weight: 300;
-  color: #292929;
+  color: #565a5c;
 }
 h1,
 .h1 {
@@ -323,9 +323,9 @@ h4 {
   line-height: 32px;
 }
 h5 {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
 }
 h6,
 .h6 {
@@ -433,12 +433,12 @@ a:hover {
   outline: none;
 }
 a {
-  font-weight: 600;
-  color: #0D1C45;
+  text-decoration: none;
+  color: #3E7EDF;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
-  cursor: poitner;
+  cursor: pointer;
 }
 .image-bg a,
 .bg-primary a {
@@ -716,30 +716,53 @@ footer.bg-dark li,
 }
 /*!---------- 6. BUTTONS ----------*/
 .btn {
-  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  padding: 0 26px;
-  height: auto;
-  min-width: 150px;
-  line-height: 36px;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 1px;
-  background: #0D1C45;
-  border-radius: 0;
-  color: #fff;
+  color: #565a5c;
+  background: white;
+  font-size: 14px;
+  padding: 7px 21px;
+  display: inline-block;
+  margin-bottom: 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  border: 1px solid #c4c4c4;
   text-align: center;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  margin-right: 8px;
+  vertical-align: middle;
+  font-weight: bold;
+  line-height: 1.43;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn:hover {
+  border-color: #aaa;
+  text-decoration: none;
+}
+.btn-block {
+  display: block;
+  white-space: normal;
+  width: 100%;
+}
+.btn-primary {
+  background: #3E7EDF;
+  margin-left: 20px;
+  color: white!important;
+  border: none;
+}
+.btn-primary:hover {
+  color: white;
+  background: #3E7EDF;
+  opacity: 0.9;
+}
+.btn-submit {
+  display: inline-block;
 }
 .btn:last-child,
 .btn:last-of-type {
   margin-right: 0;
-}
-.btn:hover {
-  background: rgba(13,28,69,0.9);
-  color: #fff;
 }
 .btn-icon {
   width: 40px;
@@ -1693,7 +1716,7 @@ nav.transparent.fixed.bg-dark .module.widget-handle i {
   z-index: -1;
 }
 /*!---------- 11. FORMS ----------*/
-input,
+/*input,
 select,
 textarea {
   font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2054,7 +2077,7 @@ form iframe.mail-list-form {
     width: 100%;
     margin-bottom: 8px;
   }
-}
+}*/
 /*!---------- 12. ACCORDIONS ----------*/
 .accordion .title {
   cursor: pointer;
