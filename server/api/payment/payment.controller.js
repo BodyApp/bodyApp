@@ -3,31 +3,35 @@
 // var Stripe = require('stripe')
 var config = require('../../config/environment');
 var stripe = require("stripe")(config.stripeOptions.apiKey);
+// var stripe = require("stripe")("sk_test_FcBN0w7tedfz76of38xr0qr4");
 var User = require('../user/user.model');
 
+var Firebase = require('firebase');
+var ref = new Firebase("https://bodyapp.firebaseio.com/");
+
 //Formatted for use with Mongoose plugin (user.model.js)
-module.exports = exports = function stripeCustomer (schema, options) {
-  schema.add({
-    stripe: {
-      customer: {
-        customerId: String
-      },
-      subscriptions: Object,
-      subscription: {
-        name: String,
-        id: String,
-        startDate: Number,
-        endDate: Number,
-        amount: Number,
-        currency: String,
-        interval: String,
-        intervalCount: Number,
-        livemode: Boolean,
-        status: String
-      }
-    }
-  });
-};
+// module.exports = exports = function stripeCustomer (schema, options) {
+//   schema.add({
+//     stripe: {
+//       customer: {
+//         customerId: String
+//       },
+//       subscriptions: Object,
+//       subscription: {
+//         name: String,
+//         id: String,
+//         startDate: Number,
+//         endDate: Number,
+//         amount: Number,
+//         currency: String,
+//         interval: String,
+//         intervalCount: Number,
+//         livemode: Boolean,
+//         status: String
+//       }
+//     }
+//   });
+// };
 
 exports.updateCustomerSubscriptionStatus = function(req, res, next){
   var studioId = req.body.studioId;
@@ -54,12 +58,12 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
             user.stripe.studios[studioId].subscription.status = subData.status;    
 
             user.save(function(err){
-            return res.json(user)
-          });
+              return res.json(user)
+            });
           }
         );
       }
-    }   
+    })   
   })
 };
 
@@ -178,7 +182,7 @@ exports.addCustomerSubscription = function(req, res, next){
         });
       }    
 
-      if(!user.stripe.studios[studioId].subscription.status != "active"){
+      // if(user.stripe.studios[studioId].subscription.status != "active"){
         //Only part of the 'subscriptions' object when user is first created
         var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
         
@@ -197,7 +201,7 @@ exports.addCustomerSubscription = function(req, res, next){
         user.stripe.studios[studioId].subscription.intervalCount = subData.plan.interval_count;
         user.stripe.studios[studioId].subscription.liveMode = subData.plan.livemode;    
         user.stripe.studios[studioId].subscription.status = subData.status;    
-      }
+      // }
 
       user.save(function(err){
         // sendSubscriberEmail(user) //Email sent to user about how they are a member now.
@@ -214,60 +218,127 @@ exports.addCustomerSubscription = function(req, res, next){
         source: stripeToken,
         description: "BODY Consumer"
       }, createPlatformCustomerHandler)
-    }
+    };
 
     var updateCustomer = function(customerId) {
       stripe.customers.update(customerId, {
         source: stripeToken,
         description: "BODY Consumer"
       }, updatePlatformCustomerHandler);
-    }
+    };
 
     var createCustomerSubscription = function(connectedAccountId, connectedAccountAccessToken) {
+      // var connectedStripe = require("stripe")(connectedAccountAccessToken)
+
       stripe.tokens.create(
         { customer: user.stripe.customer.customerId },
+        // connectedAccountAccessToken,
         { stripe_account: connectedAccountId },
         function(err, newToken) {
-          var connectedStripe = require("stripe")(connectedAccountAccessCode)
+          if (err) return console.log(err)
+          var connectedStripe = require("stripe")(connectedAccountAccessToken)
           //If user already has a customer Id with the connected account
           if (user.stripe.studios && user.stripe.studios[studioId] && user.stripe.studios[studioId].customer && user.stripe.studios[studioId].customer.customerId) {
-            connectedStripe.customers.update(user.stripe.studios[studioId].customer.customerId {
-              source: newToken,
-              description: "BODY Consumer"
-            }, function(err, connectedAccountCustomer) {
-              createSubscription(newToken, connectedAccountCustomer)
-            })
-          } else {
-            connectedStripe.customers.create({
-              email: userEmail,
-              source: newToken,
-              description: "BODY Consumer"
-            }, function(err, connectedAccountCustomer) {
-              createSubscription(newToken, connectedAccountCustomer, connectedAccountId)
-            })
+            if (coupon) {
+              stripe.customers.update(user.stripe.studios[studioId].customer.customerId, {
+                source: newToken.id,
+                description: "BODY Consumer",
+                plan: planInfo.id,
+                application_fee_percent: 30,
+                coupon: coupon.id
+              }, 
+              { stripe_account: connectedAccountId },
+              function(err, customer) {
+                if (err) return console.log(err)
+                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+              })  
+            } else {
+              stripe.customers.update(user.stripe.studios[studioId].customer.customerId, {
+                source: newToken.id,
+                description: "BODY Consumer",
+                plan: planInfo.id,
+                application_fee_percent: 30,
+              }, 
+              { stripe_account: connectedAccountId },
+              function(err, customer) {
+                if (err) return console.log(err)
+                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+              })
+            }
+          } else { //Create new customer
+            if (coupon) {
+              stripe.customers.create({
+                email: userEmail,
+                source: newToken.id,
+                description: "BODY Consumer",
+                plan: planInfo.id,
+                application_fee_percent: 30,
+                coupon: coupon.id
+              }, 
+              { stripe_account: connectedAccountId },
+              function(err, customer) {
+                if (err) return console.log(err)
+                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+              })  
+            } else {
+              stripe.customers.create({
+                email: userEmail,
+                source: newToken.id,
+                description: "BODY Consumer",
+                plan: planInfo.id,
+                application_fee_percent: 30
+              }, 
+              { stripe_account: connectedAccountId },
+              function(err, customer) {
+                if (err) return console.log(err)
+                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+              })
+            }
           }
         }
       );
 
-      var createSubscription = function(tokenToUse, connectedAccountCustomer, connectedAccountId) {
-        var connectedStripe = require("stripe")(connectedAccountAccessCode)
-        ref.child('studios').child(studioId).child('stripeConnected').child('applicationFeePercent').once('value', function(feeSnapshot) {
-          stripe.customers.createSubscription(connectedAccountCustomer.customerId, {
-            source: newToken,
-            plan: planInfo.id,
-            application_fee: feeSnapshot.val(),
-            coupon: coupon.id || null
-          }, function(err, customer) {
-            createCustomerSubscriptionHandler(err, customer, connectedAccountId);    
-          }    
-        })
-      }     
+      // var createSubscription = function(newToken, connectedAccountCustomer, connectedAccountId, connectedAccountAccessToken) {
+      //   var connectedStripe = require("stripe")(connectedAccountAccessToken)
+      //   ref.child('studios').child(studioId).child('stripeConnected').child('applicationFeePercent').once('value', function(feeSnapshot) {
+      //     if (coupon) {
+      //       stripe.customers.createSubscription({
+      //         plan: planInfo.id.toString(),
+      //         customer: connectedAccountCustomer.id,
+      //         application_fee_percent: feeSnapshot.val(),
+      //         coupon: coupon.id
+      //       }, 
+      //       { stripe_account: connectedAccountId },
+      //       function(err, customer) {
+      //         if (err) return console.log(err)
+      //         createCustomerSubscriptionHandler(err, customer, connectedAccountId);    
+      //       })  
+      //     } else {
+      //       console.log(planInfo.id)
+      //       stripe.customers.createSubscription({
+      //         plan: planInfo.id.toString(),
+      //         customer: connectedAccountCustomer.id, 
+      //         application_fee_percent: feeSnapshot.val()
+      //       }, 
+      //       { stripe_account: connectedAccountId },
+      //       function(err, customer) {
+      //         if (err) return console.log(err)
+      //         createCustomerSubscriptionHandler(err, customer, connectedAccountId);    
+      //       })  
+      //     }
+      //   })
+      // }     
     }
 
-    if (user.customer.customerId) {
-      updateCustomer(user.customer.customerId)
+    if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+      updateCustomer(user.stripe.customer.customerId)
     } else {
       createCustomerId()
     }
-  });
+
+  })
 };

@@ -18,6 +18,8 @@ angular.module('bodyAppApp')
       listSubscriptionPlans()
       listCustomers()
       listCoupons()
+      // $scope.createSubscriptionPlan(100, "testplan2")
+      openStripePayment("ralabala1v1462750165317")
 
       User.getMembersOfStudio({
         id: data._id
@@ -551,7 +553,7 @@ angular.module('bodyAppApp')
           statement_descriptor: studioId + " Subscription",
           userThatCreatedPlan: $scope.currentUser._id
         }).$promise.then(function(subscription) {
-          $scope.pricingOptions.push(subscription); 
+          // $scope.pricingOptions.push(subscription); 
           $scope.returnedSubscription = subscription;
         })
       }
@@ -618,18 +620,19 @@ angular.module('bodyAppApp')
           }
 
           var handler = StripeCheckout.configure({
-            key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+            // key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+            key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
             image: '../../assets/images/body-stripe.jpg',
             locale: 'auto',
             token: function(token, args) {
-              var modalInstance = openPaymentConfirmedModal()
+              // var modalInstance = openPaymentConfirmedModal()
               
-              $http.post('/api/payment/addcustomersubscription', {
-                user: currentUser,
+              $http.post('/api/payments/addcustomersubscription', {
+                user: $scope.currentUser,
                 stripeToken: token,
                 shippingAddress: args,
                 coupon: coupon,
-                studioId: studio,
+                studioId: studioId,
                 planInfo: planInfo
               })
               .success(function(data) {
@@ -647,7 +650,7 @@ angular.module('bodyAppApp')
             }
           });
 
-          if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
+          if (!$scope.currentUser.email || ($scope.currentUser.email && $scope.currentUser.email.length < 4)) {
             handler.open({
               name: planInfo.statement_descriptor,
               description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
@@ -658,7 +661,7 @@ angular.module('bodyAppApp')
           } else {
             handler.open({
               name: planInfo.statement_descriptor,
-              email: currentUser.email,
+              email: $scope.currentUser.email,
               description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
               panelLabel: "Pay $" + amountToPay / 100 + " / Month",
               shippingAddress: true,

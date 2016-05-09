@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-var stripeCustomer = require('../payment/payment.controller');
+// var stripeCustomer = require('../payment/payment.controller');
 var config = require('../../config/environment');
 
 var UserSchema = new Schema({
@@ -45,6 +45,7 @@ var UserSchema = new Schema({
   introClassTaken: Boolean,
   tourtipShown: String,
   shippingAddress: Object,
+  stripe: Object,
   level: Number,
   goals: String,
   emergencyContact: Object,
@@ -72,8 +73,8 @@ var UserSchema = new Schema({
 });
 
 //Sets up Stripe
-var stripeOptions = config.stripeOptions;
-UserSchema.plugin(stripeCustomer, stripeOptions);
+// var stripeOptions = config.stripeOptions;
+// UserSchema.plugin(stripeCustomer, stripeOptions);
 
 /**
  * Virtuals
