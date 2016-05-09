@@ -6,7 +6,7 @@ angular.module('bodyAppApp')
       .state('studios', {
         url: '/studios/:studioId/classes',
         templateUrl: 'app/studios/classes.html',
-        controller: 'StudiosCtrl',
+        controller: 'ClassesCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {

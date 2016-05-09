@@ -28,7 +28,8 @@
     "moment-timezone": "*",
     "checklist-model": "*",
     "angular-scroll": "*",
-    "ngclipboard": "*"
+    "ngclipboard": "*",
+    "ng-tags-input": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

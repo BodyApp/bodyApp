@@ -15,7 +15,8 @@ angular.module('bodyAppApp', [
   "angularScreenfull",
   'angular-tour',
   'duScroll',
-  'ngclipboard'
+  'ngclipboard',
+  'ngTagsInput'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
