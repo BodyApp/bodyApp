@@ -34,7 +34,7 @@ angular.module('bodyAppApp')
       if (!classToSave.classDescription) return $scope.missingDescription = true;
       if (classToSave.classDescription.length > 200) return $scope.descriptionTooLong = classToSave.classDescription.length;
 
-      //NEED TO FIX EQUIPMENT SO NOT ARRAY
+      //Should change equipment so not array.
 
       ref.child("classTypes").push(classToSave, function(err) {
         if (err) return console.log(err);
@@ -54,8 +54,12 @@ angular.module('bodyAppApp')
     }
 
     $scope.updateClassType = function(classKey, classToEdit) {
-      console.log(classKey)
-      console.log(classToEdit)
+
+      for (var i = 0; i < classToEdit.equipment.length; i++) { //Being added because firebase doesn't like arrays
+        console.log(classToEdit.equipment[i].$$hashKey)
+        delete classToEdit.equipment[i].$$hashKey
+      }
+
       if (!classToEdit.className) return $scope.missingName = true;
       if (!classToEdit.classDescription) return $scope.missingDescription = true;
       if (classToEdit.classDescription.length > 200) return $scope.descriptionTooLong = classToEdit.classDescription.length;
