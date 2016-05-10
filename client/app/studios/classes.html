@@ -5,19 +5,19 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block">Add Class Type</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddClass = true">Add Class Type</a>
       </div>
     </div>
 
     <div class="col-md-9">
 
 <!-- FORM PANEL -->
-      <div class="panel space-4">
+      <div class="panel space-4" ng-show = "showAddClass">
         <div class="panel-header">
           Add Class
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+              <a href="#" class="panel-action-item" ng-click = "showAddClass = false"><i class="ti-close"></i></a>
             </li>
           </ul>
         </div>
@@ -28,6 +28,7 @@
               Class Name
             </label>
             <div class="col-sm-9">
+              <div style = "color: red" ng-show = "missingName">You're missing a class name!</div>
               <input id="class-name" ng-model = "classToCreate.className" name="" size="30" type="text" placeholder="e.g. Level One">
               <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
               <div class="row col-sm-12">
@@ -55,7 +56,7 @@
                   <span class="input-prefix">
                     <span>$</span>
                   </span>
-                  <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem">
+                  <input type="text" ng-model = "classToCreate.specialtyClassRate" inputmode="numeric" id="specialty-class-price" class="input-stem">
                 </div>
                 <label class="lightgray">
                   USD
@@ -70,8 +71,8 @@
               Open To
             </label>
             <div class="col-sm-9">
-              <div class="select">
-                <select id="class-reg-types">
+              <div class="select" >
+                <select id="class-reg-types" ng-init = "classToCreate.openTo = 'All (Members &amp; Drop Ins)'" ng-model = "classToCreate.openTo">
                   <option>All (Members &amp; Drop Ins)</option>
                   <option>Members Only</option>
                   <option>Drop Ins Only</option>
@@ -90,7 +91,7 @@
                 ng-model="classToCreate.equipment" 
                 size="30"
                 display-property="name" 
-                placeholder="e.g. Dumbbells, Mat (separate by commas)" 
+                placeholder="e.g. Dumbbells" 
                 replace-spaces-with-dashes="false"
                 template="tag-template"
                 >
@@ -110,7 +111,9 @@
               Class Description
             </label>
             <div class="col-sm-9">
-              <textarea cols="40" rows="5" id="class-description" placeholder="0/200 characters"></textarea>
+              <div style = "color: red" ng-show = "missingDescription">You're missing a description! Doesn't have to be long, but please add one.</div>
+              <div style = "color: red" ng-show = "descriptionTooLong">Your description is currently {{descriptionTooLong}} characters, please make it less than 200 characters! </div>
+              <textarea cols="40" rows="5" id="class-description" placeholder="0/200 characters" ng-model = "classToCreate.classDescription"></textarea>
               <h5 class="lightgray mt8 mb8">Class descriptions help your customers understand what they're getting themselves into. Tell them if it's a beginner or advanced class or if there is prior experience necessary.</h5>     
             </div>            
           </div>
@@ -119,10 +122,10 @@
             <div class="col-sm-12">
               <ul class="panel-action-list">
                 <li>
-                  <a href="#" class="panel-action-item">Cancel</a>
+                  <a href="#" class="panel-action-item" ng-click = "showAddClass = false">Cancel</a>
                 </li>
                 <li>
-                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveClassType(classToCreate)">Save</a>
                 </li>            
               </ul>              
             </div>
@@ -226,7 +229,7 @@
 <!-- PANEL END-->
 
       <div class="subpanel-btn">
-        <a href="#">Add Class Type<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-click = "showAddClass = true">Add Class Type<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>
