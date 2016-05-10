@@ -5,19 +5,20 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "showAddClass = true">Add Class Type</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddClass = true; showEditClass = false;">Add Class Type</a>
       </div>
     </div>
 
     <div class="col-md-9">
 
-<!-- FORM PANEL -->
-      <div class="panel space-4" ng-show = "showAddClass">
+<!-- Add Class PANEL -->
+      <div class="panel space-4" ng-show = "showAddClass || showEditClass">
         <div class="panel-header">
-          Add Class
+          <span ng-if = "showAddClass"> Add Class </span>
+          <span ng-if = "showEditClass"> Edit Class </span>
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item" ng-click = "showAddClass = false"><i class="ti-close"></i></a>
+              <a href="#" class="panel-action-item" ng-click = "showAddClass = false; showEditClass = false;"><i class="ti-close"></i></a>
             </li>
           </ul>
         </div>
@@ -29,10 +30,12 @@
             </label>
             <div class="col-sm-9">
               <div style = "color: red" ng-show = "missingName">You're missing a class name!</div>
-              <input id="class-name" ng-model = "classToCreate.className" name="" size="30" type="text" placeholder="e.g. Level One">
+              <input ng-if = "showAddClass" id="class-name" ng-model = "classToCreate.className" name="" size="30" type="text" placeholder="e.g. Level One">
+              <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.className" name="" size="30" type="text" placeholder="e.g. Level One">
               <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
               <div class="row col-sm-12">
-                <input id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" size="15" type="checkbox">
+                <input ng-if = "showAddClass" id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" size="15" type="checkbox">
+                <input ng-if = "showEditClass" id="specialty-class-check" ng-model = "showEditClass.classToEdit.specialtyClass" name="specialty-class" size="15" type="checkbox">
                 <label for="specialty-class-check" class="check-selector">
                   Specialty Class
                 </label>              
@@ -46,7 +49,7 @@
             </div>            
           </div>
 
-          <div class="row space-4" ng-show = "classToCreate.specialtyClass">
+          <div class="row space-4" ng-show = "classToCreate.specialtyClass || showEditClass.classToEdit.specialtyClassRate">
             <label class="col-sm-3" for="specialty-class-price">
               Specialty Rate
             </label>
@@ -56,7 +59,8 @@
                   <span class="input-prefix">
                     <span>$</span>
                   </span>
-                  <input type="text" ng-model = "classToCreate.specialtyClassRate" inputmode="numeric" id="specialty-class-price" class="input-stem">
+                  <input ng-if = "showAddClass" type="text" ng-model = "classToCreate.specialtyClassRate" inputmode="numeric" id="specialty-class-price" class="input-stem">
+                  <input ng-if = "showEditClass" type="text" ng-model = "showEditClass.classToEdit.specialtyClassRate" inputmode="numeric" id="specialty-class-price" class="input-stem">
                 </div>
                 <label class="lightgray">
                   USD
@@ -72,7 +76,12 @@
             </label>
             <div class="col-sm-9">
               <div class="select" >
-                <select id="class-reg-types" ng-init = "classToCreate.openTo = 'All (Members &amp; Drop Ins)'" ng-model = "classToCreate.openTo">
+                <select ng-if = "showAddClass" id="class-reg-types" ng-init = "classToCreate.openTo = 'All (Members &amp; Drop Ins)'" ng-model = "classToCreate.openTo">
+                  <option>All (Members &amp; Drop Ins)</option>
+                  <option>Members Only</option>
+                  <option>Drop Ins Only</option>
+                </select>
+                <select ng-if = "showEditClass" id="class-reg-types" ng-model = "showEditClass.classToEdit.openTo">
                   <option>All (Members &amp; Drop Ins)</option>
                   <option>Members Only</option>
                   <option>Drop Ins Only</option>
@@ -85,10 +94,27 @@
             <label class="col-sm-3" for="equipment-needed">
               Equipment Required
             </label>
-            <div class="col-sm-9">
-              <!-- <input id="equipment-needed" name="" size="30" type="text" placeholder="e.g. Dumbbells, Mat (separate by commas)"> -->
+            <div class="col-sm-9" ng-if = "showAddClass">
               <tags-input id="equipment-needed" 
                 ng-model="classToCreate.equipment" 
+                size="30"
+                display-property="name" 
+                placeholder="e.g. Dumbbells" 
+                replace-spaces-with-dashes="false"
+                template="tag-template"
+                >
+                <auto-complete source="loadEquipment($query)"
+                  min-length="0"
+                  load-on-focus="true"
+                  load-on-empty="true"
+                  max-results-to-show="32"
+                  template="autocomplete-template">
+                 </auto-complete>
+              </tags-input>
+            </div>            
+            <div class="col-sm-9" ng-if = "showEditClass">
+              <tags-input id="equipment-needed" 
+                ng-model="showEditClass.classToEdit.equipment" 
                 size="30"
                 display-property="name" 
                 placeholder="e.g. Dumbbells" 
@@ -113,7 +139,8 @@
             <div class="col-sm-9">
               <div style = "color: red" ng-show = "missingDescription">You're missing a description! Doesn't have to be long, but please add one.</div>
               <div style = "color: red" ng-show = "descriptionTooLong">Your description is currently {{descriptionTooLong}} characters, please make it less than 200 characters! </div>
-              <textarea cols="40" rows="5" id="class-description" placeholder="0/200 characters" ng-model = "classToCreate.classDescription"></textarea>
+              <textarea ng-if = "showAddClass" cols="40" rows="5" id="class-description" placeholder="0/200 characters" ng-model = "classToCreate.classDescription"></textarea>
+              <textarea ng-if = "showEditClass" cols="40" rows="5" id="class-description" placeholder="0/200 characters" ng-model = "showEditClass.classToEdit.classDescription"></textarea>
               <h5 class="lightgray mt8 mb8">Class descriptions help your customers understand what they're getting themselves into. Tell them if it's a beginner or advanced class or if there is prior experience necessary.</h5>     
             </div>            
           </div>
@@ -122,10 +149,13 @@
             <div class="col-sm-12">
               <ul class="panel-action-list">
                 <li>
-                  <a href="#" class="panel-action-item" ng-click = "showAddClass = false">Cancel</a>
+                  <a href="#" class="panel-action-item" ng-click = "showAddClass = false; showEditClass = false">Cancel</a>
                 </li>
-                <li>
+                <li ng-if = "showAddClass">
                   <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveClassType(classToCreate)">Save</a>
+                </li>            
+                <li ng-if = "showEditClass">
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateClassType(showEditClass.classKey, showEditClass.classToEdit)">Update</a>
                 </li>            
               </ul>              
             </div>
@@ -135,13 +165,15 @@
       </div>
 <!-- FORM PANEL END-->
 
+
+
 <!-- PANEL -->
-      <div class="panel space-4">
-        <div class="panel-header">
-          Level One
+      <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes">
+        <div class="panel-header" >
+          {{classType.className}}
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item">Edit</a>
+              <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>
             </li>
             <li>
               <a href="#" class="panel-action-item">Delete</a>
@@ -150,15 +182,15 @@
         </div>
         <div class="panel-body">
           <div class="row">
-            <div class="col-sm-3 mb16">
+            <div class="col-sm-4 mb16">
               <h5 class="mb0">Open To</h5>
-              <h5 class="lightgray">All</h5>
+              <h5 class="lightgray">{{classType.openTo}}</h5>
             </div>
             <div class="col-sm-3 mb16">
               <h5 class="mb0">Requires</h5>
               <ul>
-                <li>
-                  <h5 class="lightgray">Dumbbells</h5>
+                <li ng-repeat = "item in classType.equipment">
+                  <h5 class="lightgray">{{item.name}}</h5>
                 </li>             
               </ul>
             </div>
@@ -173,63 +205,15 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="mb0">Description</h5>
-              <h5 class="lightgray mb0">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
+              <h5 class="lightgray mb0">{{classType.classDescription}}</h5>
             </div>
           </div>
         </div>
       </div>
 <!-- PANEL END--> 
 
-<!-- PANEL -->
-      <div class="panel">
-        <div class="panel-header">
-          Strength Workshop (Specialty Class $300)
-          <ul class="panel-action-list">
-            <li>
-              <a href="#" class="panel-action-item">Edit</a>
-            </li>
-            <li>
-              <a href="#" class="panel-action-item">Delete</a>
-            </li>            
-          </ul>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-sm-3 mb16">
-              <h5 class="mb0">Open To</h5>
-              <h5 class="lightgray">Members Only</h5>
-            </div>
-            <div class="col-sm-3 mb16">
-              <h5 class="mb0">Requires</h5>
-              <ul>
-                <li>
-                  <h5 class="lightgray">Dumbbells</h5>
-                </li>
-                <li>
-                  <h5 class="lightgray">Yoga Mat</h5>
-                </li>                
-              </ul>
-            </div>
-  <!--      
-  NOT MVP
-            <div class="col-sm-2">
-              <h5 class="mb0">Scheduled</h5>
-              <h5 class="lightgray">24 Times</h5>
-            </div>
-  -->            
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <h5 class="mb0">Description</h5>
-              <h5 class="lightgray mb0">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
-            </div>
-          </div>
-        </div>
-      </div>
-<!-- PANEL END-->
-
       <div class="subpanel-btn">
-        <a href="#" ng-click = "showAddClass = true">Add Class Type<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-click = "showAddClass = true; showEditClass = false;">Add Class Type<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>
@@ -237,6 +221,7 @@
   </div>
 </div>
 
+<!-- Used for the tags inputs -->
 <script type="text/ng-template" id="tag-template">
   <div class="tag-template">
     

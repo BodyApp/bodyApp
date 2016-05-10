@@ -4,6 +4,7 @@ angular.module('bodyAppApp')
   .controller('ClassesCtrl', function ($scope, $stateParams, Studios, $http) {
     var ref;
     var studioId = $stateParams.studioId;
+    $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
@@ -19,16 +20,48 @@ angular.module('bodyAppApp')
     //   { name: "Germany", flag: "Germany.png" },
     // ];
 
+    ref.child('classTypes').on('value', function(snapshot) {
+      $scope.savedClassTypes = snapshot.val()
+      if(!$scope.$$phase) $scope.$apply();
+
+    })
+
+
     $scope.saveClassType = function(classToSave) {
-      console.log(classToSave)
+
       if (!classToSave.className) return $scope.missingName = true;
       // if (!classToSave.equipment) return $scope.missingEquipment = true
       if (!classToSave.classDescription) return $scope.missingDescription = true;
       if (classToSave.classDescription.length > 200) return $scope.descriptionTooLong = classToSave.classDescription.length;
+
+      //NEED TO FIX EQUIPMENT SO NOT ARRAY
+
       ref.child("classTypes").push(classToSave, function(err) {
         if (err) return console.log(err);
         console.log("Class successfully saved")
         $scope.classToCreate = {};
+        $scope.classToCreate.openTo = "All (Members &amp; Drop Ins)";
+        $scope.missingName = false;
+        $scope.missingDescription = false;
+        $scope.descriptionTooLong = false;
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    $scope.editClass = function(key, classToEdit) {
+      $scope.showEditClass = {classKey: key, classToEdit: classToEdit};
+      $scope.showAddClass = false;
+    }
+
+    $scope.updateClassType = function(classKey, classToEdit) {
+      console.log(classKey)
+      console.log(classToEdit)
+      if (!classToEdit.className) return $scope.missingName = true;
+      if (!classToEdit.classDescription) return $scope.missingDescription = true;
+      if (classToEdit.classDescription.length > 200) return $scope.descriptionTooLong = classToEdit.classDescription.length;
+      ref.child('classTypes').child(classKey).update(classToEdit, function(err) {
+        console.log("Class successfully updated")
+        $scope.showEditClass = false;
         $scope.missingName = false;
         $scope.missingDescription = false;
         $scope.descriptionTooLong = false;
