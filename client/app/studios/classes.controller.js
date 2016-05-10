@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassesCtrl', function ($scope, $stateParams, Studios, $http) {
+  .controller('ClassesCtrl', function ($scope, $stateParams, Studios, $http, Auth) {
+    var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -20,7 +21,7 @@ angular.module('bodyAppApp')
     //   { name: "Germany", flag: "Germany.png" },
     // ];
 
-    ref.child('classTypes').on('value', function(snapshot) {
+    ref.child('classTypes').orderByChild('created').on('value', function(snapshot) {
       $scope.savedClassTypes = snapshot.val()
       if(!$scope.$$phase) $scope.$apply();
 
@@ -33,6 +34,8 @@ angular.module('bodyAppApp')
       // if (!classToSave.equipment) return $scope.missingEquipment = true
       if (!classToSave.classDescription) return $scope.missingDescription = true;
       if (classToSave.classDescription.length > 200) return $scope.descriptionTooLong = classToSave.classDescription.length;
+      classToSave.created = new Date().getTime();
+      classToSave.createdBy = Auth.getCurrentUser()._id
 
       //Should change equipment so not array.
 
@@ -51,14 +54,20 @@ angular.module('bodyAppApp')
     $scope.editClass = function(key, classToEdit) {
       $scope.showEditClass = {classKey: key, classToEdit: classToEdit};
       $scope.showAddClass = false;
+      window.scrollTo(0, 0);
     }
 
     $scope.updateClassType = function(classKey, classToEdit) {
 
-      for (var i = 0; i < classToEdit.equipment.length; i++) { //Being added because firebase doesn't like arrays
-        console.log(classToEdit.equipment[i].$$hashKey)
-        delete classToEdit.equipment[i].$$hashKey
+      if (classToEdit.equipment) {
+        for (var i = 0; i < classToEdit.equipment.length; i++) { //Being added because firebase doesn't like arrays
+          console.log(classToEdit.equipment[i].$$hashKey)
+          delete classToEdit.equipment[i].$$hashKey
+        }
       }
+
+      classToEdit.updated = new Date().getTime();
+      classToEdit.updatedBy = Auth.getCurrentUser()._id
 
       if (!classToEdit.className) return $scope.missingName = true;
       if (!classToEdit.classDescription) return $scope.missingDescription = true;
@@ -95,5 +104,9 @@ angular.module('bodyAppApp')
         });
       });
     };
+
+    $scope.scrollTop = function() {
+      window.scrollTo(0, 0);
+    }
 
   });
