@@ -115,11 +115,12 @@ UserSchema
   .virtual('instructorProfile')
   .get(function() {
     return {
+      '_id': this._id,
       'nickName': this.nickName,
       'firstName': this.firstName,
       'lastName': this.lastName,
       'gender': this.gender,
-      'role': this.role,
+      // 'role': this.role,
       'picture': this.picture,
       'facebookId': this.facebookId,
       'trainerCredential1': this.trainerCredential1,

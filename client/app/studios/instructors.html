@@ -5,7 +5,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "showAddInstructor = true; showEditInstructor = false;">Add Instructor</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddInstructor = true; showEditInstructor = false; scrollTop()">Add Instructor</a>
       </div>
     </div>
 
@@ -13,12 +13,12 @@
 
 
 <!-- FORM PANEL -->
-      <div class="panel space-4" ng-show = "showAddInstructor">
+      <div class="panel space-4" ng-show = "showAddInstructor || showEditInstructor">
         <div class="panel-header">
           Add Instructor
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item" ng-click = "showAddInstructor = false; showEditInstructor = false;"><i class="ti-close"></i></a>
+              <a href="#" class="panel-action-item" ng-click = "showAddInstructor = false; showEditInstructor = false; returnedInstructor = false;"><i class="ti-close"></i></a>
             </li>
           </ul>
         </div>
@@ -31,9 +31,10 @@
             <div class="col-sm-9">
               <div class="row col-sm-12">
                 <div class="input-addon">
-                  <input ng-model = "userToSearchFor" type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="search by email">
+                  <input ng-model = "userToSearchFor" ng-keypress="keyPressed($event, userToSearchFor)" type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="search by email">
                   <span class="input-suffix">
                     <a href="#" ng-click = "searchForUser(userToSearchFor)">Add user</a>
+                    <span style = "color: red;" ng-show = "noUserFound">No User Found</span>
                   </span>                
                 </div>
               </div>
@@ -65,7 +66,7 @@
               Position Title
             </label>
             <div class="col-sm-9">
-              <input ng-disabled = "!returnedInstructor" ng-model = "instructor.title" id="position-title" name="" size="30" type="text" placeholder="e.g. Head Coach">
+              <input ng-disabled = "!returnedInstructor" ng-model = "returnedInstructor.title" id="position-title" name="" size="30" type="text" placeholder="e.g. Head Coach">
             </div>            
           </div>
 
@@ -74,7 +75,7 @@
               Certifications
             </label>
             <div class="col-sm-9">
-              <input ng-disabled = "!returnedInstructor" ng-model = "instructor.certifications" id="certifications" name="" size="30" type="text" placeholder="e.g CF-L1, ACSM (separate by commas)">
+              <input ng-disabled = "!returnedInstructor" ng-model = "returnedInstructor.certifications" id="certifications" name="" size="30" type="text" placeholder="e.g CF-L1, ACSM (separate by commas)">
             </div>            
           </div>          
 
@@ -83,7 +84,7 @@
               Instructor Bio
             </label>
             <div class="col-sm-9">
-              <textarea ng-disabled = "!returnedInstructor" ng-model = "instructor.bio" cols="40" rows="5" id="instructor-bio" placeholder="0/100 characters"></textarea>
+              <textarea ng-disabled = "!returnedInstructor" ng-model = "returnedInstructor.bio" cols="40" rows="5" id="instructor-bio" placeholder="0/100 characters"></textarea>
               <div class="row col-sm-12">
                 <h5 class="lightgray mt8">BODY is built on relationships. Help your studio's members get to know your staff!</h5>
               </div>
@@ -96,7 +97,7 @@
             </label>
             <div class="col-sm-9">
               <div class="select">
-                <select ng-disabled = "!returnedInstructor" ng-init = "instructor.permissions = 'Instructor'" ng-model = "instructor.permissions" id="permissions">
+                <select ng-disabled = "!returnedInstructor" ng-init = "returnedInstructor.permissions = returnedInstructor.permissions || 'Instructor'" ng-model = "instructor.permissions" id="permissions">
                   <option>Instructor</option>
                   <option>Studio Admin</option>
                 </select>
@@ -111,10 +112,10 @@
             <div class="col-sm-12">
               <ul class="panel-action-list">
                 <li>
-                  <a href="#" ng-click = "showAddInstructor = false; showEditInstructor = false;" class="panel-action-item">Cancel</a>
+                  <a href="#" ng-click = "showAddInstructor = false; showEditInstructor = false; returnedInstructor = false;" class="panel-action-item">Cancel</a>
                 </li>
                 <li>
-                  <a href="#" ng-disabled = "!returnedInstructor" ng-click = "saveInstructor(instuctor)" class="panel-action-item btn-primary btn">Save</a>
+                  <a href="#" ng-disabled = "!returnedInstructor" ng-click = "saveInstructor(returnedInstructor)" class="panel-action-item btn-primary btn">Save</a>
                 </li>            
               </ul>              
             </div>
@@ -126,16 +127,16 @@
 
 
 <!-- PANEL -->
-      <div class="panel space-4">
+      <div class="panel space-4" ng-repeat = "trainer in trainersPulled">
         <div class="panel-header">
-          Beth Anne Lazaro (You)
+          {{trainer.firstName}} {{trainer.lastName}}
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item">Edit</a>
+              <a href="#" class="panel-action-item" ng-click = "editInstructor(trainer); scrollTop();">Edit</a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#" class="panel-action-item hidden">Delete</a>
-            </li>            
+            </li>             -->
           </ul>
         </div>
 
@@ -143,32 +144,32 @@
 
           <div class="row mb16">
             <div class="col-sm-2">
-              <img src="/assets/images/bern-prince.jpg" class="profile-photo">
+              <img ng-src="{{trainer.picture}}" class="profile-photo">
             </div>
             <div class="col-sm-10">
               <div class="row mb8">
                 <div class="col-sm-4">
                   <h5 class="mb0">Position</h5>
-                  <h5 class="lightgray mb0">Head Coach</h5>
+                  <h5 class="lightgray mb0">{{trainer.title}}</h5>
                 </div>
                 <div class="col-sm-4">
                   <h5 class="mb0">Permissions</h5>
-                  <h5 class="lightgray mb0">Studio Admin</h5>
+                  <h5 class="lightgray mb0">{{trainer.permissions}}</h5>
                 </div>
-                <div class="col-sm-4">
+                <!-- <div class="col-sm-4">
                   <h5 class="mb0">Scheduled for</h5>
                   <h5 class="lightgray mb0">24 classes</h5>
-                </div>
+                </div> -->
               </div>
               <div class="row">
                 <div class="col-sm-4">
                   <h5 class="mb0">Certifications</h5>
-                  <h5 class="lightgray mb0">CF-L1, ACSM</h5>
+                  <h5 class="lightgray mb0">{{trainer.certifications}}</h5>
                 </div>
-                <div class="col-sm-4">
+                <!-- <div class="col-sm-4">
                   <h5 class="mb0">Current Rating</h5>
                   <h5 class="lightgray mb0">5/5</h5>
-                </div>
+                </div> -->
                 <div class="col-sm-4">
                 </div>
               </div>              
@@ -178,7 +179,7 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="mb0">Instructor Bio</h5>
-              <h5 class="lightgray mb0">Anything I can shake my rump to! "Here I Come" by Fergie. If I played baseball, this is what I would walk out to bat to and point to the outfield with confidence.</h5>
+              <h5 class="lightgray mb0">{{trainer.bio}}</h5>
             </div>
           </div>
         </div>
@@ -186,7 +187,7 @@
 <!-- PANEL END--> 
 
       <div class="subpanel-btn">
-        <a href="#" ng-click = "showAddInstructor = true; showEditInstructor = false;">Add Instructor<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-click = "showAddInstructor = true; showEditInstructor = false; scrollTop()">Add Instructor<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>

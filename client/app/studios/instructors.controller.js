@@ -21,8 +21,8 @@ angular.module('bodyAppApp')
     //   { name: "Germany", flag: "Germany.png" },
     // ];
 
-    ref.child('classTypes').orderByChild('created').on('value', function(snapshot) {
-      $scope.savedClassTypes = snapshot.val()
+    ref.child('trainers').on('value', function(snapshot) {
+      $scope.trainersPulled = snapshot.val()
       if(!$scope.$$phase) $scope.$apply();
 
     })
@@ -34,12 +34,45 @@ angular.module('bodyAppApp')
       }, {
         email: userToSearchFor
       }).$promise.then(function(instructor) {
-        $scope.returnedInstructor = instructor;
+        if (instructor._id) {
+          $scope.returnedInstructor = instructor;
+          $scope.noUserFound = false;
+        } else {
+          $scope.noUserFound = true;
+        }
       })
     }
 
     $scope.saveInstructor = function(instructorToSave) {
-      
+      console.log(instructorToSave)
+      // console.log(userInfo);
+      // delete userInfo.$promise
+      // delete userInfo.$resolved
+
+      // for (var prop in userInfo) {
+      //   if (userInfo.hasOwnProperty(prop)) instructorToSave[prop] = userInfo[prop];
+      // }
+
+      // instructorToSave.userInfo = userInfo;
+      // console.log(instructorToSave)
+
+      // ref.child('trainers').child(userInfo._id).update(instructorToSave)
+      ref.child('trainers').child(instructorToSave._id).update(instructorToSave, function(err) {
+        console.log("Saved / Updated instructor")
+        $scope.returnedInstructor = false;
+        $scope.showAddInstructor = false;
+        $scope.showEditInstructor = false;
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    $scope.editInstructor = function(toEdit) {
+      $scope.showEditInstructor = true;
+      $scope.returnedInstructor = toEdit;
+    }
+
+    $scope.keyPressed = function(key, enteredSoFar) {
+      if (key.keyCode === 13) $scope.searchForUser(enteredSoFar)
     }
 
     $scope.scrollTop = function() {
