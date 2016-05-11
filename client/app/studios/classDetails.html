@@ -1,0 +1,241 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+
+      <div class="panel"> <!-- CLASS DETAIL PANEL -->
+        <div class="panel-header">
+          Class Details
+        </div>
+        <div class="panel-body">
+          <h5 class="mb0">Time</h5>
+          <h5 class="mb0">12p - 1:30p PDT</h5>
+
+          <h5 class="mt8 mb0">Class</h5>
+          <h5 class="lightgray mb0">Level One</h5>
+          <div class="select display-block hidden">
+            <select>
+              <option>Level One</option>
+            </select>
+          </div>
+
+          <h5 class="mt8 mb0">Workout</h5>
+          <h5 class="lightgray mb0">Workout #34: Fight Gone Bad</h5>
+          <div class="select display-block hidden">
+            <select>
+              <option>Workout #34: Fight Gone Bad</option>
+            </select>
+          </div>
+
+          <h5 class="mt8 mb0">Instructor</h5>
+          <h5 class="lightgray mb0">Beth Anne L</h5>
+          <div class="select display-block hidden">
+            <select>
+              <option>Beth Anne</option>
+            </select>
+          </div>
+
+          <h5 class="mt8 mb0">Playlist</h5>
+          <h5 class="lightgray">Top 20 Beats</h5>
+          <div class="select display-block hidden">
+            <select>
+              <option>Top 20 Beats</option>
+            </select>
+          </div>
+
+          <a href="#" class="mt16 btn btn-blue btn-block">Start Class</a>
+        </div>
+      </div>
+
+      <div class="panel"> <!-- ACTION PANEL -->
+        <div class="panel-header">
+          Actions
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li class="mb8">
+              <a href="#">Return to Schedule</a>
+            </li>
+            <li class="mb8">
+              <a href="#">Edit Class Details</a>
+            </li>
+            <li class="mb8">
+              <a href="#">Message Sign Ups</a>
+            </li>
+            <li class="mb8">
+              <a href="#">Delete Class</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="panel"> <!-- SIGN UPS PANEL -->
+        <div class="panel-header">
+          Sign Ups (2 of 12)
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Return to Schedule</a>
+            </li>      
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <table class="table mb0 table-condensed table-hover member-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Photo</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Injury</th>
+                    <th>Goal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td><img src="/assets/images/bern-prince.jpg" width="40" height="40" class="profile-photo"></td>
+                    <td>Bern</td>
+                    <td>Prince</td>
+                    <td class="overflow">My ankle hurts and sometimes I throw up on myself by accident.</td>
+                    <td>I really hope to get absolutely shredded by Dan's wedding because that would be sick.</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td><img src="/assets/images/justin-photo.jpg" width="40" height="40" class="profile-photo"></td>
+                    <td>Justin</td>
+                    <td>Mendelson</td>
+                    <td class="overflow">None</td>
+                    <td>I don't set goals. I smash them.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>                      
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- <div class="panel">                SENT MESSAGE TO CLASS / SIGN UP
+        <div class="panel-body">
+          <div class="member-action-icon member-email">
+            <i class="ti-email"></i> Message sent on Apr 23, 2016
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h5 class="mb0">To</h5>
+              <h5 class="lightgray mb0">Amanda R</h5>
+              <h5 class="mt8 mb0">Subject</h5>
+              <h5 class="lightgray mb0">Class Instructor Change</h5>
+              <h5 class="mt8 mb0">Message</h5>
+              <h5 class="lightgray mb0">Hey everyone! Justin is subbing for Beth Anne on Thursday May 15th. Have a great day.</h5>                     
+            </div>                
+          </div>
+        </div>
+      </div> -->      
+
+      <!-- <div class="panel">              CLASS MESSAGING
+        <div class="panel-body">
+          <div class="row mb16">
+            <label class="col-sm-2" for="add-message-to">
+              To:
+            </label>
+            <div class="col-sm-10">
+              <h5 class="lightgray mt8">Amanda R</h5>
+              
+              <div class="row mt8">
+                <div class="col-sm-6">
+                  <div class="select display-block">
+                    <select>
+                      <option>All sign ups</option>
+                      <option>Bern Prince</option>
+                    </select>
+                  </div>
+                </div>
+                <label class="col-sm-6">
+                  <a href="#">Add recipient</a>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          <div class="row mb16">
+            <label class="col-sm-2" for="add-message-subject">
+              Subject:
+            </label>
+            <div class="col-sm-10">
+              <input type="text" id="add-message-subject" placeholder="e.g. Instructor Sub for Friday"></input>
+            </div>
+          </div>
+          <div class="row mb16">
+            <label class="col-sm-2" for="add-message-text">
+              Message:
+            </label>
+            <div class="col-sm-10">
+              <textarea cols="40" rows="5" id="add-message-text" placeholder="e.g. Hey everyone! Justin is subbing for Beth Anne on Friday."></textarea>
+            </div>
+          </div>                
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Send Message</a>
+                </li>            
+              </ul>              
+            </div>
+          </div>                
+        </div>
+      </div> -->
+    
+      <div class="row mb8 hidden"> <!-- DELETE PLAN WARNING -->
+        <div class="col-sm-12">
+          <p class="alert alert-warning">You're about to delete this class. All sign ups for this class will be deleted.</p>
+        </div>
+      </div>
+
+      <div class="row mb8 hidden"> <!-- CHANGE CLASS DETAILS WARNING -->
+        <div class="col-sm-12">
+          <p class="alert alert-warning">The time for a live class cannot be modified. To change the time of a live class you must delete it first and then add a new one.</p>
+        </div>
+      </div>
+
+      <div class="row hidden">
+        <div class="col-sm-12">
+          <ul class="panel-action-list">
+            <li>
+              <label class="col-sm-12 mb0" for="notify-signups-cancelation" style="padding-right:0px;">
+                <input id="notify-signups-cancelation" name="" size="15" type="checkbox" checked="checked">
+                Notify sign ups
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-12">
+          <ul class="panel-action-list">
+            <li>
+              <a href="#" class="panel-action-item">Cancel</a>
+            </li>
+            <li> 
+              <a href="#" class="panel-action-item btn-primary btn">Delete class</a> 
+              <a href="#" class="panel-action-item btn-primary btn hidden">Submit changes</a> 
+            </li>
+          </ul>              
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

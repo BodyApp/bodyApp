@@ -1,0 +1,466 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="panel space-4">
+        <div class="panel-header">
+          Add class
+        </div>
+        <div class="panel-body">
+
+          <div class="row">
+            <label class="col-sm-12 pb0" for="class-time">
+              Day and Time
+            </label>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <input type="text" placeholder="05/09/18">
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-lg-6">
+              <label for="start-time" class="pb0">
+                Start Time
+              </label>
+              <input type="text" id="start-time" placeholder="00:00PM">
+            </div>
+            <div class="col-lg-6">
+              <label for="start-time" class="pb0">
+                End Time
+              </label>
+              <input type="text" id="start-time" placeholder="00:00PM">
+            </div>            
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <span class="lightgray">Time zone:</span>
+              <span class="lightgray">EDT</span>
+              <div class="select hidden">
+                <select>
+                  <option>EDT</option>
+                  <option>MDT</option>
+                  <option>PDT</option>
+                </select>
+              </div>
+              <a href="#" class="tiny">Change</a>
+            </div>
+          </div>
+<!-- 
+  REPEAT CLASS
+          <div class="row mb8">
+            <div class="col-sm-12 tiny">
+              <input id="repeat-class" name="" size="15" type="checkbox">
+              <label for="repeat-class" class="check-selector">
+              Repeat
+              </label>
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="start-time" class="pb0">
+                Repeat on
+              </label>
+              <table class="class-repeat-table">
+                <thead>
+                  <tr>
+                    <th><input id="class-repeat-mon" name="class-mon" size="15" type="checkbox"></th>
+                    <th><input id="class-repeat-tue" name="class-tue" size="15" type="checkbox"></th>
+                    <th><input id="class-repeat-wed" name="class-wed" size="15" type="checkbox"></th>
+                    <th><input id="class-repeat-thu" name="class-thu" size="15" type="checkbox"></th>
+                    <th><input id="class-repeat-fri" name="class-fri" size="15" type="checkbox"></th>
+                    <th><input id="class-repeat-sat" name="class-sat" size="15" type="checkbox"></th>
+                    <th><input id="class-repeat-sun" name="class-sun" size="15" type="checkbox"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label for="class-repeat-mon" class="check-selector">M</label></td>
+                    <td><label for="class-repeat-tue" class="check-selector">T</label></td>
+                    <td><label for="class-repeat-wed" class="check-selector">W</label></td>
+                    <td><label for="class-repeat-thu" class="check-selector">T</label></td>
+                    <td><label for="class-repeat-fri" class="check-selector">F</label></td>
+                    <td><label for="class-repeat-sat" class="check-selector">S</label></td>
+                    <td><label for="class-repeat-sun" class="check-selector">S</label></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>           
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="end-repeat" class="pb0">
+                Repeat ends on
+              </label>
+              <input id="end-repeat" type="text" placeholder="05/09/18">
+            </div>
+          </div>
+ -->          
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="class-choice" class="pb0">
+                Class
+              </label>
+              <div class="select display-block">
+                <select id="class-choice">
+                  <option>Level One</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="workout-choice" class="pb0">
+                Workout
+              </label>
+              <div class="select display-block">
+                <select id="workout-choice">
+                  <option>Workout #34: Fight Gone Bad</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="instructor-choice" class="pb0">
+                Instructor
+              </label>
+              <div class="select display-block">
+                <select id="instructor-choice">
+                  <option>Beth Anne Lazaro (You)</option>
+                </select>
+              </div>
+            </div>
+          </div> 
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="playlist-choice" class="pb0">
+                Playlist
+              </label>
+              <div class="select display-block">
+                <select id="playlist-choice">
+                  <option>Top 20 Beats</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-top-4">
+            <a href="#" class="btn-blue btn-block">Add to schedule</a>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+<!--
+******************************************************************************************************************************************** SCHEDULE VIEW **************************************************************************************************************************************************
+-->
+      <div class="panel">
+        <div class="panel-header">
+          Your Schedule
+          <div class="cal-controls text-left">
+            <a href="#" class="btn hidden-xs"><i class="bold ti-calendar"></i></a>
+            <a href="#" class="btn">Today</a>
+            <div class="select hidden-xs">
+              <select>
+                <option>Level One</option>
+              </select>
+            </div>
+            <div class="select hidden-xs">
+              <select>
+                <option>Beth Anne L</option>
+              </select>
+            </div>
+            <div class="select">
+              <select>
+                <option>Week View</option>
+                <option>List View</option>
+              </select>
+            </div>
+          </div>          
+        </div>
+        <div class="panel-body">
+
+          <div class="row"> <!-- CALENDAR LIST VIEW -->
+            <div class="col-sm-12">
+              <table class="table table-condensed table-hover cal-list-table">
+                <thead>
+                  <tr>
+                    <th>Mon 05/09</th>
+                    <th>Class</th>
+                    <th class="hidden-xs">Workout</th>
+                    <th>Instructor</th>
+                    <th class="hidden-xs">Playlist</th>
+                    <th class="hidden-xs">Sign Ups</th>
+                    <th class="visible-xs">Reg</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10:30a-12p PDT</td>
+                    <td>Level One</td>
+                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
+                    <td>Beth Anne L</td>
+                    <td class="hidden-xs">Top 20 Beats</td>
+                    <td>3 of 12</td>
+                  </tr>
+                  <tr>
+                    <td>10:30a-12p PDT</td>
+                    <td>Level One</td>
+                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
+                    <td>Beth Anne L</td>
+                    <td class="hidden-xs">Top 20 Beats</td>
+                    <td>3 of 12</td>
+                  </tr>
+                  <tr>
+                    <td>12:30a-1p PDT</td>
+                    <td>Level Two</td>
+                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
+                    <td>Ralph L</td>
+                    <td class="hidden-xs">Top 20 Beats</td>
+                    <td>3 of 12</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-condensed table-hover cal-list-table">
+                <thead>
+                  <tr>
+                    <th>Tue 05/10</th>
+                    <th>Class</th>
+                    <th class="hidden-xs">Workout</th>
+                    <th>Instructor</th>
+                    <th class="hidden-xs">Playlist</th>
+                    <th class="hidden-xs">Sign Ups</th>
+                    <th class="visible-xs">Reg</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10:30a-12p PDT</td>
+                    <td>Level One</td>
+                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
+                    <td>Beth Anne L</td>
+                    <td class="hidden-xs">Top 20 Beats</td>
+                    <td>3 of 12</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+          <div class="row hidden"> <!-- CALENDAR WEEK VIEW -->
+            <div class="col-sm-12">
+              <div class="cal-container text-center">
+
+                <div class="header-cover"></div>
+                <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div>
+
+                <div class="cal-column sched-day-1"> <!-- REPEATED FOR NEXT DAY -->
+                  <div class="cal-daytime">
+                    <div class="cal-day">Mon</div>
+                    <div class="cal-date">05/09</div>
+                  </div>
+                  <div class="cal-allClasses">
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cal-column sched-day-2"> <!-- REPEATED FOR NEXT DAY -->
+                    <div class="cal-daytime">
+                      <div class="cal-day cal-today">Tue</div>
+                      <div class="cal-date cal-today">05/10</div>
+                    </div>
+                </div>
+
+                <div class="cal-column sched-day-3"> <!-- REPEATED FOR NEXT DAY -->
+                  <div class="cal-daytime">
+                    <div class="cal-day">Wed</div>
+                    <div class="cal-date">05/11</div>
+                  </div>
+                  <div class="cal-allClasses">
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cal-column sched-day-4"> <!-- REPEATED FOR NEXT DAY -->
+                  <div class="cal-daytime">
+                    <div class="cal-day">Thu</div>
+                    <div class="cal-date">05/12</div>
+                  </div>
+                </div>
+
+                <div class="cal-column sched-day-5"> <!-- REPEATED FOR NEXT DAY -->
+                  <div class="cal-daytime">
+                    <div class="cal-day">Fri</div>
+                    <div class="cal-date">05/13</div>
+                  </div>
+                  <div class="cal-allClasses">
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cal-column sched-day-6"> <!-- REPEATED FOR NEXT DAY -->
+                  <div class="cal-daytime">
+                    <div class="cal-day">Sat</div>
+                    <div class="cal-date">05/14</div>
+                  </div>
+                  <div class="cal-allClasses">
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cal-column sched-day-7"> <!-- REPEATED FOR NEXT DAY -->
+                  <div class="cal-daytime">
+                    <div class="cal-day">Sun</div>
+                    <div class="cal-date">05/15</div>
+                  </div>
+                  <div class="cal-allClasses">
+                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                      <div class="cal-time bold">10:00p PST</div>
+                      <div class="cal-class">Level One</div>
+                      <div class="cal-instructor">Ralph L</div>
+                      <div class="cal-friends">2 friends</div>
+                      <div class="cal-bubbles">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
+                      </div>
+                      <div class="cal-action">
+                        <a href="#" class="btn btn-blue">Reserve</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      
+  
+
+
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

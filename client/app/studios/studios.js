@@ -68,5 +68,49 @@ angular.module('bodyAppApp')
             return $stateParams.studioId
           }
         }
+      })
+      .state('editprofile', {
+        url: '/studios/:studioId/editprofile',
+        templateUrl: 'app/studios/editprofile.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('notifications', {
+        url: '/studios/:studioId/notifications',
+        templateUrl: 'app/studios/notifications.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('editschedule', {
+        url: '/studios/:studioId/editschedule',
+        templateUrl: 'app/studios/editschedule.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('classDetails', {
+        url: '/studios/:studioId/classDetails',
+        templateUrl: 'app/studios/classDetails.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
       });
   });

@@ -741,6 +741,33 @@ footer.bg-dark li,
   border-color: #aaa;
   text-decoration: none;
 }
+.btn-blue {
+  color: white;
+  background: #3E7EDF;
+  font-size: 14px;
+  padding: 7px 21px;
+  display: inline-block;
+  margin-bottom: 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  line-height: 1.43;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn-blue:hover, .btn-blue:visited, .btn-blue:focus {
+  color: white;
+  opacity: 0.9;
+  text-decoration: none;
+}
 .btn-block {
   display: block;
   white-space: normal;
@@ -820,7 +847,7 @@ footer.bg-dark li,
   font-weight: 400;
   letter-spacing: 1px;
   border-radius: 0;
-  color: #fff;
+  color: #565a5c;
   text-align: center;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
@@ -859,11 +886,11 @@ body.btn-rounded .btn {
   color: #fff;
 }
 .btn:visited {
-  color: #fff;
+  color: #565a5c;
 }
 .btn-white:visited,
 .btn:visited:hover {
-  color: #fff;
+  color: #565a5c;
 }
 .btn-white:visited:hover {
   color: #222;
