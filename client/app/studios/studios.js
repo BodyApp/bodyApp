@@ -68,5 +68,10 @@ angular.module('bodyAppApp')
             return $stateParams.studioId
           }
         }
+      })
+      .state('createstudio', {
+        url: '/createstudio',
+        templateUrl: 'app/studios/createStudio.html',
+        controller: 'CreateStudioCtrl',
       });
   });
