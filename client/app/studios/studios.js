@@ -28,7 +28,7 @@ angular.module('bodyAppApp')
       .state('music', {
         url: '/studios/:studioId/music',
         templateUrl: 'app/studios/music.html',
-        controller: 'StudiosCtrl',
+        controller: 'MusicCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {
