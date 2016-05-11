@@ -21,8 +21,14 @@ angular.module('bodyAppApp')
     //   { name: "Germany", flag: "Germany.png" },
     // ];
 
-    ref.child('classTypes').orderByChild('created').on('value', function(snapshot) {
-      $scope.savedClassTypes = snapshot.val()
+    ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
+      $scope.savedClassTypes = []
+      snapshot.forEach(function(classType) {
+        $scope.savedClassTypes.push(classType.val());
+        console.log(classType.val().updated)
+      })
+      // $scope.savedClassTypes = snapshot.val()
+      // console.log($scope.savedClassTypes)
       if(!$scope.$$phase) $scope.$apply();
 
     })
@@ -35,6 +41,7 @@ angular.module('bodyAppApp')
       if (!classToSave.classDescription) return $scope.missingDescription = true;
       if (classToSave.classDescription.length > 200) return $scope.descriptionTooLong = classToSave.classDescription.length;
       classToSave.created = new Date().getTime();
+      classToSave.updated = new Date().getTime();
       classToSave.createdBy = Auth.getCurrentUser()._id
 
       //Should change equipment so not array.
@@ -61,10 +68,11 @@ angular.module('bodyAppApp')
 
       if (classToEdit.equipment) {
         for (var i = 0; i < classToEdit.equipment.length; i++) { //Being added because firebase doesn't like arrays
-          console.log(classToEdit.equipment[i].$$hashKey)
           delete classToEdit.equipment[i].$$hashKey
         }
       }
+
+      if (classToEdit.$$hashKey) delete classToEdit.$$hashKey
 
       classToEdit.updated = new Date().getTime();
       classToEdit.updatedBy = Auth.getCurrentUser()._id

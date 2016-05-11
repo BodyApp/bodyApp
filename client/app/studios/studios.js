@@ -17,7 +17,7 @@ angular.module('bodyAppApp')
       .state('instructors', {
         url: '/studios/:studioId/instructors',
         templateUrl: 'app/studios/instructors.html',
-        controller: 'StudiosCtrl',
+        controller: 'InstructorsCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {

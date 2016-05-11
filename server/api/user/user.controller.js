@@ -89,7 +89,7 @@ exports.getInstructorByEmail = function(req, res, next) {
   User.findOne({email: email}, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
     if (err) return next(err);
     if (!user) return res.status(200).send('No instructor found');
-    if (user) return res.json(user.profile);
+    if (user) return res.json(user.instructorProfile);
   });
 }
 

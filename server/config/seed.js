@@ -163,24 +163,6 @@ User.find({}).remove(function() {
     "completedNewUserFlow": true
     },
     {
-    provider: 'facebook',
-    role: 'admin',
-    firstName: 'Bern',
-    lastName: 'Prince',
-    nickName: "Bern",
-    gender: "male",
-    picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
-    facebookId: "10500958748247716",
-    email: "daniel.liebeskind@gmail.com",
-    __v: 51,
-    injuries: "Nope",
-    bookedIntroClass: false,
-    completedNewUserFlow: true,
-    introClassTaken: false,
-    // welcomeEmailSent: false,
-    welcomeEmailSent: new Date(),
-    // level: 1
-  }, {
     provider: 'local',
     role: 'admin',
     firstName: 'Body',

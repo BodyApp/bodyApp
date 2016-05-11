@@ -5,7 +5,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block">Add Instructor</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddInstructor = true; showEditInstructor = false;">Add Instructor</a>
       </div>
     </div>
 
@@ -13,12 +13,12 @@
 
 
 <!-- FORM PANEL -->
-      <div class="panel space-4">
+      <div class="panel space-4" ng-show = "showAddInstructor">
         <div class="panel-header">
           Add Instructor
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item"><i class="ti-close"></i></a>
+              <a href="#" class="panel-action-item" ng-click = "showAddInstructor = false; showEditInstructor = false;"><i class="ti-close"></i></a>
             </li>
           </ul>
         </div>
@@ -31,9 +31,9 @@
             <div class="col-sm-9">
               <div class="row col-sm-12">
                 <div class="input-addon">
-                  <input type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="search by email">
+                  <input ng-model = "userToSearchFor" type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="search by email">
                   <span class="input-suffix">
-                    <a href="#">Add user</a>
+                    <a href="#" ng-click = "searchForUser(userToSearchFor)">Add user</a>
                   </span>                
                 </div>
               </div>
@@ -43,60 +43,61 @@
             </div>            
           </div>
 
-          <div class="row space-4">
+          <div class="row space-4" ng-hide = "!returnedInstructor">
             <label class="col-sm-3" for="profile-details">
               Profile Details
             </label>
             <div class="col-sm-9">
               <div class="row">
                 <div class="col-sm-3">
-                  <img src="/assets/images/bern-prince.jpg" class="profile-photo">
+                  <img ng-src="{{returnedInstructor.picture}}" class="profile-photo">
                 </div>
                 <div class="col-sm-9">
                   <h5 class="mb0">Instructor Name</h5>
-                  <h5 class="lightgray mb0">Bern Prince</h5>
+                  <h5 class="lightgray mb0">{{returnedInstructor.firstName}} {{returnedInstructor.lastName}}</h5>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="row space-4">
+          <div class="row space-4" ng-hide = "!returnedInstructor">
             <label class="col-sm-3" for="position-title">
               Position Title
             </label>
             <div class="col-sm-9">
-              <input id="position-title" name="" size="30" type="text" placeholder="e.g. Head Coach">
+              <input ng-disabled = "!returnedInstructor" ng-model = "instructor.title" id="position-title" name="" size="30" type="text" placeholder="e.g. Head Coach">
             </div>            
           </div>
 
-          <div class="row space-4">
+          <div class="row space-4" ng-hide = "!returnedInstructor">
             <label class="col-sm-3" for="certifications">
               Certifications
             </label>
             <div class="col-sm-9">
-              <input id="certifications" name="" size="30" type="text" placeholder="e.g CF-L1, ACSM (separate by commas)">
+              <input ng-disabled = "!returnedInstructor" ng-model = "instructor.certifications" id="certifications" name="" size="30" type="text" placeholder="e.g CF-L1, ACSM (separate by commas)">
             </div>            
           </div>          
 
-          <div class="row space-4">
+          <div class="row space-4" ng-hide = "!returnedInstructor">
             <label class="col-sm-3" for="instructor-bio">
               Instructor Bio
             </label>
             <div class="col-sm-9">
-              <textarea cols="40" rows="5" id="instructor-bio" placeholder="0/100 characters"></textarea>
+              <textarea ng-disabled = "!returnedInstructor" ng-model = "instructor.bio" cols="40" rows="5" id="instructor-bio" placeholder="0/100 characters"></textarea>
               <div class="row col-sm-12">
                 <h5 class="lightgray mt8">BODY is built on relationships. Help your studio's members get to know your staff!</h5>
               </div>
             </div>            
           </div>
 
-          <div class="row space-4">
+          <div class="row space-4" ng-hide = "!returnedInstructor">
             <label class="col-sm-3" for="permissions">
               Permission
             </label>
             <div class="col-sm-9">
               <div class="select">
-                <select id="permissions">
+                <select ng-disabled = "!returnedInstructor" ng-init = "instructor.permissions = 'Instructor'" ng-model = "instructor.permissions" id="permissions">
+                  <option>Instructor</option>
                   <option>Studio Admin</option>
                 </select>
               </div>
@@ -110,10 +111,10 @@
             <div class="col-sm-12">
               <ul class="panel-action-list">
                 <li>
-                  <a href="#" class="panel-action-item">Cancel</a>
+                  <a href="#" ng-click = "showAddInstructor = false; showEditInstructor = false;" class="panel-action-item">Cancel</a>
                 </li>
                 <li>
-                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                  <a href="#" ng-disabled = "!returnedInstructor" ng-click = "saveInstructor(instuctor)" class="panel-action-item btn-primary btn">Save</a>
                 </li>            
               </ul>              
             </div>
@@ -185,7 +186,7 @@
 <!-- PANEL END--> 
 
       <div class="subpanel-btn">
-        <a href="#">Add Instructor<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-click = "showAddInstructor = true; showEditInstructor = false;">Add Instructor<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>

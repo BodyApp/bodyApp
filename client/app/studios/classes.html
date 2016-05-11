@@ -168,7 +168,7 @@
 
 
 <!-- PANEL -->
-      <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes">
+      <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes | orderBy: '-updated'">
         <div class="panel-header" >
           {{classType.className}}
           <ul class="panel-action-list">
@@ -176,7 +176,7 @@
               <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>
             </li>
             <li>
-              <a href="#" class="panel-action-item">Delete</a>
+              <!-- <a href="#" class="panel-action-item">Delete</a> -->
             </li>            
           </ul>
         </div>
