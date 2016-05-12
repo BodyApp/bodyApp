@@ -319,8 +319,9 @@ h3 {
   line-height: 40px;
 }
 h4 {
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
 }
 h5 {
   font-size: 14px;
@@ -767,6 +768,13 @@ footer.bg-dark li,
   color: white;
   opacity: 0.9;
   text-decoration: none;
+}
+.btn-tag {
+  background-color: #edefed;
+  margin-right: 8px;
+  padding: 4px 12px;
+  font-size: 12px;  
+  border: none;
 }
 .btn-block {
   display: block;

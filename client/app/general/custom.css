@@ -6,6 +6,21 @@
   padding-left: 12.5px;
 }
 
+.va-container {
+  display: table;
+  position: absolute;
+}
+.va-container-v {
+  height: 100%
+}
+.va-container-h {
+  width: 100%;
+}
+.va-middle {
+  vertical-align: middle;
+  display: table-cell;
+}
+
 @media (min-width: 768px) {
   .page-container, .page-container-responsive {
     padding-left: 25px;
@@ -34,6 +49,54 @@
   .page-container-responsive {
     width: 1045px;
   }
+}
+
+/*------HERO VIDEO PLAYER-------*/
+
+.fullscreen-video-player {
+  background-color: #000;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  -webkit-transition: opacity 800ms ease;
+  -moz-transition: opacity 800ms ease;
+  -o-transition: opacity 800ms ease;
+  transition: opacity 800ms ease;
+  z-index: -1001;
+}
+.fullscreen-video-player iframe {
+  max-width: 100%;
+}
+.fullscreen-video-player-close {
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    right: 50px;
+    text-decoration: none;
+    top: 50px;  
+}
+.row-table {
+  display: table;
+  table-layout: fixed;
+}
+.row-full-height {
+  height: 100%;
+}
+.row.row-table {
+  width: 100%;
+  width: -webkit-calc(100% + 25px);
+  width: -moz-calc(100% + 25px);
+  width: calc(100% + 25px);
+}
+.col-middle {
+  vertical-align: middle;
+}
+.col-top, .col-middle, .col-bottom {
+  float: none;
+  display: table-cell;
 }
 
 /*------SCHEDULE-------*/
@@ -95,12 +158,15 @@
   color: #3E7EDF;
 }
 
-.header-cover {
+.header-cover, .header-cover-gray {
   background: white;
   height: 49px;
   width: 100%;
   position: absolute;
   z-index: 999;
+}
+.header-cover-gray {
+  background: #F5F5F5;
 }
 .cal-column {
   display: inline-block;
@@ -949,7 +1015,7 @@ h1 {
   color: #0D1c45;
 }
 .royalblue {
-  color: #224893;
+  color: #3E7EDF;
 }
 .purpleblue {
   color: #A2B2E3;

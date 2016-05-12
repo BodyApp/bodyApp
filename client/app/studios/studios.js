@@ -112,5 +112,16 @@ angular.module('bodyAppApp')
             return $stateParams.studioId
           }
         }
+      })
+      .state('ralabala', {
+        url: '/studios/:studioId/ralabala',
+        templateUrl: 'app/studios/ralabala.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
       });
   });
