@@ -38,6 +38,12 @@ angular.module('bodyAppApp')
         params: {
           controller: 'listCoupons'
         }
+      },
+      getUserRevenue: {
+        method: 'GET',
+        params: {
+          controller: "getUserRevenue"
+        }
       }
 	  });
   });

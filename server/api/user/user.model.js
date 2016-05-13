@@ -96,12 +96,15 @@ UserSchema
   .get(function() {
     return {
       'nickName': this.nickName,
+      "_id": this._id,
       'firstName': this.firstName,
-      'lastName': this.lastName.charAt(0),
+      'lastName': this.lastName,
       'gender': this.gender,
       'role': this.role,
       'picture': this.picture,
       'facebookId': this.facebookId,
+      "injuries": this.injuries,
+      "goals": this.goals,
       'trainerCredential1': this.trainerCredential1,
       'trainerCredential2': this.trainerCredential2,
       'trainerCredential3': this.trainerCredential3,

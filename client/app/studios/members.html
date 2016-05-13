@@ -11,35 +11,35 @@
 <!--
 ******************************************************************************************************************************************** CUSTOMER DETAILS **************************************************************************************************************************************************
 -->
-    <div class="panel">
+    <div class="panel" ng-show = "showCustomerDetail">
       <div class="panel-header">
         Customer Details
         <ul class="panel-action-list">
           <li>
-            <a href="#" class="panel-action-item">Back to Your Members</a>
+            <a href="#" class="panel-action-item" ng-click = "showCustomerDetail = false;">Back to Your Members</a>
           </li>      
         </ul>
       </div>
 
-      <div class="panel-body">
+      <div class="panel-body" >
         <div class="row">
 
           <div class="col-md-4">
-            <img src="/assets/images/bern-prince.jpg" class="mb0">
+            <img src="{{showCustomerDetail.profileInfo.picture}}" class="mb0">
             <div class="panel panel-member">
               <h5 class="mb0">Full Name</h5>
-              <h5 class="lightgray mb0">Justin Mendelson</h5>
+              <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.firstName}} {{showCustomerDetail.profileInfo.lastName}}</h5>
               <h5 class="mt8 mb0">Email</h5>
-              <h5 class="lightgray mb0">jmendelson22@gmail.com</h5>
+              <h5 class="lightgray mb0">{{showCustomerDetail.email}}</h5>
               <h5 class="mt8 mb0">Location</h5>
-              <h5 class="lightgray mb0">Cleveland, OH USA</h5>
+              <h5 class="lightgray mb0">{{showCustomerDetail.sources.data[0].address_city}}, {{showCustomerDetail.sources.data[0].address_state}} {{showCustomerDetail.sources.data[0].country}}</h5>
               <h5 class="mt8 mb0">History</h5>
-              <h5 class="lightgray mb0">Member for 3 months</h5>
-              <h5 class="mt8 mb0">Rate</h5>
-              <h5 class="lightgray mb0">$30 per month</h5>
+              <h5 class="lightgray mb0">{{getTimeMember(showCustomerDetail)}}</h5>
+              <h5 ng-if = "showCustomerDetail.subscriptions.data[0]" class="mt8 mb0">Rate</h5>
+              <h5 ng-if = "showCustomerDetail.subscriptions.data[0]" class="lightgray mb0">${{showCustomerDetail.subscriptions.data[0].plan.amount/100}} per {{showCustomerDetail.subscriptions.data[0].plan.interval}}</h5>
             </div>
 
-            <div class="panel">
+            <!-- <div class="panel">
               <div class="panel-header">
                 Actions
               </div>
@@ -56,8 +56,8 @@
                   </li>
                 </ul>
               </div>
-            </div>
-          </div>
+            </div> -->
+          </div> 
 
           <div class="col-md-8">
             <div class="panel">
@@ -65,21 +65,21 @@
                 Additional Information
               </div>
               <div class="panel-body">
-                <h5 class="mb0">Total Revenue</h5>
-                <h5 class="lightgray mb0">$90</h5>
-                <h5 class="mt8 mb0">Attendance</h5>
-                <h5 class="lightgray mb0">3x weekly</h5>
+                <!-- <h5 class="mb0">Total Revenue</h5>
+                <h5 class="lightgray mb0">${{getTotalRevenue(showCustomerDetail)}}</h5> -->
+                <!-- <h5 class="mt8 mb0">Attendance</h5>
+                <h5 class="lightgray mb0">3x weekly</h5> -->
                 <h5 class="mt8 mb0">Injuries</h5>
-                <h5 class="lightgray mb0">My ankle hurts and sometimes I throw up on myself by accident.</h5>
+                <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.injuries}}</h5>
                 <h5 class="mt8 mb0">Goals</h5>
-                <h5 class="lightgray mb0">I really hope to get absolutely shredded by Dan's wedding because that would be sick.</h5>
+                <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.goals}}</h5>
               </div>
             </div>
 
 <!-- ACTION FORMS -->
     <!-- NOTES -->
 
-            <div class="panel">
+            <!-- <div class="panel">
               <div class="panel-body">
                 <div class="row mb16">
                   <label class="col-sm-2" for="add-note">
@@ -102,11 +102,11 @@
                   </div>
                 </div>                
               </div>
-            </div>
+            </div> -->
 
     <!-- Messages -->
 
-            <div class="panel">
+            <!-- <div class="panel">
               <div class="panel-body">
                 <div class="row mb16">
                   <label class="col-sm-2" for="add-message-subject">
@@ -137,10 +137,10 @@
                   </div>
                 </div>                
               </div>
-            </div>
+            </div> -->
 
     <!-- Refunds -->
-            <div class="panel">
+            <!-- <div class="panel">
               <div class="panel-body">
 
                 <div class="row mb16">
@@ -179,7 +179,7 @@
                   <div class="col-sm-12">
                     <ul class="panel-action-list">
                       <li>
-                        <a href="#" class="panel-action-item">Cancel</a>
+                        <a href="#" class="panel-action-item" ng-click = "showCustomerDetail = false;">Cancel</a>
                       </li>
                       <li>
                         <a href="#" class="panel-action-item btn-primary btn">Save</a>
@@ -189,12 +189,12 @@
                 </div>
 
               </div>
-            </div>
+            </div> -->
 
 
 <!-- COMPLETED ACTIONS -->
 
-            <div class="panel">
+            <!-- <div class="panel">
               <div class="panel-body">
                 <div class="member-action-icon member-email">
                   <i class="ti-email"></i> Message sent on Apr 23, 2016
@@ -238,14 +238,15 @@
               </div>
             </div>                                    
 
-          </div>
+          </div> -->
 
                     
-
+          <!-- </div> -->
+          </div>
         </div>
 
         <div class="subpanel-btn">
-          <a href="#">Back to Your Members</a>
+          <a href="#" ng-click = "showCustomerDetail = false;">Back to Your Members</a>
         </div>        
         
       </div>
@@ -263,18 +264,20 @@
         <div class="panel-header">
           Member Report
           <ul class="panel-action-list">
-            <li>
+            <!-- <li>
               <a href="#" class="panel-action-item">Message</a>
-            </li>
-            <li>
-              <a href="#" class="panel-action-item">Export</a>
-            </li>            
+            </li> -->
+            <!-- <li id = "exportButton" ng-init = "exportCustomers(customers)"> -->
+              <!-- <a href="#" class="panel-action-item" id = "exportButton" ng-click = "exportCustomers(customers)">Export</a>
+              <a id="downloadAnchorElem" style="display:none"></a> -->
+              <!-- <a ng-href="data:' + {{toExport}} + '" download="members.json" class="panel-action-item">Export</a> -->
+            <!-- </li>             -->
           </ul>
         </div>
         <div class="panel-body">
           <div class="row mb16">
             <div class="col-sm-12">
-              <h5 class="mb0">Total Studio Members: <span class="lightgray bold">49</span></h5>
+              <h5 class="mb0">Total Studio Members: <span class="lightgray bold">{{getNumberOf(customers)}}</span></h5>
             </div>
           </div>
           <div class="row mb16">
@@ -312,22 +315,22 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td><img src="/assets/images/bern-prince.jpg" width="40" height="40" class="profile-photo"></td>
-                    <td>Bern</td>
-                    <td>Prince</td>
-                    <td class="overflow">My ankle hurts and sometimes I throw up on myself by accident.</td>
-                    <td>I really hope to get absolutely shredded by Dan's wedding because that would be sick.</td>
+                  <tr ng-repeat = "customer in customers" ng-click = "clickCustomer(customer);">
+                    <td>{{$index + 1}}</td>
+                    <td><img ng-src="{{customer.profileInfo.picture}}" width="40" height="40" class="profile-photo"></td>
+                    <td>{{customer.profileInfo.firstName}}</td>
+                    <td>{{customer.profileInfo.lastName}}</td>
+                    <td class="overflow">{{customer.profileInfo.injuries}}</td>
+                    <td>{{customer.profileInfo.goals}}</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>2</td>
                     <td><img src="/assets/images/justin-photo.jpg" width="40" height="40" class="profile-photo"></td>
                     <td>Justin</td>
                     <td>Mendelson</td>
                     <td class="overflow">None</td>
                     <td>I don't set goals. I smash them.</td>
-                  </tr>                  
+                  </tr>                   -->
                   <tr>
                     <td colspan="6"><a href="#" class="text-center">View All</a></td>
                   </tr>

@@ -216,7 +216,11 @@ exports.addCustomerSubscription = function(req, res, next){
       stripe.customers.create({
         email: userEmail,
         source: stripeToken,
-        description: "BODY Consumer"
+        description: "BODY Consumer",
+        metadata: {
+          "facebookId": user.facebookId,
+          "mongoId": user._id
+        }
       }, createPlatformCustomerHandler)
     };
 
@@ -245,7 +249,11 @@ exports.addCustomerSubscription = function(req, res, next){
                 description: "BODY Consumer",
                 plan: planInfo.id,
                 application_fee_percent: 30,
-                coupon: coupon.id
+                coupon: coupon.id,
+                metadata: {
+                  "facebookId": user.facebookId,
+                  "mongoId": user._id
+                }
               }, 
               { stripe_account: connectedAccountId },
               function(err, customer) {
@@ -259,6 +267,10 @@ exports.addCustomerSubscription = function(req, res, next){
                 description: "BODY Consumer",
                 plan: planInfo.id,
                 application_fee_percent: 30,
+                metadata: {
+                  "facebookId": user.facebookId,
+                  "mongoId": user._id
+                }
               }, 
               { stripe_account: connectedAccountId },
               function(err, customer) {
@@ -275,7 +287,11 @@ exports.addCustomerSubscription = function(req, res, next){
                 description: "BODY Consumer",
                 plan: planInfo.id,
                 application_fee_percent: 30,
-                coupon: coupon.id
+                coupon: coupon.id,
+                metadata: {
+                  "facebookId": user.facebookId,
+                  "mongoId": user._id
+                }
               }, 
               { stripe_account: connectedAccountId },
               function(err, customer) {
@@ -289,7 +305,11 @@ exports.addCustomerSubscription = function(req, res, next){
                 source: newToken.id,
                 description: "BODY Consumer",
                 plan: planInfo.id,
-                application_fee_percent: 30
+                application_fee_percent: 30,
+                metadata: {
+                  "facebookId": user.facebookId,
+                  "mongoId": user._id
+                }
               }, 
               { stripe_account: connectedAccountId },
               function(err, customer) {

@@ -14,13 +14,6 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
-    // $scope.tags = [
-    //   { name: "Brazil", flag: "Brazil.png" },
-    //   { name: "Italy", flag: "Italy.png" },
-    //   { name: "Spain", flag: "Spain.png" },
-    //   { name: "Germany", flag: "Germany.png" },
-    // ];
-
     ref.child('trainers').on('value', function(snapshot) {
       $scope.trainersPulled = snapshot.val()
       if(!$scope.$$phase) $scope.$apply();

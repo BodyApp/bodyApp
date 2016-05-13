@@ -147,3 +147,21 @@ exports.listCoupons = function(req, res, next){
     }
   })
 };
+
+exports.getUserRevenue = function(req, res, next) {
+  var customerToGet = req.body.customerToGet;
+  var studioId = req.body.studioId;
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+    var stripe = require("stripe")(snapshot.val())
+
+    var totalRevenue = 0;
+    stripe.charges.list({customer: customerToGet}, function(err, charges) {
+      for (var i = 0; i < charges.data.length; i++) {
+        totalRevenue += charges.data[i].amount;
+      }
+      return res.status(200).send(totalRevenue);
+    })
+  })
+}
+

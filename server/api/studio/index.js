@@ -15,4 +15,6 @@ router.put('/:id/listSubscriptionPlans', auth.isAuthenticated(), controller.list
 router.put('/:id/listCustomers', auth.isAuthenticated(), controller.listCustomers);
 router.put('/:id/listCoupons', auth.isAuthenticated(), controller.listCoupons);
 
+router.put('/:id/getUserRevenue', auth.isAuthenticated(), controller.getUserRevenue);
+
 module.exports = router;
