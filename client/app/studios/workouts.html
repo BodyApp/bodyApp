@@ -44,7 +44,7 @@
                 ng-model="showAddWorkout.classTypes" 
                 size="30"
                 display-property="name" 
-                placeholder="e.g. Dumbbells" 
+                placeholder="Click to choose from your class types" 
                 replace-spaces-with-dashes="false"
                 template="tag-template"
                 >
@@ -219,10 +219,13 @@
             <div class="col-sm-12">
               <ul class="panel-action-list">
                 <li>
-                  <a href="#" class="panel-action-item">Cancel</a>
+                  <a href="#" class="panel-action-item" ng-click = "editing = false; showAddWorkout = false;">Cancel</a>
                 </li>
-                <li>
+                <li ng-if = "!editing">
                   <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveWorkout(showAddWorkout)">Save</a>
+                </li>
+                <li ng-if = "editing">
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateWorkout(showAddWorkout)">Update</a>
                 </li>
               </ul>              
             </div>
@@ -260,66 +263,40 @@
 -->
 
 
-      <div class="panel space-4">
+      <div class="panel space-4" ng-repeat = "workout in workouts | orderBy:'-updated' track by $index">
         <div class="panel-header">
-          Workout #34: Fight Gone Bad
+          {{workout.title}}
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item">Edit</a>
+              <a href="#" class="panel-action-item" ng-click = "editWorkout(workout);">Edit</a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#" class="panel-action-item">Delete</a>
-            </li>            
+            </li>             -->
           </ul>
         </div>
         <div class="panel-body">
           <div class="row">
-            <div class="col-sm-12 mb16">
-              <h5 class="mb0">Assigned To: <span class="lightgray bold">Level One</span></h5>
+            <div class="col-sm-12 mb16" >
+              <h5 class="mb0">Assigned To: <span ng-repeat = "classTypes in workout.classTypes track by $index" class="lightgray bold">{{classTypes.name}}, </span></h5>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-4">
+          <div class="row" ng-init = "limit = 3">
+            <div class="col-md-4" ng-repeat = "set in workout.sets | limitTo:limit track by $index">
               <div class="panel workout-card">
-                <h5 class="mb0">Set 1</h5>
-                <h5 class="lightgray">EMOM 10 min</h5>
+                <h5 class="mb0">Set {{$index + 1}}</h5>
+                <!-- <h5 class="lightgray">EMOM 10 min</h5>
                 <h5 class="mt8 mb0">Timer Setting</h5>
-                <h5 class="lightgray">60s:0s (10 rds)</h5>
+                <h5 class="lightgray">60s:0s (10 rds)</h5> -->
                 <h5 class="mt8 mb0">Exercises</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>                     
+                <div ng-repeat = "exercise in set.exercises track by $index">
+                  <h5 class="lightgray">{{exercise.name}}</h5>
+                </div>
               </div>              
             </div>
-            <div class="col-md-4">
-              <div class="panel workout-card">
-                <h5 class="mb0">Set 2</h5>
-                <h5 class="lightgray">EMOM 10 min</h5>
-                <h5 class="mt8 mb0">Timer Setting</h5>
-                <h5 class="lightgray">60s:0s (10 rds)</h5>
-                <h5 class="mt8 mb0">Exercises</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>                    
-              </div>              
-            </div>
-            <div class="col-md-4">
-              <div class="panel workout-card">
-                <h5 class="mb0">Set 3</h5>
-                <h5 class="lightgray">EMOM 10 min</h5>
-                <h5 class="mt8 mb0">Timer Setting</h5>
-                <h5 class="lightgray">60s:0s (10 rds)</h5>
-                <h5 class="mt8 mb0">Exercises</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
-              </div>              
-            </div>            
           </div>
           <div class="row text-center col-sm-12">
-            <a href="#">Show more</a>
+            <a href="#" ng-click = "limit = limit + 3">Show more</a>
           </div>
         </div>
       </div>

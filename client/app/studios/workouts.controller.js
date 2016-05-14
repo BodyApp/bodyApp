@@ -19,6 +19,7 @@ angular.module('bodyAppApp')
       if (authData) {
         console.log("User is authenticated with fb ");
         getClassTypes()
+        loadWorkouts()
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -30,6 +31,7 @@ angular.module('bodyAppApp')
             } else {
               if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
               getClassTypes()
+              loadWorkouts()
             }
           }); 
         } else {
@@ -38,6 +40,16 @@ angular.module('bodyAppApp')
         }
       }
     })
+
+    function loadWorkouts() {
+    	ref.child('workouts').on('value', function(snapshot) {
+    		$scope.workouts = []
+	      snapshot.forEach(function(classType) {
+	        $scope.workouts.push(classType.val());
+	      })
+		    if(!$scope.$$phase) $scope.$apply();
+    	})
+    }
 
     $scope.addSet = function(setToAdd) {
     	console.log(setToAdd)
@@ -74,6 +86,9 @@ angular.module('bodyAppApp')
 
     $scope.saveWorkout = function(workoutToSave) {
     	console.log(workoutToSave)
+    	workoutToSave.created = new Date().getTime();
+    	workoutToSave.updated = new Date().getTime();
+    	workoutToSave.createdBy = currentUser._id;
     	var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
     		if (err) return console.log(err);
     		ref.child('workouts').child(pushedWorkout.key()).update({id: pushedWorkout.key()}, function(err) {
@@ -88,6 +103,46 @@ angular.module('bodyAppApp')
     			}
     		})
     	})
+    }
+
+    $scope.editWorkout = function(workoutToEdit) {
+    	$scope.editing = true;
+    	console.log(workoutToEdit);
+    	$scope.showAddWorkout = workoutToEdit;
+    	$scope.scrollTop()
+      if(!$scope.$$phase) $scope.$apply();  	
+    }
+
+
+    $scope.updateWorkout = function(workoutToUpdate) {
+    	workoutToUpdate.updated = new Date().getTime();
+    	workoutToUpdate.updatedBy = currentUser._id;
+    	ref.child('workouts').child(workoutToUpdate.id).update(workoutToUpdate, function(err) {
+    		if (err) return console.log(err);
+    		$scope.showAddWorkout = false;
+    		$scope.editing = false;
+	      if(!$scope.$$phase) $scope.$apply(); 
+	      for (var i = 0; i < workoutToUpdate.classTypes.length; i++) { //Saves workout within the class types selected
+  				ref.child('classTypes').child(workoutToUpdate.classTypes[i].id).child('workoutsUsingClass').child(workoutToUpdate.id).set({dateSaved: new Date().getTime()}, function(err) {
+  					if (err) return console.log(err)
+  				})
+  			} 	    		
+    	})
+    	// var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
+    	// 	if (err) return console.log(err);
+    	// 	ref.child('workouts').child(pushedWorkout.key()).update({id: pushedWorkout.key()}, function(err) {
+    	// 		if (err) return console.log(err);
+    	// 		console.log("workout successfully created")
+					// $scope.showAddWorkout = false;
+					// $scope.editing = false;
+		   //    if(!$scope.$$phase) $scope.$apply();
+    	// 		for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
+    	// 			ref.child('classTypes').child(workoutToSave.classTypes[i].id).child('workoutsUsingClass').child(pushedWorkout.key()).set({dateSaved: new Date().getTime()}, function(err) {
+    	// 				if (err) return console.log(err)
+    	// 			})
+    	// 		}
+    	// 	})
+    	// })
     }
 
   });
