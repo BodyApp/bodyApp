@@ -39,6 +39,22 @@ angular.module('bodyAppApp')
       }
     })
 
+    $scope.addSet = function(setToAdd) {
+    	console.log(setToAdd)
+    	for (var i = 0; i < setToAdd.exercises.length; i++) {
+    		delete setToAdd.exercises[i].$$hashKey
+    	}
+    	$scope.showAddWorkout.sets = $scope.showAddWorkout.sets || [];
+    	$scope.showAddWorkout.sets.push(setToAdd)
+    	$scope.showAddSet = false;
+    }
+
+    $scope.initAddExercises = function() {
+    	$scope.showAddSet = $scope.showAddSet || {};
+    	$scope.showAddSet.exercises = $scope.showAddSet.exercises || []; 
+    	if ($scope.showAddSet.exercises.length < 1) $scope.showAddSet.exercises.push({name: ''});
+    }
+
     $scope.scrollTop = function() {
       window.scrollTo(0, 0);
     }
@@ -58,6 +74,20 @@ angular.module('bodyAppApp')
 
     $scope.saveWorkout = function(workoutToSave) {
     	console.log(workoutToSave)
+    	var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
+    		if (err) return console.log(err);
+    		ref.child('workouts').child(pushedWorkout.key()).update({id: pushedWorkout.key()}, function(err) {
+    			if (err) return console.log(err);
+    			console.log("workout successfully created")
+					$scope.showAddWorkout = false;
+		      if(!$scope.$$phase) $scope.$apply();
+    			for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
+    				ref.child('classTypes').child(workoutToSave.classTypes[i].id).child('workoutsUsingClass').child(pushedWorkout.key()).set({dateSaved: new Date().getTime()}, function(err) {
+    					if (err) return console.log(err)
+    				})
+    			}
+    		})
+    	})
     }
 
   });

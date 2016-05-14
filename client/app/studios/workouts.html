@@ -5,7 +5,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "showAddWorkout = true; scrollToTop();">Add Workout</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddWorkout = {}; scrollToTop();">Add Workout</a>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
               Workout Title
             </label>
             <div class="col-sm-9">
-              <input id="workout-title" ng-model = "workoutToCreate.title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
+              <input id="workout-title" ng-model = "showAddWorkout.title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
               <h5 class="lightgray mt8 mb8">Give your workout a name that will be easy for you to remember. This is only viewable by studio staff, not by clients.</h5>      
             </div>
           </div>
@@ -41,7 +41,7 @@
             </label>
             <div class="col-sm-9">
               <tags-input id="equipment-needed" 
-                ng-model="workoutToCreate.classTypes" 
+                ng-model="showAddWorkout.classTypes" 
                 size="30"
                 display-property="name" 
                 placeholder="e.g. Dumbbells" 
@@ -60,8 +60,8 @@
             
             <!-- <div class="col-sm-9">
               <label class="select" ng-repeat = "(classType, enabled) in classTypes">
-                <input type="checkbox" ng-model="workoutToCreate.classTypes[classType]" /> {{classType}}  -->
-                <!-- <select id="class-reg-types" ng-model = "workoutToCreate.classTypes">
+                <input type="checkbox" ng-model="showAddWorkout.classTypes[classType]" /> {{classType}}  -->
+                <!-- <select id="class-reg-types" ng-model = "showAddWorkout.classTypes">
                   <option>Any class</option>
                   <option>Level One</option>
                   <option>Strength Workshop (Specialty Class $300)</option>
@@ -76,7 +76,7 @@
               Sets
             </label>
             <div class="col-sm-7">
-              <div class="panel workout-card">                
+              <div class="panel workout-card" ng-repeat = "set in showAddWorkout.sets track by $index">                
                 <ul class="panel-action-list">
                   <li>
                     <a href="#" class="panel-action-item">Edit</a>
@@ -85,30 +85,27 @@
                     <a href="#" class="panel-action-item">Delete</a>
                   </li>            
                 </ul>
-                <h5 class="mb0">Set 1 <span class="success"><i class="ti-check-box bold"></i></span></h5>
-                <h5 class="lightgray">EMOM 10 min</h5>
-                <h5 class="mt8 mb0">Timer Setting</h5>
-                <h5 class="lightgray">60s:0s (10 rds)</h5>
+                <h5 class="mb0">Set {{$index+1}} <span class="success"><i class="ti-check-box bold"></i></span></h5>
+                <h5 class="lightgray">{{set.title}}</h5>
+                <!-- <h5 class="mt8 mb0">Timer Setting</h5>
+                <h5 class="lightgray">60s:0s (10 rds)</h5> -->
                 <h5 class="mt8 mb0">Exercises</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>
-                <h5 class="lightgray">Odd min 15/20 Air Thrusters</h5>
-                <h5 class="lightgray">Even min 12 Squat Thrusts</h5>                   
+                <div ng-repeat = "exercise in set.exercises track by $index">
+                  <h5 class="lightgray">{{exercise.name}}</h5>
+                </div>
               </div>
 
-              <div class="panel workout-card">
+              <div class="panel workout-card" ng-show = "showAddSet">
                 <div class="row mb8">
                   <label class="col-sm-3" for="set-title">
                     Set Title
                   </label>
                   <div class="col-sm-9">
-                    <input id="set-title" name="" size="30" type="text" placeholder="e.g. EMOM 10 min">
+                    <input ng-model = "showAddSet.title" id="set-title" name="" size="30" type="text" placeholder="e.g. EMOM 10 min">
                   </div>
                 </div>
 
-                <div class="row mb8">
+                <!-- <div class="row mb8">
                   <label class="col-sm-3" for="timer-options">
                     Timer
                   </label>
@@ -168,38 +165,40 @@
                   <div class="col-sm-9">
                     <input id="timer-work-qty" name="" size="30" type="text" placeholder="e.g. 3">
                   </div>
-                </div>
+                </div> -->
 
-                <div class="row">
+                <!-- <div class="row">
                   <label class="col-sm-3" for="exercise-1">
                     Exercise 1
                   </label>
                   <div class="col-sm-9">
-                    <input id="exercise-1" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
+                    <input id="exercise-1" ng-model = "setToAdd.exercises[0]" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
                   </div>                 
-                </div>
-                <div class="row">
-                  <label class="col-sm-3" for="exercise-2">
-                    Exercise 2
-                  </label>
-                  <div class="col-sm-9">
-                    <input id="exercise-1" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
-                    <div class="row mt8">
-                      <div class="col-sm-12">
-                        <a href="#">Add Exercise</a>
-                      </div>
+                </div> -->
+                <div>
+                  <div class="row" ng-repeat = "exercise in showAddSet.exercises track by $index">
+                    <label class="col-sm-3" for="exercise-2">
+                      Exercise {{$index+1}}
+                    </label>
+                    <div class="col-sm-9">
+                      <input ng-model = "showAddSet.exercises[$index].name" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
+                    </div>                 
+                  </div>                               
+                  <div class="row mt8 col-sm-9">
+                    <div class="col-sm-12">
+                      <a href="#" ng-click = "showAddSet.exercises.push({name: ''})">Add Exercise</a>
                     </div>
-                  </div>                 
-                </div>                               
+                  </div>
+                </div>
 
                 <div class="row">
                   <div class="col-sm-12">
                     <ul class="panel-action-list">
                       <li>
-                        <a href="#" class="panel-action-item">Cancel</a>
+                        <a href="#" class="panel-action-item" ng-click = "showAddSet = false;">Cancel</a>
                       </li>
                       <li>
-                        <a href="#" class="panel-action-item btn-primary btn">Add</a>
+                        <a href="#" class="panel-action-item btn-primary btn" ng-click = "addSet(showAddSet)">Add</a>
                       </li>            
                     </ul>              
                   </div>
@@ -209,7 +208,7 @@
 
               <div class="row">
                 <div class="col-sm-12">
-                  <a href="#">Add Set</a>
+                  <a href="#" ng-click = "showAddSet = {}; initAddExercises();">Add Set</a>
                 </div>
               </div>
 
@@ -223,7 +222,7 @@
                   <a href="#" class="panel-action-item">Cancel</a>
                 </li>
                 <li>
-                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveWorkout(workoutToCreate)">Save</a>
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveWorkout(showAddWorkout)">Save</a>
                 </li>
               </ul>              
             </div>
@@ -326,7 +325,7 @@
       </div>
 
       <div class="subpanel-btn">
-        <a href="#" ng-click = "showAddWorkout = true; scrollToTop();">Add Workout<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-click = "showAddWorkout = {}; scrollToTop();">Add Workout<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>
