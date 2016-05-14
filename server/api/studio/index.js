@@ -14,6 +14,7 @@ router.put('/:id/deleteSubscriptionPlan', auth.isAuthenticated(), controller.del
 router.put('/:id/listSubscriptionPlans', auth.isAuthenticated(), controller.listSubscriptionPlans);
 router.put('/:id/listCustomers', auth.isAuthenticated(), controller.listCustomers);
 router.put('/:id/listCoupons', auth.isAuthenticated(), controller.listCoupons);
+router.put('/:id/createCoupon', auth.isAuthenticated(), controller.createCoupon);
 router.put('/:id/deleteCoupon', auth.isAuthenticated(), controller.deleteCoupon);
 
 router.put('/:id/getUserRevenue', auth.isAuthenticated(), controller.getUserRevenue);

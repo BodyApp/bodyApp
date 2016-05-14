@@ -160,6 +160,37 @@ angular.module('bodyAppApp')
         couponId: couponToDelete.id
       }).$promise.then(function(deletedCouponId) {
         console.log("Deleted coupon with id: " + couponToDelete.id);
+        listCoupons()
+      })
+    }
+
+    $scope.initShowAddCoupon = function() {
+    	$scope.showAddCoupon = {};
+    	$scope.showAddCoupon.couponType = "Percentage off";
+    	$scope.showAddCoupon.duration = "once";
+    }
+
+    $scope.createCoupon = function(couponToCreate) {
+    	if (couponToCreate.unformattedDate) couponToCreate.redeem_by = new Date(couponToCreate.unformattedDate).getTime()/1000
+  		if (couponToCreate.couponType === 'Dollars off') {
+  			couponToCreate.currency = "usd"
+  			couponToCreate.amount_off = couponToCreate.amountInDollars * 100;
+  			delete couponToCreate.amountInDollars;
+  		}
+
+    	Studio.createCoupon({
+        id: currentUser._id
+      }, {
+        studioId: studioId,
+        couponToCreate: couponToCreate
+      }).$promise.then(function(coupon) {
+      	console.log("Saved new coupon");
+      	listCoupons()
+      	$scope.showAddCoupon = false;
+    		if(!$scope.$$phase) $scope.$apply();
+
+        // $scope.pricingOptions.push(subscription); 
+        // $scope.returnedSubscription = subscription;
       })
     }
 
@@ -172,7 +203,8 @@ angular.module('bodyAppApp')
     }
 
     $scope.formatDate = function(dateToFormat) {
-    	return moment(dateToFormat*1).format('l');
+    	moment.locale('en');
+    	return moment(dateToFormat*1000).format('l'); //Times 1000 to convert from Unix
     }
 
   });

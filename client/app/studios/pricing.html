@@ -7,7 +7,7 @@
       <div class="space-top-4 space-4">
         <a href="#" class="btn btn-block" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add Pricing Plan</a>
         <!-- <a href="#" class="mt16 btn btn-block">Add Promotion</a> -->
-        <a href="#" class="mt16 btn btn-block">Add Coupon</a>
+        <a href="#" class="mt16 btn btn-block" ng-click = "initShowAddCoupon()">Add Coupon</a>
       </div>
     </div>
 
@@ -313,10 +313,10 @@
         <div class="panel-body">
           <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
-              Code
+              Code / ID
             </label>
             <div class="col-sm-9">
-              <input id="coupon-code" name="" size="30" type="text" placeholder="e.g. HALFOFF4SUMMER">
+              <input ng-model = "showAddCoupon.id" id="coupon-code" name="" size="30" type="text" placeholder="e.g. HALFOFF4SUMMER">
             </div>
           </div>
 
@@ -326,13 +326,13 @@
             </label>
             <div class="col-sm-9">
               <div class="select">
-                <select id="class-reg-types">
+                <select id="class-reg-types" ng-model = "showAddCoupon.couponType">
                   <option>Percentage off</option>
                   <option>Dollars off</option>
                 </select>
               </div>
         <!-- SHOW WHEN USER SELECTS DOLLARS OFF -->
-              <div class="row mt8">
+              <div class="row mt8" ng-if = "showAddCoupon.couponType === 'Dollars off'">
                 <label class="col-sm-2 lightgray">
                   Discount
                 </label>
@@ -340,7 +340,7 @@
                   <span class="input-prefix">
                     <span>$</span>
                   </span>
-                  <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
+                  <input type="text" ng-model = "showAddCoupon.amountInDollars" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
                 </div>
                 <label class="lightgray text-left">
                   USD
@@ -348,14 +348,14 @@
               </div>
 
         <!-- SHOW WHEN USER SELECTS PERCENTAGE OFF -->
-              <div class="row mt8">
+              <div class="row mt8" ng-if = "showAddCoupon.couponType === 'Percentage off'">
                 <label class="col-sm-2 lightgray">
                   Discount
                 </label>
                 <div class="col-sm-4">
                   <div class="row col-sm-12">
                     <div class="input-addon">
-                      <input type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="e.g. 50">
+                      <input ng-model = "showAddCoupon.percent_off" type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="e.g. 50">
                       <span class="input-suffix">%</span>                
                     </div>
                   </div>
@@ -371,18 +371,18 @@
             </label>
             <div class="col-sm-9">
               <div class="select">
-                <select id="coupon-duration">
-                  <option>Once</option>
-                  <option>Multi-month</option>
-                  <option>Forever</option>
+                <select id="coupon-duration" ng-model = "showAddCoupon.duration">
+                  <option>once</option>
+                  <option>repeating</option>
+                  <option>forever</option>
                 </select>
               </div>
-              <div class="row mt8">
+              <div class="row mt8" ng-show = "showAddCoupon.duration === 'repeating'">
                 <label class="col-sm-2 lightgray" for="coupon-duration-months">
                   # Months 
                 </label>
                 <div class="col-sm-4">
-                  <input id="coupon-duration-months" inputmode="numeric" name="" size="30" type="text" placeholder="2">
+                  <input ng-model = "showAddCoupon.duration_in_months" id="coupon-duration-months" inputmode="numeric" name="" size="30" type="text" placeholder="2">
                 </div>
               </div>
             </div>
@@ -393,7 +393,7 @@
               Max Redemptions
             </label>
             <div class="col-sm-4">
-              <input id="redemptions" inputmode="numeric" name="" size="30" type="text" placeholder="e.g. 100">
+              <input ng-model = "showAddCoupon.max_redemptions" id="redemptions" inputmode="numeric" name="" size="30" type="text" placeholder="e.g. 100">
             </div>
           </div>  
 
@@ -402,7 +402,7 @@
               Expiration
             </label>
             <div class="col-sm-9">
-              <input id="coupon-exp" name="" size="30" type="date">
+              <input ng-model = "showAddCoupon.unformattedDate" id="coupon-exp" name="" size="30" type="date">
             </div>
           </div>
 
@@ -410,10 +410,10 @@
             <div class="col-sm-12">
               <ul class="panel-action-list">
                 <li>
-                  <a href="#" class="panel-action-item">Cancel</a>
+                  <a href="#" class="panel-action-item" ng-click = "showAddCoupon = false;">Cancel</a>
                 </li>
                 <li>
-                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "createCoupon(showAddCoupon)">Save</a>
                 </li>
               </ul>              
             </div>
@@ -430,7 +430,7 @@
           Coupons
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item">Add new coupon</a>
+              <a href="#" class="panel-action-item" ng-click = "initShowAddCoupon()">Add new coupon</a>
             </li>  
           </ul>
         </div>
@@ -461,6 +461,7 @@
                     <td ng-if = "coupon.amount_off">${{coupon.amount_off/100}}</td>
                     <td ng-if = "coupon.duration === 'once'">1 month</td>
                     <td ng-if = "coupon.duration === 'repeating'">{{coupon.duration_in_months}} months</td>
+                    <td ng-if = "coupon.duration === 'forever'">Forever</td>
                     <td ng-if = "!coupon.max_redemptions">Unlimited</td>
                     <td ng-if = "coupon.max_redemptions">{{coupon.max_redemptions}} Allowed</td>
                     <td ng-if = "!coupon.redeem_by">Never</td>

@@ -180,6 +180,42 @@ exports.listCoupons = function(req, res, next){
   })
 };
 
+exports.createCoupon = function(req, res, next){
+  var studioId = req.body.studioId;
+  var couponToCreate = req.body.couponToCreate;
+  var currentUserId = req.user._id;
+  delete couponToCreate.couponType;
+  delete couponToCreate.unformattedDate;
+  // console.log(currentUserId)
+  // couponToCreate.metadata = {
+  //   "studioId": studioId,
+  //   "userThatCreatedCoupon": currentUserId
+  // }
+  if (couponToCreate.max_redemptions) couponToCreate.max_redemptions *= 1;
+
+  // if (couponToCreate.redeem_by) couponToCreate.redeem_by = new Date(couponToCreate.redeemBy).getTime()
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+    if (snapshot.exists()) {
+
+      var stripe = require("stripe")(snapshot.val())
+
+      stripe.coupons.create(couponToCreate, 
+      function(err, coupon) {
+        if (err) {console.log(err); return res.status(400).send(err);}
+        console.log("Successfully created coupon " + coupon.id + " for studio " + studioId);
+        res.status(200).json(coupon);  
+        // ref.child('studios').child(studioId).child('stripeConnected').child('subscriptionPlans').child(plan.id).update(plan, function(err) {
+        //   if (err) return res.status(400).send(err);
+        //   res.status(200).json(plan);  
+        // })
+      });
+    } else {
+      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    }
+  })
+};
+
 exports.deleteCoupon = function(req, res, next){
   var studioId = req.body.studioId;
   var couponId = req.body.couponId;
