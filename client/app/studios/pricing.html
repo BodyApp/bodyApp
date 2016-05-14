@@ -5,7 +5,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block">Add Pricing Plan</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddPricingPlan = {};">Add Pricing Plan</a>
         <a href="#" class="mt16 btn btn-block">Add Promotion</a>
         <a href="#" class="mt16 btn btn-block">Add Coupon</a>
       </div>
@@ -16,10 +16,10 @@
 <!-- PANEL -->
       <div class="panel space-4">
         <div class="panel-header">
-          Studio Pricing Plans
+          Studio Pricing Plans (Limited to one subscription plan & one drop-in rate)
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item">Add new pricing plan</a>
+              <a href="#" class="panel-action-item" ng-click = "showAddPricingPlan = {};">Add new pricing plan</a>
             </li>
           </ul>          
         </div>
@@ -31,7 +31,7 @@
               <div class="panel">             
                 <div class="panel-body">
                   <div class="plan-action">
-                    <a href="#">Edit</a> |
+                    <!-- <a href="#">Edit</a> | -->
                     <a href="#">Delete</a>
                   </div>
                   <h5 class="mb0">Monthly Plan</h5>
@@ -58,7 +58,7 @@
             </div>
 
     <!-- ADD PRICING PLAN FORM -->            
-            <div class="col-md-6">
+            <div class="col-md-6" ng-show = "showAddPricingPlan">
               <div class="panel">             
                 <div class="panel-body">
 
@@ -128,7 +128,7 @@
                     <div class="col-sm-12">
                       <ul class="panel-action-list">
                         <li>
-                          <a href="#" class="panel-action-item">Cancel</a>
+                          <a href="#" class="panel-action-item" ng-click = "showAddPricingPlan = false;">Cancel</a>
                         </li>
                         <li>
                           <a href="#" class="panel-action-item btn-primary btn">Save</a>

@@ -50,7 +50,7 @@ angular.module('bodyAppApp')
       .state('pricing', {
         url: '/studios/:studioId/pricing',
         templateUrl: 'app/studios/pricing.html',
-        controller: 'StudiosCtrl',
+        controller: 'PricingCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {

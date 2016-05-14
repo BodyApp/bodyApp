@@ -95,12 +95,44 @@ exports.listSubscriptionPlans = function(req, res, next){
         if (err) {console.log(err); return res.status(400).send(err);}
         console.log(plans.data.length + " subscription plans pulled.")
         res.status(200).send(plans.data);  
+        syncSubscriptionPlans(plans.data, studioId) 
       });
     } else {
       return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
     }
   })
 };
+
+var syncSubscriptionPlans = function(plans, studioId) {
+  ref.child('studios').child(studioId).child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
+    snapshot.forEach(function(plan) { //Makes sure don't have extra subscriptions in firebase if delete them in Stripe.
+      var idToCheck = plan.val().id;
+      var toDelete = true;
+      for (var i = 0; i < plans.length; i++) {
+        if (plans[i].id === idToCheck) toDelete = false;
+      }
+      if (toDelete) {
+        plan.ref().remove(function(err) {
+          if (err) return console.log(err)
+          console.log("Deleting subscription plan in firebase as doesn't exist in Stripe")
+        })
+      } else {
+        console.log("Subscription " + idToCheck + " exists in Stripe, so not deleting from Firebase.")
+      }
+    })
+    for (var i = 0; i < plans.length; i++) { //Makes sure any subscriptions created directly in Stripe are saved to Firebase.
+      var idToCheck = plans[i].id
+      if (!snapshot.val() || !snapshot.val()[idToCheck]) {
+        ref.child('studios').child(studioId).child('stripeConnected').child('subscriptionPlans').child(idToCheck).update(plans[i], function(err) {
+          if (err) return console.log(err)
+          console.log("Adding subscription plan in firebase because exists in Stripe")
+        })
+      } else {
+        console.log("Subscription " + idToCheck + " already exists in Firebase, so not adding to Firebase.")
+      }
+    }
+  })
+}
 
 exports.listCustomers = function(req, res, next){
   var studioId = req.body.studioId;
