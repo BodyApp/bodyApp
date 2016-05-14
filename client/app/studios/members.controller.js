@@ -19,6 +19,28 @@ angular.module('bodyAppApp')
 
     // })
 
+    ref.onAuth(function(authData) {
+      if (authData) {
+        console.log("User is authenticated with fb ");
+      } else {
+        console.log("User is logged out");
+        if (user.firebaseToken) {
+          ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
+            if (error) {
+              Auth.logout();
+              $window.location.reload()
+              console.log("Firebase user authentication failed", error);
+            } else {
+              if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+            }
+          }); 
+        } else {
+          Auth.logout();
+          $window.location.reload()
+        }
+      }
+    })
+
     var listCustomers = function() { //Can also pass in a particular planId to only get subscriptions for that plan.
       Studio.listCustomers({
         id: currentUser._id
@@ -74,7 +96,9 @@ angular.module('bodyAppApp')
       }
       console.log(toExport)
       // $scope.toExport = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(toExport));
+      // var members = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(toExport));
       var members = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(toExport));
+
       // if(!$scope.$$phase) $scope.$apply();
 
       // var dlAnchorElem = document.getElementById('downloadAnchorElem');

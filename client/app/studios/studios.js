@@ -39,7 +39,7 @@ angular.module('bodyAppApp')
       .state('workouts', {
         url: '/studios/:studioId/workouts',
         templateUrl: 'app/studios/workouts.html',
-        controller: 'StudiosCtrl',
+        controller: 'WorkoutsCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {

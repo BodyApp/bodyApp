@@ -5,7 +5,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block">Add Workout</a>
+        <a href="#" class="btn btn-block" ng-click = "showAddWorkout = true; scrollToTop();">Add Workout</a>
       </div>
     </div>
 
@@ -14,7 +14,7 @@
 <!--
 ******************************************************************************************************************************************** FORM PANEL **************************************************************************************************************************************************
 -->
-      <div class="panel space-4">
+      <div class="panel space-4" ng-show = "showAddWorkout">
         <div class="panel-header">
           Add Workout
           <ul class="panel-action-list">
@@ -30,7 +30,7 @@
               Workout Title
             </label>
             <div class="col-sm-9">
-              <input id="workout-title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
+              <input id="workout-title" ng-model = "workoutToCreate.title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
               <h5 class="lightgray mt8 mb8">Give your workout a name that will be easy for you to remember. This is only viewable by studio staff, not by clients.</h5>      
             </div>
           </div>
@@ -40,13 +40,33 @@
               Assign To
             </label>
             <div class="col-sm-9">
-              <div class="select">
-                <select id="class-reg-types">
+              <tags-input id="equipment-needed" 
+                ng-model="workoutToCreate.classTypes" 
+                size="30"
+                display-property="name" 
+                placeholder="e.g. Dumbbells" 
+                replace-spaces-with-dashes="false"
+                template="tag-template"
+                >
+                <auto-complete source="loadClassTypes($query)"
+                  min-length="0"
+                  load-on-focus="true"
+                  load-on-empty="true"
+                  max-results-to-show="32"
+                  template="autocomplete-template">
+                 </auto-complete>
+              </tags-input>
+            <!-- </div>             -->
+            
+            <!-- <div class="col-sm-9">
+              <label class="select" ng-repeat = "(classType, enabled) in classTypes">
+                <input type="checkbox" ng-model="workoutToCreate.classTypes[classType]" /> {{classType}}  -->
+                <!-- <select id="class-reg-types" ng-model = "workoutToCreate.classTypes">
                   <option>Any class</option>
                   <option>Level One</option>
                   <option>Strength Workshop (Specialty Class $300)</option>
-                </select>
-              </div>
+                </select> -->
+              <!-- </label> -->
               <h5 class="lightgray mt8 mb8">Assign this workout to one or multiple class types.</h5>  
             </div>
           </div>
@@ -203,7 +223,7 @@
                   <a href="#" class="panel-action-item">Cancel</a>
                 </li>
                 <li>
-                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveWorkout(workoutToCreate)">Save</a>
                 </li>
               </ul>              
             </div>
@@ -306,12 +326,33 @@
       </div>
 
       <div class="subpanel-btn">
-        <a href="#">Add Workout<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-click = "showAddWorkout = true; scrollToTop();">Add Workout<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>
 
   </div>
 </div>
+
+<!-- Used for the tags inputs -->
+<script type="text/ng-template" id="tag-template">
+  <div class="tag-template">
+    
+    <div class="right-panel">
+      <span>{{$getDisplayText()}}</span>
+      <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-template">
+  <div class="autocomplete-template">
+    
+    <div class="right-panel">
+      <span ng-bind-html="$highlight($getDisplayText())"></span>
+      
+    </div>
+  </div>
+</script>
 
 <div ng-include="'components/footer/footer.html'"></div>

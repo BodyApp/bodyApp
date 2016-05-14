@@ -14,15 +14,41 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
-    ref.child('playlists').orderByChild("lastModified").on('value', function(snapshot) {
-    	$scope.playlists = [];
-      snapshot.forEach(function(playlist) {
-        $scope.playlists.unshift(playlist.val())
-        // $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
-      })
-      if(!$scope.$$phase) $scope.$apply();
-
+    ref.onAuth(function(authData) {
+      if (authData) {
+        console.log("User is authenticated with fb ");
+        getPlaylists()
+      } else {
+        console.log("User is logged out");
+        if (user.firebaseToken) {
+          ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
+            if (error) {
+              Auth.logout();
+              $window.location.reload()
+              console.log("Firebase user authentication failed", error);
+            } else {
+              if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+              getPlaylists()
+            }
+          }); 
+        } else {
+          Auth.logout();
+          $window.location.reload()
+        }
+      }
     })
+
+    function getPlaylists() {
+	    ref.child('playlists').orderByChild("lastModified").on('value', function(snapshot) {
+	    	$scope.playlists = [];
+	      snapshot.forEach(function(playlist) {
+	        $scope.playlists.unshift(playlist.val())
+	        // $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
+	      })
+	      if(!$scope.$$phase) $scope.$apply();
+
+	    })
+    }
 
     $scope.soundcloudAuth = function() {
     	console.log("Soundcloud auth clicked")

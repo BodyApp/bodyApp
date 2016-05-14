@@ -36,7 +36,7 @@ angular.module('bodyAppApp')
 
     $scope.saveClassType = function(classToSave) {
 
-      if (!classToSave.className) return $scope.missingName = true;
+      if (!classToSave.name) return $scope.missingName = true;
       // if (!classToSave.equipment) return $scope.missingEquipment = true
       if (!classToSave.classDescription) return $scope.missingDescription = true;
       if (classToSave.classDescription.length > 200) return $scope.descriptionTooLong = classToSave.classDescription.length;
@@ -46,9 +46,10 @@ angular.module('bodyAppApp')
 
       //Should change equipment so not array.
 
-      ref.child("classTypes").push(classToSave, function(err) {
+      var toPush = ref.child("classTypes").push(classToSave, function(err) {
         if (err) return console.log(err);
         console.log("Class successfully saved")
+        ref.child("classTypes").child(toPush.key()).update({id: toPush.key()})
         $scope.classToCreate = {};
         $scope.classToCreate.openTo = "All (Members &amp; Drop Ins)";
         $scope.missingName = false;
@@ -77,7 +78,7 @@ angular.module('bodyAppApp')
       classToEdit.updated = new Date().getTime();
       classToEdit.updatedBy = Auth.getCurrentUser()._id
 
-      if (!classToEdit.className) return $scope.missingName = true;
+      if (!classToEdit.name) return $scope.missingName = true;
       if (!classToEdit.classDescription) return $scope.missingDescription = true;
       if (classToEdit.classDescription.length > 200) return $scope.descriptionTooLong = classToEdit.classDescription.length;
       ref.child('classTypes').child(classKey).update(classToEdit, function(err) {
@@ -105,12 +106,12 @@ angular.module('bodyAppApp')
         { "name": "Thera-Band", "id": "8nf0wejde82" }
 
       ]
-      return $http.get('countries.json', { cache: true}).then(function(response) {
-        var countries = response.data;
-        return countries.filter(function(country) {
-          return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
-        });
-      });
+      // return $http.get('countries.json', { cache: true}).then(function(response) {
+      //   var countries = response.data;
+      //   return countries.filter(function(country) {
+      //     return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+      //   });
+      // });
     };
 
     $scope.scrollTop = function() {

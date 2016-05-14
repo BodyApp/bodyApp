@@ -14,11 +14,36 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
-    ref.child('trainers').on('value', function(snapshot) {
-      $scope.trainersPulled = snapshot.val()
-      if(!$scope.$$phase) $scope.$apply();
-
+    ref.onAuth(function(authData) {
+      if (authData) {
+        console.log("User is authenticated with fb ");
+        getTrainers()
+      } else {
+        console.log("User is logged out");
+        if (user.firebaseToken) {
+          ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
+            if (error) {
+              Auth.logout();
+              $window.location.reload()
+              console.log("Firebase user authentication failed", error);
+            } else {
+              if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+              getTrainers()
+            }
+          }); 
+        } else {
+          Auth.logout();
+          $window.location.reload()
+        }
+      }
     })
+
+    function getTrainers() {
+      ref.child('trainers').on('value', function(snapshot) {
+        $scope.trainersPulled = snapshot.val()
+        if(!$scope.$$phase) $scope.$apply();
+      })  
+    }
 
     $scope.searchForUser = function(userToSearchFor) {
       console.log(userToSearchFor)

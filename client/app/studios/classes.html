@@ -30,8 +30,8 @@
             </label>
             <div class="col-sm-9">
               <div style = "color: red" ng-show = "missingName">You're missing a class name!</div>
-              <input ng-if = "showAddClass" id="class-name" ng-model = "classToCreate.className" name="" size="30" type="text" placeholder="e.g. Level One">
-              <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.className" name="" size="30" type="text" placeholder="e.g. Level One">
+              <input ng-if = "showAddClass" id="class-name" ng-model = "classToCreate.name" name="" size="30" type="text" placeholder="e.g. Level One">
+              <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.name" name="" size="30" type="text" placeholder="e.g. Level One">
               <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
               <div class="row col-sm-12">
                 <input ng-if = "showAddClass" id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" size="15" type="checkbox">
@@ -170,7 +170,7 @@
 <!-- PANEL -->
       <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes | orderBy: '-updated'">
         <div class="panel-header" >
-          {{classType.className}}
+          {{classType.name}}
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>
