@@ -91,7 +91,11 @@ angular.module('bodyAppApp')
 
     $scope.initPricingPlan = function() {
     	$scope.showAddPricingPlan = {};
-    	$scope.showAddPricingPlan.pricingType = 'Drop In';
+    	if ($scope.dropinPlan) {
+    		$scope.showAddPricingPlan.pricingType = 'Monthly';
+    	} else {
+    		$scope.showAddPricingPlan.pricingType = 'Drop In';
+    	}
     }
 
     $scope.savePricingPlan = function(planToSave) {
