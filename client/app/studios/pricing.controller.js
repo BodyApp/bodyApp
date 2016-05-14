@@ -96,9 +96,11 @@ angular.module('bodyAppApp')
 
     $scope.savePricingPlan = function(planToSave) {
     	if (planToSave.pricingType === 'Drop In') {
+    		planToSave.amount = planToSave.amountInDollars * 100;
     		ref.child("stripeConnected").child('dropinPlan').update(planToSave, function(err) {
     			if (err) return console.log(err)
   				$scope.showAddPricingPlan = false;
+	    		if(!$scope.$$phase) $scope.$apply();
     		})
     	} else {
     		Studio.createSubscriptionPlan({
@@ -115,10 +117,34 @@ angular.module('bodyAppApp')
 	      	console.log("Saved new subscription");
 	      	listSubscriptionPlans()
 	      	$scope.showAddPricingPlan = false;
+	    		if(!$scope.$$phase) $scope.$apply();
+
 	        // $scope.pricingOptions.push(subscription); 
 	        // $scope.returnedSubscription = subscription;
 	      })
     	}
+    }
+
+    $scope.deleteDropinPlan = function() {
+    	ref.child("stripeConnected").child('dropinPlan').remove(function(err) {
+    		if (err) return console.log(err)
+    		console.log("Dropin plan removed");
+    	})
+    }
+
+    $scope.editDropinPlan = function(planToEdit) {
+    	$scope.showAddPricingPlan = planToEdit;
+    	$scope.editing = true;
+    }
+
+    $scope.updateDropinPlan = function(planToEdit) {
+    	planToEdit.amount = planToEdit.amountInDollars * 100;
+    	ref.child("stripeConnected").child('dropinPlan').update(planToEdit, function(err) {
+  			if (err) return console.log(err)
+				$scope.showAddPricingPlan = false;
+				$scope.editing = false;
+    		if(!$scope.$$phase) $scope.$apply();
+  		})
     }
 
     $scope.keyPressed = function(key, enteredSoFar) {

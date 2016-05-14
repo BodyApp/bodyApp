@@ -42,15 +42,15 @@
               </div>  
             </div>
 
-            <div class="col-md-6" >
+            <div class="col-md-6" ng-show = "dropinPlan">
               <div class="panel">             
                 <div class="panel-body">
                   <div class="plan-action">
-                    <a href="#">Edit</a> |
-                    <a href="#">Delete</a>
+                    <a href="#" ng-click = "editDropinPlan(dropinPlan)">Edit</a> |
+                    <a href="#" ng-click = "deleteDropinPlan()">Delete</a>
                   </div>
                   <h5 class="mb0">Drop In Plan</h5>
-                  <h5 class="lightgray">${{dropinPlan.amount/100}} Once</h5>
+                  <h5 class="lightgray">${{dropinPlan.amountInDollars}} Once</h5>
                   <h5 class="mt16 mb0">Class Cap</h5>
                   <h5 class="lightgray">1 class</h5>
                 </div>
@@ -69,8 +69,8 @@
                     <div class="col-sm-9">
                       <div class="select">
                         <select ng-model = "showAddPricingPlan.pricingType">
-                          <option ng-if = "!dropinPlan">Drop In</option>
-                          <option ng-if = "!subscriptionPlan">Monthly</option>
+                          <option ng-if = "!dropinPlan || editing">Drop In</option>
+                          <option ng-if = "!subscriptionPlan && !editing">Monthly</option>
                         </select>           
                       </div>
                       <div class="row mt8">
@@ -137,10 +137,13 @@
                     <div class="col-sm-12">
                       <ul class="panel-action-list">
                         <li>
-                          <a href="#" class="panel-action-item" ng-click = "showAddPricingPlan = false;">Cancel</a>
+                          <a href="#" class="panel-action-item" ng-click = "showAddPricingPlan = false; editing = false;">Cancel</a>
                         </li>
-                        <li>
+                        <li ng-show = "!editing">
                           <a href="#" class="panel-action-item btn-primary btn" ng-click = "savePricingPlan(showAddPricingPlan)">Save</a>
+                        </li>
+                        <li ng-show = "editing">
+                          <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateDropinPlan(showAddPricingPlan)">Update</a>
                         </li>
                       </ul>              
                     </div>
