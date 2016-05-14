@@ -151,12 +151,28 @@ angular.module('bodyAppApp')
   		})
     }
 
+    $scope.deleteCoupon = function(couponToDelete) {
+    	console.log(couponToDelete);
+      Studio.deleteCoupon({
+        id: currentUser._id
+      }, {
+        studioId: studioId,
+        couponId: couponToDelete.id
+      }).$promise.then(function(deletedCouponId) {
+        console.log("Deleted coupon with id: " + couponToDelete.id);
+      })
+    }
+
     $scope.keyPressed = function(key, enteredSoFar) {
       if (key.keyCode === 13) $scope.searchForUser(enteredSoFar)
     }
 
     $scope.scrollTop = function() {
       window.scrollTo(0, 0);
+    }
+
+    $scope.formatDate = function(dateToFormat) {
+    	return moment(dateToFormat*1).format('l');
     }
 
   });

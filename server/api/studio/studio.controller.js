@@ -180,6 +180,33 @@ exports.listCoupons = function(req, res, next){
   })
 };
 
+exports.deleteCoupon = function(req, res, next){
+  var studioId = req.body.studioId;
+  var couponId = req.body.couponId;
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+    if (snapshot.exists()) {
+
+      var stripe = require("stripe")(snapshot.val())
+
+      stripe.coupons.del(couponId,
+      // {
+      //   stripe_account: snapshot.val()
+      // }, 
+      function(err, plan) {
+        if (err) {console.log(err); return res.status(400).send(err);}
+        // ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).remove(function(err) {
+          if (err) return res.status(400).send(err);
+          console.log("Coupon " + couponId + " successfully deleted by studio " + studioId);
+          res.status(200).send("Coupon " + couponId + " successfully deleted");  
+        // })
+      });
+    } else {
+      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    }
+  })
+};
+
 exports.getUserRevenue = function(req, res, next) {
   var customerToGet = req.body.customerToGet;
   var studioId = req.body.studioId;

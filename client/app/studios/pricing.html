@@ -301,7 +301,7 @@
 
 
 <!-- COUPON FORM -->
-      <div class="panel mb16">
+      <div class="panel mb16" ng-show = "showAddCoupon">
         <div class="panel-header">
           Add coupon
           <ul class="panel-action-list">
@@ -436,22 +436,7 @@
         </div>
         <div class="panel-body">
           <div class="row mb16">
-            <div class="col-sm-12">
-              <div class="select">
-                <select>
-                  <option>All Types</option>
-                  <option>Percentage off</option>
-                  <option>Dollars off</option>
-                </select>           
-              </div>
-              <div class="select">
-                <select>
-                  <option>Duration: All</option>
-                  <option>Duration: Once</option>
-                  <option>Duration: Monthly</option>
-                  <option>Duration: Forever</option>
-                </select>           
-              </div>                     
+        <!--   -->
             </div>
           </div>          
 
@@ -469,17 +454,22 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody ng-repeat = "coupon in existingCoupons">
                   <tr>
-                    <td>RALABALA4FREE</td>
-                    <td>100%</td>
-                    <td>1 month</td>
-                    <td>Unlimited</td>
-                    <td>5/30/16</td>
-                    <td>1/1000</td>
-                    <td><a href="#">Delete</a></td>
+                    <td>{{coupon.id}}</td>
+                    <td ng-if = "coupon.percent_off">{{coupon.percent_off}}%</td>
+                    <td ng-if = "coupon.amount_off">${{coupon.amount_off/100}}</td>
+                    <td ng-if = "coupon.duration === 'once'">1 month</td>
+                    <td ng-if = "coupon.duration === 'repeating'">{{coupon.duration_in_months}} months</td>
+                    <td ng-if = "!coupon.max_redemptions">Unlimited</td>
+                    <td ng-if = "coupon.max_redemptions">{{coupon.max_redemptions}} Allowed</td>
+                    <td ng-if = "!coupon.redeem_by">Never</td>
+                    <td ng-if = "coupon.redeem_by">{{formatDate(coupon.redeem_by)}}</td>
+                    <td ng-if = "coupon.times_redeemed > 0">{{coupon.times_redeemed}}</td>
+                    <td ng-if = "coupon.times_redeemed === 0">Never</td>
+                    <td><a href="#" ng-click = "deleteCoupon(coupon)">Delete</a></td>
                   </tr> 
-                  <tr>
+<!--                   <tr>
                     <td>4AFRIEND</td>
                     <td>$10</td>
                     <td>Once</td>
@@ -487,7 +477,7 @@
                     <td>6/10/16</td>
                     <td>12/100</td>
                     <td><a href="#">Delete</a></td>
-                  </tr>                                    
+                  </tr>   -->                                  
                 </tbody>
               </table>
             </div>                      
