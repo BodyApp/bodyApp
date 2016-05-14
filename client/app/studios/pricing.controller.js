@@ -3,6 +3,7 @@ angular.module('bodyAppApp')
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
+    $scope.studioId = studioId;
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
     if (studioId) {
@@ -17,6 +18,7 @@ angular.module('bodyAppApp')
         console.log("User is authenticated with fb ");
         listCoupons();
         listSubscriptionPlans();
+        getDropinPlan();
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -29,6 +31,7 @@ angular.module('bodyAppApp')
               if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
               listCoupons();
               listSubscriptionPlans();
+              getDropinPlan();
             }
           }); 
         } else {
@@ -57,28 +60,18 @@ angular.module('bodyAppApp')
         studioId: studioId
       }).$promise.then(function(plans) {
         console.log("Retrieved " + plans.length + " subscription plans");
-        $scope.subscriptionPlans = plans;
-        for (var plan = 0; plan < plans.length; plan++) {
-          ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
-        }
+        $scope.subscriptionPlan = plans[0];
+        // for (var plan = 0; plan < plans.length; plan++) { //This is no longer necessary as doing on backend.
+        //   ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
+        // }
       })
     }
 
-    $scope.createSubscriptionPlan = function(amount, name) {
-      Studio.createSubscriptionPlan({
-        id: currentUser._id
-      }, {
-        studioId: studioId,
-        amount: amount,
-        name: name,
-        currency: "usd",
-        interval: "month",
-        statement_descriptor: studioId + " Subscription",
-        userThatCreatedPlan: currentUser._id
-      }).$promise.then(function(subscription) {
-        // $scope.pricingOptions.push(subscription); 
-        $scope.returnedSubscription = subscription;
-      })
+    function getDropinPlan() {
+    	ref.child("stripeConnected").child('dropinPlan').on('value', function(snapshot) {
+    		$scope.dropinPlan = snapshot.val()
+    		if(!$scope.$$phase) $scope.$apply();
+    	})
     }
 
     $scope.deleteSubscriptionPlan = function(planId) {
@@ -88,8 +81,44 @@ angular.module('bodyAppApp')
         studioId: studioId,
         planId: planId
       }).$promise.then(function(deletedPlanId) {
-        console.log("Deleted subscription plan with id: " + planId);
+      	ref.child('stripeConnected').child('subscriptionPlans').child(planId).remove(function(err) {
+      		if (err) return console.log(err);
+      		listSubscriptionPlans()
+      		console.log("Deleted subscription plan with id: " + planId);
+      	})
       })
+    }
+
+    $scope.initPricingPlan = function() {
+    	$scope.showAddPricingPlan = {};
+    	$scope.showAddPricingPlan.pricingType = 'Drop In';
+    }
+
+    $scope.savePricingPlan = function(planToSave) {
+    	if (planToSave.pricingType === 'Drop In') {
+    		ref.child("stripeConnected").child('dropinPlan').update(planToSave, function(err) {
+    			if (err) return console.log(err)
+  				$scope.showAddPricingPlan = false;
+    		})
+    	} else {
+    		Studio.createSubscriptionPlan({
+	        id: currentUser._id
+	      }, {
+	        studioId: studioId,
+	        amount: planToSave.amountInDollars*100,
+	        name: studioId + " BODY Subscription",
+	        currency: "usd",
+	        interval: "month",
+	        statement_descriptor: studioId + " Subscription",
+	        userThatCreatedPlan: currentUser._id
+	      }).$promise.then(function(subscription) {
+	      	console.log("Saved new subscription");
+	      	listSubscriptionPlans()
+	      	$scope.showAddPricingPlan = false;
+	        // $scope.pricingOptions.push(subscription); 
+	        // $scope.returnedSubscription = subscription;
+	      })
+    	}
     }
 
     $scope.keyPressed = function(key, enteredSoFar) {

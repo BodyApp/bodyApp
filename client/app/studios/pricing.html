@@ -5,7 +5,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "showAddPricingPlan = {};">Add Pricing Plan</a>
+        <a href="#" class="btn btn-block" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add Pricing Plan</a>
         <a href="#" class="mt16 btn btn-block">Add Promotion</a>
         <a href="#" class="mt16 btn btn-block">Add Coupon</a>
       </div>
@@ -19,7 +19,7 @@
           Studio Pricing Plans (Limited to one subscription plan & one drop-in rate)
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item" ng-click = "showAddPricingPlan = {};">Add new pricing plan</a>
+              <a href="#" class="panel-action-item" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add new pricing plan</a>
             </li>
           </ul>          
         </div>
@@ -27,22 +27,22 @@
         <div class="panel-body">
           <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-6" ng-show = "subscriptionPlan">
               <div class="panel">             
                 <div class="panel-body">
                   <div class="plan-action">
                     <!-- <a href="#">Edit</a> | -->
-                    <a href="#">Delete</a>
+                    <a href="#" ng-click = "deleteSubscriptionPlan(subscriptionPlan.id)">Delete</a>
                   </div>
                   <h5 class="mb0">Monthly Plan</h5>
-                  <h5 class="lightgray">$30 Monthly</h5>
+                  <h5 class="lightgray">${{subscriptionPlan.amount/100}} Monthly</h5>
                   <h5 class="mt16 mb0">Class Cap</h5>
                   <h5 class="lightgray">Unlimited per month</h5>
                 </div>
               </div>  
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" >
               <div class="panel">             
                 <div class="panel-body">
                   <div class="plan-action">
@@ -50,7 +50,7 @@
                     <a href="#">Delete</a>
                   </div>
                   <h5 class="mb0">Drop In Plan</h5>
-                  <h5 class="lightgray">$10 Once</h5>
+                  <h5 class="lightgray">${{dropinPlan.amount/100}} Once</h5>
                   <h5 class="mt16 mb0">Class Cap</h5>
                   <h5 class="lightgray">1 class</h5>
                 </div>
@@ -68,16 +68,16 @@
                     </label>
                     <div class="col-sm-9">
                       <div class="select">
-                        <select>
-                          <option>Monthly</option>
-                          <option>Drop In</option>
+                        <select ng-model = "showAddPricingPlan.pricingType">
+                          <option ng-if = "!dropinPlan">Drop In</option>
+                          <option ng-if = "!subscriptionPlan">Monthly</option>
                         </select>           
                       </div>
                       <div class="row mt8">
-                        <div class="col-sm-12 hidden">
+                        <div class="col-sm-12" ng-if = "showAddPricingPlan.type === 'Drop In'">
                           <h5 class="lightgray bold">Bills: Once</h5>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" ng-if = "showAddPricingPlan.type === 'Monthly'">
                           <h5 class="lightgray bold">Bills: First of every month</h5>
                         </div>                        
                       </div>
@@ -89,6 +89,15 @@
                     </div>
                   </div>
                   
+                  <!-- <div class="row mb16">
+                    <label class="col-sm-3">
+                      Name
+                    </label>
+                    <div class="input-addon col-sm-7">
+                      <input ng-model = "showAddPricingPlan.name" type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. {{studioId}} sub">
+                    </div>
+                  </div> -->
+
                   <div class="row mb16">
                     <label class="col-sm-3">
                       Price
@@ -97,14 +106,14 @@
                       <span class="input-prefix">
                         <span>$</span>
                       </span>
-                      <input type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
+                      <input ng-model = "showAddPricingPlan.amountInDollars" type="text" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
                     </div>
                     <label class="lightgray text-left">
                       USD
                     </label>                             
                   </div>
 
-                  <div class="row mb16">
+                  <!-- <div class="row mb16">
                     <label class="col-sm-3" for="class-cap">
                       Classes
                     </label>
@@ -122,7 +131,7 @@
                         </div>
                       </div>                      
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="row">
                     <div class="col-sm-12">
@@ -131,7 +140,7 @@
                           <a href="#" class="panel-action-item" ng-click = "showAddPricingPlan = false;">Cancel</a>
                         </li>
                         <li>
-                          <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                          <a href="#" class="panel-action-item btn-primary btn" ng-click = "savePricingPlan(showAddPricingPlan)">Save</a>
                         </li>
                       </ul>              
                     </div>
