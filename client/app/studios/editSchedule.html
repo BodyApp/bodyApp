@@ -204,25 +204,25 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 
           <div class="row"> <!-- CALENDAR LIST VIEW -->
             <div class="col-sm-12">
-              <table class="table table-condensed table-hover cal-list-table">
+              <table class="table table-condensed table-hover cal-list-table" ng-repeat = "dayShown in daysToShow">
                 <thead>
                   <tr>
-                    <th>{{getFormattedDateTime(firstDayShown.dateTime).dayOfWeek}}, {{getFormattedDateTime(firstDayShown.dateTime).month}} {{getFormattedDateTime(firstDayShown.dateTime).day}}</th>
-                    <th>Class</th>
-                    <th class="hidden-xs">Workout</th>
-                    <th>Instructor</th>
+                    <th style = "width: 120px;">{{dayShown.formattedDate}}</th>
+                    <th style = "width: 120px;">Class</th>
+                    <th class="hidden-xs" style = "width: 120px;">Workout</th>
+                    <th style = "width: 120px;">Instructor</th>
                     <th class="hidden-xs">Playlist</th>
                     <th class="hidden-xs">Sign Ups</th>
                     <th class="visible-xs">Reg</th>
                   </tr>
                 </thead>
-                <tbody ng-repeat = "class in classSchedule">
+                <tbody ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule">
                   <tr>
                     <td>{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</td>
                     <td>{{classTypes[class.classType].name}}</td>
-                    <td class="hidden-xs">{{getWorkouts(class.workout).title}}</td>
+                    <td class="hidden-xs">{{workouts[class.workout].title}}</td>
                     <td>{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName}}</td>
-                    <td>{{getPlaylistObject(class.playlist).title}}</td>
+                    <td class="hidden-xs">{{playlistObjects[class.playlist].title}}</td>
                     <td ng-if = "numBookingsByClass[class.dateTime]">{{getNumberOfBookings(class.dateTime)}} of {{class.spots}}</td>
                     <td ng-if = "!numBookingsByClass[class.dateTime]">None</td>
                   </tr>

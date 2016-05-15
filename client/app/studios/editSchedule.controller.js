@@ -22,10 +22,12 @@ angular.module('bodyAppApp')
     // console.log($scope.firstDayShown)
 
     // $scope.classTypes = {};
-    $scope.workouts = {};
+    // $scope.workouts = {};
     // $scope.instructors = {};
-    $scope.playlistsObject = {};
+    // $scope.playlistsObject = {};
     $scope.numBookingsByClass = {};
+
+    var numDaysToShow = 7;
 
     ref.onAuth(function(authData) {
       if (authData) {
@@ -33,7 +35,10 @@ angular.module('bodyAppApp')
         getClassTypes();
         getInstructors();
         getPlaylists();
-        getClasses()
+        getClasses();
+        getWorkouts();
+        getPlaylistObjects();
+        createSchedule(numDaysToShow);
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -47,7 +52,10 @@ angular.module('bodyAppApp')
               getClassTypes();
               getInstructors();
               getPlaylists();
-              getClasses()
+              getClasses();
+              getWorkouts();
+              getPlaylistObjects();
+              createSchedule(numDaysToShow);
             }
           }); 
         } else {
@@ -59,7 +67,7 @@ angular.module('bodyAppApp')
 
     function getClasses() {
       var startAt = new Date().getTime().toString();
-      var numberOfDaysToDisplay = 7;
+      var numberOfDaysToDisplay = numDaysToShow;
       var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
       var endAt = (new Date().getTime() + toAdd).toString()
 
@@ -139,21 +147,31 @@ angular.module('bodyAppApp')
       checkIfExists(workoutToSave.dateTime, workoutToSave); 
     }
 
-    $scope.getWorkouts = function(workoutId) {
-      if ($scope.workouts[workoutId]) return $scope.workouts[workoutId];
-      ref.child('workouts').child(workoutId).once('value', function(snapshot) {
-        $scope.workouts[workoutId] = snapshot.val()
+    function createSchedule(days) {
+      $scope.daysToShow = [];
+      var dateTimeNow = new Date();
+      var beginningDateToday = new Date(dateTimeNow.getFullYear(), dateTimeNow.getMonth(), dateTimeNow.getDate(), 0, 0, 0, 1).getTime();
+      for (var i=0; i<days; i++) {
+        var day = {}
+        day.beginDateTime = beginningDateToday + i*24*60*60*1000
+        day.endDateTime = day.beginDateTime + 24*60*60*1000-1000
+        day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
+
+        $scope.daysToShow.push(day)
+      }
+    }
+
+    function getWorkouts() {
+      ref.child('workouts').once('value', function(snapshot) {
+        $scope.workouts = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
-        return $scope.workouts[workoutId];
       })
     }
 
-    $scope.getPlaylistObject = function(playlistId) {
-      if ($scope.playlistsObject[playlistId]) return $scope.playlistsObject[playlistId];
-      ref.child('playlists').child(playlistId).once('value', function(snapshot) {
-        $scope.playlistsObject[playlistId] = snapshot.val();
+    function getPlaylistObjects() {
+      ref.child('playlists').once('value', function(snapshot) {
+        $scope.playlistObjects = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
-        return $scope.playlistsObject[playlistId];
       })
     }
 
@@ -166,54 +184,58 @@ angular.module('bodyAppApp')
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
-        var newDate = new Date(dateTime);
-        var formatted = {};
+      return getFormattedDateTime(dateTime, noToday);
+    }
 
-        if (newDate.getHours() == 12) {
-            formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
-        } else if (newDate.getHours() == 0) {
-            formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
-        } else {
-            formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
-        } 
-        
-        formatted.day = newDate.getDate();
-        formatted.year = newDate.getFullYear();
-        
-        // $scope.dayOfWeek;
-        
-        switch (newDate.getDay()) {
-            case 0: formatted.dayOfWeek = "Sun"; break;
-            case 1: formatted.dayOfWeek = "Mon"; break;
-            case 2: formatted.dayOfWeek = "Tue"; break;
-            case 3: formatted.dayOfWeek = "Wed"; break;
-            case 4: formatted.dayOfWeek = "Thu"; break;
-            case 5: formatted.dayOfWeek = "Fri"; break;
-            case 6: formatted.dayOfWeek = "Sat"; break;
-            default: break;
-        }
+    function getFormattedDateTime(dateTime, noToday) {
+      var newDate = new Date(dateTime);
+      var formatted = {};
 
-        if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
-            formatted.dayOfWeek = "Today"
-        }
+      if (newDate.getHours() == 12) {
+          formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
+      } else if (newDate.getHours() == 0) {
+          formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
+      } else {
+          formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
+      } 
+      
+      formatted.day = newDate.getDate();
+      formatted.year = newDate.getFullYear();
+      
+      // $scope.dayOfWeek;
+      
+      switch (newDate.getDay()) {
+          case 0: formatted.dayOfWeek = "Sun"; break;
+          case 1: formatted.dayOfWeek = "Mon"; break;
+          case 2: formatted.dayOfWeek = "Tue"; break;
+          case 3: formatted.dayOfWeek = "Wed"; break;
+          case 4: formatted.dayOfWeek = "Thu"; break;
+          case 5: formatted.dayOfWeek = "Fri"; break;
+          case 6: formatted.dayOfWeek = "Sat"; break;
+          default: break;
+      }
 
-        var month = new Array();
-        month[0] = "Jan";
-        month[1] = "Feb";
-        month[2] = "Mar";
-        month[3] = "Apr";
-        month[4] = "May";
-        month[5] = "Jun";
-        month[6] = "Jul";
-        month[7] = "Aug";
-        month[8] = "Sept";
-        month[9] = "Oct";
-        month[10] = "Nov";
-        month[11] = "Dec";
+      if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
+          formatted.dayOfWeek = "Today"
+      }
 
-        formatted.month = month[newDate.getMonth()]    
-        // console.log(formatted);       
-        return formatted;
+      var month = new Array();
+      month[0] = "Jan";
+      month[1] = "Feb";
+      month[2] = "Mar";
+      month[3] = "Apr";
+      month[4] = "May";
+      month[5] = "Jun";
+      month[6] = "Jul";
+      month[7] = "Aug";
+      month[8] = "Sept";
+      month[9] = "Oct";
+      month[10] = "Nov";
+      month[11] = "Dec";
+
+      formatted.month = month[newDate.getMonth()]    
+      // console.log(formatted);       
+      return formatted;
     }
 
     $scope.keyPressed = function(key, enteredSoFar) {
