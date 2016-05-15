@@ -16,38 +16,31 @@
           <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
 
           <h5 class="mt8 mb0">Class</h5>
-          <h5 class="lightgray mb0">{{classTypes[classDetails.classType].name}}</h5>
-          <div class="select display-block hidden">
-            <select>
-              <option>Level One</option>
-            </select>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{classTypes[classDetails.classType].name}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="class-choice" ng-model = "classDetails.classType" ng-change = "selectClassType(classDetails.classType)" ng-options = "key as value.name for (key, value) in classTypes"></select>
           </div>
 
           <h5 class="mt8 mb0">Workout</h5>
-          <h5 class="lightgray mb0">{{workouts[classDetails.workout].title}}</h5>
-          <div class="select display-block hidden">
-            <select>
-              <option>Workout #34: Fight Gone Bad</option>
-            </select>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{workouts[classDetails.workout].title}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="workout-choice" ng-model = "classDetails.workout" ng-options = "key as value.title for (key, value) in workoutOptions"></select>
           </div>
 
           <h5 class="mt8 mb0">Instructor</h5>
-          <h5 class="lightgray mb0">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
-          <div class="select display-block hidden">
-            <select>
-              <option>Beth Anne</option>
-            </select>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="instructor-choice" ng-model = "classDetails.instructor" ng-options = "key as (value.firstName + ' ' + value.lastName) for (key, value) in instructors"></select>
           </div>
 
           <h5 class="mt8 mb0">Playlist</h5>
-          <h5 class="lightgray">{{playlistObjects[classDetails.playlist].title}}</h5>
-          <div class="select display-block hidden">
-            <select>
-              <option>Top 20 Beats</option>
-            </select>
+          <h5 class="lightgray" ng-hide = "editing">{{playlistObjects[classDetails.playlist].title}}</h5>
+          <div class="select display-block" ng-show = "editing">
+          <select id="playlist-choice" ng-model = "classDetails.playlist" ng-options = "value.id as value.title for (key, value) in playlistObjects"></select>
           </div>
 
-          <a href="#" class="mt16 btn btn-blue btn-block">Start Class</a>
+          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "!editing">Start Class</a>
+          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "editing" ng-click = "updateClass(classDetails)">Update</a>
         </div>
       </div>
 

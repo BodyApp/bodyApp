@@ -71,7 +71,7 @@ angular.module('bodyAppApp')
     function getClassDetails(classToGet) {
       ref.child('classes').child(classToGet).once('value', function(snapshot) {
         $scope.classDetails = snapshot.val();
-        console.log($scope.classDetails)
+        // console.log($scope.classDetails)
         if(!$scope.$$phase) $scope.$apply();
       })
     }
@@ -112,7 +112,7 @@ angular.module('bodyAppApp')
       if (!$scope.classTypes) {
       	ref.child('classTypes').once('value', function(snapshot) {
 	        $scope.classTypes = snapshot.val()
-	        console.log($scope.classTypes);
+	        // console.log($scope.classTypes);
 	        
 	        // //Sets initial class type
 	        // $scope.workoutToCreate = $scope.workoutToCreate || {};
@@ -125,14 +125,17 @@ angular.module('bodyAppApp')
 
     $scope.selectClassType = function(classType) {
       $scope.workoutOptions = {};
-      for (var prop in classType.workoutsUsingClass) {
-        ref.child('workouts').child(prop).once('value', function(snapshot) {
-          if (!snapshot.exists()) return
-          $scope.workoutOptions[prop] = snapshot.val() 
-          if (!$scope.workoutToCreate.workout) $scope.workoutToCreate.workout = $scope.workoutOptions[prop] //Initiates workout
-          if(!$scope.$$phase) $scope.$apply();
-        })
-      }  
+      ref.child('classTypes').child(classType).child('workoutsUsingClass').once('value', function(workoutList) {
+	      workoutList.forEach(function(workout) {
+	      	var prop = workout.key();
+	        ref.child('workouts').child(prop).once('value', function(snapshot) {
+	          if (!snapshot.exists()) return
+	          $scope.workoutOptions[prop] = snapshot.val()
+	        	if (!$scope.workoutOptions[$scope.classDetails.workout]) $scope.classDetails.workout = prop; //If change class type, automatically choses a workout.
+	          if(!$scope.$$phase) $scope.$apply();
+	        })
+	      })
+      })  
     }
 
     function checkIfExists(dateTime, workoutToSave) {
@@ -179,6 +182,7 @@ angular.module('bodyAppApp')
       if (!$scope.playlistObjects) {
 	      ref.child('playlists').once('value', function(snapshot) {
 	        $scope.playlistObjects = snapshot.val();
+	        console.log($scope.playlistObjects)
 	        if(!$scope.$$phase) $scope.$apply();
 	      })
 			}
@@ -214,6 +218,16 @@ angular.module('bodyAppApp')
 
     $scope.enterEditMode = function() {
     	$scope.editing = true;
+    	$scope.selectClassType($scope.classDetails.classType)
+    }
+
+    $scope.updateClass = function(classToUpdate) {
+    	$scope.editing = false;
+    	console.log(classToUpdate);
+    	ref.child('classes').child(classId).update(classToUpdate, function(err) {
+    		if (err) return console.log(err)
+    		console.log("Successfully updated class.")
+    	})
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
@@ -234,8 +248,6 @@ angular.module('bodyAppApp')
       
       formatted.day = newDate.getDate();
       formatted.year = newDate.getFullYear();
-      
-      // $scope.dayOfWeek;
       
       switch (newDate.getDay()) {
           case 0: formatted.dayOfWeek = "Sun"; break;
