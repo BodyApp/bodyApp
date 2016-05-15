@@ -179,10 +179,16 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
       <div class="panel">
         <div class="panel-header">
           Your Schedule
-          <!-- <div class="cal-controls text-left">
-            <a href="#" class="btn hidden-xs"><i class="bold ti-calendar"></i></a>
-            <a href="#" class="btn">Today</a>
-            <div class="select hidden-xs">
+          <div class="cal-controls text-left">
+            <!-- <a href="#" class="btn hidden-xs"><i class="bold ti-calendar"></i></a> -->
+            <!-- <a href="#" class="btn">Today</a> -->
+            <a href="#" class="btn" ng-click = "showingNextWeek = !showingNextWeek; changeWeek()">
+              <span style = "font-weight: bold;" ng-show = "!showingNextWeek">Next</span> 
+              <span style = "font-weight: bold;" ng-show = "showingNextWeek">Previous</span> 
+              <span style = "font-weight: bold;">Week</span>
+            </a>
+            <!-- <a href="#" class="btn" ng-click = "showingNextWeek = false; showPreviousWeek()" ng-show = "showingNextWeek">Previous Week</a> -->
+            <!-- <div class="select hidden-xs">
               <select>
                 <option>Level One</option>
               </select>
@@ -197,8 +203,8 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                 <option>Week View</option>
                 <option>List View</option>
               </select>
-            </div>
-          </div>           -->
+            </div> -->
+          </div>          
         </div>
         <div class="panel-body">
 
@@ -226,22 +232,6 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                     <td ng-if = "numBookingsByClass[class.dateTime]">{{getNumberOfBookings(class.dateTime)}} of {{class.spots}}</td>
                     <td ng-if = "!numBookingsByClass[class.dateTime]">None</td>
                   </tr>
-                  <!-- <tr>
-                    <td>10:30a-12p PDT</td>
-                    <td>Level One</td>
-                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
-                    <td>Beth Anne L</td>
-                    <td class="hidden-xs">Top 20 Beats</td>
-                    <td>3 of 12</td>
-                  </tr>
-                  <tr>
-                    <td>12:30a-1p PDT</td>
-                    <td>Level Two</td>
-                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
-                    <td>Ralph L</td>
-                    <td class="hidden-xs">Top 20 Beats</td>
-                    <td>3 of 12</td>
-                  </tr> -->
                 </tbody>
               </table>
 

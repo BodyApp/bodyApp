@@ -16,8 +16,6 @@ angular.module('bodyAppApp')
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
 
-    $scope.firstDayShown = {};
-    $scope.firstDayShown.dateTime = new Date().getTime();
     // $scope.firstDayShown.formattedDate = $scope.getFormattedDateTime($scope.firstDayShown.dateTime)
     // console.log($scope.firstDayShown)
 
@@ -27,7 +25,10 @@ angular.module('bodyAppApp')
     // $scope.playlistsObject = {};
     $scope.numBookingsByClass = {};
 
+    var daysInFuture = 0;
     var numDaysToShow = 7;
+
+    $scope.showingNextWeek = false;
 
     ref.onAuth(function(authData) {
       if (authData) {
@@ -35,10 +36,10 @@ angular.module('bodyAppApp')
         getClassTypes();
         getInstructors();
         getPlaylists();
-        getClasses();
+        getClasses(daysInFuture);
         getWorkouts();
         getPlaylistObjects();
-        createSchedule(numDaysToShow);
+        createSchedule(numDaysToShow, daysInFuture);
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -52,10 +53,10 @@ angular.module('bodyAppApp')
               getClassTypes();
               getInstructors();
               getPlaylists();
-              getClasses();
+              getClasses(daysInFuture);
               getWorkouts();
               getPlaylistObjects();
-              createSchedule(numDaysToShow);
+              createSchedule(numDaysToShow, daysInFuture);
             }
           }); 
         } else {
@@ -65,11 +66,12 @@ angular.module('bodyAppApp')
       }
     })
 
-    function getClasses() {
+    function getClasses(daysInFuture) {
       var startAt = new Date().getTime().toString();
+      startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
       var numberOfDaysToDisplay = numDaysToShow;
       var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
-      var endAt = (new Date().getTime() + toAdd).toString()
+      var endAt = (startAt*1 + toAdd).toString()
 
       ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
         $scope.classSchedule = snapshot.val();
@@ -147,10 +149,11 @@ angular.module('bodyAppApp')
       checkIfExists(workoutToSave.dateTime, workoutToSave); 
     }
 
-    function createSchedule(days) {
+    function createSchedule(days, daysInFuture) {
       $scope.daysToShow = [];
       var dateTimeNow = new Date();
       var beginningDateToday = new Date(dateTimeNow.getFullYear(), dateTimeNow.getMonth(), dateTimeNow.getDate(), 0, 0, 0, 1).getTime();
+      beginningDateToday = beginningDateToday + daysInFuture*24*60*60*1000;
       for (var i=0; i<days; i++) {
         var day = {}
         day.beginDateTime = beginningDateToday + i*24*60*60*1000
@@ -158,6 +161,7 @@ angular.module('bodyAppApp')
         day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
 
         $scope.daysToShow.push(day)
+        if(!$scope.$$phase) $scope.$apply();
       }
     }
 
@@ -182,6 +186,21 @@ angular.module('bodyAppApp')
         return $scope.numBookingsByClass[dateTime];
       })
     }
+
+    $scope.changeWeek = function() {
+      if ($scope.showingNextWeek) {
+        getClasses(0);
+        createSchedule(7, 0);  
+      } else {
+        getClasses(7);
+        createSchedule(7, 7);
+      }
+    }
+
+    // $scope.showPreviousWeek = function() {
+    //   getClasses(0);
+    //   createSchedule(7, 0);
+    // }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
       return getFormattedDateTime(dateTime, noToday);
