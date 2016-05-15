@@ -125,12 +125,13 @@ angular.module('bodyAppApp')
       }  
     }
 
-    function checkIfExists(dateTime, workoutToSave) {
-      ref.child('classes').child(dateTime).once('value', function(snapshot) {
+    function checkIfExists(workoutToSave) {
+      ref.child('classes').child(workoutToSave.dateTime).once('value', function(snapshot) {
         if (snapshot.exists()) {
-          checkIfExists(dateTime+1, workoutToSave);  //Recursive
+          workoutToSave.dateTime +=1;
+          checkIfExists(workoutToSave);  //Recursive
         } else {
-          ref.child('classes').child(dateTime).update(workoutToSave, function(err) {
+          ref.child('classes').child(workoutToSave.dateTime).update(workoutToSave, function(err) {
             if (err) return console.log(err);
           })      
         }
@@ -147,7 +148,7 @@ angular.module('bodyAppApp')
       workoutToSave.spots = 12;
       console.log(workoutToSave)
 
-      checkIfExists(workoutToSave.dateTime, workoutToSave); 
+      checkIfExists(workoutToSave); 
     }
 
     function createSchedule(days, daysInFuture) {

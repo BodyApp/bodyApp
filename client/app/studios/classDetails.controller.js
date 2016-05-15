@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, Studios, $http, Auth, User) {
+  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
@@ -187,13 +187,29 @@ angular.module('bodyAppApp')
     function getBookings(dateTime) {
       // if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
       ref.child('bookings').child(dateTime).once('value', function(snapshot) {
-        $scope.bookings = snapshot.val();
+        if (snapshot.exists()) $scope.bookings = snapshot.val();
         return $scope.bookings;
       })
     }
 
+    $scope.deleteClass = function() {
+    	if ($scope.bookings) return alert("There are users signed up for this class!")
+    	ref.child('classes').child(classId).remove(function(err) {
+    		if (err) return console.log(err)
+  			console.log("Class successfully deleted.")
+  			$scope.returnToSchedule();
+    	})
+    }
+
     $scope.returnToSchedule = function() {
-    	$location.path('/studios/' + studioId + '/editschedule')
+    	if(!$rootScope.$$phase) {
+	    	$rootScope.$apply(function() {
+	        $location.path('/studios/' + studioId + '/editschedule')
+	        console.log($location.path());
+	      });
+	    } else {
+	    	$location.path('/studios/' + studioId + '/editschedule')
+	    }
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
