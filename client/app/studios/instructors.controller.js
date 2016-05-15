@@ -17,7 +17,7 @@ angular.module('bodyAppApp')
     ref.onAuth(function(authData) {
       if (authData) {
         console.log("User is authenticated with fb ");
-        getTrainers()
+        getInstructors()
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -28,7 +28,7 @@ angular.module('bodyAppApp')
               console.log("Firebase user authentication failed", error);
             } else {
               if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-              getTrainers()
+              getInstructors()
             }
           }); 
         } else {
@@ -38,9 +38,9 @@ angular.module('bodyAppApp')
       }
     })
 
-    function getTrainers() {
-      ref.child('trainers').on('value', function(snapshot) {
-        $scope.trainersPulled = snapshot.val()
+    function getInstructors() {
+      ref.child('instructors').on('value', function(snapshot) {
+        $scope.instructorsPulled = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
       })  
     }
@@ -64,8 +64,8 @@ angular.module('bodyAppApp')
     $scope.saveInstructor = function(instructorToSave) {
       console.log(instructorToSave)
       // console.log(userInfo);
-      // delete userInfo.$promise
-      // delete userInfo.$resolved
+      if (instructorToSave.$promise) delete instructorToSave.$promise;
+      if (instructorToSave.$resolved) delete instructorToSave.$resolved;
 
       // for (var prop in userInfo) {
       //   if (userInfo.hasOwnProperty(prop)) instructorToSave[prop] = userInfo[prop];
@@ -74,8 +74,8 @@ angular.module('bodyAppApp')
       // instructorToSave.userInfo = userInfo;
       // console.log(instructorToSave)
 
-      // ref.child('trainers').child(userInfo._id).update(instructorToSave)
-      ref.child('trainers').child(instructorToSave._id).update(instructorToSave, function(err) {
+      // ref.child('instructors').child(userInfo._id).update(instructorToSave)
+      ref.child('instructors').child(instructorToSave._id).update(instructorToSave, function(err) {
         console.log("Saved / Updated instructor")
         $scope.returnedInstructor = false;
         $scope.showAddInstructor = false;

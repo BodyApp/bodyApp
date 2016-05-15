@@ -109,8 +109,8 @@
                 Class
               </label>
               <div class="select display-block">
-                <select id="class-choice">
-                  <option>Level One</option>
+                <select id="class-choice" ng-model = "workoutToCreate.classType" ng-change = "selectClassType(workoutToCreate.classType)" ng-options = "value.name for (key, value) in classTypes">
+                  <!-- <option>Level One</option> -->
                 </select>
               </div>
             </div>
@@ -122,8 +122,8 @@
                 Workout
               </label>
               <div class="select display-block">
-                <select id="workout-choice">
-                  <option>Workout #34: Fight Gone Bad</option>
+                <select id="workout-choice" ng-model = "workoutToCreate.workout" ng-options = "value as value.title for (key, value) in workoutOptions">
+                  <!-- <option>Workout #34: Fight Gone Bad</option> -->
                 </select>
               </div>
             </div>
@@ -135,8 +135,8 @@
                 Instructor
               </label>
               <div class="select display-block">
-                <select id="instructor-choice">
-                  <option>Beth Anne Lazaro (You)</option>
+                <select id="instructor-choice" ng-model = "workoutToCreate.instructor" ng-options = "value as (value.firstName + ' ' + value.lastName) for (key, value) in instructors">
+                  <!-- <option>Beth Anne Lazaro (You)</option> -->
                 </select>
               </div>
             </div>
@@ -148,8 +148,8 @@
                 Playlist
               </label>
               <div class="select display-block">
-                <select id="playlist-choice">
-                  <option>Top 20 Beats</option>
+                <select id="playlist-choice" ng-model = "workoutToCreate.playlist" ng-options = "value as value.title for (key, value) in playlists">
+                  <!-- <option>Top 20 Beats</option> -->
                 </select>
               </div>
             </div>
@@ -172,7 +172,7 @@
       <div class="panel">
         <div class="panel-header">
           Your Schedule
-          <div class="cal-controls text-left">
+          <!-- <div class="cal-controls text-left">
             <a href="#" class="btn hidden-xs"><i class="bold ti-calendar"></i></a>
             <a href="#" class="btn">Today</a>
             <div class="select hidden-xs">
@@ -191,7 +191,7 @@
                 <option>List View</option>
               </select>
             </div>
-          </div>          
+          </div>           -->
         </div>
         <div class="panel-body">
 

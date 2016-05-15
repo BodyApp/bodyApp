@@ -127,12 +127,12 @@
 
 
 <!-- PANEL -->
-      <div class="panel space-4" ng-repeat = "trainer in trainersPulled">
+      <div class="panel space-4" ng-repeat = "instructor in instructorsPulled">
         <div class="panel-header">
-          {{trainer.firstName}} {{trainer.lastName}}
+          {{instructor.firstName}} {{instructor.lastName}}
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item" ng-click = "editInstructor(trainer); scrollTop();">Edit</a>
+              <a href="#" class="panel-action-item" ng-click = "editInstructor(instructor); scrollTop();">Edit</a>
             </li>
             <!-- <li>
               <a href="#" class="panel-action-item hidden">Delete</a>
@@ -144,17 +144,17 @@
 
           <div class="row mb16">
             <div class="col-sm-2">
-              <img ng-src="{{trainer.picture}}" class="profile-photo">
+              <img ng-src="{{instructor.picture}}" class="profile-photo">
             </div>
             <div class="col-sm-10">
               <div class="row mb8">
                 <div class="col-sm-4">
                   <h5 class="mb0">Position</h5>
-                  <h5 class="lightgray mb0">{{trainer.title}}</h5>
+                  <h5 class="lightgray mb0">{{instructor.title}}</h5>
                 </div>
                 <div class="col-sm-4">
                   <h5 class="mb0">Permissions</h5>
-                  <h5 class="lightgray mb0">{{trainer.permissions}}</h5>
+                  <h5 class="lightgray mb0">{{instructor.permissions}}</h5>
                 </div>
                 <!-- <div class="col-sm-4">
                   <h5 class="mb0">Scheduled for</h5>
@@ -164,7 +164,7 @@
               <div class="row">
                 <div class="col-sm-4">
                   <h5 class="mb0">Certifications</h5>
-                  <h5 class="lightgray mb0">{{trainer.certifications}}</h5>
+                  <h5 class="lightgray mb0">{{instructor.certifications}}</h5>
                 </div>
                 <!-- <div class="col-sm-4">
                   <h5 class="mb0">Current Rating</h5>
@@ -179,7 +179,7 @@
           <div class="row">
             <div class="col-sm-12">
               <h5 class="mb0">Instructor Bio</h5>
-              <h5 class="lightgray mb0">{{trainer.bio}}</h5>
+              <h5 class="lightgray mb0">{{instructor.bio}}</h5>
             </div>
           </div>
         </div>

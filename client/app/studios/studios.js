@@ -99,7 +99,7 @@ angular.module('bodyAppApp')
       .state('editschedule', {
         url: '/studios/:studioId/editschedule',
         templateUrl: 'app/studios/editschedule.html',
-        controller: 'StudiosCtrl',
+        controller: 'EditScheduleCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {
@@ -108,7 +108,7 @@ angular.module('bodyAppApp')
         }
       })
       .state('classDetails', {
-        url: '/studios/:studioId/classDetails',
+        url: '/studios/:studioId/classdetails',
         templateUrl: 'app/studios/classDetails.html',
         controller: 'StudiosCtrl',
         authenticate: true,
@@ -118,9 +118,9 @@ angular.module('bodyAppApp')
           }
         }
       })
-      .state('ralabala', {
-        url: '/studios/:studioId/ralabala',
-        templateUrl: 'app/studios/ralabala.html',
+      .state('storefront', {
+        url: '/studios/:studioId',
+        templateUrl: 'app/studios/storefront.html',
         controller: 'StudiosCtrl',
         authenticate: true,
         resolve: {
