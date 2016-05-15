@@ -207,7 +207,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <table class="table table-condensed table-hover cal-list-table">
                 <thead>
                   <tr>
-                    <th>Mon 05/09</th>
+                    <th>{{getFormattedDateTime(firstDayShown.dateTime).dayOfWeek}}, {{getFormattedDateTime(firstDayShown.dateTime).month}} {{getFormattedDateTime(firstDayShown.dateTime).day}}</th>
                     <th>Class</th>
                     <th class="hidden-xs">Workout</th>
                     <th>Instructor</th>
@@ -216,16 +216,17 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                     <th class="visible-xs">Reg</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody ng-repeat = "class in classSchedule">
                   <tr>
-                    <td>10:30a-12p PDT</td>
-                    <td>Level One</td>
-                    <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
-                    <td>Beth Anne L</td>
-                    <td class="hidden-xs">Top 20 Beats</td>
-                    <td>3 of 12</td>
+                    <td>{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</td>
+                    <td>{{classTypes[class.classType].name}}</td>
+                    <td class="hidden-xs">{{getWorkouts(class.workout).title}}</td>
+                    <td>{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName}}</td>
+                    <td>{{getPlaylistObject(class.playlist).title}}</td>
+                    <td ng-if = "numBookingsByClass[class.dateTime]">{{getNumberOfBookings(class.dateTime)}} of {{class.spots}}</td>
+                    <td ng-if = "!numBookingsByClass[class.dateTime]">None</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>10:30a-12p PDT</td>
                     <td>Level One</td>
                     <td class="hidden-xs">Workout #34: Fight Gone Bad</td>
@@ -240,11 +241,11 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                     <td>Ralph L</td>
                     <td class="hidden-xs">Top 20 Beats</td>
                     <td>3 of 12</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
 
-              <table class="table table-condensed table-hover cal-list-table">
+              <!-- <table class="table table-condensed table-hover cal-list-table">
                 <thead>
                   <tr>
                     <th>Tue 05/10</th>
@@ -267,7 +268,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                   </tr>
                 </tbody>
               </table>
-
+ -->
             </div>
 
           </div>

@@ -16,12 +16,24 @@ angular.module('bodyAppApp')
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
 
+    $scope.firstDayShown = {};
+    $scope.firstDayShown.dateTime = new Date().getTime();
+    // $scope.firstDayShown.formattedDate = $scope.getFormattedDateTime($scope.firstDayShown.dateTime)
+    // console.log($scope.firstDayShown)
+
+    // $scope.classTypes = {};
+    $scope.workouts = {};
+    // $scope.instructors = {};
+    $scope.playlistsObject = {};
+    $scope.numBookingsByClass = {};
+
     ref.onAuth(function(authData) {
       if (authData) {
         console.log("User is authenticated with fb ");
         getClassTypes();
         getInstructors();
         getPlaylists();
+        getClasses()
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -35,6 +47,7 @@ angular.module('bodyAppApp')
               getClassTypes();
               getInstructors();
               getPlaylists();
+              getClasses()
             }
           }); 
         } else {
@@ -43,6 +56,19 @@ angular.module('bodyAppApp')
         }
       }
     })
+
+    function getClasses() {
+      var startAt = new Date().getTime().toString();
+      var numberOfDaysToDisplay = 7;
+      var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
+      var endAt = (new Date().getTime() + toAdd).toString()
+
+      ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
+        $scope.classSchedule = snapshot.val();
+        console.log("Pulled " + Object.keys($scope.classSchedule).length + " classes for schedule.")
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
 
     function getPlaylists() {
       ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
@@ -58,7 +84,7 @@ angular.module('bodyAppApp')
     function getInstructors() {
       ref.child('instructors').once('value', function(snapshot) {
         $scope.instructors = snapshot.val()
-        console.log($scope.instructors)
+        // console.log($scope.instructors)
         $scope.workoutToCreate = $scope.workoutToCreate || {};
         if (!$scope.workoutToCreate.instructor) $scope.workoutToCreate.instructor = $scope.instructors[Object.keys($scope.instructors)[0]];
       })
@@ -113,7 +139,82 @@ angular.module('bodyAppApp')
       checkIfExists(workoutToSave.dateTime, workoutToSave); 
     }
 
-    
+    $scope.getWorkouts = function(workoutId) {
+      if ($scope.workouts[workoutId]) return $scope.workouts[workoutId];
+      ref.child('workouts').child(workoutId).once('value', function(snapshot) {
+        $scope.workouts[workoutId] = snapshot.val()
+        if(!$scope.$$phase) $scope.$apply();
+        return $scope.workouts[workoutId];
+      })
+    }
+
+    $scope.getPlaylistObject = function(playlistId) {
+      if ($scope.playlistsObject[playlistId]) return $scope.playlistsObject[playlistId];
+      ref.child('playlists').child(playlistId).once('value', function(snapshot) {
+        $scope.playlistsObject[playlistId] = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
+        return $scope.playlistsObject[playlistId];
+      })
+    }
+
+    $scope.getNumberOfBookings = function(dateTime) {
+      if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
+      ref.child('bookings').child(dateTime).once('value', function(snapshot) {
+        $scope.numBookingsByClass[dateTime] = snapshot.numChildren();
+        return $scope.numBookingsByClass[dateTime];
+      })
+    }
+
+    $scope.getFormattedDateTime = function(dateTime, noToday) {
+        var newDate = new Date(dateTime);
+        var formatted = {};
+
+        if (newDate.getHours() == 12) {
+            formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
+        } else if (newDate.getHours() == 0) {
+            formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
+        } else {
+            formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
+        } 
+        
+        formatted.day = newDate.getDate();
+        formatted.year = newDate.getFullYear();
+        
+        // $scope.dayOfWeek;
+        
+        switch (newDate.getDay()) {
+            case 0: formatted.dayOfWeek = "Sun"; break;
+            case 1: formatted.dayOfWeek = "Mon"; break;
+            case 2: formatted.dayOfWeek = "Tue"; break;
+            case 3: formatted.dayOfWeek = "Wed"; break;
+            case 4: formatted.dayOfWeek = "Thu"; break;
+            case 5: formatted.dayOfWeek = "Fri"; break;
+            case 6: formatted.dayOfWeek = "Sat"; break;
+            default: break;
+        }
+
+        if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
+            formatted.dayOfWeek = "Today"
+        }
+
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sept";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+
+        formatted.month = month[newDate.getMonth()]    
+        // console.log(formatted);       
+        return formatted;
+    }
 
     $scope.keyPressed = function(key, enteredSoFar) {
       if (key.keyCode === 13) $scope.searchForUser(enteredSoFar)
