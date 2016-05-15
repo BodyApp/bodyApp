@@ -212,6 +212,10 @@ angular.module('bodyAppApp')
 	    }
     }
 
+    $scope.enterEditMode = function() {
+    	$scope.editing = true;
+    }
+
     $scope.getFormattedDateTime = function(dateTime, noToday) {
       return getFormattedDateTime(dateTime, noToday);
     }

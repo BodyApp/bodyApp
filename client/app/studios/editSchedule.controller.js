@@ -67,11 +67,11 @@ angular.module('bodyAppApp')
     })
 
     function getClasses(daysInFuture) {
-      var startAt = new Date().getTime().toString();
+      var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
       startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
       var numberOfDaysToDisplay = numDaysToShow;
       var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
-      var endAt = (startAt*1 + toAdd).toString()
+      var endAt = (startAt*1 + toAdd + 1*60*60*1000).toString()
 
       ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
         $scope.classSchedule = snapshot.val();

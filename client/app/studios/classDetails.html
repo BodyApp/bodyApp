@@ -9,7 +9,10 @@
           Class Details
         </div>
         <div class="panel-body">
-          <h5 class="mb0">Time</h5>
+          <h5 class="mb0">Date</h5>
+          <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).dayOfWeek}}, {{getFormattedDateTime(classDetails.dateTime).month}} {{getFormattedDateTime(classDetails.dateTime).day}}</h5>
+
+          <h5 class="mt8">Time</h5>
           <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
 
           <h5 class="mt8 mb0">Class</h5>
@@ -58,7 +61,7 @@
               <a href="#" ng-click = "returnToSchedule()">Return to Schedule</a>
             </li>
             <li class="mb8">
-              <a href="#">Edit Class Details</a>
+              <a href="#" ng-click = "enterEditMode()">Edit Class Details</a>
             </li>
             <!-- <li class="mb8">
               <a href="#">Message Sign Ups</a>
