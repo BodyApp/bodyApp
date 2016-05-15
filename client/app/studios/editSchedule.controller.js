@@ -193,10 +193,12 @@ angular.module('bodyAppApp')
     $scope.changeWeek = function() {
       if ($scope.showingNextWeek) {
         getClasses(0);
-        createSchedule(7, 0);  
+        createSchedule(7, 0);
+        $scope.showingNextWeek = false;
       } else {
         getClasses(7);
         createSchedule(7, 7);
+        $scope.showingNextWeek = true;
       }
     }
 

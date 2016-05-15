@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassDetailsCtrl', function ($scope, $stateParams, Studios, $http, Auth, User) {
+  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
@@ -190,6 +190,10 @@ angular.module('bodyAppApp')
         $scope.bookings = snapshot.val();
         return $scope.bookings;
       })
+    }
+
+    $scope.returnToSchedule = function() {
+    	$location.path('/studios/' + studioId + '/editschedule')
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
