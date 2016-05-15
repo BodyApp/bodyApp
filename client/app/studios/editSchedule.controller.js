@@ -89,8 +89,27 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveWorkout = function(workoutToCreate) {
-      console.log(workoutToCreate)
-      console.log(new Date(workoutToCreate.dateTime).getTime())
+      var workoutToSave = {};
+      workoutToSave.classType = workoutToCreate.classType.id;
+      workoutToSave.dateTime = new Date(workoutToCreate.dateTime).getTime();
+      workoutToSave.instructor = workoutToCreate.instructor._id;
+      workoutToSave.playlist = workoutToCreate.playlist.id;
+      workoutToSave.workout = workoutToCreate.workout.id;
+      workoutToSave.spots = 12;
+
+      checkifExists(workoutToSave.dateTime);
+
+      function checkIfExists(dateTime) {
+        ref.child('classes').child(dateTime).once('value', function(snapshot) {
+          if (snapshot.exists()) {
+            checkIfExists(dateTime+1);  //Recursive
+          } else {
+            ref.child('classes').child(dateTime).update(workoutToSave, function(err) {
+              if (err) return console.log(err);
+            })      
+          }
+        })
+      }
     }
 
     $scope.keyPressed = function(key, enteredSoFar) {
