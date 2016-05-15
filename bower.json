@@ -29,7 +29,8 @@
     "checklist-model": "*",
     "angular-scroll": "*",
     "ngclipboard": "*",
-    "ng-tags-input": "*"
+    "ng-tags-input": "*",
+    "angular-material": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

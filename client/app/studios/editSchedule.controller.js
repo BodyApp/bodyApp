@@ -4,6 +4,7 @@ angular.module('bodyAppApp')
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
+    $scope.minDate = new Date();
     Studios.setCurrentStudio(studioId);
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
