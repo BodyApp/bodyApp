@@ -88,6 +88,18 @@ angular.module('bodyAppApp')
       }  
     }
 
+    function checkIfExists(dateTime, workoutToSave) {
+      ref.child('classes').child(dateTime).once('value', function(snapshot) {
+        if (snapshot.exists()) {
+          checkIfExists(dateTime+1, workoutToSave);  //Recursive
+        } else {
+          ref.child('classes').child(dateTime).update(workoutToSave, function(err) {
+            if (err) return console.log(err);
+          })      
+        }
+      })
+    }
+
     $scope.saveWorkout = function(workoutToCreate) {
       var workoutToSave = {};
       workoutToSave.classType = workoutToCreate.classType.id;
@@ -96,21 +108,12 @@ angular.module('bodyAppApp')
       workoutToSave.playlist = workoutToCreate.playlist.id;
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.spots = 12;
+      console.log(workoutToSave)
 
-      checkifExists(workoutToSave.dateTime);
-
-      function checkIfExists(dateTime) {
-        ref.child('classes').child(dateTime).once('value', function(snapshot) {
-          if (snapshot.exists()) {
-            checkIfExists(dateTime+1);  //Recursive
-          } else {
-            ref.child('classes').child(dateTime).update(workoutToSave, function(err) {
-              if (err) return console.log(err);
-            })      
-          }
-        })
-      }
+      checkIfExists(workoutToSave.dateTime, workoutToSave); 
     }
+
+    
 
     $scope.keyPressed = function(key, enteredSoFar) {
       if (key.keyCode === 13) $scope.searchForUser(enteredSoFar)
