@@ -10,10 +10,10 @@
         </div>
         <div class="panel-body">
           <h5 class="mb0">Time</h5>
-          <h5 class="mb0">12p - 1:30p PDT</h5>
+          <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
 
           <h5 class="mt8 mb0">Class</h5>
-          <h5 class="lightgray mb0">Level One</h5>
+          <h5 class="lightgray mb0">{{classTypes[classDetails.classType].name}}</h5>
           <div class="select display-block hidden">
             <select>
               <option>Level One</option>
@@ -21,7 +21,7 @@
           </div>
 
           <h5 class="mt8 mb0">Workout</h5>
-          <h5 class="lightgray mb0">Workout #34: Fight Gone Bad</h5>
+          <h5 class="lightgray mb0">{{workouts[classDetails.workout].title}}</h5>
           <div class="select display-block hidden">
             <select>
               <option>Workout #34: Fight Gone Bad</option>
@@ -29,7 +29,7 @@
           </div>
 
           <h5 class="mt8 mb0">Instructor</h5>
-          <h5 class="lightgray mb0">Beth Anne L</h5>
+          <h5 class="lightgray mb0">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
           <div class="select display-block hidden">
             <select>
               <option>Beth Anne</option>
@@ -37,7 +37,7 @@
           </div>
 
           <h5 class="mt8 mb0">Playlist</h5>
-          <h5 class="lightgray">Top 20 Beats</h5>
+          <h5 class="lightgray">{{playlistObjects[classDetails.playlist].title}}</h5>
           <div class="select display-block hidden">
             <select>
               <option>Top 20 Beats</option>

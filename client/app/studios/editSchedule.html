@@ -223,7 +223,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                   </tr>
                 </thead>
                 <tbody ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule">
-                  <tr>
+                  <tr ng-click = "navigateToClassDetails(class.dateTime)">
                     <td>{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</td>
                     <td>{{classTypes[class.classType].name}}</td>
                     <td class="hidden-xs">{{workouts[class.workout].title}}</td>

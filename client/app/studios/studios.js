@@ -108,13 +108,16 @@ angular.module('bodyAppApp')
         }
       })
       .state('classDetails', {
-        url: '/studios/:studioId/classdetails',
+        url: '/studios/:studioId/classdetails/:classId',
         templateUrl: 'app/studios/classDetails.html',
-        controller: 'StudiosCtrl',
+        controller: 'ClassDetailsCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {
             return $stateParams.studioId
+          },
+          classId: function($stateParams) {
+            return $stateParams.classId
           }
         }
       })

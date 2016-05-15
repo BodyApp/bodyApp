@@ -1,5 +1,7 @@
+'use strict';
+
 angular.module('bodyAppApp')
-  .controller('EditScheduleCtrl', function ($scope, $stateParams, $location, Studios, $http, Auth, User) {
+  .controller('ClassDetailsCtrl', function ($scope, $stateParams, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
@@ -12,6 +14,8 @@ angular.module('bodyAppApp')
       // $location.path('/ralabala/admin')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
+
+    var classId = $stateParams.classId;
 
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
@@ -33,13 +37,12 @@ angular.module('bodyAppApp')
     ref.onAuth(function(authData) {
       if (authData) {
         console.log("User is authenticated with fb ");
+        getClassDetails(classId);
         getClassTypes();
-        getInstructors();
-        getPlaylists();
-        getClasses(daysInFuture);
         getWorkouts();
+        getInstructors();
         getPlaylistObjects();
-        createSchedule(numDaysToShow, daysInFuture);
+        getBookings(classId);
       } else {
         console.log("User is logged out");
         if (user.firebaseToken) {
@@ -50,13 +53,12 @@ angular.module('bodyAppApp')
               console.log("Firebase user authentication failed", error);
             } else {
               if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+              getClassDetails(classId);
               getClassTypes();
-              getInstructors();
-              getPlaylists();
-              getClasses(daysInFuture);
-              getWorkouts();
-              getPlaylistObjects();
-              createSchedule(numDaysToShow, daysInFuture);
+			        getWorkouts();
+			        getInstructors();
+			        getPlaylistObjects();
+			        getBookings(classId);
             }
           }); 
         } else {
@@ -66,51 +68,59 @@ angular.module('bodyAppApp')
       }
     })
 
-    function getClasses(daysInFuture) {
-      var startAt = new Date().getTime().toString();
-      startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
-      var numberOfDaysToDisplay = numDaysToShow;
-      var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
-      var endAt = (startAt*1 + toAdd).toString()
-
-      ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
-        $scope.classSchedule = snapshot.val();
-        console.log("Pulled " + Object.keys($scope.classSchedule).length + " classes for schedule.")
+    function getClassDetails(classToGet) {
+      ref.child('classes').child(classToGet).once('value', function(snapshot) {
+        $scope.classDetails = snapshot.val();
+        console.log($scope.classDetails)
         if(!$scope.$$phase) $scope.$apply();
       })
     }
 
-    function getPlaylists() {
-      ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
-        $scope.playlists = [];
-        snapshot.forEach(function(playlist) {
-          $scope.playlists.unshift(playlist.val())
-        })
-        $scope.workoutToCreate = $scope.workoutToCreate || {};
-        if (!$scope.workoutToCreate.playlist) $scope.workoutToCreate.playlist = $scope.playlists[0];
-      })
-    }
+    // function getPlaylists() {
+    //   ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
+    //     $scope.playlists = [];
+    //     snapshot.forEach(function(playlist) {
+    //       $scope.playlists.unshift(playlist.val())
+    //     })
+    //     $scope.workoutToCreate = $scope.workoutToCreate || {};
+    //     if (!$scope.workoutToCreate.playlist) $scope.workoutToCreate.playlist = $scope.playlists[0];
+    //   })
+    // }
 
     function getInstructors() {
-      ref.child('instructors').once('value', function(snapshot) {
-        $scope.instructors = snapshot.val()
-        Studios.saveInstructors(snapshot.val())
-        // console.log($scope.instructors)
-        $scope.workoutToCreate = $scope.workoutToCreate || {};
-        if (!$scope.workoutToCreate.instructor) $scope.workoutToCreate.instructor = $scope.instructors[Object.keys($scope.instructors)[0]];
-      })
+    	$scope.instructors = Studios.getInstructors();
+      if(!$scope.$$phase) $scope.$apply();
+
+      if (!$scope.instructors) {
+				ref.child('instructors').once('value', function(snapshot) {
+	        $scope.instructors = snapshot.val();     	
+	        if(!$scope.$$phase) $scope.$apply();
+	      })
+      }
+
+      // ref.child('instructors').once('value', function(snapshot) {
+      //   $scope.instructors = snapshot.val()
+      //   // console.log($scope.instructors)
+      //   $scope.workoutToCreate = $scope.workoutToCreate || {};
+      //   if (!$scope.workoutToCreate.instructor) $scope.workoutToCreate.instructor = $scope.instructors[Object.keys($scope.instructors)[0]];
+      // })
     }
 
     function getClassTypes() {
-      ref.child('classTypes').once('value', function(snapshot) {
-        $scope.classTypes = snapshot.val()
-        Studios.saveClassTypes(snapshot.val())
-        //Sets initial class type
-        $scope.workoutToCreate = $scope.workoutToCreate || {};
-        if (!$scope.workoutToCreate.classType) $scope.workoutToCreate.classType = $scope.classTypes[Object.keys($scope.classTypes)[0]];
-        $scope.selectClassType($scope.workoutToCreate.classType) //Grab workouts
-        if(!$scope.$$phase) $scope.$apply();
-      })  
+    	$scope.classTypes = Studios.getClassTypes();
+      if(!$scope.$$phase) $scope.$apply();
+      if (!$scope.classTypes) {
+      	ref.child('classTypes').once('value', function(snapshot) {
+	        $scope.classTypes = snapshot.val()
+	        console.log($scope.classTypes);
+	        
+	        // //Sets initial class type
+	        // $scope.workoutToCreate = $scope.workoutToCreate || {};
+	        // if (!$scope.workoutToCreate.classType) $scope.workoutToCreate.classType = $scope.classTypes[Object.keys($scope.classTypes)[0]];
+	        // $scope.selectClassType($scope.workoutToCreate.classType) //Grab workouts
+	        if(!$scope.$$phase) $scope.$apply();
+	      })  	
+      }
     }
 
     $scope.selectClassType = function(classType) {
@@ -150,58 +160,36 @@ angular.module('bodyAppApp')
       checkIfExists(workoutToSave.dateTime, workoutToSave); 
     }
 
-    function createSchedule(days, daysInFuture) {
-      $scope.daysToShow = [];
-      var dateTimeNow = new Date();
-      var beginningDateToday = new Date(dateTimeNow.getFullYear(), dateTimeNow.getMonth(), dateTimeNow.getDate(), 0, 0, 0, 1).getTime();
-      beginningDateToday = beginningDateToday + daysInFuture*24*60*60*1000;
-      for (var i=0; i<days; i++) {
-        var day = {}
-        day.beginDateTime = beginningDateToday + i*24*60*60*1000
-        day.endDateTime = day.beginDateTime + 24*60*60*1000-1000
-        day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
-
-        $scope.daysToShow.push(day)
-        if(!$scope.$$phase) $scope.$apply();
-      }
-    }
-
     function getWorkouts() {
-      ref.child('workouts').once('value', function(snapshot) {
-        $scope.workouts = snapshot.val()
-        Studios.saveWorkouts(snapshot.val())
-        if(!$scope.$$phase) $scope.$apply();
-      })
+    	$scope.workouts = Studios.getWorkouts();
+      if(!$scope.$$phase) $scope.$apply();
+
+      if (!$scope.workouts) {
+      	ref.child('workouts').once('value', function(snapshot) {
+	        $scope.workouts = snapshot.val()
+	        if(!$scope.$$phase) $scope.$apply();
+	      })	
+      }
     }
 
     function getPlaylistObjects() {
-      ref.child('playlists').once('value', function(snapshot) {
-        $scope.playlistObjects = snapshot.val();
-        Studios.savePlaylistObjects(snapshot.val())
-        if(!$scope.$$phase) $scope.$apply();
-      })
+    	$scope.playlistObjects = Studios.getPlaylistObjects();
+      if(!$scope.$$phase) $scope.$apply();
+      
+      if (!$scope.playlistObjects) {
+	      ref.child('playlists').once('value', function(snapshot) {
+	        $scope.playlistObjects = snapshot.val();
+	        if(!$scope.$$phase) $scope.$apply();
+	      })
+			}
     }
 
-    $scope.getNumberOfBookings = function(dateTime) {
-      if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
+    function getBookings(dateTime) {
+      // if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
       ref.child('bookings').child(dateTime).once('value', function(snapshot) {
-        $scope.numBookingsByClass[dateTime] = snapshot.numChildren();
-        return $scope.numBookingsByClass[dateTime];
+        $scope.bookings = snapshot.val();
+        return $scope.bookings;
       })
-    }
-
-    $scope.changeWeek = function() {
-      if ($scope.showingNextWeek) {
-        getClasses(0);
-        createSchedule(7, 0);  
-      } else {
-        getClasses(7);
-        createSchedule(7, 7);
-      }
-    }
-
-    $scope.navigateToClassDetails = function(classId) {
-      $location.path('/studios/'+studioId+'/classdetails/'+classId)
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
