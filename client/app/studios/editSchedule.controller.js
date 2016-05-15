@@ -13,6 +13,9 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
+    var tzName = jstz().timezone_name;
+    $scope.timezone = moment().tz(tzName).format('z');
+
     ref.onAuth(function(authData) {
       if (authData) {
         console.log("User is authenticated with fb ");
@@ -83,6 +86,11 @@ angular.module('bodyAppApp')
           if(!$scope.$$phase) $scope.$apply();
         })
       }  
+    }
+
+    $scope.saveWorkout = function(workoutToCreate) {
+      console.log(workoutToCreate)
+      console.log(new Date(workoutToCreate.dateTime).getTime())
     }
 
     $scope.keyPressed = function(key, enteredSoFar) {

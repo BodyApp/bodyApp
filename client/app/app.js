@@ -17,7 +17,8 @@ angular.module('bodyAppApp', [
   'duScroll',
   'ngclipboard',
   'ngTagsInput',
-  'ngMaterial'
+  'ngMaterial',
+  'ngMaterialDatePicker'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

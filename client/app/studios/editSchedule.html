@@ -20,18 +20,20 @@
             <div class="col-sm-12">
               <!-- <md-content>               -->
                 <!-- <input type="text" placeholder="05/09/18"> -->
-                <md-datepicker md-min-date="minDate" ng-model="workoutToCreate.date" md-placeholder="Enter date"></md-datepicker>
+                <!-- <md-datepicker md-min-date="minDate" ng-model="workoutToCreate.date" md-placeholder="Enter date"></md-datepicker> -->
+              <input mdc-datetime-picker="" date="true" min-date="minDate" time="true" type="text" id="datetime" placeholder="Enter date and time" ng-model="workoutToCreate.dateTime" short-time="true" format="M/D/Y hh:mm a" class="md-input">
               <!-- </md-content> -->
             </div>
           </div>
 
 
-          <div class="row mb8">
+<!--           <div class="row mb8">
             <div class="col-lg-6">
               <label for="start-time" class="pb0">
                 Start Time
               </label>
-              <input type="text" id="start-time" placeholder="00:00PM">
+              <input mdc-datetime-picker="" date="false" time="true" type="text" id="time" short-time="true"
+placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" md-input">
             </div>
             <div class="col-lg-6">
               <label for="start-time" class="pb0">
@@ -39,20 +41,20 @@
               </label>
               <input type="text" id="start-time" placeholder="00:00PM">
             </div>            
-          </div>
+          </div> -->
 
           <div class="row">
             <div class="col-sm-12">
               <span class="lightgray">Time zone:</span>
-              <span class="lightgray">EDT</span>
-              <div class="select hidden">
+              <span class="lightgray">{{timezone}}</span>
+              <!-- <div class="select hidden">
                 <select>
                   <option>EDT</option>
                   <option>MDT</option>
                   <option>PDT</option>
                 </select>
-              </div>
-              <a href="#" class="tiny">Change</a>
+              </div> -->
+              <!-- <a href="#" class="tiny">Change</a> -->
             </div>
           </div>
 <!-- 
@@ -161,7 +163,7 @@
           </div>
 
           <div class="space-top-4">
-            <a href="#" class="btn-blue btn-block">Add to schedule</a>
+            <a href="#" class="btn-blue btn-block" ng-click = "saveWorkout(workoutToCreate)">Add to schedule</a>
           </div>
 
 

@@ -30,7 +30,8 @@
     "angular-scroll": "*",
     "ngclipboard": "*",
     "ng-tags-input": "*",
-    "angular-material": "*"
+    "angular-material": "*",
+    "angular-material-datetimepicker": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
