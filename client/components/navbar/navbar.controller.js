@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NavbarCtrl', function ($scope, $location, $state, $uibModal, $window, Auth) {
+  .controller('NavbarCtrl', function ($scope, $location, $state, $stateParams, $uibModal, $window, Auth, Studios) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -26,6 +26,7 @@ angular.module('bodyAppApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.isInstructor = Auth.isInstructor;
     $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.isCurrentStudioAdmin = Studios.isAdmin;
 
     $scope.clicked = false;
 
@@ -33,6 +34,46 @@ angular.module('bodyAppApp')
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
 
     var modalInstance;
+    // $scope.isCurrentStudioAdmin = false;
+
+    var studioId = $stateParams.studioId;
+    $scope.studioId = studioId;
+    var ref;
+    Studios.setCurrentStudio(studioId);
+    if (studioId) {
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+    } else {
+      // $location.path('/ralabala/admin')
+      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    }
+    ref.onAuth(function(authData) {
+      if (authData) {
+        // console.log("User is authenticated with fb ");
+        // checkIfStudioAdmin()
+      } else {
+        console.log("User is logged out");
+        if (user.firebaseToken) {
+          ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
+            if (error) {
+              Auth.logout();
+              $window.location.reload()
+              console.log("Firebase user authentication failed", error);
+            } else {
+              // if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+              // checkIfStudioAdmin()
+            }
+          }); 
+        } else {
+          Auth.logout();
+          $window.location.reload()
+        }
+      }
+    })
+
+    // function checkIfStudioAdmin() {
+    //   $scope.isCurrentStudioAdmin = Studios.isAdmin();
+    //   if(!$scope.$$phase) $scope.$apply();
+    // }
 
     $scope.hover = function(element) {
       $scope.imageSrc = "assets/images/BodyLogo_white_small.png";

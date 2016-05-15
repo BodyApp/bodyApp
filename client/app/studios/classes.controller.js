@@ -25,7 +25,7 @@ angular.module('bodyAppApp')
       $scope.savedClassTypes = []
       snapshot.forEach(function(classType) {
         $scope.savedClassTypes.push(classType.val());
-        console.log(classType.val().updated)
+        // console.log(classType.val().updated)
       })
       // $scope.savedClassTypes = snapshot.val()
       // console.log($scope.savedClassTypes)

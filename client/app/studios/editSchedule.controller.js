@@ -108,12 +108,12 @@ angular.module('bodyAppApp')
         //Sets initial class type
         $scope.workoutToCreate = $scope.workoutToCreate || {};
         if (!$scope.workoutToCreate.classType) $scope.workoutToCreate.classType = $scope.classTypes[Object.keys($scope.classTypes)[0]];
-        $scope.selectClassType($scope.workoutToCreate.classType) //Grab workouts
+        selectClassType($scope.workoutToCreate.classType) //Grab workouts
         if(!$scope.$$phase) $scope.$apply();
       })  
     }
 
-    $scope.selectClassType = function(classType) {
+    function selectClassType(classType) {
       $scope.workoutOptions = {};
       for (var prop in classType.workoutsUsingClass) {
         ref.child('workouts').child(prop).once('value', function(snapshot) {
@@ -122,7 +122,11 @@ angular.module('bodyAppApp')
           if (!$scope.workoutToCreate.workout) $scope.workoutToCreate.workout = $scope.workoutOptions[prop] //Initiates workout
           if(!$scope.$$phase) $scope.$apply();
         })
-      }  
+      }
+    }
+
+    $scope.selectClassType = function(classType) {
+       return selectClassType(classType); 
     }
 
     function checkIfExists(workoutToSave) {

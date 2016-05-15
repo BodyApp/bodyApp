@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .factory('Studios', function() {
+  .factory('Studios', function(Auth) {
   	
   	var service = {};
   	service.currentStudio;
@@ -11,12 +11,41 @@ angular.module('bodyAppApp')
     service.playlists;
     service.workouts;
     service.instructors;
+    service.admin;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     // var fbObject;
 
+    service.isAdmin = function() {
+      // return service.admin;
+      // if (!service.admin && service.currentStudio) {
+      //   console.log("yeah")
+      //   ref.child(service.currentStudio).child('admins').child(Auth.getCurrentUser()._id).once('value', function(snapshot) {
+      //     if (snapshot.exists()) {
+      //       service.admin = true
+      //       return true;
+      //     } else {
+      //       service.admin = false
+      //       return false;
+      //     }
+      //   })
+      // } else {
+      //   console.log("here")
+        return service.admin;
+      // }
+    }
+
     service.setCurrentStudio = function(studio) {
       service.currentStudio = studio
+      if (!service.admin) {
+        ref.child(studio).child('admins').child(Auth.getCurrentUser()._id).on('value', function(snapshot) {
+          if (snapshot.exists()) {
+            service.admin = true
+          } else {
+            service.admin = false
+          }
+        })
+      }
     }    
 
     service.getCurrentStudio = function() {

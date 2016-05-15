@@ -76,11 +76,18 @@ angular.module('bodyAppApp')
 
       // ref.child('instructors').child(userInfo._id).update(instructorToSave)
       ref.child('instructors').child(instructorToSave._id).update(instructorToSave, function(err) {
+        if (err) return console.log(err)
         console.log("Saved / Updated instructor")
         $scope.returnedInstructor = false;
         $scope.showAddInstructor = false;
         $scope.showEditInstructor = false;
         if(!$scope.$$phase) $scope.$apply();
+        if (instructorToSave.permissions === "Studio Admin") {
+          ref.child('admins').child(instructorToSave._id).set({"isInstructor": true}, function(err) {
+            if (err) return console.log(err)
+            console.log("Instructor updated as admin")
+          })
+        }
       })
     }
 
