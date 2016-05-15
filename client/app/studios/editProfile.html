@@ -1,0 +1,255 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNavAccount.html'"></div>
+    </div>
+
+    <div class="col-md-9">
+
+<!--
+******************************************************************************************************************************************** REQUIRED INFO **************************************************************************************************************************************************
+-->
+
+
+<!-- FORM PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Required
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="profile-details">
+              Profile Photo
+            </label>
+            <div class="col-sm-9">
+              <div class="row">
+                <div class="col-sm-4">
+                  <img src="/assets/images/bern-prince.jpg" class="profile-photo">
+                </div>
+                <div class="col-sm-8">
+                  <h5 class="lightgray mb0">Clear frontal face photos are an important way for instructors and members to learn about each other. We automatically use your profile photo from Facebook.</h5>
+                  <div class="mt8">
+                    <a href="https://www.facebook.com" class="btn btn-block">Update your profile photo in Facebook</a>
+                    <a href="#" class="btn btn-block hidden">Take a photo with your webcam</a>
+                    <a href="#" class="mt16 btn btn-block hidden">Upload from your computer</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="first-name">
+              First Name
+            </label>
+            <div class="col-sm-9">
+              <input id="first-name" name="Justin" size="30" type="text" value="Justin">
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="last-name">
+              Last Name
+            </label>
+            <div class="col-sm-9">
+              <input id="last-name" name="Mendelson" size="30" type="text" value="Mendelson">
+            </div>            
+          </div>          
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="permissions">
+              I Am
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="permissions">
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">We use this data for analysis and never share it with other users.</h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="permissions">
+              Birthdate
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select id="user-birthdate-mo">
+                  <option>January</option>
+                  <option>February</option>
+                  <option>March</option>
+                </select>
+              </div>
+              <div class="select">
+                <select id="user-birthdate-day">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+              </div>
+              <div class="select">
+                <select id="user-birthdate-yr">
+                  <option>1998</option>
+                  <option>1997</option>
+                  <option>1996</option>
+                </select>                                
+              </div>
+              
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">The wonderful day you were brought into this world. We use this data for analysis and never share it with other users.</h5>
+              </div>
+            </div>
+          </div> 
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="user-email">
+              Email
+            </label>
+            <div class="col-sm-9">
+              <input id="user-email" name="jmendelson22@gmail.com" size="30" type="text" value="jmendelson22@gmail.com">
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Your email is used for studio and client notifications.</h5>
+              </div>              
+            </div>            
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="user-email">
+              Phone Number
+            </label>
+            <div class="col-sm-9">
+              <input id="user-email" name="302-690-9793" size="30" type="text" value="302-690-9793">
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Your phone number is used to get in touch with you for technical or emergency support purposes. We won't share your phone number with other users.</h5>
+              </div>              
+            </div>            
+          </div> 
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="user-email">
+              Where You Live
+            </label>
+            <div class="col-sm-9">
+              <input id="user-email" name="Pepper Pike, Ohio, United States" size="30" type="text" value="Pepper Pike, Ohio, United States">
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">We use this data for analysis and never share it with other users.</h5>
+              </div>              
+            </div>            
+          </div>                                                 
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- FORM PANEL END-->
+
+<!--
+******************************************************************************************************************************************** HEALTH & GOAL INFO **************************************************************************************************************************************************
+-->
+
+
+<!-- FORM PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Health and Goals
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="injuries">
+              Injuries
+            </label>
+            <div class="col-sm-9">
+              <textarea cols="40" rows="5" id="injuries" placeholder=""></textarea>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Describe any injuries or health conditions. This information is confidential and only shared with your instructors.</h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="goals">
+              Goals
+            </label>
+            <div class="col-sm-9">
+              <textarea cols="40" rows="5" id="goals" placeholder=""></textarea>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">In the next three months, what goals can we help you achieve? This information is confidential and only shared with your instructors.</h5>
+              </div>
+            </div>            
+          </div>          
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="emergency">
+              Emergency Contact
+            </label>
+            <div class="col-sm-9">
+              <div class="row mb8">
+                <label class="col-sm-3 lightgray" for="emergency">
+                  Name
+                </label>
+                <div class="col-sm-9">
+                  <input id="emergency" name="Elaine Mendelson" size="30" type="text" value="Elaine Mendelson">
+                </div>            
+              </div>
+              <div class="row mb8">
+                <label class="col-sm-3 lightgray" for="emergency">
+                  Phone
+                </label>
+                <div class="col-sm-9">
+                  <input id="emergency-phone" name="302-743-6593" size="30" type="text" value="302-743-6593">
+                </div>            
+              </div>
+              <div class="row">
+                <label class="col-sm-3 lightgray" for="emergency">
+                  Relationship
+                </label>
+                <div class="col-sm-9">
+                  <input id="emergency-relationship" name="mother" size="30" type="text" value="mother">
+                </div>            
+              </div>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</h5>
+              </div>              
+            </div>            
+          </div>                                                      
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- FORM PANEL END-->
+
+
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

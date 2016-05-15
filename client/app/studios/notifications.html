@@ -1,0 +1,107 @@
+<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+
+<div class="page-container-responsive row-space-top-4 row-space-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/sideNavAccount.html'"></div>
+    </div>
+
+    <div class="col-md-9">
+
+<!--
+******************************************************************************************************************************************** EMAIL SETTINGS **************************************************************************************************************************************************
+-->
+
+
+<!-- FORM PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Email Settings
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="email-settings">
+              I want to recieve
+            </label>
+            <div class="col-sm-9">
+              <label class="col-sm-12 mb0">
+                <input id="email-settings-schedule" name="first-timers" size="15" type="checkbox" checked="checked">
+                Studio Udpates (scheduling, reservations, cancelations)
+              </label>
+              <label class="col-sm-12 mb0">
+                <input id="email-settings-transactions" name="first-timers" size="15" type="checkbox" checked="checked">
+                Transactions (orders, refunds)
+              </label>     
+              <label class="col-sm-12 mb0">
+                <input id="email-settings-transactions" name="first-timers" size="15" type="checkbox" checked="checked">
+                General promotions, updates and news about BODY
+              </label>
+              
+            </div>
+          </div>                                            
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- FORM PANEL END-->
+
+<!--
+******************************************************************************************************************************************** PHONE SETTINGS **************************************************************************************************************************************************
+-->
+
+
+<!-- FORM PANEL -->
+      <div class="panel space-4">
+        <div class="panel-header">
+          Phone Settings
+        </div>
+        <div class="panel-body">
+
+          <div class="row space-4">
+            <label class="col-sm-3" for="email-settings">
+              I want to recieve
+            </label>
+            <div class="col-sm-9">
+              <label class="col-sm-12 mb0">
+                <input id="email-settings-schedule" name="" size="15" type="checkbox" checked="checked">
+                Calls from BODY customer or technical support
+              </label>
+              <div class="col-sm-12">
+                <h5 class="lightgray">If you opt out, we may still call you about your account if it’s urgent or if previous emails didn’t reach you.</h5>
+              </div>
+              
+            </div>
+          </div>                                             
+
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                </li>
+              </ul>              
+            </div>
+          </div>
+
+        </div>
+      </div>
+<!-- FORM PANEL END-->
+
+
+
+    </div>
+
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

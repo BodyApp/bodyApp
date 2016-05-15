@@ -1,21 +1,438 @@
 /*------CONTAINERS-------*/
-.page-container-responsive {
-  width: auto;
+.page-container, .page-container-responsive {
   margin-left: auto;
   margin-right: auto;
+  padding-right: 12.5px;
+  padding-left: 12.5px;
+}
+
+.va-container {
+  display: table;
+  position: absolute;
+}
+.va-container-v {
+  height: 100%
+}
+.va-container-h {
+  width: 100%;
+}
+.va-middle {
+  vertical-align: middle;
+  display: table-cell;
 }
 
 @media (min-width: 768px) {
-  .page-container-responsive {
+  .page-container, .page-container-responsive {
     padding-left: 25px;
     padding-right: 25px;
     width: 745px;
   }
 }
 
+.page-container-responsive {
+  width: auto;
+}
+
+@media (min-width: 768px) {
+  .page-container-responsive {
+    width: 745px;
+  }
+}
+
+@media (min-width: 991px) {
+  .page-container-responsive {
+    width: 945px;
+  }
+}
+
 @media (min-width: 1100px) {
   .page-container-responsive {
     width: 1045px;
+  }
+}
+
+/*------HERO VIDEO PLAYER-------*/
+
+.fullscreen-video-player {
+  background-color: #000;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  -webkit-transition: opacity 800ms ease;
+  -moz-transition: opacity 800ms ease;
+  -o-transition: opacity 800ms ease;
+  transition: opacity 800ms ease;
+  z-index: -1001;
+}
+.fullscreen-video-player iframe {
+  max-width: 100%;
+}
+.fullscreen-video-player-close {
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    right: 50px;
+    text-decoration: none;
+    top: 50px;  
+}
+.row-table {
+  display: table;
+  table-layout: fixed;
+}
+.row-full-height {
+  height: 100%;
+}
+.row.row-table {
+  width: 100%;
+  width: -webkit-calc(100% + 25px);
+  width: -moz-calc(100% + 25px);
+  width: calc(100% + 25px);
+}
+.col-middle {
+  vertical-align: middle;
+}
+.col-top, .col-middle, .col-bottom {
+  float: none;
+  display: table-cell;
+}
+
+/*------SCHEDULE-------*/
+
+.tiny {
+  font-size: 12px;
+  font-weight: 500;
+}
+.class-repeat-table {
+  width: 100%;
+}
+.class-repeat-table th{
+  padding: 0px;
+  margin: 0px;
+}
+.class-repeat-table td{
+  padding: 1px 1px 1px 3px;
+}
+.cal-list-table {
+  margin-bottom: 0px;
+}
+.cal-list-table thead {
+  background: #F7F7F7;
+  font-size: 13px;
+}
+.cal-list-table td {
+  max-width: 150px;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cal-container {
+  background: #EFF1EF;
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  border-bottom: 1px solid #EFF1EF;
+}
+.cal-controls {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+}
+.cal-controls .btn {
+  padding: 5px 20px!important;
+  font-size: 12px;
+}
+.cal-controls .select select {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 12px;
+  max-width: 100px;
+}
+.cal-controls .select:before {
+  padding-top: 0.5em;
+}
+.cal-today {
+  color: #3E7EDF;
+}
+
+.header-cover, .header-cover-gray {
+  background: white;
+  height: 49px;
+  width: 100%;
+  position: absolute;
+  z-index: 999;
+}
+.header-cover-gray {
+  background: #F5F5F5;
+}
+.cal-column {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 98px;
+  margin-right: -3px;
+  margin-left: -3px;
+}
+.week-bck, .week-fwd {
+  position: absolute;
+  top: 9px;
+  z-index: 1001;
+}
+.week-fwd {
+  right: 0px;
+}
+ 
+.cal-daytime {
+  position: relative;
+  z-index: 1000;
+}
+.cal-allClasses {
+  margin-top: 10px;
+}
+.cal-scheduled {
+  border: 1px solid #E4E8E7;
+  background: white;
+  padding: 10px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+.cal-time, .cal-class, .cal-instructor, .cal-friends {
+  margin-bottom: 3px;
+  font-weight: 400;
+}
+.cal-action .btn-blue {
+  padding: 1px 10px;
+  font-size: 12px;
+}
+.cal-bubbles {
+  margin-bottom: 6px;
+}
+.cal-bubbles img {
+  margin-right: 3px;
+  border-radius: 50%;
+}
+
+@media (max-width: 225px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2 {
+    display: inline-block;
+  }
+}
+
+
+@media only screen and (max-width: 259px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1 {
+    display: inline-block;
+  }
+}
+
+@media only screen and (min-width: 260px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2 {
+    display: inline-block;
+  }
+}
+
+@media only screen and (min-width: 375px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3 {
+    display: inline-block;
+  }
+  .cal-container {
+    width: 291px;
+  }
+}
+
+@media (min-width: 456px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4 {
+    display: inline-block;
+  }
+  .cal-container {
+    width: 388px;
+  }
+}
+
+@media (min-width: 550px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5 {
+    display: inline-block;
+  }
+  .cal-container {
+    width: 484px;
+  }
+}
+
+@media (min-width: 650px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6 {
+    display: inline-block;
+  }
+  .cal-container {
+    width: 582px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7,
+  .sched-day-8,
+  .sched-day-9,
+  .sched-day-10,
+  .sched-day-11,
+  .sched-day-12,
+  .sched-day-13,
+  .sched-day-14 {
+    display: none;
+  }
+
+  .sched-day-1,
+  .sched-day-2,
+  .sched-day-3,
+  .sched-day-4,
+  .sched-day-5,
+  .sched-day-6,
+  .sched-day-7 {
+    display: inline-block;
+  }
+  .cal-container {
+    width: 678px;
   }
 }
 
@@ -112,12 +529,12 @@
   padding: 6px 16px!important;
   border-radius: 2px!important;
   margin-bottom: 0px!important;
-  border: none!important;
 }
 .alert-warning {
-  background: #FDE722!important;
-  color: #565a5c!important;
+  background: #FDEB83!important;
+  color: #BB7316!important;
   margin-bottom: 0px;
+  border-radius: 2px;
 }
 .alert-danger {
   background: #CA6666!important;
@@ -598,7 +1015,7 @@ h1 {
   color: #0D1c45;
 }
 .royalblue {
-  color: #224893;
+  color: #3E7EDF;
 }
 .purpleblue {
   color: #A2B2E3;
