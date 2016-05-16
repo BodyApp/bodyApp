@@ -142,5 +142,82 @@ angular.module('bodyAppApp')
             return $stateParams.studioId
           }
         }
+      })
+      .state('dashboard', {
+        url: '/studios/:studioId/user/dashboard',
+        templateUrl: 'app/studios/user/dashboard.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('user-schedule', {
+        url: '/studios/:studioId/user/user-schedule',
+        templateUrl: 'app/studios/user/user-schedule.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('friends', {
+        url: '/studios/:studioId/user/friends',
+        templateUrl: 'app/studios/user/friends.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('user-workouts', {
+        url: '/studios/:studioId/user/user-workouts',
+        templateUrl: 'app/studios/user/user-workouts.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('test-class', {
+        url: '/studios/:studioId/user/test-class',
+        templateUrl: 'app/studios/user/test-class.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('billing', {
+        url: '/studios/:studioId/user/billing',
+        templateUrl: 'app/studios/user/billing.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
+      .state('receipts', {
+        url: '/studios/:studioId/user/receipts',
+        templateUrl: 'app/studios/user/receipts.html',
+        controller: 'StudiosCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
       });
   });

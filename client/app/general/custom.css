@@ -1,3 +1,19 @@
+/*------DASHBOARD-------*/
+.notifications li, .friends-list li {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 0;
+  border-bottom: 1px solid #dce0e0;
+  vertical-align: middle;
+}
+.notifications li:first-child, .friends-list li:first-child {
+  padding-top: 0px;
+}
+.notifications li:last-child .friends-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 /*------CONTAINERS-------*/
 .page-container, .page-container-responsive {
   margin-left: auto;
@@ -5,7 +21,9 @@
   padding-right: 12.5px;
   padding-left: 12.5px;
 }
-
+.mb70 {
+  margin-bottom: 70px;
+}
 .va-container {
   display: table;
   position: absolute;
@@ -49,6 +67,15 @@
   .page-container-responsive {
     width: 1045px;
   }
+}
+
+#browser-alert {
+  padding: 5px;
+  background: #E40824;
+}
+#browser-alert a {
+  color: white;
+  text-decoration: underline;
 }
 
 /*------HERO VIDEO PLAYER-------*/
@@ -542,6 +569,17 @@
   margin-bottom: 0px;
 }
 
+.payment-panel {
+  height: 150px;
+  position: relative;
+  padding: 15px;
+}
+.payment-panel .fa-cc-visa {
+  position: absolute;
+  color: #1a1f71;
+  right: 20px;
+  bottom: 20px;
+}
 
 /*------SPACING-------*/
 .row-space-top-4 {
