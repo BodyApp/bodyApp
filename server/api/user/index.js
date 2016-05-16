@@ -35,7 +35,7 @@ router.put('/:id/saveTimezone', auth.isAuthenticated(), controller.saveTimezone)
 
 router.put('/:id/createIntercomHash', auth.isAuthenticated(), controller.createIntercomHash);
 
-router.put('/:id/checkCoupon', auth.isAuthenticated(), controller.checkCoupon);
+// router.put('/:id/checkCoupon', auth.isAuthenticated(), controller.checkCoupon);
 
 router.put('/:id/sendWelcomeEmail', auth.isAuthenticated(), controller.sendWelcomeEmail);
 
@@ -49,7 +49,7 @@ router.put('/:id/saveResult', auth.isAuthenticated(), controller.saveResult);
 
 router.put('/:id/tourtipShown', auth.isAuthenticated(), controller.tourtipShown);
 
-router.post('/charge', auth.isAuthenticated(), controller.postBilling);
+// router.post('/charge', auth.isAuthenticated(), controller.postBilling);
 router.post('/chargedropin', auth.isAuthenticated(), controller.postDropInBilling);
 
 router.post('/cancelsub', auth.isAuthenticated(), controller.cancelSubscription);

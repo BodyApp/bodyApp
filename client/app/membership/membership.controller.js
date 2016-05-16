@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, User, Schedule) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, studioId, User, Schedule, Studio) {
 
-    var studio = Schedule.getCurrentStudio()
+    // var studio = Schedule.getCurrentStudio()
 
     $scope.slot = slot;
     if (slot) {
@@ -13,7 +13,14 @@ angular.module('bodyAppApp')
       var slotTime = moment(slot.date).format('LT')
     }
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + studio)
+    var planInfo;
+
+    var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + studioId)
+    ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
+      if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
+      planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
+      $scope.planInfo = planInfo;
+    })
 
     $scope.closeModal = function() {
       $uibModalInstance.close()
@@ -73,8 +80,19 @@ angular.module('bodyAppApp')
     $scope.couponEntered = currentUser.referredBy;
 
     if ($scope.couponEntered) {
-      User.checkCoupon({ id: currentUser._id }, {
-        couponString: $scope.couponEntered
+      // User.checkCoupon({ id: currentUser._id }, {
+      //   couponString: $scope.couponEntered
+      // }, function(coupon) {
+      //   if (!coupon.valid) {
+      //     $scope.couponEntered = undefined
+      //   }
+      // }, function(err) {
+      //     $scope.couponEntered = undefined
+      //     console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
+      // }).$promise
+      Studio.checkCoupon({ id: currentUser._id }, {
+        couponString: $scope.couponEntered,
+        studioId: studioId
       }, function(coupon) {
         if (!coupon.valid) {
           $scope.couponEntered = undefined
@@ -91,8 +109,9 @@ angular.module('bodyAppApp')
       } else if (couponEntered === currentUser.referralCode){
         $scope.userEnteredOwnCoupon = true;
       } else {
-        User.checkCoupon({ id: currentUser._id }, {
-          couponString: couponEntered
+        Studio.checkCoupon({ id: currentUser._id }, {
+          couponString: $scope.couponEntered,
+          studioId: studioId
         }, function(coupon) {
           if (coupon.valid) {
             openStripePayment(coupon)
@@ -100,6 +119,7 @@ angular.module('bodyAppApp')
             $scope.invalidCouponEntered = true;
           }
         }, function(err) {
+            $scope.couponEntered = undefined
             console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
         }).$promise
       }
@@ -110,97 +130,73 @@ angular.module('bodyAppApp')
     }
 
 		function openStripePayment(coupon) {
-      var amountToPay = 3000;
-      $scope.invalidCouponEntered = false;
-      $uibModalInstance.dismiss('join');
-      
-      if (coupon && coupon.valid) {
-        amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
-      }
-      // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
-      // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
-      var handler = StripeCheckout.configure({
-        key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-        image: '../../assets/images/body-stripe.jpg',
-        locale: 'auto',
-        token: function(token, args) {
-          var modalInstance = openPaymentConfirmedModal()
-          
-          $http.post('/api/users/charge', {
-            user: currentUser,
-            stripeToken: token,
-            shippingAddress: args,
-            coupon: coupon,
-            studioId: studio
-          })
-          .success(function(data) {
-              console.log("Successfully posted to /user/charge");
+      // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
+        // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
+        
+        // var planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
+        // var planInfo = snapshot.val()
+        if (!planInfo) return
+        var amountToPay = planInfo.amount;
+        // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
+        $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
+        
+        if (coupon && coupon.valid) {
+          amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+        }
+
+        var handler = StripeCheckout.configure({
+          // key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+          key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+          image: '../../assets/images/body-stripe.jpg',
+          locale: 'auto',
+          token: function(token, args) {
+            // var modalInstance = openPaymentConfirmedModal()
+            
+            $http.post('/api/payments/addcustomersubscription', {
+              user: currentUser,
+              stripeToken: token,
+              shippingAddress: args,
+              coupon: coupon,
+              studioId: studioId,
+              planInfo: planInfo
+            })
+            .success(function(data) {
+              console.log("Successfully create new customer subscription.");
+              console.log(data);
               Auth.updateUser(data);
-              currentUser = data;
-              $scope.currentUser = currentUser;
-              $rootScope.subscriptionActive = true;
-              if (slot) bookClass(slot);
-              // User.generateSingleParentCoupon({ id: currentUser._id }, {}, function(user) {
-              //   Auth.updateUser(user);
-              //   console.log("generated single parent coupon " + user.singleParentCode)
-              // }, function(err) {
-              //     console.log("Error generating subscriber coupon and email: " + err)                
-              // }).$promise;
-              // modalInstance.close() //Added an x to the modal, so can close that way
-              
-          })
-          .error(function(err) {
+              // currentUser = data;
+              // currentUser = currentUser;
+              $rootScope.subscriptions = $rootScope.subscriptions || {}
+              $rootScope.subscriptions[studioId] = true
+              if (slot) bookClass(slot);               
+            })
+            .error(function(err) {
               console.log(err)
-              // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
               return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
-          }.bind(this));
-        }
-      });
-      if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
-        //If user has already signed up previously
+            }.bind(this));
+          }
+        });
+
         if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
           handler.open({
-            name: 'BODY SUBSCRIPTION',
+            name: planInfo.statement_descriptor,
             description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
-            zipCode: true,
-            // amount: amountToPay
+            zipCode: true
           });    
         } else {
           handler.open({
-            name: 'BODY SUBSCRIPTION',
+            name: planInfo.statement_descriptor,
             email: currentUser.email,
             description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
-            zipCode: true,
-            // amount: amountToPay
+            zipCode: true
           });
         }
-      } else {
-        if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-          handler.open({
-            name: 'BODY SUBSCRIPTION',
-            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-            zipCode: true,
-            shippingAddress: true,
-            // amount: amountToPay
-          });    
-        } else {
-          handler.open({
-            name: 'BODY SUBSCRIPTION',
-            email: currentUser.email,
-            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-            shippingAddress: true,
-            zipCode: true,
-            // amount: amountToPay
-          });
-        }
-      }
-    } 
+      // })
+    }  
 
     function openStripeDropIn() {
       if (!slot) return
@@ -231,7 +227,7 @@ angular.module('bodyAppApp')
             console.log("Successfully posted to /user/chargedropin");
             Auth.updateUser(data);
             currentUser = data;
-            $scope.currentUser = currentUser;
+            currentUser = currentUser;
             // $rootScope.subscriptionActive = true;
             if (slot) bookClass(slot);
           })
@@ -349,7 +345,7 @@ angular.module('bodyAppApp')
         // slot.bookedFbUserIds[currentUser.facebook.id] = true
         // slot.$save();
         currentUser = user;
-        $scope.currentUser = currentUser;
+        currentUser = currentUser;
       }, function(err) {
           console.log("Error adding class: " + err)
           ref.child("bookings").child(slot.date).child(currentUser._id).remove()

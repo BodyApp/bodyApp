@@ -427,32 +427,32 @@ exports.postBilling = function(req, res, next){
           sendShippingInfo(user)
         }
 
-        if(!user.stripe.customer.customerId){
+        // if(!user.stripe.customer.customerId){
         //   // user.stripe.customer = {};
         //   console.log("Didn't have customer ID yet.  Saving now.")
-          user.stripe.customer.customerId = customer.id;
-        }
+          // user.stripe.customer.customerId = customer.id;
+        // }
 
-        if(!user.stripe.subscription.status != "active"){
+        // if(!user.stripe.subscription.status != "active"){
 
           // user.stripe.customer.customerId = customer.id;
           // user.stripe.subscription = {};
-          console.log("Didn't have plan saved yet.  Saving now.")
+          // console.log("Didn't have plan saved yet.  Saving now.")
           //Only part of the 'subscriptions' object when user is first created
-          var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
-          console.log(subData);    
+          // var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+          // console.log(subData);    
           // user.stripe.customer.customerId = customer.id;
-          user.stripe.subscription.id = subData.id;
-          user.stripe.subscription.name = subData.plan.id;
-          user.stripe.subscription.amount = subData.plan.amount;
-          user.stripe.subscription.startDate = subData.start
-          user.stripe.subscription.endDate = subData.current_period_end
-          user.stripe.subscription.currency = subData.plan.currency;
-          user.stripe.subscription.interval = subData.plan.interval;
-          user.stripe.subscription.intervalCount = subData.plan.interval_count;
-          user.stripe.subscription.liveMode = subData.plan.livemode;    
-          user.stripe.subscription.status = subData.status;    
-        }
+          // user.stripe.subscription.id = subData.id;
+          // user.stripe.subscription.name = subData.plan.id;
+          // user.stripe.subscription.amount = subData.plan.amount;
+          // user.stripe.subscription.startDate = subData.start
+          // user.stripe.subscription.endDate = subData.current_period_end
+          // user.stripe.subscription.currency = subData.plan.currency;
+          // user.stripe.subscription.interval = subData.plan.interval;
+          // user.stripe.subscription.intervalCount = subData.plan.interval_count;
+          // user.stripe.subscription.liveMode = subData.plan.livemode;    
+          // user.stripe.subscription.status = subData.status;    
+        // }
 
         user.save(function(err){
           sendSubscriberEmail(user)
@@ -579,11 +579,11 @@ exports.postDropInBilling = function(req, res, next){
           // sendShippingInfo(user)
         }
 
-        if(!user.stripe.customer.customerId){
+        // if(!user.stripe.customer.customerId){
         //   // user.stripe.customer = {};
         //   console.log("Didn't have customer ID yet.  Saving now.")
-          user.stripe.customer.customerId = customer.id;
-        }
+          // user.stripe.customer.customerId = customer.id;
+        // }
 
         user.dropInClasses = user.dropInClasses || {};
         user.dropInClasses[slot.date] = true;

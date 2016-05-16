@@ -243,6 +243,29 @@ exports.deleteCoupon = function(req, res, next){
   })
 };
 
+exports.checkCoupon = function(req, res, next){
+  var studioId = req.body.studioId;
+  var couponString = req.body.couponString;
+
+  if(!couponString){
+    return console.log("error retrieving coupon code.")
+    res.status(400).send("No coupon sent")
+  }
+
+  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+    if (snapshot.exists()) {
+
+      var stripe = require("stripe")(snapshot.val())
+      stripe.coupons.retrieve(couponString, function(err, coupon) {
+        if (err) res.status(400).send("Could not retrieve coupon")
+        res.status(200).json(coupon);
+      })
+    } else {
+      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    }
+  })
+};
+
 exports.getUserRevenue = function(req, res, next) {
   var customerToGet = req.body.customerToGet;
   var studioId = req.body.studioId;

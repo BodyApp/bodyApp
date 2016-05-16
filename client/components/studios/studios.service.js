@@ -51,6 +51,12 @@ angular.module('bodyAppApp')
           controller: 'deleteCoupon'
         }
       },
+      checkCoupon: {
+        method: 'PUT',
+        params: {
+          controller: 'checkCoupon'
+        }
+      },
       getUserRevenue: {
         method: 'GET',
         params: {

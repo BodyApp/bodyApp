@@ -60,6 +60,7 @@ angular.module('bodyAppApp')
         studioId: studioId
       }).$promise.then(function(plans) {
         console.log("Retrieved " + plans.length + " subscription plans");
+        if (plans.length < 1) return;
         $scope.subscriptionPlan = plans[0];
         ref.child('storefrontInfo').update({subscriptionPricing: plans[0].amount})
         // for (var plan = 0; plan < plans.length; plan++) { //This is no longer necessary as doing on backend.

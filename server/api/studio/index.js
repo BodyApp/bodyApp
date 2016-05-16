@@ -16,6 +16,7 @@ router.put('/:id/listCustomers', auth.isAuthenticated(), controller.listCustomer
 router.put('/:id/listCoupons', auth.isAuthenticated(), controller.listCoupons);
 router.put('/:id/createCoupon', auth.isAuthenticated(), controller.createCoupon);
 router.put('/:id/deleteCoupon', auth.isAuthenticated(), controller.deleteCoupon);
+router.put('/:id/checkCoupon', auth.isAuthenticated(), controller.checkCoupon);
 
 router.put('/:id/getUserRevenue', auth.isAuthenticated(), controller.getUserRevenue);
 

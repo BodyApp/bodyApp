@@ -8,6 +8,6 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.post('/addcustomersubscription', auth.isAuthenticated(), controller.addCustomerSubscription);
-router.put('/updateCustomerSubscriptionStatus', auth.isAuthenticated(), controller.updateCustomerSubscriptionStatus);
+router.post('/updatecustomersubscriptionstatus', auth.isAuthenticated(), controller.updateCustomerSubscriptionStatus);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $uibModal, Studios, Auth) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $uibModal, Studios, Auth, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
 
     var ref;
@@ -11,6 +11,7 @@ angular.module('bodyAppApp')
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
     } else {
+      studioId = 'ralabala'
       // $location.path('/ralabala/admin')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }   
@@ -26,6 +27,40 @@ angular.module('bodyAppApp')
     getPlaylistObjects();
     createSchedule(numDaysToShow, daysInFuture);
     ref.unauth()
+
+    if (currentUser && currentUser.$promise) {
+      currentUser.$promise.then(function(user) {
+        console.log("Using promise to check subscription")
+        console.log(currentUser)
+        checkSubscriptionStatus()
+      })            
+    } else if (currentUser) {
+      console.log("Checking subscription without promise")
+      checkSubscriptionStatus()
+    } else {
+      console.log("Can't check subscription status")
+    }
+
+    function checkSubscriptionStatus() {
+      $http.post('/api/payments/updatecustomersubscriptionstatus', {
+        studioId: studioId
+      })
+      .success(function(data) {
+        console.log("Successfully updated customer subscription status.");
+        Auth.updateUser(data);
+        // currentUser = data;
+        // $scope.currentUser = currentUser;
+        // $rootScope.subscriptionActive = true; //Need to change this
+        // if (slot) bookClass(slot);               
+      })
+      .error(function(err) {
+        console.log(err)
+      }.bind(this));
+    }
+   
+
+    // console.log(currentUser);
+    // if (currentUser.stripe && currentUser.stripe.studios) $rootScope.subscriptions[studioId] = currentUser.stripe.studios[studioId]
 
     // ref.onAuth(function(authData) {
     //   if (authData) {
@@ -183,6 +218,9 @@ angular.module('bodyAppApp')
             resolve: {
               slot: function() {
                 return null
+              },
+              studioId: function() {
+                return studioId
               }
             }
             // scope: {classToJoin: slot} //passed current scope to the modal
