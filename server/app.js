@@ -81,15 +81,15 @@ require('./routes')(app);
 //   });
 // }
 
-// app.listen(config.port, function() {console.log("Listening on", config.port)})
+app.listen(config.port, function() {console.log("Listening on", config.port)})
 
-throng({
-  start: start,
-  master: startMaster,
-  workers: WORKERS
-  // lifetime: Infinity
-  }
-);
+// throng({
+//   start: start,
+//   master: startMaster,
+//   workers: WORKERS
+//   // lifetime: Infinity
+//   }
+// );
 
 function startMaster() {
   console.log('Started master');
