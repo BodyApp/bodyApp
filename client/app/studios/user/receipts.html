@@ -2,7 +2,51 @@
 
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
-    
+    <div class="col-md-3">
+      <div ng-include="'components/navbar/user-sideNav-account.html'"></div>
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="panel space-4"> <!-- SUBSCRIPTION PANEL -->
+        <div class="panel-header">
+          Receipts
+        </div>
+        <div class="panel-body">
+        	<table class="table table-condensed">
+        		<thead>
+        			<tr>
+        				<th>Date</th>
+        				<th>Purchase</th>
+        				<th>Payment Method</th>
+        				<th>Price</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<tr>
+        				<td>04/29/16</td>
+        				<td>Superhero Fitness Drop In</td>
+        				<td>XXXXXXXXXXXX 7795</td>
+        				<td>$50.00</td>
+        			</tr>
+        			<tr>
+        				<td>04/25/16</td>
+        				<td>RALABALA Monthly Membership</td>
+        				<td>XXXXXXXXXXXX 7795</td>
+        				<td>$30.00</td>
+        			</tr>
+        			<tr>
+        				<td>03/25/16</td>
+        				<td>RALABALA Monthly Membership</td>
+        				<td>XXXXXXXXXXXX 7795</td>
+        				<td>$30.00</td>
+        			</tr>
+        		</tbody>
+        	</table>
+        </div>
+      </div>     <!-- SUBSCRIPTION PANEL END --> 
+
+    </div>
   </div>
 </div>
 

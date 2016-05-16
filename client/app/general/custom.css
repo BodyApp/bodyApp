@@ -569,6 +569,17 @@
   margin-bottom: 0px;
 }
 
+.payment-panel {
+  height: 150px;
+  position: relative;
+  padding: 15px;
+}
+.payment-panel .fa-cc-visa {
+  position: absolute;
+  color: #1a1f71;
+  right: 20px;
+  bottom: 20px;
+}
 
 /*------SPACING-------*/
 .row-space-top-4 {
