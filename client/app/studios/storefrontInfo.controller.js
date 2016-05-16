@@ -38,6 +38,22 @@ angular.module('bodyAppApp')
       }
     })
 
+    $scope.$watch('files.length',function(newVal,oldVal){
+      var formData = new FormData();
+      angular.forEach($scope.files,function(obj){
+          formData.append('files[]', obj.lfFile);
+      });
+      console.log(formData)
+      // $http.post('./upload', formData, {
+      //     transformRequest: angular.identity,
+      //     headers: {'Content-Type': undefined}
+      // }).then(function(result){
+          // do sometingh                   
+      // },function(err){
+          // do sometingh
+      // });
+    });
+
     function getStorefrontInfo() {
       ref.child('storefrontInfo').on('value', function(snapshot) {
         $scope.storefrontInfo = snapshot.val();

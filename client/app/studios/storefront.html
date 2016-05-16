@@ -92,7 +92,7 @@
                     <h4>Unlimited</h5>
                   </div>
                   <div class="col-sm-6">
-                    <h4 class="lightgray">$30/mo</h5>
+                    <h4 class="lightgray">${{subscriptionPricing}}/mo</h5>
                   </div>
                 </div>
                 <div class="row mb8">
@@ -100,23 +100,23 @@
                     <h4>Drop In</h5>
                   </div>
                   <div class="col-sm-6">
-                    <h4 class="lightgray">$10</h5>
+                    <h4 class="lightgray">${{dropinPricing}}</h5>
                   </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-6">
                     <h4>1st Class</h5>
                   </div>
                   <div class="col-sm-6">
                     <h4 class="lightgray">Free</h5>
                   </div>
-                </div>
+                </div> -->
               </div>
               <a href="#" class="btn-blue btn-block">Join Studio</a>
             </div>
           </div>
 
-          <div class="panel space-4">
+          <!-- <div class="panel space-4">
             <div class="panel-header text-center">
               Studio Stories
             </div>
@@ -129,7 +129,7 @@
                     <h5 class="white">Ally needed a new way to fit in her workout. She’s down 15 pounds.</h5>
                   </div>
                 </a>
-              </div>
+              </div> -->
               <!-- <div class="next-story text-center mt8 mb0"> SWITCHER FOR NEXT STORY
                 <span>
                   <span><i class="fa fa-circle"></i></span>
@@ -139,10 +139,10 @@
                   <span><i class="fa fa-circle-o"></i></span>
                 </span>
               </div> -->
-            </div>
-          </div>
+            <!-- </div>
+          </div> -->
 
-          <div class="panel"> <!-- FRIEND PANEL -->
+          <!-- <div class="panel space-4">
             <div class="panel-body">
               <div class="row studio-friends text-center">
                 <span>
@@ -169,9 +169,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="panel"> <!-- FOLLOW PANEL  -->
+<!--           <div class="panel">
             <div class="panel-body">
               <div class="row">
                 <div class="col-sm-12">
@@ -193,11 +193,7 @@
                 </div>
               </div>
             </div>
-
-          </div>
-
-
-
+          </div> -->
 
         </div>
       </div>
@@ -212,8 +208,8 @@
     <div class="row">
       <div class="col-lg-8">
 
-        <div class="row studio-fast-links"> <!-- MINI NAV FOR STUDIO CONTENT -->
-          <div class="col-md-12">
+        <!-- <div class="row studio-fast-links"> --> <!-- MINI NAV FOR STUDIO CONTENT -->
+          <!-- <div class="col-md-12">
             <ul>
               <li>
                 <a href="#">Schedule</a>
@@ -230,186 +226,36 @@
             </ul>
             <hr>
           </div>
-        </div>
+        </div> -->
 
         <div class="row mb16"> <!-- CALENDAR WEEK VIEW -->
-          <div class="cal-container text-center">
+          <div class="cal-container text-center">         
+            <div class="header-cover"></div>
+            <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
-            <div class="header-cover-gray"></div>
-            <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div>
-
-            <div class="cal-column sched-day-1"> <!-- REPEATED FOR NEXT DAY -->
+            <div class="cal-column" ng-class = "'sched-day-'+($index+1)" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
               <div class="cal-daytime">
-                <div class="cal-day">Mon</div>
-                <div class="cal-date">05/09</div>
+                <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
+                <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
               </div>
-              <div class="cal-allClasses">
+              <div class="cal-allClasses" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule" >
                 <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
+                  <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
+                  <div class="cal-class">{{classTypes[class.classType].name}}</div>
+                  <div class="cal-instructor">{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName.charAt(0)}}</div>
+                  <!-- <div class="cal-friends">2 friends</div>
                   <div class="cal-bubbles">
                     <img src="/assets/images/bern-prince.jpg" width="20" height="20">
                     <img src="/assets/images/bern-prince.jpg" width="20" height="20">
                     <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
+                  </div> -->
                   <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
+                    <a href="#" class="btn btn-blue">Reserve</a>
                   </div>
                 </div>
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
+                <!-- <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div> -->
               </div>
             </div>
-
-            <div class="cal-column sched-day-2"> <!-- REPEATED FOR NEXT DAY -->
-                <div class="cal-daytime">
-                  <div class="cal-day cal-today">Tue</div>
-                  <div class="cal-date cal-today">05/10</div>
-                </div>
-            </div>
-
-            <div class="cal-column sched-day-3"> <!-- REPEATED FOR NEXT DAY -->
-              <div class="cal-daytime">
-                <div class="cal-day">Wed</div>
-                <div class="cal-date">05/11</div>
-              </div>
-              <div class="cal-allClasses">
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="cal-column sched-day-4"> <!-- REPEATED FOR NEXT DAY -->
-              <div class="cal-daytime">
-                <div class="cal-day">Thu</div>
-                <div class="cal-date">05/12</div>
-              </div>
-            </div>
-
-            <div class="cal-column sched-day-5"> <!-- REPEATED FOR NEXT DAY -->
-              <div class="cal-daytime">
-                <div class="cal-day">Fri</div>
-                <div class="cal-date">05/13</div>
-              </div>
-              <div class="cal-allClasses">
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="cal-column sched-day-6"> <!-- REPEATED FOR NEXT DAY -->
-              <div class="cal-daytime">
-                <div class="cal-day">Sat</div>
-                <div class="cal-date">05/14</div>
-              </div>
-              <div class="cal-allClasses">
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="cal-column sched-day-7"> <!-- REPEATED FOR NEXT DAY -->
-              <div class="cal-daytime">
-                <div class="cal-day">Sun</div>
-                <div class="cal-date">05/15</div>
-              </div>
-              <div class="cal-allClasses">
-                <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">10:00p PST</div>
-                  <div class="cal-class">Level One</div>
-                  <div class="cal-instructor">Ralph L</div>
-                  <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div>
-                  <div class="cal-action">
-                    <a href="#" class="btn-blue">Reserve</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div>
           </div>
         </div>
 
@@ -419,8 +265,8 @@
             <div class="row">  <!-- ABOUT THIS STUDIO -->
               <div class="col-md-12">
                 <h4 class="bold mb8">About this studio</h4>
-                <h5 class="mb8">"I'm not a runner!" "I'm too scared!" Well you're not alone. But have no fear, your inhibitions will be conquered once the lights go down, the music turns up and your RALABALA experience begins.</h5>
-                <a href="#">Contact Studio</a>
+                <h5 class="mb8">{{storefrontInfo.longDescription}}</h5>
+                <!-- <a href="#">Contact Studio</a> -->
               </div>
             </div>
 
@@ -430,58 +276,37 @@
               <div class="col-md-2">
                 <h5 class="lightgray">Classes</h5>
               </div>
-              <div class="col-md-10">
+              <div class="col-md-10" >
 
-                <div class="row mb16"> <!-- FIRST CLASS -->
+                <div class="row mb16" ng-repeat = "classType in classTypes"> <!-- FIRST CLASS -->
                   <div class="col-md-12">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb0">Level One</h5>
-                        <h5 class="lightgray">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
+                        <h5 class="mb0">{{classType.name}}</h5>
+                        <h5 class="lightgray">{{classType.classDescription}}</h5>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-5">
                         <h5 class="mb0">Open to</h5>
-                        <h5 class="lightgray">All</h5>
+                        <h5 class="lightgray">{{classType.openTo}}</h5>
                       </div>
                       <div class="col-md-4">
                         <h5 class="mb0">Requires</h5>
-                        <h5 class="lightgray">Dumbbells</h5>
+                        <div ng-repeat = "equipment in classType.equipment">
+                          <h5 class="lightgray">{{equipment.name}}</h5>
+                        </div>
+                        
                       </div>
-                      <div class="col-md-4">
+                      <!-- <div class="col-md-4">
                         <h5 class="mb0">Scheduled</h5>
                         <h5 class="lightgray">24 times</h5>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
 
-                <div class="row"> <!-- SECOND CLASS -->
-                  <div class="col-md-12">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="mb0">Level Two</h5>
-                        <h5 class="lightgray">Level Two classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <h5 class="mb0">Open to</h5>
-                        <h5 class="lightgray">All</h5>
-                      </div>
-                      <div class="col-md-4">
-                        <h5 class="mb0">Requires</h5>
-                        <h5 class="lightgray">Dumbbells</h5>
-                        <h5 class="lightgray">Kettlebells</h5>
-                      </div>
-                      <div class="col-md-4">
-                        <h5 class="mb0">Scheduled</h5>
-                        <h5 class="lightgray">24 times</h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
 
@@ -497,15 +322,15 @@
                   <div class="col-md-8">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb8">Monthly Unlimited Classes: $30/mo</h5>
-                        <h5>Drop In Class: $10</h5>
+                        <h5 class="mb8">Monthly Unlimited Classes: ${{subscriptionPricing}}/mo</h5>
+                        <h5>Drop In Class: ${{dropinPricing}}</h5>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb8">Promos: <span class="royalblue bold">First class free</span></h5>
+                        <!-- <h5 class="mb8">Promos: <span class="royalblue bold">First class free</span></h5> -->
                         <h5>Cancelation penalty: <span class="royalblue bold">$0</span></h5>
                       </div>
                     </div>
@@ -544,9 +369,9 @@
               </div>
             </div>
 
-            <hr class="content-divider mt16 mb16">
-
-            <div class="row">  <!-- STATS SECTION -->
+            <!-- STATS SECTION -->
+            <!-- <hr class="content-divider mt16 mb16"> -->
+            <!-- <div class="row">  
               <div class="col-md-2">
                 <h5 class="lightgray">Stats</h5>
               </div>
@@ -571,16 +396,17 @@
                   </div>                  
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <hr class="content-divider mt16 mb16">
 
-
-            <div class="row pb16">  <!-- Studio STORIES -->
+            <!-- Studio STORIES -->
+            <!-- <div class="row pb16">  
               <div class="col-md-12">
-                <h4 class="bold mb8">Studio Stories</h4>
+                <h4 class="bold mb8">Studio Stories</h4> -->
 
-                <div class="photo-grid">     <!--  CLIENT PHOTO GALLERY -->
+                <!--  CLIENT PHOTO GALLERY -->
+<!--                 <div class="photo-grid">     
                   <div class="row featured-height">
                     <div class="row-full-height col-6">
                       <a href="#" class="photo-grid-photo" style="background-image:url('/assets/images/ralabala/story2.jpg')">
@@ -629,7 +455,7 @@
                     </div>
                   </div>
                 </div>
-
+ -->
               </div>
             </div>
 
@@ -816,49 +642,26 @@
             </div>
             <hr class="content-divider mt16 mb16">
 
-            <div class="row mt16">
+            <div class="row mt16" ng-repeat = "instructor in instructors">
               <div class="col-md-3">
                 <div class="studio-instructor-photo text-center">
-                  <img src="/assets/images/bern-prince.jpg">
+                  <img ng-src="instructor.picture">
                 </div>
               </div>
               <div class="col-md-9">
-                <h3 class="mb0">Beth Anne Lazaro</h3>
-                <h5 class="mb8 lightgray">Studio Owner</h5>
-                <h5 class="mb8">Anything I can shake my rump to! "Here I Come" by Fergie. If I played baseball, this is what I would walk out to bat to and point to the outfield with confidence.</h5>
-                <div class="row">
-                  <div class="col-sm-6">
+                <h3 class="mb0">{{instructor.firstName}} {{instructor.lastName}}</h3>
+                <h5 class="mb8 lightgray">{{instructor.title}}</h5>
+                <h5 class="mb8">{{instructor.bio}}</h5>
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-sm-6">
                     <h5 class="mb0">Response Rate</h5>
                     <h5 class="lightgray">100%</h5>
-                  </div>
-                  <div class="col-sm-6">
+                  </div> -->
+                  <!-- <div class="col-sm-6">
                     <h5 class="mb0">Classes Taught</h5>
                     <h5 class="lightgray">304</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mt16">
-              <div class="col-md-3">
-                <div class="studio-instructor-photo text-center">
-                  <img src="/assets/images/bern-prince.jpg">
-                </div>
-              </div>
-              <div class="col-md-9">
-                <h3 class="mb0">Ralph Lazaro</h3>
-                <h5 class="mb8 lightgray">Head Coach</h5>
-                <h5 class="mb8">Anything I can shake my rump to! "Here I Come" by Fergie. If I played baseball, this is what I would walk out to bat to and point to the outfield with confidence.</h5>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <h5 class="mb0">Response Rate</h5>
-                    <h5 class="lightgray">100%</h5>
-                  </div>
-                  <div class="col-sm-6">
-                    <h5 class="mb0">Classes Taught</h5>
-                    <h5 class="lightgray">304</h5>
-                  </div>
-                </div>
+                  </div> -->
+                <!-- </div> -->
               </div>
             </div>
 

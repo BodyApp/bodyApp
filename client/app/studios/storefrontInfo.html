@@ -29,6 +29,14 @@
               <input ng-model = "storefrontInfo.studioName" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. My Awesome Studio">
             </div>
           </div>
+                    <div class="row mb16">
+            <label class="col-sm-3" for="coupon-code">
+              Full Name of Owner
+            </label>
+            <div class="col-sm-9">
+              <input ng-model = "storefrontInfo.ownerName" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. Probably your name">
+            </div>
+          </div>
           <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
               Short Description
@@ -39,12 +47,13 @@
           </div>
           <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
-              Full Name of Owner
+              Long Description
             </label>
             <div class="col-sm-9">
-              <input ng-model = "storefrontInfo.ownerName" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. Probably your name">
+              <input ng-model = "storefrontInfo.longDescription" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. This is a studio for people that want to live the life of their dreams.">
             </div>
           </div>
+
           <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
               Youtube ID
@@ -53,93 +62,16 @@
               <input ng-model = "storefrontInfo.youtubeId" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. pZtWOp-zxok">
             </div>
           </div>
-
           <div class="row mb16">
-            <label class="col-sm-3">
-              Type
+            <label class="col-sm-3" for="coupon-code">
+              Add Icon Image
             </label>
             <div class="col-sm-9">
-              <div class="select">
-                <select id="class-reg-types" ng-model = "showAddCoupon.couponType">
-                  <option>Percentage off</option>
-                  <option>Dollars off</option>
-                </select>
-              </div>
-        <!-- SHOW WHEN USER SELECTS DOLLARS OFF -->
-              <div class="row mt8" ng-if = "showAddCoupon.couponType === 'Dollars off'">
-                <label class="col-sm-2 lightgray">
-                  Discount
-                </label>
-                <div class="input-addon col-sm-4">
-                  <span class="input-prefix">
-                    <span>$</span>
-                  </span>
-                  <input type="text" ng-model = "showAddCoupon.amountInDollars" inputmode="numeric" id="specialty-class-price" class="input-stem" placeholder="e.g. 24.99">
-                </div>
-                <label class="lightgray text-left">
-                  USD
-                </label>
-              </div>
-
-        <!-- SHOW WHEN USER SELECTS PERCENTAGE OFF -->
-              <div class="row mt8" ng-if = "showAddCoupon.couponType === 'Percentage off'">
-                <label class="col-sm-2 lightgray">
-                  Discount
-                </label>
-                <div class="col-sm-4">
-                  <div class="row col-sm-12">
-                    <div class="input-addon">
-                      <input ng-model = "showAddCoupon.percent_off" type="text" size="32" inputmode="numeric" id="search-user" class="input-stem input-stem-suffix" placeholder="e.g. 50">
-                      <span class="input-suffix">%</span>                
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+            	<lf-ng-md-file-input lf-files="files" lf-api="api01"></lf-ng-md-file-input>
+							</md-checkbox>
+              <!-- <input ng-model = "storefrontInfo.youtubeId" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. pZtWOp-zxok"> -->
             </div>
           </div>
-
-          <div class="row mb16">
-            <label class="col-sm-3" for="coupon-duration">
-              Duration
-            </label>
-            <div class="col-sm-9">
-              <div class="select">
-                <select id="coupon-duration" ng-model = "showAddCoupon.duration">
-                  <option>once</option>
-                  <option>repeating</option>
-                  <option>forever</option>
-                </select>
-              </div>
-              <div class="row mt8" ng-show = "showAddCoupon.duration === 'repeating'">
-                <label class="col-sm-2 lightgray" for="coupon-duration-months">
-                  # Months 
-                </label>
-                <div class="col-sm-4">
-                  <input ng-model = "showAddCoupon.duration_in_months" id="coupon-duration-months" inputmode="numeric" name="" size="30" type="text" placeholder="2">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mb16">
-            <label class="col-sm-3">
-              Max Redemptions
-            </label>
-            <div class="col-sm-4">
-              <input ng-model = "showAddCoupon.max_redemptions" id="redemptions" inputmode="numeric" name="" size="30" type="text" placeholder="e.g. 100">
-            </div>
-          </div>  
-
-          <div class="row mb16">
-            <label class="col-sm-3" for="coupon-exp">
-              Expiration
-            </label>
-            <div class="col-sm-9">
-              <input ng-model = "showAddCoupon.unformattedDate" id="coupon-exp" name="" size="30" type="date">
-            </div>
-          </div>
-
           <div class="row">
             <div class="col-sm-12">
               <ul class="panel-action-list">

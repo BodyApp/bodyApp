@@ -31,7 +31,8 @@
     "ngclipboard": "*",
     "ng-tags-input": "*",
     "angular-material": "*",
-    "angular-material-datetimepicker": "*"
+    "angular-material-datetimepicker": "*",
+    "lf-ng-md-file-input": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

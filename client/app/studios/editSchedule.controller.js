@@ -29,6 +29,9 @@ angular.module('bodyAppApp')
     var numDaysToShow = 7;
 
     $scope.showingNextWeek = false;
+    $scope.showWeekView = true;
+
+    $scope.durationOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
     ref.onAuth(function(authData) {
       if (authData) {
@@ -149,6 +152,7 @@ angular.module('bodyAppApp')
       workoutToSave.instructor = workoutToCreate.instructor._id;
       workoutToSave.playlist = workoutToCreate.playlist.id;
       workoutToSave.workout = workoutToCreate.workout.id;
+      workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.spots = 12;
       console.log(workoutToSave)
 
@@ -165,6 +169,8 @@ angular.module('bodyAppApp')
         day.beginDateTime = beginningDateToday + i*24*60*60*1000
         day.endDateTime = day.beginDateTime + 24*60*60*1000-1000
         day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
+        day.formattedDayOfWeek = getFormattedDateTime(day.beginDateTime).dayOfWeek;
+        day.formattedMonthAndDay = getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
 
         $scope.daysToShow.push(day)
         if(!$scope.$$phase) $scope.$apply();
@@ -204,6 +210,16 @@ angular.module('bodyAppApp')
         getClasses(7);
         createSchedule(7, 7);
         $scope.showingNextWeek = true;
+      }
+    }
+
+    $scope.changeView = function() {
+      if ($scope.showListView) {
+        $scope.showListView = false;
+        $scope.showWeekView = true;
+      } else {
+        $scope.showListView = true;
+        $scope.showWeekView = false;
       }
     }
 

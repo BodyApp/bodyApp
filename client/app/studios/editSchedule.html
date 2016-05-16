@@ -113,6 +113,19 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
           <div class="row mb8">
             <div class="col-sm-12">
               <label for="class-choice" class="pb0">
+                Duration (minutes)
+              </label>
+              <div class="select display-block">
+                <select id="class-choice" ng-model = "workoutToCreate.duration" ng-options = "value for value in durationOptions">
+                  <!-- <option>Level One</option> -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
+              <label for="class-choice" class="pb0">
                 Class
               </label>
               <div class="select display-block">
@@ -182,6 +195,12 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
           <div class="cal-controls text-left">
             <!-- <a href="#" class="btn hidden-xs"><i class="bold ti-calendar"></i></a> -->
             <!-- <a href="#" class="btn">Today</a> -->
+            <a href="#" class="btn" ng-click = "changeView()">
+              <span style = "font-weight: bold;">Show</span>
+              <span style = "font-weight: bold;" ng-show = "showListView">Week</span> 
+              <span style = "font-weight: bold;" ng-show = "showWeekView">List</span> 
+              <span style = "font-weight: bold;">View</span>
+            </a>
             <a href="#" class="btn" ng-click = "changeWeek()">
               <span style = "font-weight: bold;" ng-show = "!showingNextWeek">Next</span> 
               <span style = "font-weight: bold;" ng-show = "showingNextWeek">Previous</span> 
@@ -208,7 +227,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
         </div>
         <div class="panel-body">
 
-          <div class="row"> <!-- CALENDAR LIST VIEW -->
+          <div class="row" ng-if = "showListView"> <!-- CALENDAR LIST VIEW -->
             <div class="col-sm-12">
               <table class="table table-condensed table-hover cal-list-table" ng-repeat = "dayShown in daysToShow">
                 <thead>
@@ -263,185 +282,36 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 
           </div>
 
-          <div class="row hidden"> <!-- CALENDAR WEEK VIEW -->
+          <div class="row" ng-if = "showWeekView"> <!-- CALENDAR WEEK VIEW -->
             <div class="col-sm-12">
               <div class="cal-container text-center">
 
                 <div class="header-cover"></div>
-                <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div>
+                <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
-                <div class="cal-column sched-day-1"> <!-- REPEATED FOR NEXT DAY -->
+                <div class="cal-column" ng-class = "'sched-day-'+($index+1)" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
                   <div class="cal-daytime">
-                    <div class="cal-day">Mon</div>
-                    <div class="cal-date">05/09</div>
+                    <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
+                    <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
                   </div>
-                  <div class="cal-allClasses">
+                  <div class="cal-allClasses" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule" >
                     <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
+                      <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
+                      <div class="cal-class">{{classTypes[class.classType].name}}</div>
+                      <div class="cal-instructor">{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName.charAt(0)}}</div>
+                      <!-- <div class="cal-friends">2 friends</div> -->
+                      <!-- <div class="cal-bubbles">
                         <img src="/assets/images/bern-prince.jpg" width="20" height="20">
                         <img src="/assets/images/bern-prince.jpg" width="20" height="20">
                         <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
+                      </div> -->
+                      <!-- <div class="cal-action">
                         <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
+                      </div> -->
                     </div>
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    
 
-                <div class="cal-column sched-day-2"> <!-- REPEATED FOR NEXT DAY -->
-                    <div class="cal-daytime">
-                      <div class="cal-day cal-today">Tue</div>
-                      <div class="cal-date cal-today">05/10</div>
-                    </div>
-                </div>
-
-                <div class="cal-column sched-day-3"> <!-- REPEATED FOR NEXT DAY -->
-                  <div class="cal-daytime">
-                    <div class="cal-day">Wed</div>
-                    <div class="cal-date">05/11</div>
-                  </div>
-                  <div class="cal-allClasses">
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="cal-column sched-day-4"> <!-- REPEATED FOR NEXT DAY -->
-                  <div class="cal-daytime">
-                    <div class="cal-day">Thu</div>
-                    <div class="cal-date">05/12</div>
-                  </div>
-                </div>
-
-                <div class="cal-column sched-day-5"> <!-- REPEATED FOR NEXT DAY -->
-                  <div class="cal-daytime">
-                    <div class="cal-day">Fri</div>
-                    <div class="cal-date">05/13</div>
-                  </div>
-                  <div class="cal-allClasses">
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="cal-column sched-day-6"> <!-- REPEATED FOR NEXT DAY -->
-                  <div class="cal-daytime">
-                    <div class="cal-day">Sat</div>
-                    <div class="cal-date">05/14</div>
-                  </div>
-                  <div class="cal-allClasses">
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="cal-column sched-day-7"> <!-- REPEATED FOR NEXT DAY -->
-                  <div class="cal-daytime">
-                    <div class="cal-day">Sun</div>
-                    <div class="cal-date">05/15</div>
-                  </div>
-                  <div class="cal-allClasses">
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                      <div class="cal-time bold">10:00p PST</div>
-                      <div class="cal-class">Level One</div>
-                      <div class="cal-instructor">Ralph L</div>
-                      <div class="cal-friends">2 friends</div>
-                      <div class="cal-bubbles">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                        <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                      </div>
-                      <div class="cal-action">
-                        <a href="#" class="btn btn-blue">Reserve</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div>
+                <!-- <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div> -->
               </div>
 
             </div>

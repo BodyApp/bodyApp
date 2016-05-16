@@ -18,7 +18,8 @@ angular.module('bodyAppApp', [
   'ngclipboard',
   'ngTagsInput',
   'ngMaterial',
-  'ngMaterialDatePicker'
+  'ngMaterialDatePicker',
+  'lfNgMdFileInput'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

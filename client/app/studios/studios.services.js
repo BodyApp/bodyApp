@@ -37,7 +37,7 @@ angular.module('bodyAppApp')
 
     service.setCurrentStudio = function(studio) {
       service.currentStudio = studio
-      if (!service.admin) {
+      if (!service.admin && studio && Auth.getCurrentUser()._id) {
         ref.child(studio).child('admins').child(Auth.getCurrentUser()._id).on('value', function(snapshot) {
           if (snapshot.exists()) {
             service.admin = true
