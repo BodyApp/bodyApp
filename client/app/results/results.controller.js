@@ -9,8 +9,8 @@ angular.module('bodyAppApp')
     $scope.wodToDisplay;
 
     $scope.today = new Date();
-    var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
-    // var classDate = $scope.classCompleted ? new Date($scope.classCompleted.date) : new Date();
+    var classDate = $scope.classCompleted ? new Date($scope.classCompleted.dateTime) : new Date();
+    // var classDate = $scope.classCompleted ? new Date($scope.classCompleted.dateTime) : new Date();
     var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate());
 
     $scope.userResultsToday = $scope.currentUser.results ? $scope.currentUser.results[classKey] : null;

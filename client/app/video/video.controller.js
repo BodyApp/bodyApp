@@ -28,8 +28,8 @@ angular.module('bodyAppApp')
 
 		// var lastConsumerTrainerCouldHear;
 
-		var classClosesTime = (classToJoin.date + 1000*60*70);
-		var classHalfway = (classToJoin.date + 1000*60*30);
+		var classClosesTime = (classToJoin.dateTime + 1000*60*70);
+		var classHalfway = (classToJoin.dateTime + 1000*60*30);
 		var endClassCheckInterval = $interval(function() {
 			var currentTime = (new Date()).getTime()
 			if (classClosesTime < currentTime) {
@@ -51,7 +51,7 @@ angular.module('bodyAppApp')
 		var currentSongIndex = 0;
 		var soundsLength = 0
 		var songArray = [];
-		var elapsedTime = Math.round((new Date().getTime() - classToJoin.date), 0)
+		var elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime), 0)
 
 		var currentUser = Auth.getCurrentUser();
 		$scope.currentUser = currentUser;
@@ -80,7 +80,7 @@ angular.module('bodyAppApp')
 		$scope.musicVolume = 50;
 		var oldSoundVolume; //Used for toggling whether users can hear each other or not
 
-		var classDate = new Date(classToJoin.date)
+		var classDate = new Date(classToJoin.dateTime)
 		var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
     // var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
     // var sunDate = new Date();
@@ -92,7 +92,7 @@ angular.module('bodyAppApp')
     
 
     var bookedUsers = {};
-    ref.child("bookings").child(classToJoin.date).on('child_added', function(snapshot) {
+    ref.child("bookings").child(classToJoin.dateTime).on('child_added', function(snapshot) {
     	bookedUsers = snapshot.val()
     })
     
@@ -298,7 +298,7 @@ angular.module('bodyAppApp')
 
 				audioPlayer.bind(SC.Widget.Events.READY, function() {
 					if (firstTimePlayingSong) {
-						elapsedTime = Math.round((new Date().getTime() - classToJoin.date + 1000*60*5), 0) //Starts music 5 minutes before official class start time
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime + 1000*60*5), 0) //Starts music 5 minutes before official class start time
 						
 						setMusicVolume($scope.musicVolume);
 
@@ -325,7 +325,7 @@ angular.module('bodyAppApp')
 						if(!$scope.$$phase) $scope.$apply();
 					}
 					if (firstTimePlayingSong) {
-						elapsedTime = Math.round((new Date().getTime() - classToJoin.date + 1000*60*5), 0) //Starts music 5 minutes before official class start time
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime + 1000*60*5), 0) //Starts music 5 minutes before official class start time
 						var seekingTo = elapsedTime - soundsLength
 						if (audioPlayer) audioPlayer.seekTo(seekingTo);
 						console.log("seeking to position " + seekingTo);
@@ -813,9 +813,9 @@ angular.module('bodyAppApp')
 				    
 				    //Sets Stream IDs in the class object for easier diagnosis of tokbox stream issues
 				    // if (userIsInstructor) {
-				    // 	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.date).update({tokboxStreamId: event.stream.id})
+				    // 	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.dateTime).update({tokboxStreamId: event.stream.id})
 				    // } else {
-				    // 	ref.child("bookings").child(classToJoin.date).child(currentUser._id).update({tokboxStreamId: event.stream.id})
+				    // 	ref.child("bookings").child(classToJoin.dateTime).child(currentUser._id).update({tokboxStreamId: event.stream.id})
 				    // }
 				    olark('api.visitor.updateCustomFields', {
 						    "latestTokboxStreamId": event.stream.id
@@ -1218,20 +1218,20 @@ angular.module('bodyAppApp')
 		function classTaken() {
 			if (currentUser._id !== classToJoin.trainer) {
 				if (classToJoin.level === "Intro") {
-					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.date}, function(user) {
+					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.dateTime}, function(user) {
 		        Auth.updateUser(user);
 		        Intercom('update', {
 		        	"introTaken":true,
-              "lastClassTaken_at": Math.floor(new Date(classToJoin.date*1) / 1000)
+              "lastClassTaken_at": Math.floor(new Date(classToJoin.dateTime*1) / 1000)
             });
 		      }, function(err) {
 		          console.log("Error setting intro class taken property: " + err)                  
 		      }).$promise;
 				} else {
-					User.pushTakenClass({ id: currentUser._id }, {classToPush: classToJoin.date}, function(user) {
+					User.pushTakenClass({ id: currentUser._id }, {classToPush: classToJoin.dateTime}, function(user) {
 		        Auth.updateUser(user);
 		        Intercom('update', {
-              "lastClassTaken_at": Math.floor(new Date(classToJoin.date*1) / 1000)
+              "lastClassTaken_at": Math.floor(new Date(classToJoin.dateTime*1) / 1000)
             });
 		      }, function(err) {
 	          console.log("Error setting class taken property: " + err)                  

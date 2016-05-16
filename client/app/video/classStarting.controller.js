@@ -82,8 +82,8 @@ angular.module('bodyAppApp')
     function setup() {
       setupSuccessful = true
       classToJoin = Schedule.classUserJustJoined;
-      classTime = classToJoin.date;
-      classDate = new Date(classToJoin.date)
+      classTime = classToJoin.dateTime;
+      classDate = new Date(classToJoin.dateTime)
       sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
       sunGetDate = sunDate.getDate();
       sunGetMonth = sunDate.getMonth()+1;
@@ -109,7 +109,7 @@ angular.module('bodyAppApp')
       )
 
       userRef = ref.child("bookings")
-      .child(classToJoin.date)
+      .child(classToJoin.dateTime)
       .child(currentUser._id)
 
       $scope.classToJoin = classToJoin;
@@ -223,7 +223,7 @@ angular.module('bodyAppApp')
     function getBookedUsers(classJoined) {
       $scope.bookedUsers = [];
 
-      var bookedUsersRef = ref.child("bookings").child(classToJoin.date);
+      var bookedUsersRef = ref.child("bookings").child(classToJoin.dateTime);
 
       bookedUsersRef.on('value', function(snapshot) {
         var bookedUsersReturned = snapshot.val();
@@ -271,7 +271,7 @@ angular.module('bodyAppApp')
 
   	function checkTime() {
       if (!classToJoin) $location.path('/');
-  		$scope.minutesUntilClass = Math.round(((classToJoin.date - new Date().getTime())/1000)/60, 0);
+  		$scope.minutesUntilClass = Math.round(((classToJoin.dateTime - new Date().getTime())/1000)/60, 0);
   		// $scope.$apply();
   		// if ($scope.minutesUntilClass <= 0) {
   			// $scope.joinClassActive = true;

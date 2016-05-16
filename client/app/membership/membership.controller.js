@@ -9,8 +9,8 @@ angular.module('bodyAppApp')
     $scope.slot = slot;
     if (slot) {
       moment.locale('en')
-      var slotDate = moment(slot.date).format('M/D')
-      var slotTime = moment(slot.date).format('LT')
+      var slotDate = moment(slot.dateTime).format('M/D')
+      var slotTime = moment(slot.dateTime).format('LT')
     }
 
     var planInfo;
@@ -333,11 +333,11 @@ angular.module('bodyAppApp')
       });
 
       User.addBookedClass({ id: currentUser._id }, {
-        classToAdd: slot.date
+        classToAdd: slot.dateTime
       }, function(user) {
-        // getInfo(slot.date);
-        ref.child("bookings").child(slot.date).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
-        ref.child("userBookings").child(currentUser._id).child(slot.date).update({date: slot.date, trainer: slot.trainer, level: slot.level})
+        // getInfo(slot.dateTime);
+        ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+        ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({date: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
         // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId})           
         // slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
@@ -348,8 +348,8 @@ angular.module('bodyAppApp')
         currentUser = currentUser;
       }, function(err) {
           console.log("Error adding class: " + err)
-          ref.child("bookings").child(slot.date).child(currentUser._id).remove()
-          ref.child("userBookings").child(currentUser._id).child(slot.date).remove()
+          ref.child("bookings").child(slot.dateTime).child(currentUser._id).remove()
+          ref.child("userBookings").child(currentUser._id).child(slot.dateTime).remove()
           // slot.bookedUsers = slot.bookedUsers || {};
           // delete slot.bookedUsers[currentUser._id];
           // delete slot.bookedFbUserIds[currentUser.facebook.id];

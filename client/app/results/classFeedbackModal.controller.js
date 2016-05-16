@@ -12,7 +12,7 @@ angular.module('bodyAppApp')
   		// $location.path('/')
   	}
 
-  	var classDate = new Date($scope.classCompleted.date);        
+  	var classDate = new Date($scope.classCompleted.dateTime);        
   	var classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
     // var sunDate = new Date(classDate.getFullYear(), classDate.getMonth(), classDate.getDate() - classDate.getDay(), 11, 0, 0);
     // var sunDate = new Date();
@@ -69,7 +69,7 @@ angular.module('bodyAppApp')
       //   ref.child("resultsByUser").child(currentUser._id).child(classKey).update({
       //     score: score*1,
       //     comment: comment,
-      //     classDateTime: $scope.classCompleted.date,
+      //     classDateTime: $scope.classCompleted.dateTime,
       //     classDayKey: classKey,
       //     timePosted: (new Date()).getTime()        
       //   }, function(err) {if (!err) console.log("results saved to user's profile")})
@@ -112,7 +112,7 @@ angular.module('bodyAppApp')
       //     userFirstName: currentUser.firstName,
       //     userLastName: currentUser.lastName,
       //     userPicture: currentUser.picture,
-      //     classDateTime: $scope.classCompleted.date,
+      //     classDateTime: $scope.classCompleted.dateTime,
       //     timePosted: (new Date()).getTime()        
       //   }, function(error) {
       //     if (error) return console.log(error);
@@ -124,7 +124,7 @@ angular.module('bodyAppApp')
       //     //  dayList.setPriority(-score);
       //     // }
 
-      //     classList = ref.child("resultsByClass").child($scope.classCompleted.date).push({
+      //     classList = ref.child("resultsByClass").child($scope.classCompleted.dateTime).push({
       //       score: score,
       //       comment: comment,
       //       userId: currentUser._id,
