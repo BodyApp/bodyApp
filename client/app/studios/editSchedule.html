@@ -295,7 +295,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                     <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
                   </div>
                   <div class="cal-allClasses" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule" >
-                    <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                    <div class="cal-scheduled text-left" ng-click = "navigateToClassDetails(class.dateTime)"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                       <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
                       <div class="cal-class">{{classTypes[class.classType].name}}</div>
                       <div class="cal-instructor">{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName.charAt(0)}}</div>

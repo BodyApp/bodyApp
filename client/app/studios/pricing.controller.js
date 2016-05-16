@@ -73,6 +73,7 @@ angular.module('bodyAppApp')
 
     function getDropinPlan() {
     	ref.child("stripeConnected").child('dropinPlan').on('value', function(snapshot) {
+        if (!snapshot.exists()) return
     		$scope.dropinPlan = snapshot.val()
         ref.child('storefrontInfo').update({dropinPricing: snapshot.val().amount})
     		if(!$scope.$$phase) $scope.$apply();

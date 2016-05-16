@@ -23,6 +23,7 @@ angular.module('bodyAppApp')
     ref.onAuth(function(authData) {
       if (authData) {
         console.log("User is authenticated with fb ");
+        listCustomers()
       } else {
         console.log("User is logged out");
         if (currentUser.firebaseToken) {
@@ -33,6 +34,7 @@ angular.module('bodyAppApp')
               console.log("Firebase currentUser authentication failed", error);
             } else {
               if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+              listCustomers()
             }
           }); 
         } else {
@@ -42,7 +44,7 @@ angular.module('bodyAppApp')
       }
     })
 
-    var listCustomers = function() { //Can also pass in a particular planId to only get subscriptions for that plan.
+    function listCustomers() { //Can also pass in a particular planId to only get subscriptions for that plan.
       Studio.listCustomers({
         id: currentUser._id
       }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
@@ -63,7 +65,7 @@ angular.module('bodyAppApp')
           })  
         }
       })
-    }()
+    }
 
     $scope.getTimeMember = function(customer) {
       if (!customer || !customer.subscriptions) {return "Not a customer"}

@@ -17,6 +17,8 @@ angular.module('bodyAppApp')
 
     var classId = $stateParams.classId;
 
+    $scope.bookings = {};
+
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
 
@@ -192,6 +194,7 @@ angular.module('bodyAppApp')
       // if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
       ref.child('bookings').child(dateTime).once('value', function(snapshot) {
         if (snapshot.exists()) $scope.bookings = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
         return $scope.bookings;
       })
     }
@@ -228,6 +231,11 @@ angular.module('bodyAppApp')
     		if (err) return console.log(err)
     		console.log("Successfully updated class.")
     	})
+    }
+
+    $scope.getNumOf = function(objectToCheck) {
+      console.log(objectToCheck)
+      return Object.keys(objectToCheck).length
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {

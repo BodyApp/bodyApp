@@ -55,6 +55,7 @@ angular.module('bodyAppApp')
       }).$promise.then(function(instructor) {
         if (instructor._id) {
           $scope.returnedInstructor = instructor;
+          $scope.returnedInstructor.permissions = "Instructor";
           $scope.noUserFound = false;
         } else {
           $scope.noUserFound = true;
@@ -95,6 +96,12 @@ angular.module('bodyAppApp')
     $scope.editInstructor = function(toEdit) {
       $scope.showEditInstructor = true;
       $scope.returnedInstructor = toEdit;
+    }
+
+    $scope.setupInstructor = function() {
+      $scope.showAddInstructor = true; 
+      $scope.showEditInstructor = false;
+      $scope.scrollTop()
     }
 
     $scope.keyPressed = function(key, enteredSoFar) {

@@ -79,6 +79,8 @@ angular.module('bodyAppApp')
         $scope.missingName = false;
         $scope.missingDescription = false;
         $scope.descriptionTooLong = false;
+        $scope.showAddClass = false;
+        $scope.showEditClass = false;
         if(!$scope.$$phase) $scope.$apply();
       })
     }
