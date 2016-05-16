@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, Studios, Auth) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, Studios, Auth) {
   	var currentUser = Auth.getCurrentUser()
+
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -17,46 +18,55 @@ angular.module('bodyAppApp')
     var daysInFuture = 0;
     var numDaysToShow = 7;
 
-    ref.onAuth(function(authData) {
-      if (authData) {
-        console.log("User is authenticated with fb ");
-        getClasses(0, 7);
-        getStorefrontInfo();
-        getInstructors();
-        getSubscriptionPricing();
-        getDropinPricing();
-        getClassTypes();
-        getWorkouts();
-        getPlaylistObjects();
-        createSchedule(numDaysToShow, daysInFuture);
+    getClasses(0, 7);
+    getStorefrontInfo();
+    getInstructors();
+    getClassTypes();
+    getWorkouts();
+    getPlaylistObjects();
+    createSchedule(numDaysToShow, daysInFuture);
+    ref.unauth()
 
-      } else {
-        console.log("User is logged out");
-        if (currentUser.firebaseToken) {
-          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-            if (error) {
-              Auth.logout();
-              $window.location.reload()
-              console.log("Firebase currentUser authentication failed", error);
-            } else {
-              if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-              getClasses(0);
-              getStorefrontInfo();
-              getInstructors();
-              getSubscriptionPricing();
-              getDropinPricing();
-              getClassTypes();
-              getWorkouts();
-              getPlaylistObjects();
-              createSchedule(numDaysToShow, daysInFuture);
-            }
-          }); 
-        } else {
-          Auth.logout();
-          $window.location.reload()
-        }
-      }
-    })
+    // ref.onAuth(function(authData) {
+    //   if (authData) {
+    //     console.log("User is authenticated with fb ");
+    //     getClasses(0, 7);
+    //     getStorefrontInfo();
+    //     getInstructors();
+    //     getClassTypes();
+    //     getWorkouts();
+    //     getPlaylistObjects();
+    //     createSchedule(numDaysToShow, daysInFuture);
+    //   } else {
+    //     console.log("User is logged out");
+    //     getClasses(0);
+    //     getStorefrontInfo();
+    //     getInstructors();
+    //     getClassTypes();
+    //     createSchedule(numDaysToShow, daysInFuture);
+    //     if (currentUser.firebaseToken) {
+    //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+    //         if (error) {
+    //           Auth.logout();
+    //           $window.location.reload()
+    //           console.log("Firebase currentUser authentication failed", error);
+    //         } else {
+    //           if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+    //           getClasses(0, 7);
+    //           getStorefrontInfo();
+    //           getInstructors();
+    //           getClassTypes();
+    //           getWorkouts();
+    //           getPlaylistObjects();
+    //           createSchedule(numDaysToShow, daysInFuture);
+    //         }
+    //       }); 
+    //     } else {
+    //       // Auth.logout();
+    //       // $window.location.reload()
+    //     }
+    //   }
+    // })
 
     function getStorefrontInfo() {
       ref.child('storefrontInfo').once('value', function(snapshot) {
@@ -67,7 +77,6 @@ angular.module('bodyAppApp')
     }
 
     function getDropinPricing() {
-      console.log('hey')
       ref.child('stripeConnected').child('dropinPlan').child('amount').once('value', function(snapshot) {
         console.log(snapshot.val())
         $scope.dropinPricing = snapshot.val()/100

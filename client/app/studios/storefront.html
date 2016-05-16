@@ -92,7 +92,7 @@
                     <h4>Unlimited</h5>
                   </div>
                   <div class="col-sm-6">
-                    <h4 class="lightgray">${{subscriptionPricing}}/mo</h5>
+                    <h4 class="lightgray">${{storefrontInfo.subscriptionPricing/100}}/mo</h5>
                   </div>
                 </div>
                 <div class="row mb8">
@@ -100,7 +100,7 @@
                     <h4>Drop In</h5>
                   </div>
                   <div class="col-sm-6">
-                    <h4 class="lightgray">${{dropinPricing}}</h5>
+                    <h4 class="lightgray">${{storefrontInfo.dropinPricing/100}}</h5>
                   </div>
                 </div>
                 <!-- <div class="row">
@@ -322,8 +322,8 @@
                   <div class="col-md-8">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb8">Monthly Unlimited Classes: ${{subscriptionPricing}}/mo</h5>
-                        <h5>Drop In Class: ${{dropinPricing}}</h5>
+                        <h5 class="mb8">Monthly Unlimited Classes: ${{storefrontInfo.subscriptionPricing/100}}/mo</h5>
+                        <h5>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
                       </div>
                     </div>
                   </div>

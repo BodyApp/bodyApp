@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('InstructorsCtrl', function ($scope, $stateParams, Studios, $http, Auth, User) {
+  .controller('InstructorsCtrl', function ($scope, $stateParams, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;

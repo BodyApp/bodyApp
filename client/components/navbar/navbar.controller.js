@@ -52,20 +52,20 @@ angular.module('bodyAppApp')
         // checkIfStudioAdmin()
       } else {
         console.log("User is logged out");
-        if (user.firebaseToken) {
-          ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
+        if ($scope.getCurrentUser().firebaseToken) {
+          ref.authWithCustomToken($scope.getCurrentUser().firebaseToken, function(error, authData) {
             if (error) {
               Auth.logout();
               $window.location.reload()
-              console.log("Firebase user authentication failed", error);
+              console.log("Firebase $scope.getCurrentUser() authentication failed", error);
             } else {
               // if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
               // checkIfStudioAdmin()
             }
           }); 
         } else {
-          Auth.logout();
-          $window.location.reload()
+          // Auth.logout();
+          // $window.location.reload()
         }
       }
     })

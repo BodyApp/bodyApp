@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('EditScheduleCtrl', function ($scope, $stateParams, $location, Studios, $http, Auth, User) {
+  .controller('EditScheduleCtrl', function ($scope, $stateParams, $location, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;

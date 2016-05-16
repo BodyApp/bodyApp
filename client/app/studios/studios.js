@@ -136,7 +136,7 @@ angular.module('bodyAppApp')
         url: '/studios/:studioId',
         templateUrl: 'app/studios/storefront.html',
         controller: 'StorefrontCtrl',
-        authenticate: true,
+        // authenticate: true,
         resolve: {
           studioId: function($stateParams) {
             return $stateParams.studioId

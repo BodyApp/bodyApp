@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MusicCtrl', function ($scope, $stateParams, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
+  .controller('MusicCtrl', function ($scope, $stateParams, $window, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
   	var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;

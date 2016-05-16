@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, Studios, $http, Auth) {
+  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;

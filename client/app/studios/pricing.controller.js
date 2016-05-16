@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('PricingCtrl', function ($scope, $stateParams, Studios, Studio, $http, Auth, User) {
+  .controller('PricingCtrl', function ($scope, $stateParams, $window, Studios, Studio, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
@@ -61,6 +61,7 @@ angular.module('bodyAppApp')
       }).$promise.then(function(plans) {
         console.log("Retrieved " + plans.length + " subscription plans");
         $scope.subscriptionPlan = plans[0];
+        ref.child('storefrontInfo').update({subscriptionPricing: plans[0].amount})
         // for (var plan = 0; plan < plans.length; plan++) { //This is no longer necessary as doing on backend.
         //   ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
         // }
@@ -70,6 +71,7 @@ angular.module('bodyAppApp')
     function getDropinPlan() {
     	ref.child("stripeConnected").child('dropinPlan').on('value', function(snapshot) {
     		$scope.dropinPlan = snapshot.val()
+        ref.child('storefrontInfo').update({dropinPricing: snapshot.val().amount})
     		if(!$scope.$$phase) $scope.$apply();
     	})
     }
