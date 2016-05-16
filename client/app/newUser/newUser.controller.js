@@ -197,7 +197,7 @@ angular.module('bodyAppApp')
         Intercom('update', {
             "newUserFlowComplete": currentUser.completedNewUserFlow ? currentUser.completedNewUserFlow : false
         });       
-    	$state.go('schedule');
+    	$state.go('storefront');
     }
 
     $scope.saveNewEmail = function(emailToSave) {

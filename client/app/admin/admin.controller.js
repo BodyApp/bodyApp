@@ -19,7 +19,7 @@ angular.module('bodyAppApp')
       listCustomers()
       listCoupons()
       // $scope.createSubscriptionPlan(100, "testplan2")
-      openStripePayment("ralabala1v1462750165317")
+      // openStripePayment("ralabala1v1462750165317")
 
       User.getMembersOfStudio({
         id: data._id

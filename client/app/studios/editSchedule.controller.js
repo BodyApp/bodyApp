@@ -33,6 +33,8 @@ angular.module('bodyAppApp')
 
     $scope.durationOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
+    var nextSessionToSave;
+
     ref.onAuth(function(authData) {
       if (authData) {
         console.log("User is authenticated with fb ");
@@ -43,6 +45,7 @@ angular.module('bodyAppApp')
         getWorkouts();
         getPlaylistObjects();
         createSchedule(numDaysToShow, daysInFuture);
+        createInitialTokBoxSession();
       } else {
         console.log("User is logged out");
         if (currentUser.firebaseToken) {
@@ -60,6 +63,7 @@ angular.module('bodyAppApp')
               getWorkouts();
               getPlaylistObjects();
               createSchedule(numDaysToShow, daysInFuture);
+              createInitialTokBoxSession();
             }
           }); 
         } else {
@@ -68,6 +72,12 @@ angular.module('bodyAppApp')
         }
       }
     })
+
+    function createInitialTokBoxSession() {
+      User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+        nextSessionToSave = session;
+      })
+    }
 
     function getClasses(daysInFuture) {
       var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
@@ -140,6 +150,10 @@ angular.module('bodyAppApp')
         } else {
           ref.child('classes').child(workoutToSave.dateTime).update(workoutToSave, function(err) {
             if (err) return console.log(err);
+            console.log("Saved Class")
+            User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+              nextSessionToSave = session;
+            })
           })      
         }
       })
@@ -154,6 +168,7 @@ angular.module('bodyAppApp')
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.spots = 12;
+      workoutToSave.sessionId = nextSessionToSave.sessionId
       console.log(workoutToSave)
 
       checkIfExists(workoutToSave); 
