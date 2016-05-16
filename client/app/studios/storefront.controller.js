@@ -57,6 +57,7 @@ angular.module('bodyAppApp')
         $rootScope.subscriptions = $rootScope.subscriptions || {}
         if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
           $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
+          if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
           console.log("Subscription active? " + $rootScope.subscriptions[studioId])
         } 
 
