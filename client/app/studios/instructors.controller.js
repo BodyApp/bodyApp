@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('InstructorsCtrl', function ($scope, $stateParams, $window, Studios, $http, Auth, User) {
+  .controller('InstructorsCtrl', function ($scope, $state, $stateParams, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};

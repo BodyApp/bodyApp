@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('WorkoutsCtrl', function ($scope, $stateParams, $q, $window, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
+  .controller('WorkoutsCtrl', function ($scope, $stateParams, $q, $window, $state, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
   	var currentUser = Auth.getCurrentUser()
+    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     var ref;
     var studioId = $stateParams.studioId;
     $scope.workoutToCreate = {};

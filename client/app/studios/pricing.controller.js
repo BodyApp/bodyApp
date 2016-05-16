@@ -1,6 +1,7 @@
 angular.module('bodyAppApp')
-  .controller('PricingCtrl', function ($scope, $stateParams, $window, Studios, Studio, $http, Auth, User) {
+  .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, Studios, Studio, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     var ref;
     var studioId = $stateParams.studioId;
     $scope.studioId = studioId;
@@ -60,8 +61,9 @@ angular.module('bodyAppApp')
         studioId: studioId
       }).$promise.then(function(plans) {
         console.log("Retrieved " + plans.length + " subscription plans");
-        if (plans.length < 1) return;
+        if (plans.length < 1) return $scope.subscriptionPlan = false;
         $scope.subscriptionPlan = plans[0];
+        if(!$scope.$$phase) $scope.$apply();
         ref.child('storefrontInfo').update({subscriptionPricing: plans[0].amount})
         // for (var plan = 0; plan < plans.length; plan++) { //This is no longer necessary as doing on backend.
         //   ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
@@ -75,6 +77,13 @@ angular.module('bodyAppApp')
         ref.child('storefrontInfo').update({dropinPricing: snapshot.val().amount})
     		if(!$scope.$$phase) $scope.$apply();
     	})
+    }
+
+    //Add billing controller
+    $scope.beginStripeConnect = function() {
+      $window.location.href = '/auth/stripe?studioid=' + studioId;
+      // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
+      // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
     }
 
     $scope.deleteSubscriptionPlan = function(planId) {

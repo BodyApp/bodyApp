@@ -1,6 +1,7 @@
 angular.module('bodyAppApp')
-  .controller('MembersCtrl', function ($scope, $stateParams, $window, Studios, $http, Studio, Auth, User) {
+  .controller('MembersCtrl', function ($scope, $stateParams, $window, $state, Studios, $http, Studio, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     console.log(currentUser);
     var ref;
     var studioId = $stateParams.studioId;

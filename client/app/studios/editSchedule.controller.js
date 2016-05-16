@@ -1,6 +1,7 @@
 angular.module('bodyAppApp')
-  .controller('EditScheduleCtrl', function ($scope, $stateParams, $location, $window, Studios, $http, Auth, User) {
+  .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};

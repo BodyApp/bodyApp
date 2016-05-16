@@ -12,11 +12,31 @@ angular.module('bodyAppApp')
     service.workouts;
     service.instructors;
     service.admin;
+    service.instructor;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     // var fbObject;
 
     service.isAdmin = function() {
+      // return service.admin;
+      // if (!service.admin && service.currentStudio) {
+      //   console.log("yeah")
+      //   ref.child(service.currentStudio).child('admins').child(Auth.getCurrentUser()._id).once('value', function(snapshot) {
+      //     if (snapshot.exists()) {
+      //       service.admin = true
+      //       return true;
+      //     } else {
+      //       service.admin = false
+      //       return false;
+      //     }
+      //   })
+      // } else {
+      //   console.log("here")
+        return service.admin;
+      // }
+    }
+
+    service.isInstructor = function() {
       // return service.admin;
       // if (!service.admin && service.currentStudio) {
       //   console.log("yeah")
@@ -43,6 +63,15 @@ angular.module('bodyAppApp')
             service.admin = true
           } else {
             service.admin = false
+          }
+        })
+      }
+      if (!service.instructor && studio && Auth.getCurrentUser()._id) {
+        ref.child(studio).child('instructors').child(Auth.getCurrentUser()._id).on('value', function(snapshot) {
+          if (snapshot.exists()) {
+            service.instructor = true
+          } else {
+            service.instructor = false
           }
         })
       }
