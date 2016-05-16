@@ -14,7 +14,9 @@ angular.module('bodyAppApp')
       studioId = 'ralabala'
       // $location.path('/ralabala/admin')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
-    }   
+    }
+
+    $scope.studioId = studioId;
 
     var daysInFuture = 0;
     var numDaysToShow = 7;
@@ -48,6 +50,13 @@ angular.module('bodyAppApp')
       .success(function(data) {
         console.log("Successfully updated customer subscription status.");
         Auth.updateUser(data);
+        currentUser = data;
+        console.log(currentUser)
+        $rootScope.subscriptions = $rootScope.subscriptions || {}
+        if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
+          $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
+        } 
+
         // currentUser = data;
         // $scope.currentUser = currentUser;
         // $rootScope.subscriptionActive = true; //Need to change this
@@ -62,46 +71,27 @@ angular.module('bodyAppApp')
     // console.log(currentUser);
     // if (currentUser.stripe && currentUser.stripe.studios) $rootScope.subscriptions[studioId] = currentUser.stripe.studios[studioId]
 
-    // ref.onAuth(function(authData) {
-    //   if (authData) {
-    //     console.log("User is authenticated with fb ");
-    //     getClasses(0, 7);
-    //     getStorefrontInfo();
-    //     getInstructors();
-    //     getClassTypes();
-    //     getWorkouts();
-    //     getPlaylistObjects();
-    //     createSchedule(numDaysToShow, daysInFuture);
-    //   } else {
-    //     console.log("User is logged out");
-    //     getClasses(0);
-    //     getStorefrontInfo();
-    //     getInstructors();
-    //     getClassTypes();
-    //     createSchedule(numDaysToShow, daysInFuture);
-    //     if (currentUser.firebaseToken) {
-    //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-    //         if (error) {
-    //           Auth.logout();
-    //           $window.location.reload()
-    //           console.log("Firebase currentUser authentication failed", error);
-    //         } else {
-    //           if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-    //           getClasses(0, 7);
-    //           getStorefrontInfo();
-    //           getInstructors();
-    //           getClassTypes();
-    //           getWorkouts();
-    //           getPlaylistObjects();
-    //           createSchedule(numDaysToShow, daysInFuture);
-    //         }
-    //       }); 
-    //     } else {
-    //       // Auth.logout();
-    //       // $window.location.reload()
-    //     }
-    //   }
-    // })
+    ref.onAuth(function(authData) {
+      if (authData) {
+        console.log("User is authenticated with fb ");
+      } else {
+        console.log("User is logged out");
+        if (currentUser.firebaseToken) {
+          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+            if (error) {
+              Auth.logout();
+              $window.location.reload()
+              console.log("Firebase currentUser authentication failed", error);
+            } else {
+              if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+            }
+          }); 
+        } else {
+          // Auth.logout();
+          // $window.location.reload()
+        }
+      }
+    })
 
     function getStorefrontInfo() {
       ref.child('storefrontInfo').once('value', function(snapshot) {

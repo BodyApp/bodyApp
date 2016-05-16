@@ -39,11 +39,12 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
     ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-      var stripe = require('stripe')(retrievedAccessToken)
-      if (user.stripe && user.stripe[studioId] && user.stripe[studioId].customerId) {
+      var stripe = require('stripe')(retrievedAccessToken.val())
+      if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
         stripe.customers.retrieve(
-          user.stripe[studioId].customerId,
+          user.studioSubscriptions[studioId].customerId,
           function(err, customer) {
+            if (err) return console.log(err)
             console.log(customer)
             var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
             // user.stripe[studioId].subscription = user.stripe[studioId].subscription || {};   
@@ -56,7 +57,7 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
             // user.stripe[studioId].interval = subData.plan.interval;
             // user.stripe[studioId].intervalCount = subData.plan.interval_count;
             // user.stripe[studioId].liveMode = subData.plan.livemode;    
-            user.stripe[studioId].status = subData.status;    
+            user.studioSubscriptions[studioId].status = subData.status;    
 
             user.save(function(err){
               return res.status(200).json(user)
@@ -110,7 +111,7 @@ exports.addCustomerSubscription = function(req, res, next){
       }
 
       if (!user.stripe || !user.stripe.customerId){
-        // user.stripe = user.stripe || {};
+        user.stripe = user.stripe || {};
         // user.stripe.customer = user.stripe.customer || {}
         user.stripe.customerId = customer.id;
       }
@@ -202,9 +203,10 @@ exports.addCustomerSubscription = function(req, res, next){
         // user.stripe[studioId].interval = subData.plan.interval;
         // user.stripe[studioId].intervalCount = subData.plan.interval_count;
         // user.stripe[studioId].liveMode = subData.plan.livemode;
-        user.stripe[studioId] = user.stripe[studioId] || {};
-        user.stripe[studioId].customerId = customer.id;    
-        user.stripe[studioId].status = subData.status;    
+        user.studioSubscriptions = user.studioSubscriptions || {};
+        user.studioSubscriptions[studioId] = user.studioSubscriptions[studioId] || {};
+        user.studioSubscriptions[studioId].customerId = customer.id;    
+        user.studioSubscriptions[studioId].status = subData.status;    
       // }s
 
       user.save(function(err){

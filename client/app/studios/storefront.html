@@ -112,7 +112,8 @@
                   </div>
                 </div> -->
               </div>
-              <a href="#" class="btn-blue btn-block" ng-click = "joinStudioClicked()">Join Studio</a>
+              <a href="#" class="btn-blue btn-block" ng-show = "!subscriptions[studioId]" ng-click = "joinStudioClicked()">Join Studio</a>
+              <a class="btn-blue btn-block" ng-show = "subscriptions[studioId]">You are a member of this studio!</a>
             </div>
           </div>
 
@@ -645,7 +646,7 @@
             <div class="row mt16" ng-repeat = "instructor in instructors">
               <div class="col-md-3">
                 <div class="studio-instructor-photo text-center">
-                  <img ng-src="instructor.picture">
+                  <img ng-src="{{instructor.picture}}">
                 </div>
               </div>
               <div class="col-md-9">
