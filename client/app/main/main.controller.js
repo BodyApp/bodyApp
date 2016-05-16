@@ -39,7 +39,7 @@ angular.module('bodyAppApp')
       if (loggedIn) {
         if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
           // event.preventDefault();
-          $state.go('schedule');
+          $state.go('storefront');
         } else {
           // event.preventDefault;
           $state.go('newuser');

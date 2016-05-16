@@ -3,7 +3,7 @@
 angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('studios', {
+      .state('classes', {
         url: '/studios/:studioId/classes',
         templateUrl: 'app/studios/classes.html',
         controller: 'ClassesCtrl',

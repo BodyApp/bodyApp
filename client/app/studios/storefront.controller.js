@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, Studios, Auth) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $uibModal, Studios, Auth) {
   	var currentUser = Auth.getCurrentUser()
 
     var ref;
@@ -152,6 +152,50 @@ angular.module('bodyAppApp')
         // Studios.savePlaylistObjects(snapshot.val())
         if(!$scope.$$phase) $scope.$apply();
       })
+    }
+
+    $scope.joinStudioClicked = function() {
+      Auth.isLoggedInAsync(function(loggedIn) {
+        if (!loggedIn) {
+          // if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
+          //   $state.go('storefront');
+          // } else {
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'app/account/signup/signup.html',
+            controller: 'SignupCtrl',
+            windowClass: "modal-tall"
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+            // $window.location.href = '/auth/' + 'facebook';
+            $window.location.reload()
+          }, function () {
+            $window.location.reload()
+          });
+          // }
+        } else {
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'app/membership/membership.html',
+            controller: 'MembershipCtrl',
+            windowClass: "modal-wide",
+            resolve: {
+              slot: function() {
+                return null
+              }
+            }
+            // scope: {classToJoin: slot} //passed current scope to the modal
+          });
+
+          modalInstance.result.then(function () {
+            currentUser = Auth.getCurrentUser()
+          }, function () {
+            currentUser = Auth.getCurrentUser()
+            // openStripePayment() //Killed here because moved into the membership modal's controller
+          });
+        }
+      });
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
