@@ -17,6 +17,7 @@ angular.module('bodyAppApp')
     // var fbObject;
 
     service.isAdmin = function() {
+      console.log(service.admin)
       // return service.admin;
       // if (!service.admin && service.currentStudio) {
       //   console.log("yeah")

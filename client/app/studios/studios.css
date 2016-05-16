@@ -62,10 +62,6 @@
 	color: #565A5C;
 	margin-left: 2px;
 }
-.studio-rating {
-	display: inline-block;
-	position: absolute;
-}
 .studio-stars {
 	display: inline-block;
 	position: relative;
@@ -106,23 +102,22 @@
   margin-bottom: 8px;
 }
 
-.callToAction-container {
-	position: absolute;
-	width: 315px;
-	z-index: 1001;
+.callToAction {
 	border-top: 0;
+	border-bottom: 0;
+  margin-bottom: 0;
 }
-
-@media (min-width: 1100px) {
+@media (max-width: 991px) {
   .callToAction {
-  	min-height: 211px;
-  	border-top: 0;
-  	border-bottom: 0;
+    border-top: 1px solid #dce0e0;
+    border-bottom: 1px solid #dce0e0;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
 .callToAction-pricing {
-	padding: 5px 15px;
+	padding: 5px 10px;
 }
 
 .stories-panel {

@@ -39,7 +39,8 @@
     "moment-timezone": "*",
     "firebase-token-generator": "*",
     "helmet":"*",
-    "throng":"*"
+    "throng":"*",
+    "passport-oauth": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

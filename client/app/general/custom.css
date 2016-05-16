@@ -1,3 +1,29 @@
+/*------TEXT-------*/
+
+@media (max-width: 990px) {
+  .text-center-sm {
+    text-align: center;
+  }
+  .text-left-sm {
+    text-align: left;
+  }
+  .text-right-sm {
+    text-align: right;
+  }
+}
+
+@media (max-width: 767px) {
+  .text-center-xs {
+    text-align: center;
+  }
+  .text-left-xs {
+    text-align: left;
+  }
+  .text-right-xs {
+    text-align: right;
+  }
+}
+
 /*------DASHBOARD-------*/
 .notifications li, .friends-list li {
   padding-top: 15px;
@@ -193,7 +219,7 @@
   z-index: 999;
 }
 .header-cover-gray {
-  background: #F5F5F5;
+  background: white;
 }
 .cal-column {
   display: inline-block;
