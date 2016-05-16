@@ -20,7 +20,7 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().stripe.subscription.status !== 'active'">
+                            <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().studioSubscriptions[studioId].status !== 'active'">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                               </p>
@@ -78,7 +78,7 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().stripe.subscription.status !== 'active'">
+                        <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().studioSubscriptions[studioId].status !== 'active'">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
                           </p>

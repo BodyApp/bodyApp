@@ -37,15 +37,19 @@ angular.module('bodyAppApp')
     // $scope.isCurrentStudioAdmin = false;
 
     var studioId = $stateParams.studioId;
-    $scope.studioId = studioId;
+    
     var ref;
     Studios.setCurrentStudio(studioId);
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
     } else {
+      studioId = 'ralabala';
       // $location.path('/ralabala/admin')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
+
+    $scope.studioId = studioId;
+
     ref.onAuth(function(authData) {
       if (authData) {
         // console.log("User is authenticated with fb ");
