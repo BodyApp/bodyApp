@@ -1,6 +1,9 @@
 <div ng-controller="SideNavbarCtrl">
   <ul class="sidenav-list">
     <li>
+      <a ng-href="/studios/{{studioId}}/storefrontinfo" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'storefrontinfo'}" ng-click="selectedTab = 'classes';">Storefront Info</a>
+    </li>
+    <li>
       <a ng-href="/studios/{{studioId}}/classes" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'classes'}" ng-click="selectedTab = 'classes';">Classes</a>
     </li>
     <li>

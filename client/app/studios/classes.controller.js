@@ -14,28 +14,51 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
+    ref.onAuth(function(authData) {
+      if (authData) {
+        console.log("User is authenticated with fb ");
+        getClassTypes();
+      } else {
+        console.log("User is logged out");
+        if (currentUser.firebaseToken) {
+          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+            if (error) {
+              Auth.logout();
+              $window.location.reload()
+              console.log("Firebase currentUser authentication failed", error);
+            } else {
+              if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+              getClassTypes();
+            }
+          }); 
+        } else {
+          Auth.logout();
+          $window.location.reload()
+        }
+      }
+    })
+
     // $scope.tags = [
     //   { name: "Brazil", flag: "Brazil.png" },
     //   { name: "Italy", flag: "Italy.png" },
     //   { name: "Spain", flag: "Spain.png" },
     //   { name: "Germany", flag: "Germany.png" },
     // ];
+    function getClassTypes() {
+      ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
+        $scope.savedClassTypes = []
+        snapshot.forEach(function(classType) {
+          $scope.savedClassTypes.push(classType.val());
+          // console.log(classType.val().updated)
+        })
+        // $scope.savedClassTypes = snapshot.val()
+        // console.log($scope.savedClassTypes)
+        if(!$scope.$$phase) $scope.$apply();
 
-    ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
-      $scope.savedClassTypes = []
-      snapshot.forEach(function(classType) {
-        $scope.savedClassTypes.push(classType.val());
-        // console.log(classType.val().updated)
-      })
-      // $scope.savedClassTypes = snapshot.val()
-      // console.log($scope.savedClassTypes)
-      if(!$scope.$$phase) $scope.$apply();
-
-    })
-
-
+      })  
+    }
+    
     $scope.saveClassType = function(classToSave) {
-
       if (!classToSave.name) return $scope.missingName = true;
       // if (!classToSave.equipment) return $scope.missingEquipment = true
       if (!classToSave.classDescription) return $scope.missingDescription = true;

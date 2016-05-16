@@ -1,15 +1,16 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb64"></div>
 
 <div id="studio-hero">
-  <div class="va-container va-container-v va-container-h">
-    <div class="va-middle text-center">
-      <a href="#" class="hero-play-btn">
+  <!-- <div class="va-container va-container-v va-container-h"> -->
+    <!-- <div class="va-middle text-center"> -->
+      <!-- <a href="#" class="hero-play-btn">
         <i class="fa fa-play-circle video-play"></i>
-      </a>
-    </div>
-  </div>
-  <div class="video-full-width hidden">
-    <iframe width="100%" height="420" src="https://www.youtube.com/embed/pZtWOp-zxok?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+      </a> -->
+    <!-- </div> -->
+  <!-- </div> -->
+  <div class="video-full-width">
+    <!-- <iframe width="100%" height="420" src="https://www.youtube.com/embed/pZtWOp-zxok?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe> -->
+    <iframe width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
   </div>
   <!-- FULL SCREEN VIDEO PLAYER
   <div id="hero-video-player" class="fullscreen-video-player" tabindex="1" style="z-index:2001;">
@@ -24,9 +25,9 @@
       </div>
     </div>
   </div> -->
-  <span class="cover-img-container">
+  <!-- <span class="cover-img-container">
     <div class="cover-img" style="background-image:url(assets/images/ralabala/ralabala_hero.jpg);"></div>
-  </span>
+  </span> -->
 </div>
 
 <div id="summary" class="panel studio-section">
@@ -40,17 +41,18 @@
               <img class="studio-profile-img" src="/assets/images/ralabala/ralabala_logo.jpg">
             </div>
             <div class="col-md-9">
-              <h1 class="studio-name">RALABALA</h1>
-              <h2 class="studio-short">Founded by two adventure seekers who share a passion for inspiring others to live more active lives.</h2>
+              <h1 class="studio-name">{{storefrontInfo.studioName}}</h1>
+              <h2 class="studio-short">{{storefrontInfo.shortDescription}}</h2>
             </div>
           </div>
 
           <div class="row mt16">
             <div class="col-md-3 text-center">
-              <h5>Beth Anne Lazaro</h5>
-              <h5 class="lightgray">& 4 Instructors</h5>
+              <h5>{{storefrontInfo.ownerName}}</h5>
+              <h5 class="lightgray" ng-if = "numOfInstructors === 1">& 1 Instructor</h5>
+              <h5 class="lightgray" ng-if = "numOfInstructors > 1">& {{numOfInstructors}} Instructors</h5>
             </div>
-            <div class="col-md-9">
+            <!-- <div class="col-md-9">
               <div class="row">
                 <div class="col-sm-4">
                   <div class="studio-rating">
@@ -72,7 +74,7 @@
                   <div class="btn-tag">Yoga</div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
           </div>
 

@@ -21,14 +21,14 @@ angular.module('bodyAppApp')
         getDropinPlan();
       } else {
         console.log("User is logged out");
-        if (user.firebaseToken) {
-          ref.authWithCustomToken(user.firebaseToken, function(error, authData) {
+        if (currentUser.firebaseToken) {
+          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
             if (error) {
               Auth.logout();
               $window.location.reload()
-              console.log("Firebase user authentication failed", error);
+              console.log("Firebase currentUser authentication failed", error);
             } else {
-              if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+              if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
               listCoupons();
               listSubscriptionPlans();
               getDropinPlan();

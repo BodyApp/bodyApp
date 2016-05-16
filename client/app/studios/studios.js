@@ -25,6 +25,17 @@ angular.module('bodyAppApp')
           }
         }
       })
+      .state('storefrontInfo', {
+        url: '/studios/:studioId/storefrontinfo',
+        templateUrl: 'app/studios/storefrontInfo.html',
+        controller: 'StorefrontInfoCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
       .state('music', {
         url: '/studios/:studioId/music',
         templateUrl: 'app/studios/music.html',
@@ -124,7 +135,7 @@ angular.module('bodyAppApp')
       .state('storefront', {
         url: '/studios/:studioId',
         templateUrl: 'app/studios/storefront.html',
-        controller: 'StudiosCtrl',
+        controller: 'StorefrontCtrl',
         authenticate: true,
         resolve: {
           studioId: function($stateParams) {
