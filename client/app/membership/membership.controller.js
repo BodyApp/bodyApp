@@ -163,7 +163,7 @@ angular.module('bodyAppApp')
               accessCode: accessCode
             })
             .success(function(data) {
-              console.log("Successfully create new customer subscription.");
+              console.log("Successfully created new customer subscription.");
               console.log(data);
               Auth.updateUser(data);
               // currentUser = data;
@@ -175,6 +175,7 @@ angular.module('bodyAppApp')
             })
             .error(function(err) {
               console.log(err)
+              $rootScope.subscribing = false;
               return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
             }.bind(this));
           }
