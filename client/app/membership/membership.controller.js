@@ -188,7 +188,8 @@ angular.module('bodyAppApp')
             description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
-            zipCode: true
+            zipCode: true,
+            closed: function() {$rootScope.subscribing = false;}
           });    
         } else {
           handler.open({
@@ -197,7 +198,8 @@ angular.module('bodyAppApp')
             description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
             panelLabel: "Pay $" + amountToPay / 100 + " / Month",
             shippingAddress: true,
-            zipCode: true
+            zipCode: true,
+            closed: function() {$rootScope.subscribing = false;}
           });
         }
       // })
