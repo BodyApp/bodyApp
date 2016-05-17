@@ -130,6 +130,7 @@ angular.module('bodyAppApp')
     }
 
 		function openStripePayment(coupon) {
+      if ($rootScope.subscribing) return
       $rootScope.subscribing = true
       // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
         // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
