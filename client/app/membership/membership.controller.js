@@ -133,76 +133,66 @@ angular.module('bodyAppApp')
       if ($rootScope.subscribing) return
       $rootScope.subscribing = true
       // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
-        // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
-        
-        // var planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
-        // var planInfo = snapshot.val()
-        if (!planInfo) return
-        var amountToPay = planInfo.amount;
-        // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
-        $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
-        
-        if (coupon && coupon.valid) {
-          amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
-        }
+      // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
+      
+      // var planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
+      // var planInfo = snapshot.val()
+      if (!planInfo) return
+      var amountToPay = planInfo.amount;
+      // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
+      $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
+      
+      if (coupon && coupon.valid) {
+        amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+      }
 
-        var handler = StripeCheckout.configure({
-          key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-          // key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
-          image: '../../assets/images/body-stripe.jpg',
-          locale: 'auto',
-          token: function(token, args) {
-            // var modalInstance = openPaymentConfirmedModal()
-            
-            $http.post('/api/payments/addcustomersubscription', {
-              user: currentUser,
-              stripeToken: token,
-              shippingAddress: args,
-              coupon: coupon,
-              studioId: studioId,
-              planInfo: planInfo,
-              accessCode: accessCode
-            })
-            .success(function(data) {
-              console.log("Successfully created new customer subscription.");
-              console.log(data);
-              Auth.updateUser(data);
-              // currentUser = data;
-              // currentUser = currentUser;
-              $rootScope.subscriptions = $rootScope.subscriptions || {};
-              $rootScope.subscriptions[studioId] = true;
-              $rootScope.subscribing = false;
-              if (slot) bookClass(slot);               
-            })
-            .error(function(err) {
-              console.log(err)
-              $rootScope.subscribing = false;
-              return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
-            }.bind(this));
-          }
-        });
-
-        if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-          handler.open({
-            name: planInfo.statement_descriptor,
-            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-            shippingAddress: true,
-            zipCode: true,
-            closed: function() {$rootScope.subscribing = false;}
-          });    
-        } else {
-          handler.open({
-            name: planInfo.statement_descriptor,
-            email: currentUser.email,
-            description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-            panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-            shippingAddress: true,
-            zipCode: true,
-            closed: function() {$rootScope.subscribing = false;}
-          });
+      var handler = StripeCheckout.configure({
+        key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+        // key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+        image: '../../assets/images/body-stripe.jpg',
+        locale: 'auto',
+        token: function(token, args) {
+          // var modalInstance = openPaymentConfirmedModal()
+          
+          $http.post('/api/payments/addcustomersubscription', {
+            user: currentUser,
+            stripeToken: token,
+            shippingAddress: args,
+            coupon: coupon,
+            studioId: studioId,
+            planInfo: planInfo,
+            accessCode: accessCode
+          })
+          .success(function(data) {
+            console.log("Successfully created new customer subscription.");
+            Auth.updateUser(data);
+            // currentUser = data;
+            // currentUser = currentUser;
+            $rootScope.subscriptions = $rootScope.subscriptions || {};
+            $rootScope.subscriptions[studioId] = true;
+            $rootScope.subscribing = false;
+            if (slot) bookClass(slot);               
+          })
+          .error(function(err) {
+            console.log(err)
+            $rootScope.subscribing = false;
+            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+          }.bind(this));
         }
-      // })
+      });
+
+      var handlerObject = {};
+      handlerObject.name = planInfo.statement_descriptor;
+      handlerObject.description = (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!";
+      handlerObject.panelLabel = "Pay $" + amountToPay / 100 + " / Month";
+      handlerObject.shippingAddress = true;
+      handlerObject.zipCode = true;
+      handlerObject.closed = function() { $rootScope.subscribing = false; }
+        console.log(handlerObject)
+      if (currentUser.email && currentUser.email.length > 4) {
+        handlerObject.email = currentUser.email
+      }
+      handler.open(handlerObject)
     }  
 
     function openStripeDropIn() {
