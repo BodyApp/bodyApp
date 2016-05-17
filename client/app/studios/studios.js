@@ -143,17 +143,6 @@ angular.module('bodyAppApp')
           }
         }
       })
-      .state('testralabala', {
-        url: '/studios/:studioId/testralabala',
-        templateUrl: 'app/studios/testralabala.html',
-        controller: 'StorefrontCtrl',
-        // authenticate: true,
-        resolve: {
-          studioId: function($stateParams) {
-            return $stateParams.studioId
-          }
-        }
-      })
       .state('dashboard', {
         url: '/studios/:studioId/user/dashboard',
         templateUrl: 'app/studios/user/dashboard.html',
