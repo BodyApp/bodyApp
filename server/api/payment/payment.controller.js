@@ -35,15 +35,16 @@ var ref = new Firebase("https://bodyapp.firebaseio.com/");
 
 exports.updateCustomerSubscriptionStatus = function(req, res, next){
   var studioId = req.body.studioId;
+  var accessCode = req.body.accessCode;
 
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
-    ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-      if (!retrievedAccessToken) {
-        console.log("No access token found for this studio")
-        return res.status(400).send("No access token found")
-      }
-      var stripe = require('stripe')(retrievedAccessToken.val())
+    // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
+      // if (!retrievedAccessToken) {
+      //   console.log("No access token found for this studio")
+      //   return res.status(400).send("No access token found")
+      // }
+      var stripe = require('stripe')(accessCode)
       if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
         stripe.customers.retrieve(
           user.studioSubscriptions[studioId].customerId,
@@ -71,7 +72,7 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
         console.log("User " + user._id + " is not a customer of " + studioId);
         return res.status(400).send("User " + user._id + " is not a customer of " + studioId);
       }
-    })   
+    // })   
   })
 };
 
@@ -82,6 +83,7 @@ exports.addCustomerSubscription = function(req, res, next){
   var studioId = req.body.studioId;
   var userEmail = req.body.stripeToken.email;
   var planInfo = req.body.planInfo;
+  var accessCode = req.body.accessCode;
 
   if(!stripeToken){
     return console.log("error retrieving stripe token.")
@@ -129,9 +131,9 @@ exports.addCustomerSubscription = function(req, res, next){
               res.status(201).send("Customer and billing created, but no subscription added.")
               return cb(null)
             }
-            ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-              createCustomerSubscription(retrievedId.val(), retrievedAccessToken.val())    
-            })
+            // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
+              createCustomerSubscription(retrievedId.val(), accessCode)    
+            // })
           })  
         } else {
           res.status(201).send("Customer and billing created, but no subscription added.")
@@ -148,9 +150,9 @@ exports.addCustomerSubscription = function(req, res, next){
             res.status(201).send("Customer and billing updated, but no subscription added.")
             return cb(null)
           }
-          ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-            createCustomerSubscription(retrievedId.val(), retrievedAccessToken.val())    
-          })
+          // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
+            createCustomerSubscription(retrievedId.val(), accessCode)    
+          // })
         })  
       } else {
         res.status(201).send("Customer and billing updated, but no subscription added.")

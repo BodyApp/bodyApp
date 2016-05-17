@@ -100,7 +100,7 @@
                     <h4>Unlimited</h4>
                   </div>
                   <div class="col-md-6">
-                    <h4 class="lightgray">${{storefrontInfo.subscriptionPricing/100}}/mo</h4>
+                    <h4 class="lightgray" ng-show="storefrontInfo.subscriptionPricing">${{storefrontInfo.subscriptionPricing/100}}/mo</h4>
                   </div>
                 </div>
               </div>
@@ -110,14 +110,14 @@
                     <h4>Drop In</h4>
                   </div>
                   <div class="col-md-6">
-                    <h4 class="lightgray">${{storefrontInfo.dropinPricing/100}}</h4>
+                    <h4 class="lightgray" ng-show = "storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}}</h4>
                   </div>
                 </div>
               </div>
 
               <div class="col-xs-12 mt16">
                 <a href="#" class="btn-blue btn-block" ng-show = "!subscriptions[studioId]" ng-click = "joinStudioClicked()">Join Studio</a>
-                <a class="btn-blue btn-block" ng-show = "subscriptions[studioId]">You are a member of this studio!</a>
+                <div class="" ng-show = "subscriptions[studioId]">You are a member of this studio!</div>
               </div>
             </div>
           </div>

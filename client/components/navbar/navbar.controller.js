@@ -37,6 +37,7 @@ angular.module('bodyAppApp')
     // $scope.isCurrentStudioAdmin = false;
 
     var studioId = $stateParams.studioId;
+    var accessCode;
     
     var ref;
     Studios.setCurrentStudio(studioId);
@@ -56,6 +57,7 @@ angular.module('bodyAppApp')
         ref.onAuth(function(authData) {
           if (authData) {
             console.log("User is authenticated with fb ");
+            getAccessCode()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
@@ -67,6 +69,7 @@ angular.module('bodyAppApp')
                   console.log("Firebase currentUser authentication failed", error);
                 } else {
                   if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                  getAccessCode()
                   // checkIfStudioAdmin()
                 }
               }); 
@@ -87,6 +90,13 @@ angular.module('bodyAppApp')
     //   $scope.isCurrentStudioAdmin = Studios.isAdmin();
     //   if(!$scope.$$phase) $scope.$apply();
     // }
+
+    function getAccessCode() {
+      ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("No access token exists")
+        accessCode = snapshot.val()
+      })
+    }
 
     $scope.hover = function(element) {
       $scope.imageSrc = "assets/images/BodyLogo_white_small.png";
@@ -170,6 +180,9 @@ angular.module('bodyAppApp')
             },
             studioId: function() {
               return studioId
+            },
+            accessCode: function() {
+              return accessCode
             }
           }
         });

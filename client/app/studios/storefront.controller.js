@@ -30,10 +30,12 @@ angular.module('bodyAppApp')
     createSchedule(numDaysToShow, daysInFuture);
     ref.unauth()
 
+    var accessCode;
+
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(data) {
-        getUserBookings()
-        checkSubscriptionStatus()
+        // getUserBookings()
+        // checkSubscriptionStatus()
         if (data.studioSubscriptions && data.studioSubscriptions[studioId]) {
           $rootScope.subscriptions = $rootScope.subscriptions || {};
           $rootScope.subscriptions[studioId] = data.studioSubscriptions[studioId].status === "active"
@@ -41,38 +43,71 @@ angular.module('bodyAppApp')
           console.log("Subscription active? " + $rootScope.subscriptions[studioId])
         }
 
-      //   ref.onAuth(function(authData) {
-      //     if (authData) {
-      //       console.log("User is authenticated with fb ");
-      //     } else {
-      //       console.log("User is logged out");
-      //       if (currentUser.firebaseToken) {
-      //         ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-      //           if (error) {
-      //             Auth.logout();
-      //             $window.location.reload()
-      //             console.log("Firebase currentUser authentication failed", error);
-      //           } else {
-      //             if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-      //           }
-      //         }); 
-      //       } else {
-      //         // Auth.logout();
-      //         // $window.location.reload()
-      //       }
-      //     }
-      //   })
+        ref.onAuth(function(authData) {
+          if (authData) {
+            // console.log("User is authenticated with fb ");
+            getUserBookings()
+            getAccessCode()
+            checkSubscriptionStatus()
+          } else {
+            console.log("User is logged out");
+            if (currentUser.firebaseToken) {
+              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                if (error) {
+                  Auth.logout();
+                  $window.location.reload()
+                  console.log("Firebase currentUser authentication failed", error);
+                } else {
+                  if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+                  getUserBookings()
+                  getAccessCode()
+                  checkSubscriptionStatus()
+                }
+              }); 
+            } else {
+              // Auth.logout();
+              // $window.location.reload()
+            }
+          }
+        })
       })
     } else if (currentUser._id) {
       console.log("Checking subscription without promise")
-      checkSubscriptionStatus()
-      getUserBookings()
+      // checkSubscriptionStatus()
+      // getUserBookings()
       if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
         $rootScope.subscriptions = $rootScope.subscriptions || {};
         $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
         if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
         console.log("Subscription active? " + $rootScope.subscriptions[studioId])
       }
+      ref.onAuth(function(authData) {
+        if (authData) {
+          // console.log("User is authenticated with fb ");
+          getUserBookings()
+          getAccessCode()
+          checkSubscriptionStatus()
+        } else {
+          console.log("User is logged out");
+          if (currentUser.firebaseToken) {
+            ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+              if (error) {
+                Auth.logout();
+                $window.location.reload()
+                console.log("Firebase currentUser authentication failed", error);
+              } else {
+                if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+                getUserBookings()
+                getAccessCode()
+                checkSubscriptionStatus()
+              }
+            }); 
+          } else {
+            // Auth.logout();
+            // $window.location.reload()
+          }
+        }
+      })
     }
 
     // if (currentUser && currentUser.$promise) {
@@ -91,9 +126,17 @@ angular.module('bodyAppApp')
     //   console.log("Can't check subscription status")
     // }
 
+    function getAccessCode() {
+      ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("Can't get access code for studio.")
+        accessCode = snapshot.val()
+      })
+    }
+
     function checkSubscriptionStatus() {
       $http.post('/api/payments/updatecustomersubscriptionstatus', {
-        studioId: studioId
+        studioId: studioId,
+        accessCode: accessCode
       })
       .success(function(data) {
         console.log("Successfully updated customer subscription status.");
@@ -215,13 +258,15 @@ angular.module('bodyAppApp')
     }
 
     function getUserBookings() {
+      // console.log("Getting bookings for " + currentUser._id)
       ref.child('userBookings').child(currentUser._id).on('value', function(snapshot) {
+        // console.log(snapshot.val())
         if (!snapshot.exists()) return;
         // console.log(snapshot.val())
         $scope.userBookings = snapshot.val()
         snapshot.forEach(function(booking) {
-          console.log(booking.val())
-          timeCanJoin(booking.val().date)
+          // console.log(booking.val())
+          timeCanJoin(booking.val().dateTime)
         })
         if(!$scope.$$phase) $scope.$apply();
       })
@@ -260,6 +305,9 @@ angular.module('bodyAppApp')
               },
               studioId: function() {
                 return studioId
+              },
+              accessCode: function() {
+                return accessCode
               }
             }
             // scope: {classToJoin: slot} //passed current scope to the modal
@@ -295,12 +343,12 @@ angular.module('bodyAppApp')
     }
 
     $scope.reserveClicked = function(slot) {
-      console.log(slot)
+      // console.log(slot)
       if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")
         checkMembership(slot)
       } else {
-        console.log("Beginning to book class " +slot.dateTime)
+        // console.log("Beginning to book class " +slot.dateTime)
         var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'app/schedule/bookingConfirmation.html',
@@ -325,7 +373,7 @@ angular.module('bodyAppApp')
             if (err) return console.log(err)
             console.log("Added booking")
           });
-          ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({date: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout}, function(err) {
+          ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout}, function(err) {
             if (err) return console.log(err)
             console.log("Added user booking")
           });
@@ -353,13 +401,13 @@ angular.module('bodyAppApp')
 
     function timeCanJoin(classDateTime) {
       var rightNow = new Date().getTime();
-      var minutesBeforeClassThatCanJoin = 10;
-      var timeCanJoin = classDateTime - minutesBeforeClassThatCanJoin * 60 * 1000
+      var minutesBeforeClassThatCanJoin = 65;
+      var timeCanJoin = classDateTime*1 - minutesBeforeClassThatCanJoin * 60 * 1000
       $scope.classesJoinTime = $scope.classesJoinTime || {};
       $scope.classesJoinTime[classDateTime] = timeCanJoin;
       $scope.rightNow = rightNow;
-      console.log(timeCanJoin)
-      console.log(rightNow)
+      // console.log(timeCanJoin)
+      // console.log(rightNow)
       if(!$scope.$$phase) $scope.$apply();
 
       // var timeUntilClass = rightNow - timeCanJoin;

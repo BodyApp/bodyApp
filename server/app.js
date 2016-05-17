@@ -174,15 +174,16 @@ function start() {
 // }
  
 // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
-// var ref = new Firebase("https://bodyapp.firebaseio.com/");
-// ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
-//   if (error) {
-//     console.log("Firebase server authentication failed", error);
-//   } else {
-//     console.log("Firebase server authentication succeeded!", authData);
-//   }
-// // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-// }); 
+var ref = new Firebase("https://bodyapp.firebaseio.com/");
+ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
+  if (error) {
+    console.log("Firebase server authentication failed", error);
+  } else {
+    // console.log("Firebase server authentication succeeded!", authData);
+    console.log("Firebase server authentication succeeded!");
+  }
+// }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+}); 
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 // new CronJob('29 * * * * *', function() {

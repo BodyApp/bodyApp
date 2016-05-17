@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, studioId, User, Schedule, Studio) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, studioId, User, Schedule, Studio, accessCode) {
 
     // var studio = Schedule.getCurrentStudio()
 
@@ -158,7 +158,8 @@ angular.module('bodyAppApp')
               shippingAddress: args,
               coupon: coupon,
               studioId: studioId,
-              planInfo: planInfo
+              planInfo: planInfo,
+              accessCode: accessCode
             })
             .success(function(data) {
               console.log("Successfully create new customer subscription.");
