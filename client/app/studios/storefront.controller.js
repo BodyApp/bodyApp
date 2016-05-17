@@ -142,7 +142,7 @@ angular.module('bodyAppApp')
         console.log("Successfully updated customer subscription status.");
         Auth.updateUser(data);
         currentUser = data;
-        console.log(currentUser)
+        // console.log(currentUser)
         $rootScope.subscriptions = $rootScope.subscriptions || {}
         if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
           $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
