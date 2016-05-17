@@ -208,7 +208,8 @@
                   </div> -->
                   <div class="cal-action">
                     <a href="#" class="btn-blue" ng-show = "!userBookings[class.dateTime]" ng-click = "reserveClicked(class)">Reserve</a>
-                    <a href="#" class="btn-blue" ng-show = "userBookings[class.dateTime]" ng-disabled = 'true'>Booked</a>
+                    <a class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-disabled>Booked</a>
+                    <a ng-href="#" class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow > classesJoinTime[class.dateTime] " ng-click = "joinClass(class)">Join</a>
                   </div>
                 </div>
                 <!-- <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div> -->

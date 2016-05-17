@@ -23,7 +23,7 @@ angular.module('bodyAppApp')
 
     ref.onAuth(function(authData) {
       if (authData) {
-        console.log("User is authenticated with fb ");
+        // console.log("User is authenticated with fb ");
         getStorefrontInfo();
       } else {
         console.log("User is logged out");
@@ -50,7 +50,7 @@ angular.module('bodyAppApp')
       angular.forEach($scope.files,function(obj){
           formData.append('files[]', obj.lfFile);
       });
-      console.log(formData)
+      // console.log(formData)
       // $http.post('./upload', formData, {
       //     transformRequest: angular.identity,
       //     headers: {'Content-Type': undefined}

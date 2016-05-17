@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $uibModal, Studios, Auth, User, $rootScope) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, Studios, Auth, User, Schedule, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
 
     var ref;
@@ -34,6 +34,13 @@ angular.module('bodyAppApp')
       Auth.getCurrentUser().$promise.then(function(data) {
         getUserBookings()
         checkSubscriptionStatus()
+        if (data.studioSubscriptions && data.studioSubscriptions[studioId]) {
+          $rootScope.subscriptions = $rootScope.subscriptions || {};
+          $rootScope.subscriptions[studioId] = data.studioSubscriptions[studioId].status === "active"
+          if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = data.stripe.subscription.status === "active"
+          console.log("Subscription active? " + $rootScope.subscriptions[studioId])
+        }
+
       //   ref.onAuth(function(authData) {
       //     if (authData) {
       //       console.log("User is authenticated with fb ");
@@ -60,6 +67,12 @@ angular.module('bodyAppApp')
       console.log("Checking subscription without promise")
       checkSubscriptionStatus()
       getUserBookings()
+      if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
+        $rootScope.subscriptions = $rootScope.subscriptions || {};
+        $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
+        if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
+        console.log("Subscription active? " + $rootScope.subscriptions[studioId])
+      }
     }
 
     // if (currentUser && currentUser.$promise) {
@@ -206,6 +219,10 @@ angular.module('bodyAppApp')
         if (!snapshot.exists()) return;
         // console.log(snapshot.val())
         $scope.userBookings = snapshot.val()
+        snapshot.forEach(function(booking) {
+          console.log(booking.val())
+          timeCanJoin(booking.val().date)
+        })
         if(!$scope.$$phase) $scope.$apply();
       })
     }
@@ -332,6 +349,27 @@ angular.module('bodyAppApp')
             // alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
         }).$promise;
       }
+    }
+
+    function timeCanJoin(classDateTime) {
+      var rightNow = new Date().getTime();
+      var minutesBeforeClassThatCanJoin = 10;
+      var timeCanJoin = classDateTime - minutesBeforeClassThatCanJoin * 60 * 1000
+      $scope.classesJoinTime = $scope.classesJoinTime || {};
+      $scope.classesJoinTime[classDateTime] = timeCanJoin;
+      $scope.rightNow = rightNow;
+      console.log(timeCanJoin)
+      console.log(rightNow)
+      if(!$scope.$$phase) $scope.$apply();
+
+      // var timeUntilClass = rightNow - timeCanJoin;
+      // console.log(timeCanJoin)
+      // return timeCanJoin;
+    }
+
+    $scope.joinClass = function(classToJoin) {
+      Schedule.setClassUserJustJoined(studioId, classToJoin);
+      $location.path('/studios/' + studioId + '/classstarting')
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {

@@ -4,12 +4,15 @@ angular.module('bodyAppApp')
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
         if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+        // listCoupons(data);
+        // listSubscriptionPlans(data);
       })
     } else if (currentUser.role) {
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
     }
     var ref;
     var studioId = $stateParams.studioId;
+    var accessCode;
     $scope.studioId = studioId;
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
@@ -22,10 +25,11 @@ angular.module('bodyAppApp')
 
     ref.onAuth(function(authData) {
       if (authData) {
-        console.log("User is authenticated with fb ");
-        listCoupons();
-        listSubscriptionPlans();
+        // console.log("User is authenticated with fb ");
+        // listCoupons();
+        // listSubscriptionPlans();
         getDropinPlan();
+        getAccessCode()
       } else {
         console.log("User is logged out");
         if (currentUser.firebaseToken) {
@@ -36,9 +40,10 @@ angular.module('bodyAppApp')
               console.log("Firebase currentUser authentication failed", error);
             } else {
               if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-              listCoupons();
-              listSubscriptionPlans();
+              // listCoupons();
+              // listSubscriptionPlans();
               getDropinPlan();
+              getAccessCode()
             }
           }); 
         } else {
@@ -48,12 +53,22 @@ angular.module('bodyAppApp')
       }
     })
 
+    function getAccessCode() {
+      ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
+        if (!snapshot.exists) accessCode = null
+        accessCode = snapshot.val();
+        listCoupons();
+        listSubscriptionPlans();
+      })
+    }
+
     function listCoupons() {
       Studio.listCoupons({
         id: currentUser._id
-      }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
+      }, {
         studioId: studioId,
-        limit: 100
+        limit: 100,
+        accessCode: accessCode
       }).$promise.then(function(existingCoupons) {
         console.log("Retrieved " + existingCoupons.length + " coupons");
         $scope.existingCoupons = existingCoupons;
@@ -62,9 +77,10 @@ angular.module('bodyAppApp')
 
     function listSubscriptionPlans() {
       Studio.listSubscriptionPlans({
-        id: currentUser._id
+        id: currentUser._id          
       }, {
-        studioId: studioId
+        studioId: studioId,
+        accessCode: accessCode
       }).$promise.then(function(plans) {
         console.log("Retrieved " + plans.length + " subscription plans");
         if (plans.length < 1) return $scope.subscriptionPlan = false;
@@ -98,7 +114,8 @@ angular.module('bodyAppApp')
         id: currentUser._id
       }, {
         studioId: studioId,
-        planId: planId
+        planId: planId,
+        accessCode: accessCode
       }).$promise.then(function(deletedPlanId) {
       	ref.child('stripeConnected').child('subscriptionPlans').child(planId).remove(function(err) {
       		if (err) return console.log(err);
@@ -135,7 +152,8 @@ angular.module('bodyAppApp')
 	        currency: "usd",
 	        interval: "month",
 	        statement_descriptor: studioId + " Subscription",
-	        userThatCreatedPlan: currentUser._id
+	        userThatCreatedPlan: currentUser._id,
+          accessCode: accessCode
 	      }).$promise.then(function(subscription) {
 	      	console.log("Saved new subscription");
 	      	listSubscriptionPlans()
@@ -176,7 +194,8 @@ angular.module('bodyAppApp')
         id: currentUser._id
       }, {
         studioId: studioId,
-        couponId: couponToDelete.id
+        couponId: couponToDelete.id,
+        accessCode: accessCode
       }).$promise.then(function(deletedCouponId) {
         console.log("Deleted coupon with id: " + couponToDelete.id);
         listCoupons()
@@ -201,6 +220,7 @@ angular.module('bodyAppApp')
         id: currentUser._id
       }, {
         studioId: studioId,
+        accessCode: accessCode,
         couponToCreate: couponToCreate
       }).$promise.then(function(coupon) {
       	console.log("Saved new coupon");

@@ -43,23 +43,26 @@ angular.module('bodyAppApp')
 
   	service.setClassUserJustJoined = function(studioId, classJoined) {
       // var q = new Promise()
+      service.classUserJustJoined = classJoined;
 
-      var workoutDate = new Date(classJoined.date);
-      var sunDate = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate() - workoutDate.getDay(), 11, 0, 0);
-      var sunGetDate = sunDate.getDate();
-      var sunGetMonth = sunDate.getMonth()+1;
-      var sunGetYear = sunDate.getFullYear();
-      var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-      var weekOfRef = ref.child(studioId).child("classes").child(weekOf);
-      var dayOfWeek = DayOfWeekSetter.setDay(workoutDate.getDay())
-      var classRef = weekOfRef.child(dayOfWeek).child("slots").child(classJoined.date) 
+      // var workoutDate = new Date(classJoined.date);
+      // var sunDate = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate() - workoutDate.getDay(), 11, 0, 0);
+      // var sunGetDate = sunDate.getDate();
+      // var sunGetMonth = sunDate.getMonth()+1;
+      // var sunGetYear = sunDate.getFullYear();
+      // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
+      // var weekOfRef = ref.child(studioId).child("classes").child(weekOf);
+      // var dayOfWeek = DayOfWeekSetter.setDay(workoutDate.getDay())
+      // var classRef = weekOfRef.child(dayOfWeek).child("slots").child(classJoined.date) 
 
-      classRef.on('value', function(snapshot) {
-        service.classUserJustJoined = snapshot.val()
-        ref.child(studioId).child('trainers').child(service.classUserJustJoined.trainer).once('value', function(snapshot) {
-          service.trainerOfStudioJustJoined = snapshot.val()
-        })
-      })
+      // var classRef = ref.child(studioId).child('classes').child(classJoined);
+
+      // classRef.on('value', function(snapshot) {
+        // service.classUserJustJoined = snapshot.val()
+        // ref.child(studioId).child('trainers').child(service.classUserJustJoined.trainer).once('value', function(snapshot) {
+        //   service.trainerOfStudioJustJoined = snapshot.val()
+        // })
+      // })
   	}
 
   	service.setFirebaseObject = function(weekRef) {

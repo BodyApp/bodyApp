@@ -44,7 +44,7 @@ angular.module('bodyAppApp')
 
     ref.onAuth(function(authData) {
       if (authData) {
-        console.log("User is authenticated with fb ");
+        // console.log("User is authenticated with fb ");
         getClassTypes();
         getInstructors();
         getPlaylists();

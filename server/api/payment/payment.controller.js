@@ -39,13 +39,16 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
     ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
+      if (!retrievedAccessToken) {
+        console.log("No access token found for this studio")
+        return res.status(400).send("No access token found")
+      }
       var stripe = require('stripe')(retrievedAccessToken.val())
       if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
         stripe.customers.retrieve(
           user.studioSubscriptions[studioId].customerId,
           function(err, customer) {
-            if (err) return console.log(err)
-            console.log(customer)
+            if (err) return res.status(400).send("Error retrieving customer.")
             var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
             // user.stripe[studioId].subscription = user.stripe[studioId].subscription || {};   
             // user.stripe[studioId].planId = subData.id;
@@ -64,6 +67,9 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
             });
           }
         );
+      } else {
+        console.log("User " + user._id + " is not a customer of " + studioId);
+        return res.status(400).send("User " + user._id + " is not a customer of " + studioId);
       }
     })   
   })
@@ -110,10 +116,10 @@ exports.addCustomerSubscription = function(req, res, next){
         user.shippingAddress = shippingAddress;
       }
 
-      if (!user.stripe || !user.stripe.customerId){
+      if (!user.stripe || !user.stripe.customer || !user.stripe.customer.customerId){
         user.stripe = user.stripe || {};
-        // user.stripe.customer = user.stripe.customer || {}
-        user.stripe.customerId = customer.id;
+        user.stripe.customer = user.stripe.customer || {}
+        user.stripe.customer.customerId = customer.id;
       }
 
       user.save(function(err){
@@ -241,7 +247,7 @@ exports.addCustomerSubscription = function(req, res, next){
       // var connectedStripe = require("stripe")(connectedAccountAccessToken)
 
       stripe.tokens.create(
-        { customer: user.stripe.customerId },
+        { customer: user.stripe.customer.customerId },
         // connectedAccountAccessToken,
         { stripe_account: connectedAccountId },
         function(err, newToken) {
@@ -360,8 +366,8 @@ exports.addCustomerSubscription = function(req, res, next){
       // }     
     }
 
-    if (user.stripe && user.stripe.customerId) {
-      updateCustomer(user.stripe.customerId)
+    if (user.stripe && user.stripe.customer.customerId) {
+      updateCustomer(user.stripe.customer.customerId)
     } else {
       createCustomerId()
     }

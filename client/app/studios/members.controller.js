@@ -28,7 +28,7 @@ angular.module('bodyAppApp')
 
     ref.onAuth(function(authData) {
       if (authData) {
-        console.log("User is authenticated with fb ");
+        // console.log("User is authenticated with fb ");
         listCustomers()
       } else {
         console.log("User is logged out");
@@ -51,26 +51,30 @@ angular.module('bodyAppApp')
     })
 
     function listCustomers() { //Can also pass in a particular planId to only get subscriptions for that plan.
-      Studio.listCustomers({
-        id: currentUser._id
-      }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
-        studioId: studioId,
-        limit: 100
-      }).$promise.then(function(customers) {
-        if (!customers) return console.log("No customers retrieved.")
-        console.log("Retrieved " + customers.length + " customers");
+      ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
+        if (!snapshot.exists) return
+        Studio.listCustomers({
+          id: currentUser._id
+        }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
+          studioId: studioId,
+          limit: 100,
+          accessCode: snapshot.val()
+        }).$promise.then(function(customers) {
+          if (!customers) return console.log("No customers retrieved.")
+          console.log("Retrieved " + customers.length + " customers");
 
-        $scope.customers = {}
-        for (var i = 0; i < customers.length; i++) {
-        // console.log(customers[i])
-        if (customers[i].metadata && customers[i].metadata.mongoId) $scope.customers[customers[i].metadata.mongoId] = customers[i];
-          User.getUser({id: currentUser._id}, {userToGet: customers[i].metadata.mongoId}).$promise.then(function(data) {
-            $scope.customers[data._id] = $scope.customers[data._id] || {};
-            $scope.customers[data._id].profileInfo = data;
-            console.log($scope.customers)
-            if(!$scope.$$phase) $scope.$apply();
-          })  
-        }
+          $scope.customers = {}
+          for (var i = 0; i < customers.length; i++) {
+          // console.log(customers[i])
+          if (customers[i].metadata && customers[i].metadata.mongoId) $scope.customers[customers[i].metadata.mongoId] = customers[i];
+            User.getUser({id: currentUser._id}, {userToGet: customers[i].metadata.mongoId}).$promise.then(function(data) {
+              $scope.customers[data._id] = $scope.customers[data._id] || {};
+              $scope.customers[data._id].profileInfo = data;
+              console.log($scope.customers)
+              if(!$scope.$$phase) $scope.$apply();
+            })  
+          }
+        })
       })
     }
 

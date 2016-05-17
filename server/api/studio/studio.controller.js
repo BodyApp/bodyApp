@@ -20,12 +20,14 @@ exports.createSubscriptionPlan = function(req, res, next){
   var statement_descriptor = req.body.statement_descriptor;
   var metadata = req.body.metadata;
   var userThatCreatedPlan = req.body.userThatCreatedPlan;
+  var accessCode = req.body.accessCode;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+  //   if (snapshot.exists()) {
       // stripe = require("stripe")(snapshot.val());
 
-      var stripe = require("stripe")(snapshot.val())
+      // var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode)
 
       stripe.plans.create({
         id: studioId + amount/100 + "v" + new Date().getTime(),
@@ -49,20 +51,22 @@ exports.createSubscriptionPlan = function(req, res, next){
           res.status(200).json(plan);  
         })
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+    // } else {
+    //   return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+    // }
+  // })
 };
 
 exports.deleteSubscriptionPlan = function(req, res, next){
   var studioId = req.body.studioId;
   var planId = req.body.planId;
+  var accessCode = req.body.accessCode;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+  //   if (snapshot.exists()) {
 
-      var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode)
+      // var stripe = require("stripe")(snapshot.val())
 
       stripe.plans.del(planId,
       // {
@@ -75,20 +79,21 @@ exports.deleteSubscriptionPlan = function(req, res, next){
           res.status(200).send("Plan " + planId + " successfully deleted");  
         })
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+  //   } else {
+  //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+  //   }
+  // })
 };
 
 exports.listSubscriptionPlans = function(req, res, next){
   var studioId = req.body.studioId;
+  var accessCode = req.body.accessCode;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
-      console.log("Retrieved access code for studio " + studioId)
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+    // if (snapshot.exists()) {
+      // console.log("Retrieved access code for studio " + studioId)
 
-      var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode)
 
       stripe.plans.list(
         // { stripe_account: snapshot.val() }, 
@@ -98,10 +103,10 @@ exports.listSubscriptionPlans = function(req, res, next){
         res.status(200).send(plans.data);  
         // syncSubscriptionPlans(plans.data, studioId) 
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+  //   } else {
+  //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+  //   }
+  // })
 };
 
 function syncSubscriptionPlans(plans, studioId) {
@@ -138,11 +143,14 @@ function syncSubscriptionPlans(plans, studioId) {
 exports.listCustomers = function(req, res, next){
   var studioId = req.body.studioId;
   var limit = req.body.limit;
+  var accessCode = req.body.accessCode;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+  //   if (snapshot.exists()) {
 
-      var stripe = require("stripe")(snapshot.val())
+  //     var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode);
+
 
       stripe.customers.list( { limit: limit },
         // { stripe_account: snapshot.val() }, 
@@ -152,39 +160,42 @@ exports.listCustomers = function(req, res, next){
         res.status(200).send(customers.data);  
         
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+  //   } else {
+  //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+  //   }
+  // })
 };
 
 exports.listCoupons = function(req, res, next){
   var studioId = req.body.studioId;
   var limit = req.body.limit;
+  var accessCode = req.body.accessCode;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+    // if (snapshot.exists()) {
 
-      var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode)
+      // var stripe = require("stripe")(snapshot.val())
 
       stripe.coupons.list( { limit: limit },
         // { stripe_account: snapshot.val() }, 
         function(err, coupons) {
         if (err) {console.log(err); return res.status(400).send(err);}
         console.log(coupons.data.length + " active coupons pulled.")
-        res.status(200).send(coupons.data);  
+        return res.status(200).send(coupons.data);  
         
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+  //   } else {
+  //     return res.status(400).send("Studio "+studioId+" doesn't have a valid account ID associated with it.");
+  //   }
+  // })
 };
 
 exports.createCoupon = function(req, res, next){
   var studioId = req.body.studioId;
   var couponToCreate = req.body.couponToCreate;
   var currentUserId = req.user._id;
+  var accessCode = req.body.accessCode;
   delete couponToCreate.couponType;
   delete couponToCreate.unformattedDate;
   // console.log(currentUserId)
@@ -196,10 +207,11 @@ exports.createCoupon = function(req, res, next){
 
   // if (couponToCreate.redeem_by) couponToCreate.redeem_by = new Date(couponToCreate.redeemBy).getTime()
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+  //   if (snapshot.exists()) {
 
-      var stripe = require("stripe")(snapshot.val())
+  //     var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode)
 
       stripe.coupons.create(couponToCreate, 
       function(err, coupon) {
@@ -211,20 +223,22 @@ exports.createCoupon = function(req, res, next){
         //   res.status(200).json(plan);  
         // })
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+  //   } else {
+  //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+  //   }
+  // })
 };
 
 exports.deleteCoupon = function(req, res, next){
   var studioId = req.body.studioId;
   var couponId = req.body.couponId;
+  var accessCode = req.body.accessCode;
 
-  ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-    if (snapshot.exists()) {
+  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+  //   if (snapshot.exists()) {
 
-      var stripe = require("stripe")(snapshot.val())
+  //     var stripe = require("stripe")(snapshot.val())
+      var stripe = require("stripe")(accessCode)
 
       stripe.coupons.del(couponId,
       // {
@@ -238,10 +252,10 @@ exports.deleteCoupon = function(req, res, next){
           res.status(200).send("Coupon " + couponId + " successfully deleted");  
         // })
       });
-    } else {
-      return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-    }
-  })
+  //   } else {
+  //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+  //   }
+  // })
 };
 
 exports.checkCoupon = function(req, res, next){
@@ -258,7 +272,7 @@ exports.checkCoupon = function(req, res, next){
 
       var stripe = require("stripe")(snapshot.val())
       stripe.coupons.retrieve(couponString, function(err, coupon) {
-        if (err) res.status(400).send("Could not retrieve coupon")
+        if (err) return res.status(400).send("Could not retrieve coupon")
         res.status(200).json(coupon);
       })
     } else {

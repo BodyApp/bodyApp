@@ -17,7 +17,7 @@ angular.module('bodyAppApp')
 
 		var trainerInfo;
 
-		ref.child("trainers").child(classToJoin.trainer).once('value', function(snapshot) {
+		ref.child("trainers").child(classToJoin.instructor).once('value', function(snapshot) {
 			trainerInfo = snapshot.val();
 			$scope.trainer = trainerInfo;
 		})
@@ -68,7 +68,7 @@ angular.module('bodyAppApp')
 		
 		var publisher;
 
-		var userIsInstructor = currentUser._id.toString() === classToJoin.trainer.toString()
+		var userIsInstructor = currentUser._id.toString() === classToJoin.instructor.toString()
 		var userIsDan = currentUser.facebookId === "10100958748247716"
 		// if (userIsDan) userIsInstructor = true;
 		if (!userIsInstructor) {
@@ -506,7 +506,7 @@ angular.module('bodyAppApp')
 				var streamId = event.stream.connection.data.toString();
 				var streamBoxNumber = 1;
 
-				if (streamId === classToJoin.trainer.toString()) {
+				if (streamId === classToJoin.instructor.toString()) {
 					console.log("Received trainer stream")
 					instructorStream = true;
 					vidWidth = "100%";
@@ -1216,18 +1216,18 @@ angular.module('bodyAppApp')
 		}
 
 		function classTaken() {
-			if (currentUser._id !== classToJoin.trainer) {
-				if (classToJoin.level === "Intro") {
-					User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.dateTime}, function(user) {
-		        Auth.updateUser(user);
-		        Intercom('update', {
-		        	"introTaken":true,
-              "lastClassTaken_at": Math.floor(new Date(classToJoin.dateTime*1) / 1000)
-            });
-		      }, function(err) {
-		          console.log("Error setting intro class taken property: " + err)                  
-		      }).$promise;
-				} else {
+			if (currentUser._id !== classToJoin.instructor) {
+				// if (classToJoin.level === "Intro") {
+				// 	User.takeIntroClass({ id: currentUser._id }, {introClassTaken: classToJoin.dateTime}, function(user) {
+		  //       Auth.updateUser(user);
+		  //       Intercom('update', {
+		  //       	"introTaken":true,
+    //           "lastClassTaken_at": Math.floor(new Date(classToJoin.dateTime*1) / 1000)
+    //         });
+		  //     }, function(err) {
+		  //         console.log("Error setting intro class taken property: " + err)                  
+		  //     }).$promise;
+				// } else {
 					User.pushTakenClass({ id: currentUser._id }, {classToPush: classToJoin.dateTime}, function(user) {
 		        Auth.updateUser(user);
 		        Intercom('update', {
@@ -1236,7 +1236,7 @@ angular.module('bodyAppApp')
 		      }, function(err) {
 	          console.log("Error setting class taken property: " + err)                  
 		      }).$promise;
-				}
+				// }
 			}
 		}
 

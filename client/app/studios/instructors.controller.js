@@ -23,7 +23,7 @@ angular.module('bodyAppApp')
 
     ref.onAuth(function(authData) {
       if (authData) {
-        console.log("User is authenticated with fb ");
+        // console.log("User is authenticated with fb ");
         getInstructors()
       } else {
         console.log("User is logged out");

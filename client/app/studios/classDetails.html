@@ -39,7 +39,7 @@
           <select id="playlist-choice" ng-model = "classDetails.playlist" ng-options = "value.id as value.title for (key, value) in playlistObjects"></select>
           </div>
 
-          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "!editing">Start Class</a>
+          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "!editing" ng-click = "joinClass(classDetails)">Start Class</a>
           <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "editing" ng-click = "updateClass(classDetails)">Update</a>
         </div>
       </div>

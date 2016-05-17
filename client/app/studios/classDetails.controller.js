@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, Studios, $http, Auth, User) {
+  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, Studios, $http, Auth, User, Schedule) {
     var currentUser = Auth.getCurrentUser()
     var ref;
     var studioId = $stateParams.studioId;
@@ -38,7 +38,7 @@ angular.module('bodyAppApp')
 
     ref.onAuth(function(authData) {
       if (authData) {
-        console.log("User is authenticated with fb ");
+        // console.log("User is authenticated with fb ");
         getClassDetails(classId);
         getClassTypes();
         getWorkouts();
@@ -236,6 +236,11 @@ angular.module('bodyAppApp')
     		if (err) return console.log(err)
     		console.log("Successfully updated class.")
     	})
+    }
+
+    $scope.joinClass = function(classToJoin) {
+      Schedule.setClassUserJustJoined(studioId, classToJoin);
+      $location.path('/studios/' + studioId + '/classstarting')
     }
 
     $scope.getNumOf = function(objectToCheck) {

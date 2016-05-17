@@ -90,7 +90,7 @@ angular.module('bodyAppApp')
       sunGetYear = sunDate.getFullYear();
       weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
       
-      ref.child("trainers").child(classToJoin.trainer).once('value', function(snapshot) {
+      ref.child("instructors").child(classToJoin.instructor).once('value', function(snapshot) {
         $scope.trainerInfo = snapshot.val();
         $scope.trainerRatingRounded = Math.round(snapshot.val().trainerRating * 10)/10
         if(!$scope.$$phase) $scope.$apply();
@@ -148,7 +148,7 @@ angular.module('bodyAppApp')
       // $scope.instructorPicUrl = $scope.instructor.picture
 
       //Network Test
-      if (currentUser._id != classToJoin.trainer) {
+      if (currentUser._id != classToJoin.instructor) {
         $scope.networkTestCountdown = timeoutMs + 6000
         $scope.testingNetwork = true;
         $timeout(function() {
@@ -163,7 +163,7 @@ angular.module('bodyAppApp')
       }
 
       $scope.numBookedUsers;
-      $scope.bookedUsers;
+      // $scope.bookedUsers;
 
       getBookedUsers(classToJoin);
 
@@ -221,51 +221,55 @@ angular.module('bodyAppApp')
     // }
 
     function getBookedUsers(classJoined) {
-      $scope.bookedUsers = [];
+      // $scope.bookedUsers = [];
 
       var bookedUsersRef = ref.child("bookings").child(classToJoin.dateTime);
 
       bookedUsersRef.on('value', function(snapshot) {
-        var bookedUsersReturned = snapshot.val();
-        if (snapshot.exists()) {
-          $scope.numBookedUsers = Object.keys(snapshot.val()).length;
-          $scope.bookedUsers = {};
-          for (var bookedUser in snapshot.val()) {
-            if (bookedUser) {
-            $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
-              // Adds security where injuries aren't available unless current user is admin or instructor.
-              if (currentUser.role === "admin" || currentUser._id === classToJoin.trainer) {
-                // console.log(bookedUser)
-                User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
-                  if (data.injuries && data.profile) {
-                    // console.log(userToAdd)
-                    // console.log(data)
-                    // var userToAdd = data.profile;
-                    if ($scope.bookedUsers[data.profile.facebookId]) $scope.bookedUsers[data.profile.facebookId].injuries = data.injuries;
-                    // userToAdd.injuries = data.injuries
-                    // if (data.profile && data.profile.facebookId) $scope.bookedUsers[data.profile.facebookId] = userToAdd;
-                    // console.log($scope.bookedUsers);
-                    if(!$scope.$$phase) $scope.$apply();  
-                  } 
-                  // else {
-                  //   // if (data.profile && data.profile.facebookId) $scope.bookedUsers[data.profile.facebookId] = data.profile;
-                  //   console.log($scope.bookedUsers)
-                  //   if(!$scope.$$phase) $scope.$apply();  
-                  // }
-                }).catch(function(err) {
-                  // $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
-                  // console.log($scope.bookedUsers)
-                  console.log(err);
-                })
-              } 
-              // else {
-              //   $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
+        if (!snapshot.exists()) return
+        $scope.bookedUsers = snapshot.val()
+        console.log($scope.bookedUsers)
+        if(!$scope.$$phase) $scope.$apply();  
+        // var bookedUsersReturned = snapshot.val();
+        // if (snapshot.exists()) {
+        //   $scope.numBookedUsers = Object.keys(snapshot.val()).length;
+        //   $scope.bookedUsers = {};
+        //   for (var bookedUser in snapshot.val()) {
+        //     if (bookedUser) {
+        //     $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
+        //       // Adds security where injuries aren't available unless current user is admin or instructor.
+        //       if (currentUser.role === "admin" || currentUser._id === classToJoin.instructor) {
+        //         // console.log(bookedUser)
+        //         User.getUserAndInjuries({id: $scope.currentUser._id}, {userToGet: bookedUser}).$promise.then(function(data) {
+        //           if (data.injuries && data.profile) {
+        //             // console.log(userToAdd)
+        //             // console.log(data)
+        //             // var userToAdd = data.profile;
+        //             if ($scope.bookedUsers[data.profile.facebookId]) $scope.bookedUsers[data.profile.facebookId].injuries = data.injuries;
+        //             // userToAdd.injuries = data.injuries
+        //             // if (data.profile && data.profile.facebookId) $scope.bookedUsers[data.profile.facebookId] = userToAdd;
+        //             // console.log($scope.bookedUsers);
+        //             if(!$scope.$$phase) $scope.$apply();  
+        //           } 
+        //           // else {
+        //           //   // if (data.profile && data.profile.facebookId) $scope.bookedUsers[data.profile.facebookId] = data.profile;
+        //           //   console.log($scope.bookedUsers)
+        //           //   if(!$scope.$$phase) $scope.$apply();  
+        //           // }
+        //         }).catch(function(err) {
+        //           // $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
+        //           // console.log($scope.bookedUsers)
+        //           console.log(err);
+        //         })
+        //       } 
+        //       // else {
+        //       //   $scope.bookedUsers[bookedUsersReturned[bookedUser].facebookId] = bookedUsersReturned[bookedUser];
 
-              //   if(!$scope.$$phase) $scope.$apply();  
-              // }    
-            }
-          }
-        }
+        //       //   if(!$scope.$$phase) $scope.$apply();  
+        //       // }    
+        //     }
+        //   }
+        // }
       })
     }
 
@@ -280,12 +284,12 @@ angular.module('bodyAppApp')
   	}
 
     $scope.navigateToVideo = function() {
-      if (currentUser._id === classToJoin.trainer) {
+      if (currentUser._id === classToJoin.instructor) {
         if (checkTimeInterval) clearInterval(checkTimeInterval)
-        $location.path("/" + studioId + '/trainervideo')
+        $location.path("/studios/" + studioId + '/trainervideo')
       } else {
         if (checkTimeInterval) clearInterval(checkTimeInterval)
-        $location.path("/" + studioId + '/consumervideo')
+        $location.path("/studios/" + studioId + '/consumervideo')
       }
     }
 

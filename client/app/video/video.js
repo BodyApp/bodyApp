@@ -4,7 +4,7 @@ angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('consumerVideo', {
-        url: '/:studioId/consumervideo',
+        url: '/studios/:studioId/consumervideo',
         templateUrl: 'app/video/consumer_video.html',
         controller: 'VideoCtrl',
         authenticate: true,
@@ -15,7 +15,7 @@ angular.module('bodyAppApp')
         }
       })
       .state('trainerVideo', {
-        url: '/:studioId/trainervideo',
+        url: '/studios/:studioId/trainervideo',
         templateUrl: 'app/video/trainer_video.html',
         controller: 'VideoCtrl',
         authenticate: true,
@@ -26,7 +26,7 @@ angular.module('bodyAppApp')
         }
       })
       .state('classStarting', {
-        url: '/:studioId/classstarting',
+        url: '/studios/:studioId/classstarting',
         templateUrl: 'app/video/classStarting.html',
         controller: 'ClassStartingCtrl',
         authenticate: true,

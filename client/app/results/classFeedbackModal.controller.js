@@ -78,7 +78,7 @@ angular.module('bodyAppApp')
       // }).$promise.then(function() {
         //Add rating to trainer object
         User.addRating({ id: currentUser._id }, {
-          trainer: $scope.classCompleted.trainer, 
+          trainer: $scope.classCompleted.instructor, 
           rating: rating
         }, function(data) {
           console.log("rating saved.  New trainer rating: " + data.trainerRating + " on " + data.trainerNumRatings + " ratings.")
@@ -89,7 +89,7 @@ angular.module('bodyAppApp')
               userFirstName: currentUser.firstName,
               timePosted: (new Date()).getTime(),
               classTaken: classDate.getTime(),
-              instructor: $scope.classCompleted.trainer,
+              instructor: $scope.classCompleted.instructor,
               rating: rating,
               feedback: feedback
             })
@@ -140,7 +140,7 @@ angular.module('bodyAppApp')
       //           userFirstName: currentUser.firstName,
       //           timePosted: (new Date()).getTime(),
       //           classTaken: classDate.getTime(),
-      //           instructor: $scope.classCompleted.trainer._id,
+      //           instructor: $scope.classCompleted.instructor._id,
       //           rating: rating,
       //           feedback: feedback
       //         })
