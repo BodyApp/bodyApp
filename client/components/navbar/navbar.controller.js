@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NavbarCtrl', function ($scope, $location, $state, $stateParams, $uibModal, $window, Auth, Studios) {
+  .controller('NavbarCtrl', function ($scope, $location, $state, $stateParams, $uibModal, $window, $rootScope, Auth, Studios) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -169,6 +169,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.showMembershipModal = function() {
+      if ($rootScope.subscribing) return
       var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'app/membership/membership.html',

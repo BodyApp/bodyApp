@@ -326,6 +326,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.joinStudioClicked = function(slot) {
+      if ($rootScope.subscribing) return
       checkMembership(slot)
     }
 

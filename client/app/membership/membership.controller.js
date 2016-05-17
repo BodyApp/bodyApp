@@ -130,6 +130,7 @@ angular.module('bodyAppApp')
     }
 
 		function openStripePayment(coupon) {
+      $rootScope.subscribing = true
       // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
         // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
         
@@ -167,8 +168,9 @@ angular.module('bodyAppApp')
               Auth.updateUser(data);
               // currentUser = data;
               // currentUser = currentUser;
-              $rootScope.subscriptions = $rootScope.subscriptions || {}
-              $rootScope.subscriptions[studioId] = true
+              $rootScope.subscriptions = $rootScope.subscriptions || {};
+              $rootScope.subscriptions[studioId] = true;
+              $rootScope.subscribing = false;
               if (slot) bookClass(slot);               
             })
             .error(function(err) {
