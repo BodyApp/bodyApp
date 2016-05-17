@@ -86,6 +86,7 @@ exports.listSubscriptionPlans = function(req, res, next){
 
   ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
     if (snapshot.exists()) {
+      console.log("Retrieved access code for studio " + studioId)
 
       var stripe = require("stripe")(snapshot.val())
 
@@ -95,7 +96,7 @@ exports.listSubscriptionPlans = function(req, res, next){
         if (err) {console.log(err); return res.status(400).send(err);}
         console.log(plans.data.length + " subscription plans pulled.")
         res.status(200).send(plans.data);  
-        syncSubscriptionPlans(plans.data, studioId) 
+        // syncSubscriptionPlans(plans.data, studioId) 
       });
     } else {
       return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
@@ -103,7 +104,7 @@ exports.listSubscriptionPlans = function(req, res, next){
   })
 };
 
-var syncSubscriptionPlans = function(plans, studioId) {
+function syncSubscriptionPlans(plans, studioId) {
   ref.child('studios').child(studioId).child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
     snapshot.forEach(function(plan) { //Makes sure don't have extra subscriptions in firebase if delete them in Stripe.
       var idToCheck = plan.val().id;

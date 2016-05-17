@@ -3,7 +3,14 @@
 angular.module('bodyAppApp')
   .controller('ClassesCtrl', function ($scope, $stateParams, $state, $window, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
+    // if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -47,6 +54,7 @@ angular.module('bodyAppApp')
     // ];
     function getClassTypes() {
       ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.savedClassTypes = []
         snapshot.forEach(function(classType) {
           $scope.savedClassTypes.push(classType.val());

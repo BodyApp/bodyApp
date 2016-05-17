@@ -113,11 +113,11 @@
   left: 0;
   position: fixed;
   top: 0;
-  -webkit-transition: opacity 800ms ease;
+  /*-webkit-transition: opacity 800ms ease;
   -moz-transition: opacity 800ms ease;
   -o-transition: opacity 800ms ease;
   transition: opacity 800ms ease;
-  z-index: -1001;
+  z-index: -1001;*/
 }
 .fullscreen-video-player iframe {
   max-width: 100%;
@@ -251,7 +251,7 @@
   margin-top: -1px;
   margin-bottom: -1px;
 }
-.cal-time, .cal-class, .cal-instructor, .cal-friends {
+.cal-time, .cal-class, .cal-instructor, .cal-friends, .cal-duration {
   margin-bottom: 3px;
   font-weight: 400;
 }

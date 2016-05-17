@@ -3,7 +3,13 @@
 angular.module('bodyAppApp')
   .controller('InstructorsCtrl', function ($scope, $state, $stateParams, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -41,6 +47,7 @@ angular.module('bodyAppApp')
 
     function getInstructors() {
       ref.child('instructors').on('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.instructorsPulled = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
       })  

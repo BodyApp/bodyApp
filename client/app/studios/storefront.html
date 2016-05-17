@@ -1,32 +1,46 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb64"></div>
 
-<div id="studio-hero">
-  <!-- <div class="va-container va-container-v va-container-h"> -->
-    <!-- <div class="va-middle text-center"> -->
-      <!-- <a href="#" class="hero-play-btn">
+<!-- <div id="studio-hero">
+  <div class="va-container va-container-v va-container-h" ng-hide = "playingVideo">
+    <div class="va-middle text-center">
+      <a href="#" class="hero-play-btn" ng-click = "playYoutubeVideo()">
         <i class="fa fa-play-circle video-play"></i>
-      </a> -->
-    <!-- </div> -->
-  <!-- </div> -->
-  <div class="video-full-width">
-    <iframe width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <!-- FULL SCREEN VIDEO PLAYER
-  <div id="hero-video-player" class="fullscreen-video-player" tabindex="1" style="z-index:2001;">
-    <div class="row row-table row-full-height">
-      <div class="col-sm-12 col-middle text-center">
-        <video>
-          <source src="">
-        </video>
-        <a href="#" id="close-fullscreen-hero" class="fullscreen-video-player-close">
-          <i class="ti-close"></i>
-        </a>
-      </div>
+      </a>
     </div>
-  </div> -->
-  <!-- <span class="cover-img-container">
-    <div class="cover-img" style="background-image:url(assets/images/ralabala/ralabala_hero.jpg);"></div>
-  </span> -->
+  </div>
+  <div class="video-full-width">
+    <iframe id = "youtubeVideo" width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <span class="cover-img-container" ng-hide = "playingVideo">
+    <div class="cover-img" style="background-image:url(assets/images/studios/ralabala/header.jpg);"></div>
+  </span>
+</div> -->
+
+<div id="studio-hero">
+  <div class="va-container va-container-v va-container-h">
+    <div class="va-middle text-center">
+      <a href="#" class="hero-play-btn">
+        <i class="fa fa-play-circle video-play" ng-click = "playYoutubeVideo()"></i>
+      </a>
+    </div>
+  </div>
+  <!-- <div class="video-full-width">
+    <iframe width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
+  </div> -->
+  
+  <div id="hero-video-player" class="fullscreen-video-player" ng-show = "showVideoPlayer" tabindex="1" style="z-index:2001;">
+    <div class="row row-table row-full-height">
+      <div class="col-sm-12 col-middle text-center" id = "youtubeContainer">
+        <iframe id="youtubeVideo" width="100%" height="100%" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
+        <a href="#" id="close-fullscreen-hero" ng-click = "stopPlayingVideo()" class="fullscreen-video-player-close">
+          <i class="ti-close"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <span class="cover-img-container">
+    <div class="cover-img" style="background-image:url(assets/images/studios/ralabala/hero.jpg);"></div>
+  </span>
 </div>
 
 <div id="summary" class="panel studio-section">
@@ -37,7 +51,7 @@
           
           <div class="row">
             <div class="col-md-3 text-center">
-              <img class="studio-profile-img mb-sm-16" src="/assets/images/ralabala/ralabala_logo.jpg">
+              <img class="studio-profile-img mb-sm-16" ng-src="/assets/images/studios/{{studioId}}/logo.jpg">
               <h5 class="mt8 hidden-xs hidden-sm">{{storefrontInfo.ownerName}}</h5>
               <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors === 1">& 1 Instructor</h5>
               <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& {{numOfInstructors}} Instructors</h5>
@@ -183,6 +197,7 @@
               <div class="cal-allClasses" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule" >
                 <div class="cal-scheduled text-left"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
+                  <div class="cal-duration">{{class.duration}}m</div>
                   <div class="cal-class">{{classTypes[class.classType].name}}</div>
                   <div class="cal-instructor">{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName.charAt(0)}}</div>
                   <!-- <div class="cal-friends">2 friends</div>

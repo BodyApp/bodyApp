@@ -1,7 +1,13 @@
 angular.module('bodyAppApp')
   .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -88,6 +94,7 @@ angular.module('bodyAppApp')
       var endAt = (startAt*1 + toAdd + 1*60*60*1000).toString()
 
       ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.classSchedule = snapshot.val();
         console.log("Pulled " + Object.keys($scope.classSchedule).length + " classes for schedule.")
         if(!$scope.$$phase) $scope.$apply();
@@ -96,6 +103,7 @@ angular.module('bodyAppApp')
 
     function getPlaylists() {
       ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.playlists = [];
         snapshot.forEach(function(playlist) {
           $scope.playlists.unshift(playlist.val())
@@ -107,6 +115,7 @@ angular.module('bodyAppApp')
 
     function getInstructors() {
       ref.child('instructors').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.instructors = snapshot.val()
         Studios.saveInstructors(snapshot.val())
         // console.log($scope.instructors)
@@ -117,6 +126,7 @@ angular.module('bodyAppApp')
 
     function getClassTypes() {
       ref.child('classTypes').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.classTypes = snapshot.val()
         Studios.saveClassTypes(snapshot.val())
         //Sets initial class type

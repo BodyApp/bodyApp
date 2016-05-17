@@ -1,7 +1,13 @@
 angular.module('bodyAppApp')
   .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, Studios, Studio, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
     var ref;
     var studioId = $stateParams.studioId;
     $scope.studioId = studioId;

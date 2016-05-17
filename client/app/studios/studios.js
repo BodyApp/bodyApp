@@ -109,7 +109,7 @@ angular.module('bodyAppApp')
       })
       .state('editschedule', {
         url: '/studios/:studioId/editschedule',
-        templateUrl: 'app/studios/editschedule.html',
+        templateUrl: 'app/studios/editSchedule.html',
         controller: 'EditScheduleCtrl',
         authenticate: true,
         resolve: {

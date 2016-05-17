@@ -3,7 +3,13 @@
 angular.module('bodyAppApp')
   .controller('WorkoutsCtrl', function ($scope, $stateParams, $q, $window, $state, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
   	var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
     var ref;
     var studioId = $stateParams.studioId;
     $scope.workoutToCreate = {};
@@ -44,6 +50,7 @@ angular.module('bodyAppApp')
 
     function loadWorkouts() {
     	ref.child('workouts').on('value', function(snapshot) {
+        if (!snapshot.exists()) return;
     		$scope.workouts = []
 	      snapshot.forEach(function(classType) {
 	        $scope.workouts.push(classType.val());
@@ -75,6 +82,7 @@ angular.module('bodyAppApp')
     function getClassTypes() {
     	classTypes = [];
     	ref.child('classTypes').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
     		snapshot.forEach(function(classType) {
     			classTypes.push(classType.val())
     		})
@@ -83,6 +91,10 @@ angular.module('bodyAppApp')
 
     $scope.loadClassTypes = function($query) {
 			return classTypes;
+    }
+
+    $scope.addExercise = function() {
+      if ($scope.showAddSet.exercises.length < 6) $scope.showAddSet.exercises.push({name: ''})
     }
 
     $scope.saveWorkout = function(workoutToSave) {

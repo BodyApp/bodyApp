@@ -1,7 +1,13 @@
 angular.module('bodyAppApp')
   .controller('MembersCtrl', function ($scope, $stateParams, $window, $state, Studios, $http, Studio, Auth, User) {
     var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
     console.log(currentUser);
     var ref;
     var studioId = $stateParams.studioId;
@@ -51,6 +57,7 @@ angular.module('bodyAppApp')
         studioId: studioId,
         limit: 100
       }).$promise.then(function(customers) {
+        if (!customers) return console.log("No customers retrieved.")
         console.log("Retrieved " + customers.length + " customers");
 
         $scope.customers = {}

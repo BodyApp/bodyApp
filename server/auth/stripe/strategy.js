@@ -84,7 +84,10 @@ Strategy.prototype.authenticate = function(req, options) {
     if (!parsed.protocol) {
       // The callback URL is relative, resolve a fully qualified URL from the
       // URL of the originating request.
-      callbackURL = url.resolve(req.originalURL, callbackURL);
+      console.log("URL that is in strategy: " + callbackURL)
+      console.log("Original url in strategy: " + req.originalUrl)
+      callbackURL = url.resolve("https://www.getbodyapp.com/", callbackURL);
+      // callbackURL = url.resolve(req.originalURL, callbackURL);
     }
   }
 

@@ -113,6 +113,7 @@ angular.module('bodyAppApp')
       if(!$scope.$$phase) $scope.$apply();
       if (!$scope.classTypes) {
       	ref.child('classTypes').once('value', function(snapshot) {
+          if (!snapshot.exists()) return;
 	        $scope.classTypes = snapshot.val()
 	        // console.log($scope.classTypes);
 	        
@@ -128,6 +129,7 @@ angular.module('bodyAppApp')
     $scope.selectClassType = function(classType) {
       $scope.workoutOptions = {};
       ref.child('classTypes').child(classType).child('workoutsUsingClass').once('value', function(workoutList) {
+        if (!workoutList.exists()) return;
 	      workoutList.forEach(function(workout) {
 	      	var prop = workout.key();
 	        ref.child('workouts').child(prop).once('value', function(snapshot) {
@@ -171,6 +173,7 @@ angular.module('bodyAppApp')
 
       if (!$scope.workouts) {
       	ref.child('workouts').once('value', function(snapshot) {
+          if (!snapshot.exists()) return;
 	        $scope.workouts = snapshot.val()
 	        if(!$scope.$$phase) $scope.$apply();
 	      })	
@@ -183,6 +186,7 @@ angular.module('bodyAppApp')
       
       if (!$scope.playlistObjects) {
 	      ref.child('playlists').once('value', function(snapshot) {
+          if (!snapshot.exists()) return;
 	        $scope.playlistObjects = snapshot.val();
 	        console.log($scope.playlistObjects)
 	        if(!$scope.$$phase) $scope.$apply();
@@ -193,6 +197,7 @@ angular.module('bodyAppApp')
     function getBookings(dateTime) {
       // if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
       ref.child('bookings').child(dateTime).once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         if (snapshot.exists()) $scope.bookings = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
         return $scope.bookings;
@@ -200,7 +205,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.deleteClass = function() {
-    	if ($scope.bookings) return alert("There are users signed up for this class!")
+    	if ($scope.bookings && Object.keys($scope.bookings).length > 0) return alert("There are users signed up for this class!")
     	ref.child('classes').child(classId).remove(function(err) {
     		if (err) return console.log(err)
   			console.log("Class successfully deleted.")

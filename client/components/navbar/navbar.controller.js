@@ -40,6 +40,7 @@ angular.module('bodyAppApp')
     
     var ref;
     Studios.setCurrentStudio(studioId);
+    // currentUser = Auth.getCurrentUser()
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
     } else {
@@ -50,29 +51,37 @@ angular.module('bodyAppApp')
 
     $scope.studioId = studioId;
 
-    ref.onAuth(function(authData) {
-      if (authData) {
-        // console.log("User is authenticated with fb ");
-        // checkIfStudioAdmin()
-      } else {
-        console.log("User is logged out");
-        if ($scope.getCurrentUser().firebaseToken) {
-          ref.authWithCustomToken($scope.getCurrentUser().firebaseToken, function(error, authData) {
-            if (error) {
-              Auth.logout();
-              $window.location.reload()
-              console.log("Firebase $scope.getCurrentUser() authentication failed", error);
+    if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
+      Auth.getCurrentUser().$promise.then(function(currentUser) {
+        ref.onAuth(function(authData) {
+          if (authData) {
+            console.log("User is authenticated with fb ");
+            // checkIfStudioAdmin()
+          } else {
+            console.log("User is logged out");
+            if (currentUser.firebaseToken) {
+              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+                if (error) {
+                  Auth.logout();
+                  $window.location.reload()
+                  console.log("Firebase currentUser authentication failed", error);
+                } else {
+                  if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+                  // checkIfStudioAdmin()
+                }
+              }); 
             } else {
-              // if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-              // checkIfStudioAdmin()
+              // Auth.logout();
+              // $window.location.reload()
             }
-          }); 
-        } else {
-          // Auth.logout();
-          // $window.location.reload()
-        }
-      }
-    })
+          }
+        })
+      })
+    }
+      
+    // }
+
+    
 
     // function checkIfStudioAdmin() {
     //   $scope.isCurrentStudioAdmin = Studios.isAdmin();
@@ -158,6 +167,9 @@ angular.module('bodyAppApp')
           resolve: {
             slot: function() {
               return undefined
+            },
+            studioId: function() {
+              return studioId
             }
           }
         });

@@ -3,7 +3,13 @@
 angular.module('bodyAppApp')
   .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
-    if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+    }
     var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -57,6 +63,7 @@ angular.module('bodyAppApp')
 
     function getStorefrontInfo() {
       ref.child('storefrontInfo').on('value', function(snapshot) {
+      	if (!snapshot.exists()) return;
         $scope.storefrontInfo = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
       })  

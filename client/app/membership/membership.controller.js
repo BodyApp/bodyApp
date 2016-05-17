@@ -77,7 +77,7 @@ angular.module('bodyAppApp')
     // });
 
 	  var currentUser = Auth.getCurrentUser();
-    $scope.couponEntered = currentUser.referredBy;
+    // $scope.couponEntered = currentUser.referredBy;
 
     if ($scope.couponEntered) {
       // User.checkCoupon({ id: currentUser._id }, {
@@ -145,8 +145,8 @@ angular.module('bodyAppApp')
         }
 
         var handler = StripeCheckout.configure({
-          // key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-          key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
+          key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+          // key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
           image: '../../assets/images/body-stripe.jpg',
           locale: 'auto',
           token: function(token, args) {
@@ -337,7 +337,7 @@ angular.module('bodyAppApp')
       }, function(user) {
         // getInfo(slot.dateTime);
         ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
-        ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({date: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
+        ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
         // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId})           
         // slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
