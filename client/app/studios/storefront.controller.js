@@ -17,6 +17,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.studioId = studioId;
+    $scope.backgroundImageUrl = 'assets/images/studios/'+studioId+'/hero.jpg'
 
     var daysInFuture = 0;
     var numDaysToShow = 7;
