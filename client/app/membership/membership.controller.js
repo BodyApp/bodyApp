@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, studioId, User, Schedule, Studio, accessCode) {
+  .controller('MembershipCtrl', function ($scope, $document, $http, $location, $uibModal, $uibModalInstance, $rootScope, Auth, slot, studioId, User, Schedule, Studio, accountId, $timeout) {
 
     // var studio = Schedule.getCurrentStudio()
 
@@ -14,12 +14,21 @@ angular.module('bodyAppApp')
     }
 
     var planInfo;
+    var dropinRate;
 
     var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + studioId)
     ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
       if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
       planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
       $scope.planInfo = planInfo;
+      if(!$scope.$$phase) $scope.$apply();
+    })
+
+    ref.child('stripeConnected').child('dropinPlan').once('value', function(snapshot) {
+      if (!snapshot.exists()) return console.log("No dropin plan set for this studio.")
+      dropinRate = snapshot.val().amount
+      $scope.dropinRate = dropinRate;
+      if(!$scope.$$phase) $scope.$apply();
     })
 
     $scope.closeModal = function() {
@@ -131,7 +140,7 @@ angular.module('bodyAppApp')
 
 		function openStripePayment(coupon) {
       if ($rootScope.subscribing) return
-      $rootScope.subscribing = true
+      
       // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
       // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
       
@@ -153,15 +162,14 @@ angular.module('bodyAppApp')
         locale: 'auto',
         token: function(token, args) {
           // var modalInstance = openPaymentConfirmedModal()
-          
+          $rootScope.subscribing = true
           $http.post('/api/payments/addcustomersubscription', {
-            user: currentUser,
             stripeToken: token,
             shippingAddress: args,
             coupon: coupon,
             studioId: studioId,
             planInfo: planInfo,
-            accessCode: accessCode
+            accountId: accountId
           })
           .success(function(data) {
             console.log("Successfully created new customer subscription.");
@@ -187,8 +195,7 @@ angular.module('bodyAppApp')
       handlerObject.panelLabel = "Pay $" + amountToPay / 100 + " / Month";
       handlerObject.shippingAddress = true;
       handlerObject.zipCode = true;
-      handlerObject.closed = function() { $rootScope.subscribing = false; }
-        console.log(handlerObject)
+      // handlerObject.closed = function() { $rootScope.subscribing = false;}
       if (currentUser.email && currentUser.email.length > 4) {
         handlerObject.email = currentUser.email
       }
@@ -197,7 +204,9 @@ angular.module('bodyAppApp')
 
     function openStripeDropIn() {
       if (!slot) return
-      var amountToPay = 1000;
+      if ($rootScope.subscribing) return
+      
+      var amountToPay = dropinRate;
       // $scope.invalidCouponEntered = false;
       $uibModalInstance.dismiss('join');
       
@@ -211,16 +220,18 @@ angular.module('bodyAppApp')
         image: '../../assets/images/body-stripe.jpg',
         locale: 'auto',
         token: function(token, args) {
-          var modalInstance = openDropInPaymentConfirmedModal()
-          
-          $http.post('/api/users/chargedropin', {
-            user: currentUser,
+          // var modalInstance = openDropInPaymentConfirmedModal()
+          $rootScope.subscribing = true
+          $http.post('/api/payments/chargedropin', {
+            amount: dropinRate,
             stripeToken: token,
             shippingAddress: args,
             slot: slot,
-            studioId: studio
+            studioId: studioId,
+            accountId: accountId
           })
           .success(function(data) {
+            $rootScope.subscribing = false;
             console.log("Successfully posted to /user/chargedropin");
             Auth.updateUser(data);
             currentUser = data;
@@ -229,6 +240,7 @@ angular.module('bodyAppApp')
             if (slot) bookClass(slot);
           })
           .error(function(err) {
+            $rootScope.subscribing = false;
               console.log(err)
               // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
               return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
@@ -237,48 +249,18 @@ angular.module('bodyAppApp')
       });
       // if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
         //If user has already signed up previously
-      if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-        handler.open({
-          name: '$'+amountToPay/100 +' DROP IN CLASS',
-          description: "Book " + slotTime + " class on " + slotDate,
-          panelLabel: "Pay $" + amountToPay / 100,
-          shippingAddress: true,
-          zipCode: true,
-          // amount: amountToPay
-        });    
-      } else {
-        handler.open({
-          name: '$'+amountToPay/100 +' DROP IN CLASS',
-          email: currentUser.email,
-          description: "Book " + slotTime + " class on " + slotDate,
-          panelLabel: "Pay $" + amountToPay / 100,
-          shippingAddress: true,
-          zipCode: true,
-          // amount: amountToPay
-        });
+
+      var handlerObject = {};
+      handlerObject.name = '$'+amountToPay/100 +' DROP IN CLASS';
+      handlerObject.description = "Book " + slotTime + " class on " + slotDate;
+      handlerObject.panelLabel = "Pay $" + amountToPay / 100;
+      handlerObject.shippingAddress = true;
+      handlerObject.zipCode = true;
+      // handlerObject.closed = function() { $rootScope.subscribing = false;}
+      if (currentUser.email && currentUser.email.length > 4) {
+        handlerObject.email = currentUser.email
       }
-      // } else {
-        // if (!currentUser.email || (currentUser.email && currentUser.email.length < 4)) {
-        //   handler.open({
-        //     name: 'BODY SUBSCRIPTION',
-        //     description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-        //     panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-        //     zipCode: true,
-        //     shippingAddress: true,
-        //     // amount: amountToPay
-        //   });    
-        // } else {
-        //   handler.open({
-        //     name: 'BODY SUBSCRIPTION',
-        //     email: currentUser.email,
-        //     description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-        //     panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-        //     zipCode: true,
-        //     shippingAddress: true,
-        //     // amount: amountToPay
-        //   });
-        // }
-      // }
+      handler.open(handlerObject)
     } 
 
     function openPaymentConfirmedModal() {

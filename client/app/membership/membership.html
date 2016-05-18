@@ -79,7 +79,7 @@
                     <div style = "color: red" ng-if = "userEnteredOwnCoupon">You can't use you're own code!</div>
                     <input placeholder = "Enter code here" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)"></input>
                   </div>
-                  <a class="join-btn btn mt4 mb8" ng-click = "joinClicked(couponEntered)" href="#">Join</a>
+                  <a class="join-btn btn mt4 mb8" ng-click = "joinClicked(couponEntered)" href="#" style = "color: white;">Join</a>
                   <div class="securepayment">
                     <span class="gray">Secured SSL Payment&nbsp;</span>
                     <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
@@ -91,13 +91,13 @@
             </div>
           </div>
           <!-- <div class="visible-xs pt72"></div> -->
-           <div class="col-sm-6 col-md-4" ng-hide = "true">
-           <!-- <div class="col-sm-6 col-md-4" ng-hide = "!slot"> -->
+           <!-- <div class="col-sm-6 col-md-4" ng-hide = "true"> -->
+           <div class="col-sm-6 col-md-4" ng-hide = "!slot">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
               <h3 class="royalblue pt32 mb8 text-center bold">Drop in</h3>
               <div class="text-center" style="margin-bottom: 14px;">
-                <h2 class="pricingAmt royalblue"><sup>$</sup></h2><h2 class="pricingAmt royalblue">10</h2>
+                <h2 class="pricingAmt royalblue"><sup>$</sup></h2><h2 class="pricingAmt royalblue">{{dropinRate/100}}</h2>
                 <span class="pricingTime royalblue">/ class</span>
                 <span class="pricingType royalblue">Join any class</span>
               </div>
@@ -114,7 +114,7 @@
                 </ul>
                 <div class="text-center" style = "font-size: 12px;">
                   <div class="darkgray mb8">Pay for a single class</div>
-                  <a class="join-btn btn mt4 mb8" ng-click = "payClicked()" href="#">Pay</a>
+                  <a class="join-btn btn mt4 mb8" ng-click = "payClicked()" href="#" style = "color: white;">Pay</a>
                   <div class="securepayment">
                     <span class="gray">Secured SSL Payment&nbsp;</span>
                     <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>

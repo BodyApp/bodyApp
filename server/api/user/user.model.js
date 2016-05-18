@@ -45,6 +45,7 @@ var UserSchema = new Schema({
   introClassTaken: Boolean,
   tourtipShown: String,
   shippingAddress: Object,
+  charges: Object,
   stripe: Object,
   level: Number,
   goals: String,

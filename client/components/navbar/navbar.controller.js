@@ -37,7 +37,7 @@ angular.module('bodyAppApp')
     // $scope.isCurrentStudioAdmin = false;
 
     var studioId = $stateParams.studioId;
-    var accessCode;
+    var accountId;
     
     var ref;
     Studios.setCurrentStudio(studioId);
@@ -57,7 +57,7 @@ angular.module('bodyAppApp')
         ref.onAuth(function(authData) {
           if (authData) {
             console.log("User is authenticated with fb ");
-            getAccessCode()
+            getAccountId()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
@@ -69,7 +69,7 @@ angular.module('bodyAppApp')
                   console.log("Firebase currentUser authentication failed", error);
                 } else {
                   if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                  getAccessCode()
+                  getAccountId()
                   // checkIfStudioAdmin()
                 }
               }); 
@@ -91,10 +91,10 @@ angular.module('bodyAppApp')
     //   if(!$scope.$$phase) $scope.$apply();
     // }
 
-    function getAccessCode() {
-      ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
-        if (!snapshot.exists()) return console.log("No access token exists")
-        accessCode = snapshot.val()
+    function getAccountId() {
+      ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("No account ID exists")
+        accountId = snapshot.val()
       })
     }
 
@@ -182,8 +182,8 @@ angular.module('bodyAppApp')
             studioId: function() {
               return studioId
             },
-            accessCode: function() {
-              return accessCode
+            accountId: function() {
+              return accountId
             }
           }
         });

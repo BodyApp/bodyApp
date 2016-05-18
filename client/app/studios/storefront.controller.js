@@ -30,16 +30,17 @@ angular.module('bodyAppApp')
     createSchedule(numDaysToShow, daysInFuture);
     ref.unauth()
 
-    var accessCode;
+    var accountId;
 
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(data) {
+        updateIntercom(data)
         // getUserBookings()
         // checkSubscriptionStatus()
         if (data.studioSubscriptions && data.studioSubscriptions[studioId]) {
           $rootScope.subscriptions = $rootScope.subscriptions || {};
           $rootScope.subscriptions[studioId] = data.studioSubscriptions[studioId].status === "active"
-          if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = data.stripe.subscription.status === "active"
+          if (!$rootScope.subscriptions[studioId] && data.stripe && data.stripe.subscription) $rootScope.subscriptions[studioId] = data.stripe.subscription.status === "active"
           console.log("Subscription active? " + $rootScope.subscriptions[studioId])
         }
 
@@ -47,7 +48,7 @@ angular.module('bodyAppApp')
           if (authData) {
             // console.log("User is authenticated with fb ");
             getUserBookings()
-            getAccessCode()
+            getAccountId()
             checkSubscriptionStatus()
           } else {
             console.log("User is logged out");
@@ -60,7 +61,7 @@ angular.module('bodyAppApp')
                 } else {
                   if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
                   getUserBookings()
-                  getAccessCode()
+                  getAccountId()
                   checkSubscriptionStatus()
                 }
               }); 
@@ -75,17 +76,18 @@ angular.module('bodyAppApp')
       console.log("Checking subscription without promise")
       // checkSubscriptionStatus()
       // getUserBookings()
+      updateIntercom(currentUser);
       if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
         $rootScope.subscriptions = $rootScope.subscriptions || {};
         $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
-        if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
+        if (!$rootScope.subscriptions[studioId] && currentUser.stripe && currentUser.stripe.subscription) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
         console.log("Subscription active? " + $rootScope.subscriptions[studioId])
       }
       ref.onAuth(function(authData) {
         if (authData) {
           // console.log("User is authenticated with fb ");
           getUserBookings()
-          getAccessCode()
+          getAccountId()
           checkSubscriptionStatus()
         } else {
           console.log("User is logged out");
@@ -98,7 +100,7 @@ angular.module('bodyAppApp')
               } else {
                 if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
                 getUserBookings()
-                getAccessCode()
+                getAccountId()
                 checkSubscriptionStatus()
               }
             }); 
@@ -126,17 +128,68 @@ angular.module('bodyAppApp')
     //   console.log("Can't check subscription status")
     // }
 
-    function getAccessCode() {
-      ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
+    function updateIntercom(user) {
+      if (user.intercomHash) {
+        window.intercomSettings = {
+          app_id: "daof2xrs",
+          name: user.firstName + " " + user.lastName, // Full name
+          email: user.email, // Email address
+          user_id: user._id,
+          user_hash: user.intercomHash,
+          "goals": user.goals,
+          "emergencyContact": user.emergencyContact,
+          "injuries": user.injuries,
+          // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
+          // "bookedIntro": user.bookedIntroClass ? user.bookedIntroClass : false,
+          // "introTaken": user.introClassTaken ? user.introClassTaken : false,
+          "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+          "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false,
+          // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+          // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+          "referredBy": user.referredBy,
+          "referralCode" : user.referralCode,
+          "role": user.role,
+          "timezone": user.timezone
+        };
+      } else {
+        User.createIntercomHash({id: user._id}, {}, function(user) {
+          Auth.updateUser(user);
+          window.intercomSettings = {
+            app_id: "daof2xrs",
+            name: user.firstName + " " + user.lastName, // Full name
+            email: user.email, // Email address
+            user_id: user._id,
+            user_hash: user.intercomHash,
+            "goals": user.goals,
+            "emergencyContact": user.emergencyContact,
+            "injuries": user.injuries,
+            // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
+            // "bookedIntro": user.bookedIntroClass,
+            // "introTaken": user.introClassTaken,
+            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+            "newUserFlowComplete": user.completedNewUserFlow,
+            // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+            // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+            "referredBy": user.referredBy,
+            "referralCode" : user.referralCode,
+            "role": user.role,
+            "timezone": user.timezone
+          };
+        }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
+      }
+    }
+
+    function getAccountId() {
+      ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("Can't get access code for studio.")
-        accessCode = snapshot.val()
+        accountId = snapshot.val()
       })
     }
 
     function checkSubscriptionStatus() {
       $http.post('/api/payments/updatecustomersubscriptionstatus', {
         studioId: studioId,
-        accessCode: accessCode
+        accountId: accountId
       })
       .success(function(data) {
         console.log("Successfully updated customer subscription status.");
@@ -306,8 +359,8 @@ angular.module('bodyAppApp')
               studioId: function() {
                 return studioId
               },
-              accessCode: function() {
-                return accessCode
+              accountId: function() {
+                return accountId
               }
             }
             // scope: {classToJoin: slot} //passed current scope to the modal
@@ -345,6 +398,7 @@ angular.module('bodyAppApp')
 
     $scope.reserveClicked = function(slot) {
       // console.log(slot)
+      if ($rootScope.subscribing) return
       if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")
         checkMembership(slot)

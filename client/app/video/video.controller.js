@@ -817,14 +817,21 @@ angular.module('bodyAppApp')
 				    // } else {
 				    // 	ref.child("bookings").child(classToJoin.dateTime).child(currentUser._id).update({tokboxStreamId: event.stream.id})
 				    // }
-				    olark('api.visitor.updateCustomFields', {
-						    "latestTokboxStreamId": event.stream.id
-						});
+				    
 
 				    Intercom('update', {
  							"latestTokboxStreamId": event.stream.id
  						});
 
+ 						if (event.connection && event.connection.connectionId) {
+ 							Intercom('update', {
+	 							"latestTokboxConnectionId": event.connection.connectionId
+	 						});
+ 						}
+
+ 						olark('api.visitor.updateCustomFields', {
+						    "latestTokboxStreamId": event.stream.id
+						});
 				});
 
 			  publisher.on("streamDestroyed", function (event) {
