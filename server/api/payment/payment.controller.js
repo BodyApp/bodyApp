@@ -2,8 +2,7 @@
 
 // var Stripe = require('stripe')
 var config = require('../../config/environment');
-// var stripe = require("stripe")(config.stripeOptions.apiKey);
-var stripe = require("stripe")('sk_live_8luONSHGbKYTd50ODzxQ5v0X');
+var stripe = require("stripe")(config.stripeOptions.apiKey);
 // var stripe = require("stripe")("sk_test_FcBN0w7tedfz76of38xr0qr4");
 var User = require('../user/user.model');
 
