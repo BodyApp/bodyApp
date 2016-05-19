@@ -85,6 +85,7 @@ angular.module('bodyAppApp')
         templateUrl: 'app/studios/createStudio.html',
         controller: 'CreateStudioCtrl',
       })
+      
       .state('editprofile', {
         url: '/studios/:studioId/editprofile',
         templateUrl: 'app/studios/editprofile.html',

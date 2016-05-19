@@ -2,19 +2,55 @@
 
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
-    <div class="col-md-3">
-      <div ng-include="'components/navbar/sideNav.html'"></div>
-      <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block">Add Pricing Plan</a>
-        <a href="#" class="mt16 btn btn-block">Add Promotion</a>
-        <a href="#" class="mt16 btn btn-block">Add Coupon</a>
-      </div>
-    </div>
-
     <div class="col-md-9">
 
-    </div>
+      <div class="panel mb16">
+        <div class="panel-header">
+          Create Studio
+          <ul class="panel-action-list">
+            <!-- <li>
+              <a href="#" class="panel-action-item" ng-click = "showAddCoupon = false;"><i class="ti-close"></i></a>
+            </li> -->
+          </ul>          
+        </div>
+        <div class="panel-body">
+          <!-- <div class="row mb16">
+            <label class="col-sm-3" for="coupon-code">
+              Studio Name
+            </label>
+            <div class="col-sm-9">
+              <input ng-model = "storefrontInfo.studioName" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. My Awesome Studio">
+            </div>
+          </div> -->
+          <div class = "row" style = "color: red" ng-show = "invalidId">
+            <div class = "col-sm-3"></div>
+            <div class = "col-sm-9">This Studio ID is already taken or invalid.</div>
+          </div>
+          <div class="row mb16">            
+            <label class="col-sm-3" for="coupon-code">
+              Studio ID
+            </label>
+            <div class="col-sm-9">
+              <input ng-model = "studioToCreate.studioId" id="coupon-code" name="" size="30" type="text" placeholder="Studio's URL will be www.getbodyapp.com/studios/{studio ID}" ng-change = "invalidId = false;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="panel-action-list">
+                <li>
+                  <a href="#" class="panel-action-item" ng-click = "studioToCreate.studioId = undefined;">Cancel</a>
+                </li>
+                <li>
+                  <a href="#" class="panel-action-item btn-primary btn" ng-click = "createStudio(studioToCreate)">Create Studio</a>
+                </li>
+              </ul>              
+            </div>
+          </div>                                                   
 
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 

@@ -48,7 +48,7 @@ User.find({}).remove(function() {
             "max": 17
         }
     },
-    role: "admin",
+    role: "user",
     __v: 51,
     injuries: "Nothing really",
     goals: "To be able to fly",
