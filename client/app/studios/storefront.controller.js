@@ -461,6 +461,26 @@ angular.module('bodyAppApp')
       }
     }
 
+    $scope.cancelClass = function(classToCancel) {
+      // User.cancelBookedClass({ id: currentUser._id }, {
+      //   classToCancel: slot.date,
+      //   studioId: studioId
+      // }, function(user) {
+      if (confirm("Are you sure you want to cancel class?")) {
+        ref.child("bookings").child(classToCancel.dateTime).child(currentUser._id).remove()
+        ref.child("userBookings").child(currentUser._id).child(classToCancel.dateTime).remove()
+        ref.child("cancellations").child(classToCancel.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+        // Auth.updateUser(user);
+        // currentUser = user;
+        // $scope.currentUser = currentUser;  
+      }
+        
+      // }, function(err) {
+      //     console.log("Error adding class: " + err)
+      //     alert("sorry, there was an issue canceling your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+      // }).$promise;
+    }
+
     function timeCanJoin(classDateTime) {
       var rightNow = new Date().getTime();
       var minutesBeforeClassThatCanJoin = 65;
