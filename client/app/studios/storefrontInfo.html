@@ -9,7 +9,7 @@
       </div> -->
     </div>
 
-    <div class="col-md-9">
+    <div class="col-md-9" ng-show = "storefrontInfo">
 
 			<div class="panel mb16">
         <div class="panel-header">
@@ -29,7 +29,7 @@
               <input ng-model = "storefrontInfo.studioName" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. My Awesome Studio">
             </div>
           </div>
-                    <div class="row mb16">
+          <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
               Full Name of Owner
             </label>
@@ -50,7 +50,7 @@
               Long Description
             </label>
             <div class="col-sm-9">
-              <input ng-model = "storefrontInfo.longDescription" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. This is a studio for people that want to live the life of their dreams.">
+              <input ng-model = "storefrontInfo.longDescription" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. With the BODY Studio, you'll never be without a high-quality home workout again.  Take interactive classes where instructors can see you and you can see other participants, emulating the experience of being at an in-person studio, but from anywhere!">
             </div>
           </div>
 
@@ -74,9 +74,9 @@
           <div class="row">
             <div class="col-sm-12">
               <ul class="panel-action-list">
-                <li>
+                <!-- <li>
                   <a href="#" class="panel-action-item" ng-click = "showAddCoupon = false;">Cancel</a>
-                </li>
+                </li> -->
                 <li>
                   <a href="#" class="panel-action-item btn-primary btn" ng-click = "createCoupon(showAddCoupon)">Save</a>
                 </li>

@@ -53,8 +53,8 @@
             <div class="col-md-3 text-center">
               <img class="studio-profile-img mb-sm-16" ng-src="/assets/images/studios/{{studioId}}/logo.jpg">
               <h5 class="mt8 hidden-xs hidden-sm">{{storefrontInfo.ownerName}}</h5>
-              <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors === 1">& 1 Instructor</h5>
-              <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& {{numOfInstructors}} Instructors</h5>
+              <!-- <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& 1 Instructor</h5> -->
+              <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& {{numOfInstructors-1}} Instructors</h5>
             </div>
             <div class="col-md-9">
               <h1 class="studio-name text-center-sm">{{storefrontInfo.studioName}}</h1>
@@ -97,7 +97,7 @@
               <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
                   <div class="col-md-6">
-                    <h4>Unlimited</h4>
+                    <h4 ng-show="storefrontInfo.subscriptionPricing">Unlimited</h4>
                   </div>
                   <div class="col-md-6">
                     <h4 class="lightgray" ng-show="storefrontInfo.subscriptionPricing">${{storefrontInfo.subscriptionPricing/100}}/mo</h4>
@@ -106,7 +106,7 @@
               </div>
               <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6" ng-show = "storefrontInfo.dropinPricing">
                     <h4>Drop In</h4>
                   </div>
                   <div class="col-md-6">
@@ -116,7 +116,7 @@
               </div>
 
               <div class="col-xs-12 mt16">
-                <a href="#" class="btn-blue btn-block" ng-show = "!subscriptions[studioId]" ng-click = "joinStudioClicked()">Join Studio</a>
+                <a href="#" class="btn-blue btn-block" ng-show = "!subscriptions[studioId] && storefrontInfo.subscriptionPricing" ng-click = "joinStudioClicked()">Join Studio</a>
                 <div class="" ng-show = "subscriptions[studioId]">You are a member of this studio!</div>
               </div>
             </div>
@@ -281,8 +281,8 @@
                   <div class="col-md-8">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb8">Monthly Unlimited Classes: ${{storefrontInfo.subscriptionPricing/100}}/mo</h5>
-                        <h5>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
+                        <h5 class="mb8" ng-show = 'storefrontInfo.subscriptionPricing'>Monthly Unlimited Classes: ${{storefrontInfo.subscriptionPricing/100}}/mo</h5>
+                        <h5 ng-show = 'storefrontInfo.dropinPricing'>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
                       </div>
                     </div>
                   </div>

@@ -3,15 +3,15 @@
 angular.module('bodyAppApp')
   .controller('WorkoutsCtrl', function ($scope, $stateParams, $q, $window, $state, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
   	var currentUser = Auth.getCurrentUser()
+    var studioId = $stateParams.studioId;
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
     var ref;
-    var studioId = $stateParams.studioId;
     $scope.workoutToCreate = {};
     Studios.setCurrentStudio(studioId);
     if (studioId) {

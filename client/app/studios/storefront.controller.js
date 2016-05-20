@@ -16,6 +16,12 @@ angular.module('bodyAppApp')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
 
+    ref.once('value', function(snapshot) {
+      if (!snapshot.exists()) {
+        $location.path('/')
+      }
+    })
+
     $scope.studioId = studioId;
     $scope.backgroundImageUrl = 'assets/images/studios/'+studioId+'/hero.jpg'
 

@@ -1,15 +1,16 @@
 angular.module('bodyAppApp')
   .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    var studioId = $stateParams.studioId;
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
     var ref;
-    var studioId = $stateParams.studioId;
+    
     $scope.classToCreate = {};
     $scope.minDate = new Date();
     Studios.setCurrentStudio(studioId);

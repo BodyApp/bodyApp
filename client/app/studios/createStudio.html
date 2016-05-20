@@ -24,14 +24,20 @@
           </div> -->
           <div class = "row" style = "color: red" ng-show = "invalidId">
             <div class = "col-sm-3"></div>
-            <div class = "col-sm-9">This Studio ID is already taken or invalid.</div>
+            <div class = "col-sm-9">This Studio ID is invalid.</div>
+          </div>
+          <div class = "row" style = "color: red" ng-show = "takenId">
+            <div class = "col-sm-3"></div>
+            <div class = "col-sm-9">This Studio ID is already taken.</div>
           </div>
           <div class="row mb16">            
             <label class="col-sm-3" for="coupon-code">
               Studio ID
             </label>
             <div class="col-sm-9">
-              <input ng-model = "studioToCreate.studioId" id="coupon-code" name="" size="30" type="text" placeholder="Studio's URL will be www.getbodyapp.com/studios/{studio ID}" ng-change = "invalidId = false;">
+              <input ng-model = "studioToCreate.studioId" id="coupon-code" name="" size="30" type="text" placeholder="Studio's URL will be www.getbodyapp.com/studios/{studio ID}" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId)" ng-keypress="keyPressed($event, studioToCreate)">
+              <div>Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
+              <div>Don't worry, you can change your studio name to whatever you want!</div>
             </div>
           </div>
           <div class="row">

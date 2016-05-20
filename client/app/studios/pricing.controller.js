@@ -1,17 +1,17 @@
 angular.module('bodyAppApp')
   .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, Studios, Studio, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    var studioId = $stateParams.studioId;
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
         // listCoupons(data);
         // listSubscriptionPlans(data);
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
     var ref;
-    var studioId = $stateParams.studioId;
     var accessCode;
     $scope.studioId = studioId;
     $scope.classToCreate = {};
@@ -121,6 +121,10 @@ angular.module('bodyAppApp')
       		if (err) return console.log(err);
       		listSubscriptionPlans()
       		console.log("Deleted subscription plan with id: " + planId);
+          ref.child('storefrontInfo').child('subscriptionPricing').remove(function(err) {
+            if (err) return console.log(err)
+            console.log("Removed subscription pricing from storefront.")
+          })
       	})
       })
     }

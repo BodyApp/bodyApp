@@ -1,17 +1,15 @@
 angular.module('bodyAppApp')
   .controller('MembersCtrl', function ($scope, $stateParams, $window, $state, Studios, $http, Studio, Auth, User) {
     var currentUser = Auth.getCurrentUser()
+    var studioId = $stateParams.studioId;
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
-    console.log(currentUser);
-    var ref;
-    var studioId = $stateParams.studioId;
-    $scope.classToCreate = {};
+    var ref;    
     Studios.setCurrentStudio(studioId);
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);

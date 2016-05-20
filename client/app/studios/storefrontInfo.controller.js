@@ -3,23 +3,27 @@
 angular.module('bodyAppApp')
   .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
-    if (currentUser.$promise) {
-      currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
-      })
-    } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
-    }
+    
     var ref;
     var studioId = $stateParams.studioId;
-    $scope.classToCreate = {};
-    Studios.setCurrentStudio(studioId);
+    
+    
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });  
+      })
+    } else if (currentUser.role) {
+      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });  
+    }
+
     if (studioId) {
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
     } else {
       // $location.path('/ralabala/admin')
       ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
     }
+
+    Studios.setCurrentStudio(studioId);
 
     ref.onAuth(function(authData) {
       if (authData) {
