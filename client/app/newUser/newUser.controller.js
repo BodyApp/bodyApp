@@ -13,7 +13,7 @@ angular.module('bodyAppApp')
     var emergencyContact = {};
     $scope.timezone;
     var tzName = jstz().timezone_name;
-    var ref = firebase.database().ref().child('studios').child(studioId);
+    var ref = firebase.database().ref()
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {
       if (user) {
@@ -41,30 +41,30 @@ angular.module('bodyAppApp')
         currentUser = user
 
         //Firebase authentication check
-          var ref = new Firebase("https://bodyapp.firebaseio.com/");
-          ref.onAuth(function(authData) {
-              if (authData) {
-                getUpcomingIntros()
-                console.log("User is authenticated with fb ");
-              } else {
-                console.log("User is logged out");
-                if (currentUser.firebaseToken) {
-                  ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                    if (error) {
-                      Auth.logout();
-                      $window.location.reload()
-                      console.log("Firebase user authentication failed", error);
-                    } else {
-                      getUpcomingIntros()  
-                      if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                    }
-                  }); 
-                } else {
-                  Auth.logout();
-                  $window.location.reload()
-                }
-              }
-        })
+          // var ref = new Firebase("https://bodyapp.firebaseio.com/");
+          // ref.onAuth(function(authData) {
+          //     if (authData) {
+          //       getUpcomingIntros()
+          //       console.log("User is authenticated with fb ");
+          //     } else {
+          //       console.log("User is logged out");
+          //       if (currentUser.firebaseToken) {
+          //         ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+          //           if (error) {
+          //             Auth.logout();
+          //             $window.location.reload()
+          //             console.log("Firebase user authentication failed", error);
+          //           } else {
+          //             getUpcomingIntros()  
+          //             if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+          //           }
+          //         }); 
+          //       } else {
+          //         Auth.logout();
+          //         $window.location.reload()
+          //       }
+          //     }
+        // })
 
         // //Olark Integration
         if (user.firstName && user.lastName) {

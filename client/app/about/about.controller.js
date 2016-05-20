@@ -2,10 +2,11 @@
 
 angular.module('bodyAppApp')
   .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
-    var ref = new Firebase("https://bodyapp.firebaseio.com");
-    $scope.challenges;
+    // var ref = new Firebase("https://bodyapp.firebaseio.com");
+    
+    // $scope.challenges;
     $(window).scrollTop()
-    getWods()
+    // getWods()
     // window.scrollTo(0, 0);
   	$scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
@@ -13,13 +14,13 @@ angular.module('bodyAppApp')
 
     function getWods() {
       var rightNow = new Date().getTime()
-      ref.child('WODs').orderByChild('dateTime').limitToLast(60).endAt(rightNow).once('value', function(snapshot) {
-        $scope.challenges = []
-        for (var i in snapshot.val()) {
-          $scope.challenges.unshift(snapshot.val()[i])
-        }
-        if(!$scope.$$phase) $scope.$apply();
-      })
+      // ref.child('WODs').orderByChild('dateTime').limitToLast(60).endAt(rightNow).once('value', function(snapshot) {
+      //   $scope.challenges = []
+      //   for (var i in snapshot.val()) {
+      //     $scope.challenges.unshift(snapshot.val()[i])
+      //   }
+      //   if(!$scope.$$phase) $scope.$apply();
+      // })
     }
 
     $scope.formatDateTime = function(dateTime) {
