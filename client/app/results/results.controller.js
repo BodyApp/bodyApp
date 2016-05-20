@@ -30,7 +30,20 @@ angular.module('bodyAppApp')
     setupDayList();
     // $scope.selectedDate = new Date();     
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/")
+    var ref = firebase.database().ref();
+    var auth = firebase.auth();
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+      } else {
+        if (currentUser.firebaseToken) {
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+          }); 
+        } else {
+          console.log("User doesn't have a firebase token saved, should retrieve one.")
+        }
+      }
+    })
 
     $scope.wods;
     var wodsRef = ref.child("WODs");

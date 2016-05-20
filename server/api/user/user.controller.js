@@ -19,11 +19,12 @@ var domain = 'getbodyapp.com';
 var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 // var classBookedMailingList = mailgun.lists('classbooked@getbodyapp.com').info().address;
 
-var Firebase = require('firebase');
-var FirebaseTokenGenerator = require("firebase-token-generator");
-var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
+var firebase = require('firebase');
+// var FirebaseTokenGenerator = require("firebase-token-generator");
+// var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 
-var ref = new Firebase("https://bodyapp.firebaseio.com/");
+// var ref = new Firebase("https://bodyapp.firebaseio.com/");
+var ref = firebase.database().ref()
 
 const crypto = require("crypto");
 

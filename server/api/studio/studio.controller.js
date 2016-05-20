@@ -8,8 +8,11 @@ var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
 var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 
-var Firebase = require('firebase');
-var ref = new Firebase("https://bodyapp.firebaseio.com/");
+// var Firebase = require('firebase');
+// var ref = new Firebase("https://bodyapp.firebaseio.com/");
+
+var firebase = require('firebase');
+var ref = firebase.database().ref()
 
 exports.createSubscriptionPlan = function(req, res, next){
   var studioId = req.body.studioId;

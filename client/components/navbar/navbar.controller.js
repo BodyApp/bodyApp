@@ -42,36 +42,30 @@ angular.module('bodyAppApp')
     var ref;
     Studios.setCurrentStudio(studioId);
     // currentUser = Auth.getCurrentUser()
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
-      studioId = 'ralabala';
-      // $location.path('/ralabala/admin')
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    if (!studioId) {
+      studioId = 'ralabala'
     }
+
+    ref = firebase.database().ref().child('studios').child(studioId);
 
     $scope.studioId = studioId;
 
+    var auth = firebase.auth();
+
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(currentUser) {
-        ref.onAuth(function(authData) {
-          if (authData) {
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
             console.log("User is authenticated with fb ");
             getAccountId()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
             if (currentUser.firebaseToken) {
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                if (error) {
-                  Auth.logout();
-                  $window.location.reload()
-                  console.log("Firebase currentUser authentication failed", error);
-                } else {
-                  if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                  getAccountId()
+              auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+                if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+                getAccountId()
                   // checkIfStudioAdmin()
-                }
               }); 
             } else {
               // Auth.logout();

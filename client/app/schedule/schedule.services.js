@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
   	service.userHasClassNow = false;
   	service.classUserJustJoined;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
+    // var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     // var fbObject;
 
     service.setCurrentStudio = function(studio) {

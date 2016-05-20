@@ -8,13 +8,17 @@ angular.module('bodyAppApp')
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
+    if (!studioId) {
       studioId = 'ralabala'
+      // ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+      // var ref = firebase.database().ref().child('studios');
+    // } else {
+      
       // $location.path('/ralabala/admin')
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+      // ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+
     }
+    ref = firebase.database().ref().child('studios').child(studioId);
 
     ref.once('value', function(snapshot) {
       if (!snapshot.exists()) {
@@ -35,7 +39,7 @@ angular.module('bodyAppApp')
     getWorkouts();
     getPlaylistObjects();
     createSchedule(numDaysToShow, daysInFuture);
-    ref.unauth()
+    // ref.unauth()
 
     var accountId;
 
@@ -51,33 +55,55 @@ angular.module('bodyAppApp')
           console.log("Subscription active? " + $rootScope.subscriptions[studioId])
         }
 
-        ref.onAuth(function(authData) {
-          if (authData) {
-            // console.log("User is authenticated with fb ");
-            getUserBookings()
-            getAccountId()
-            checkSubscriptionStatus()
+      var auth = firebase.auth();
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          // console.log("User is authenticated with fb ");
+          getUserBookings()
+          getAccountId()
+          checkSubscriptionStatus()
+        } else {
+          // console.log("User is logged out");
+          if (currentUser.firebaseToken) {
+            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+              getUserBookings()
+              getAccountId()
+              checkSubscriptionStatus()
+            }); 
           } else {
-            console.log("User is logged out");
-            if (currentUser.firebaseToken) {
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                if (error) {
-                  Auth.logout();
-                  $window.location.reload()
-                  console.log("Firebase currentUser authentication failed", error);
-                } else {
-                  if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-                  getUserBookings()
-                  getAccountId()
-                  checkSubscriptionStatus()
-                }
-              }); 
-            } else {
-              // Auth.logout();
-              // $window.location.reload()
-            }
+            console.log("User doesn't have a firebase token saved, should retrieve one.")
           }
-        })
+        }
+      })
+
+        // ref.onAuth(function(authData) {
+        //   if (authData) {
+        //     // console.log("User is authenticated with fb ");
+        //     getUserBookings()
+        //     getAccountId()
+        //     checkSubscriptionStatus()
+        //   } else {
+        //     console.log("User is logged out");
+        //     if (currentUser.firebaseToken) {
+        //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+        //         if (error) {
+        //           Auth.logout();
+        //           $window.location.reload()
+        //           console.log("Firebase currentUser authentication failed", error);
+        //         } else {
+        //           if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+        //           getUserBookings()
+        //           getAccountId()
+        //           checkSubscriptionStatus()
+        //         }
+        //       }); 
+        //     } else {
+        //       // Auth.logout();
+        //       // $window.location.reload()
+        //     }
+        //   }
+        // })
       })
     } else if (currentUser._id) {
       console.log("Checking subscription without promise")

@@ -14,7 +14,8 @@ angular.module('bodyAppApp')
     service.admin;
     service.instructor;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
+    // var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
+    var ref = firebase.database().ref().child('studios');
     // var fbObject;
 
     service.isAdmin = function() {

@@ -3,7 +3,7 @@
 angular.module('bodyAppApp')
   .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, Auth, Studios) {
   	var currentUser = Auth.getCurrentUser();
-  	var ref = new Firebase("https://bodyapp.firebaseio.com/");
+    var ref = firebase.database().ref().child('studios').child(studioId);
 
   	$scope.sanitizeUrl = function(currentUrl) {
   		return currentUrl.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase()
@@ -41,15 +41,26 @@ angular.module('bodyAppApp')
   					ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
   						if (err) return console.log(err);
   						console.log("Set current user "+ currentUser._id + " as admin of " + studioId)
-	  					ref.child('studios').child(studioId).child('instructors').child(currentUser._id).update(currentUser, function(err) {
-	  						if (err) return console.log(err);
-	  						console.log("Saved current user "+ currentUser._id + " as instructor of " + studioId)
-	  						$rootScope.$apply(function() {
-	  							// $timeout(function() {
-	  								return $location.path('/studios/' + studioId + '/storefrontinfo');	
-	  							// }, 2000)
-					      });
-	  					})
+  						User.getInstructorByEmail({
+				        id: currentUser._id
+				      }, {
+				        email: currentUser.email
+				      }).$promise.then(function(instructor) {
+				        if (instructor._id) {
+				          ref.child('studios').child(studioId).child('instructors').child(instructor._id).update(instructor, function(err) {
+			  						if (err) return console.log(err);
+			  						console.log("Saved current user "+ currentUser._id + " as instructor of " + studioId)
+			  						$rootScope.$apply(function() {
+			  							// $timeout(function() {
+			  								return $location.path('/studios/' + studioId + '/storefrontinfo');	
+			  							// }, 2000)
+							      });
+			  					})
+				        } else {
+				          console.log("Couldn't pull instructor profile.")
+				        }
+				      })
+	  					
   					})
   				})
   			}

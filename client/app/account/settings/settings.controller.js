@@ -2,7 +2,23 @@
 
 angular.module('bodyAppApp')
   .controller('SettingsCtrl', function ($scope, $http, $uibModal, $state, $rootScope, User, Auth) {
-    var ref = new Firebase("https://bodyapp.firebaseio.com");
+    var ref = firebase.database().ref()
+    var auth = firebase.auth();
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        pullFriendPictures()
+      } else {
+        if (currentUser.firebaseToken) {
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+            pullFriendPictures()
+          }); 
+        } else {
+          console.log("User doesn't have a firebase token saved, should retrieve one.")
+        }
+      }
+    })
+
     $scope.errors = {};
     $scope.teammates = true;
     $scope.profilePage = false;
@@ -48,31 +64,29 @@ angular.module('bodyAppApp')
       //   }, function(err){console.log('error generating single parent code code: ' + err)})
       // }
 
-      //Firebase authentication check
-        var ref = new Firebase("https://bodyapp.firebaseio.com/");
-        ref.onAuth(function(authData) {
-          if (authData) {
-            pullFriendPictures()
-            console.log("User is authenticated with fb ");
-          } else {
-            console.log("User is logged out");
-            if (currentUser.firebaseToken) {
-              ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-                if (error) {
-                  Auth.logout();
-                  $window.location.reload()
-                  console.log("Firebase user authentication failed", error);
-                } else {
-                  if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-                  // pullFriendPictures()
-                }
-              }); 
-            } else {
-              Auth.logout();
-              $window.location.reload()
-            }
-          }
-        })
+        // ref.onAuth(function(authData) {
+        //   if (authData) {
+        //     pullFriendPictures()
+        //     console.log("User is authenticated with fb ");
+        //   } else {
+        //     console.log("User is logged out");
+        //     if (currentUser.firebaseToken) {
+        //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+        //         if (error) {
+        //           Auth.logout();
+        //           $window.location.reload()
+        //           console.log("Firebase user authentication failed", error);
+        //         } else {
+        //           if (user.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+        //           // pullFriendPictures()
+        //         }
+        //       }); 
+        //     } else {
+        //       Auth.logout();
+        //       $window.location.reload()
+        //     }
+        //   }
+        // })
       
       // pullFriendPictures()
     }

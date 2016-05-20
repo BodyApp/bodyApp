@@ -11,10 +11,16 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 var CronJob = require('cron').CronJob;
-var Firebase = require('firebase');
+// var Firebase = require('firebase');
+var firebase = require("firebase");
+firebase.initializeApp({
+  serviceAccount: "./serviceAccountCredentials.json",
+  databaseURL: "https://bodyapp.firebaseio.com"
+});
+var ref = firebase.database().ref()
 var seojs = require('express-seojs');
-var FirebaseTokenGenerator = require("firebase-token-generator");
-var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
+// var FirebaseTokenGenerator = require("firebase-token-generator");
+// var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 var helmet = require('helmet');
 var cluster = require('cluster'); //For worker clustering.
 const numCPUs = require('os').cpus().length; //For worker clustering
@@ -174,16 +180,22 @@ function start() {
 // }
  
 // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
-var ref = new Firebase("https://bodyapp.firebaseio.com/");
-ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
-  if (error) {
-    console.log("Firebase server authentication failed", error);
-  } else {
-    // console.log("Firebase server authentication succeeded!", authData);
-    console.log("Firebase server authentication succeeded!");
-  }
-// }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
-}); 
+// var ref = new Firebase("https://bodyapp.firebaseio.com/");
+
+// var auth = firebase.auth();
+// auth.signInWithCustomToken(config.firebaseSecret).then(function(user) {
+//   if (user) return console.log("Firebase server authentication succeeded!")
+//   console.log("Firebase server authentication failed.")
+// })
+// ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
+//   if (error) {
+//     console.log("Firebase server authentication failed", error);
+//   } else {
+//     // console.log("Firebase server authentication succeeded!", authData);
+//     console.log("Firebase server authentication succeeded!");
+//   }
+// // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
+// }); 
 
 //Cron job that checks classes and flags past classes with 'past' and full classes with classFull. Should run every 30 seconds
 // new CronJob('29 * * * * *', function() {

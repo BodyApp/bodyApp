@@ -11,40 +11,60 @@ angular.module('bodyAppApp')
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
     }
     // if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
-    var ref;
+    // var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
-      // $location.path('/ralabala/admin')
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
-    }
+    // if (studioId) {
+    //   ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
+    // } else {
+    //   // $location.path('/ralabala/admin')
+    //   ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    // }
 
-    ref.onAuth(function(authData) {
-      if (authData) {
-        // console.log("User is authenticated with fb ");
+    if (!studioId) studioId = 'ralabala'
+    var ref = firebase.database().ref().child('studios').child(studioId);
+
+    var auth = firebase.auth();
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
         getClassTypes();
       } else {
-        console.log("User is logged out");
+        // console.log("User is logged out");
         if (currentUser.firebaseToken) {
-          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-            if (error) {
-              Auth.logout();
-              $window.location.reload()
-              console.log("Firebase currentUser authentication failed", error);
-            } else {
-              if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-              getClassTypes();
-            }
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+            getClassTypes();
           }); 
         } else {
-          Auth.logout();
-          $window.location.reload()
+          console.log("User doesn't have a firebase token saved, should retrieve one.")
         }
       }
     })
+
+    // ref.onAuth(function(authData) {
+    //   if (authData) {
+    //     // console.log("User is authenticated with fb ");
+    //     getClassTypes();
+    //   } else {
+    //     console.log("User is logged out");
+    //     if (currentUser.firebaseToken) {
+    //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+    //         if (error) {
+    //           Auth.logout();
+    //           $window.location.reload()
+    //           console.log("Firebase currentUser authentication failed", error);
+    //         } else {
+    //           if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+    //           getClassTypes();
+    //         }
+    //       }); 
+    //     } else {
+    //       Auth.logout();
+    //       $window.location.reload()
+    //     }
+    //   }
+    // })
 
     // $scope.tags = [
     //   { name: "Brazil", flag: "Brazil.png" },

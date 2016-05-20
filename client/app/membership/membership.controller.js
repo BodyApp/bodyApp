@@ -16,7 +16,7 @@ angular.module('bodyAppApp')
     var planInfo;
     var dropinRate;
 
-    var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + studioId)
+    var ref = firebase.database().ref().child('studios').child(studioId);
     ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
       if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
       planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]

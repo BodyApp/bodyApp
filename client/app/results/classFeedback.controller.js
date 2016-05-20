@@ -19,12 +19,23 @@ angular.module('bodyAppApp')
     // var sunGetMonth = sunDate.getMonth()+1;
     // var sunGetYear = sunDate.getFullYear();
     // var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-    var ref
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId)
-    } else {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala")
-    }
+    
+    if (!studioId) studioId = 'ralabala'
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    var auth = firebase.auth();
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+      } else {
+        if (currentUser.firebaseToken) {
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+          }); 
+        } else {
+          console.log("User doesn't have a firebase token saved, should retrieve one.")
+        }
+      }
+    })
+
     // var weekOfRef = ref.child("classes").child(weekOf)
     // var dayRef = weekOfRef.child(DayOfWeekSetter.setDay(classDate.getDay()))
 

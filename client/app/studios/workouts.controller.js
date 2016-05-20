@@ -11,42 +11,57 @@ angular.module('bodyAppApp')
     } else if (currentUser.role) {
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
-    var ref;
+    
     $scope.workoutToCreate = {};
-    Studios.setCurrentStudio(studioId);
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
-      // $location.path('/ralabala/admin')
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
-    }
+    
     var classTypes;
 
-    ref.onAuth(function(authData) {
-      if (authData) {
-        // console.log("User is authenticated with fb ");
-        getClassTypes()
-        loadWorkouts()
+    if (!studioId) studioId = 'ralabala'
+    Studios.setCurrentStudio(studioId);
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    var auth = firebase.auth();
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        getClassTypes();
+        loadWorkouts();
       } else {
-        console.log("User is logged out");
         if (currentUser.firebaseToken) {
-          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-            if (error) {
-              Auth.logout();
-              $window.location.reload()
-              console.log("Firebase currentUser authentication failed", error);
-            } else {
-              if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-              getClassTypes()
-              loadWorkouts()
-            }
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+            getClassTypes();
+            loadWorkouts();
           }); 
         } else {
-          Auth.logout();
-          $window.location.reload()
+          console.log("User doesn't have a firebase token saved, should retrieve one.")
         }
       }
     })
+
+    // ref.onAuth(function(authData) {
+    //   if (authData) {
+    //     // console.log("User is authenticated with fb ");
+    //     getClassTypes()
+    //     loadWorkouts()
+    //   } else {
+    //     console.log("User is logged out");
+    //     if (currentUser.firebaseToken) {
+    //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+    //         if (error) {
+    //           Auth.logout();
+    //           $window.location.reload()
+    //           console.log("Firebase currentUser authentication failed", error);
+    //         } else {
+    //           if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+    //           getClassTypes()
+    //           loadWorkouts()
+    //         }
+    //       }); 
+    //     } else {
+    //       Auth.logout();
+    //       $window.location.reload()
+    //     }
+    //   }
+    // })
 
     function loadWorkouts() {
     	ref.child('workouts').on('value', function(snapshot) {

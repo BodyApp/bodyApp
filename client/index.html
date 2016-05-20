@@ -139,7 +139,7 @@
       <script src="bower_components/lodash/dist/lodash.compat.js"></script>
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-      <script src="bower_components/firebase/firebase.js"></script>
+      <!-- <script src="bower_components/firebase/firebase.js"></script> -->
       <script src="bower_components/angularfire/dist/angularfire.js"></script>
       <script src="bower_components/FileSaver/FileSaver.js"></script>
       <script src="bower_components/jstz/jstz.js"></script>
@@ -187,6 +187,18 @@
       <script src="bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.js"></script>  
 
       <script src='//static.opentok.com/v2/js/opentok.min.js'></script>
+
+      <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+      <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyDytddVjV515BdVokmQqDqSR3P_xL6EbYA",
+          authDomain: "bodyapp.firebaseapp.com",
+          databaseURL: "https://bodyapp.firebaseio.com",
+          storageBucket: "project-4827292085917900551.appspot.com",
+        };
+        firebase.initializeApp(config);
+      </script>
 
     <!-- endbuild -->
 

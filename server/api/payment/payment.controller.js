@@ -6,8 +6,11 @@ var stripe = require("stripe")(config.stripeOptions.apiKey);
 // var stripe = require("stripe")("sk_test_FcBN0w7tedfz76of38xr0qr4");
 var User = require('../user/user.model');
 
-var Firebase = require('firebase');
-var ref = new Firebase("https://bodyapp.firebaseio.com/");
+// var Firebase = require('firebase');
+// var ref = new Firebase("https://bodyapp.firebaseio.com/");
+
+var firebase = require('firebase');
+var ref = firebase.database().ref()
 
 //Formatted for use with Mongoose plugin (user.model.js)
 // module.exports = exports = function stripeCustomer (schema, options) {

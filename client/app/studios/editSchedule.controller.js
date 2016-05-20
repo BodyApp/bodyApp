@@ -9,17 +9,43 @@ angular.module('bodyAppApp')
     } else if (currentUser.role) {
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
-    var ref;
     
-    $scope.classToCreate = {};
+    if (!studioId) studioId = 'ralabala'
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    var auth = firebase.auth();
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        getClassTypes();
+        getInstructors();
+        getPlaylists();
+        getClasses(daysInFuture);
+        getWorkouts();
+        getPlaylistObjects();
+        createSchedule(numDaysToShow, daysInFuture);
+        createInitialTokBoxSession();
+      } else {
+        // console.log("User is logged out");
+        if (currentUser.firebaseToken) {
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+            getClassTypes();
+            getInstructors();
+            getPlaylists();
+            getClasses(daysInFuture);
+            getWorkouts();
+            getPlaylistObjects();
+            createSchedule(numDaysToShow, daysInFuture);
+            createInitialTokBoxSession();
+          }); 
+        } else {
+          console.log("User doesn't have a firebase token saved, should retrieve one.")
+        }
+      }
+    })
+    
     $scope.minDate = new Date();
     Studios.setCurrentStudio(studioId);
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
-      // $location.path('/ralabala/admin')
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
-    }
+    
 
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
@@ -43,43 +69,43 @@ angular.module('bodyAppApp')
 
     var nextSessionToSave;
 
-    ref.onAuth(function(authData) {
-      if (authData) {
-        // console.log("User is authenticated with fb ");
-        getClassTypes();
-        getInstructors();
-        getPlaylists();
-        getClasses(daysInFuture);
-        getWorkouts();
-        getPlaylistObjects();
-        createSchedule(numDaysToShow, daysInFuture);
-        createInitialTokBoxSession();
-      } else {
-        console.log("User is logged out");
-        if (currentUser.firebaseToken) {
-          ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-            if (error) {
-              Auth.logout();
-              $window.location.reload()
-              console.log("Firebase user authentication failed", error);
-            } else {
-              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", authData);
-              getClassTypes();
-              getInstructors();
-              getPlaylists();
-              getClasses(daysInFuture);
-              getWorkouts();
-              getPlaylistObjects();
-              createSchedule(numDaysToShow, daysInFuture);
-              createInitialTokBoxSession();
-            }
-          }); 
-        } else {
-          Auth.logout();
-          $window.location.reload()
-        }
-      }
-    })
+    // ref.onAuth(function(authData) {
+    //   if (authData) {
+    //     // console.log("User is authenticated with fb ");
+    //     getClassTypes();
+    //     getInstructors();
+    //     getPlaylists();
+    //     getClasses(daysInFuture);
+    //     getWorkouts();
+    //     getPlaylistObjects();
+    //     createSchedule(numDaysToShow, daysInFuture);
+    //     createInitialTokBoxSession();
+    //   } else {
+    //     console.log("User is logged out");
+    //     if (currentUser.firebaseToken) {
+    //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+    //         if (error) {
+    //           Auth.logout();
+    //           $window.location.reload()
+    //           console.log("Firebase user authentication failed", error);
+    //         } else {
+    //           if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", authData);
+    //           getClassTypes();
+    //           getInstructors();
+    //           getPlaylists();
+    //           getClasses(daysInFuture);
+    //           getWorkouts();
+    //           getPlaylistObjects();
+    //           createSchedule(numDaysToShow, daysInFuture);
+    //           createInitialTokBoxSession();
+    //         }
+    //       }); 
+    //     } else {
+    //       Auth.logout();
+    //       $window.location.reload()
+    //     }
+    //   }
+    // })
 
     function createInitialTokBoxSession() {
       User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
