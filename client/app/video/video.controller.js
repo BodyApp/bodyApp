@@ -348,10 +348,10 @@ angular.module('bodyAppApp')
 			}
 		})
 
-		var wodRef = ref.child("WODs").child(classKey)
-		wodRef.once('value', function(snapshot) {
-			$scope.todayWod = snapshot.val()
-		})
+		// var wodRef = ref.child("WODs").child(classKey)
+		// wodRef.once('value', function(snapshot) {
+		// 	$scope.todayWod = snapshot.val()
+		// })
 
 		$scope.letConsumersHearEachOther = function() {
 			$scope.consumersCanHearEachOther = true;
