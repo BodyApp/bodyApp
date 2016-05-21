@@ -115,64 +115,122 @@ angular.module('bodyAppApp')
     //   .child("tabata"));
 
 		//3-way data bind for tabata time and rounds
-		var dayOfWeek = DayOfWeekSetter.setDay(classDate.getDay())
+		// var dayOfWeek = DayOfWeekSetter.setDay(classDate.getDay())
 
-    $firebaseObject(ref.child("realTimeControls")
-      .child(classDate.getTime())
-      .child("tabata")).$bindTo($scope, 'tabata').then(function() {
-      	if (!$scope.tabata) return;
-      	if (userIsInstructor) {
-      		$scope.tabata.timeOnMinutes = "0"
-      		$scope.tabata.timeOnSeconds = "20"
-      		$scope.tabata.timeOffSeconds = "10"
-      		$scope.tabata.rounds = "1"
-      		return $scope.tabata.tabataActive = true
-      	}
-      	else if (!userIsInstructor) {
-      		console.log("Watching whether tabata is on or off.")
-      		$scope.$watch('tabata.isOn', function(data){
-	          document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
-						document.getElementById('tabata').reset();
-						if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
-							console.log("Starting consumer tabata")
-							$timeout(function() {
-								document.getElementById('tabata').start();
-							}, 1000)
-						}
-	        });
-      		
-      		$scope.$watch('tabata.lastSet', function(data){
-	          document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
-						document.getElementById('tabata').reset();
-						console.log("Stopping and resetting tabata")
-	        });
+		var tabataRef = ref.child('realTimeControls').child(classDate.getTime()).child('tabata');
+		var tabataSet = false;
 
-	        $scope.$watch('tabata.lastStart', function(data){
-	        	if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+		tabataRef.on('value', function(snapshot) {
+			$scope.tabata = snapshot.val()
+			if (userIsInstructor && !tabataSet) {
+				tabataRef.update({timeOnMinutes: "0", timeOnSeconds: "20", timeOffSeconds: "10", rounds: "1", tabataActive: true}, function(err) {
+					if (err) return console.log(err)
+					tabataSet = true;
+				})
+			}
+	   	else if (!userIsInstructor) {
+    		console.log("Watching whether tabata is on or off.")
+    		$scope.$watch('tabata.isOn', function(data){
+          document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
+					document.getElementById('tabata').reset();
+					if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+						console.log("Starting consumer tabata")
+						$timeout(function() {
 							document.getElementById('tabata').start();
-							console.log("Starting tabata")
-						}
-	        });
-      	}
-      })
+						}, 1000)
+					}
+        });
+    		
+    		$scope.$watch('tabata.lastSet', function(data){
+          document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
+					document.getElementById('tabata').reset();
+					console.log("Stopping and resetting tabata")
+        });
 
-    var stopwatchRef = $firebaseObject(
-    	ref.child("realTimeControls")
-      .child(classDate.getTime())
-      .child("stopwatch"));
-  	
-  	stopwatchRef.$watch(function() {
-  		if (stopwatchRef.running > stopwatchRef.stopped) {
-  			document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
-  			document.getElementById('stopwatch').reset();
-  			$scope.stopwatchStartTime = stopwatchRef.running;
-  			document.getElementById('stopwatch').start();
-  		} else {
-  			document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
+        $scope.$watch('tabata.lastStart', function(data){
+        	if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+						document.getElementById('tabata').start();
+						console.log("Starting tabata")
+					}
+        });
+    	}
+		})
+
+
+
+
+    // $firebaseObject(ref.child("realTimeControls")
+    //   .child(classDate.getTime())
+    //   .child("tabata")).$bindTo($scope, 'tabata').then(function() {
+    //   	if (!$scope.tabata) return;
+    //   	if (userIsInstructor) {
+    //   		$scope.tabata.timeOnMinutes = "0"
+    //   		$scope.tabata.timeOnSeconds = "20"
+    //   		$scope.tabata.timeOffSeconds = "10"
+    //   		$scope.tabata.rounds = "1"
+    //   		return $scope.tabata.tabataActive = true
+    //   	}
+    //   	else if (!userIsInstructor) {
+    //   		console.log("Watching whether tabata is on or off.")
+    //   		$scope.$watch('tabata.isOn', function(data){
+	   //        document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
+				// 		document.getElementById('tabata').reset();
+				// 		if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+				// 			console.log("Starting consumer tabata")
+				// 			$timeout(function() {
+				// 				document.getElementById('tabata').start();
+				// 			}, 1000)
+				// 		}
+	   //      });
+      		
+    //   		$scope.$watch('tabata.lastSet', function(data){
+	   //        document.getElementById ? document.getElementById('tabata').stop() : console.log("tabata not set");
+				// 		document.getElementById('tabata').reset();
+				// 		console.log("Stopping and resetting tabata")
+	   //      });
+
+	   //      $scope.$watch('tabata.lastStart', function(data){
+	   //      	if ($scope.tabata.lastStart > $scope.tabata.lastSet) {
+				// 			document.getElementById('tabata').start();
+				// 			console.log("Starting tabata")
+				// 		}
+	   //      });
+    //   	}
+    //   })
+
+    // var stopwatchRef = $firebaseObject(
+    // 	ref.child("realTimeControls")
+    //   .child(classDate.getTime())
+    //   .child("stopwatch"));
+
+		var stopwatchRef = ref.child('realTimeControls').child(classDate.getTime()).child('stopwatch');
+
+		stopwatchRef.on('value', function(snapshot) {
+			if (!snapshot.exists()) return
+			if (snapshot.val().running > snapshot.val().stopped) {
+				document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
+				document.getElementById('stopwatch').reset();
+				$scope.stopwatchStartTime = snapshot.val().running;
+				document.getElementById('stopwatch').start();
+			} else {
+				document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
   			document.getElementById('stopwatch').reset();
   			$scope.stopwatchStartTime = new Date().getTime();
-  		}
-  	})
+			}
+		})
+  	
+  	// stopwatchRef.$watch(function() {
+  	// 	if (stopwatchRef.running > stopwatchRef.stopped) {
+  	// 		document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
+  	// 		document.getElementById('stopwatch').reset();
+  	// 		$scope.stopwatchStartTime = stopwatchRef.running;
+  	// 		document.getElementById('stopwatch').start();
+  	// 	} else {
+  	// 		document.getElementById('stopwatch') ? document.getElementById('stopwatch').stop() : console.log("stopwatch not set");
+  	// 		document.getElementById('stopwatch').reset();
+  	// 		$scope.stopwatchStartTime = new Date().getTime();
+  	// 	}
+  	// })
 
     // //2-way data bind for tabata controls
     // var tabataIsOnRef = $firebaseObject(
@@ -187,15 +245,34 @@ angular.module('bodyAppApp')
 
     $scope.consumersCanHearEachOther = false;
 
-    var canHearRef = $firebaseObject(
-    	ref.child("realTimeControls")
-      .child(classDate.getTime())
-      .child("consumersCanHearEachOther"));
+    var canHearRef = ref.child("realTimeControls").child(classDate.getTime()).child("consumersCanHearEachOther");
+
+    // var canHearRef = $firebaseObject(
+    // 	ref.child("realTimeControls")
+    //   .child(classDate.getTime())
+    //   .child("consumersCanHearEachOther"));
 
     if (userIsInstructor) {
-    	canHearRef.$value = false;
-			canHearRef.$save()
+    	canHearRef.set({canHear: true})
+    	// canHearRef.$value = false;
+			// canHearRef.$save()
     }
+
+    canHearRef.on('value', function(snapshot) {
+			if (!snapshot.exists()) return;
+			if (!userIsInstructor) {
+				$scope.consumersCanHearEachOther = snapshot.val().canHear;
+				if ($scope.consumersCanHearEachOther) {
+		 			for (var prop in subscriberObjects) {
+							subscriberObjects[prop].subscribeToAudio(true)
+					}
+		  	} else {
+		  		for (var prop in subscriberObjects) {
+						subscriberObjects[prop].subscribeToAudio(false)
+					}
+		  	}	
+			}
+		})
 
     var feedbackModal = ref.child("realTimeControls")
       .child(classDate.getTime())
@@ -224,65 +301,74 @@ angular.module('bodyAppApp')
       	}
       });
 
-    var volumeRef = $firebaseObject(
-      ref.child("realTimeControls")
-      .child(classDate.getTime())
-      .child("musicVolume"));
+    // var volumeRef = $firebaseObject(
+    //   ref.child("realTimeControls")
+    //   .child(classDate.getTime())
+    //   .child("musicVolume"));
+
+    var volumeRef = ref.child("realTimeControls").child(classDate.getTime()).child("musicVolume");
 
     if (userIsInstructor) {
-    	volumeRef.$value = 50;
-    	volumeRef.$save()
+    	volumeRef.update({volume: 50})
+    	// volumeRef.$value = 50;
+    	// volumeRef.$save()
     }
 
-		volumeRef.$loaded().then(function() {
-			$scope.musicVolume = volumeRef.$value
-			setMusicVolume($scope.musicVolume);
-	  });
+    volumeRef.on('value', function(snapshot) {
+    	$scope.musicVolume = snapshot.val().volume
+    	setMusicVolume($scope.musicVolume);
+    	if(!$scope.$$phase) $scope.$apply();
+    })
 
-		volumeRef.$watch(function() {
-			$scope.musicVolume = volumeRef.$value
-			setMusicVolume($scope.musicVolume);
-			if(!$scope.$$phase) $scope.$apply();
-	  });
+		// volumeRef.$loaded().then(function() {
+		// 	$scope.musicVolume = volumeRef.$value
+		// 	setMusicVolume($scope.musicVolume);
+	 //  });
 
-	  canHearRef.$loaded().then(function() {
-			$scope.consumersCanHearEachOther = canHearRef.$value
-			if ($scope.consumersCanHearEachOther) {
-	 			for (var prop in subscriberObjects) {
-						subscriberObjects[prop].subscribeToAudio(true)
-				}
-	  	} else {
-	  		for (var prop in subscriberObjects) {
-					subscriberObjects[prop].subscribeToAudio(false)
-				}
-	  		// for (var i = 0; i < subscriberArray.length; i++) {
-	  		// 	console.log("Can no longer hear user " + subscriberArray[i].streamId)
-	  		// 	subscriberArray[i].subscribeToAudio(false);
-	  		// }
-	  	}
-	  });
+		// volumeRef.$watch(function() {
+		// 	$scope.musicVolume = volumeRef.$value
+		// 	setMusicVolume($scope.musicVolume);
+		// 	if(!$scope.$$phase) $scope.$apply();
+	 //  });
 
-		canHearRef.$watch(function() {
-			$scope.consumersCanHearEachOther = canHearRef.$value
-			if ($scope.consumersCanHearEachOther) {
-				for (var prop in subscriberObjects) {
-					subscriberObjects[prop].subscribeToAudio(true)
-				}
-	  	} else {
-	  		for (var prop in subscriberObjects) {
-					subscriberObjects[prop].subscribeToAudio(false)
-				}
-	  		// for (var i = 0; i < subscriberArray.length; i++) {
-	  		// 	console.log("Can hear user " + subscriberArray[i].streamId)
-	  		// 	subscriberArray[i].subscribeToAudio(true);
-	  		// }
-	  	// } else {
-	  		// for (var i = 0; i < subscriberArray.length; i++) {
-	  		// 	console.log("Can no longer hear user " + subscriberArray[i].streamId)
-	  		// 	subscriberArray[i].subscribeToAudio(false);
-	  		// }
-	  	}
-	  });
+	 //  canHearRef.$loaded().then(function() {
+		// 	$scope.consumersCanHearEachOther = canHearRef.$value
+		// 	if ($scope.consumersCanHearEachOther) {
+	 // 			for (var prop in subscriberObjects) {
+		// 				subscriberObjects[prop].subscribeToAudio(true)
+		// 		}
+	 //  	} else {
+	 //  		for (var prop in subscriberObjects) {
+		// 			subscriberObjects[prop].subscribeToAudio(false)
+		// 		}
+	 //  		// for (var i = 0; i < subscriberArray.length; i++) {
+	 //  		// 	console.log("Can no longer hear user " + subscriberArray[i].streamId)
+	 //  		// 	subscriberArray[i].subscribeToAudio(false);
+	 //  		// }
+	 //  	}
+	 //  });
+
+		// canHearRef.$watch(function() {
+		// 	$scope.consumersCanHearEachOther = canHearRef.$value
+		// 	if ($scope.consumersCanHearEachOther) {
+		// 		for (var prop in subscriberObjects) {
+		// 			subscriberObjects[prop].subscribeToAudio(true)
+		// 		}
+	 //  	} else {
+	 //  		for (var prop in subscriberObjects) {
+		// 			subscriberObjects[prop].subscribeToAudio(false)
+		// 		}
+	 //  		// for (var i = 0; i < subscriberArray.length; i++) {
+	 //  		// 	console.log("Can hear user " + subscriberArray[i].streamId)
+	 //  		// 	subscriberArray[i].subscribeToAudio(true);
+	 //  		// }
+	 //  	// } else {
+	 //  		// for (var i = 0; i < subscriberArray.length; i++) {
+	 //  		// 	console.log("Can no longer hear user " + subscriberArray[i].streamId)
+	 //  		// 	subscriberArray[i].subscribeToAudio(false);
+	 //  		// }
+	 //  	}
+	 //  });
 
 		// if (!userIsInstructor) {
 		//   $scope.consumersCanHearEachOther.$watch(function() {
@@ -355,25 +441,37 @@ angular.module('bodyAppApp')
 
 		$scope.letConsumersHearEachOther = function() {
 			$scope.consumersCanHearEachOther = true;
-			canHearRef.$value = true;
-			canHearRef.$save()
+			canHearRef.update({canHear: true}, function(err) {
+				if (err) return console.log(err)
+				oldSoundVolume = $scope.musicVolume;
+				$scope.musicVolume = 0;
+				volumeRef.update({volume: $scope.musicVolume})
+				// volumeRef.$value = $scope.musicVolume
+				// volumeRef.$save()
+				setMusicVolume($scope.musicVolume)
+			})
+			// canHearRef.$value = true;
+			// canHearRef.$save()
 
-			oldSoundVolume = $scope.musicVolume;
-			$scope.musicVolume = 0;
-			volumeRef.$value = $scope.musicVolume
-			volumeRef.$save()
-			setMusicVolume($scope.musicVolume)
 		}
 
 		$scope.stopConsumersFromHearingEachOther = function() {
 			$scope.consumersCanHearEachOther = false;
-			canHearRef.$value = false;
-			canHearRef.$save()
+			// canHearRef.$value = false;
+			// canHearRef.$save()
 
-			$scope.musicVolume = oldSoundVolume;
-			volumeRef.$value = $scope.musicVolume
-			volumeRef.$save()
-			setMusicVolume($scope.musicVolume)
+			// $scope.musicVolume = oldSoundVolume;
+			// volumeRef.$value = $scope.musicVolume
+			// volumeRef.$save()
+			// setMusicVolume($scope.musicVolume)
+
+			canHearRef.update({canHear: false}, function(err) {
+				if (err) return console.log(err)
+				oldSoundVolume = $scope.musicVolume;
+				volumeRef.update({volume: $scope.musicVolume})
+				// volumeRef.$save()
+				setMusicVolume($scope.musicVolume)
+			})
 		}
 
 		$scope.openSongPermalink = function(currentSong) {
@@ -382,13 +480,13 @@ angular.module('bodyAppApp')
 
 		$scope.setMusicVolume = function(musicVolume) {
 			setMusicVolume(musicVolume)
-			volumeRef.$value = musicVolume
-			volumeRef.$save()
+			volumeRef.update({volume: musicVolume})
+			// volumeRef.$save()
 
 			if ($scope.consumersCanHearEachOther) {
 				$scope.consumersCanHearEachOther = false;
-				canHearRef.$value = false;
-				canHearRef.$save()
+				canHearRef.update({canHear: false});
+				// canHearRef.$save()
 			}
 		}
 
@@ -398,14 +496,15 @@ angular.module('bodyAppApp')
 				setMusicVolume(musicVolume)
 				$scope.musicVolume = musicVolume;
 				if(!$scope.$$phase) $scope.$apply();
-				volumeRef.$value = musicVolume
-				volumeRef.$save()
+				volumeRef.update({volume: musicVolume});
+				// volumeRef.$save()
 			}
 
 			if ($scope.consumersCanHearEachOther) {
 				$scope.consumersCanHearEachOther = false;
-				canHearRef.$value = false;
-				canHearRef.$save()
+				canHearRef.update({canHear: false});
+				// canHearRef.$value = false;
+				// canHearRef.$save()
 			}
 		}
 
@@ -415,14 +514,15 @@ angular.module('bodyAppApp')
 				setMusicVolume(musicVolume)
 				$scope.musicVolume = musicVolume;
 				if(!$scope.$$phase) $scope.$apply();
-				volumeRef.$value = musicVolume
-				volumeRef.$save()
+				volumeRef.update({volume: musicVolume})
+				// volumeRef.$save()
 			}
 
 			if ($scope.consumersCanHearEachOther) {
 				$scope.consumersCanHearEachOther = false;
-				canHearRef.$value = false;
-				canHearRef.$save()
+				canHearRef.update({canHear: false});
+				// canHearRef.$value = false;
+				// canHearRef.$save()
 			}
 		}
 
@@ -1070,7 +1170,7 @@ angular.module('bodyAppApp')
 			
 			// document.getElementById('tabata').start()
 			$timeout(function() {
-				$scope.tabata.lastStart = new Date().getTime();
+				tabataRef.update({lastStart : new Date().getTime()});
 				document.getElementById('tabata').start();
 			}, 1000)
 	    // $scope.tabata.lastStartTime = new Date().getTime();
@@ -1094,19 +1194,27 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.setTabata = function() {
-			$scope.tabata.lastSet = new Date().getTime();
+			tabataRef.update({lastSet: new Date.getTime(), currentTabataTime: $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1}, function(err) {
+				if (err) return console.log(err)
+					tabataRef.update({isOn: true}, function(err) {
+						if (err) return console.log(err);
+						document.getElementById('tabata') ? document.getElementById('tabata').stop() : console.log("tabata not set");
+						document.getElementById('tabata').reset();
+					})
+			})
+			// $scope.tabata.lastSet = new Date().getTime();
 
-			$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1;
-			$scope.tabata.rounds = $scope.tabata.roundsToSet * 1;
+			// $scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1;
+			// $scope.tabata.rounds = $scope.tabata.roundsToSet * 1;
 
-			$timeout(function() { 
-				$scope.tabata.isOn = true 
-				document.getElementById('tabata') ? document.getElementById('tabata').stop() : console.log("tabata not set");
-				document.getElementById('tabata').reset();
-			}, 500) //Makes sure that lastSet is already set before isOn called.  Otherwise may wind up doing something screwy.
+			// $timeout(function() { 
+			// 	$scope.tabata.isOn = true 
+			// 	document.getElementById('tabata') ? document.getElementById('tabata').stop() : console.log("tabata not set");
+			// 	document.getElementById('tabata').reset();
+			// }, 500) //Makes sure that lastSet is already set before isOn called.  Otherwise may wind up doing something screwy.
 
 
-			if(!$scope.$$phase) $scope.$apply();
+			// if(!$scope.$$phase) $scope.$apply();
 			// $scope.tabata.lastResetTime = new Date().getTime();
 			// $scope.tabata.lastButtonPress = "Set";
 			// $scope.tabata.$save()
@@ -1133,15 +1241,20 @@ angular.module('bodyAppApp')
 		}
 
 		$scope.startStopwatch = function() {
-			stopwatchRef.running = new Date().getTime();
-			stopwatchRef.$save();
+			// stopwatchRef.running = new Date().getTime();
+			stopwatchRef.update({running: new Date().getTime()}, function(err) {
+				if (err) return console.log(err);
+			})
+			// stopwatchRef.$save();
 
 			// document.getElementById('stopwatch').start();
 		}
 
 		$scope.stopStopwatch = function() {
-			stopwatchRef.stopped = new Date().getTime();
-			stopwatchRef.$save();
+			stopwatchRef.update({stopped: new Date().getTime()}, function(err) {
+				if (err) return console.log(err);
+			});
+			// stopwatchRef.$save();
 			// document.getElementById('stopwatch').stop();
 			// document.getElementById('stopwatch').reset();
 		}
@@ -1151,7 +1264,10 @@ angular.module('bodyAppApp')
 		// }
 
 		$scope.switchTimerType = function() {
-			$scope.tabata.tabataActive = !$scope.tabata.tabataActive;
+			tabataRef.update({tabataActive: !$scope.tabata.tabataActive}, function(err) {
+				if (err) return console.log(err);
+			})
+			// $scope.tabata.tabataActive = !$scope.tabata.tabataActive;
 		}
 
 		// $scope.setTimeOn = function(on) {
@@ -1180,37 +1296,56 @@ angular.module('bodyAppApp')
 				if ($scope.tabata.isOn) {
 					if ($scope.tabata.rounds > 0) {
 						$scope.tabata.rounds -= 1;
-						$scope.tabata.currentTabataTime = $scope.tabata.timeOffSeconds*1;
-						
-						console.log("Setting tabata to off");
-						if(!$scope.$$phase) $scope.$apply();
-						
-						// document.getElementById('tabata').start();
-						$timeout(function() {
-							$scope.tabata.isOn = false;
+						// $scope.tabata.currentTabataTime = $scope.tabata.timeOffSeconds*1;
+						tabataRef.update({currentTabataTime: $scope.tabata.timeOffSeconds*1}, function(err) {
+							if (err) return console.log(err);
 							document.getElementById('tabata').stop() ? document.getElementById('tabata').stop() : console.log("tabata not set");
 							document.getElementById('tabata').reset();
-						}, 1000)
-						$timeout(function() {
-							document.getElementById('tabata').start();
-						}, 2000)
+							tabataRef.update({isOn: false}, function(err) {
+								if (err) return console.log(err)
+								console.log("Set tabata to off");		
+								document.getElementById('tabata').start();
+							})
+						})
+						
+						// console.log("Setting tabata to off");
+						// if(!$scope.$$phase) $scope.$apply();
+						
+						// document.getElementById('tabata').start();
+						// $timeout(function() {
+						// 	$scope.tabata.isOn = false;
+						// 	document.getElementById('tabata').stop() ? document.getElementById('tabata').stop() : console.log("tabata not set");
+						// 	document.getElementById('tabata').reset();
+						// }, 1000)
+						// $timeout(function() {
+						// 	document.getElementById('tabata').start();
+						// }, 2000)
 					}
 					// document.getElementById('tabata').start();
 				} else {
 					if ($scope.tabata.rounds > 0) {
-						$scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1
-						
-						console.log("Setting tabata to on");
-						if(!$scope.$$phase) $scope.$apply();
-						// document.getElementById('tabata').start();
-						$timeout(function() {
-							$scope.tabata.isOn = true;
+						// $scope.tabata.currentTabataTime = $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1
+						tabataRef.update({currentTabataTime: $scope.tabata.timeOnMinutes*60 + $scope.tabata.timeOnSeconds*1}, function(err) {
+							if (err) return console.log(err)
 							document.getElementById('tabata').stop() ? document.getElementById('tabata').stop() : console.log("tabata not set");
-							document.getElementById('tabata').reset();
-						}, 1000)
-						$timeout(function() {
-							document.getElementById('tabata').start();
-						}, 2000)
+							document.getElementById('tabata').reset();	
+							tabataRef.update({isOn: true}, function(err) {
+								if (err) return console.log(err);
+								document.getElementById('tabata').start();
+							})
+						})
+
+						// console.log("Setting tabata to on");
+						// if(!$scope.$$phase) $scope.$apply();
+						// document.getElementById('tabata').start();
+						// $timeout(function() {
+						// 	$scope.tabata.isOn = true;
+						// 	document.getElementById('tabata').stop() ? document.getElementById('tabata').stop() : console.log("tabata not set");
+						// 	document.getElementById('tabata').reset();
+						// }, 1000)
+						// $timeout(function() {
+						// 	document.getElementById('tabata').start();
+						// }, 2000)
 						// document.getElementById('tabata').start();
 					}
 				}
