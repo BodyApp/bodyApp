@@ -62,15 +62,38 @@
               <input ng-model = "storefrontInfo.youtubeId" ng-change = "saveStorefrontInfo(storefrontInfo)" id="coupon-code" name="" size="30" type="text" placeholder="e.g. pZtWOp-zxok">
             </div>
           </div>
-          <!-- <div class="row mb16">
+          <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
               Add Icon Image
             </label>
-            <div class="col-sm-9">
-            	<lf-ng-md-file-input lf-files="files" lf-api="api01"></lf-ng-md-file-input>
-							</md-checkbox>
+            <div class="col-sm-6">
+            	<lf-ng-md-file-input ng-show = "!iconUrl" lf-placeholder = "Pick Icon" lf-files="iconImage" lf-caption=""></lf-ng-md-file-input>
+              <lf-ng-md-file-input ng-show = "iconUrl" lf-placeholder = "Replace" lf-files="iconImage" lf-caption="Replace"></lf-ng-md-file-input>
             </div>
-          </div> -->
+            <!-- <img ng-src = "{{iconUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img> -->
+          </div>
+          <div class="row mb16">
+            <label class="col-sm-3" for="coupon-code">
+              Icon Image Preview
+            </label>
+            <img ng-src = "{{iconUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img>
+          </div>
+          <div class="row mb16">
+            <label class="col-sm-3" for="coupon-code">
+              Add Header Image
+            </label>
+            <div class="col-sm-6">
+              <lf-ng-md-file-input ng-show = "!headerUrl" lf-placeholder = "Pick Header Image" lf-files="headerImage" lf-caption=""></lf-ng-md-file-input>
+              <lf-ng-md-file-input ng-show = "headerUrl" lf-placeholder = "Replace" lf-files="headerImage" lf-caption="Replace"></lf-ng-md-file-input>
+            </div>
+            <!-- <img ng-src = "{{headerUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img> -->
+          </div>
+          <div class="row mb16">
+            <label class="col-sm-3" for="coupon-code">
+              Header Image Preview
+            </label>
+            <img ng-src = "{{headerUrl}}" height="100px" class = "cover-img"></img>
+          </div>
           <div class="row">
             <div class="col-sm-12">
               <ul class="panel-action-list">

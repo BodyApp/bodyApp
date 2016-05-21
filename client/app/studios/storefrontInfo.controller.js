@@ -18,10 +18,12 @@ angular.module('bodyAppApp')
     if (!studioId) studioId = 'ralabala'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
+    var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {
       if (user) {
         getStorefrontInfo();
+        getImages();
       } else {
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
@@ -58,10 +60,135 @@ angular.module('bodyAppApp')
     //   }
     // })
 
-    $scope.$watch('files.length',function(newVal,oldVal){
-      var formData = new FormData();
-      angular.forEach($scope.files,function(obj){
-          formData.append('files[]', obj.lfFile);
+    function getImages() {
+      storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
+        $scope.iconUrl = url;
+        if(!$scope.$$phase) $scope.$apply();
+
+        // Get the download URL for 'images/stars.jpg'
+        // This can be inserted into an <img> tag
+        // This can also be downloaded directly
+      }).catch(function(error) {
+        console.log(error)
+        // Handle any errors
+      });
+
+      storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
+        $scope.headerUrl = url;
+        if(!$scope.$$phase) $scope.$apply();
+
+        // Get the download URL for 'images/stars.jpg'
+        // This can be inserted into an <img> tag
+        // This can also be downloaded directly
+      }).catch(function(error) {
+        console.log(error)
+        // Handle any errors
+      });
+    }
+
+    
+    $scope.$watch('headerImage.length',function(newVal,oldVal){
+
+      angular.forEach($scope.headerImage,function(obj){
+        // console.log(obj.lfFile)
+        var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+          function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+          }, function(error) {
+          switch (error.code) {
+            case 'storage/unauthorized':
+            console.log("User doesn't have permission to access the object");
+              // User doesn't have permission to access the object
+              break;
+
+            case 'storage/canceled':
+            console.log("User canceled the upload");
+              // User canceled the upload
+              break;
+
+            case 'storage/unknown':
+            console.log("Unkown error occured");
+            console.log(error.serverResponse);
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        }, function() {
+          // Upload completed successfully, now we can get the download URL
+          $scope.headerUrl = uploadTask.snapshot.downloadURL;
+          if(!$scope.$$phase) $scope.$apply();
+
+        });
+        // formData.append('files[]', obj.lfFile);
+          // console.log(formData)
+      });
+      // console.log(formData)
+      // $http.post('./upload', formData, {
+      //     transformRequest: angular.identity,
+      //     headers: {'Content-Type': undefined}
+      // }).then(function(result){
+          // do sometingh                   
+      // },function(err){
+          // do sometingh
+      // });
+    });
+
+    $scope.$watch('iconImage.length',function(newVal,oldVal){
+
+      angular.forEach($scope.iconImage,function(obj){
+        // console.log(obj.lfFile)
+        var uploadTask = storageRef.child('images/icon.jpg').put(obj.lfFile);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+          function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+          }, function(error) {
+          switch (error.code) {
+            case 'storage/unauthorized':
+            console.log("User doesn't have permission to access the object");
+              // User doesn't have permission to access the object
+              break;
+
+            case 'storage/canceled':
+            console.log("User canceled the upload");
+              // User canceled the upload
+              break;
+
+            case 'storage/unknown':
+            console.log("Unkown error occured");
+            console.log(error.serverResponse);
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        }, function() {
+          // Upload completed successfully, now we can get the download URL
+          $scope.iconUrl = uploadTask.snapshot.downloadURL;
+          if(!$scope.$$phase) $scope.$apply();
+
+        });
+        // formData.append('files[]', obj.lfFile);
+          // console.log(formData)
       });
       // console.log(formData)
       // $http.post('./upload', formData, {
