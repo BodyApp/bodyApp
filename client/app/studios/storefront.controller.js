@@ -4,21 +4,13 @@ angular.module('bodyAppApp')
   .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, Studios, Auth, User, Schedule, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
 
-    var ref;
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
+    if (!studioId) studioId = 'ralabala'
     Studios.setCurrentStudio(studioId);
-    if (!studioId) {
-      studioId = 'ralabala'
-      // ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-      // var ref = firebase.database().ref().child('studios');
-    // } else {
-      
-      // $location.path('/ralabala/admin')
-      // ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
 
-    }
-    ref = firebase.database().ref().child('studios').child(studioId);
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    var storageRef = firebase.storage().ref().child('studios').child(studioId);
 
     ref.once('value', function(snapshot) {
       if (!snapshot.exists()) {
@@ -27,7 +19,6 @@ angular.module('bodyAppApp')
     })
 
     $scope.studioId = studioId;
-    $scope.backgroundImageUrl = 'assets/images/studios/'+studioId+'/hero.jpg'
 
     var daysInFuture = 0;
     var numDaysToShow = 7;
@@ -39,6 +30,7 @@ angular.module('bodyAppApp')
     getWorkouts();
     getPlaylistObjects();
     createSchedule(numDaysToShow, daysInFuture);
+    getImages()
     // ref.unauth()
 
     var accountId;
@@ -210,6 +202,23 @@ angular.module('bodyAppApp')
           };
         }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
       }
+    }
+
+    function getImages() {
+      storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
+        $scope.iconUrl = url;
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+
+      storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
+        // $scope.headerUrl = url;
+        $scope.backgroundImageUrl = url
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
 
     function getAccountId() {

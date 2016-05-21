@@ -39,7 +39,7 @@
     </div>
   </div>
 
-    <div class="cover-img" ng-style="{'background-image':'url({{backgroundImageUrl}})'}"></div>
+    <div class="cover-img" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}"></div>
 
 </div>
 
@@ -51,7 +51,7 @@
           
           <div class="row">
             <div class="col-md-3 text-center">
-              <img class="studio-profile-img mb-sm-16" ng-src="/assets/images/studios/{{studioId}}/logo.jpg">
+              <img class="studio-profile-img mb-sm-16" ng-src="{{iconUrl}}">
               <h5 class="mt8 hidden-xs hidden-sm">{{storefrontInfo.ownerName}}</h5>
               <!-- <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& 1 Instructor</h5> -->
               <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& {{numOfInstructors-1}} Instructors</h5>
