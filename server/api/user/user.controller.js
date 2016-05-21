@@ -20,11 +20,13 @@ var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 // var classBookedMailingList = mailgun.lists('classbooked@getbodyapp.com').info().address;
 
 var firebase = require('firebase');
+var ref = firebase.database().ref()
+var auth = firebase.auth();
+
 // var FirebaseTokenGenerator = require("firebase-token-generator");
 // var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 
 // var ref = new Firebase("https://bodyapp.firebaseio.com/");
-var ref = firebase.database().ref()
 
 const crypto = require("crypto");
 
@@ -745,7 +747,20 @@ exports.createIntercomHash = function(req, res, next) {
       });
     } 
   });
+}
 
+exports.createFirebaseToken = function(req, res, next) {
+  var userId = req.user._id;
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
+    if(err) return console.log(err)
+    
+    user.firebaseToken = firebase.auth().createCustomToken(user._id.toString(), { uid: user.facebookId, role: user.role, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture });
+
+    user.save(function(err) {
+      if (err) return validationError(res, err);
+      res.status(200).json(user.firebaseToken);
+    });
+  });
 }
 
 function sendSubscriberEmail(user) {

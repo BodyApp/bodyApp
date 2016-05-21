@@ -37,7 +37,7 @@
                             </li>                   
                             <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                               <p ng-class="{active: isActive('/schedule')}">
-                                <a href="/schedule">Dashboard</a>
+                                <a href="/studios/{{studioId}}">Dashboard</a>
                               </p>
                             </li>
                             <!-- <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
@@ -95,7 +95,7 @@
                         </li>
                         <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
                           <p ng-class="{active: isActive('/schedule')}">
-                            <a href="/schedule">Dashboard</a>
+                            <a href="/studios/{{studioId}}">Dashboard</a>
                           </p>
                         </li>
                        <!--  <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">

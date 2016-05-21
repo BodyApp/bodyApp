@@ -9,7 +9,6 @@ angular.module('bodyAppApp')
     $scope.minDate = new Date();
     Studios.setCurrentStudio(studioId);
     if (!studioId) studioId = 'ralabala'
-
     var ref = firebase.database().ref().child('studios').child(studioId);
 
     var classId = $stateParams.classId;
@@ -156,7 +155,7 @@ angular.module('bodyAppApp')
       ref.child('classTypes').child(classType).child('workoutsUsingClass').once('value', function(workoutList) {
         if (!workoutList.exists()) return;
 	      workoutList.forEach(function(workout) {
-	      	var prop = workout.key();
+	      	var prop = workout.key;
 	        ref.child('workouts').child(prop).once('value', function(snapshot) {
 	          if (!snapshot.exists()) return
 	          $scope.workoutOptions[prop] = snapshot.val()

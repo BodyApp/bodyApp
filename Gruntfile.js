@@ -393,7 +393,7 @@ module.exports = function (grunt) {
             '.htaccess',
             'bower_components/**/*',
             'assets/**/*',
-            'index.html'
+            'index.html',
           ]
         }, {
           expand: true,
@@ -405,7 +405,8 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             'package.json',
-            'server/**/*'
+            'server/**/*',
+            'serviceAccountCredentials.json'
           ]
         }]
       },

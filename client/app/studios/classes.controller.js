@@ -24,7 +24,6 @@ angular.module('bodyAppApp')
 
     if (!studioId) studioId = 'ralabala'
     var ref = firebase.database().ref().child('studios').child(studioId);
-
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {
       if (user) {
@@ -101,7 +100,7 @@ angular.module('bodyAppApp')
       var toPush = ref.child("classTypes").push(classToSave, function(err) {
         if (err) return console.log(err);
         console.log("Class successfully saved")
-        ref.child("classTypes").child(toPush.key()).update({id: toPush.key()})
+        ref.child("classTypes").child(toPush.key).update({id: toPush.key})
         $scope.classToCreate = {};
         $scope.classToCreate.openTo = "All (Members &amp; Drop Ins)";
         $scope.missingName = false;

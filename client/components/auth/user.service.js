@@ -224,6 +224,12 @@ angular.module('bodyAppApp')
         params: {
           controller: 'listCoupons'
         }
+      },
+      createFirebaseToken: {
+        method: 'PUT',
+        params: {
+          controller: 'getFirebaseToken'
+        }
       }
 	  });
   });

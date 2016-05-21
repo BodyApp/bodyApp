@@ -3,6 +3,8 @@
 angular.module('bodyAppApp')
   .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, Studios, Auth, User, Schedule, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
+    $scope.currentUser = currentUser;
+    console.log(currentUser)
 
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
@@ -54,19 +56,20 @@ angular.module('bodyAppApp')
           getUserBookings()
           getAccountId()
           checkSubscriptionStatus()
-        } else {
-          // console.log("User is logged out");
-          if (currentUser.firebaseToken) {
-            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
-              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-              getUserBookings()
-              getAccountId()
-              checkSubscriptionStatus()
-            }); 
-          } else {
-            console.log("User doesn't have a firebase token saved, should retrieve one.")
-          }
-        }
+        } 
+        // else {
+        //   // console.log("User is logged out");
+        //   if (currentUser.firebaseToken) {
+        //     auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+        //       if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+        //       getUserBookings()
+        //       getAccountId()
+        //       checkSubscriptionStatus()
+        //     }); 
+        //   } else {
+        //     console.log("User doesn't have a firebase token saved, should retrieve one.")
+        //   }
+        // }
       })
 
         // ref.onAuth(function(authData) {

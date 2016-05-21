@@ -64,7 +64,7 @@ angular.module('bodyAppApp')
 
     var trainerInfo;
 
-    var classObjRef;
+    // var classObjRef;
 
     var userRef;
 
@@ -110,13 +110,13 @@ angular.module('bodyAppApp')
 
       setupVidAud()
 
-      classObjRef = $firebaseObject(ref
-        .child("classes")
-        .child(weekOf)
-        .child(DayOfWeekSetter.setDay(classDate.getDay()))
-        .child("slots")
-        .child(classDate.getTime())
-      )
+      // classObjRef = $firebaseObject(ref
+      //   .child("classes")
+      //   .child(weekOf)
+      //   .child(DayOfWeekSetter.setDay(classDate.getDay()))
+      //   .child("slots")
+      //   .child(classDate.getTime())
+      // )
 
       userRef = ref.child("bookings")
       .child(classToJoin.dateTime)

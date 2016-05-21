@@ -50,10 +50,9 @@ angular.module('bodyAppApp')
 
     $scope.studioId = studioId;
 
-    var auth = firebase.auth();
-
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(currentUser) {
+        var auth = firebase.auth();
         auth.onAuthStateChanged(function(user) {
           if (user) {
             console.log("User is authenticated with fb ");
@@ -68,6 +67,13 @@ angular.module('bodyAppApp')
                   // checkIfStudioAdmin()
               }); 
             } else {
+              User.createFirebaseToken({ id: currentUser._id }, {}, function(token) {
+                auth.signInWithCustomToken(token).then(function(user) {
+                  if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+                  getAccountId()
+                    // checkIfStudioAdmin()
+                }); 
+              })
               // Auth.logout();
               // $window.location.reload()
             }
