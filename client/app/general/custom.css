@@ -308,8 +308,8 @@
 
 /*------HERO VIDEO PLAYER-------*/
 
-.fullscreen-video-player {
-  background-color: #000;
+.fullscreen-video-player, .fullscreen-stories {
+  background-color: rgba(0,0,0,0.85);
   height: 100%;
   width: 100%;
   left: 0;
@@ -327,11 +327,11 @@
 .fullscreen-video-player-close {
     color: white;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 30px;
     position: absolute;
-    right: 50px;
+    right: 35px;
     text-decoration: none;
-    top: 50px;  
+    top: 30px;  
 }
 .row-table {
   display: table;
