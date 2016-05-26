@@ -32,5 +32,5 @@ angular.module('bodyAppApp')
         url: '/jointeam',
         templateUrl: 'app/about/jointeam.html',
         controller: 'AboutCtrl'
-      })            
+      })
   });

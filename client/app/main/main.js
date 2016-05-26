@@ -17,4 +17,20 @@ angular.module('bodyAppApp')
         controller: 'MainCtrl'
       });
   })
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('open-a-studio', {
+        url: '/open-a-studio',
+        templateUrl: 'app/main/open-a-studio.html',
+        controller: 'MainCtrl'
+      });
+  })
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('setup-studio', {
+        url: '/setup-studio',
+        templateUrl: 'app/main/setup-studio.html',
+        controller: 'MainCtrl'
+      });
+  })
   ;
