@@ -35,6 +35,14 @@ angular.module('bodyAppApp')
   })
   .config(function ($stateProvider) {
     $stateProvider
+      .state('class-starting', {
+        url: '/class-starting',
+        templateUrl: 'app/main/class-starting.html',
+        controller: 'MainCtrl'
+      });
+  })
+  .config(function ($stateProvider) {
+    $stateProvider
       .state('invite-a-friend', {
         url: '/invite-a-friend',
         templateUrl: 'app/main/invite-a-friend.html',
