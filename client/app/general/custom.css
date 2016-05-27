@@ -1,3 +1,15 @@
+/*------CLASS STARTING-------*/
+.starting-action-btns li {
+  margin-left: 10px;
+  display: inline-block;
+}
+.classmate-photo {
+  margin-right: 10px;
+}
+.small-divider {
+  width: 10%;
+  margin: 10px 0;
+}
 /*------INVITE A FRIEND-------*/
 .round-photo {
   border-radius: 50%;
