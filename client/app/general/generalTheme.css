@@ -39,14 +39,14 @@
  36. Spacing
 /*!---------- 1. GLOBAL STYLES ----------*/
 body {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.43;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #565a5c;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.43 !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #565a5c !important;
   background-color: #f5f5f5;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;  
+  -moz-osx-font-smoothing: grayscale;
 }
 body.boxed-layout {
   background: #eee;

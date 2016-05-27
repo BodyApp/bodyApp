@@ -1,3 +1,87 @@
+/*------INVITE A FRIEND-------*/
+.round-photo {
+  border-radius: 50%;
+}
+.cover-dark {
+  background-color: rgba(0,0,0,.4);
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 420px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.invite-photo {
+  border: 2px solid #f1f1f1;
+}
+.or-separator {
+  background: none;
+  height: 34px;
+  position: relative;
+  text-align: center;
+}
+.or-separator-text {
+  background-color: #fff;
+  display: inline-block;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #82888a;
+}
+.or-separator hr {
+  margin: -19px auto 10px;
+  width: 100%;  
+}
+.float-row-item {
+  float: left;
+  padding-right: 15px;  
+}
+.input-large {
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;  
+}
+.flex-span {
+  overflow: auto;
+  display: block;  
+}
+.btn-facebook {
+  border-color: #3B5998 !important;
+  border-bottom-color: #263a63 !important;
+  background-color: #3B5998 !important;
+  color: #fff !important;
+}
+.btn-facebook:hover, .btn-facebook:focus {
+  border-color: #4568b2 !important;
+  border-bottom-color: #2d4575 !important;
+  background-color: #4568b2 !important;
+  color: #fff !important;
+}
+.btn-twitter {
+  border-color: #00aced !important;
+  border-bottom-color: #00aced !important;
+  background-color: #00aced !important;
+  color: #fff !important;
+}
+.btn-twitter:hover, .btn-twitter:focus {
+  border-color: #26C2FD !important;
+  border-bottom-color: #26C2FD !important;
+  background-color: #26C2FD !important;
+  color: #fff !important;
+}
+.btn-facebook i, .btn-twitter i {
+  margin-right: 10px;
+}
+.how-it-works-item i {
+  font-size: 40px;
+}
+.how-it-works-text {
+  margin-left: 50px;
+  position: absolute;
+  top: 0px;
+  padding-right: 15px;
+}
 /*------ANGULAR MATERIAL FORMS-------*/
 .form-hint {
   position: absolute;

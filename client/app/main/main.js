@@ -33,4 +33,12 @@ angular.module('bodyAppApp')
         controller: 'MainCtrl'
       });
   })
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('invite-a-friend', {
+        url: '/invite-a-friend',
+        templateUrl: 'app/main/invite-a-friend.html',
+        controller: 'MainCtrl'
+      });
+  })
   ;
