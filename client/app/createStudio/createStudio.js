@@ -9,12 +9,4 @@ angular.module('bodyAppApp')
       controller: 'CreateStudioCtrl',
     })
   })
-  .config(function ($stateProvider) {
-    $stateProvider
-      .state('setup-studio', {
-        url: '/setup-studio',
-        templateUrl: 'app/createStudio/setup-studio.html',
-        controller: 'CreateStudioCtrl'
-      });
-  })
   ;

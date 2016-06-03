@@ -127,7 +127,7 @@
 			<div class="ss-content-wrapper">
 				<div class="ss-content">
 
-					<div id="ss-content-basics">
+					<div id="ss-content-basics" ng-show = "step === 0">
 						<div class="row">
 							<div class="col-sm-12">
 								<h4 class="mb8">Let's start building your studio!</h4>
@@ -139,7 +139,7 @@
 						        <md-input-container flex class="md-block">
 					            <label class="angular-label">Claim your studio ID</label>
 					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
-					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate)">
+					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId)">
 				              <div class="form-hint" ng-show = "!takenId">Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
 				              <div class="form-hint" ng-show = "takenId">The ID {{studioToCreate.studioId}} is already taken.  Please try another.</div>
 						        </md-input-container>
@@ -152,7 +152,7 @@
 							    <div layout="column" flex class="mb8">
 							    	<md-input-container class="md-block">
 							        <label class="angular-label">Studio Name</label>
-							        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.name" class="angular-input">
+							        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.studioName" class="angular-input">
 							        <div class="form-hint">Every great service starts with a great name.</div>
 							        <div ng-messages="projectForm.description.$error" class="hidden">
 							          <div ng-message="required">This is required.</div>
@@ -220,7 +220,7 @@
 							    <div layout="column" flex class="mb8">
 							    	<md-input-container class="md-block">
 							        <label class="angular-label">Studio Video YouTube ID</label>
-							        <input type="text" required="" md-no-asterisk="" name="description" ng-model="video.id" class="angular-input">
+							        <input type="text" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input">
 							        <div class="form-hint">The best videos tend to be between 1 to 2 minutes.</div>
 							        <div ng-messages="projectForm.description.$error" class="hidden">
 							          <div ng-message="required">This is required.</div>
@@ -239,12 +239,12 @@
 								<a href="#" class="hidden">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large">Next</a>
+								<a href="#" class="btn-blue btn-large" ng-click = "createStudio(studioToCreate)">Next</a>
 							</div>
 						</div>
 					</div>
 
-					<div id="ss-content-description" class="hidden">
+					<div id="ss-content-description" ng-show = "step === 1">
 						<div class="row mb32">
 							<div class="col-sm-12">
 								<h4 class="mb8">Help clients find the right fit</h4>
@@ -338,7 +338,7 @@
 						</div>	
 					</div>
 
-					<div id="ss-content-pricing" class="hidden">
+					<div id="ss-content-pricing" ng-show = "step === 2">
 						<div class="row mb32">
 							<div class="col-sm-12">
 								<h4 class="mb8">Pricing</h4>
@@ -402,7 +402,7 @@
 						</div>
 					</div>
 
-					<div id="ss-content-classes" class="hidden">
+					<div id="ss-content-classes" ng-show = "step === 3">
 						<div class="row mb16">
 							<div class="col-sm-12">
 								<h4 class="mb8">Classes</h4>
@@ -512,7 +512,7 @@
 						</div>
 					</div>
 
-					<div id="ss-content-perks" class="hidden">
+					<div id="ss-content-perks" ng-show = "step === 4">
 						<div class="row mb16">
 							<div class="col-sm-12">
 								<h4 class="mb8">Special Offers</h4>
@@ -682,7 +682,7 @@
 						</div>
 					</div>
 
-					<div id="ss-content-account" class="hidden">
+					<div id="ss-content-account" ng-show = "step === 5">
 						<div class="row mb16">
 							<div class="col-sm-12">
 								<h4 class="mb8">Some housekeeping</h4>
@@ -733,7 +733,7 @@
 						</div>
 					</div>
 
-					<div id="ss-content-staff" class="hidden">
+					<div id="ss-content-staff" ng-show = "step === 6">
 						<div class="row mb16">
 							<div class="col-sm-12">
 								<h4 class="mb8">Your Studio Staff</h4>
@@ -847,7 +847,7 @@
 						</div>
 					</div>
 
-					<div id="ss-content-stories" class="hidden">
+					<div id="ss-content-stories" ng-show = "step === 7">
 						<div class="row mb16">
 							<div class="col-sm-12">
 								<h4 class="mb8">Client Stories</h4>
@@ -1202,7 +1202,7 @@
 					<h5 class="bold">Studio Listing</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
-					<li class="nav-item pre-listed nav-active">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 0}" ng-click = "step = 0">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1210,13 +1210,13 @@
 										<span class="nav-item-name">Basics</span>
 									</div>
 									<div class="pull-right">
-										<i class="fa fa-check success-check"></i>
+										<i class="fa" ng-class = "{'fa-check': basicsComplete, 'success-check': basicsComplete, 'fa-plus': !basicsComplete, 'incomplete-plus': !basicsComplete}"></i>
 									</div>
 								</div>
 							</div>
 						</a>
 					</li>
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 1}" ng-click = "step = 1">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1236,7 +1236,7 @@
 					<h5 class="bold">Services</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 2}" ng-click = "step = 2">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1250,7 +1250,7 @@
 							</div>
 						</a>
 					</li>
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 3}" ng-click = "step = 3">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1264,7 +1264,7 @@
 							</div>
 						</a>
 					</li>	
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 4}" ng-click = "step = 4">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1284,7 +1284,7 @@
 					<h5 class="bold">About</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 5}" ng-click = "step = 5">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1298,7 +1298,7 @@
 							</div>
 						</a>
 					</li>
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 6}" ng-click = "step = 6">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
@@ -1312,7 +1312,7 @@
 							</div>
 						</a>
 					</li>	
-					<li class="nav-item pre-listed">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 7}" ng-click = "step = 7">
 						<a href="#">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">

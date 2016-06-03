@@ -5,12 +5,14 @@ angular.module('bodyAppApp')
   	var currentUser = Auth.getCurrentUser();
     var ref = firebase.database().ref();
 
+    $scope.step = 0;
+
   	$scope.sanitizeUrl = function(currentUrl) {
   		return currentUrl.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase()
   	}
 
-  	$scope.keyPressed = function(key, studioToCreate) {
-      if (key.keyCode === 13) $scope.createStudio(studioToCreate);
+  	$scope.keyPressed = function(key, idToCheck) {
+      if (key.keyCode === 13) $scope.checkId(idToCheck);
     }
 
     $scope.checkId = function(idToCheck) {
@@ -40,7 +42,7 @@ angular.module('bodyAppApp')
 				ref.child('studios').child(studioId).child('storefrontInfo').set({
 					'studioId':studioId, 
 					'ownerName': ownerName,
-          'name': studioToCreate.name
+          'studioName': studioToCreate.studioName
 				}, function(err) {
 					if (err) return console.log(err);
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
@@ -51,6 +53,9 @@ angular.module('bodyAppApp')
           angular.forEach($scope.headerImage,function(obj){
             var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
           })
+          $scope.basicsComplete = true;
+          $scope.step++;
+          if(!$scope.$$phase) $scope.$apply();
 					Studios.setCurrentStudio(studioId);
 					ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
 						if (err) return console.log(err);
