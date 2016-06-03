@@ -43,7 +43,7 @@ angular.module('bodyAppApp')
     Studios.setCurrentStudio(studioId);
     // currentUser = Auth.getCurrentUser()
     if (!studioId) {
-      studioId = 'ralabala'
+      studioId = 'body'
     }
 
     ref = firebase.database().ref().child('studios').child(studioId);

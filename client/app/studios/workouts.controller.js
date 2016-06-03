@@ -16,7 +16,7 @@ angular.module('bodyAppApp')
     
     var classTypes;
 
-    if (!studioId) studioId = 'ralabala'
+    if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();

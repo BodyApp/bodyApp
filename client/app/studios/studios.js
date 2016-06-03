@@ -80,11 +80,11 @@ angular.module('bodyAppApp')
           }
         }
       })
-      .state('createstudio', {
-        url: '/createstudio',
-        templateUrl: 'app/studios/createStudio.html',
-        controller: 'CreateStudioCtrl',
-      })
+      // .state('createstudio', {
+      //   url: '/createstudio',
+      //   templateUrl: 'app/studios/createStudio.html',
+      //   controller: 'CreateStudioCtrl',
+      // })
       
       .state('editprofile', {
         url: '/studios/:studioId/editprofile',

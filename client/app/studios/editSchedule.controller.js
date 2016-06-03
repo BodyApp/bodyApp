@@ -10,7 +10,7 @@ angular.module('bodyAppApp')
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
     
-    if (!studioId) studioId = 'ralabala'
+    if (!studioId) studioId = 'body'
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {
@@ -42,7 +42,7 @@ angular.module('bodyAppApp')
         }
       }
     })
-    
+
     $scope.minDate = new Date();
     Studios.setCurrentStudio(studioId);
     
