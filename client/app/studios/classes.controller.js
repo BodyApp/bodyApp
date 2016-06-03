@@ -15,14 +15,8 @@ angular.module('bodyAppApp')
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
-    // if (studioId) {
-    //   ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    // } else {
-    //   // $location.path('/ralabala/admin')
-    //   ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
-    // }
 
-    if (!studioId) studioId = 'ralabala'
+    if (!studioId) studioId = 'body'
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {

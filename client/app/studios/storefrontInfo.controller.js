@@ -15,7 +15,7 @@ angular.module('bodyAppApp')
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });  
     }
 
-    if (!studioId) studioId = 'ralabala'
+    if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);

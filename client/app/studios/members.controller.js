@@ -9,7 +9,7 @@ angular.module('bodyAppApp')
     } else if (currentUser.role) {
       if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
     }
-    if (!studioId) studioId = 'ralabala'
+    if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();

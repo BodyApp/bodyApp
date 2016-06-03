@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
-    if (!studioId) studioId = 'ralabala'
+    if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
 
     var ref = firebase.database().ref().child('studios').child(studioId);
