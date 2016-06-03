@@ -1,0 +1,1195 @@
+<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
+
+<div class="ss-header-container">
+	<div class="ss-header-name">
+		<h5 class="white">RALABALA</h5>
+	</div>
+	<div class="ss-header-preview">
+		<a href="#">
+			<h5 class="white">Preview your studio</h5>
+		</a>
+	</div>
+</div>
+
+<div class="ss-row-container">
+	<div class="ss-content-container">
+		<div class="ss-content-wrapper">
+			<div class="ss-content">
+
+				<div id="ss-content-basics" class="hidden">
+					<div class="row">
+						<div class="col-sm-12">
+							<h4 class="mb8">Let's start building your studio!</h4>
+							<h5 class="lightgray">Add images, a video, and a name.</h5>
+							<hr class="content-divider mt16 mb24">
+
+							<form>
+						    <div layout="row" flex class="mb8">
+					        <md-input-container flex class="md-block">
+				            <label class="angular-label">Claim your studio ID</label>
+				            <input type="text" ng-model="studio.id" class="angular-input">
+				            <div class="form-hint">Your studio URL will be getbodyapp.com/studios/studioID</div>
+					        </md-input-container>
+					        <div>
+				            <md-button class="md-primary md-raised">Search Availability</md-button>
+					        </div>
+						    </div>
+
+						    <div layout="column" flex class="mb8">
+						    	<md-input-container class="md-block">
+						        <label class="angular-label">Studio Name</label>
+						        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="studio.name" class="angular-input">
+						        <div class="form-hint">Every great service starts with a great name.</div>
+						        <div ng-messages="projectForm.description.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+						        </div>
+						      </md-input-container>
+						    </div>
+
+						    <div layout="row" flex class="mb8">
+					        <md-input-container flex class="md-block">
+				            <label class="angular-label">Upload profile photo</label>
+				            <input type="text" class="angular-input">
+				            <div class="form-hint">Recommended 400 x 400 pixels.</div>
+					        </md-input-container>
+					        <div>
+				            <md-button class="md-primary md-raised">Add photo</md-button>
+					        </div>
+						    </div>
+
+						    <div layout="row" flex class="mb8">
+					        <md-input-container flex class="md-block">
+				            <label class="angular-label">Upload header photo</label>
+				            <input type="text" class="angular-input">
+				            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
+					        </md-input-container>
+					        <div>
+				            <md-button class="md-primary md-raised">Add photo</md-button>
+					        </div>
+						    </div>
+
+						    <div layout="column" flex class="mb8">
+						    	<md-input-container class="md-block">
+						        <label class="angular-label">Studio Video YouTube ID</label>
+						        <input type="text" required="" md-no-asterisk="" name="description" ng-model="video.id" class="angular-input">
+						        <div class="form-hint">The best videos tend to be between 1 to 2 minutes.</div>
+						        <div ng-messages="projectForm.description.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+						        </div>
+						      </md-input-container>
+						    </div>						    
+
+							</form>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="hidden">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="ss-content-description" class="hidden">
+					<div class="row mb32">
+						<div class="col-sm-12">
+							<h4 class="mb8">Help clients find the right fit</h4>
+							<h5 class="lightgray">Every studio on BODY is unique. Highlight what makes your service safe and effective so that it stands out to clients.</h5>
+							<hr class="content-divider mt16 mb24">
+							<form>
+
+								<div class="row mb8">
+						    	<div class="col-sm-12">
+							    	<md-input-container class="md-block">
+							        <label class="angular-label">Short Blurb</label>
+							        <textarea ng-model="shortblurb" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea"></textarea>
+							        <div class="form-hint">Be clear and descriptive.</div>
+							        <div ng-messages="projectForm.shortblurb.$error" class="hidden">
+							          <div ng-message="required">This is required.</div>
+							          <div ng-message="md-maxlength">The blurb has to be less than 100 characters long.</div>
+							        </div>
+							      </md-input-container>
+							    </div>
+						    </div>
+
+						    <div class="row mb8">
+						    	<div class="col-sm-12">
+						    		<md-input-container class="md-block">
+							        <label class="angular-label">Studio Description</label>
+							        <textarea ng-model="studiodescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea"></textarea>
+							        <div class="form-hint">Provide clients a full description of your service.</div>
+							        <div ng-messages="projectForm.studiodescription.$error" class="hidden">
+							          <div ng-message="required">This is required.</div>
+							          <div ng-message="md-maxlength">The description has to be less than 500 characters long.</div>
+							        </div>
+							      </md-input-container>
+						    	</div>
+						    </div>
+
+						    <div class="row mb8">
+						    	<div class="col-sm-12 mb8">
+						    		<label class="angular-label">Studio Categories</label>
+						    		<span class="list-hint">Provide max of 3</span>
+						    	</div>
+						    	<md-list>
+						    		<div class="col-sm-6">
+										  <md-list-item>
+										    <h5 class="lightgray">Strength</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										  <md-list-item>
+										    <h5 class="lightgray">HIIT</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										  <md-list-item>
+										    <h5 class="lightgray">Yoga</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										  <md-list-item>
+										    <h5 class="lightgray">Dance</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										</div>
+									  <div class="col-sm-6">
+										  <md-list-item>
+										    <h5 class="lightgray">Boxing</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										  <md-list-item>
+										    <h5 class="lightgray">Pilates</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										  <md-list-item>
+										    <h5 class="lightgray">Barre</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+										  <md-list-item>
+										    <h5 class="lightgray">Martial Arts</h5>
+										    <md-checkbox class="md-secondary"></md-checkbox>
+										  </md-list-item>
+									  </div>
+									</md-list>
+						    </div>
+							</form>						
+						</div>					
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>	
+				</div>
+
+				<div id="ss-content-pricing" class="hidden">
+					<div class="row mb32">
+						<div class="col-sm-12">
+							<h4 class="mb8">Pricing</h4>
+							<h5 class="lightgray">Average subscription price for a studio offering 6-10 classes a week is expected to be anywhere from $30-$50, but could easily go up to $100 or more. Drop In classes can range from $5 to $50, with workshops charging a few hundred per session.</h5>
+							<hr class="content-divider mt16 mb16">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-10">
+							<h4>Unlimited Monthly Membership</h4>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<md-switch ng-model="subscriptionprice" aria-label="subscriptionprice" class="angular-switch">
+								Active
+							</md-switch>
+						</div>
+						<div class="col-sm-12 mt8">
+							<h5 class="lightgray">There is no cap on the number of classes subscribers can take each month. Your subscribers will be billed monthly to access your services.</h5>
+						</div>
+						<div class="col-sm-12 mt8">
+							<md-input-container class="md-block">
+				        <label class="angular-label">Unlimited Membership Rate (USD)</label>
+				        <input type="number" step="any" min="1" ng-model="unlimitedrate" class="angular-input">				        
+				        <div ng-messages="projectForm.unlimitedrate.$error" class="hidden">
+				          <div ng-message="min">You should charge at least $1 per month for membership. Don't just give your services away!</div>
+				        </div>
+				      </md-input-container>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-10">
+							<h4>Drop In Price</h4>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<md-switch ng-model="subscriptionprice" aria-label="subscriptionprice" class="angular-switch">
+								Active
+							</md-switch>
+						</div>
+						<div class="col-sm-12 mt8">
+							<h5 class="lightgray">Drop In pricing is available for customers who are not subscribers to your studio. Drop Ins will be billed each time they take a class.</h5>
+						</div>
+						<div class="col-sm-12 mt8">
+							<md-input-container class="md-block">
+				        <label class="angular-label">Drop In Rate (USD)</label>
+				        <input type="number" step="any" min="1" ng-model="dropinrate" class="angular-input">
+				        <div ng-messages="projectForm.dropinrate.$error" class="hidden">
+				          <div ng-message="min">You should charge at least $1 for Drop Ins. Don't just give your services away!</div>
+				        </div>
+				      </md-input-container>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="ss-content-classes" class="hidden">
+					<div class="row mb16">
+						<div class="col-sm-12">
+							<h4 class="mb8">Classes</h4>
+							<h5 class="lightgray">Let's determine what classes you are going to offer your customers.</h5>
+							<hr class="content-divider mt16 mb16">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label">Class Name</label>
+					        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="classname" class="angular-input">
+					        <div ng-messages="projectForm.classname.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+					        </div>
+					      </md-input-container>
+
+					      <md-input-container class="md-block" flex-gt-sm="">
+					        <label>This class is open to</label>
+					        <md-select ng-model="openTo" md-selected-text="" class="angular-select">
+					          <md-optgroup label="Open To">
+					            <md-option>All (Members & Drop Ins)</md-option>
+					            <md-option>Monthly Members</md-option>
+					            <md-option>Drop Ins</md-option>
+					          </md-optgroup>
+					        </md-select>
+					      </md-input-container>
+				    	</div>
+						</div>
+					</div>
+
+					<div class="row">
+			    	<div class="col-sm-12">
+				    	<md-input-container class="md-block">
+				        <label class="angular-label">Class Description</label>
+				        <textarea ng-model="classdescription" md-maxlength="200" rows="5" md-select-on-focus class="angular-textarea"></textarea>
+				        <div ng-messages="projectForm.classdescription.$error" class="hidden">
+				          <div ng-message="required">This is required.</div>
+				          <div ng-message="md-maxlength">The blurb has to be less than 100 characters long.</div>
+				        </div>
+				      </md-input-container>
+				    </div>
+			    </div>
+
+			    <div class="row">
+						<div class="col-sm-12">
+							<md-input-container class="md-block">
+				        <label class="angular-label">Equipment Required</label>
+				        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="equipmentrequired" class="angular-input">
+				        <div ng-messages="projectForm.equipmentrequired.$error" class="hidden">
+				          <div ng-message="required">This is required.</div>
+				          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+				        </div>
+				      </md-input-container>
+						</div>
+					</div>
+
+					<div class="row mb8">
+						<div class="col-sm-10">
+							<h5>This is a specialty class</h5>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<md-switch ng-model="specialtyclass" aria-label="specialtyclass" class="angular-switch">
+								Active
+							</md-switch>
+						</div>					
+					</div>
+					<div class="row hidden">
+						<div class="col-sm-12">
+							<md-input-container class="md-block">
+				        <label class="angular-label">Specialty Rate (USD)</label>
+				        <input type="number" required="" md-no-asterisk="" name="description" ng-model="specialtyrate" class="angular-input">
+				        <div ng-messages="projectForm.specialtyrate.$error" class="hidden">
+				          <div ng-message="required">This is required.</div>
+				        </div>
+				      </md-input-container>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-10">
+							<h5>New clients can take this class</h5>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<md-switch ng-model="newclients" aria-label="newclients" class="angular-switch">
+								Active
+							</md-switch>
+						</div>					
+					</div>
+
+					<div class="row mt24">
+						<hr class="content-divider mt16 mb16">
+						<div class="col-sm-12 text-right">
+							<a href="#">+ Add another class</a>
+						</div>
+					</div>
+
+					<div class="row mt40">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="ss-content-perks" class="hidden">
+					<div class="row mb16">
+						<div class="col-sm-12">
+							<h4 class="mb8">Special Offers</h4>
+							<h5 class="lightgray">Extra services and offers for marketing and referrals.</h5>
+							<hr class="content-divider mt16 mb16">
+						</div>
+					</div>
+
+					<div class="row mb8">
+			    	<div class="col-sm-12 mb8">
+			    		<h4>Subscriber Perks</h4>
+			    	</div>
+			    	<md-list>
+			    		<div class="col-sm-4">
+							  <md-list-item>
+							    <h5 class="lightgray">Nutrition Advice</h5>
+							    <md-checkbox class="md-secondary"></md-checkbox>
+							  </md-list-item>
+							  <md-list-item>
+							    <h5 class="lightgray">Life Coaching</h5>
+							    <md-checkbox class="md-secondary"></md-checkbox>
+							  </md-list-item>
+							</div>
+						  <div class="col-sm-4">
+							  <md-list-item>
+							    <h5 class="lightgray">Email Support</h5>
+							    <md-checkbox class="md-secondary"></md-checkbox>
+							  </md-list-item>
+							  <md-list-item>
+							    <h5 class="lightgray">Phone Support</h5>
+							    <md-checkbox class="md-secondary"></md-checkbox>
+							  </md-list-item>
+						  </div>
+						  <div class="col-sm-4">
+							  <md-list-item>
+							    <h5 class="lightgray">Text Support</h5>
+							    <md-checkbox class="md-secondary"></md-checkbox>
+							  </md-list-item>
+						  </div>
+						</md-list>
+			    </div>
+			    <hr class="content-divider mt16 mb16">
+
+			    <div class="row mb8">
+			    	<div class="col-sm-12">
+			    		<h4 class="mb16">Your Coupons</h4>
+			    	</div>
+			    	<div class="col-sm-6">
+			    		<h5 class="mb8">Code</h5>
+			    		<div>
+			    			<h5 class="lightgray">RALABALA4Free</h5>
+			    		</div>
+			    	</div>
+			    	<div class="col-sm-3">
+			    		<h5 class="mb8">Discount</h5>
+			    		<div>
+			    			<h5 class="lightgray">100%</h5>
+			    		</div>
+			    	</div>
+			    	<div class="col-sm-3">
+			    		<h5 class="mb8">Applies</h5>
+			    		<div>
+			    			<h5 class="lightgray">1 month</h5>
+			    		</div>
+			    	</div>
+			    </div>
+					
+					<hr class="content-divider mt16 mb16">
+
+			    <div class="row mt24">
+						<div class="col-sm-12 text-right">
+							<a href="#">+ Add a coupon</a>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<md-input-container class="md-block">
+				        <label class="angular-label">Coupon Code</label>
+				        <input type="text" md-maxlength="30" required="" md-no-asterisk="" name="description" ng-model="couponcode" class="angular-input">
+				        <div class="form-hint">e.g. HALFOFF4SUMMER</div>
+				        <div ng-messages="projectForm.couponcode.$error" class="hidden">
+				          <div ng-message="required">This is required.</div>
+				          <div ng-message="md-maxlength">The code has to be less than 30 characters long.</div>
+				        </div>
+				      </md-input-container>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div layout-gt-sm="row">
+					      <md-input-container class="md-block" flex-gt-sm="">
+					        <label>Discount Type</label>
+					        <md-select ng-model="discountType" md-selected-text="" class="angular-select">
+					          <md-optgroup label="Discount Type">
+					            <md-option>Percentage off</md-option>
+					            <md-option>Dollars off</md-option>
+					          </md-optgroup>
+					        </md-select>
+					      </md-input-container>								
+								<md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label">Percentage (%)</label>
+					        <input type="number" required="" md-no-asterisk="" name="percentOff" ng-model="percentOff" class="angular-input">
+					        <div ng-messages="projectForm.percentOff.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+					        </div>
+					      </md-input-container>
+				    	</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div layout-gt-sm="row">
+					      <md-input-container class="md-block" flex-gt-sm="">
+					        <label>Duration</label>
+					        <md-select ng-model="duration" md-selected-text="" class="angular-select">
+					          <md-optgroup label="Duration">
+					            <md-option>Once</md-option>
+					            <md-option>Monthly</md-option>
+					          </md-optgroup>
+					        </md-select>
+					      </md-input-container>								
+								<md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label"># of months</label>
+					        <input type="number" required="" md-no-asterisk="" name="numberofmonths" ng-model="numberofmonths" class="angular-input">
+					        <div ng-messages="projectForm.numberofmonths.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+					        </div>
+					      </md-input-container>
+				    	</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div layout-gt-xs="row">
+					      <md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label">Maximum Redemptions</label>
+					        <input type="number" required="" md-no-asterisk="" name="maxredemptions" ng-model="maxredemptions" class="angular-input">
+					        <div ng-messages="projectForm.maxredemptions.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+					        </div>
+					      </md-input-container>
+					      <md-datepicker ng-model="expiration" md-placeholder="Expiration Date" class="angular-datepicker"></md-datepicker>
+				    	</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<a href="#" class="btn btn-block">Save Coupon</a>
+						</div>
+					</div>
+
+					<div class="row mt40">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="ss-content-account" class="hidden">
+					<div class="row mb16">
+						<div class="col-sm-12">
+							<h4 class="mb8">Some housekeeping</h4>
+							<h5 class="lightgray">Connect your stripe account and get ready to receive payments.</h5>
+							<hr class="content-divider mt16 mb16">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div layout-gt-sm="row">
+					      <md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label">Contact Email</label>
+					        <input type="text" required="" md-no-asterisk="" name="contactEmail" ng-model="contactEmail" class="angular-input">
+					        <div class="form-hint">Contact information for your studio</div>
+					        <div ng-messages="projectForm.contactEmail.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					        </div>
+					      </md-input-container>							
+								<md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label">Contact Phone</label>
+					        <input type="text" required="" md-no-asterisk="" name="contactPhone" ng-model="contactPhone" class="angular-input">
+					        <div ng-messages="projectForm.contactPhone.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					        </div>
+					      </md-input-container>
+				    	</div>
+						</div>
+					</div>
+
+					<hr class="content-divider mt16 mb16">
+
+					<div class="row">
+						<div class="col-sm-12">
+							<h4 class="mb8">Payout Details</h4>
+							<h5 class="lightgray mb8">Transactions are handling through Stripe payment processing. <a href="#">Setup a Stripe account</a> and connect it to BODY to receive payments.</h5>
+							<h5 class="success-check">Your account has been successfully synced <i class="fa fa-check"></i></h5>
+						</div>
+					</div>
+
+					<div class="row mt40">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="ss-content-staff" class="hidden">
+					<div class="row mb16">
+						<div class="col-sm-12">
+							<h4 class="mb8">Your Studio Staff</h4>
+							<h5 class="lightgray">BODY is built on relationships. Help your studio's members get to know you and your staff!</h5>
+							<hr class="content-divider mt16 mb16">
+						</div>
+					</div>
+
+					<div class="row mb16">
+						<div class="col-sm-12">
+							<h4>Instructor Profile</h4>
+							<h5 class="lightgray">Your public profile information</h5>
+						</div>
+					</div>
+
+					<form>
+						<div class="row">
+							<div class="col-sm-3">
+								<img src="assets/images/justin-photo.jpg" class="profile-photo">
+							</div>
+							<div class="col-sm-9">
+								<div layout-gt-sm="row">
+									<md-input-container class="md-block" flex-gt-sm="">
+						        <label class="angular-label">First Name</label>
+						        <input type="text" required="" md-no-asterisk="" name="instructorFirstName" ng-model="instructorFirstName" class="angular-input">
+						        <div ng-messages="projectForm.instructorFirstName.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						        </div>
+						      </md-input-container>
+						      <md-input-container class="md-block" flex-gt-sm="">
+						        <label class="angular-label">Last Name</label>
+						        <input type="text" required="" md-no-asterisk="" name="instructorFirstName" ng-model="instructorLastName" class="angular-input">
+						        <div ng-messages="projectForm.instructorLastName.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						        </div>
+						      </md-input-container>
+								</div>
+								<div layout-gt-sm="row">
+									<md-input-container class="md-block" flex-gt-sm="">
+						        <label class="angular-label">Position Title</label>
+						        <input type="text" required="" md-no-asterisk="" name="instructorTitle" ng-model="instructorTitle" class="angular-input">
+						        <div ng-messages="projectForm.instructorTitle.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						        </div>
+						      </md-input-container>
+						      <md-input-container class="md-block" flex-gt-sm="">
+						        <label class="angular-label">Certifications</label>
+						        <input type="text" required="" md-no-asterisk="" name="instructorCertifications" ng-model="instructorCertifications" class="angular-input">
+						        <div ng-messages="projectForm.instructorCertifications.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						        </div>
+						      </md-input-container>
+								</div>
+								<div layout-gt-sm="row">
+									<md-input-container class="md-block" flex-gt-sm="">
+						        <label class="angular-label">Your Bio</label>
+						        <textarea ng-model="instructorBio" md-maxlength="200" rows="5" md-select-on-focus class="angular-textarea"></textarea>
+						        <div ng-messages="projectForm.instructorBio.$error" class="hidden">
+						          <div ng-message="required">This is required.</div>
+						        </div>
+						      </md-input-container>
+								</div>
+								<div layout-gt-sm="row">
+									<md-input-container class="md-block" flex-gt-sm="">
+									  <label>Studio Role</label>
+									  <md-select ng-model="studioRole" md-selected-text="" class="angular-select">
+									    <md-optgroup label="Studio Role">
+									      <md-option>Studio Admin</md-option>
+									      <md-option>Instructor</md-option>
+									    </md-optgroup>
+									  </md-select>
+									</md-input-container>
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<hr class="content-divider mt16 mb16">
+					<div class="row mt24">
+						<div class="col-sm-12 text-right">
+							<a href="#">+ Add another instructor</a>
+						</div>
+					</div>
+
+					
+					<div class="row mt32 hidden">
+						<div class="col-sm-12">
+							<form>
+								<div layout="row" flex class="mb8">
+					        <md-input-container flex class="md-block">
+				            <label class="angular-label">Search by email</label>
+				            <input type="text" ng-model="instructor.id" class="angular-input">
+				            <div class="form-hint">Your instructor's photo, first and last name are automatically populated.</div>
+					        </md-input-container>
+					        <div>
+				            <md-button class="md-primary md-raised">Find user</md-button>
+					        </div>
+						    </div>
+					    </form>
+						</div>
+					</div>
+					
+
+					<div class="row mt40">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Next</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="ss-content-stories" class="hidden">
+					<div class="row mb16">
+						<div class="col-sm-12">
+							<h4 class="mb8">Client Stories</h4>
+							<h5 class="lightgray">Every one of your clients has a story to share - from success to failure, stories are what inspire us. Use this space to tell the story of your unique clients. These stories will promote the efficacy and value of your service.</h5>
+							<hr class="content-divider mt16 mb16">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+					    <div layout="row" flex class="mb8">
+				        <md-input-container flex class="md-block">
+			            <label class="angular-label">Upload story photo</label>
+			            <input type="text" class="angular-input">
+			            <div class="form-hint">Recommended 600 x 400 pixels.</div>
+				        </md-input-container>
+				        <div>
+			            <md-button class="md-primary md-raised">Add photo</md-button>
+				        </div>
+					    </div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-sm="">
+					        <label class="angular-label">Client Name</label>
+					        <input type="text" required="" md-no-asterisk="" name="storyName" ng-model="storyName" class="angular-input">
+					        <div ng-messages="projectForm.storyName.$error" class="hidden">
+					          <div ng-message="required">This is required.</div>
+					        </div>
+					      </md-input-container>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+			    	<div class="col-sm-12">
+				    	<md-input-container class="md-block">
+				        <label class="angular-label">Story Details</label>
+				        <textarea ng-model="classdescription" md-maxlength="500" rows="5" md-select-on-focus class="angular-textarea"></textarea>
+				        <div class="form-hint">Share details of success, failure, or anything in between.</div>
+				        <div ng-messages="projectForm.classdescription.$error" class="hidden">
+				          <div ng-message="required">This is required.</div>
+				          <div ng-message="md-maxlength">The blurb has to be less than 500 characters long.</div>
+				        </div>
+				      </md-input-container>
+				    </div>
+			    </div>
+
+			    <hr class="content-divider mt16 mb16">
+					<div class="row mt24">
+						<div class="col-sm-12 text-right">
+							<a href="#">+ Add another story</a>
+						</div>
+					</div>
+
+			    <div class="row mt40">
+						<div class="col-sm-2 mt8">
+							<a href="#" class="">Back</a>
+						</div>
+						<div class="col-sm-10 text-right">
+							<a href="#" class="btn-blue btn-large">Finish Remaining Steps</a>
+						</div>
+					</div>			    
+
+				</div>
+
+			</div>
+			<div class="ss-help">
+				<div class="ss-help-panel-wrapper">
+					
+					<div id="ss-help-basics" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:120px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Studio ID</h4>
+								<h5 class="mb0">Choose an ID you'll be happy with for the long term. Your ID cannot be changed once it is created.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:250px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Studio Name</h4>
+								<h5 class="mb0">What should we call you? Most use their company or personal name here.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:320px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Profile Photo</h4>
+								<h5 class="mb0">The profile photo associated with your studio.<br><br>Recommended Upload<br>400 x 400 pixels<br>JPEG or PNG</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:400px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Header Photo</h4>
+								<h5 class="mb0">The main image for your studio storefront page. Make it count!<br><br>Recommended Upload<br>1280x540 pixels<br>JPEG or PNG</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:480px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Studio Video</h4>
+								<h5 class="mb0">Have fun – add a video! Studios with a video have a much higher chance of success.<br><br>Provide your YouTube video ID. <a href="https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id" target="_blank">Here's where to find it</a>.</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-description" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:150px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Short Blurb</h4>
+								<h5 class="mb0">Your blurb provides an overview of your services and should be simple, specific, and memorable. Your blurb will create a first impression on prospective clients, so choose it wisely!</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:240px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Studio Description</h4>
+								<h5 class="mb0">Use your studio description to share more about what services you provide and why your program is safe and effective.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:400px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Studio Categories</h4>
+								<h5 class="mb0">These tags will help people find your studio, so choose them wisely!</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-pricing" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:180px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Monthly Unlimited Membership</h4>
+								<h5 class="mb0">Some studios start off with a lower price and raise it after gaining traction. You can always adjust your price in response to changes in demand.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:380px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Drop In</h4>
+								<h5 class="mb0">Encourage prospective clients to try your services with a Drop In offering.</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-classes" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:100px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Class Name</h4>
+								<h5 class="mb0">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:100px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Open To</h4>
+								<h5 class="mb0">Types of customers that will be able to sign up for this class.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:180px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Class Description</h4>
+								<h5 class="mb0">Class descriptions help your customers understand what they're getting themselves into. Tell them if it's a beginner or advanced class or if there is prior experience necessary.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:320px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Equipment Required</h4>
+								<h5 class="mb0">What equipment do class participants need during class?<br><br>Example: Dumbbells, Exercise Mat</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:350px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Specialty Class</h4>
+								<h5 class="mb0">Specialty classes are perfect for unique workshops or events. Unique pricing can be set for specialty classes.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:370px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">New Clients</h4>
+								<h5 class="mb0">If this is an advanced class you may not want to allow newcomers.</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-perks" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:100px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Subscriber Perks</h4>
+								<h5 class="mb0">Extra services which you plan to offer your monthly subscribers. Subscriber perks are valuable and can help differentiate your studio. These will be displayed on your storefront page</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:300px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Coupon Codes</h4>
+								<h5 class="mb0">Coupon codes can be emailed or posted on social sites for prospective customers. These can always be changed later.</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-account" class="hidden">
+						<div class="panel ss-help-panel" style="margin-top:100px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Contact Email</h4>
+								<h5 class="mb0">This is how BODY clients will correspond with you and you will receive important notifications.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:100px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Contact Number</h4>
+								<h5 class="mb0">This is how we can get in touch for studio support purposes.</h5>
+							</div>
+						</div>
+
+						<div class="panel ss-help-panel hidden" style="margin-top:280px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Payout Details</h4>
+								<h5 class="mb0">Transactions are handled through Stripe. If you don't already have an account you can <a href="#">set one up here</a>.</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-staff" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:220px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Instructor Profile</h4>
+								<h5 class="mb0">BODY is built on relationships. Help your studio's members get to know you and your staff!</h5>
+							</div>
+						</div>
+						<div class="panel ss-help-panel hidden" style="margin-top:300px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Certifications</h4>
+								<h5 class="mb0">e.g. CF-L1, ACSM (separate by commas)</h5>
+							</div>
+						</div>
+						<div class="panel ss-help-panel hidden" style="margin-top:450px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Permission</h4>
+								<h5 class="mb0">Only Studio Admins can modify classes, pricing, or studio details.</h5>
+							</div>
+						</div>
+					</div>
+
+					<div id="ss-help-stories" class="hidden">
+						<div class="panel ss-help-panel hidden" style="margin-top:200px;">
+							<div class="help-header-icon-container text-center va-container-h">
+								<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
+							</div>
+							<div class="panel-body">
+								<h4 class="text-center mb16">Client Stories</h4>
+								<h5 class="mb0">Share stories of success, failure, or anything in between. We recommend adding 5 or more stories to your page.<br><br>
+
+								Recommended Image Upload<br>
+								600 x 400 pixels<br>
+								JPEG or PNG</h5>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="ss-footer">
+			</div>
+		</div>
+
+	</div>
+	<div class="ss-nav">
+		<div class="nav-sections">
+			<div class="section-header pre-listed mb8">
+				<h5 class="bold">Studio Listing</h5>
+			</div>
+			<ul class="mb32 list-unstyled">
+				<li class="nav-item pre-listed nav-active">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Basics</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-check success-check"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Description</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>				
+			</ul>
+
+			<div class="section-header pre-listed mb8">
+				<h5 class="bold">Services</h5>
+			</div>
+			<ul class="mb32 list-unstyled">
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Pricing</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Classes</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>	
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Perks & Promotion</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>	
+			</ul>
+
+			<div class="section-header pre-listed mb8">
+				<h5 class="bold">About</h5>
+			</div>
+			<ul class="mb32 list-unstyled">
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Account</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Staff</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>	
+				<li class="nav-item pre-listed">
+					<a href="#">
+						<div class="row nav-item">
+							<div class="col-sm-12 va-container">
+								<div class="text-wrap va-middle">
+									<span class="nav-item-name">Client Stories</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-plus incomplete-plus"></i>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>	
+			</ul>
+
+		</div>
+		<div class="publish-actions text-center">
+			<div class="steps-remaining lightgray">
+				Complete
+				<a href="#">3 steps</a>
+				to list your studio
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div ng-include="'components/footer/footer.html'"></div>

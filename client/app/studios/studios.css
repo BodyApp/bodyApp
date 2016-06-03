@@ -15,6 +15,26 @@
 .hero-play-btn {
   z-index: 1;
 }
+.cover-gradient {
+  background: black;
+  background: -webkit-radial-gradient(top, black, rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(top, black, rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+  background: -moz-radial-gradient(top, black, rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(at top, black, rgba(0, 0, 0, 0));
+  opacity: 0.4;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 420px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
 #studio-hero .cover-img {
     background-repeat: no-repeat;
     -webkit-background-size: cover;
@@ -367,4 +387,61 @@
     /*float: right;*/
     /*position: relative;*/
     /*top: 7px;*/
+}
+
+/*-------STORIES-------*/
+.stories-number {
+  color: #D8D8D8;
+}
+.stories-gallery {
+  height: 80vh;
+  overflow: scroll;
+}
+.stories-gallery a {
+  opacity: 0.7;
+}
+.stories-gallery a:hover {
+  opacity: 1;
+}
+.stories-sharing li, .stories-sharing a {
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: middle;
+  color: #D8D8D8;
+}
+.stories-sharing a:hover, .next-story-icon a:hover {
+  color: white;
+}
+.next-story-icon {
+  font-size: 50px;
+  color: white;
+  margin: 0;
+}
+.next-story-icon a {
+  color: #D8D8D8;
+}
+.story-container {
+  position: relative;
+}
+.story-name {
+  background-color: rgba(0,0,0,0.4);
+  padding: 5px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+}
+.story-content {
+  padding: 10px 0;
+}
+@media (min-width: 991px) {
+  .stories-container {
+    padding-right: 50px;
+  }
+}
+@media (max-width: 768px) {
+  .story-content h5 {
+    font-size: 13px;
+    line-height: 18px;
+  }
 }
