@@ -41,7 +41,7 @@
 
           <div class="visible-xs pt72"></div>
           <div ng-class = "{'col-sm-2': slot, 'col-sm-4': !slot}"></div>
-          <div class="col-sm-6 col-md-4 col-membership">
+          <div class="col-sm-6 col-md-4 col-membership" ng-show = "planInfo.amount">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
               <h3 class="royalblue pt32 mb8 text-center bold">Membership</h3>
@@ -92,7 +92,7 @@
           </div>
           <!-- <div class="visible-xs pt72"></div> -->
            <!-- <div class="col-sm-6 col-md-4" ng-hide = "true"> -->
-           <div class="col-sm-6 col-md-4" ng-hide = "!slot">
+           <div class="col-sm-6 col-md-4" ng-hide = "!slot || !dropinRate">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
               <h3 class="royalblue pt32 mb8 text-center bold">Drop in</h3>
