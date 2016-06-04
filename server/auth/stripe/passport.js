@@ -1,15 +1,18 @@
 var passport = require('passport');
 // var StripeStrategy = require('passport-stripe').Strategy;
 var StripeStrategy = require('./strategy');
-var Firebase = require('firebase');
+// var Firebase = require('firebase');
+
+var firebase = require('firebase');
+var baseRef = firebase.database().ref()
 
 exports.setup = function (User, config) {
 
   var stripe = require("stripe")(config.stripeOptions.apiKey);
   passport.use(new StripeStrategy({
-      // clientID: config.stripe.clientID,
+      clientID: config.stripe.clientID,
       // ca_8NvwJNVopcVHsPMB93KDBXzZoIXJ7cW1
-      clientID: "ca_8NvwJNVopcVHsPMB93KDBXzZoIXJ7cW1",
+      // clientID: "ca_8NvwJNVopcVHsPMB93KDBXzZoIXJ7cW1",
       clientSecret: config.stripe.clientSecret,
       callbackURL: config.stripe.callbackURL,
       passReqToCallback: true
@@ -18,9 +21,13 @@ exports.setup = function (User, config) {
       var dataToSave = stripe_properties;
       dataToSave.refreshToken = refreshToken;
       dataToSave.applicationFeePercent = 30;
-      var ref = new Firebase("https://bodyapp.firebaseio.com/studios/" + req.query.state);
+      var ref = baseRef.child('studios').child(req.query.state);
       // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
 
+      var auth = firebase.auth();
+      auth.signInWithCustomToken(config.firebaseSecret).then(function(user) {
+          // checkIfStudioAdmin()
+      }); 
       ref.authWithCustomToken(config.firebaseSecret, function(error, authData) {
         if (error) {
           console.log("Firebase server authentication failed", error);

@@ -336,6 +336,22 @@
 					</div>
 
 					<div id="ss-content-pricing" ng-show = "step === 2">
+						<div class="row mb16">
+							<div class="col-sm-12">
+								<h4 class="mb8">Start by connecting a stripe account</h4>
+								<hr class="content-divider mt16 mb16">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="mb8">Payout Details</h4>
+								<h5 class="lightgray mb8">Transactions are handling through Stripe payment processing. <a href="#" ng-click = "beginStripeConnect()">Setup a Stripe account</a> 
+										and connect it to BODY to receive payments.
+								</h5>
+								<button class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button>
+								<!-- <h5 class="success-check">Your account has been successfully synced <i class="fa fa-check"></i></h5> -->
+							</div>
+						</div>
 						<div class="row mb32">
 							<div class="col-sm-12">
 								<h4 class="mb8">Pricing</h4>
@@ -358,9 +374,9 @@
 							<div class="col-sm-12 mt8">
 								<md-input-container class="md-block">
 					        <label class="angular-label">Unlimited Membership Rate (USD)</label>
-					        <input type="number" step="any" min="1" ng-model="unlimitedrate" class="angular-input">				        
-					        <div ng-messages="projectForm.unlimitedrate.$error" class="hidden">
-					          <div ng-message="min">You should charge at least $1 per month for membership. Don't just give your services away!</div>
+					        <input type="number" step="1" min="5" ng-model="unlimitedrate" class="angular-input">				        
+					        <div ng-messages="projectForm.unlimitedrate.$error && unlimitedrate < 5">
+					          <div ng-message="min">You should charge at least $5 per month for membership. Don't just give your services away!</div>
 					        </div>
 					      </md-input-container>
 							</div>
@@ -371,7 +387,7 @@
 								<h4>Drop In Price</h4>
 							</div>
 							<div class="col-sm-2 pull-right">
-								<md-switch ng-model="subscriptionprice" aria-label="subscriptionprice" class="angular-switch">
+								<md-switch ng-model="dropinprice" aria-label="dropinprice" class="angular-switch">
 									Active
 								</md-switch>
 							</div>
@@ -381,7 +397,7 @@
 							<div class="col-sm-12 mt8">
 								<md-input-container class="md-block">
 					        <label class="angular-label">Drop In Rate (USD)</label>
-					        <input type="number" step="any" min="1" ng-model="dropinrate" class="angular-input">
+					        <input type="number" step="1" min="1" ng-model="dropinrate" class="angular-input">
 					        <div ng-messages="projectForm.dropinrate.$error" class="hidden">
 					          <div ng-message="min">You should charge at least $1 for Drop Ins. Don't just give your services away!</div>
 					        </div>
@@ -1226,10 +1242,24 @@
 								</div>
 							</div>
 						</a>
-					</li>				
+					</li>	
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 2}" >
+						<a href="#" ng-click = "goToStep(2)">
+							<div class="row nav-item">
+								<div class="col-sm-12 va-container">
+									<div class="text-wrap va-middle">
+										<span class="nav-item-name">Pricing</span>
+									</div>
+									<div class="pull-right">
+										<i class="fa fa-plus incomplete-plus"></i>
+									</div>
+								</div>
+							</div>
+						</a>
+					</li>			
 				</ul>
 
-				<div class="section-header pre-listed mb8">
+				<!-- <div class="section-header pre-listed mb8">
 					<h5 class="bold">Services</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
@@ -1275,9 +1305,9 @@
 							</div>
 						</a>
 					</li>	
-				</ul>
+				</ul> -->
 
-				<div class="section-header pre-listed mb8">
+				<!-- <div class="section-header pre-listed mb8">
 					<h5 class="bold">About</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
@@ -1323,9 +1353,9 @@
 							</div>
 						</a>
 					</li>	
-				</ul>
+				</ul> -->
 
-			</div>
+			<!-- </div> -->
 			<div class="publish-actions text-center">
 				<div class="steps-remaining lightgray">
 					Complete

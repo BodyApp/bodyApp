@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, Auth, Studios, User) {
+  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, $window, Auth, Studios, User) {
   	var currentUser = Auth.getCurrentUser();
     var ref = firebase.database().ref();
 
@@ -87,6 +87,13 @@ angular.module('bodyAppApp')
 
     $scope.goToStep = function(step) {
       if ($scope.basicsComplete) $scope.step = step;
+    }
+
+    //Add billing controller
+    $scope.beginStripeConnect = function() {
+      $window.location.href = '/auth/stripe?studioid=' + $scope.studioToCreate.studioId;
+      // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
+      // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
     }
 
     $scope.setDescription = function(studioToCreate) {
