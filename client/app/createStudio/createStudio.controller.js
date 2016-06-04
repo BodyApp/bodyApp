@@ -84,6 +84,22 @@ angular.module('bodyAppApp')
 				})
   		})
   	}
+
+    $scope.goToStep = function(step) {
+      if ($scope.basicsComplete) $scope.step = step;
+    }
+
+    $scope.setDescription = function(studioToCreate) {
+      ref.child('studios').child(studioToCreate.studioId).child('storefrontInfo').update({
+        'shortDescription': studioToCreate.shortDescription,
+        'longDescription': studioToCreate.longDescription,
+        'categories': studioToCreate.categories
+      }, function(err) {
+        if (err) return console.log(err)
+        $scope.step++;
+        $scope.descriptionComplete = true;
+      })
+    }
   	// $window.open("https://getbody.wufoo.com/forms/zd3urqw0x6csn6/")
   	// $location.path("/")
   });

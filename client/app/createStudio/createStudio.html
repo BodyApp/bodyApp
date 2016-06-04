@@ -165,7 +165,6 @@
 							    	<md-input-container flex class="md-block">
 					            <!-- <label class="angular-label">Upload profile photo</label> -->
 					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage"></lf-ng-md-file-input>
-					            <lf-ng-md-file-input class = "angular-label" ng-show = "iconUrl" lf-placeholder = "Replace profile photo" lf-files="iconImage"></lf-ng-md-file-input>
 					            <br>
 					            <div class="form-hint">Recommended 400 x 400 pixels.</div>
 						        </md-input-container>
@@ -174,9 +173,7 @@
 				          <div layout="row" flex class="mb8">
 						        <md-input-container flex class="md-block">
 					            <!-- <label class="angular-label">Upload header photo</label> -->
-					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage"></lf-ng-md-file-input>
-				              <lf-ng-md-file-input class="angular-label" ng-show = "headerUrl" lf-placeholder = "Replace header photo" lf-files="headerImage"></lf-ng-md-file-input>
-					            <!-- <input type="text" class="angular-input"> -->
+					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage"></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
 					            <br>
 					            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
 						        </md-input-container>
@@ -256,7 +253,7 @@
 							    	<div class="col-sm-12">
 								    	<md-input-container class="md-block">
 								        <label class="angular-label">Short Blurb</label>
-								        <textarea ng-model="shortblurb" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea"></textarea>
+								        <textarea ng-model="studioToCreate.shortDescription" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea"></textarea>
 								        <div class="form-hint">Be clear and descriptive.</div>
 								        <div ng-messages="projectForm.shortblurb.$error" class="hidden">
 								          <div ng-message="required">This is required.</div>
@@ -270,7 +267,7 @@
 							    	<div class="col-sm-12">
 							    		<md-input-container class="md-block">
 								        <label class="angular-label">Studio Description</label>
-								        <textarea ng-model="studiodescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea"></textarea>
+								        <textarea ng-model="studioToCreate.longDescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea"></textarea>
 								        <div class="form-hint">Provide clients a full description of your service.</div>
 								        <div ng-messages="projectForm.studiodescription.$error" class="hidden">
 								          <div ng-message="required">This is required.</div>
@@ -289,37 +286,37 @@
 							    		<div class="col-sm-6">
 											  <md-list-item>
 											    <h5 class="lightgray">Strength</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.strength"></md-checkbox>
 											  </md-list-item>
 											  <md-list-item>
 											    <h5 class="lightgray">HIIT</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.hiit"></md-checkbox>
 											  </md-list-item>
 											  <md-list-item>
 											    <h5 class="lightgray">Yoga</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.yoga"></md-checkbox>
 											  </md-list-item>
 											  <md-list-item>
 											    <h5 class="lightgray">Dance</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.dance"></md-checkbox>
 											  </md-list-item>
 											</div>
 										  <div class="col-sm-6">
 											  <md-list-item>
 											    <h5 class="lightgray">Boxing</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.boxing"></md-checkbox>
 											  </md-list-item>
 											  <md-list-item>
 											    <h5 class="lightgray">Pilates</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.pilates"></md-checkbox>
 											  </md-list-item>
 											  <md-list-item>
 											    <h5 class="lightgray">Barre</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.barre"></md-checkbox>
 											  </md-list-item>
 											  <md-list-item>
 											    <h5 class="lightgray">Martial Arts</h5>
-											    <md-checkbox class="md-secondary"></md-checkbox>
+											    <md-checkbox class="md-secondary" ng-model = "studioToCreate.categories.martialArts"></md-checkbox>
 											  </md-list-item>
 										  </div>
 										</md-list>
@@ -333,7 +330,7 @@
 								<a href="#" class="">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large">Next</a>
+								<a href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate)">Next</a>
 							</div>
 						</div>	
 					</div>
@@ -1202,8 +1199,8 @@
 					<h5 class="bold">Studio Listing</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 0}" ng-click = "step = 0">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 0}">
+						<a href="#" ng-click = "step = 0">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1216,15 +1213,15 @@
 							</div>
 						</a>
 					</li>
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 1}" ng-click = "step = 1">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 1}" >
+						<a href="#" ng-click = "goToStep(1)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
 										<span class="nav-item-name">Description</span>
 									</div>
 									<div class="pull-right">
-										<i class="fa fa-plus incomplete-plus"></i>
+										<i class="fa" ng-class = "{'fa-check': descriptionComplete, 'success-check': descriptionComplete, 'fa-plus': !descriptionComplete, 'incomplete-plus': !descriptionComplete}"></i>
 									</div>
 								</div>
 							</div>
@@ -1236,8 +1233,8 @@
 					<h5 class="bold">Services</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 2}" ng-click = "step = 2">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 2}" >
+						<a href="#" ng-click = "goToStep(2)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1250,8 +1247,8 @@
 							</div>
 						</a>
 					</li>
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 3}" ng-click = "step = 3">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 3}">
+						<a href="#" ng-click = "goToStep(3)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1264,8 +1261,8 @@
 							</div>
 						</a>
 					</li>	
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 4}" ng-click = "step = 4">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 4}">
+						<a href="#" ng-click = "goToStep(4)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1284,8 +1281,8 @@
 					<h5 class="bold">About</h5>
 				</div>
 				<ul class="mb32 list-unstyled">
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 5}" ng-click = "step = 5">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 5}">
+						<a href="#" ng-click = "goToStep(5)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1298,8 +1295,8 @@
 							</div>
 						</a>
 					</li>
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 6}" ng-click = "step = 6">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 6}">
+						<a href="#" ng-click = "goToStep(6)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1312,8 +1309,8 @@
 							</div>
 						</a>
 					</li>	
-					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 7}" ng-click = "step = 7">
-						<a href="#">
+					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 7}">
+						<a href="#" ng-click = "goToStep(7)">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
