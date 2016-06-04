@@ -376,7 +376,7 @@
 					        <label class="angular-label">Unlimited Membership Rate (USD)</label>
 					        <input type="number" step="1" min="5" ng-model="unlimitedrate" class="angular-input">				        
 					        <div ng-messages="projectForm.unlimitedrate.$error && unlimitedrate < 5">
-					          <div ng-message="min">You should charge at least $5 per month for membership. Don't just give your services away!</div>
+					          <div ng-message="min">You should charge at least $5 per month for membership. Don't just give your services away!</div
 					        </div>
 					      </md-input-container>
 							</div>
@@ -388,6 +388,7 @@
 							</div>
 							<div class="col-sm-2 pull-right">
 								<md-switch ng-model="dropinprice" aria-label="dropinprice" class="angular-switch">
+
 									Active
 								</md-switch>
 							</div>
