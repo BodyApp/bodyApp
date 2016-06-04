@@ -381,6 +381,7 @@
   border-radius: 50%;
 }
 
+<<<<<<< HEAD
 .thumb {
     width: 50px;
     height: 50px;
@@ -388,3 +389,67 @@
     /*position: relative;*/
     /*top: 7px;*/
 }
+=======
+/*-------STORIES-------*/
+.stories-number {
+  color: #D8D8D8;
+}
+.stories-gallery {
+  height: 80vh;
+  overflow: scroll;
+}
+.stories-gallery a {
+  opacity: 0.7;
+}
+.stories-gallery a:hover {
+  opacity: 1;
+}
+.stories-sharing li, .stories-sharing a {
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: middle;
+  color: #D8D8D8;
+}
+.stories-sharing a:hover, .next-story-icon a:hover {
+  color: white;
+}
+.next-story-icon {
+  font-size: 50px;
+  color: white;
+  margin: 0;
+}
+.next-story-icon a {
+  color: #D8D8D8;
+}
+.story-container {
+  position: relative;
+}
+.story-name {
+  background-color: rgba(0,0,0,0.4);
+  padding: 5px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+}
+.story-content {
+  padding: 10px 0;
+}
+@media (min-width: 991px) {
+  .stories-container {
+    padding-right: 50px;
+  }
+}
+@media (max-width: 768px) {
+  .story-content h5 {
+    font-size: 13px;
+    line-height: 18px;
+  }
+}
+
+
+
+
+
+
+>>>>>>> a1d0d28... added modal for the stories on the studio storefront...its pretty fucking sick nigga
