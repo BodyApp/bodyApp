@@ -30,6 +30,18 @@ angular.module('bodyAppApp')
       })
     }
 
+    $scope.beginStudioCreation = function() {
+      if (currentUser) {
+        $scope.creationStarted = true
+      } else {
+        loginOauth('facebook')
+      }
+    }
+
+    function loginOauth(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
+
   	$scope.createStudio = function(studioToCreate) {
   		if (currentUser.$$state) delete currentUser.$$state;
   		if (currentUser.$promise) delete currentUser.$promise;
@@ -45,7 +57,8 @@ angular.module('bodyAppApp')
 				ref.child('studios').child(studioId).child('storefrontInfo').set({
 					'studioId':studioId, 
 					'ownerName': ownerName,
-          'studioName': studioToCreate.studioName
+          'studioName': studioToCreate.studioName,
+          'dateCreated': new Date().getTime()
 				}, function(err) {
 					if (err) return console.log(err);
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
@@ -113,8 +126,8 @@ angular.module('bodyAppApp')
 
     function getAssets() {
       ref.child('studios').child('ralabala').child('storefrontInfo').once('value', function(snapshot) {
-        $scope.storefrontInfo = snapshot.val();
-        $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?autoplay=1&rel=0&amp;showinfo=0');  
+        $scope.storefrontInfo = snapshot.val();      
+        // $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
       })
       
       storageRef.child('studios').child('ralabala').child('images/header.jpg').getDownloadURL().then(function(url) {
@@ -127,17 +140,19 @@ angular.module('bodyAppApp')
     }
 
     $scope.playYoutubeVideo = function() {
-      // $("#youtubeVideo")[0].src += "&autoplay=1";
+      $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay=1');
+      // $scope.youtubeLink + '&autoplay=1';
       $scope.showVideoPlayer = true;
       $scope.hidePlayer = false;
       if(!$scope.$$phase) $scope.$apply();
     }
 
     $scope.stopPlayingVideo = function() {
+      $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay=0');
       // $('#youtubeVideo').attr('src', $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay'));
-      $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?autoplay=1&rel=0&amp;showinfo=0');  
-
+      // $("#youtubeVideo")[0].src = $scope.youtubeLink;
       $scope.showVideoPlayer = false;
+      $scope.hidePlayer = true;
       if(!$scope.$$phase) $scope.$apply();
     }
   	// $window.open("https://getbody.wufoo.com/forms/zd3urqw0x6csn6/")

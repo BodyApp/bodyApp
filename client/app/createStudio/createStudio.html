@@ -77,7 +77,7 @@
 		</div>
 		<div class="row mt48 text-center">
 			<div class="col-sm-12">
-				<a href="#" class="btn-blue big-btn" ng-click = "creationStarted = true">Open Your Studio</a>
+				<a href="#" class="btn-blue big-btn" ng-click = "beginStudioCreation()">Open Your Studio</a>
 			</div>
 		</div>
 
@@ -117,16 +117,16 @@
 	    <iframe width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
 	  </div> -->
 	  
-	  <div id="hero-video-player" class="fullscreen-video-player" ng-show = "showVideoPlayer" tabindex="1" style="z-index:2001;">
+<!-- 	  <div id="hero-video-player" class="fullscreen-video-player" ng-show = "showVideoPlayer" tabindex="1" style="z-index:2001;">
 	    <div class="row row-table row-full-height">
 	      <div class="col-sm-12 col-middle text-center" id = "youtubeContainer">
-	        <iframe id="youtubeVideo" width="100%" height="100%" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
+	        <iframe id="youtubeVideo2" width="100%" height="100%" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
 	        <a href="#" id="close-fullscreen-hero" ng-click = "stopPlayingVideo()" class="fullscreen-video-player-close">
 	          <i class="ti-close"></i>
 	        </a>
 	      </div>
 	    </div>
-	  </div>
+	  </div> -->
 
 	  <div class="cover-img" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}"></div>
 		<div class="cover-gradient"></div>
@@ -170,7 +170,7 @@
 			<div class="col-sm-12">
 				<h3 class="bold mb8 white">Get started in minutes</h3>
 				<h4 class="white">Getting started is easy! We'll be with you every step of the way.</h4>
-				<a href="#" class="btn-blue big-btn mt24" ng-click = "creationStarted = true">Open your studio</a>
+				<a href="#" class="btn-blue big-btn mt24" ng-click = "beginStudioCreation()">Open your studio</a>
 			</div>
 		</div>
 	</div>
