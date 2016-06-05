@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, $window, $sce, Auth, Studios, User) {
+  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, $window, $sce, $uibModal, Auth, Studios, User) {
   	var currentUser = Auth.getCurrentUser();
     var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref();
@@ -31,15 +31,20 @@ angular.module('bodyAppApp')
     }
 
     $scope.beginStudioCreation = function() {
-      if (currentUser) {
+      if (currentUser._id) {
         $scope.creationStarted = true
       } else {
-        loginOauth('facebook')
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/account/signup/signup.html',
+          controller: 'SignupCtrl',
+          windowClass: "modal-tall"
+        });
       }
     }
 
     function loginOauth(provider) {
-      $window.location.href = '/auth/' + provider;
+      $window.location.href = '/auth/' + provider + '/createstudio';
     };
 
   	$scope.createStudio = function(studioToCreate) {

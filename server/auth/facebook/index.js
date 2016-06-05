@@ -22,7 +22,14 @@ router
 
   .get('/callback', passport.authenticate('facebook', {
     failureRedirect: '/signup',
+    // successRedirect: '/createstudio',
     session: false
-  }), auth.setTokenCookie);
+  }), auth.setTokenCookie)
+
+  .get('/createstudio', passport.authenticate('facebook', {
+    scope: ['email', 'public_profile', 'user_friends'], // Permissions asked to user
+    failureRedirect: '/signup',
+    session: false
+  }))
 
 module.exports = router;
