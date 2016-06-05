@@ -166,9 +166,9 @@
                   </div>
                 </div> -->
                 <div class="col-md-8 text-center-sm studio-tags">
-                  <div class="btn-tag">Bootcamp</div>
-                  <div class="btn-tag">Strength</div>
-                  <div class="btn-tag">Yoga</div>
+                  <div class="btn-tag" ng-repeat = "(key, value) in storefrontInfo.categories">{{key}}</div>
+                  <!-- <div class="btn-tag">Strength</div>
+                  <div class="btn-tag">Yoga</div> -->
                 </div>
               </div>
 
@@ -390,9 +390,9 @@
               </div>
             </div>
 
-            <hr class="content-divider mt16 mb16">
+            <hr class="content-divider mt16 mb16" ng-show = "storefrontInfo.perks">
 
-            <div class="row">  <!-- PERK SECTION -->
+            <div class="row" ng-show = "storefrontInfo.perks">  <!-- PERK SECTION -->
               <div class="col-md-2">
                 <h5 class="lightgray">Perks</h5>
               </div>

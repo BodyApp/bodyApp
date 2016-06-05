@@ -135,7 +135,7 @@ angular.module('bodyAppApp')
         // $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
       })
       
-      storageRef.child('studios').child('ralabala').child('images/header.jpg').getDownloadURL().then(function(url) {
+      storageRef.child('studios').child('body').child('images/header.jpg').getDownloadURL().then(function(url) {
         // $scope.headerUrl = url;
         $scope.backgroundImageUrl = url
         if(!$scope.$$phase) $scope.$apply();
