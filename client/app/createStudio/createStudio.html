@@ -113,11 +113,11 @@
 <div ng-show = "creationStarted"> 
 	<div class="ss-header-container">
 		<div class="ss-header-name">
-			<h5 class="white">RALABALA</h5>
+			<h5 class="white">{{studioToCreate.studioName}}</h5>
 		</div>
 		<div class="ss-header-preview">
 			<a href="#">
-				<h5 class="white">Preview your studio</h5>
+				<!-- <h5 class="white">Preview your studio</h5> -->
 			</a>
 		</div>
 	</div>
@@ -327,7 +327,7 @@
 
 						<div class="row">
 							<div class="col-sm-2 mt8">
-								<a href="#" class="">Back</a>
+								<a href="#" class="hidden">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
 								<a href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate)">Next</a>
@@ -352,7 +352,7 @@
 								<!-- <h5 class="success-check">Your account has been successfully synced <i class="fa fa-check"></i></h5> -->
 							</div>
 						</div>
-						<div class="row mb32">
+						<!-- <div class="row mb32">
 							<div class="col-sm-12">
 								<h4 class="mb8">Pricing</h4>
 								<h5 class="lightgray">Average subscription price for a studio offering 6-10 classes a week is expected to be anywhere from $30-$50, but could easily go up to $100 or more. Drop In classes can range from $5 to $50, with workshops charging a few hundred per session.</h5>
@@ -403,14 +403,14 @@
 					        </div>
 					      </md-input-container>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="row">
 							<div class="col-sm-2 mt8">
-								<a href="#" class="">Back</a>
+								<a href="#" class="hidden">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large">Next</a>
+								<a href="#" class="btn-blue btn-large">Connect Stripe Account</a>
 							</div>
 						</div>
 					</div>

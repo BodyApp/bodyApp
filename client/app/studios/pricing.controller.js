@@ -71,6 +71,7 @@ angular.module('bodyAppApp')
     function getAccessCode() {
       ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
         if (!snapshot.exists) accessCode = null
+        $scope.stripeConnected = true;
         accessCode = snapshot.val();
         listCoupons();
         listSubscriptionPlans();
