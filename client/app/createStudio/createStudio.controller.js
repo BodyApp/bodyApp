@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, $window, Auth, Studios, User) {
+  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, $window, $sce, Auth, Studios, User) {
   	var currentUser = Auth.getCurrentUser();
     var ref = firebase.database().ref();
+    var storageRef = firebase.storage().ref();
 
     $scope.step = 0;
+    getAssets();
+
 
   	$scope.sanitizeUrl = function(currentUrl) {
   		return currentUrl.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase()
@@ -106,6 +109,36 @@ angular.module('bodyAppApp')
         $scope.step++;
         $scope.descriptionComplete = true;
       })
+    }
+
+    function getAssets() {
+      ref.child('studios').child('ralabala').child('storefrontInfo').once('value', function(snapshot) {
+        $scope.storefrontInfo = snapshot.val();
+        $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?autoplay=1&rel=0&amp;showinfo=0');  
+      })
+      
+      storageRef.child('studios').child('ralabala').child('images/header.jpg').getDownloadURL().then(function(url) {
+        // $scope.headerUrl = url;
+        $scope.backgroundImageUrl = url
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+    $scope.playYoutubeVideo = function() {
+      // $("#youtubeVideo")[0].src += "&autoplay=1";
+      $scope.showVideoPlayer = true;
+      $scope.hidePlayer = false;
+      if(!$scope.$$phase) $scope.$apply();
+    }
+
+    $scope.stopPlayingVideo = function() {
+      // $('#youtubeVideo').attr('src', $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay'));
+      $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?autoplay=1&rel=0&amp;showinfo=0');  
+
+      $scope.showVideoPlayer = false;
+      if(!$scope.$$phase) $scope.$apply();
     }
   	// $window.open("https://getbody.wufoo.com/forms/zd3urqw0x6csn6/")
   	// $location.path("/")
