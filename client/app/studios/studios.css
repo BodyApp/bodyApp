@@ -36,18 +36,18 @@
   left: 0px;
 }
 #studio-hero .cover-img {
-    background-repeat: no-repeat;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    background-position: 50% 50%;
-    background-color: #f5f5f5;
-    height: 420px;
-    width: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-color: #f5f5f5;
+  height: 420px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 .cover-img {
 	vertical-align: middle;

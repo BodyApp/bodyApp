@@ -1,3 +1,966 @@
+/*------USER VIDEO-------*/
+.video-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-color: black;
+}
+.timer-rounds {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  z-index: 3000;
+}
+.timer-rounds .timer {
+  font-size: 90px;
+  font-weight: 600;
+  text-shadow: 1px 1px rgba(0,0,0,0.2);
+  margin-left: 8px;
+}
+.timer-rounds .rounds {
+  font-size: 50px;
+  font-weight: 600;
+  text-shadow: 1px 1px rgba(0,0,0,0.2);
+}
+.control-menu {
+  position: absolute;
+  height: 100vh;
+  width: 250px;
+  background: rgba(0,0,0,0.2);
+  background: -webkit-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(at left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0));
+  left: 0;
+  top: 0;
+  z-index: 5000;
+}
+.control-menu-workout, .control-menu-music, .control-menu-class {
+  border-top: none;
+  max-height: 98%;
+  overflow-y: hidden;
+}
+.control-icon i {
+  font-size: 30px;
+  color: white;
+}
+.workout-set:last-of-type {
+  margin-top: 15px;
+}
+.workout-set:last-of-type .next-workout {
+  display: block!important;
+}
+.control-menu-music .playlist-song {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.menu-class-member {
+  display: block;
+}
+.menu-class-contact, .menu-class-photo {
+  display: inline-block;
+  vertical-align: middle;
+}
+.menu-class-photo {
+  margin-right: 5px;
+}
+
+/*------USER VIDEO FORMAT - STACKED-------*/
+.user-videos-stack .user-videos-large {
+  position: absolute !important;
+  top: 0 !important; 
+  left: 0 !important; 
+  width: 100% !important; 
+  height: 100vh !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+.user-videos-stack .user-videos-large img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+.user-videos-stack .classmates-video-name {
+  position: absolute;
+  bottom: 1px;
+  left: 0px;
+  width: 100%;
+  font-size: 11px;
+  color: white;
+}
+.user-videos-stack .user-videos-large .classmates-video-name {
+  top: 20px;
+  font-size: 20px;
+}
+.user-videos-stack li {
+  position: absolute;
+  width: 7%;
+  height: 7%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-stack li:first-child {
+  right: 1%;
+  bottom: 2%;
+  width: 14%;
+  height: 14%;
+}
+.user-videos-stack li:nth-child(2) {
+  right: 1%;
+  bottom: 16%;
+}
+.user-videos-stack li:nth-child(3) {
+  right: 8%;
+  bottom: 16%;
+}
+.user-videos-stack li:nth-child(4) {
+  right: 1%;
+  bottom: 23%;
+}
+.user-videos-stack li:nth-child(5) {
+  right: 8%;
+  bottom: 23%;
+}
+.user-videos-stack li:nth-child(6) {
+  right: 1%;
+  bottom: 30%;
+}
+.user-videos-stack li:nth-child(7) {
+  right: 8%;
+  bottom: 30%;
+}
+.user-videos-stack li:nth-child(8) {
+  right: 1%;
+  bottom: 37%;
+}
+.user-videos-stack li:nth-child(9) {
+  right: 8%;
+  bottom: 37%;
+}
+.user-videos-stack li:nth-child(10) {
+  right: 1%;
+  bottom: 44%;
+}
+.user-videos-stack li:nth-child(11) {
+  right: 8%;
+  bottom: 44%;
+}
+.user-videos-stack li:nth-child(12) {
+  right: 1%;
+  bottom: 51%;
+}
+.user-videos-stack li:nth-child(13) {
+  right: 8%;
+  bottom: 51%;
+}
+
+/*------USER VIDEO FORMAT - BOXED 7 & UNDER-------*/
+.user-videos-boxed-7andUnder .user-videos-large {
+  position: absolute !important;
+  top: 0 !important; 
+  right: 0 !important; 
+  width: 80% !important; 
+  height: 80vh !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+.user-videos-boxed-7andUnder .user-videos-large img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+.user-videos-boxed-7andUnder .classmates-video-name {
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-boxed-7andUnder .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-boxed-7andUnder li {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-boxed-7andUnder li:first-child {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-boxed-7andUnder li:nth-child(2) {
+  right: 20%;
+  bottom: 0;
+}
+.user-videos-boxed-7andUnder li:nth-child(3) {
+  right: 40%;
+  bottom: 0;
+}
+.user-videos-boxed-7andUnder li:nth-child(4) {
+  right: 60%;
+  bottom: 0;
+}
+.user-videos-boxed-7andUnder li:nth-child(5) {
+  right: 80%;
+  bottom: 0;
+}
+.user-videos-boxed-7andUnder li:nth-child(6) {
+  right: 80%;
+  bottom: 20%;
+}
+.user-videos-boxed-7andUnder li:nth-child(7) {
+  right: 80%;
+  bottom: 40%;
+}
+.user-videos-boxed-7andUnder li:nth-child(8) {
+  right: 80%;
+  bottom: 60%;
+}
+.user-videos-boxed-7andUnder li:nth-child(9) {
+  right: 80%;
+  bottom: 80%;
+}
+.user-videos-boxed-7andUnder li:nth-child(10) {
+  display: none;
+}
+.user-videos-boxed-7andUnder li:nth-child(11) {
+  display: none;
+}
+.user-videos-boxed-7andUnder li:nth-child(12) {
+  display: none;
+}
+.user-videos-boxed-7andUnder li:nth-child(13) {
+  display: none;
+}
+
+/*------USER VIDEO FORMAT - BOXED OVER 7-------*/
+.user-videos-boxed-over7 .user-videos-large {
+  position: absolute !important;
+  top: 0 !important; 
+  right: 0 !important; 
+  width: 60% !important; 
+  height: 80vh !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+.user-videos-boxed-over7 .user-videos-large img {
+  position: absolute; 
+  top: 0; 
+  left: -15%; 
+  right: -15%; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 130%;
+}
+.user-videos-boxed-over7 .classmates-video-name {
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-boxed-over7 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-boxed-over7 li {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-boxed-over7 li:first-child {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-boxed-over7 li:nth-child(2) {
+  right: 20%;
+  bottom: 0;
+}
+.user-videos-boxed-over7 li:nth-child(3) {
+  right: 40%;
+  bottom: 0;
+}
+.user-videos-boxed-over7 li:nth-child(4) {
+  right: 60%;
+  bottom: 0;
+}
+.user-videos-boxed-over7 li:nth-child(5) {
+  right: 60%;
+  bottom: 20%;
+}
+.user-videos-boxed-over7 li:nth-child(6) {
+  right: 60%;
+  bottom: 40%;
+}
+.user-videos-boxed-over7 li:nth-child(7) {
+  right: 60%;
+  bottom: 60%;
+}
+.user-videos-boxed-over7 li:nth-child(8) {
+  right: 60%;
+  bottom: 80%;
+}
+.user-videos-boxed-over7 li:nth-child(9) {
+  right: 80%;
+  bottom: 0;
+}
+.user-videos-boxed-over7 li:nth-child(10) {
+  right: 80%;
+  bottom: 20%;
+}
+.user-videos-boxed-over7 li:nth-child(11) {
+  right: 80%;
+  bottom: 40%;
+}
+.user-videos-boxed-over7 li:nth-child(12) {
+  right: 80%;
+  bottom: 60%;
+}
+.user-videos-boxed-over7 li:nth-child(13) {
+  right: 80%;
+  bottom: 80%;
+}
+
+/*------USER VIDEO FORMAT - GRID1-------*/
+.user-videos-grid-1 .user-videos-large, .user-videos-grid-1 li {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-1 img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+.user-videos-grid-1 .classmates-video-name {
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-1 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-1 li:first-child {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-1 li:nth-child(3) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(4) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(5) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(6) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(7) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(8) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(9) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(10) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(11) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(12) {
+  display: none;
+}
+.user-videos-grid-1 li:nth-child(13) {
+  display: none;
+}
+
+/*------USER VIDEO FORMAT - GRID2-------*/
+.user-videos-grid-2 .user-videos-large, .user-videos-grid-2 li {
+  position: absolute;
+  width: 50%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-2 img {
+  position: absolute; 
+  top: 0; 
+  left: -20%; 
+  right: -20%; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 140%;
+  min-height: 50%;
+}
+.user-videos-grid-2 .classmates-video-name {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-2 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-2 li:first-child {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-2 li:nth-child(3) {
+  right: 50%;
+  bottom: 0;
+}
+.user-videos-grid-2 li:nth-child(4) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(5) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(6) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(7) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(8) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(9) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(10) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(11) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(12) {
+  display: none;
+}
+.user-videos-grid-2 li:nth-child(13) {
+  display: none;
+}
+
+/*------USER VIDEO FORMAT - GRID-3or4-------*/
+.user-videos-grid-3or4 .user-videos-large, .user-videos-grid-3or4 li {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-3or4 img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+.user-videos-grid-3or4 .classmates-video-name {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-3or4 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-3or4 li:first-child {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-3or4 li:nth-child(3) {
+  right: 0;
+  bottom: 50%;
+}
+.user-videos-grid-3or4 li:nth-child(4) {
+  right: 50%;
+  bottom: 0;
+}
+.user-videos-grid-3or4 li:nth-child(5) {
+  right: 50%;
+  bottom: 50%;
+}
+.user-videos-grid-3or4 li:nth-child(6) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(7) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(8) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(9) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(10) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(11) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(12) {
+  display: none;
+}
+.user-videos-grid-3or4 li:nth-child(13) {
+  display: none;
+}
+
+/*------USER VIDEO FORMAT - GRID-5or6-------*/
+.user-videos-grid-5or6 .user-videos-large, .user-videos-grid-5or6 li {
+  position: absolute;
+  width: 33.33333333%;
+  height: 50%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-5or6 img {
+  position: absolute; 
+  top: 0; 
+  left: -25%; 
+  right: -25%; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 150%;
+}
+.user-videos-grid-5or6 .classmates-video-name {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-5or6 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-5or6 li:first-child {
+  display: none;
+}
+.user-videos-grid-5or6 li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-5or6 li:nth-child(3) {
+  right: 0;
+  bottom: 50%;
+}
+.user-videos-grid-5or6 li:nth-child(4) {
+  right: 33.33333333%;
+  bottom: 0;
+}
+.user-videos-grid-5or6 li:nth-child(5) {
+  right: 66.66666666%;
+  bottom: 0;
+}
+.user-videos-grid-5or6 li:nth-child(6) {
+  right: 33.33333333%;
+  bottom: 50%;
+}
+.user-videos-grid-5or6 li:nth-child(7) {
+  right: 66.66666666%;
+  bottom: 50%;
+}
+.user-videos-grid-5or6 li:nth-child(8) {
+  display: none;
+}
+.user-videos-grid-5or6 li:nth-child(9) {
+  display: none;
+}
+.user-videos-grid-5or6 li:nth-child(10) {
+  display: none;
+}
+.user-videos-grid-5or6 li:nth-child(11) {
+  display: none;
+}
+.user-videos-grid-5or6 li:nth-child(12) {
+  display: none;
+}
+.user-videos-grid-5or6 li:nth-child(13) {
+  display: none;
+}
+
+/*------USER VIDEO FORMAT - GRID-7or8-------*/
+.user-videos-grid-7or8 .user-videos-large, .user-videos-grid-7or8 li {
+  position: absolute;
+  width: 25%;
+  height: 50%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-7or8 img {
+  position: absolute; 
+  top: 0; 
+  left: -20%; 
+  right: -20%; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 140%;
+}
+.user-videos-grid-7or8 .classmates-video-name {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-7or8 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-7or8 li:first-child {
+  display: none;
+}
+.user-videos-grid-7or8 li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-7or8 li:nth-child(3) {
+  right: 0;
+  bottom: 50%;
+}
+.user-videos-grid-7or8 li:nth-child(4) {
+  right: 25%;
+  bottom: 0;
+}
+.user-videos-grid-7or8 li:nth-child(5) {
+  right: 25%;
+  bottom: 50%;
+}
+.user-videos-grid-7or8 li:nth-child(6) {
+  right: 50%;
+  bottom: 0;
+}
+.user-videos-grid-7or8 li:nth-child(7) {
+  right: 50%;
+  bottom: 50%;
+}
+.user-videos-grid-7or8 li:nth-child(8) {
+  right: 75%;
+  bottom: 0;
+}
+.user-videos-grid-7or8 li:nth-child(9) {
+  right: 75%;
+  bottom: 50%;
+}
+.user-videos-grid-7or8 li:nth-child(10) {
+  display: none;
+}
+.user-videos-grid-7or8 li:nth-child(11) {
+  display: none;
+}
+.user-videos-grid-7or8 li:nth-child(12) {
+  display: none;
+}
+.user-videos-grid-7or8 li:nth-child(13) {
+  display: none;
+}
+
+/*------USER VIDEO FORMAT - GRID-9-------*/
+.user-videos-grid-9 .user-videos-large, .user-videos-grid-9 li {
+  position: absolute;
+  width: 33.33333333%;
+  height: 33.33333333%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-9 img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+}
+.user-videos-grid-9 .classmates-video-name {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-9 .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-9 li:first-child {
+  display: none;
+}
+.user-videos-grid-9 li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-9 li:nth-child(3) {
+  right: 0;
+  bottom: 33.33333333%;
+}
+.user-videos-grid-9 li:nth-child(4) {
+  right: 0;
+  bottom: 66.66666666%;
+}
+.user-videos-grid-9 li:nth-child(5) {
+  right: 33.33333333%;
+  bottom: 0;
+}
+.user-videos-grid-9 li:nth-child(6) {
+  right: 33.33333333%;
+  bottom: 33.33333333%;
+}
+.user-videos-grid-9 li:nth-child(7) {
+  right: 33.33333333%;
+  bottom: 66.66666666%;
+}
+.user-videos-grid-9 li:nth-child(8) {
+  right: 66.66666666%;
+  bottom: 0;
+}
+.user-videos-grid-9 li:nth-child(9) {
+  right: 66.66666666%;
+  bottom: 33.33333333%;
+}
+.user-videos-grid-9 li:nth-child(10) {
+  right: 66.66666666%;
+  bottom: 66.66666666%;
+}
+.user-videos-grid-9 li:nth-child(11) {
+  display: none;
+}
+.user-videos-grid-9 li:nth-child(12) {
+  display: none;
+}
+.user-videos-grid-9 li:nth-child(13) {
+  display: none;
+}
+
+
+/*------USER VIDEO FORMAT - GRID-12andUnder-------*/
+.user-videos-grid-12andUnder .user-videos-large {
+  position: absolute;
+  width: 25%;
+  height: 34%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-12andUnder img {
+  position: absolute; 
+  top: 0; 
+  left: -15%; 
+  right: -15%; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 130%;
+}
+.user-videos-grid-12andUnder .classmates-video-name {
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+.user-videos-grid-12andUnder .user-videos-large .classmates-video-name {
+  bottom: 20px;
+  font-size: 20px;
+}
+.user-videos-grid-12andUnder li {
+  position: absolute;
+  width: 25%;
+  height: 34%;
+  overflow: hidden;
+  z-index: 2;
+}
+.user-videos-grid-12andUnder li:first-child {
+  display: none;
+}
+.user-videos-grid-12andUnder li:nth-child(2) {
+  right: 0;
+  bottom: 0;
+}
+.user-videos-grid-12andUnder li:nth-child(3) {
+  right: 25%;
+  bottom: 0;
+}
+.user-videos-grid-12andUnder li:nth-child(4) {
+  right: 50%;
+  bottom: 0;
+}
+.user-videos-grid-12andUnder li:nth-child(5) {
+  right: 75%;
+  bottom: 0;
+}
+.user-videos-grid-12andUnder li:nth-child(6) {
+  right: 0%;
+  bottom: 33%;
+}
+.user-videos-grid-12andUnder li:nth-child(7) {
+  right: 25%;
+  bottom: 33%;
+}
+.user-videos-grid-12andUnder li:nth-child(8) {
+  right: 50%;
+  bottom: 33%;
+}
+.user-videos-grid-12andUnder li:nth-child(9) {
+  right: 75%;
+  bottom: 33%;
+}
+.user-videos-grid-12andUnder li:nth-child(10) {
+  right: 0%;
+  bottom: 66%;
+}
+.user-videos-grid-12andUnder li:nth-child(11) {
+  right: 25%;
+  bottom: 66%;
+}
+.user-videos-grid-12andUnder li:nth-child(12) {
+  right: 50%;
+  bottom: 66%;
+}
+.user-videos-grid-12andUnder li:nth-child(13) {
+  right: 75%;
+  bottom: 66%;
+}
+
+
+
+/*------NEW MAIN-------*/
+.earn-banner {
+  height: 343px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.earn-banner img {
+  min-height: 100%;
+}
+.earn-panel-body {
+  height: 343px;
+}
+.earn-panel-content {
+  padding-right: 30px;
+  font-size: 25px;
+  line-height: 30px;
+}
+.earn-banner-hero {
+  background-size: cover;
+  background-position: center center ;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+@media (max-width: 1099px) {
+  .earn-panel-content {
+    font-size: 19px;
+    line-height: 24px;
+  }
+}
+@media (max-width: 767px) {
+  .earn-panel-content {
+    text-align: center;
+    padding: 30px;
+    color: #fff;
+  }
+}
+.discovery-card {
+  height: 300px;
+  background-color: #f5f5f5;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 10px 30px;
+}
+.discovery-card-tall {
+  height: 400px;
+}
+.discovery-card .round-photo {
+  border: 2px solid white;
+}
+.discovery-content {
+  background-color: rgba(0,0,0,0.5);
+  padding: 6px;
+}
+.discovery-card-tall .discovery-content {
+  width: 300px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.featured-studio {
+  font-style: italic;
+  color: #4E95FF;
+  font-weight: 700;
+}
+
+/*------OLD MAIN-------*/
+
 .bodylife {
     background-image: url("../../assets/images/ali.jpg");
     background-repeat: no-repeat;

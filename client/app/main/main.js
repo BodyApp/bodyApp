@@ -43,6 +43,22 @@ angular.module('bodyAppApp')
   })
   .config(function ($stateProvider) {
     $stateProvider
+      .state('userVideoTemplate', {
+        url: '/userVideoTemplate',
+        templateUrl: 'app/main/userVideoTemplate.html',
+        controller: 'MainCtrl'
+      });
+  })
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('trainerVideoTemplate', {
+        url: '/trainerVideoTemplate',
+        templateUrl: 'app/main/trainerVideoTemplate.html',
+        controller: 'MainCtrl'
+      });
+  })
+  .config(function ($stateProvider) {
+    $stateProvider
       .state('invite-a-friend', {
         url: '/invite-a-friend',
         templateUrl: 'app/main/invite-a-friend.html',
