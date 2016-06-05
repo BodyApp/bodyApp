@@ -13,14 +13,15 @@ router
     }
   )
 
-  .get('/callback',  
-    passport.authenticate('stripe', { failureRedirect: '/login' }),
-    function(req, res) {
-      // console.log(req)
-      // console.log(res);
-      // Successful authentication, redirect home.
-      res.redirect('/');
-    }
+  .get('/callback',
+    function(req, res, next) {
+      passport.authenticate('stripe',   
+        function(err, studioId) {
+          console.log(studioId);
+          res.redirect('/studios/'+studioId+'/pricing');
+        }
+      )(req, res, next)
+    } 
   )
 
 module.exports = router;
