@@ -205,6 +205,7 @@ angular.module('bodyAppApp')
       ref.child('storefrontInfo').on('value', function(snapshot) {
       	if (!snapshot.exists()) return;
         $scope.storefrontInfo = snapshot.val();
+        console.log($scope.storefrontInfo)
         if(!$scope.$$phase) $scope.$apply();
       })  
     }

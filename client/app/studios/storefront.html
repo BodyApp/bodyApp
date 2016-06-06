@@ -166,7 +166,7 @@
                   </div>
                 </div> -->
                 <div class="col-md-8 text-center-sm studio-tags">
-                  <div class="btn-tag" ng-repeat = "(key, value) in storefrontInfo.categories">{{key}}</div>
+                  <div class="btn-tag" ng-repeat = "(key, value) in storefrontInfo.categories" ng-if = "value === true">{{key}}</div>
                   <!-- <div class="btn-tag">Strength</div>
                   <div class="btn-tag">Yoga</div> -->
                 </div>

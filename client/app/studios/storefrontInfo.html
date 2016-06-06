@@ -100,13 +100,60 @@
                 <!-- <li>
                   <a href="#" class="panel-action-item" ng-click = "showAddCoupon = false;">Cancel</a>
                 </li> -->
-                <li>
+                <!-- <li>
                   <a href="#" class="panel-action-item btn-primary btn" ng-click = "createCoupon(showAddCoupon)">Save</a>
-                </li>
+                </li> -->
               </ul>              
             </div>
           </div>                                                   
 
+          <div class="row mb8">
+                    <div class="col-sm-12 mb8">
+                      <label class="angular-label">Studio Categories</label>
+                      <span class="list-hint">Provide max of 3</span>
+                    </div>
+                    <md-list>
+                      <div class="col-sm-6">
+                        <md-list-item>
+                          <h5 class="lightgray">Strength</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.strength"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                        <md-list-item>
+                          <h5 class="lightgray">HIIT</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.hiit"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                        <md-list-item>
+                          <h5 class="lightgray">Yoga</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.yoga"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                        <md-list-item>
+                          <h5 class="lightgray">Dance</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.dance"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                      </div>
+                      <div class="col-sm-6">
+                        <md-list-item>
+                          <h5 class="lightgray">Boxing</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.boxing"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                        <md-list-item>
+                          <h5 class="lightgray">Pilates</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.pilates"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                        <md-list-item>
+                          <h5 class="lightgray">Barre</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.barre"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                        <md-list-item>
+                          <h5 class="lightgray">Martial Arts</h5>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.martialArts"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                        </md-list-item>
+                      </div>
+                    </md-list>
+                  </div>
+                </form>           
+              </div>          
+            </div>
         </div>
       </div>
 
