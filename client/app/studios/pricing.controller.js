@@ -103,6 +103,7 @@ angular.module('bodyAppApp')
         $scope.subscriptionPlan = plans[0];
         if(!$scope.$$phase) $scope.$apply();
         ref.child('storefrontInfo').update({subscriptionPricing: plans[0].amount})
+        ref.child('stripeConnected').child('subscriptionPlans').update($scope.subscriptionPlan)
         // for (var plan = 0; plan < plans.length; plan++) { //This is no longer necessary as doing on backend.
         //   ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
         // }

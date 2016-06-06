@@ -229,6 +229,12 @@ angular.module('bodyAppApp')
         if (!snapshot.exists()) return console.log("Can't get access code for studio.")
         accountId = snapshot.val()
       })
+
+      ref.child("stripeConnected").child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
+        snapshot.forEach(function(plan) {
+          $scope.subscriptionPlan = plan.val()  
+        })      
+      })
     }
 
     function checkSubscriptionStatus() {
