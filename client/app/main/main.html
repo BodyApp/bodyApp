@@ -6,11 +6,11 @@
       <div class="col-sm-8 col-sm-push-2">
         <h1 class="white mb16 bold">Welcome to Class</h1>
         <h3 class="white mb40">Earn more money by offering live health and fitness services to your global following</h3>
-        <a href="#" class="btn big-btn">Get Started</a>
+        <a href="/createstudio" class="btn big-btn">Get Started</a>
       </div>
     </div>
   </div>
-  <div class="cover-img" style="background-image:url(assets/images/studios/ralabala/hero.jpg);"></div>
+  <div class="cover-img" style="background-image:url(assets/images/studios/ralabala/header.jpg);"></div>
   <div class="cover-gradient"></div>
 </div>
 
@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-sm-8 hidden-xs">
           <div class="earn-banner">
-            <a href="#">
+            <a href="/createstudio">
               <img src="/assets/images/video/vid-e.jpg">
             </a>
           </div>
@@ -31,7 +31,7 @@
           <div class="va-container va-container-v va-container-h earn-panel-content">
             <div class="va-middle">
               <strong>Virtual instruction opens up a world of opportunity</strong>
-              <a href="#" class="btn-blue btn-block btn-large mt32">See What You Can Earn</a>
+              <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">See What You Can Earn</a>
             </div>
           </div>
         </div>
@@ -44,8 +44,8 @@
   <div class="page-container-responsive">
     <div class="row">
       <div class="col-xs-12 mb32 text-center">
-        <h3 class="bold mb8">Choose How You Move</h3>
-        <h5>Live interaction with a real coach to help you achieve results.</h5>
+        <h3 class="bold mb8">Take Classes</h3>
+        <h5>Choose How You Move. Live interaction with a real coach to help you achieve results.</h5>
       </div>
       <!-- <div class="col-md-4">
         <div class="discovery-card" style="background-image:url('assets/images/studios/ralabala/discovery.jpg');">
@@ -63,16 +63,16 @@
         </div>
       </div> -->
       <div class="col-md-12">
-        <div class="discovery-card discovery-card-tall" style="background-image:url('assets/images/video/vid-b.jpg');">
-          <a href="#">
+        <div class="discovery-card discovery-card-tall" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
+          <a href="/studios/{{id}}">
             <div class="va-container va-container-v va-container-h">
               <div class="va-middle text-center">
-                <img class="round-photo" src="/assets/images/studios/ralabala/logo.jpg" width="100" height="100">
-                <div class="mt16 discovery-content">
-                  <h5 class="white featured-studio">Featured Studio</h5>
-                  <h2 class="white">RALABALA</h2>
-                  <h5 class="white">Bootcamp</h5>
+                <div class="discovery-content">
+                  <h5 class="white featured-studio" ng-show = "$index === 0">Featured Studio</h5>
+                  <h2 class="white">{{studio.studioName}}</h2>
+                  <!-- <h5 class="white">Bootcamp</h5> -->
                 </div>
+                <img class="mt16 round-photo" ng-src="{{logos[id]}}" width="100" height="100">
               </div>
             </div>
           </a>
@@ -82,7 +82,7 @@
   </div>
 </div>
 
-<div id="studio-hero" class="hero-tall">
+<!-- <div id="studio-hero" class="hero-tall">
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
       <div class="col-sm-8 col-sm-push-2">
@@ -97,7 +97,40 @@
   </div>
   <div class="cover-img" style="background-image:url(assets/images/ali.jpg);"></div>
   <div class="cover-gradient"></div>
+</div> -->
+
+<div id="studio-hero" class="hero-tall">
+  <div class="va-container va-container-v va-container-h hero-play-btn">
+    <div class="va-middle text-center">
+      <div class="col-sm-8 col-sm-push-2">
+        <h1 class="white mb16 bold">Connect With Real People</h1>
+        <h3 class="white mb40">See how studio owners connect with busy Moms like Ali</h3>
+        <h5></h5>
+        <a href="#" class="">
+          <i class="fa fa-play-circle video-play" ng-click = "playYoutubeVideo()"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="video-full-width">
+    <iframe width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
+  </div> -->
+  
+  <div id="hero-video-player" class="fullscreen-video-player" ng-show = "showVideoPlayer" tabindex="1" style="z-index:2001;">
+    <div class="row row-table row-full-height">
+      <div class="col-sm-12 col-middle text-center" id = "youtubeContainer">
+        <iframe id="youtubeVideo" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+        <a href="#" id="close-fullscreen-hero" ng-click = "stopPlayingVideo()" class="fullscreen-video-player-close">
+          <i class="ti-close"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="cover-img" style="background-image:url(assets/images/ali.jpg);"></div>
+  <div class="cover-gradient"></div>
 </div>
+
+
 
 <div ng-include="'components/footer/footer.html'"></div>
 

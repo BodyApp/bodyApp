@@ -1,15 +1,56 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('MainCtrl', function ($scope, $uibModal, $location, $http, $window, $state, Auth, User) {
+  .controller('MainCtrl', function ($scope, $uibModal, $location, $http, $window, $state, $sce, Auth, User) {
 
     $scope.videoSee = false;
+    var ref = firebase.database().ref();
     // $window.scrollTo(0,0);
+
+    getStudios()
+    $scope.backgroundImages = {};
+    $scope.logos = {};
 
     //Intercom integration for when users are not yet logged in.
     window.intercomSettings = {
       app_id: "daof2xrs"
     };
+
+    function getStudios() {
+      ref.child('studioIds').on('value', function(snapshot) {
+        $scope.studios = {};
+        snapshot.forEach(function(studio) {
+          // if (!studio.exists()) delete $scope.studios[studio.key]
+          ref.child('studios').child(studio.key).child('storefrontInfo').once('value', function(storefrontInfo) {
+            $scope.studios[studio.key] = storefrontInfo.val()
+            if(!$scope.$$phase) $scope.$apply();
+            console.log($scope.studios)
+          })
+        })
+      })
+    }
+
+    $scope.getBackgroundImage = function(studioId) {
+      var storageRef = firebase.storage().ref().child('studios').child(studioId);
+      storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
+          // $scope.headerUrl = url;
+          $scope.backgroundImages[studioId] = url
+          if(!$scope.$$phase) $scope.$apply();
+        }).catch(function(error) {
+          console.log(error)
+        });
+    }
+
+    $scope.getLogo = function(studioId) {
+      var storageRef = firebase.storage().ref().child('studios').child(studioId);
+      storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
+          // $scope.headerUrl = url;
+          $scope.logos[studioId] = url
+          if(!$scope.$$phase) $scope.$apply();
+        }).catch(function(error) {
+          console.log(error)
+        });
+    }
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
@@ -46,6 +87,20 @@ angular.module('bodyAppApp')
         }
       }
     });
+
+    $scope.playYoutubeVideo = function() {
+      // $("#youtubeVideo")[0].src += "&autoplay=1";
+      $('#youtubeVideo').attr('src', $sce.trustAsResourceUrl('https://www.youtube.com/embed/0MvO3-8CLNc?rel=0&amp;showinfo=0&autoplay=1'));
+      $scope.showVideoPlayer = true;
+      $scope.hidePlayer = false;
+      if(!$scope.$$phase) $scope.$apply();
+    }
+
+    $scope.stopPlayingVideo = function() {
+      $('#youtubeVideo').attr('src', $sce.trustAsResourceUrl('https://www.youtube.com/embed/0MvO3-8CLNc?rel=0&amp;showinfo=0&autoplay'));
+      $scope.showVideoPlayer = false;
+      if(!$scope.$$phase) $scope.$apply();
+    }
 
     // // *****************SCROLL DOWN*****************
     // $(".arrow").click(function() {

@@ -50,5 +50,4 @@ angular.module('bodyAppApp')
         controller: 'MainCtrl'
       });
   })
->>>>>>> e0d9135d61c133f00e90efe333275305a4b1902e
   ;
