@@ -91,6 +91,15 @@ angular.module('bodyAppApp')
     //   if(!$scope.$$phase) $scope.$apply();
     // }
 
+    function getSubscriptionPlan() {
+      ref.child("stripeConnected").child('subscriptionPlans').once('value', function(snapshot) {
+        snapshot.forEach(function(plan) {
+          $scope.subscriptionPlan = plan.val()
+        })
+        
+      })
+    }
+
     function getAccountId() {
       ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("No account ID exists")
