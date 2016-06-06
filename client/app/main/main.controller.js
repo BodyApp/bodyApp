@@ -76,17 +76,17 @@ angular.module('bodyAppApp')
       });
     }
 
-    Auth.isLoggedInAsync(function(loggedIn) {
-      if (loggedIn) {
-        if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
-          // event.preventDefault();
-          $state.go('storefront');
-        } else {
-          // event.preventDefault;
-          $state.go('newuser');
-        }
-      }
-    });
+    // Auth.isLoggedInAsync(function(loggedIn) {
+    //   if (loggedIn) {
+    //     if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
+    //       // event.preventDefault();
+    //       $state.go('storefront');
+    //     } else {
+    //       // event.preventDefault;
+    //       $state.go('newuser');
+    //     }
+    //   }
+    // });
 
     $scope.playYoutubeVideo = function() {
       // $("#youtubeVideo")[0].src += "&autoplay=1";
