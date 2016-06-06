@@ -401,6 +401,9 @@
   color: white;
   text-decoration: underline;
 }
+.display-none {
+  display: none;
+}
 
 /*------HERO VIDEO PLAYER-------*/
 

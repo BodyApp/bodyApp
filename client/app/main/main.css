@@ -21,12 +21,75 @@
   font-size: 50px;
   font-weight: 600;
   text-shadow: 1px 1px rgba(0,0,0,0.2);
+  position: relative;
+  right: 0;
+  bottom: -10px;
 }
-.control-menu {
+.volume-bars {
+  width: 50px;
+  height: 40px;
+  position: absolute;
+  right: 100px;
+  bottom: 4px;
+}
+.music-icon {
+  position: absolute;
+  left: 10px;
+  top: -8px;
+  font-size: 20px;
+  color: white;
+}
+.volume-bars1,
+.volume-bars2,
+.volume-bars3,
+.volume-bars4,
+.volume-bars5 {
+  width: 5px;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+}
+.volume-bars1 {
+  right: 30px;
+  height: 10px;
+}
+.volume-bars2 {
+  right: 20px;
+  height: 20px;
+}
+.volume-bars3 {
+  right: 10px;
+  height: 30px;
+}
+.volume-bars4 {
+  right: 0;
+  height: 40px;
+}
+.music-level {
+  background-color: #3E7EDF;
+}
+.music-on {
+  color: #3E7EDF;
+}
+.music-off {
+  color: white;
+}
+.trainer-remote {
+  position: relative;
+  top: 20px;
+}
+.trainer-remote i {
+  font-size: 20px;
+  padding-top: 18px;
+}
+.trainer-remote-btn {
+  background-color: rgba(0,0,0,0.5) !important;
+}
+.control-menu-open {
   position: absolute;
   height: 100vh;
   width: 250px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.9);
   background: -webkit-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
   background: -moz-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
@@ -34,8 +97,69 @@
   left: 0;
   top: 0;
   z-index: 5000;
+  transition: left 1s;
+  -webkit-transition: left 1s;  
 }
-.control-menu-workout, .control-menu-music, .control-menu-class {
+.control-menu-closed {
+  position: absolute;
+  height: 100vh;
+  width: 250px;
+  background: rgba(0,0,0,0.9);
+  background: -webkit-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(at left, rgba(0,0,0,0.6), rgba(0, 0, 0, 0));
+  left: -250px;
+  top: 0;
+  z-index: 5000;
+  transition: left 1s;
+  -webkit-transition: left 1s;  
+}
+.control-tab-open {
+  padding: 0 10px;
+  font-size: 40px;
+  position: fixed;
+  top: 20px;
+  left: 250px;
+  background-color: rgba(0,0,0,0.5);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  transition: left 1s;
+  -webkit-transition: left 1s;
+}
+.control-tab-closed {
+  padding: 0 10px;
+  font-size: 40px;
+  position: fixed;
+  top: 20px;
+  left: 0px;
+  background-color: rgba(0,0,0,0.5);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  transition: left 1s;
+  -webkit-transition: left 1s;  
+}
+.control-menu-icons {
+  padding: 0 20px;
+  font-size: 25px;
+}
+.control-menu-icons a,
+.control-tab-open a,
+.control-tab-closed a {
+  color: #fff;
+}
+.control-menu-icons a:hover,
+.control-menu-icons a:visited,
+.control-menu-icons a:focus,
+.control-tab-open a:hover,
+.control-tab-open a:visited,
+.control-tab-open a:focus,
+.control-tab-closed a:hover,
+.control-tab-closed a:visited,
+.control-tab-closed a:focus, {
+  color: #fff;
+}
+.control-menu-workout, .control-menu-music, .control-menu-class, .control-menu-timer {
   border-top: none;
   max-height: 98%;
   overflow-y: hidden;
@@ -64,6 +188,14 @@
 }
 .menu-class-photo {
   margin-right: 5px;
+}
+.support-details {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}
+.support-details a {
+  color: rgba(255,255,255,0.5);
 }
 
 /*------USER VIDEO FORMAT - STACKED-------*/
@@ -95,8 +227,8 @@
   color: white;
 }
 .user-videos-stack .user-videos-large .classmates-video-name {
-  top: 20px;
-  font-size: 20px;
+  bottom: 20px;
+  font-size: 30px;
 }
 .user-videos-stack li {
   position: absolute;
