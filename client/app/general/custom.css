@@ -401,6 +401,9 @@
   color: white;
   text-decoration: underline;
 }
+.display-none {
+  display: none;
+}
 
 /*------HERO VIDEO PLAYER-------*/
 
@@ -448,6 +451,9 @@
 .col-top, .col-middle, .col-bottom {
   float: none;
   display: table-cell;
+}
+.hero-tall, .hero-tall .cover-img, .hero-tall .cover-gradient {
+  height: 450px !important;
 }
 
 /*------SCHEDULE-------*/
@@ -815,7 +821,15 @@
   -moz-border-radius: 0;
   border-radius: 0;
 }
-
+.panel-dark {
+  background-color: #f5f5f5;
+}
+.panel-no-border {
+  border: 0;
+}
+.panel-no-margin {
+  margin-bottom: 0;
+}
 .panel-action-list {
   list-style: none;
   float: right;
