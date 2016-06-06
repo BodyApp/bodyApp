@@ -217,7 +217,7 @@
 							    <div layout="row" flex class="mb8">
 							    	<md-input-container flex class="md-block">
 					            <!-- <label class="angular-label">Upload profile photo</label> -->
-					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage"></lf-ng-md-file-input>
+					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
 					            <div class="form-hint">Recommended 400 x 400 pixels.</div>
 						        </md-input-container>
@@ -226,7 +226,7 @@
 				          <div layout="row" flex class="mb8">
 						        <md-input-container flex class="md-block">
 					            <!-- <label class="angular-label">Upload header photo</label> -->
-					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage"></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
+					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
 					            <br>
 					            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
 						        </md-input-container>
