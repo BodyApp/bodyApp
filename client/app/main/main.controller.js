@@ -5,11 +5,14 @@ angular.module('bodyAppApp')
 
     $scope.videoSee = false;
     var ref = firebase.database().ref();
+    var storageRef = firebase.storage().ref()
+
     // $window.scrollTo(0,0);
 
     getStudios()
     $scope.backgroundImages = {};
     $scope.logos = {};
+    getAssets()
 
     //Intercom integration for when users are not yet logged in.
     window.intercomSettings = {
@@ -31,8 +34,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.getBackgroundImage = function(studioId) {
-      var storageRef = firebase.storage().ref().child('studios').child(studioId);
-      storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
+      storageRef.child('studios').child(studioId).child('images/header.jpg').getDownloadURL().then(function(url) {
           // $scope.headerUrl = url;
           $scope.backgroundImages[studioId] = url
           if(!$scope.$$phase) $scope.$apply();
@@ -100,6 +102,26 @@ angular.module('bodyAppApp')
       $('#youtubeVideo').attr('src', $sce.trustAsResourceUrl('https://www.youtube.com/embed/0MvO3-8CLNc?rel=0&amp;showinfo=0&autoplay'));
       $scope.showVideoPlayer = false;
       if(!$scope.$$phase) $scope.$apply();
+    }
+
+    function getAssets() {
+      
+      storageRef.child('studios').child('body').child('images/header.jpg').getDownloadURL().then(function(url) {
+        // $scope.headerUrl = url;
+        $scope.headerImageUrl = url
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+      
+      storageRef.child('assets').child('images').child('mainPageImage.JPG').getDownloadURL().then(function(url) {
+        // $scope.headerUrl = url;
+        $scope.mainPageImageUrl = url
+        console.log($scope.mainPageImageUrl)
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
 
     // // *****************SCROLL DOWN*****************

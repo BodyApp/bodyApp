@@ -67,8 +67,6 @@ function setTokenCookie(req, res) {
   if (!req.user) return res.status(404).json({ message: 'Something went wrong, please try again.'});
   var token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
-  console.log(req)
-  console.log(res)
   var toRouteTo = ''
   if (req.headers.referer) toRouteTo = req.headers.referer.substr(req.headers.referer.lastIndexOf('/') + 1)
   console.log(toRouteTo)

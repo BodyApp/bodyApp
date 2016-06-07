@@ -47,7 +47,7 @@
 	  </div>
 
     <div class="cover-img" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}"></div>
-		<div class="cover-gradient"></div>
+		<div class="cover-gradient-darker"></div>
 
 	</div>
 
@@ -189,7 +189,7 @@
 
 								<form>
 							    <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block">
+						        <md-input-container flex class="md-block" ng-mouseenter = "showIDHelper = true; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
 					            <label class="angular-label">Claim your studio ID</label>
 					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
 					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId)">
@@ -203,7 +203,7 @@
 							    </div>
 
 							    <div layout="column" flex class="mb8">
-							    	<md-input-container class="md-block">
+							    	<md-input-container class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = true; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
 							        <label class="angular-label">Studio Name</label>
 							        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.studioName" class="angular-input">
 							        <div class="form-hint">Every great service starts with a great name.</div>
@@ -215,7 +215,7 @@
 							    </div>
 
 							    <div layout="row" flex class="mb8">
-							    	<md-input-container flex class="md-block">
+							    	<md-input-container flex class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = true; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
 					            <!-- <label class="angular-label">Upload profile photo</label> -->
 					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
@@ -224,7 +224,7 @@
 				          </div>
 
 				          <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block">
+						        <md-input-container flex class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = true; showYoutubeVideoHelper = false;">
 					            <!-- <label class="angular-label">Upload header photo</label> -->
 					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
 					            <br>
@@ -268,7 +268,7 @@
 							    </div> -->
 
 							    <div layout="column" flex class="mb8">
-							    	<md-input-container class="md-block">
+							    	<md-input-container class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = true;">
 							        <label class="angular-label">Studio Video YouTube ID</label>
 							        <input type="text" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input">
 							        <div class="form-hint">The best videos tend to be between 1 to 2 minutes.</div>
@@ -289,7 +289,7 @@
 								<a href="#" class="hidden">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large" ng-click = "createStudio(studioToCreate)">Next</a>
+								<a href="#" class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">Next</a>
 							</div>
 						</div>
 					</div>
@@ -304,7 +304,7 @@
 
 									<div class="row mb8">
 							    	<div class="col-sm-12">
-								    	<md-input-container class="md-block">
+								    	<md-input-container class="md-block" ng-mouseenter = "showShortDescriptionHelper = true; showLongDescriptionHelper = false; showCategoriesHelper = false;">
 								        <label class="angular-label">Short Blurb</label>
 								        <textarea ng-model="studioToCreate.shortDescription" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea"></textarea>
 								        <div class="form-hint">Be clear and descriptive.</div>
@@ -318,7 +318,7 @@
 
 							    <div class="row mb8">
 							    	<div class="col-sm-12">
-							    		<md-input-container class="md-block">
+							    		<md-input-container class="md-block" ng-mouseenter = "showShortDescriptionHelper = false; showLongDescriptionHelper = true; showCategoriesHelper = false;">
 								        <label class="angular-label">Studio Description</label>
 								        <textarea ng-model="studioToCreate.longDescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea"></textarea>
 								        <div class="form-hint">Provide clients a full description of your service.</div>
@@ -330,7 +330,7 @@
 							    	</div>
 							    </div>
 
-							    <div class="row mb8">
+							    <div class="row mb8" ng-mouseenter = "showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = true;">
 							    	<div class="col-sm-12 mb8">
 							    		<label class="angular-label">Studio Categories</label>
 							    		<span class="list-hint">Provide max of 3</span>
@@ -383,7 +383,7 @@
 								<a href="#" class="hidden">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate)">Next</a>
+								<a href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate); showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = false;">Next</a>
 							</div>
 						</div>	
 					</div>
@@ -987,8 +987,8 @@
 				<div class="ss-help">
 					<div class="ss-help-panel-wrapper">
 						
-						<div id="ss-help-basics" class="hidden">
-							<div class="panel ss-help-panel hidden" style="margin-top:120px;">
+						<div id="ss-help-basics">
+							<div class="panel ss-help-panel" style="margin-top:120px;" ng-class="{'hidden': !showIDHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -998,7 +998,7 @@
 								</div>
 							</div>
 
-							<div class="panel ss-help-panel hidden" style="margin-top:250px;">
+							<div class="panel ss-help-panel" style="margin-top:250px;" ng-class="{'hidden': !showNameHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1008,7 +1008,7 @@
 								</div>
 							</div>
 
-							<div class="panel ss-help-panel hidden" style="margin-top:320px;">
+							<div class="panel ss-help-panel" style="margin-top:320px;" ng-class="{'hidden': !showProfilePhotoHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1018,7 +1018,7 @@
 								</div>
 							</div>
 
-							<div class="panel ss-help-panel hidden" style="margin-top:400px;">
+							<div class="panel ss-help-panel" style="margin-top:400px;" ng-class="{'hidden': !showHeaderPhotoHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1028,7 +1028,7 @@
 								</div>
 							</div>
 
-							<div class="panel ss-help-panel hidden" style="margin-top:480px;">
+							<div class="panel ss-help-panel" style="margin-top:480px;" ng-class="{'hidden': !showYoutubeVideoHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1039,8 +1039,8 @@
 							</div>
 						</div>
 
-						<div id="ss-help-description" class="hidden">
-							<div class="panel ss-help-panel hidden" style="margin-top:150px;">
+						<div id="ss-help-description">
+							<div class="panel ss-help-panel" style="margin-top:150px;" ng-class="{'hidden': !showShortDescriptionHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1050,7 +1050,7 @@
 								</div>
 							</div>
 
-							<div class="panel ss-help-panel hidden" style="margin-top:240px;">
+							<div class="panel ss-help-panel" style="margin-top:240px;" ng-class="{'hidden': !showLongDescriptionHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1060,7 +1060,7 @@
 								</div>
 							</div>
 
-							<div class="panel ss-help-panel hidden" style="margin-top:400px;">
+							<div class="panel ss-help-panel" style="margin-top:400px;" ng-class="{'hidden': !showCategoriesHelper}">
 								<div class="help-header-icon-container text-center va-container-h">
 									<img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="80" height="80" class="col-center">
 								</div>
@@ -1269,7 +1269,7 @@
 				</div>
 				<ul class="mb32 list-unstyled">
 					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 0}">
-						<a href="#" ng-click = "step = 0">
+						<a href="#" ng-click = "step = 0; showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = false; showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1283,7 +1283,7 @@
 						</a>
 					</li>
 					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 1}" >
-						<a href="#" ng-click = "goToStep(1)">
+						<a href="#" ng-click = "goToStep(1); showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = false; showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
@@ -1297,7 +1297,7 @@
 						</a>
 					</li>	
 					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 2}" >
-						<a href="#" ng-click = "goToStep(2)">
+						<a href="#" ng-click = "goToStep(2); showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = false; showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">

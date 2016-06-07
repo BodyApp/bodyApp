@@ -10,8 +10,8 @@
       </div>
     </div>
   </div>
-  <div class="cover-img" style="background-image:url(assets/images/studios/ralabala/header.jpg);"></div>
-  <div class="cover-gradient"></div>
+  <div class="cover-img" ng-style="{'background-image':'url('+ headerImageUrl +')'}"></div>
+  <div class="cover-gradient-darker"></div>
 </div>
 
 <div class="panel-dark pt48 pb40">
@@ -21,12 +21,12 @@
         <div class="col-sm-8 hidden-xs">
           <div class="earn-banner">
             <a href="/createstudio">
-              <img src="/assets/images/video/vid-e.jpg">
+              <img ng-src="{{mainPageImageUrl}}">
             </a>
           </div>
         </div>
         <div class="col-sm-4 earn-panel-body">
-          <div class="earn-banner-hero visible-xs" style="background-image:url('/assets/images/video/vid-e.jpg')">
+          <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}">
           </div>
           <div class="va-container va-container-v va-container-h earn-panel-content">
             <div class="va-middle">
