@@ -131,11 +131,11 @@
                   </div>
               </div>
             </div>
-            <div id="browser-alert" class = "hidden">  <!-- BROWSER ALERT -->
+            <div id="browser-alert" ng-show = "isLoggedIn()" ng-if = "wrongBrowser">  <!-- BROWSER ALERT -->
               <div class="row text-center">
                 <div class="col-sm-12">
                   <h5 class="white">
-                    Blast! Your browser or device isn't supported. To be able to join class, please use the latest version of <a href="#">Chrome</a> on a PC or Mac computer.</h5>
+                    Blast! Your browser or device isn't supported. To be able to join class, please use the latest version of <a ng-click = "downloadChrome()" href="#">Chrome</a> on a PC or Mac computer.</h5>
                 </div>
               </div>
             </div> <!-- BROWSER ALERT END -->

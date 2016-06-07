@@ -84,6 +84,14 @@ angular.module('bodyAppApp')
       
     // }
 
+
+    if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
+      $scope.wrongBrowser = true;
+    }
+
+    $scope.downloadChrome = function() {
+      $window.open("https://www.google.com/chrome/index.html");
+    }
     
 
     // function checkIfStudioAdmin() {
