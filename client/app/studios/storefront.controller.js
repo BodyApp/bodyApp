@@ -445,20 +445,19 @@ angular.module('bodyAppApp')
       if (confirm("Are you sure you want to cancel your subscription?")) {
         var modalInstance = openCancellationConfirmedModal()
         $http.post('/api/payments/cancelcustomersubscription', {            
-            studioId: studioId,
-            // planInfo: planId,
-            accountId: accountId
-          })
-          .success(function(data) {
-            console.log("Successfully cancelled subscription to " + studioId);
-            Auth.updateUser(data);
-            $rootScope.subscriptions = $rootScope.subscriptions || {};
-            delete $rootScope.subscriptions[studioId];
-          })
-          .error(function(err) {
-            console.log(err)                
-          }.bind(this));
-        }
+          studioId: studioId,
+          // planInfo: planId,
+          accountId: accountId
+        })
+        .success(function(data) {
+          console.log("Successfully cancelled subscription to " + studioId);
+          // Auth.updateUser(data);
+          $rootScope.subscriptions = $rootScope.subscriptions || {};
+          delete $rootScope.subscriptions[studioId];
+        })
+        .error(function(err) {
+          console.log(err)                
+        }.bind(this));
       }
         // })
       // })

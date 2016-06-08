@@ -61,32 +61,31 @@ exports.createSubscriptionPlan = function(req, res, next){
 };
 
 exports.deleteSubscriptionPlan = function(req, res, next){
-  var studioId = req.body.studioId;
-  var planId = req.body.planId;
-  var accountId = req.body.accountId;
+  // var studioId = req.body.studioId;
+  // var planId = req.body.planId;
+  // var accessCode = req.body.accessCode;
 
-  // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
-  //   if (snapshot.exists()) {
+  // // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
+  // //   if (snapshot.exists()) {
 
-      // var stripe = require("stripe")(accessCode)
-      // var stripe = require("stripe")(snapshot.val())
+  //     var stripe = require("stripe")(accessCode)
+  //     // var stripe = require("stripe")(snapshot.val())
 
-      stripe.plans.del(planId,
-        { stripe_account: accountId }
-      // {
-      //   stripe_account: snapshot.val()
-      // }, 
-      function(err, plan) {
-        if (err) {console.log(err); return res.status(400).send(err);}
-        ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).remove(function(err) {
-          if (err) return res.status(400).send(err);
-          res.status(200).send("Plan " + planId + " successfully deleted");  
-        })
-      });
-  //   } else {
-  //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
-  //   }
-  // })
+  //     stripe.plans.del(planId,
+  //     // {
+  //     //   stripe_account: snapshot.val()
+  //     // }, 
+  //     function(err, plan) {
+  //       if (err) {console.log(err); return res.status(400).send(err);}
+  //       ref.child('studios').child(studioId).child('subscriptionPlans').child(plan.id).remove(function(err) {
+  //         if (err) return res.status(400).send(err);
+  //         res.status(200).send("Plan " + planId + " successfully deleted");  
+  //       })
+  //     });
+  // //   } else {
+  // //     return res.status(400).send("Your studio doesn't have a valid account ID associated with it.");
+  // //   }
+  // // })
 };
 
 exports.listSubscriptionPlans = function(req, res, next){

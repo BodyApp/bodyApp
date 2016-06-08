@@ -49,48 +49,44 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
       //   return res.status(400).send("No access token found")
       // }
       // var stripe = require('stripe')(accessCode)
-      ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).once('value', function(snapshot) {
-        if (snapshot.exist() && snapshot.val().customerId) {
-          stripe.customers.retrieve(
-            {customer: user.studioSubscriptions[studioId].customerId},
+      ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').once('value', function(snapshot) {
+        if (snapshot.exists() && snapshot.val().id) {
+          stripe.subscriptions.retrieve(
+            {id: snapshot.val().id},
             { stripe_account: accountId },
-            function(err, customer) {
+            function(err, subscription) {
               if (err) {
                 if (err.statusCode === 404) {
-                  delete user.studioSubscriptions[studioId];
-                  console.log(user)
-                  user.save(function(err){
+                  // delete user.studioSubscriptions[studioId];
+                  // console.log(user)
+                  // user.save(function(err){
+                  //   if (err) console.log(err)
+                  ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'status': 'inactive'}, function(err) {
                     if (err) console.log(err)
-                    return res.status(200).json(user)
-                  });
+                    return res.status(200).send("Subcription not found at " + studioId + " for user " + user._id + ". Making inactive")
+                  })
                 } else {
                   console.log(err)
                   return res.status(400).send("Error occured when checking subscription status in Stripe")
                 }
               } else {
-                var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
-                // user.stripe[studioId].subscription = user.stripe[studioId].subscription || {};   
-                // user.stripe[studioId].planId = subData.id;
-                // user.stripe[studioId].name = subData.plan.id;
-                // user.stripe[studioId].amount = subData.plan.amount;
-                // user.stripe[studioId].startDate = subData.start
-                // user.stripe[studioId].endDate = subData.current_period_end
-                // user.stripe[studioId].currency = subData.plan.currency;
-                // user.stripe[studioId].interval = subData.plan.interval;
-                // user.stripe[studioId].intervalCount = subData.plan.interval_count;
-                // user.stripe[studioId].liveMode = subData.plan.livemode;    
-                user.studioSubscriptions[studioId].status = subData.status;    
+                ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'status': subscription.status}, function(err) {
+                  if (err) return res.status(400).json(err)
+                  return res.status(200).send("Subscription status for user " + user._id + " at studio "+studioId+" updated as " + subscription.status)
+                })
+                // var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+                // user.studioSubscriptions[studioId].status = subData.status;    
 
-                user.save(function(err){
-                  return res.status(200).json(user)
-                });
+                // user.save(function(err){
+                //   return res.status(200).json(snapshot.val())
+                // });
               }
             }
           );
         } else {
-        console.log("User " + user._id + " is not a customer of " + studioId);
-        return res.status(400).send("User " + user._id + " is not a customer of " + studioId);
-      }          
+          console.log("User " + user._id + " is not a customer of " + studioId);
+          return res.status(200).send("User " + user._id + " is not a customer of " + studioId);
+        }          
       })
       // if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
     // })   
@@ -107,6 +103,7 @@ exports.cancelCustomerSubscription = function(req, res, next) {
       { stripe_account: connectedAccountId },
       function(err, confirmation) {
         if (err) return console.log(err)
+        ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'status': confirmation.status})
         return res.status(200).json(confirmation);
         // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
       })  
@@ -234,8 +231,22 @@ exports.addCustomerSubscription = function(req, res, next){
 
       // if(user.stripe[studioId].subscription.status != "active"){
         //Only part of the 'subscriptions' object when user is first created
-        var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;
+      var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;
 
+      ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({
+        'id': subData.id, 
+        'application_fee_percent': subData.application_fee_percent,
+        'created': subData.created,
+        'current_period_end': subData.current_period_end,
+        'customerId': subData.customer,
+        'planId': subData.plan.id
+      }, function(err) {
+        if (err) console.log(err);
+        res.status(200).send("Added subscription " + subData.id + " for user " + user._id)
+        if (err) return cb(err);
+        return cb(null);
+        return
+      })
         
         // user.stripe = user.stripe || {};
         // user.stripe = user.stripe || {};
@@ -251,19 +262,18 @@ exports.addCustomerSubscription = function(req, res, next){
         // user.stripe[studioId].interval = subData.plan.interval;
         // user.stripe[studioId].intervalCount = subData.plan.interval_count;
         // user.stripe[studioId].liveMode = subData.plan.livemode;
-        user.studioSubscriptions = user.studioSubscriptions || {};
-        user.studioSubscriptions[studioId] = user.studioSubscriptions[studioId] || {};
-        user.studioSubscriptions[studioId].customerId = customer.id;    
-        user.studioSubscriptions[studioId].status = subData.status;    
+        // user.studioSubscriptions = user.studioSubscriptions || {};
+        // user.studioSubscriptions[studioId] = user.studioSubscriptions[studioId] || {};
+        // user.studioSubscriptions[studioId].customerId = customer.id;    
+        // user.studioSubscriptions[studioId].status = subData.status;    
       // }s
 
-      user.save(function(err){
+      // user.save(function(err){
         // sendSubscriberEmail(user) //Email sent to user about how they are a member now.
-        res.status(200).json(user)
-        if (err) return cb(err);
-        return cb(null);
-        return
-      });
+        // res.status(200).json(user)
+        // if (err) return cb(err);
+        // return cb(null);
+        // return
     };
 
     var createCustomerId = function() {
@@ -296,83 +306,88 @@ exports.addCustomerSubscription = function(req, res, next){
           if (err) return console.log(err)
           // var connectedStripe = require("stripe")(connectedAccountAccessToken)
           //If user already has a customer Id with the connected account
-          if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
-            if (coupon) {
-              stripe.customers.update(user.studioSubscriptions[studioId].customerId, {
-                source: newToken.id,
-                description: "BODY Consumer",
-                plan: planInfo.id,
-                application_fee_percent: 30-3,
-                coupon: coupon.id,
-                metadata: {
-                  "facebookId": user.facebookId.toString(),
-                  "mongoId": user._id.toString()
-                }
-              }, 
-              { stripe_account: connectedAccountId },
-              function(err, customer) {
-                if (err) return console.log(err)
-                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
-                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
-              })  
-            } else {
-              stripe.customers.update(user.studioSubscriptions[studioId].customerId, {
-                source: newToken.id,
-                description: "BODY Consumer",
-                plan: planInfo.id,
-                application_fee_percent: 30-3,
-                metadata: {
-                  "facebookId": user.facebookId.toString(),
-                  "mongoId": user._id.toString()
-                }
-              }, 
-              { stripe_account: connectedAccountId },
-              function(err, customer) {
-                if (err) return console.log(err)
-                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
-                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
-              })
+          ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('customerId').once('value', function(snapshot) {
+            if (snapshot.exists()) {
+              var customerId = snapshot.val();
+              if (coupon) {
+                stripe.customers.update(customerId, {
+                  source: newToken.id,
+                  description: "BODY Consumer",
+                  plan: planInfo.id,
+                  application_fee_percent: 30-3,
+                  coupon: coupon.id,
+                  metadata: {
+                    "facebookId": user.facebookId.toString(),
+                    "mongoId": user._id.toString()
+                  }
+                }, 
+                { stripe_account: connectedAccountId },
+                function(err, customer) {
+                  if (err) return console.log(err)
+                  createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                  // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+                })  
+              } else {
+                stripe.customers.update(customerId, {
+                  source: newToken.id,
+                  description: "BODY Consumer",
+                  plan: planInfo.id,
+                  application_fee_percent: 30-3,
+                  metadata: {
+                    "facebookId": user.facebookId.toString(),
+                    "mongoId": user._id.toString()
+                  }
+                }, 
+                { stripe_account: connectedAccountId },
+                function(err, customer) {
+                  if (err) return console.log(err)
+                  createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                  // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+                })
+              }
+            } else { //Create new customer
+              if (coupon) {
+                stripe.customers.create({
+                  email: userEmail,
+                  source: newToken.id,
+                  description: "BODY Consumer",
+                  plan: planInfo.id,
+                  application_fee_percent: 30-3,
+                  coupon: coupon.id,
+                  metadata: {
+                    "facebookId": user.facebookId.toString(),
+                    "mongoId": user._id.toString()
+                  }
+                }, 
+                { stripe_account: connectedAccountId },
+                function(err, customer) {
+                  if (err) return console.log(err)
+                  createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                  // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+                })  
+              } else {
+                stripe.customers.create({
+                  email: userEmail,
+                  source: newToken.id,
+                  description: "BODY Consumer",
+                  plan: planInfo.id,
+                  application_fee_percent: 30-3,
+                  metadata: {
+                    "facebookId": user.facebookId.toString(),
+                    "mongoId": user._id.toString()
+                  }
+                }, 
+                { stripe_account: connectedAccountId },
+                function(err, customer) {
+                  if (err) return console.log(err)
+                  createCustomerSubscriptionHandler(err, customer, connectedAccountId);
+                  // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+                })
+              }
             }
-          } else { //Create new customer
-            if (coupon) {
-              stripe.customers.create({
-                email: userEmail,
-                source: newToken.id,
-                description: "BODY Consumer",
-                plan: planInfo.id,
-                application_fee_percent: 30-3,
-                coupon: coupon.id,
-                metadata: {
-                  "facebookId": user.facebookId.toString(),
-                  "mongoId": user._id.toString()
-                }
-              }, 
-              { stripe_account: connectedAccountId },
-              function(err, customer) {
-                if (err) return console.log(err)
-                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
-                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
-              })  
-            } else {
-              stripe.customers.create({
-                email: userEmail,
-                source: newToken.id,
-                description: "BODY Consumer",
-                plan: planInfo.id,
-                application_fee_percent: 30-3,
-                metadata: {
-                  "facebookId": user.facebookId.toString(),
-                  "mongoId": user._id.toString()
-                }
-              }, 
-              { stripe_account: connectedAccountId },
-              function(err, customer) {
-                if (err) return console.log(err)
-                createCustomerSubscriptionHandler(err, customer, connectedAccountId);
-                // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
-              })
-            }
-          }
+          })
+          // if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
+          
         }
       );
 
@@ -506,26 +521,36 @@ exports.chargeDropin = function(req, res, next){
       if (err) return cb(err);
 
       if (charge) {
-        user.charges = user.charges || {};
-        user.charges[studioId] = user.charges[studioId] || {};
-        user.charges[studioId][charge.id] = charge.created;
+        ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('charges').child(charge.id).update({
+          'amount': charge.amount,
+          'created': charge.created,
+          'invoice': charge.invoice,
+          'status': charge.status,
+          'application_fee': charge.application_fee
+        })
+        // user.charges = user.charges || {};
+        // user.charges[studioId] = user.charges[studioId] || {};
+        // user.charges[studioId][charge.id] = charge.created;
       } else {
         console.log("No charge returned")
       }
 
       if (customer && customer.id) {
-        user.studioSubscriptions = user.studioSubscriptions || {};
-        user.studioSubscriptions[studioId] = user.studioSubscriptions[studioId] || {};
-        user.studioSubscriptions[studioId].customerId = customer.id;
+        ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'customerId': customer.id}, function(err) {
+          res.status(200).send("Customer Id updated and charge "+charge.id+" added for user " + user._id);
+          if (err) return cb(err);
+          return cb(null);
+          return  
+        })
+        // user.studioSubscriptions = user.studioSubscriptions || {};
+        // user.studioSubscriptions[studioId] = user.studioSubscriptions[studioId] || {};
+        // user.studioSubscriptions[studioId].customerId = customer.id;
       }
 
-      user.save(function(err){
+      // user.save(function(err){
         // sendSubscriberEmail(user) //Email sent to user about how they are a member now.
-        res.status(200).json(user)
-        if (err) return cb(err);
-        return cb(null);
-        return
-      });
+        
+      // });
     };
 
     var createCustomerId = function() {
@@ -558,69 +583,71 @@ exports.chargeDropin = function(req, res, next){
           if (err) return console.log(err)
           // var connectedStripe = require("stripe")(connectedAccountAccessToken)
           //If user already has a customer Id with the connected account
-          if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
-            stripe.customers.update(user.studioSubscriptions[studioId].customerId, 
-            {
-              source: newToken.id,
-              metadata: {
-                "facebookId": user.facebookId.toString(),
-                "mongoId": user._id.toString()
-              }
-            }, 
-            { stripe_account: connectedAccountId },
-            function(err, customer) {
-              if (err) return console.log(err)
-              stripe.charges.create( 
+          ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('customerId').once('value', function(snapshot) {
+            if (snapshot.exists()) {
+              stripe.customers.update(snapshot.val(), 
               {
-                customer: customer.id,
-                description: "BODY Consumer",
-                amount: amount,
-                currency: "usd",
-                application_fee: Math.max(Math.round(amount*.3 - amount*0.029 - 30), 0),
+                source: newToken.id,
                 metadata: {
                   "facebookId": user.facebookId.toString(),
                   "mongoId": user._id.toString()
                 }
               }, 
               { stripe_account: connectedAccountId },
-              function(err, charge) {
+              function(err, customer) {
                 if (err) return console.log(err)
-                createCustomerChargeHandler(err, charge, connectedAccountId, customer);
+                stripe.charges.create( 
+                {
+                  customer: customer.id,
+                  description: "BODY Consumer",
+                  amount: amount,
+                  currency: "usd",
+                  application_fee: Math.max(Math.round(amount*.3 - amount*0.029 - 30), 0),
+                  metadata: {
+                    "facebookId": user.facebookId.toString(),
+                    "mongoId": user._id.toString()
+                  }
+                }, 
+                { stripe_account: connectedAccountId },
+                function(err, charge) {
+                  if (err) return console.log(err)
+                  createCustomerChargeHandler(err, charge, connectedAccountId, customer);
+                })  
               })  
-            })  
-          } else { //Create new customer first
-            stripe.customers.create({
-              email: userEmail,
-              source: newToken.id,
-              description: "BODY Consumer",
-              // application_fee_percent: 30-3,
-              metadata: {
-                "facebookId": user.facebookId.toString(),
-                "mongoId": user._id.toString()
-              }
-            }, 
-            { stripe_account: connectedAccountId },
-            function(err, customer) {
-              if (err) return console.log(err)
-              stripe.charges.create( 
-              {
-                customer: customer.id,
+            } else { //Create new customer first
+              stripe.customers.create({
+                email: userEmail,
+                source: newToken.id,
                 description: "BODY Consumer",
-                amount: amount,
-                currency: "usd",
-                application_fee: Math.max(Math.round(amount*.3 - amount*0.029 - 30), 0),
+                // application_fee_percent: 30-3,
                 metadata: {
                   "facebookId": user.facebookId.toString(),
                   "mongoId": user._id.toString()
                 }
               }, 
               { stripe_account: connectedAccountId },
-              function(err, charge) {
+              function(err, customer) {
                 if (err) return console.log(err)
-                createCustomerChargeHandler(err, charge, connectedAccountId, customer);
-              })  
-            })
-          }
+                stripe.charges.create( 
+                {
+                  customer: customer.id,
+                  description: "BODY Consumer",
+                  amount: amount,
+                  currency: "usd",
+                  application_fee: Math.max(Math.round(amount*.3 - amount*0.029 - 30), 0),
+                  metadata: {
+                    "facebookId": user.facebookId.toString(),
+                    "mongoId": user._id.toString()
+                  }
+                }, 
+                { stripe_account: connectedAccountId },
+                function(err, charge) {
+                  if (err) return console.log(err)
+                  createCustomerChargeHandler(err, charge, connectedAccountId, customer);
+                })  
+              })
+            }
+          })           
         }
       );
     }
