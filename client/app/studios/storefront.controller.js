@@ -590,7 +590,7 @@ angular.module('bodyAppApp')
 
     $scope.joinClass = function(classToJoin) {
       Schedule.setClassUserJustJoined(studioId, classToJoin);
-      $location.path('/studios/' + studioId + '/classstarting')
+      $location.path('/studios/' + studioId + '/classstarting/' + classToJoin.dateTime)
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {

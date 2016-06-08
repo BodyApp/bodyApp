@@ -51,8 +51,7 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
       // var stripe = require('stripe')(accessCode)
       ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').once('value', function(snapshot) {
         if (snapshot.exists() && snapshot.val().id) {
-          console.log(snapshot.val().id)
-          console.log(accountId)
+        if (!stripe || !stripe.subscriptions) return
           stripe.subscriptions.retrieve(
             snapshot.val().id,
             { stripe_account: accountId },

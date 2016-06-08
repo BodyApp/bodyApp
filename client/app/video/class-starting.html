@@ -6,15 +6,15 @@
 			<h3 class="mb8" ng-show = "classType && storefrontInfo">You're attending {{classType.name}} with {{storefrontInfo.studioName}}</h3>
 		</div>
 		<div class="col-md-6 text-center-sm text-center-xs mb-sm-16">
-			<h5>Need to <a href="#">cancel</a> your reservation?</h5>
+			<h5 ng-show = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass(class)">cancel</a> your reservation?</h5>
 		</div>
 		<div class="col-md-6 text-right text-center-sm text-center-xs">
 			<ul class="starting-action-btns">
 				<li>
-					<a href="#">Back to your schedule</a>
+					<a ng-href="/studios/{{storefrontInfo.studioId}}">Back to storefront</a>
 				</li>
 				<li>
-					<a href="#" class="btn-blue">Class starts in 1 day</a>
+					<a href="#" class="btn-blue">{{timeUntilClassStart}}</a>
 				</li>
 			</ul>
 		</div>
@@ -178,7 +178,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12 text-center pb24">
-					<img class="round-photo mb8" src="/assets/images/studios/ralabala/logo.jpg" width="150" height="150">
+					<img class="round-photo mb8" ng-src="{{iconUrl}}" width="150" height="150">
 					<h4 class="mb8">Your studio, {{storefrontInfo.studioName}}</h4>
 					<h5 class="mb16">Have a question about your class? The best way to get information is to ask your instructor directly.</h5>
 					<a href="#" class="btn-blue btn-large">Message Studio</a>
