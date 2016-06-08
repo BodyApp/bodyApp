@@ -42,12 +42,12 @@ angular.module('bodyAppApp')
         updateIntercom(data)
         // getUserBookings()
         // checkSubscriptionStatus()
-        if (data.studioSubscriptions && data.studioSubscriptions[studioId]) {
-          $rootScope.subscriptions = $rootScope.subscriptions || {};
-          $rootScope.subscriptions[studioId] = data.studioSubscriptions[studioId].status === "active"
-          if (!$rootScope.subscriptions[studioId] && data.stripe && data.stripe.subscription) $rootScope.subscriptions[studioId] = data.stripe.subscription.status === "active"
-          console.log("Subscription active? " + $rootScope.subscriptions[studioId])
-        }
+        // if (data.studioSubscriptions && data.studioSubscriptions[studioId]) {
+        //   $rootScope.subscriptions = $rootScope.subscriptions || {};
+        //   $rootScope.subscriptions[studioId] = data.studioSubscriptions[studioId].status === "active"
+        //   if (!$rootScope.subscriptions[studioId] && data.stripe && data.stripe.subscription) $rootScope.subscriptions[studioId] = data.stripe.subscription.status === "active"
+        //   console.log("Subscription active? " + $rootScope.subscriptions[studioId])
+        // }
 
       var auth = firebase.auth();
       auth.onAuthStateChanged(function(user) {
@@ -55,7 +55,7 @@ angular.module('bodyAppApp')
           // console.log("User is authenticated with fb ");
           getUserBookings()
           getAccountId()
-          checkSubscriptionStatus()
+          
         } 
         // else {
         //   // console.log("User is logged out");
@@ -105,12 +105,12 @@ angular.module('bodyAppApp')
       // checkSubscriptionStatus()
       // getUserBookings()
       updateIntercom(currentUser);
-      if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
-        $rootScope.subscriptions = $rootScope.subscriptions || {};
-        $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
-        if (!$rootScope.subscriptions[studioId] && currentUser.stripe && currentUser.stripe.subscription) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
-        console.log("Subscription active? " + $rootScope.subscriptions[studioId])
-      }
+      // if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
+      //   $rootScope.subscriptions = $rootScope.subscriptions || {};
+      //   $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
+      //   if (!$rootScope.subscriptions[studioId] && currentUser.stripe && currentUser.stripe.subscription) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
+      //   console.log("Subscription active? " + $rootScope.subscriptions[studioId])
+      // }
       // ref.onAuth(function(authData) {
       //   if (authData) {
       //     // console.log("User is authenticated with fb ");
@@ -228,6 +228,7 @@ angular.module('bodyAppApp')
       ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("Can't get access code for studio.")
         accountId = snapshot.val()
+        checkSubscriptionStatus()
       })
 
       ref.child("stripeConnected").child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
@@ -245,16 +246,16 @@ angular.module('bodyAppApp')
       .success(function(data) {
         console.log("Successfully updated customer subscription status.");
         console.log(data)
-        Auth.updateUser(data);
-        currentUser = data;
+        // Auth.updateUser(data);
+        // currentUser = data;
         // console.log(currentUser)
-        $rootScope.subscriptions = $rootScope.subscriptions || {}
-        if (!currentUser.studioSubscriptions) $rootScope.subscriptions = {}
-        if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
-          $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
-          if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
-          console.log("Subscription active? " + $rootScope.subscriptions[studioId])
-        } 
+        // $rootScope.subscriptions = $rootScope.subscriptions || {}
+        // if (!currentUser.studioSubscriptions) $rootScope.subscriptions = {}
+        // if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
+        //   $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
+        //   if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
+        //   console.log("Subscription active? " + $rootScope.subscriptions[studioId])
+        // } 
 
         // currentUser = data;
         // $scope.currentUser = currentUser;
@@ -399,7 +400,7 @@ angular.module('bodyAppApp')
             $window.location.reload()
           });
           // }
-        } else if (!$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
+        } else if ($rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'app/membership/membership.html',
@@ -452,8 +453,8 @@ angular.module('bodyAppApp')
         .success(function(data) {
           console.log("Successfully cancelled subscription to " + studioId);
           // Auth.updateUser(data);
-          $rootScope.subscriptions = $rootScope.subscriptions || {};
-          delete $rootScope.subscriptions[studioId];
+          // $rootScope.subscriptions = $rootScope.subscriptions || {};
+          // delete $rootScope.subscriptions[studioId];
         })
         .error(function(err) {
           console.log(err)                

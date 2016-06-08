@@ -57,6 +57,7 @@ angular.module('bodyAppApp')
           if (user) {
             console.log("User is authenticated with fb ");
             getAccountId()
+            getSubscriptionStatus()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
@@ -64,6 +65,7 @@ angular.module('bodyAppApp')
               auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
                 if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
                 getAccountId()
+                getSubscriptionStatus()
                   // checkIfStudioAdmin()
               }); 
             } else {
@@ -71,6 +73,7 @@ angular.module('bodyAppApp')
                 auth.signInWithCustomToken(token).then(function(user) {
                   if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
                   getAccountId()
+                  getSubscriptionStatus()
                     // checkIfStudioAdmin()
                 }); 
               })
@@ -104,7 +107,20 @@ angular.module('bodyAppApp')
         snapshot.forEach(function(plan) {
           $scope.subscriptionPlan = plan.val()
         })
-        
+      })
+
+      // firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('studioSubscriptions').child(studioId).child('subscription').on('value', function(snapshot) {
+      //   $rootScope.subscriptions = $rootScope.subscriptions || {}
+      //   $rootScope.subscriptions[studioId] = snapshot.val().status
+      //   console.log($rootScope.subscriptions)
+      // })
+    }
+
+    function getSubscriptionStatus() {
+      firebase.database().ref().child('fbUsers').child(Auth.getCurrentUser().facebookId).child('studioSubscriptions').child(studioId).child('subscription').on('value', function(snapshot) {
+        $rootScope.subscriptions = $rootScope.subscriptions || {}
+        $rootScope.subscriptions[studioId] = snapshot.val().status
+        console.log($rootScope.subscriptions)
       })
     }
 

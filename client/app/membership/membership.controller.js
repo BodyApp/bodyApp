@@ -173,11 +173,11 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
             console.log("Successfully created new customer subscription.");
-            Auth.updateUser(data);
+            // Auth.updateUser(data);
             // currentUser = data;
             // currentUser = currentUser;
-            $rootScope.subscriptions = $rootScope.subscriptions || {};
-            $rootScope.subscriptions[studioId] = true;
+            // $rootScope.subscriptions = $rootScope.subscriptions || {};
+            // $rootScope.subscriptions[studioId] = 'active';
             $rootScope.subscribing = false;
             if (slot) bookClass(slot);               
           })
@@ -233,9 +233,9 @@ angular.module('bodyAppApp')
           .success(function(data) {
             $rootScope.subscribing = false;
             console.log("Successfully posted to /user/chargedropin");
-            Auth.updateUser(data);
-            currentUser = data;
-            currentUser = currentUser;
+            // Auth.updateUser(data);
+            // currentUser = data;
+            // currentUser = currentUser;
             // $rootScope.subscriptionActive = true;
             if (slot) bookClass(slot);
           })

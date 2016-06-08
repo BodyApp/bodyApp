@@ -51,8 +51,10 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
       // var stripe = require('stripe')(accessCode)
       ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').once('value', function(snapshot) {
         if (snapshot.exists() && snapshot.val().id) {
+          console.log(snapshot.val().id)
+          console.log(accountId)
           stripe.subscriptions.retrieve(
-            {id: snapshot.val().id},
+            snapshot.val().id,
             { stripe_account: accountId },
             function(err, subscription) {
               if (err) {
@@ -61,7 +63,7 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
                   // console.log(user)
                   // user.save(function(err){
                   //   if (err) console.log(err)
-                  ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'status': 'inactive'}, function(err) {
+                  ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': 'inactive'}, function(err) {
                     if (err) console.log(err)
                     return res.status(200).send("Subcription not found at " + studioId + " for user " + user._id + ". Making inactive")
                   })
@@ -70,7 +72,7 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
                   return res.status(400).send("Error occured when checking subscription status in Stripe")
                 }
               } else {
-                ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'status': subscription.status}, function(err) {
+                ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': subscription.status}, function(err) {
                   if (err) return res.status(400).json(err)
                   return res.status(200).send("Subscription status for user " + user._id + " at studio "+studioId+" updated as " + subscription.status)
                 })
@@ -95,15 +97,17 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
 
 exports.cancelCustomerSubscription = function(req, res, next) {
   var studioId = req.body.studioId;
+  var accountId = req.body.accountId;
+
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
-    ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).once('value', function(snapshot) {
+    ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').once('value', function(snapshot) {
       stripe.subscriptions.del(
-        snapshot.val().subId, 
-      { stripe_account: connectedAccountId },
+        snapshot.val().id, 
+      { stripe_account: accountId },
       function(err, confirmation) {
         if (err) return console.log(err)
-        ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).update({'status': confirmation.status})
+        ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': confirmation.status})
         return res.status(200).json(confirmation);
         // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
       })  
@@ -239,7 +243,8 @@ exports.addCustomerSubscription = function(req, res, next){
         'created': subData.created,
         'current_period_end': subData.current_period_end,
         'customerId': subData.customer,
-        'planId': subData.plan.id
+        'planId': subData.plan.id,
+        'status': subData.status
       }, function(err) {
         if (err) console.log(err);
         res.status(200).send("Added subscription " + subData.id + " for user " + user._id)

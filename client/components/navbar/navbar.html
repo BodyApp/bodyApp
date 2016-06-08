@@ -20,9 +20,9 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().studioSubscriptions[studioId].status !== 'active'">
+                            <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
                               <p ng-class="{active: isActive('/schedule')}">
-                                <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
+                                <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
                               </p>
                             </li>
                             <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
@@ -78,9 +78,9 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && getCurrentUser().studioSubscriptions[studioId].status !== 'active'">
+                        <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
                           <p ng-class="{active: isActive('/schedule')}">
-                            <a href="/" ng-click = "showMembershipModal()">Add Membership</a>
+                            <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
                           </p>
                         </li>                    
                         <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">

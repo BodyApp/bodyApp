@@ -206,9 +206,9 @@
               </div>
 
               <div class="col-xs-12 mt16">
-                <a href="#" class="btn-blue btn-block" ng-show = "!subscriptions[studioId] && subscriptionPlan" ng-click = "joinStudioClicked()">Join Studio</a>
-                <a href="#" class="btn-blue btn-block" ng-show = "subscriptions[studioId]" ng-click = "cancelSubscription()">Unsubscribe From Studio</a>
-                <div class="" ng-show = "subscriptions[studioId]">You are a member of this studio!</div>
+                <a href="#" class="btn-blue btn-block" ng-show = "subscriptions[studioId] != 'active' && subscriptionPlan" ng-click = "joinStudioClicked()">Join Studio</a>
+                <a href="#" class="btn-blue btn-block" ng-show = "subscriptions[studioId] === 'active'" ng-click = "cancelSubscription()">Unsubscribe From Studio</a>
+                <div class="" ng-show = "subscriptions[studioId] === 'active'">You are a member of this studio!</div>
               </div>
             </div>
           </div>
