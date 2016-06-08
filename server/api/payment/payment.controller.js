@@ -38,7 +38,8 @@ var ref = firebase.database().ref()
 
 exports.updateCustomerSubscriptionStatus = function(req, res, next){
   var studioId = req.body.studioId;
-  var accessCode = req.body.accessCode;
+  // var accessCode = req.body.accessCode;
+  var accountId = req.body.accountId;
 
   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
     if (err) return next(err);
@@ -47,37 +48,72 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
       //   console.log("No access token found for this studio")
       //   return res.status(400).send("No access token found")
       // }
-      var stripe = require('stripe')(accessCode)
-      if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
-        stripe.customers.retrieve(
-          user.studioSubscriptions[studioId].customerId,
-          function(err, customer) {
-            if (err) return res.status(400).send("Error retrieving customer.")
-            var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
-            // user.stripe[studioId].subscription = user.stripe[studioId].subscription || {};   
-            // user.stripe[studioId].planId = subData.id;
-            // user.stripe[studioId].name = subData.plan.id;
-            // user.stripe[studioId].amount = subData.plan.amount;
-            // user.stripe[studioId].startDate = subData.start
-            // user.stripe[studioId].endDate = subData.current_period_end
-            // user.stripe[studioId].currency = subData.plan.currency;
-            // user.stripe[studioId].interval = subData.plan.interval;
-            // user.stripe[studioId].intervalCount = subData.plan.interval_count;
-            // user.stripe[studioId].liveMode = subData.plan.livemode;    
-            user.studioSubscriptions[studioId].status = subData.status;    
+      // var stripe = require('stripe')(accessCode)
+      ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).once('value', function(snapshot) {
+        if (snapshot.exist() && snapshot.val().customerId) {
+          stripe.customers.retrieve(
+            {customer: user.studioSubscriptions[studioId].customerId},
+            { stripe_account: accountId },
+            function(err, customer) {
+              if (err) {
+                if (err.statusCode === 404) {
+                  delete user.studioSubscriptions[studioId];
+                  console.log(user)
+                  user.save(function(err){
+                    if (err) console.log(err)
+                    return res.status(200).json(user)
+                  });
+                } else {
+                  console.log(err)
+                  return res.status(400).send("Error occured when checking subscription status in Stripe")
+                }
+              } else {
+                var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
+                // user.stripe[studioId].subscription = user.stripe[studioId].subscription || {};   
+                // user.stripe[studioId].planId = subData.id;
+                // user.stripe[studioId].name = subData.plan.id;
+                // user.stripe[studioId].amount = subData.plan.amount;
+                // user.stripe[studioId].startDate = subData.start
+                // user.stripe[studioId].endDate = subData.current_period_end
+                // user.stripe[studioId].currency = subData.plan.currency;
+                // user.stripe[studioId].interval = subData.plan.interval;
+                // user.stripe[studioId].intervalCount = subData.plan.interval_count;
+                // user.stripe[studioId].liveMode = subData.plan.livemode;    
+                user.studioSubscriptions[studioId].status = subData.status;    
 
-            user.save(function(err){
-              return res.status(200).json(user)
-            });
-          }
-        );
-      } else {
+                user.save(function(err){
+                  return res.status(200).json(user)
+                });
+              }
+            }
+          );
+        } else {
         console.log("User " + user._id + " is not a customer of " + studioId);
         return res.status(400).send("User " + user._id + " is not a customer of " + studioId);
-      }
+      }          
+      })
+      // if (user.studioSubscriptions && user.studioSubscriptions[studioId] && user.studioSubscriptions[studioId].customerId) {
     // })   
   })
 };
+
+exports.cancelCustomerSubscription = function(req, res, next) {
+  var studioId = req.body.studioId;
+  User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+    if (err) return next(err);
+    ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).once('value', function(snapshot) {
+      stripe.subscriptions.del(
+        snapshot.val().subId, 
+      { stripe_account: connectedAccountId },
+      function(err, confirmation) {
+        if (err) return console.log(err)
+        return res.status(200).json(confirmation);
+        // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
+      })  
+    })
+      
+  })
+}
 
 exports.addCustomerSubscription = function(req, res, next){
   var stripeToken = req.body.stripeToken.id;

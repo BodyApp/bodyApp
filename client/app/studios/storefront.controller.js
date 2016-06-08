@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, Studios, Auth, User, Schedule, $rootScope) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, Studios, Auth, User, Schedule, Studio, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
     $scope.currentUser = currentUser;
     console.log(currentUser)
@@ -111,33 +111,33 @@ angular.module('bodyAppApp')
         if (!$rootScope.subscriptions[studioId] && currentUser.stripe && currentUser.stripe.subscription) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
         console.log("Subscription active? " + $rootScope.subscriptions[studioId])
       }
-      ref.onAuth(function(authData) {
-        if (authData) {
-          // console.log("User is authenticated with fb ");
-          getUserBookings()
-          getAccountId()
-          checkSubscriptionStatus()
-        } else {
-          console.log("User is logged out");
-          if (currentUser.firebaseToken) {
-            ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
-              if (error) {
-                Auth.logout();
-                $window.location.reload()
-                console.log("Firebase currentUser authentication failed", error);
-              } else {
-                if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
-                getUserBookings()
-                getAccountId()
-                checkSubscriptionStatus()
-              }
-            }); 
-          } else {
+      // ref.onAuth(function(authData) {
+      //   if (authData) {
+      //     // console.log("User is authenticated with fb ");
+      //     getUserBookings()
+      //     getAccountId()
+      //     checkSubscriptionStatus()
+      //   } else {
+      //     console.log("User is logged out");
+      //     if (currentUser.firebaseToken) {
+      //       ref.authWithCustomToken(currentUser.firebaseToken, function(error, authData) {
+      //         if (error) {
+      //           Auth.logout();
+      //           $window.location.reload()
+      //           console.log("Firebase currentUser authentication failed", error);
+      //         } else {
+      //           if (currentUser.role === "admin") console.log("Firebase currentUser authentication succeeded!", authData);
+      //           getUserBookings()
+      //           getAccountId()
+      //           checkSubscriptionStatus()
+      //         }
+      //       }); 
+      //     } else {
             // Auth.logout();
             // $window.location.reload()
-          }
-        }
-      })
+      //     }
+      //   }
+      // })
     }
 
     // if (currentUser && currentUser.$promise) {
@@ -244,10 +244,12 @@ angular.module('bodyAppApp')
       })
       .success(function(data) {
         console.log("Successfully updated customer subscription status.");
+        console.log(data)
         Auth.updateUser(data);
         currentUser = data;
         // console.log(currentUser)
         $rootScope.subscriptions = $rootScope.subscriptions || {}
+        if (!currentUser.studioSubscriptions) $rootScope.subscriptions = {}
         if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
           $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
           if (!$rootScope.subscriptions[studioId]) $rootScope.subscriptions[studioId] = currentUser.stripe.subscription.status === "active"
@@ -432,6 +434,51 @@ angular.module('bodyAppApp')
     $scope.joinStudioClicked = function(slot) {
       if ($rootScope.subscribing) return
       checkMembership(slot)
+    }
+
+    $scope.cancelSubscription = function() {
+      // console.log(currentUser);
+      // var planId;
+      // ref.child('studios').child(studioId).child('stripeConnected').child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
+        // snapshot.forEach(function(plan) {
+          // planId = plan.val().id  
+      if (confirm("Are you sure you want to cancel your subscription?")) {
+        var modalInstance = openCancellationConfirmedModal()
+        $http.post('/api/payments/cancelcustomersubscription', {            
+            studioId: studioId,
+            // planInfo: planId,
+            accountId: accountId
+          })
+          .success(function(data) {
+            console.log("Successfully cancelled subscription to " + studioId);
+            Auth.updateUser(data);
+            $rootScope.subscriptions = $rootScope.subscriptions || {};
+            delete $rootScope.subscriptions[studioId];
+          })
+          .error(function(err) {
+            console.log(err)                
+          }.bind(this));
+        }
+      }
+        // })
+      // })
+      
+    }
+
+    function openCancellationConfirmedModal() {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/account/settings/cancellation.html',
+          controller: 'CancellationCtrl',
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+        }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+        });
+
+        return modalInstance;
     }
 
     $scope.playYoutubeVideo = function() {

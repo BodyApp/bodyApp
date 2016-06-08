@@ -63,15 +63,16 @@ exports.createSubscriptionPlan = function(req, res, next){
 exports.deleteSubscriptionPlan = function(req, res, next){
   var studioId = req.body.studioId;
   var planId = req.body.planId;
-  var accessCode = req.body.accessCode;
+  var accountId = req.body.accountId;
 
   // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(snapshot) {
   //   if (snapshot.exists()) {
 
-      var stripe = require("stripe")(accessCode)
+      // var stripe = require("stripe")(accessCode)
       // var stripe = require("stripe")(snapshot.val())
 
       stripe.plans.del(planId,
+        { stripe_account: accountId }
       // {
       //   stripe_account: snapshot.val()
       // }, 
