@@ -5,6 +5,9 @@ angular.module('bodyAppApp')
     var auth = firebase.auth();
 
     $scope.currentUser = Auth.getCurrentUser()
+    $scope.currentUlr = $location.absUrl() //Not working
+    $scope.classId = classId;
+    $scope.studioId = studioId;
 
     formatDateTime()
 
@@ -25,6 +28,8 @@ angular.module('bodyAppApp')
 	    	getClassType(snapshot.val().classType)
 	    	getWorkout(snapshot.val().workout)
 	    	getStudioLogo()
+	    	calendarDateSetter()
+	    	calendarDateSetterEnd($scope.classDetails.duration)
 	    })
 	  }
 
@@ -80,6 +85,18 @@ angular.module('bodyAppApp')
         console.log(error)
       });
 	  }
+
+	  function calendarDateSetter() {
+      var timeOffset = moment().utcOffset();
+      var date = new Date(classId*1 - timeOffset*60*1000);
+      $scope.startDateTime = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+    } 
+
+    function calendarDateSetterEnd(duration) {
+      var timeOffset = moment().utcOffset();
+      var date = new Date(classId*1 - timeOffset*60*1000 + $scope.classDetails.duration*60*1000);
+      $scope.endDateTime = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+    }
 
 	  $scope.cancelClass = function() {
 	  	if ($scope.bookings[$scope.currentUser._id]) {
