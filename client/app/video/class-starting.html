@@ -29,8 +29,8 @@
 							<h4 class="bold">Scheduled For:</h4>
 							<div class="row mt8">
 								<div class="col-xs-6">
-									<h5 class="lightgray">Thursday May 30</h5>
-									<h5 class="lightgray">5:30p EDT for 35 min</h5>
+									<h5 class="lightgray">{{formattedDateTime.date}}</h5>
+									<h5 class="lightgray">{{formattedDateTime.time}} for {{classDetails.duration}} min</h5>
 								</div>
 								<div class="col-xs-6">
 									<ul class="panel-action-list">
@@ -56,7 +56,7 @@
 									<div class="row">
 										<div class="col-xs-12">
 											<h4>{{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
-											<h5 class="lightgray">Pepper Pike, USA</h5>
+											<!-- <h5 class="lightgray">Pepper Pike, USA</h5> -->
 											<h5 class="lightgray"><span class="bold">{{instructorDetails.title}}</span> with a <span class="bold royalblue">{{instructorDetails.trainerRating}} / 5</span> rating</h5>
 										</div>
 									</div>
@@ -78,25 +78,9 @@
 							<div class="row mb8 classmate">
 								<div class="col-xs-12">	
 									<img class="round-photo inline-block classmate-photo" width="50" height="50" src="/assets/images/justin-photo.jpg">
-									<h5 class="inline-block">Justin M from Louisville, USA</h5>
-								</div>
-							</div>
-							<div class="row mb8 classmate">
-								<div class="col-xs-12">	
-									<img class="round-photo inline-block classmate-photo" width="50" height="50" src="/assets/images/justin-photo.jpg">
-									<h5 class="inline-block">Justin M from Louisville, USA</h5>
-								</div>
-							</div>
-							<div class="row mb8 classmate">
-								<div class="col-xs-12">	
-									<img class="round-photo inline-block classmate-photo" width="50" height="50" src="/assets/images/justin-photo.jpg">
-									<h5 class="inline-block">Justin M from Louisville, USA</h5>
-								</div>
-							</div>
-							<div class="row mb8 classmate">
-								<div class="col-xs-12">	
-									<img class="round-photo inline-block classmate-photo" width="50" height="50" src="/assets/images/justin-photo.jpg">
-									<h5 class="inline-block">Justin M from Louisville, USA</h5>
+									<h5 class="inline-block">Justin M 
+										<!-- <span>from Louisville, USA</span> -->
+									</h5>
 								</div>
 							</div>
 						</div>
@@ -109,11 +93,15 @@
 						<div class="col-sm-9">
 							<div class="row">
 								<div class="col-xs-12">
-									<h4 class="mb8 royalblue">Bootcamp Lvl 1</h4>
-									<h5>Requires: Dumbbells</h5>
-									<h5>Open to: All (Members & Drop Ins)</h5>
+									<h4 class="mb8 royalblue">{{classType.name}}</h4>
+									<h5>Requires: 
+										<span ng-repeat = "requirement in classType.equipment">
+											{{requirement.name}}<span ng-show="classType.equipment.length > 1 && $index != classType.equipment.length-1">, </span>
+										</span>
+									</h5>
+									<h5>Open to: {{classType.openTo}}</h5>
 									<hr class="small-divider">
-									<h5 class="lightgray">This is our signature style of workout, no matter where you are in your fitness journey we have just what you need. You will leave this class sweaty and accomplished. Let's get after it y'all!</h5>
+									<h5 class="lightgray">{{classType.classDescription}}</h5>
 								</div>
 							</div>
 						</div>
@@ -124,20 +112,28 @@
 							<h5>Workout</h5>
 						</div>
 						<div class="col-sm-9">
-							<div class="row workout-card">
-								<div class="col-xs-5">
-									<h5>Set 1</h5>
-									<h5 class="lightgray">EMOM 10 min</h5>
-								</div>
-								<div class="col-xs-7">
-									<h5>Exercises</h5>
-									<h5 class="lightgray">10 burpees</h5>
-									<h5 class="lightgray">10 Sit ups</h5>
-									<h5 class="lightgray">10 Jumping Jacks</h5>
+							<div class="row">
+								<div class="col-xs-12">
+									<h4 class="mb8 royalblue">{{workout.title}}</h4>
+									<div class = "row" ng-repeat = "set in workout.sets">
+										<div class = "row workout-card" >
+											<div class="col-xs-5">
+												<h5>Set {{$index+1}}</h5>
+												<h5 class="lightgray">{{set.title}}</h5>
+											</div>
+											<div class="col-xs-7">
+												<h5>Exercises</h5>
+													<div ng-repeat = "exercise in set.exercises">
+													<h5 class="lightgray">{{exercise.name}}</h5>
+												</div>
+											</div>
+										</div>
+										<hr ng-show = "$index !== workout.sets.length-1" class="content-divider mt16 mb16">
+									</div>
 								</div>
 							</div>
-							<hr class="content-divider mt16 mb16">
-							<div class="row workout-card">
+							
+<!-- 							<div class="row workout-card">
 								<div class="col-xs-5">
 									<h5>Set 2</h5>
 									<h5 class="lightgray">EMOM 10 min</h5>
@@ -148,11 +144,11 @@
 									<h5 class="lightgray">10 Sit ups</h5>
 									<h5 class="lightgray">10 Jumping Jacks</h5>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
-					<hr class="content-divider mt16 mb16">
-					<div class="row">
+					<hr class="content-divider mt16 mb16" ng-if = "helpCenter">
+					<div class="row" ng-if = "helpCenter">
 						<div class="col-sm-3 mb-xs-16">
 							<h5>Need help?</h5>
 						</div>

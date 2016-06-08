@@ -4,6 +4,8 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
 
+    formatDateTime()
+
     auth.onAuthStateChanged(function(user) {
       if (user) {     
         getClassDetails()
@@ -56,6 +58,15 @@ angular.module('bodyAppApp')
 	  		$scope.storefrontInfo = snapshot.val()
 	  		if(!$scope.$$phase) $scope.$apply();
 	  	})
+	  }
+
+	  function formatDateTime() {
+	  	var dateTime = new Date(classId*1);
+	  	var tzName = jstz().timezone_name;   
+      var timezone = moment().tz(tzName).format('z');
+	  	$scope.formattedDateTime = {};
+	  	$scope.formattedDateTime.date = moment(dateTime).format('dddd MMM Do')
+	  	$scope.formattedDateTime.time = moment(dateTime).format('h:mm a') + " " + timezone
 	  }
 
   })
