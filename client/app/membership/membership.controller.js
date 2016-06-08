@@ -161,7 +161,7 @@ angular.module('bodyAppApp')
         image: '../../assets/images/body-stripe.jpg',
         locale: 'auto',
         token: function(token, args) {
-          // var modalInstance = openPaymentConfirmedModal()
+          var modalInstance = openPaymentConfirmedModal()
           $rootScope.subscribing = true
           $http.post('/api/payments/addcustomersubscription', {
             stripeToken: token,
@@ -173,6 +173,7 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
             console.log("Successfully created new customer subscription.");
+            modalInstance.close();
             // Auth.updateUser(data);
             // currentUser = data;
             // currentUser = currentUser;
@@ -184,6 +185,7 @@ angular.module('bodyAppApp')
           .error(function(err) {
             console.log(err)
             $rootScope.subscribing = false;
+            modalInstance.close()
             return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
           }.bind(this));
         }
@@ -220,7 +222,7 @@ angular.module('bodyAppApp')
         image: '../../assets/images/body-stripe.jpg',
         locale: 'auto',
         token: function(token, args) {
-          // var modalInstance = openDropInPaymentConfirmedModal()
+          var modalInstance = openDropInPaymentConfirmedModal()
           $rootScope.subscribing = true
           $http.post('/api/payments/chargedropin', {
             amount: dropinRate,
@@ -233,6 +235,7 @@ angular.module('bodyAppApp')
           .success(function(data) {
             $rootScope.subscribing = false;
             console.log("Successfully posted to /user/chargedropin");
+            modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
             // currentUser = currentUser;
@@ -241,9 +244,10 @@ angular.module('bodyAppApp')
           })
           .error(function(err) {
             $rootScope.subscribing = false;
-              console.log(err)
-              // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
-              return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+            console.log(err)
+            modalInstance.close()
+            // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
           }.bind(this));
         }
       });
