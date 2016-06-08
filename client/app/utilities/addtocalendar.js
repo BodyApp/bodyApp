@@ -95,6 +95,29 @@ angular.module('jshor.angular-addtocalendar', [])
 		};
 	})
 
+	.directive('addtocalendarplain', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        startDate 	: '@',
+        endDate 		: '@',
+        title 			: '@',
+        timezone		: '@',
+        description : '@',
+        location 		: '@',
+        className 	: '@'
+      },
+    	controller: 'AddtocalendarCtrl',
+      template: '\
+      	<div class="btn-group" ng-click="getIcsCalendarUrl()">\
+					<span ng-class="className || \'btn btn-sm btn-default\'">\
+					Add to Calendar\
+					</span>\
+				</div>\
+			'
+		}
+	})
+
 	.directive('addtocalendarimage', function() {
     return {
       restrict: 'E',

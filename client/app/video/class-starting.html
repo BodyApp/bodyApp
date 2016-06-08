@@ -36,16 +36,17 @@
 									<ul class="panel-action-list">
 								    <li>
 								      <!-- <a href="#" class="panel-action-item btn-blue">Download for cal</a> -->
-								      <addtocalendarimage
+								      <addtocalendarplain
+								      	ng-show = "startDateTime && endDateTime"
 				                start-date= "{{startDateTime}}"
 				                end-date="{{endDateTime}}"
-				                title="Taking BODY Class"
+				                title="{{classType.name}} Class with {{storefrontInfo.studioName}}"
 				                location="https://www.getbodyapp.com/studios/{{studioId}}/classstarting/{{classId}}"
 				                
 				                class-name="panel-action-item btn-blue"
-				                description="Taking a BODY Class"
+				                description="Instructor: {{instructorDetails.firstName}} {{instructorDetails.lastName}}. {{instructorDetails.bio}}\n\nClass Description: {{classType.classDescription}}\n\n{{storefrontInfo.studioName}} Description: {{storefrontInfo.shortDescription}}"
 				                btn-text="Add to calendar"           
-				              ></addtocalendarimage>
+				              ></addtocalendarplain>
 								    </li>            
 						    	</ul>
 								</div>
