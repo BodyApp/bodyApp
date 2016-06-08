@@ -1,3 +1,30 @@
+/*-------ALERTS-------*/
+.studio-alert {
+  background-color: #D1FFFC;
+  position: relative;
+  display: block;
+}
+.studio-alert-container {
+  position: relative;
+}
+.studio-alert-close {
+  position: absolute;
+  right: 0;
+  display: block;
+  font-size: 18px;
+  z-index: 1;
+}
+.studio-setup-shrink {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  display: block;
+  font-size: 18px;
+  z-index: 1;
+}
+
+/*-------GENERAL-------*/
+
 #studio-reviews, #studio-team {
   background: white;
   border-top: 1px solid #dce0e0;

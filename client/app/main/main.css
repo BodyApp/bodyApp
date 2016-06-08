@@ -199,7 +199,7 @@
 }
 
 /*------USER VIDEO FORMAT - STACKED-------*/
-.user-videos-stack .user-videos-large {
+.user-videos-stack .user-videos-large, .user-videos-stack .trainer-video-large {
   position: absolute !important;
   top: 0 !important; 
   left: 0 !important; 
@@ -208,7 +208,7 @@
   overflow: hidden !important;
   z-index: 1 !important;
 }
-.user-videos-stack .user-videos-large img {
+.user-videos-stack .user-videos-large img,  .user-videos-stack .trainer-video-large img {
   position: absolute; 
   top: 0; 
   left: 0; 
@@ -229,6 +229,9 @@
 .user-videos-stack .user-videos-large .classmates-video-name {
   bottom: 20px;
   font-size: 30px;
+}
+.user-videos-stack .trainer-video-large .classmates-video-name {
+  display: none;
 }
 .user-videos-stack li {
   position: absolute;

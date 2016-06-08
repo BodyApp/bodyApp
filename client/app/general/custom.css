@@ -287,9 +287,17 @@
   position: absolute;
   top: -40px;  
 }
+.help-header-icon-container-sm {
+  position: absolute;
+  top: -25px;  
+}
 .ss-help-panel .panel-body {
   border-top: 0;
   padding-top: 50px;  
+}
+.ss-help-panel.help-panel-small .panel-body {
+  border-top: 0;
+  padding-top: 25px;  
 }
 
 /*------TEXT-------*/
@@ -1407,7 +1415,9 @@ h1 {
 .orange {
   color: #FF6638;
 }
-
+.green {
+  color: green;
+}
 .user-list li {
   text-align: left;
   display: inline-block;
