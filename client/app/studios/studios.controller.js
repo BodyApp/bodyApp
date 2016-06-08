@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StudiosCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams, Studios) {
-    if (!Studios.isAdmin()) $state.go('studios')
+  .controller('StudiosCtrl', function ($scope, $http, $location, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams, Studios) {    
     // if (!(Auth.isInstructor() || Auth.isAdmin())) {
     //   $location.path('/')
     // }

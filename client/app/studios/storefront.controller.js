@@ -13,6 +13,7 @@ angular.module('bodyAppApp')
 
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
+    var auth = firebase.auth();
 
     ref.once('value', function(snapshot) {
       if (!snapshot.exists()) {
@@ -48,8 +49,7 @@ angular.module('bodyAppApp')
         //   if (!$rootScope.subscriptions[studioId] && data.stripe && data.stripe.subscription) $rootScope.subscriptions[studioId] = data.stripe.subscription.status === "active"
         //   console.log("Subscription active? " + $rootScope.subscriptions[studioId])
         // }
-
-      var auth = firebase.auth();
+      
       auth.onAuthStateChanged(function(user) {
         if (user) {
           // console.log("User is authenticated with fb ");

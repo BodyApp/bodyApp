@@ -3,7 +3,7 @@
 <div class="page-container-responsive pb72">
 	<div class="row pt48 pb32">
 		<div class="col-md-12 text-center-sm text-center-xs">
-			<h3 class="mb8">You're attending Bootcamp with RALABALA</h3>
+			<h3 class="mb8" ng-show = "classType && storefrontInfo">You're attending {{classType.name}} with {{storefrontInfo.studioName}}</h3>
 		</div>
 		<div class="col-md-6 text-center-sm text-center-xs mb-sm-16">
 			<h5>Need to <a href="#">cancel</a> your reservation?</h5>
@@ -50,21 +50,21 @@
 						<div class="col-sm-9">
 							<div class="row">
 								<div class="col-xs-3">
-									<img src="/assets/images/justin-photo.jpg" class="round-photo">
+									<img ng-src="{{instructorDetails.picture}}" class="round-photo">
 								</div>
 								<div class="col-xs-9">
 									<div class="row">
 										<div class="col-xs-12">
-											<h4>Justin Mendelson</h4>
+											<h4>{{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
 											<h5 class="lightgray">Pepper Pike, USA</h5>
-											<h5 class="lightgray"><span class="bold">Head Coach</span> with a <span class="bold royalblue">4.9 / 5</span> rating</h5>
+											<h5 class="lightgray"><span class="bold">{{instructorDetails.title}}</span> with a <span class="bold royalblue">{{instructorDetails.trainerRating}} / 5</span> rating</h5>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-12 mt16">
-									<h5 class="lightgray">I'm just such an awesome coach on the BODY platofrm. It's really unbelievable. I will get you into the most insane shape ever.</h5>
+									<h5 class="lightgray">{{instructorDetails.bio}}</h5>
 								</div>
 							</div>							
 						</div>
@@ -72,7 +72,7 @@
 					<hr class="content-divider mt16 mb16">
 					<div class="row">
 						<div class="col-sm-3 mb-xs-16">
-							<h5>Teammates</h5>
+							<h5>Classmates</h5>
 						</div>
 						<div class="col-sm-9">
 							<div class="row mb8 classmate">
@@ -183,14 +183,14 @@
 			<div class="row">
 				<div class="col-sm-12 text-center pb24">
 					<img class="round-photo mb8" src="/assets/images/studios/ralabala/logo.jpg" width="150" height="150">
-					<h4 class="mb8">Your studio, RALABALA</h4>
+					<h4 class="mb8">Your studio, {{storefrontInfo.studioName}}</h4>
 					<h5 class="mb16">Have a question about your class? The best way to get information is to ask your instructor directly.</h5>
 					<a href="#" class="btn-blue btn-large">Message Studio</a>
 				</div>
 				<div class="col-sm-12">
 					<hr class="content-divider mt16 mb16">
 					<h5 class="mb16">About this studio</h5>
-					<h5 class="lightgray">The RALABALA online studio is open to everyone and will offer you a challenge for wherever you are in your fitness journey...from just beginning to well on your way. You will leave our classes sweaty and accomplished. We want to provide fitness to Real people who are busy with life. This virtual studio will allow you to experience a total body workout in the comfort of your own home or conference room. We want to help you make your health an attainable goal.</h5>
+					<h5 class="lightgray">{{storefrontInfo.longDescription}}</h5>
 				</div>
 			</div>
 		</div>

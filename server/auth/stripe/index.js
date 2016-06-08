@@ -17,7 +17,6 @@ router
     function(req, res, next) {
       passport.authenticate('stripe',   
         function(err, studioId) {
-          console.log(studioId);
           res.redirect('/studios/'+studioId+'/pricing');
         }
       )(req, res, next)

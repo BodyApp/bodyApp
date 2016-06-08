@@ -17,15 +17,6 @@ angular.module('bodyAppApp')
         controller: 'MainCtrl'
       });
   })
-
-  .config(function ($stateProvider) {
-    $stateProvider
-      .state('class-starting', {
-        url: '/class-starting',
-        templateUrl: 'app/main/class-starting.html',
-        controller: 'MainCtrl'
-      });
-  })
   .config(function ($stateProvider) {
     $stateProvider
       .state('userVideoTemplate', {
