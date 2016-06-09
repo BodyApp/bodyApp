@@ -49,6 +49,7 @@ angular.module('bodyAppApp')
         currentUser = {};
         var ref = firebase.database().ref()
         firebase.auth().signOut();
+        Intercom('shutdown');
       },
 
       /**

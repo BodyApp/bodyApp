@@ -114,6 +114,10 @@ angular.module('bodyAppApp')
       var component = Video.hardwareSetup(element);
     }
 
+    $scope.openNewMessage = function() {
+    	Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
+    }
+
 	  $scope.cancelClass = function() {
 	  	if ($scope.bookings[$scope.currentUser._id]) {
 	  		if (confirm("Are you sure you want to cancel class?")) {

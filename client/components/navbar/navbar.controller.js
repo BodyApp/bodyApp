@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NavbarCtrl', function ($scope, $location, $state, $stateParams, $uibModal, $window, $rootScope, Auth, Studios) {
+  .controller('NavbarCtrl', function ($scope, $location, $state, $stateParams, $uibModal, $window, $rootScope, Auth, Studios, User) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -52,12 +52,14 @@ angular.module('bodyAppApp')
 
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(currentUser) {
+
         var auth = firebase.auth();
         auth.onAuthStateChanged(function(user) {
           if (user) {
             console.log("User is authenticated with fb ");
             getAccountId()
             getSubscriptionStatus()
+            updateIntercom(currentUser)
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
@@ -66,6 +68,7 @@ angular.module('bodyAppApp')
                 if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
                 getAccountId()
                 getSubscriptionStatus()
+                updateIntercom(currentUser)
                   // checkIfStudioAdmin()
               }); 
             } else {
@@ -74,6 +77,7 @@ angular.module('bodyAppApp')
                   if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
                   getAccountId()
                   getSubscriptionStatus()
+                  updateIntercom(currentUser)
                     // checkIfStudioAdmin()
                 }); 
               })
@@ -86,6 +90,57 @@ angular.module('bodyAppApp')
     }
       
     // }
+
+    function updateIntercom(user) {
+      if (user.intercomHash) {
+        window.intercomSettings = {
+          app_id: "daof2xrs",
+          name: user.firstName + " " + user.lastName, // Full name
+          email: user.email, // Email address
+          user_id: user._id,
+          user_hash: user.intercomHash,
+          "goals": user.goals,
+          "emergencyContact": user.emergencyContact,
+          "injuries": user.injuries,
+          // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
+          // "bookedIntro": user.bookedIntroClass ? user.bookedIntroClass : false,
+          // "introTaken": user.introClassTaken ? user.introClassTaken : false,
+          "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+          "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false,
+          // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+          // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+          "referredBy": user.referredBy,
+          "referralCode" : user.referralCode,
+          "role": user.role,
+          "timezone": user.timezone
+        };
+      } else {
+        User.createIntercomHash({id: user._id}, {}, function(user) {
+          Auth.updateUser(user);
+          window.intercomSettings = {
+            app_id: "daof2xrs",
+            name: user.firstName + " " + user.lastName, // Full name
+            email: user.email, // Email address
+            user_id: user._id,
+            user_hash: user.intercomHash,
+            "goals": user.goals,
+            "emergencyContact": user.emergencyContact,
+            "injuries": user.injuries,
+            // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
+            // "bookedIntro": user.bookedIntroClass,
+            // "introTaken": user.introClassTaken,
+            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+            "newUserFlowComplete": user.completedNewUserFlow,
+            // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+            // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+            "referredBy": user.referredBy,
+            "referralCode" : user.referralCode,
+            "role": user.role,
+            "timezone": user.timezone
+          };
+        }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
+      }
+    } 
 
 
     if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {

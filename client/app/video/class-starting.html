@@ -185,19 +185,22 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-12 text-center">
-							<h5 class="mb16 mt16">Before joining, make sure you can see and hear yourself. If your camera doesn't register, restarting your computer may fix the problem.</h5>
-							<a class="btn mb8" href="#">Message Client Support</a>
-							<h5><i class="fa fa-phone"></i> +1 (857)-600-2410</h5>
+							<h5 class="mt16">Before joining, make sure you can see and hear yourself. If your camera doesn't register, restarting your computer may fix the problem.</h5>
+							<!-- <a class="btn mb8" href="#">Message Client Support</a>
+							<h5><i class="fa fa-phone"></i> +1 (857)-600-2410</h5> -->
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-12 text-center pb24">
-					<img class="round-photo mb8" ng-src="{{iconUrl}}" width="150" height="150">
+				<div class="col-sm-12 text-center pb16">
+					<img class="round-photo lightBorder mb8" ng-src="{{iconUrl}}" width="150" height="150">
 					<h4 class="mb8">Your studio, {{storefrontInfo.studioName}}</h4>
 					<h5 class="mb16">Have a question about your class? The best way to get information is to ask your instructor directly.</h5>
-					<a href="#" class="btn-blue btn-large">Message Studio</a>
+					<!-- <a href="#" class="btn-blue btn-large">Message Client Support</a> -->
+					<a class="btn mb8" href="#" ng-click = "openNewMessage()">Message Client Support</a>
+					<h5><i class="fa fa-phone"></i> +1 (857)-600-2410</h5>
+
 				</div>
 				<div class="col-sm-12">
 					<hr class="content-divider mt16 mb16">

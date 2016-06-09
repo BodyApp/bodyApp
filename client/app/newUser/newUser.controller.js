@@ -66,17 +66,17 @@ angular.module('bodyAppApp')
           //     }
         // })
 
-        // //Olark Integration
-        if (user.firstName && user.lastName) {
-            olark('api.visitor.updateFullName', {
-                fullName: user.firstName + " " + user.lastName.charAt(0)
-            });
-        }
+        // // //Olark Integration
+        // if (user.firstName && user.lastName) {
+        //     olark('api.visitor.updateFullName', {
+        //         fullName: user.firstName + " " + user.lastName.charAt(0)
+        //     });
+        // }
 
-        olark('api.visitor.updateCustomFields', {
-            id: user._id,
-            fbId: user.facebookId
-        });
+        // olark('api.visitor.updateCustomFields', {
+        //     id: user._id,
+        //     fbId: user.facebookId
+        // });
 
         //Intercom integration
         if (user.intercomHash) {

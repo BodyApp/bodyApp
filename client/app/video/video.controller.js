@@ -938,9 +938,9 @@ angular.module('bodyAppApp')
 	 						});
  						}
 
- 						olark('api.visitor.updateCustomFields', {
-						    "latestTokboxStreamId": event.stream.id
-						});
+ 					// 	olark('api.visitor.updateCustomFields', {
+						//     "latestTokboxStreamId": event.stream.id
+						// });
 				});
 
 			  publisher.on("streamDestroyed", function (event) {

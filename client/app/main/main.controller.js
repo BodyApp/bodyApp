@@ -27,7 +27,7 @@ angular.module('bodyAppApp')
           ref.child('studios').child(studio.key).child('storefrontInfo').once('value', function(storefrontInfo) {
             $scope.studios[studio.key] = storefrontInfo.val()
             if(!$scope.$$phase) $scope.$apply();
-            console.log($scope.studios)
+            // console.log($scope.studios)
           })
         })
       })

@@ -40,7 +40,7 @@ angular.module('bodyAppApp')
 
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(data) {
-        updateIntercom(data)
+        // updateIntercom(data)
         // getUserBookings()
         // checkSubscriptionStatus()
         // if (data.studioSubscriptions && data.studioSubscriptions[studioId]) {
@@ -104,7 +104,7 @@ angular.module('bodyAppApp')
       console.log("Checking subscription without promise")
       // checkSubscriptionStatus()
       // getUserBookings()
-      updateIntercom(currentUser);
+      // updateIntercom(currentUser);
       // if (currentUser.studioSubscriptions && currentUser.studioSubscriptions[studioId]) {
       //   $rootScope.subscriptions = $rootScope.subscriptions || {};
       //   $rootScope.subscriptions[studioId] = currentUser.studioSubscriptions[studioId].status === "active"
@@ -156,56 +156,56 @@ angular.module('bodyAppApp')
     //   console.log("Can't check subscription status")
     // }
 
-    function updateIntercom(user) {
-      if (user.intercomHash) {
-        window.intercomSettings = {
-          app_id: "daof2xrs",
-          name: user.firstName + " " + user.lastName, // Full name
-          email: user.email, // Email address
-          user_id: user._id,
-          user_hash: user.intercomHash,
-          "goals": user.goals,
-          "emergencyContact": user.emergencyContact,
-          "injuries": user.injuries,
-          // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
-          // "bookedIntro": user.bookedIntroClass ? user.bookedIntroClass : false,
-          // "introTaken": user.introClassTaken ? user.introClassTaken : false,
-          "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
-          "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false,
-          // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
-          // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
-          "referredBy": user.referredBy,
-          "referralCode" : user.referralCode,
-          "role": user.role,
-          "timezone": user.timezone
-        };
-      } else {
-        User.createIntercomHash({id: user._id}, {}, function(user) {
-          Auth.updateUser(user);
-          window.intercomSettings = {
-            app_id: "daof2xrs",
-            name: user.firstName + " " + user.lastName, // Full name
-            email: user.email, // Email address
-            user_id: user._id,
-            user_hash: user.intercomHash,
-            "goals": user.goals,
-            "emergencyContact": user.emergencyContact,
-            "injuries": user.injuries,
-            // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
-            // "bookedIntro": user.bookedIntroClass,
-            // "introTaken": user.introClassTaken,
-            "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
-            "newUserFlowComplete": user.completedNewUserFlow,
-            // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
-            // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
-            "referredBy": user.referredBy,
-            "referralCode" : user.referralCode,
-            "role": user.role,
-            "timezone": user.timezone
-          };
-        }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
-      }
-    }
+    // function updateIntercom(user) {
+    //   if (user.intercomHash) {
+    //     window.intercomSettings = {
+    //       app_id: "daof2xrs",
+    //       name: user.firstName + " " + user.lastName, // Full name
+    //       email: user.email, // Email address
+    //       user_id: user._id,
+    //       user_hash: user.intercomHash,
+    //       "goals": user.goals,
+    //       "emergencyContact": user.emergencyContact,
+    //       "injuries": user.injuries,
+    //       // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
+    //       // "bookedIntro": user.bookedIntroClass ? user.bookedIntroClass : false,
+    //       // "introTaken": user.introClassTaken ? user.introClassTaken : false,
+    //       "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+    //       "newUserFlowComplete": user.completedNewUserFlow ? user.completedNewUserFlow : false,
+    //       // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+    //       // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+    //       "referredBy": user.referredBy,
+    //       "referralCode" : user.referralCode,
+    //       "role": user.role,
+    //       "timezone": user.timezone
+    //     };
+    //   } else {
+    //     User.createIntercomHash({id: user._id}, {}, function(user) {
+    //       Auth.updateUser(user);
+    //       window.intercomSettings = {
+    //         app_id: "daof2xrs",
+    //         name: user.firstName + " " + user.lastName, // Full name
+    //         email: user.email, // Email address
+    //         user_id: user._id,
+    //         user_hash: user.intercomHash,
+    //         "goals": user.goals,
+    //         "emergencyContact": user.emergencyContact,
+    //         "injuries": user.injuries,
+    //         // "latestClass_at": user.classesBookedArray ? Math.floor(new Date(user.classesBookedArray[user.classesBookedArray.length-1]*1) / 1000) : "",
+    //         // "bookedIntro": user.bookedIntroClass,
+    //         // "introTaken": user.introClassTaken,
+    //         "numFriendsOnPlatform": user.friendList ? user.friendList.length : 0,
+    //         "newUserFlowComplete": user.completedNewUserFlow,
+    //         // "isPayingMember" : user.stripe ? user.stripe.subscription.status === "active" : false,
+    //         // "introClassBooked_at": Math.floor(new Date(user.introClassBooked*1) / 1000),
+    //         "referredBy": user.referredBy,
+    //         "referralCode" : user.referralCode,
+    //         "role": user.role,
+    //         "timezone": user.timezone
+    //       };
+    //     }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
+    //   }
+    // }
 
     function getImages() {
       storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {

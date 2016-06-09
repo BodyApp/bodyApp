@@ -14,6 +14,10 @@
 .round-photo {
   border-radius: 50%;
 }
+
+.lightBorder {
+  border: 4px solid #f1f1f1;
+}
 .cover-dark {
   background-color: rgba(0,0,0,.4);
   background-size: cover;
