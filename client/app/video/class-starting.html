@@ -14,7 +14,7 @@
 					<a ng-href="/studios/{{storefrontInfo.studioId}}">Back to storefront</a>
 				</li>
 				<li>
-					<a href="#" class="btn-blue">{{timeUntilClassStart}}</a>
+					<button href="#" class="btn-blue">Class starting in {{timeUntilClassStarts}}</buttons>
 				</li>
 			</ul>
 		</div>
@@ -176,11 +176,16 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="previewVideo" id="audioVideoSetup"></div>
+								<!-- <div class="pt8 previewVideo" id = "audioVideoSetup"></div> -->
+								<!-- <img ng-show="overlay1" class="cameraOverlay" src="/assets/images/fit-mom-overlay.png">
+								<img ng-show="overlay2" class="cameraOverlay" src="/assets/images/big-guy-overlay.png">
+								<img ng-show="overlay3" class="cameraOverlay" src="/assets/images/girl-overlay.png">
+								<div ng-show="overlay4" class="cameraOverlay"></div> -->
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12 text-center">
-							<h5 class="mb16">Before joining, make sure you can see and hear yourself. If your camera doesn't register, restarting your computer may fix the problem.</h5>
+							<h5 class="mb16 mt16">Before joining, make sure you can see and hear yourself. If your camera doesn't register, restarting your computer may fix the problem.</h5>
 							<a class="btn mb8" href="#">Message Client Support</a>
 							<h5><i class="fa fa-phone"></i> +1 (857)-600-2410</h5>
 						</div>

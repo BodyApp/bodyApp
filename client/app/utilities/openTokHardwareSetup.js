@@ -117,8 +117,8 @@ var createDevicePickerController = function(opts, changeHandler) {
       name: _devicePicker.pickedDevice.label,
       audioSource: null,
       videoSource: null,
-      width: 220,
-      height: 170,
+      width: 350,
+      height: 264,
       fitMode: 'cover',
       style: {
         audioLevelDisplayMode: 'off'
@@ -448,6 +448,14 @@ function createOpentokHardwareSetupComponent(targetElement, options, callback) {
         removeClass(container, 'opentok-hardware-setup-loading');
 
         container.appendChild(
+          createElement('div', { className: 'opentok-hardware-setup-mic' }, [
+            createElement('div', { className: 'opentok-hardware-setup-label' }, 'Mic:'),
+            createElement('div', { className: 'opentok-hardware-setup-selector' }, micSelector),
+            micPreview
+          ])
+        );
+
+        container.appendChild(
           createElement('div', { className: 'opentok-hardware-setup-camera' }, [
             createElement('div', { className: 'opentok-hardware-setup-label' }, 'Camera:'),
             createElement('div', { className: 'opentok-hardware-setup-selector' }, camSelector),
@@ -455,11 +463,7 @@ function createOpentokHardwareSetupComponent(targetElement, options, callback) {
           ])
         );
 
-        container.appendChild(createElement('div', { className: 'opentok-hardware-setup-mic' }, [
-          createElement('div', { className: 'opentok-hardware-setup-label' }, 'Mic:'),
-          createElement('div', { className: 'opentok-hardware-setup-selector' }, micSelector),
-          micPreview
-        ]));
+
 
         camera.setDeviceList(devices.filter(function(device) {
           return device.kind === 'videoInput';

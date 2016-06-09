@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $rootScope, studioId, classId, Auth) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $rootScope, studioId, classId, Auth, Video) {
   	var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -10,6 +10,8 @@ angular.module('bodyAppApp')
     $scope.studioId = studioId;
 
     formatDateTime()
+    calculateTimeUntilClassStarts()
+    setupVidAud()
 
     auth.onAuthStateChanged(function(user) {
       if (user) {     
@@ -29,7 +31,7 @@ angular.module('bodyAppApp')
 	    	getWorkout(snapshot.val().workout)
 	    	getStudioLogo()
 	    	calendarDateSetter()
-	    	calendarDateSetterEnd($scope.classDetails.duration)
+	    	calendarDateSetterEnd($scope.classDetails.duration)	    	
 	    })
 	  }
 
@@ -96,6 +98,20 @@ angular.module('bodyAppApp')
       var timeOffset = moment().utcOffset();
       var date = new Date(classId*1 - timeOffset*60*1000 + $scope.classDetails.duration*60*1000);
       $scope.endDateTime = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+    }
+
+    function calculateTimeUntilClassStarts() {
+    	var timeNow = new Date().getTime();
+    	var minutesUntilClassStarts = Math.round((classId*1 - timeNow) / (1000*60),0);
+    	
+    	$scope.timeUntilClassStarts = minutesUntilClassStarts + " minutes";
+    	if (minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = Math.round(minutesUntilClassStarts / 60, 0) + (Math.round(minutesUntilClassStarts / 60, 0) < 2 ? " hour" : " hours");
+    	if (minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = Math.round(minutesUntilClassStarts / 60 / 24, 0) + (Math.round(minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
+    }
+
+    function setupVidAud() {
+      var element = document.querySelector('#audioVideoSetup');
+      var component = Video.hardwareSetup(element);
     }
 
 	  $scope.cancelClass = function() {
