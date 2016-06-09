@@ -1,20 +1,20 @@
 <meta name="fragment" content="!">
-<div ng-include="'components/navbar/navbar.html'" style="margin-bottom: 72px;"></div>
+<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
 
   <section>
     <div class="container hero-banner2">
         <div class="col-sm-6 hidden-xs text-left mt16">
-          <h1 class="royalblue mb8">The BODY Experience</h1>
-          <h2 class="darkblue">It’s like a boutique studio in your living room.</h2>
-          <a href="#" ng-click="signUp()" class="btn mb8" style="padding: 5px 50px;">Get started</a>
+          <h1 class="royalblue mb8">How It Works</h1>
+          <h2 class="darkblue">Take classes with live coaches and teammates</h2>
+          <a href="#" ng-click="signUp()" class="btn-blue big-btn mt16 mb8">Get started</a>
         </div>
         <div class="col-sm-6 visible-xs text-center mb48">
-          <h1 class="royalblue mb0">The BODY Experience</h1>
-          <h2 class="darkblue">It’s like a boutique studio in your living room.</h2>
-          <a href="#" ng-click="signUp()" class="btn mb8" style="padding: 5px 50px;">Get started</a>
+          <h1 class="royalblue mb8">How It Works</h1>
+          <h2 class="darkblue">Take classes with live coaches and teammates</h2>
+          <a href="#" ng-click="signUp()" class="btn-blue big-btn mt16 mb8">Get started</a>
         </div>
         <div class="col-sm-6 text-center">
-          <img src="assets/images/form-correction.gif">
+          <img src="assets/images/coaches.png">
         </div>
         <div ng-click = "scrollDown()" class="arrow">
           <span>
@@ -27,11 +27,11 @@
   <section id="scroll-link" class="white-section">
     <div class="container">
         <div class="col-sm-7 col-sm-push-5">
-          <h2 class="mt56 darkblue">We send you everything you need</h2>
-          <h4>Weight and resistance training are an important part of our program. As part of your membership, you’ll receive free kits with all the equipment needed for class.</h4>
+          <h2 class="mt56 mb16 royalblue">It's like a boutique studio in your living room.</h2>
+          <h4 class="darkblue thin500">We’re using technology to enhance your home fitness experience. BODY is a leader in multi-way video technology, so you can join classes with your favorite instructors and teammates in real-time.</h4>
         </div>      
         <div class="col-sm-5 col-sm-pull-7">
-          <img class="mt16" src="assets/images/starter-kit.png">
+          <img alt = "live classes" class="mt16" src="assets/images/living-room-workout.png">
         </div>
     </div>
   </section>
@@ -39,11 +39,11 @@
   <section class="white-section">
     <div class="container">
         <div class="col-sm-7">
-          <h2 class="mt56 darkblue">Connect with great instructors and teammates</h2>
-          <h4>Our app uses your video cam to make it easy for your coach to see you in real-time and instruct on form. You’ll sweat it out with peers of similar ability levels to achieve results you didn’t think were possible.</h4>
+          <h2 class="mt56 mb16 royalblue">Instruction from real coaches instead of internet randos</h2>
+          <h4 class="darkblue thin500">Take classes with an instructor and up to 12 classmates. Since our classes are live, you'll find yourself with a new support network, helping you towards your path of greater health and happiness.</h4>
         </div>        
         <div class="col-sm-5 text-center">
-          <img class="mt16" src="assets/images/withfriends.png">
+          <img class="mt16" src="assets/images/real-coach.png">
         </div>
     </div>
   </section>
@@ -51,41 +51,55 @@
   <section class="white-section">
     <div class="container">
       <div class="col-sm-12 text-center">
-        <h2 class="mb72 darkblue">Sticking with your routine is now easy</h2>
+        <h2 class="mb56 royalblue">A routine you'll stick with</h2>
       </div>
 
       <div class="col-sm-offset-1 col-sm-5 text-center">
         <div class="divider-middle"></div>
-        <img src="assets/images/contact-us.png">
-        <h4 class="mt16 mini-header">Consult a coach anytime</h4>
-        <p style="margin: 0px 20px;">Questions about an injury? Meal choice? No problem. Call us anytime.</p>
+        <img alt="online fitness experience" src="assets/images/withfriends.png" height="250">
+        <h4 class="mt16 mb16 mini-header">Social fitness experience</h4>
+        <div class="col-sm-8 col-sm-push-2">
+          <h5>Sweat it out with friends and peers of similar ability levels.</h5>
+        </div>
       </div>
 
       <div class="col-sm-5 text-center">
-        <img src="assets/images/travel.png">
-        <h4 class="mt16 mini-header">Workout from anywhere</h4>
-        <p>All you need is a laptop and wifi connection.</p>      
+        <img alt="exercise from anywhere" src="assets/images/travel.png" height="250">
+        <h4 class="mt16 mb16 mini-header">Workout from anywhere</h4>
+        <div class="col-sm-8 col-sm-push-2">
+          <h5>All you need is a laptop and wifi connection.</h5>
+        </div>
       </div>      
 
     </div>
   </section>    
 
-  <section class="lightblue-section">
-    <div class="container text-center">
-      <div class="visible-xs mt32"></div>
-      <h2 class="white mb24">Take a complimentary intro class</h2>
-      <h4 class="purpleblue margins hidden-xs">The BODY Intro Class is completely free and designed to introduce you to the BODY program and have some fun – all while getting fitter. </h4>
-      <h4 class="purpleblue visible-xs">The BODY Intro Class is completely free and designed to introduce you to the BODY program and have some fun – all while getting fitter. </h4>
-
-      <div class="col-sm-12 text-center mt32 hidden-xs">
-        <a href="#" ng-click="loginOauth('facebook')" class="btn-white" style="padding: 20px 50px;"><span style="font-size: 20px;">Get started</span></a>     
-      </div>
-      <div class="col-sm-12 text-center mt32 mb56 visible-xs">
-        <a href="#" ng-click="signUp()" class="btn-white">Get started</a>     
+<div class="panel-light pt48 pb40">
+  <div class="page-container-responsive">
+    <div class="panel">
+      <div class="row">
+        <div class="col-sm-8 hidden-xs">
+          <div class="earn-banner">
+            <a href="/createstudio">
+              <img src="/assets/images/studios/body/findprogram.jpg">
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-4 earn-panel-body">
+          <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}">
+          </div>
+          <div class="va-container va-container-v va-container-h earn-panel-content">
+            <div class="va-middle">
+              <h4 class="mb16">Find a program you love</h4>
+              <h5>Hate commitment? No problem. Drop in for a class with any studio.</h5>
+              <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">View Studios</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-  </section>
+  </div>
+</div>
 
 
 <div ng-include="'components/footer/footer.html'"></div>

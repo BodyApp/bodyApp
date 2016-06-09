@@ -819,6 +819,9 @@
 .panel-dark, .panel-header {
   background-color: #edefed;
 }
+.panel-light {
+  background-color: white; 
+}
 .panel-header:first-child, .panel-body:first-child, ul.panel-body>li:first-child, ol.panel-body>li:first-child, .panel-footer:first-child {
   border-top: 0;
 }
@@ -1417,6 +1420,9 @@ h1 {
 }
 .green {
   color: green;
+}
+.thin500 {
+  font-weight: 500;
 }
 .user-list li {
   text-align: left;

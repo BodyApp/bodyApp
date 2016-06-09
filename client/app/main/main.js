@@ -44,6 +44,14 @@ angular.module('bodyAppApp')
   })
   .config(function ($stateProvider) {
     $stateProvider
+      .state('discover', {
+        url: '/discover',
+        templateUrl: 'app/main/discover.html',
+        controller: 'MainCtrl'
+      });
+  })
+  .config(function ($stateProvider) {
+    $stateProvider
       .state('invite-a-friend', {
         url: '/invite-a-friend',
         templateUrl: 'app/main/invite-a-friend.html',
