@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('bodyAppApp')
-.controller('VideoCtrl', function ($scope, $location, Video, User) {
+.controller('VideoCtrl', function ($scope, $location, Video, User, Auth) {
 
 	var studioId = Video.getStudio();
 	var classId = Video.getClassId();
 
+	var currentUser = Auth.getCurrentUser()
+
 	if (!studioId || !classId) {
-		$location.path('/')
+		return $location.path('/')
 	}
 
 	var ref = firebase.database().ref().child('studios').child(studioId);
@@ -15,11 +17,15 @@ angular.module('bodyAppApp')
   var auth = firebase.auth();
 
   $scope.showWorkout = true;
+  var userIsInstructor;
+
+  $scope.consumerObjects = {};
+  var connectionCount = 0;
 
 	auth.onAuthStateChanged(function(user) {
     if (user) {     
       getClassDetails()
-      
+      getBookedUsers()
     }
   })
 
@@ -28,9 +34,26 @@ angular.module('bodyAppApp')
     	if (!snapshot.exists()) return console.log("No class found") //Instead, should return $location.path('/studios/'+studioId)
     	$scope.classDetails = snapshot.val();
     	if(!$scope.$$phase) $scope.$apply();
-    	connect($scope.classDetails)
+    	userIsInstructor = $scope.classDetails.instructor === Auth.getCurrentUser()._id;
+    	if ($scope.bookedUsers) connect($scope.classDetails)
     	getWorkout($scope.classDetails.workout)
+	    getInstructorDetails($scope.classDetails.instructor)
     })
+  }
+
+  function getBookedUsers() {
+  	ref.child('bookings').child(classId).on('value', function(snapshot) {
+  		$scope.bookedUsers = snapshot.val()
+    	if(!$scope.$$phase) $scope.$apply();
+  		if ($scope.classDetails) connect($scope.classDetails)
+  	})
+  }
+
+  function getInstructorDetails(instructorId) {
+  	ref.child('instructors').child(instructorId).on('value', function(snapshot) {
+  		$scope.instructor = snapshot.val()
+    	if(!$scope.$$phase) $scope.$apply();
+  	})
   }
 
   function getWorkout(workoutId) {
@@ -44,7 +67,7 @@ angular.module('bodyAppApp')
 		Intercom('showNewMessage', "");
 	}
 
-	function sendIntercomTokboxError = function(error) {
+	function sendIntercomTokboxError(error) {
 		Intercom('trackEvent', 'tokboxError', {
 			errorDate_at: Math.floor(new Date() / 1000),
 			error: error
@@ -63,12 +86,10 @@ angular.module('bodyAppApp')
 		var connected = false;
 		var session;
 		var publisher;
-			
-		// setStreamAcceptor();
 
 		if (OT.checkSystemRequirements() == 1) {
 			session = OT.initSession(apiKey, sessionId);
-			setSessionEvents(session)
+			setSessionEvents(session, classToJoin)
 			$scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
       	console.log("Disconnecting session because navigated away.")
         session.disconnect()
@@ -162,8 +183,8 @@ angular.module('bodyAppApp')
 			}
 
 			function initPublisher() {
-				publisher = OT.initPublisher(getIdOfBox(userIsInstructor?0:1), {
-		      insertMode: 'replace',
+				publisher = OT.initPublisher('myfeed'), {
+		      insertMode: 'append',
 		      audioSource: audioInputDevice, 
 		      videoSource: videoInputDevice,
 		      resolution: suggestedResolution,
@@ -180,6 +201,7 @@ angular.module('bodyAppApp')
 		      }
 		    }, function(err) {
 		    	if (err) {
+		    		sendIntercomTokboxError(err);
 				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
 				      // Access denied can also be handled by the accessDenied event
 				      alert('Please allow access to the Camera and Microphone and try publishing again.');
@@ -195,7 +217,7 @@ angular.module('bodyAppApp')
 				    publish(session, publisher, connected, publisherInitialized);
 			    	console.log("Publisher successfully initialized")
 			    }
-		    });
+		    }
 			}				
 		}
 	};
@@ -204,6 +226,7 @@ angular.module('bodyAppApp')
 	  if (connected && publisherInitialized) {
 	    session.publish(publisher, function(err) {
 			  if(err) {
+			  	sendIntercomTokboxError(err);
 			  	console.log(err);
 			    if (err.code === 1553 || (err.code === 1500 && err.message.indexOf("Publisher PeerConnection Error:") >= 0)) {
 			      alert("Streaming connection failed. This could be due to a restrictive firewall.");
@@ -220,24 +243,9 @@ angular.module('bodyAppApp')
 	function setPublisherEvents(publisher) {
 		publisher.on('streamCreated', function (event) {
 	    console.log('The publisher started streaming with id ' + event.stream.id);
-	    
-	    //Sets Stream IDs in the class object for easier diagnosis of tokbox stream issues
-	    // if (userIsInstructor) {
-	    // 	ref.child("trainerClasses").child(currentUser._id).child(classToJoin.dateTime).update({tokboxStreamId: event.stream.id})
-	    // } else {
-	    // 	ref.child("bookings").child(classToJoin.dateTime).child(currentUser._id).update({tokboxStreamId: event.stream.id})
-	    // }
-	    
-
-	    Intercom('update', {
-				"latestTokboxStreamId": event.stream.id
-			});
-
-			if (event.connection && event.connection.connectionId) {
-				Intercom('update', {
-					"latestTokboxConnectionId": event.connection.connectionId
-				});
-			}
+	   
+	   	if (event.stream && event.stream.id) Intercom('update', { "latestTokboxStreamId": event.stream.id });
+			if (event.connection && event.connection.connectionId) Intercom('update', { "latestTokboxConnectionId": event.connection.connectionId });
 		});
 
 	  publisher.on("streamDestroyed", function (event) {
@@ -245,7 +253,7 @@ angular.module('bodyAppApp')
 		  console.log("The publisher stopped streaming. Reason: " + event.reason);
 		  if (event.reason === 'networkDisconnected') {
 	      alert('You lost internet connection, so we sent you to the dashboard. Please try joining the class again.');
-	      $location.path('/schedule')
+	      goBackToClassStarting()
 	    }
 		});
 
@@ -254,6 +262,7 @@ angular.module('bodyAppApp')
 		    // The user has granted access to the camera and mic.
 		  },
 		  accessDenied: function accessDeniedHandler(event) {
+		  	sendIntercomTokboxError("User denied access to video and/or microphone");
 		  	console.log("User denied access to video and/or microphone")
 		    alert("Oh no!  If you don't allow us access to your video and microphone, we can't stream your video to others!  Please reload this page and accept the camera / microphone access request.")
 		  },
@@ -268,116 +277,114 @@ angular.module('bodyAppApp')
 		});
 	}
 
-	function setSessionEvents(session) {
+	function subscribeToStream(streamEvent, subscriberBox, instructorStream, vidWidth, vidHeight) {
+		var streamId = streamEvent.connection.data.toString()
+	  var subscriber = session.subscribe(streamEvent, subscriberBox, {
+	    insertMode: 'append',
+	    width: vidWidth,
+		  height: vidHeight,
+		  mirror: true,
+	    style: {
+	    	buttonDisplayMode: 'off',
+	    	nameDisplayMode: 'off'
+	    } // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
+	  }, function(err) {
+	  	if (err) {
+	  		console.log(err)
+	  	} else {
+	  		if (!userIsInstructor && !instructorStream) subscriber.restrictFrameRate(true); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
+		  	console.log("Received stream with streamId " +streamId);
+
+		  	if (!instructorStream) {
+					// if (!subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
+					// if (subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
+					subscriberObjects[streamId].subscriber = subscriber; //Add subscriber to subscriberObjects (used to turn audio on/off)				
+				}
+
+		  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
+				  console.log('started talking');
+				  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
+				  setMusicVolume($scope.musicVolume/2.5)
+				}, function() {
+					setMusicVolume($scope.musicVolume)
+				  console.log('stopped talking');
+				  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
+				});
+
+		  	if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
+		  		subscriber.setAudioVolume(100);
+		  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
+		  	} else {
+		  		subscriber.setAudioVolume(100);
+		  		subscriber.subscribeToAudio(true); // Audio on in any other case
+		  	}
+
+				// if (userIsInstructor) {
+				// 	subscriber.setStyle("nameDisplayMode", "on");
+				// } else {
+				// 	subscriber.setStyle("nameDisplayMode", "off");	
+				// }
+		  	
+		  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : $scope.instructor.picture); //Sets image to be displayed when no video
+		  	subscriber.setStyle('audioLevelDisplayMode', 'off');
+
+		  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
+		  		console.log("Video temporarily disabled due to internet quality being low.")
+				  // Set picture overlay
+				  // domElement = document.getElementById(subscriber.id);
+				  // domElement.style["visibility"] = "hidden";
+				});
+
+				subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
+					console.log("Video re-enabled due to internet quality being high enough.")
+					// Remove picture overlay
+				  // domElement = document.getElementById(subscriber.id);
+				  // domElement.style["visibility"] = "visible";
+				});
+		  }
+	  });
+	}
+
+	function setSessionEvents(session, classToJoin) {
 		session.on('streamCreated', function(event) {
 			var instructorStream = false
 			var instructorInfo;
 			var vidWidth = "48%";
-			var vidHeight;
+			var vidHeight = 70;
+			var subscriberBox = null;
 			// var vidHeight = 70;
-
-			var streamId = event.stream.connection.data.toString();
-			var streamBoxNumber = 1;
-
-			if (streamId === classToJoin.instructor.toString()) {
-				console.log("Received trainer stream")
-				instructorStream = true;
-				vidWidth = "100%";
-			} else {
-				vidHeight = 70;
-				if (!$scope.consumerObjects[streamId]) { //check if the ID is already in consumerList array
-					$scope.consumerList.push(streamId); //Add to consumerListArray if this ID hasn't been seen before
-					streamBoxNumber = $scope.consumerList.length;
-				} else {
-					streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
-				}
-				//If user is in the bookedUsers object.  This should happen 100% of the time, but have the if/else just in case.  May have issue if pull from Firebase hasn't finished yet.
-				if (bookedUsers && bookedUsers[streamId]) {
-					$scope.consumerObjects[streamId] = bookedUsers[streamId]
-        	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-        	if(!$scope.$$phase) $scope.$apply();
-				} else {
-					var streamUser = User.getUser({id: $scope.currentUser._id}, {userToGet: streamId}).$promise.then(function(data) {
-          	$scope.consumerObjects[streamId] = data;
-          	$scope.consumerObjects[streamId].boxNumber = streamBoxNumber;
-          	if(!$scope.$$phase) $scope.$apply();
-          })
-				}
-			}
 
 			if (userIsInstructor) {
 				vidWidth = "16.67%";
 				vidHeight = "16.67%";
 			}
 
-			var subscriberBox = getIdOfBox(instructorStream ? 0 : streamBoxNumber)
+			var streamId = event.stream.connection.data.toString();
+			// var streamBoxNumber = 1;
 
-		  var subscriber = session.subscribe(event.stream, subscriberBox, {
-		    insertMode: 'replace',
-		    width: vidWidth,
-			  height: vidHeight,
-			  mirror: true,
-		    style: {buttonDisplayMode: 'off'} // Mute button turned off.  Might want to consider turning on for trainer vid since other consumers already ahve audio turned off.
-		  }, function(err) {
-		  	if (err) {
-		  		console.log(err)
-		  	} else {
-		  		subscriber.restrictFrameRate(false); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-			  	console.log("Received stream with streamId " +streamId);
-			  	console.log(subscriber);
-
-			  	if (!instructorStream) {
-						if (!subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
-						if (subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
-						subscriberObjects[streamId] = subscriber; //Add subscriber to subscriberObjects (used to turn audio on/off)				
-					}
-
-			  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
-					  console.log('started talking');
-					  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
-					  setMusicVolume($scope.musicVolume/2.5)
-					}, function() {
-						setMusicVolume($scope.musicVolume)
-					  console.log('stopped talking');
-					  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
-					});
-
-			  	if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
-			  		subscriber.setAudioVolume(100);
-			  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
-			  	} else {
-			  		subscriber.setAudioVolume(100);
-			  		subscriber.subscribeToAudio(true); // Audio on in any other case
-			  	}
-
-					if (userIsInstructor) {
-						subscriber.setStyle("nameDisplayMode", "on");
-					} else {
-						subscriber.setStyle("nameDisplayMode", "off");	
-					}
-			  	
-			  	subscriber.setStyle('backgroundImageURI', $scope.consumerObjects[streamId] ? $scope.consumerObjects[streamId].picture : trainerInfo.picture); //Sets image to be displayed when no video
-			  	subscriber.setStyle('audioLevelDisplayMode', 'off');
-
-			  	subscriber.on("videoDisabled", function(event) { // Router will disable video if quality is below a certain threshold
-			  		console.log("Video temporarily disabled due to internet quality being low.")
-					  // Set picture overlay
-					  // domElement = document.getElementById(subscriber.id);
-					  // domElement.style["visibility"] = "hidden";
-					});
-
-					subscriber.on("videoEnabled", function(event) { // Router will re-enable video if quality comes above certain threshold
-						console.log("Video re-enabled due to internet quality being high enough.")
-						// Remove picture overlay
-					  // domElement = document.getElementById(subscriber.id);
-					  // domElement.style["visibility"] = "visible";
-					});
-			  }
-		  });
+			if (streamId === classToJoin.instructor.toString()) {
+				console.log("Received trainer stream")
+				instructorStream = true;
+				vidWidth = "100%";
+			} else {
+			// if ($scope.consumerObjects[streamId]) {
+				// streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
+				// subscriberBox = instructorStream ? "trainerVideo" : "consumer" + streamBoxNumber)
+			// } else {
+				if (!userIsInstructor && Object.keys($scope.consumerObjects).length > 3) return //Consumers should only see 3 other consumers
+				if (bookedUsers && bookedUsers[streamId]) $scope.consumerObjects[streamId] = bookedUsers[streamId]
+				if(!$scope.$$phase) $scope.$apply();
+				var subscriberBox = instructorStream ? "trainerVideo" : "consumer" + Object.keys($scope.consumerObjects).length-1
+			}	
+			subscribeToStream(event.stream, null, true, vidWidth, vidHeight)		
 		});
 
 		session.on("streamDestroyed", function (event) {
-			event.preventDefault() // User picture now displayed when they disconnect.
+			// event.preventDefault() // User picture now displayed when they disconnect.
+			var streamId = event.stream.connection.data.toString();
+			if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
+			if(!$scope.$$phase) $scope.$apply();
+
 			// if (event.reason === 'networkDisconnected') {
 			// 	console.log(event);
 	  //     event.preventDefault(); // prevents object from being destroyed and removed from the DOM.  Replace with the user's picture?

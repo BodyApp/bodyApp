@@ -21,26 +21,27 @@
 		</div>
 	</div>
 	<ul class="user-videos-stack">
-		<li id="myfeed">
-			<img src="/assets/images/video/vid-a.jpg">
-			<span class="classmates-video-name text-center">Justin M</span>
-		</li>
 		<li>
-			<img src="/assets/images/video/vid-d.jpg">
-			<span class="classmates-video-name text-center">Justin M</span>
-		</li>
-		<li>
-			<img src="/assets/images/video/vid-d.jpg">
-			<span class="classmates-video-name text-center">Justin M</span>
-		</li>
-		<li>
-			<img src="/assets/images/video/vid-d.jpg">
-			<span class="classmates-video-name text-center">Justin M</span>
+			<div id="myfeed"></div>
+			<span class="classmates-video-name text-center">You</span>
 		</li>
 		<li class="trainer-video-large">
-			<img src="/assets/images/video/vid-c.jpg">
+			<div id="trainerVideo"></div>
+			<span class="classmates-video-name text-center">{{instructor.firstName}} {{instructor.lastName}}</span>
+		</li>
+		<li ng-repeat = "consumer in consumerObjects">
+			<div ng-attr-id="{{'consumer'+$index}}"></div>
+			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
+		</li>
+		<!-- <li>
+			<div id = "consumer1"></div>
 			<span class="classmates-video-name text-center">Justin M</span>
 		</li>
+		<li>
+			<div id = "consumer2"></div>
+			<span class="classmates-video-name text-center">Justin M</span>
+		</li> -->
+		
 	</ul>
 	<div class="control-menu-open">
 		<!-- <div class="control-tab-open">

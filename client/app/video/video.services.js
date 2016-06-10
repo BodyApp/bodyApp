@@ -44,12 +44,12 @@ angular.module('bodyAppApp')
   	// }
 
     service.getVideoInput = function() {
-      console.log(devices.videoSource())
+      // console.log(devices.videoSource())
       return devices.videoSource();
     }
 
     service.getAudioInput = function() {
-      console.log(devices.audioSource())
+      // console.log(devices.audioSource())
       return devices.audioSource();
     }
 
