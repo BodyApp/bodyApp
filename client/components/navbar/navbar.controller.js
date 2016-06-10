@@ -38,20 +38,21 @@ angular.module('bodyAppApp')
 
     var studioId = $stateParams.studioId;
     var accountId;
-    
-    var ref;
-    Studios.setCurrentStudio(studioId);
-    // currentUser = Auth.getCurrentUser()
+    var currentUser;
+
     if (!studioId) {
       studioId = 'body'
     }
 
-    ref = firebase.database().ref().child('studios').child(studioId);
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    Studios.setCurrentStudio(studioId);
+    // currentUser = Auth.getCurrentUser()
 
     $scope.studioId = studioId;
 
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
-      Auth.getCurrentUser().$promise.then(function(currentUser) {
+      Auth.getCurrentUser().$promise.then(function(data) {
+        currentUser = data;
 
         var auth = firebase.auth();
         auth.onAuthStateChanged(function(user) {
@@ -60,6 +61,7 @@ angular.module('bodyAppApp')
             getAccountId()
             getSubscriptionStatus()
             updateIntercom(currentUser)
+            geolocate()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
@@ -69,6 +71,7 @@ angular.module('bodyAppApp')
                 getAccountId()
                 getSubscriptionStatus()
                 updateIntercom(currentUser)
+                geolocate()
                   // checkIfStudioAdmin()
               }); 
             } else {
@@ -78,6 +81,7 @@ angular.module('bodyAppApp')
                   getAccountId()
                   getSubscriptionStatus()
                   updateIntercom(currentUser)
+                  geolocate()
                     // checkIfStudioAdmin()
                 }); 
               })
@@ -149,6 +153,33 @@ angular.module('bodyAppApp')
 
     $scope.downloadChrome = function() {
       $window.open("https://www.google.com/chrome/index.html");
+    }
+
+    function geolocate() {
+      firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('location').once('value', function(snapshot) {
+        var timeOneHourAgo = new Date().getTime() - 1000*60*60
+        if (!snapshot.exists() || snapshot.val().lastUpdated < timeOneHourAgo) { //Only run geolocator every hour
+          var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
+          geolocator.locate(onGeoSuccess, function(err) {console.log(err)}, true, html5Options);    
+        }
+      })
+    }
+
+    function onGeoSuccess(location) {
+      // console.log(location)
+      if (location && location.address) {
+        firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('location').update({
+          'lastUpdated': new Date().getTime(),
+          'city': location.address.city, 
+          'region': location.address.region, 
+          'postalCode': location.address.postalCode, 
+          'countryCode': location.address.countryCode,
+          'country': location.address.country
+        }, function(err) { 
+          if (err) return console.log(err); 
+          return console.log("user location updated")
+        })
+      }
     }
     
 

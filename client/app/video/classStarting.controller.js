@@ -38,7 +38,16 @@ angular.module('bodyAppApp')
 	  function getBookedUsersInformation() {
 	  	ref.child('bookings').child(classId).on('value', function(snapshot) {
 	  		$scope.bookings = snapshot.val();
-        if(!$scope.$$phase) $scope.$apply();
+	  		if(!$scope.$$phase) $scope.$apply();
+	  		snapshot.forEach(function(booking) {
+	  			console.log(booking.val().facebookId)
+	  			firebase.database().ref().child('fbUsers').child(booking.val().facebookId).child('location').on('value', function(snapshot) {
+	  				if (!snapshot.exists()) return
+	  				console.log(snapshot.val())
+	  				$scope.bookings[booking.key].geolocation = snapshot.val()
+	  				if(!$scope.$$phase) $scope.$apply();
+	  			})
+	  		})
 	  	})
 	  }
 

@@ -32,7 +32,8 @@
     "ng-tags-input": "*",
     "angular-material": "*",
     "angular-material-datetimepicker": "*",
-    "lf-ng-md-file-input": "*"
+    "lf-ng-md-file-input": "*",
+    "geolocator": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

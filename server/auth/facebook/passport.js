@@ -62,7 +62,7 @@ exports.setup = function (User, config) {
 
           user.level = user.level || 0;
           // var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, role: user.role, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
-          user.firebaseToken = firebase.auth().createCustomToken(user._id.toString(), { uid: profile.id, role: user.role, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture });
+          user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName.charAt(0), "gender": user.gender, "picture": user.picture, "email": user.email });
           user.lastLoginDate = user.signUpDate;
 
           user.save(function(err) {
@@ -91,7 +91,7 @@ exports.setup = function (User, config) {
           // var firebaseToken = tokenGenerator.createToken({ uid: profile.id, role: user.role, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture }) 
             // {admin: user.role === "admin"});
 
-          user.firebaseToken = firebase.auth().createCustomToken(user._id.toString(), { uid: profile.id, role: user.role, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture });
+          user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName.charAt(0), "gender": user.gender, "picture": user.picture, "email": user.email });
           // user.firebaseToken = firebaseToken;
           
           if (profile._json) {

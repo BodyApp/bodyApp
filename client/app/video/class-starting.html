@@ -86,11 +86,11 @@
 							<h5>Classmates</h5>
 						</div>
 						<div class="col-sm-9">
-							<div class="row mb8 classmate">
+							<div class="row mb8 classmate" ng-repeat = "(key, booking) in bookings">
 								<div class="col-xs-12">	
 									<img class="round-photo inline-block classmate-photo" width="50" height="50" src="/assets/images/justin-photo.jpg">
-									<h5 class="inline-block">Justin M 
-										<!-- <span>from Louisville, USA</span> -->
+									<h5 class="inline-block">{{booking.firstName}} {{booking.lastName}} 
+										<span>in {{bookings[key].geolocation.city}}, {{bookings[key].geolocation.region}} {{bookings[key].geolocation.countryCode}}</span>
 									</h5>
 								</div>
 							</div>
