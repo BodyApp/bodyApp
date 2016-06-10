@@ -40,10 +40,8 @@ angular.module('bodyAppApp')
 	  		$scope.bookings = snapshot.val();
 	  		if(!$scope.$$phase) $scope.$apply();
 	  		snapshot.forEach(function(booking) {
-	  			console.log(booking.val().facebookId)
 	  			firebase.database().ref().child('fbUsers').child(booking.val().facebookId).child('location').on('value', function(snapshot) {
 	  				if (!snapshot.exists()) return
-	  				console.log(snapshot.val())
 	  				$scope.bookings[booking.key].geolocation = snapshot.val()
 	  				if(!$scope.$$phase) $scope.$apply();
 	  			})
@@ -123,6 +121,10 @@ angular.module('bodyAppApp')
       var component = Video.hardwareSetup(element);
     }
 
+    $scope.endVideoSession = function() { //Turns off the green light if navigate away without joining class.
+    	Video.destroyHardwareSetup()
+    }
+
     $scope.openNewMessage = function() {
     	Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
     }
@@ -140,6 +142,16 @@ angular.module('bodyAppApp')
 	        ref.child("cancellations").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""})
 	      }	
 	  	}
+    }
+
+    $scope.joinClass = function() {
+    	Video.setStudio(studioId);
+    	Video.setClassId(classId);
+    	if ($scope.currentUser._id === $scope.classDetails.instructor) {
+    		$location.path('/trainervideo')	
+    	} else {
+    		$location.path('/uservideo')	
+    	}
     }
 
   })

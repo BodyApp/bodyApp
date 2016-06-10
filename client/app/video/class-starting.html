@@ -1,4 +1,4 @@
-<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
+<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48" ng-click = "endVideoSession()"></div>
 
 <div class="page-container-responsive pb72">
 	<div class="row pt48 pb32">
@@ -11,10 +11,10 @@
 		<div class="col-md-6 text-right text-center-sm text-center-xs">
 			<ul class="starting-action-btns">
 				<li>
-					<a ng-href="/studios/{{storefrontInfo.studioId}}">Back to storefront</a>
+					<a ng-click = "endVideoSession()" ng-href="/studios/{{storefrontInfo.studioId}}">Back to storefront</a>
 				</li>
 				<li>
-					<button href="#" class="btn-blue">Class starting in {{timeUntilClassStarts}}</buttons>
+					<button href="#" class="btn-blue" ng-click = "joinClass()">Class starting in {{timeUntilClassStarts}}</buttons>
 				</li>
 			</ul>
 		</div>

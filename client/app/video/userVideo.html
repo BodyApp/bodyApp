@@ -15,22 +15,12 @@
 					<div class="volume-bars1 music-level"></div>
 					<div class="volume-bars2 music-level"></div>
 					<div class="volume-bars3 music-level"></div>
-					<div class="volume-bars4 music-level"></div>
+					<div class="volume-bars4"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<ul class="user-videos-stack">
-	<!-- apply class .user-videos-stack to switch to stacked layout -->
-	<!-- apply class .user-videos-boxed-7andUnder to switch to boxed layout with 7 or less feeds -->
-	<!-- apply class .user-videos-boxed-over7 to switch to boxed layout with 8 or more feeds -->
-	<!-- apply class .user-video-grid-1 to switch to grid layout with 1 feed-->
-	<!-- apply class .user-video-grid-2 to switch to grid layout with 2 feeds-->
-	<!-- apply class .user-video-grid-3or4 to switch to grid layout with 3 or 4 feeds-->
-	<!-- apply class .user-video-grid-5or6 to switch to grid layout with 5 or 6 feeds-->
-	<!-- apply class .user-video-grid-7or8 to switch to grid layout with 7 or 8 feeds-->
-	<!-- apply class .user-video-grid-9 to switch to grid layout with 9 feeds-->
-	<!-- apply class .user-video-grid-12andUnder to switch to grid layout with 12 or less feeds-->
 		<li id="myfeed">
 			<img src="/assets/images/video/vid-a.jpg">
 			<span class="classmates-video-name text-center">Justin M</span>
@@ -53,39 +43,41 @@
 		</li>
 	</ul>
 	<div class="control-menu-open">
-		<div class="control-tab-open">
+		<!-- <div class="control-tab-open">
 			<a href="#"><i class="fa fa-bars"></i></a>
-		</div>
+		</div> -->
 		<div class="row mt16 control-menu-icons">
 			<div class="col-xs-3 text-center white">
-				<a href="#">
+				<a href="#" ng-click = "showWorkout = true; showClassmates = false;">
 					<i class="fa fa-list"><md-tooltip md-direction="bottom">Workout</md-tooltip></i>
 				</a>
 			</div>
-			<div class="col-xs-3 text-center white">
+			<!-- <div class="col-xs-3 text-center white">
 				<a href="#">
 					<i class="ti-music-alt"><md-tooltip md-direction="bottom">Playlist</md-tooltip></i>
 				</a>
-			</div>
+			</div> -->
 			<div class="col-xs-3 text-center white">
-				<a href="#">
+				<a href="#" ng-click = "showWorkout = false; showClassmates = true;">
 					<i class="fa fa-users"><md-tooltip md-direction="bottom">Class</md-tooltip></i>
 				</a>
 			</div>
 		</div>
-		<div class="panel-body control-menu-workout">
-			<div class="row workout-set">
+		<div class="panel-body control-menu-workout" ng-show = "showWorkout">
+			<div class="row workout-set" ng-repeat = "set in workout.sets">
 				<div class="col-xs-12 text-left">
-					<h5 class="white hidden next-workout">Next</h5>
-					<h4 class="white mb8">EMOM 10 min</h4>
+					<!-- <h5 class="white hidden next-workout">Next</h5> -->
+					<h4 class="white mb8">{{set.title}}</h4>
 					<hr class="content-divider mb8 mt8">
-					<h4 class="white mb8">10 Burpees</h4>
-					<h4 class="white mb8">10 Squats</h4>
-					<h4 class="white mb8">10 Planks</h4>
-					<h4 class="white mb8">10 Jumping Jacks</h4>
+					<div ng-repeat = "exercise in set.exercises">
+						<h4 class="white mb8">{{exercise.name}}</h4>
+						<!-- <h4 class="white mb8">10 Squats</h4>
+						<h4 class="white mb8">10 Planks</h4>
+						<h4 class="white mb8">10 Jumping Jacks</h4> -->
+					</div>
 				</div>
 			</div>
-			<div class="row workout-set">
+			<!-- <div class="row workout-set">
 				<div class="col-xs-12 text-left">
 					<h5 class="white hidden next-workout">Next up</h5>
 					<h4 class="white mb8">EMOM 10 min</h4>
@@ -95,10 +87,10 @@
 					<h4 class="white mb8">10 Planks</h4>
 					<h4 class="white mb8">10 Jumping Jacks</h4>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
-		<div class="panel-body control-menu-music hidden">
+		<!-- <div class="panel-body control-menu-music hidden">
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<h4 class="white mb8 playlist-name">WERK</h4>
@@ -118,9 +110,9 @@
 					<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
-		<div class="panel-body control-menu-class hidden">
+		<div class="panel-body control-menu-class" ng-show = "showClassmates">
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<h4 class="white mb8">12 Classmates</h4>
@@ -147,7 +139,7 @@
 			</div>
 		</div>
 		<div class="support-details text-center">
-			<a href="#">Call support</a>
+			<a href="#" ng-click = "openIntercomMessage()">Message Support Team</a>
 		</div>
 	</div>
 

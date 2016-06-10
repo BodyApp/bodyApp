@@ -3,16 +3,16 @@
 angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('consumerVideo', {
-        url: '/studios/:studioId/consumervideo',
-        templateUrl: 'app/video/consumer_video.html',
+      .state('userVideo', {
+        url: '/uservideo',
+        templateUrl: 'app/video/userVideo.html',
         controller: 'VideoCtrl',
-        authenticate: true,
-        resolve: {
-          studioId: function($stateParams) {
-            return $stateParams.studioId
-          }
-        }
+        authenticate: true
+        // resolve: {
+        //   studioId: function($stateParams) {
+        //     return $stateParams.studioId
+        //   }
+        // }
       })
       .state('trainerVideo', {
         url: '/studios/:studioId/trainervideo',

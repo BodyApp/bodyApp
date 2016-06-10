@@ -6,6 +6,9 @@ angular.module('bodyAppApp')
     var audioInputDevice;
     var devices;
 
+    service.classId;
+    service.studioId;
+
     service.hardwareSetup = function(element) {
       devices = createOpentokHardwareSetupComponent(element, {
         insertMode: 'append'
@@ -49,6 +52,25 @@ angular.module('bodyAppApp')
       console.log(devices.audioSource())
       return devices.audioSource();
     }
+
+    service.setStudio = function(studioId) {
+      service.studioId = studioId
+    }
+
+    service.setClassId = function(classId) {
+      service.classId = classId
+    }
+
+    service.getStudio = function() {
+      return service.studioId;
+    }
+
+    service.getClassId = function() {
+      return service.classId;
+    }
+
+
+
 
   	return service
   })
