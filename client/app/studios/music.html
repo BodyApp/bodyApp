@@ -4,6 +4,17 @@
   <div class="row">
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
+
+      <div class="panel ss-help-panel help-panel-small mt40"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Soundcloud</h4>
+          <h5 class="mb0 lightgray">We use Soundcloud because it's the best way for you to stream awesome songs to your class members without having to pay expensive royalties or forcing your clients to have additional music subscriptions.</h5>
+        </div>
+      </div>
+
       <div class="space-top-4 space-4">
         <a href="#" class="btn btn-block" ng-click = "soundcloudAuth()">Sync Soundcloud</a>
       </div>
@@ -15,7 +26,7 @@
       <div class="panel space-4">
         <div class="panel-body">
           <div class="row col-sm-12">
-            <h5 class="mb8">Connect your Soundcloud account to view your playlists</h5>
+            <h5 class="mb8">Connect your Soundcloud account to view playlists</h5>
             <a href="#" ng-click = "soundcloudAuth()">Sync Soundcloud</a>
           </div>
         </div>

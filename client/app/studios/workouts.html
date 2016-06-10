@@ -11,6 +11,15 @@
 
     <div class="col-md-9">
 
+      <div class="panel space-4">   <!-- No workouts added yet -->
+        <div class="panel-body">
+          <div class="row col-sm-12">
+            <h5 class="mb8">Looks like you don't have any workouts created yet! This is where you define timer settings and specific exercises or movements which are displayed during a class. Workouts can be linked to one or multiple class types.</h5>
+            <a href="#" ng-click = "showAddWorkout = {}; scrollToTop();">Add Workout<i class="ti-arrow-circle-right icon-spacing"></i></a>
+          </div>
+        </div>
+      </div>
+
 <!--
 ******************************************************************************************************************************************** FORM PANEL **************************************************************************************************************************************************
 -->
@@ -184,14 +193,14 @@
                       <input ng-model = "showAddSet.exercises[$index].name" name="" size="30" type="text" placeholder="e.g. 10 Air Squats">
                     </div>                 
                   </div>                               
-                  <div class="row mt8 col-sm-9">
-                    <div class="col-sm-12">
-                      <a href="#" ng-show = "showAddSet.exercises.length < 6" ng-click = "addExercise()">Add Exercise</a>
+                  <div class="row mt8">
+                    <div class="col-sm-9 col-sm-push-3">
+                      <a href="#" ng-show = "showAddSet.exercises.length < 6" ng-click = "addExercise()">Add another exercise <i class="ti-arrow-circle-right icon-spacing"></i></a>
                     </div>
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt16">
                   <div class="col-sm-12">
                     <ul class="panel-action-list">
                       <li>
@@ -208,7 +217,8 @@
 
               <div class="row">
                 <div class="col-sm-12">
-                  <a href="#" ng-click = "showAddSet = {}; initAddExercises();">Add Set</a>
+                  <a href="#" ng-click = "showAddSet = {}; initAddExercises();" class="btn mb8">Add set</a>
+                  <h5 class="lightgray">Each set can contain a max of six exercises. You can add an unlimited number of sets to each workout.</h5>
                 </div>
               </div>
 

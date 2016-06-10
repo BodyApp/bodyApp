@@ -291,9 +291,17 @@
   position: absolute;
   top: -40px;  
 }
+.help-header-icon-container-sm {
+  position: absolute;
+  top: -25px;  
+}
 .ss-help-panel .panel-body {
   border-top: 0;
   padding-top: 50px;  
+}
+.ss-help-panel.help-panel-small .panel-body {
+  border-top: 0;
+  padding-top: 25px;  
 }
 
 /*------TEXT-------*/
@@ -814,6 +822,9 @@
 }
 .panel-dark, .panel-header {
   background-color: #edefed;
+}
+.panel-light {
+  background-color: white; 
 }
 .panel-header:first-child, .panel-body:first-child, ul.panel-body>li:first-child, ol.panel-body>li:first-child, .panel-footer:first-child {
   border-top: 0;
@@ -1411,7 +1422,12 @@ h1 {
 .orange {
   color: #FF6638;
 }
-
+.green {
+  color: green;
+}
+.thin500 {
+  font-weight: 500;
+}
 .user-list li {
   text-align: left;
   display: inline-block;

@@ -4,6 +4,57 @@
   <div class="row">
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
+
+      <div class="panel ss-help-panel help-panel-small mt40"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Class Name</h4>
+          <h5 class="mb0 lightgray">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
+        </div>
+      </div>
+
+      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Specialty Class</h4>
+          <h5 class="mb0 lightgray">Specialty classes are perfect for workshops or events that have unique pricing outside of your studio's standard subscription or drop in rate.</h5>
+        </div>
+      </div>
+
+      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Open To</h4>
+          <h5 class="mb0 lightgray">Types of customers that will be able to sign up for this class.</h5>
+        </div>
+      </div>
+
+      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Equipment Required</h4>
+          <h5 class="mb0 lightgray">This will be displayed on your storefront and tells clients what equipment they need for this class.</h5>
+        </div>
+      </div>
+
+      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Class Description</h4>
+          <h5 class="mb0 lightgray">Help your customers understand what they're getting themselves into. Tell them if it's a beginner or advanced class or if there is prior experience necessary.</h5>
+        </div>
+      </div>
+
       <div class="space-top-4 space-4">
         <a href="#" class="btn btn-block" ng-click = "showAddClass = true; showEditClass = false; scrollTop();">Add Class Type</a>
       </div>
@@ -11,8 +62,16 @@
 
     <div class="col-md-9">
 
-<!-- Add Class PANEL -->
-      <div class="panel space-4" ng-show = "showAddClass || showEditClass">
+      <div class="panel space-4">   <!-- No classes added yet -->
+        <div class="panel-body">
+          <div class="row col-sm-12">
+            <h5 class="mb8">Looks like you don't have any classes created yet! Classes help create variety for your clients. Use class names that will be easy to understand (e.g. Fundamentals, Level One, Advanced, etc).</h5>
+            <a href="#" ng-click = "showAddClass = true; showEditClass = false; scrollTop();">Add Class Type<i class="ti-arrow-circle-right icon-spacing"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel space-4" ng-show = "showAddClass || showEditClass">   <!-- Add Class PANEL -->
         <div class="panel-header">
           <span ng-if = "showAddClass"> Add Class </span>
           <span ng-if = "showEditClass"> Edit Class </span>

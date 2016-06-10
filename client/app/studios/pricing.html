@@ -4,6 +4,37 @@
   <div class="row">
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
+
+      <div class="panel ss-help-panel help-panel-small mt40"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Subscription</h4>
+          <h5 class="mb0 lightgray">There is no cap on the number of classes subscribers can take each month. Your subscribers will be billed monthly to access your services.</h5>
+        </div>
+      </div>
+
+      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Drop In</h4>
+          <h5 class="mb0 lightgray">Drop In pricing is available for customers who are not subscribers to your studio. Drop Ins will be billed each time they take a class.</h5>
+        </div>
+      </div>
+
+      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+        <div class="help-header-icon-container-sm text-center va-container-h">
+          <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
+        </div>
+        <div class="panel-body">
+          <h4 class="text-center mb8">Coupon Codes</h4>
+          <h5 class="mb0 lightgray">Coupon codes can be emailed or posted on social sites for prospective customers.</h5>
+        </div>
+      </div>
+
       <div class="space-top-4 space-4">
         <a href="#" class="btn btn-block" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add Pricing Plan</a>
         <!-- <a href="#" class="mt16 btn btn-block">Add Promotion</a> -->
@@ -12,13 +43,11 @@
     </div>
 
     <div class="col-md-9">
-    <button ng-if = "!stripeConnected" class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button>
-    <a ng-if = "stripeConnected" ng-href = "#" class = "mb32" ng-click = "beginStripeConnect()">Change Connected Stripe Account</a>
 
 <!-- PANEL -->
       <div class="panel space-4">
         <div class="panel-header">
-          Studio Pricing Plans (Limited to one subscription plan & one drop-in rate)
+          Studio Pricing Plans
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add new pricing plan</a>
@@ -27,6 +56,20 @@
         </div>
 
         <div class="panel-body">
+
+          <div class="panel space-4">   <!-- No pricing added yet -->
+            <div class="panel-body">
+              <div class="row col-sm-12">
+                <h5 class="mb8">Looks like you don't have pricing set. Some studios start off with a lower price and raise it after gaining traction. You can always adjust your price in response to changes in demand.</h5>
+                <a href="#" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add pricing plan<i class="ti-arrow-circle-right icon-spacing"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="sm-12 mb16">
+            <h5 class="lightgray mb16">Your studio pricing plans are currently limited to unlimited monthly class subcriptions or one-time class drop ins.</h5>
+          </div>
+
           <div class="row">
 
             <div class="col-md-6" ng-show = "subscriptionPlan">
@@ -36,7 +79,7 @@
                     <!-- <a href="#">Edit</a> | -->
                     <a href="#" ng-click = "deleteSubscriptionPlan(subscriptionPlan.id)">Delete</a>
                   </div>
-                  <h5 class="mb0">Monthly Plan</h5>
+                  <h5 class="mb0">Subscription Price</h5>
                   <h5 class="lightgray">${{subscriptionPlan.amount/100}} Monthly</h5>
                   <h5 class="mt16 mb0">Class Cap</h5>
                   <h5 class="lightgray">Unlimited per month</h5>
@@ -51,7 +94,7 @@
                     <a href="#" ng-click = "editDropinPlan(dropinPlan)">Edit</a> |
                     <a href="#" ng-click = "deleteDropinPlan()">Delete</a>
                   </div>
-                  <h5 class="mb0">Drop In Plan</h5>
+                  <h5 class="mb0">Drop In Price</h5>
                   <h5 class="lightgray">${{dropinPlan.amountInDollars}} Once</h5>
                   <h5 class="mt16 mb0">Class Cap</h5>
                   <h5 class="lightgray">1 class</h5>
@@ -71,8 +114,8 @@
                     <div class="col-sm-9">
                       <div class="select">
                         <select ng-model = "showAddPricingPlan.pricingType">
-                          <option ng-if = "!dropinPlan || editing">Drop In</option>
-                          <option ng-if = "!subscriptionPlan && !editing">Monthly</option>
+                          <option ng-if = "!dropinPlan || editing">Drop In Price</option>
+                          <option ng-if = "!subscriptionPlan && !editing">Subscription Price</option>
                         </select>           
                       </div>
                       <div class="row mt8">
@@ -80,12 +123,12 @@
                           <h5 class="lightgray bold">Bills: Once</h5>
                         </div>
                         <div class="col-sm-12" ng-if = "showAddPricingPlan.type === 'Monthly'">
-                          <h5 class="lightgray bold">Bills: First of every month</h5>
+                          <h5 class="lightgray bold">Bills: Recurring monthly</h5>
                         </div>                        
                       </div>
                       <div class="row mt8">
                         <div class="col-sm-12">
-                          <h5 class="lightgray">How customers pay you. Currently only unlimited monthly and drop in pricing plans are available.</h5>
+                          <h5 class="lightgray">Some studios start off with a lower price and raise it after gaining traction. You can always adjust your price in response to changes in demand.</h5>
                         </div>
                       </div>
                     </div>
@@ -173,6 +216,22 @@
         </div>
       </div>
 <!-- PANEL END--> 
+
+        <div class="panel space-4">
+          <div class="panel-header">
+            Payout Details          
+          </div>
+
+          <div class="panel-body">
+            <h5 class="lightgray mb8">Your studio transactions are handled through Stripe payment processing.</h5>
+            <h5 class="green" ng-if = "stripeConnected">Account Synced: BODY APP INC <i class="fa fa-check"></i></h5>
+            <h5 class="orange" ng-if = "!stripeConnected">No Stripe account synced. You must do this before you can be paid. <i class="fa fa-check"></i></h5>
+            <!-- <button ng-if = "!stripeConnected" class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button> -->
+            <a ng-if = "!stripeConnected" ng-href = "#" class = "btn mt16" ng-click = "beginStripeConnect()">Connect with Stripe <i class="fa fa-cc-stripe"></i></a>
+            <a ng-if = "stripeConnected" ng-href = "#" class = "btn mt16" ng-click = "beginStripeConnect()">Change your connected Stripe account</a>
+
+          </div>
+        </div>
 
 
 <!--
@@ -327,7 +386,7 @@
               Type
             </label>
             <div class="col-sm-9">
-              <div class="select">
+              <div class="select display-block">
                 <select id="class-reg-types" ng-model = "showAddCoupon.couponType">
                   <option>Percentage off</option>
                   <option>Dollars off</option>
@@ -372,7 +431,7 @@
               Duration
             </label>
             <div class="col-sm-9">
-              <div class="select">
+              <div class="select display-block">
                 <select id="coupon-duration" ng-model = "showAddCoupon.duration">
                   <option>once</option>
                   <option>repeating</option>
@@ -394,7 +453,7 @@
             <label class="col-sm-3">
               Max Redemptions
             </label>
-            <div class="col-sm-4">
+            <div class="col-sm-9">
               <input ng-model = "showAddCoupon.max_redemptions" id="redemptions" inputmode="numeric" name="" size="30" type="text" placeholder="e.g. 100">
             </div>
           </div>  
@@ -437,10 +496,6 @@
           </ul>
         </div>
         <div class="panel-body">
-          <div class="row mb16">
-        <!--   -->
-            </div>
-          </div>          
 
           <div class="row mb16">
             <div class="col-sm-12">

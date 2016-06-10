@@ -1,3 +1,4 @@
+<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48 display-none"></div>
 <div class="video-container">
 	<div class="timer-rounds text-right">
 		<div layout="row" class="mb16">
@@ -7,36 +8,72 @@
 			<div class="timer">
 				<h1 class="white timer mb24">0:30</h1>
 				<h3 class="white rounds">1/4</h3>
-			</div>
-		</div>
-	</div>
-	<div class="subscribe-video">
-		<img src="/assets/images/video/vid-a.jpg">
-	</div>
-	<div class="user-videos">
-		<div class="user-videos-container">
-			<div class="your-video">
-				<img src="/assets/images/video/vid-b.jpg">
-			</div>
-			<div class="classmates-video-row">
-				<div class="classmates-video-user">
-					<img src="/assets/images/video/vid-c.jpg">
-					<span class="classmates-video-name text-center">Justin M</span>
-				</div>
-				<div class="classmates-video-user">
-					<img src="/assets/images/video/vid-d.jpg">
-					<span class="classmates-video-name text-center">Justin M</span>
+				<div class="volume-bars">
+					<div class="music-icon music-on">
+						<i class="fa fa-music"></i>
+					</div>
+					<div class="volume-bars1 music-level"></div>
+					<div class="volume-bars2 music-level"></div>
+					<div class="volume-bars3 music-level"></div>
+					<div class="volume-bars4 music-level"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="control-menu">
-		<div class="panel-body control-menu-workout hidden">
-			<div class="row mb16">
-				<div class="col-xs-12 text-center">
-					<img class="round-photo" src="/assets/images/justin-photo.jpg" width="50px;" height="50px;">
-				</div>
+	<ul class="user-videos-stack">
+	<!-- apply class .user-videos-stack to switch to stacked layout -->
+	<!-- apply class .user-videos-boxed-7andUnder to switch to boxed layout with 7 or less feeds -->
+	<!-- apply class .user-videos-boxed-over7 to switch to boxed layout with 8 or more feeds -->
+	<!-- apply class .user-video-grid-1 to switch to grid layout with 1 feed-->
+	<!-- apply class .user-video-grid-2 to switch to grid layout with 2 feeds-->
+	<!-- apply class .user-video-grid-3or4 to switch to grid layout with 3 or 4 feeds-->
+	<!-- apply class .user-video-grid-5or6 to switch to grid layout with 5 or 6 feeds-->
+	<!-- apply class .user-video-grid-7or8 to switch to grid layout with 7 or 8 feeds-->
+	<!-- apply class .user-video-grid-9 to switch to grid layout with 9 feeds-->
+	<!-- apply class .user-video-grid-12andUnder to switch to grid layout with 12 or less feeds-->
+		<li id="myfeed">
+			<img src="/assets/images/video/vid-a.jpg">
+			<span class="classmates-video-name text-center">Justin M</span>
+		</li>
+		<li>
+			<img src="/assets/images/video/vid-d.jpg">
+			<span class="classmates-video-name text-center">Justin M</span>
+		</li>
+		<li>
+			<img src="/assets/images/video/vid-d.jpg">
+			<span class="classmates-video-name text-center">Justin M</span>
+		</li>
+		<li>
+			<img src="/assets/images/video/vid-d.jpg">
+			<span class="classmates-video-name text-center">Justin M</span>
+		</li>
+		<li class="trainer-video-large">
+			<img src="/assets/images/video/vid-c.jpg">
+			<span class="classmates-video-name text-center">Justin M</span>
+		</li>
+	</ul>
+	<div class="control-menu-open">
+		<div class="control-tab-open">
+			<a href="#"><i class="fa fa-bars"></i></a>
+		</div>
+		<div class="row mt16 control-menu-icons">
+			<div class="col-xs-3 text-center white">
+				<a href="#">
+					<i class="fa fa-list"><md-tooltip md-direction="bottom">Workout</md-tooltip></i>
+				</a>
 			</div>
+			<div class="col-xs-3 text-center white">
+				<a href="#">
+					<i class="ti-music-alt"><md-tooltip md-direction="bottom">Playlist</md-tooltip></i>
+				</a>
+			</div>
+			<div class="col-xs-3 text-center white">
+				<a href="#">
+					<i class="fa fa-users"><md-tooltip md-direction="bottom">Class</md-tooltip></i>
+				</a>
+			</div>
+		</div>
+		<div class="panel-body control-menu-workout">
 			<div class="row workout-set">
 				<div class="col-xs-12 text-left">
 					<h5 class="white hidden next-workout">Next</h5>
@@ -62,11 +99,6 @@
 		</div>
 
 		<div class="panel-body control-menu-music hidden">
-			<div class="row mb16">
-				<div class="col-xs-12 text-center">
-					<img class="round-photo" src="/assets/images/justin-photo.jpg" width="50px;" height="50px;">
-				</div>
-			</div>
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<h4 class="white mb8 playlist-name">WERK</h4>
@@ -88,12 +120,7 @@
 			</div>
 		</div>
 
-		<div class="panel-body control-menu-class">
-			<div class="row mb16">
-				<div class="col-xs-12 text-center">
-					<img class="round-photo" src="/assets/images/justin-photo.jpg" width="50px;" height="50px;">
-				</div>
-			</div>
+		<div class="panel-body control-menu-class hidden">
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<h4 class="white mb8">12 Classmates</h4>
@@ -107,28 +134,24 @@
 							</div>
 						</div>
 					</div>
+					<div class="row menu-class-member mb8">
+						<div class="col-xs-12">
+							<img class="menu-class-photo profile-photo" src="assets/images/justin-photo.jpg" width="50" height="50">
+							<div class="menu-class-contact">
+								<h4 class="white mb0">Jake R</h4>
+								<h5 class="white mb0">New York USA</h5>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-
+		<div class="support-details text-center">
+			<a href="#">Call support</a>
+		</div>
 	</div>
+
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div ng-include="'components/footer/footer.html'" class="display-none"></div>

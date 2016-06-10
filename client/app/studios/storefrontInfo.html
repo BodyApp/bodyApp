@@ -1,7 +1,108 @@
-<div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
+<div ng-include="'components/navbar/navbar.html'" class = "mb70 mb-sm-48"></div>
+
+<div class="studio-alert">
+  <div class="page-container-responsive pt16 pb16">
+    <div class="studio-alert-container">
+      <div class="studio-alert-close">
+        <a href="#">
+          <i class="ti-close">
+            <md-tooltip md-direction="bottom">Close</md-tooltip>
+          </i>
+        </a>
+      </div>
+      <div class="row">
+        <div class="col-md-3 hidden-sm hidden-xs">
+          <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
+        </div>
+        <div class="col-md-9">
+          <h5 class="mb8 bold">Congrats your studio is live!</h5>
+          <h5 class="lightgray">That's the first big hurdle over! Your studio is always available from the <a href="#">Storefront tab</a> in the navigation bar. We leave you here at your studio dashboard, the place where you'll manage classes, pricing, and members.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
+
+    <div class="col-md-12">
+      <div class="panel space-4">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="studio-setup-shrink">
+                <a href="#">
+                  <i class="ti-angle-double-down">
+                    <md-tooltip md-direction="bottom">Collapse</md-tooltip>
+                  </i>
+                </a>
+              </div>
+              <div class="studio-setup-header">
+                <h4>Prepare your first class</h4>
+                <hr class="content-divider mt16 mb16">
+              </div>
+            </div>
+          </div>
+          <div class="studio-setup-notifications">
+            <ul class="notifications">
+              <li>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <a href="#">Set pricing for monthly members and drop ins <i class="fa fa-caret-right"></i></a>
+                  </div>
+                  <div class="col-sm-1 text-right">
+                    <a href="#"><i class="ti-close lightgray"></i></a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <a href="#">Add a position title and bio to your instructor profile <i class="fa fa-caret-right"></i></a>
+                  </div>
+                  <div class="col-sm-1 text-right">
+                    <a href="#"><i class="ti-close lightgray"></i></a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <a href="#">Create your first class type <i class="fa fa-caret-right"></i></a>
+                  </div>
+                  <div class="col-sm-1 text-right">
+                    <a href="#"><i class="ti-close lightgray"></i></a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <a href="#">Sync your Soundcloud account to access playlists <i class="fa fa-caret-right"></i></a>
+                  </div>
+                  <div class="col-sm-1 text-right">
+                    <a href="#"><i class="ti-close lightgray"></i></a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <a href="#">Create and assign a workout to one of your class types <i class="fa fa-caret-right"></i></a>
+                  </div>
+                  <div class="col-sm-1 text-right">
+                    <a href="#"><i class="ti-close lightgray"></i></a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <!-- <div class="space-top-4 space-4">
