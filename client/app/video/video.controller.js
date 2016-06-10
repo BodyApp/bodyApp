@@ -26,6 +26,7 @@ angular.module('bodyAppApp')
     if (user) {     
       getClassDetails()
       getBookedUsers()
+      getHeaderImage()
     }
   })
 
@@ -41,11 +42,30 @@ angular.module('bodyAppApp')
     })
   }
 
+  function getHeaderImage() {
+		storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
+      // $scope.headerUrl = url;
+      $scope.headerImageUrl = url
+      console.log(url)
+      if(!$scope.$$phase) $scope.$apply();
+    }).catch(function(error) {
+      console.log(error)
+    });
+	}
+
   function getBookedUsers() {
   	ref.child('bookings').child(classId).on('value', function(snapshot) {
   		$scope.bookedUsers = snapshot.val()
+  		$scope.numBookedUsers = Object.keys($scope.bookedUsers).length
     	if(!$scope.$$phase) $scope.$apply();
   		if ($scope.classDetails) connect($scope.classDetails)
+  		snapshot.forEach(function(bookedUser) {
+  			var userDetails = bookedUser.val()
+  			firebase.database().ref().child('fbUsers').child(userDetails.facebookId).child('location').on('value', function(snapshot) {
+  				if (snapshot.exists()) $scope.bookedUsers[bookedUser.key].location = snapshot.val()
+		    	if(!$scope.$$phase) $scope.$apply();
+  			})
+  		})
   	})
   }
 
@@ -299,6 +319,9 @@ angular.module('bodyAppApp')
 					// if (!subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
 					// if (subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
 					subscriberObjects[streamId].subscriber = subscriber; //Add subscriber to subscriberObjects (used to turn audio on/off)				
+				} else {
+					$scope.instructorDisplayed = true;
+					if(!$scope.$$phase) $scope.$apply();
 				}
 
 		  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
@@ -383,6 +406,7 @@ angular.module('bodyAppApp')
 			// event.preventDefault() // User picture now displayed when they disconnect.
 			var streamId = event.stream.connection.data.toString();
 			if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
+			if (streamId === $classDetails.instructor) $scope.instructorDisplayed = false;
 			if(!$scope.$$phase) $scope.$apply();
 
 			// if (event.reason === 'networkDisconnected') {
