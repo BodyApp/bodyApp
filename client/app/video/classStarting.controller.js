@@ -113,10 +113,11 @@ angular.module('bodyAppApp')
     function calculateTimeUntilClassStarts() {
     	var timeNow = new Date().getTime();
     	var minutesUntilClassStarts = Math.round((classId*1 - timeNow) / (1000*60),0);
-    	
-    	$scope.timeUntilClassStarts = minutesUntilClassStarts + " minutes";
-    	if (minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = Math.round(minutesUntilClassStarts / 60, 0) + (Math.round(minutesUntilClassStarts / 60, 0) < 2 ? " hour" : " hours");
-    	if (minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = Math.round(minutesUntilClassStarts / 60 / 24, 0) + (Math.round(minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
+    
+    	if (minutesUntilClassStarts < 0) return $scope.timeUntilClassStarts = "Click to join class!"	
+    	$scope.timeUntilClassStarts = "Class starting in " + minutesUntilClassStarts + " minutes";
+    	if (minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = "Class starting in " + Math.round(minutesUntilClassStarts / 60, 0) + (Math.round(minutesUntilClassStarts / 60, 0) < 2 ? " hour" : " hours");
+    	if (minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = "Class starting in " + Math.round(minutesUntilClassStarts / 60 / 24, 0) + (Math.round(minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
     }
 
     function setupVidAud() {
