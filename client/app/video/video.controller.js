@@ -29,6 +29,7 @@ angular.module('bodyAppApp')
       getClassDetails()
       getBookedUsers()
       getHeaderImage()
+      receiveRealTimeData()
     }
   })
 
@@ -86,6 +87,11 @@ angular.module('bodyAppApp')
   	})
   }
 
+  function receiveRealTimeData() {
+  	getMusicVolume();
+  	canConsumersHearEachOther();
+  }
+
   function getMusicVolume() {
   	ref.child('realTimeControls').child(classId).child('musicVolume').on('value', function(snapshot) {
   		$scope.musicVolume = snapshot.val()
@@ -94,6 +100,21 @@ angular.module('bodyAppApp')
   		if (!userIsInstructor) {
   			audioPlayer.setVolume(snapshot.val() / 100);
   			console.log("Music volume set to " + snapshot.val())
+  		}
+  	})
+  }
+
+  function canConsumersHearEachOther() {
+  	ref.child('realTimeControls').child(classId).child('consumersCanHearEachOther').on('value', function(snapshot) {
+  		$scope.consumersCanHearEachOther = snapshot.val()
+  		if(!$scope.$$phase) $scope.$apply();
+
+  		for (prop in $scope.consumerObjects) {
+	  		if ($scope.consumersCanHearEachOther) {
+	  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
+	  		} else {
+	  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+	  		}
   		}
   	})
   }
@@ -129,8 +150,6 @@ angular.module('bodyAppApp')
 				audioPlayer = SC.Widget(element);
 				audioPlayer.load(snapshot.val().soundcloudUrl);
 
-				getMusicVolume();
-
 				audioPlayer.bind(SC.Widget.Events.READY, function() {
 					if (firstTimePlayingSong) {
 						elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime + 1000*60*5), 0) //Starts music 5 minutes before official class start time
@@ -149,6 +168,7 @@ angular.module('bodyAppApp')
 								} else {
 									console.log("seeking to track " + (i+1));
 									currentSongIndex = i;			
+
 									return audioPlayer.play()
 								}
 							}	
@@ -157,6 +177,7 @@ angular.module('bodyAppApp')
 				})		
 
 				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+					audioPlayer.setVolume($scope.musicVolume);
 					if (!firstTimePlayingSong && songArray.length > 0) {
 						currentSongIndex++
 						$scope.currentSong = songArray[currentSongIndex];
@@ -396,9 +417,9 @@ angular.module('bodyAppApp')
 		  	console.log("Received stream with streamId " +streamId);
 
 		  	if (!instructorStream) {
-					// if (!subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
-					// if (subscriberObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
-					subscriberObjects[streamId].subscriber = subscriber; //Add subscriber to subscriberObjects (used to turn audio on/off)				
+					// if (!$scope.consumerObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
+					// if ($scope.consumerObjects[streamId]) console.log("subscriber with id " + streamId + " already existed and is being overwritten with new subscriber object.")
+					$scope.consumerObjects[streamId].subscriber = subscriber; //Add subscriber to $scope.consumerObjects (used to turn audio on/off)				
 				} else {
 					$scope.instructorDisplayed = true;
 					if(!$scope.$$phase) $scope.$apply();
