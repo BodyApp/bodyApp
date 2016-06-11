@@ -30,8 +30,8 @@
   border-top: 1px solid #dce0e0;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
-#studio-hero {
-	height: 420px;
+.studio-hero {
+	height: 500px;
 	width: 100%;
 	position: relative;
 	-webkit-transition: height .2s;
@@ -44,10 +44,10 @@
 }
 .cover-gradient {
   background: black;
-  background: -webkit-radial-gradient(top, black, rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
-  background: -o-radial-gradient(top, black, rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
-  background: -moz-radial-gradient(top, black, rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
-  background: radial-gradient(at top, black, rgba(0, 0, 0, 0));
+  background: -webkit-radial-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+  background: -moz-radial-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(at top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   opacity: 0.4;
   vertical-align: middle;
   background-repeat: no-repeat;
@@ -56,7 +56,7 @@
   -o-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
-  height: 420px;
+  height: 500px;
   width: 100%;
   position: absolute;
   top: 0px;
@@ -64,10 +64,10 @@
 }
 .cover-gradient-darker {
   background: black;
-  background: -webkit-radial-gradient(top, black, rgba(0, 0, 0, 0.4)); /* For Safari 5.1 to 6.0 */
-  background: -o-radial-gradient(top, black, rgba(0, 0, 0, 0.4)); /* For Opera 11.1 to 12.0 */
-  background: -moz-radial-gradient(top, black, rgba(0, 0, 0, .4)); /* For Firefox 3.6 to 15 */
-  background: radial-gradient(at top, black, rgba(0, 0, 0, 0.4));
+  background: -webkit-radial-gradient(top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+  background: -moz-radial-gradient(top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+  background: radial-gradient(at top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
   opacity: 0.6;
   vertical-align: middle;
   background-repeat: no-repeat;
@@ -76,13 +76,13 @@
   -o-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
-  height: 420px;
+  height: 500px;
   width: 100%;
   position: absolute;
   top: 0px;
   left: 0px;
 }
-#studio-hero .cover-img {
+.studio-hero .cover-img {
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -90,7 +90,7 @@
   background-size: cover;
   background-position: 50% 50%;
   background-color: #f5f5f5;
-  height: 420px;
+  height: 500px;
   width: 100%;
   position: absolute;
   top: 0px;
