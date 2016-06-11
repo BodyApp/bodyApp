@@ -3,7 +3,7 @@
 	<div class="timer-rounds text-right">
 		<div layout="row" class="mb16">
 			<div>
-				<md-progress-circular md-mode="determinate" value="90" md-diameter="60"></md-progress-circular>
+				<md-progress-circular md-mode="determinate" value="100" md-diameter="60"></md-progress-circular>
 			</div>
 			<div class="timer">
 				<h1 class="white timer mb24">0:30</h1>
@@ -265,7 +265,7 @@
 		  </md-button>
 		</div>
 		<div class="inline-block">
-		  <md-button class="md-fab trainer-remote-btn" aria-label="Volume Down">
+		  <md-button ng-click = "decreaseVolume()" class="md-fab trainer-remote-btn" aria-label="Volume Down">
 		    <i class="fa fa-volume-down"></i>
 		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
 		      Volume Down
@@ -273,7 +273,7 @@
 		  </md-button>
 		</div>
 		<div class="inline-block">
-		  <md-button class="md-fab trainer-remote-btn" aria-label="Volume Up">
+		  <md-button ng-click = "increaseVolume()" class="md-fab trainer-remote-btn" aria-label="Volume Up">
 		    <i class="fa fa-volume-up"></i>
 		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
 		      Volume Up

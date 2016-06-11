@@ -37,6 +37,20 @@ angular.module('bodyAppApp')
     }
   })
 
+	$scope.increaseVolume = function() {
+		if ($scope.musicVolume >= 100) return
+		ref.child('realTimeControls').child(classId).update({'musicVolume': $scope.musicVolume + 25}, function(err) {
+			if (err) return console.log(err)
+		})
+	}
+
+	$scope.decreaseVolume = function() {
+		if ($scope.musicVolume <= 0) return
+		ref.child('realTimeControls').child(classId).update({'musicVolume': $scope.musicVolume - 25}, function(err) {
+			if (err) return console.log(err)
+		})	
+	}
+
   function getClassDetails() {
     ref.child('classes').child(classId).on('value', function(snapshot) {
     	if (!snapshot.exists()) return console.log("No class found") //Instead, should return $location.path('/studios/'+studioId)
