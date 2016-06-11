@@ -15,15 +15,10 @@ angular.module('bodyAppApp')
         // }
       })
       .state('trainerVideo', {
-        url: '/studios/:studioId/trainervideo',
-        templateUrl: 'app/video/trainer_video.html',
+        url: '/trainervideo',
+        templateUrl: 'app/video/trainerVideo.html',
         controller: 'VideoCtrl',
         authenticate: true,
-        resolve: {
-          studioId: function($stateParams) {
-            return $stateParams.studioId
-          }
-        }
       })
       
       .state('classStarting', {

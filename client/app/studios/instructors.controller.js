@@ -84,10 +84,12 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveInstructor = function(instructorToSave) {
-      console.log(instructorToSave)
       // console.log(userInfo);
       if (instructorToSave.$promise) delete instructorToSave.$promise;
       if (instructorToSave.$resolved) delete instructorToSave.$resolved;
+
+      instructorToSave.trainerNumRatings = 0;
+      instructorToSave.trainerRating = 5;
 
       // for (var prop in userInfo) {
       //   if (userInfo.hasOwnProperty(prop)) instructorToSave[prop] = userInfo[prop];

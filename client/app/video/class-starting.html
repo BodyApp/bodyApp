@@ -3,7 +3,10 @@
 <div class="page-container-responsive pb72">
 	<div class="row pt48 pb32">
 		<div class="col-md-12 text-center-sm text-center-xs">
-			<h3 class="mb8" ng-show = "classType && storefrontInfo">You're attending {{classType.name}} with {{storefrontInfo.studioName}}</h3>
+			<h3 class="mb8" ng-show = "classType && storefrontInfo">You're 
+				<span style = "font-weight: 300;" ng-show = "!userIsInstructor">attending</span> 
+				<span style = "font-weight: 300;" ng-show = "userIsInstructor">teaching</span>
+				{{classType.name}} with {{storefrontInfo.studioName}}</h3>
 		</div>
 		<div class="col-md-6 text-center-sm text-center-xs mb-sm-16">
 			<h5 ng-show = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass(class)">cancel</a> your reservation?</h5>

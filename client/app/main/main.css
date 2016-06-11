@@ -526,7 +526,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-1 img {
+.user-videos-grid-1 div {
   position: absolute; 
   top: 0; 
   left: 0; 
@@ -598,7 +598,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-2 img {
+.user-videos-grid-2 div {
   position: absolute; 
   top: 0; 
   left: -20%; 
@@ -671,7 +671,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-3or4 img {
+.user-videos-grid-3or4 div {
   position: absolute; 
   top: 0; 
   left: 0; 
@@ -746,7 +746,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-5or6 img {
+.user-videos-grid-5or6 div {
   position: absolute; 
   top: 0; 
   left: -25%; 
@@ -822,7 +822,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-7or8 img {
+.user-videos-grid-7or8 div {
   position: absolute; 
   top: 0; 
   left: -20%; 
@@ -900,7 +900,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-9 img {
+.user-videos-grid-9 div {
   position: absolute; 
   top: 0; 
   left: 0; 
@@ -980,7 +980,7 @@
   overflow: hidden;
   z-index: 2;
 }
-.user-videos-grid-12andUnder img {
+.user-videos-grid-12andUnder div {
   position: absolute; 
   top: 0; 
   left: -15%; 

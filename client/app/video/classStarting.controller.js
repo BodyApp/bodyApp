@@ -13,6 +13,8 @@ angular.module('bodyAppApp')
     calculateTimeUntilClassStarts()
     setupVidAud()
 
+
+
     auth.onAuthStateChanged(function(user) {
       if (user) {     
         getClassDetails()
@@ -24,6 +26,7 @@ angular.module('bodyAppApp')
 	    ref.child('classes').child(classId).on('value', function(snapshot) {
 	    	if (!snapshot.exists()) return console.log("No class found") //Instead, should return $location.path('/studios/'+studioId)
 	    	$scope.classDetails = snapshot.val();
+		    $scope.userIsInstructor = $scope.currentUser._id === $scope.classDetails.instructor
 	    	if(!$scope.$$phase) $scope.$apply();
 	    	getInstructorInformation(snapshot.val().instructor);
 	    	getBookedUsersInformation();

@@ -21,6 +21,10 @@ angular.module('bodyAppApp')
   $scope.showWorkout = true;
   var userIsInstructor;
 
+  var session;
+  var publisher;
+  var publisherInitialized;
+	var connected;
   $scope.consumerObjects = {};
   var connectionCount = 0;
 
@@ -59,6 +63,7 @@ angular.module('bodyAppApp')
 
   function getBookedUsers() {
   	ref.child('bookings').child(classId).on('value', function(snapshot) {
+  		if (!snapshot.exists()) return $scope.numBookedUsers = 0;
   		$scope.bookedUsers = snapshot.val()
   		$scope.numBookedUsers = Object.keys($scope.bookedUsers).length
     	if(!$scope.$$phase) $scope.$apply();
@@ -94,7 +99,12 @@ angular.module('bodyAppApp')
 
   function getMusicVolume() {
   	ref.child('realTimeControls').child(classId).child('musicVolume').on('value', function(snapshot) {
-  		$scope.musicVolume = snapshot.val()
+  		if (snapshot.exists()) {
+  			$scope.musicVolume = snapshot.val()
+  		} else {
+  			$scope.musicVolume = 50;
+  		}
+  		
   		if(!$scope.$$phase) $scope.$apply();
   		
   		if (!userIsInstructor) {
@@ -144,7 +154,6 @@ angular.module('bodyAppApp')
 
 		ref.child("playlists").child(classToJoin.playlist).once('value', function(snapshot) {
 			$scope.playlist = snapshot.val()
-			console.log($scope.playlist)
 			if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
 				var element = document.getElementById('audioPlayer')
 				audioPlayer = SC.Widget(element);
@@ -153,8 +162,6 @@ angular.module('bodyAppApp')
 				audioPlayer.bind(SC.Widget.Events.READY, function() {
 					if (firstTimePlayingSong) {
 						elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime + 1000*60*5), 0) //Starts music 5 minutes before official class start time
-						console.log(elapsedTime)
-						// setMusicVolume($scope.musicVolume);
 
 						audioPlayer.getSounds(function(soundArray) {
 							songArray = soundArray
@@ -168,7 +175,7 @@ angular.module('bodyAppApp')
 								} else {
 									console.log("seeking to track " + (i+1));
 									currentSongIndex = i;			
-
+									if (userIsInstructor) audioPlayer.setVolume(0)
 									return audioPlayer.play()
 								}
 							}	
@@ -177,7 +184,8 @@ angular.module('bodyAppApp')
 				})		
 
 				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-					audioPlayer.setVolume($scope.musicVolume);
+					if (!userIsInstructor) audioPlayer.setVolume($scope.musicVolume);
+
 					if (!firstTimePlayingSong && songArray.length > 0) {
 						currentSongIndex++
 						$scope.currentSong = songArray[currentSongIndex];
@@ -199,18 +207,17 @@ angular.module('bodyAppApp')
 		})
 	}
 
+	//Only gets called if/when at least 1 user has booked class.
 	function connect(classToJoin) {
 		// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 		var apiKey = 45425152;
 		var sessionId = classToJoin.sessionId;
-		var publisherInitialized = false;
-		var connected = false;
-		var session;
-		var publisher;
+
+		setPublisher();
 
 		if (OT.checkSystemRequirements() == 1) {
 			session = OT.initSession(apiKey, sessionId);
-			setSessionEvents(session, classToJoin)
+			
 			$scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
       	console.log("Disconnecting session because navigated away.")
         session.disconnect()
@@ -244,8 +251,9 @@ angular.module('bodyAppApp')
 			  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 			  	}
 			  } else {
+			  	setSessionEvents(classToJoin)
 				  connected = true;
-			    publish(session, publisher, connected, publisherInitialized);
+			    publish();
 			    if (session.capabilities.publish != 1) {
 			    	session.disconnect()
 			    	// session.destroy();
@@ -257,21 +265,19 @@ angular.module('bodyAppApp')
 			});	
 		};
 
-		setPublisher();
-
 		function setPublisher() {
-			var vidWidth;
+			var vidWidth = "100%";
 			var vidHeight;
 			var suggestedResolution;
 			var suggestedFPS;
 
 			if (userIsInstructor) {
-				vidWidth = "16.67%";
-				vidHeight = "16.67%";
+				// vidWidth = "100%";
+				// vidHeight = "16.67%";
 				suggestedResolution = "640x480";
 				suggestedFPS = 30;
 			} else {
-				vidWidth = "100%"
+				// vidWidth = "100%"
 				suggestedResolution = "320x240";
 				suggestedFPS = 7;
 			}
@@ -281,7 +287,7 @@ angular.module('bodyAppApp')
 
 			//Prevents accidentally not having an audio device
 			if (audioInputDevice && videoInputDevice) {
-				initPublisher()
+				initPublisher(audioInputDevice, videoInputDevice, suggestedResolution, suggestedFPS, vidWidth)
 			} else {
 				OT.getDevices(function(error, devices) {
 					if (devices) {
@@ -293,7 +299,7 @@ angular.module('bodyAppApp')
 					  });
 					  if (!audioInputDevice) audioInputDevice = audioInputDevices[0];
 					  if (!videoInputDevice) videoInputDevice = videoInputDevices[0];
-					  initPublisher()
+					  initPublisher(audioInputDevice, videoInputDevice, suggestedResolution, suggestedFPS, vidWidth)
 					  // for (var i = 0; i < audioInputDevices.length; i++) {
 					  //   console.log("audio input device: ", audioInputDevices[i].deviceId);
 					  // }
@@ -303,8 +309,8 @@ angular.module('bodyAppApp')
 				});
 			}
 
-			function initPublisher() {
-				publisher = OT.initPublisher('myfeed'), {
+			function initPublisher(audioInputDevice, videoInputDevice, suggestedResolution, suggestedFPS, vidWidth) {
+				publisher = OT.initPublisher('myfeed', {
 		      insertMode: 'append',
 		      audioSource: audioInputDevice, 
 		      videoSource: videoInputDevice,
@@ -314,7 +320,7 @@ angular.module('bodyAppApp')
 		      publishVideo:true,
 		      mirror: true,
 		      width: vidWidth,
-				  height: vidHeight,
+				  height: undefined,
 		      name: currentUser.firstName + " " + currentUser.lastName.charAt(0),
 		      style: {
 		      	buttonDisplayMode: 'off', //Mute microphone button
@@ -332,18 +338,19 @@ angular.module('bodyAppApp')
 				    }
 				    publisher.destroy();
 				    publisher = null;
+				    console.log(err)
 		    	} else {
 			    	publisherInitialized = true;
-			    	setPublisherEvents(publisher)
-				    publish(session, publisher, connected, publisherInitialized);
+			    	setPublisherEvents()
+				    publish();
 			    	console.log("Publisher successfully initialized")
 			    }
-		    }
+		    })
 			}				
 		}
 	};
 
-	var publish = function(session, publisher, connected, publisherInitialized) {
+	var publish = function() {
 	  if (connected && publisherInitialized) {
 	    session.publish(publisher, function(err) {
 			  if(err) {
@@ -361,24 +368,22 @@ angular.module('bodyAppApp')
 	  }
 	};
 
-	function setPublisherEvents(publisher) {
-		publisher.on('streamCreated', function (event) {
-	    console.log('The publisher started streaming with id ' + event.stream.id);
-	   
-	   	if (event.stream && event.stream.id) Intercom('update', { "latestTokboxStreamId": event.stream.id });
-			if (event.connection && event.connection.connectionId) Intercom('update', { "latestTokboxConnectionId": event.connection.connectionId });
-		});
-
-	  publisher.on("streamDestroyed", function (event) {
-	  	event.preventDefault();
-		  console.log("The publisher stopped streaming. Reason: " + event.reason);
-		  if (event.reason === 'networkDisconnected') {
-	      alert('You lost internet connection, so we sent you to the dashboard. Please try joining the class again.');
-	      goBackToClassStarting()
-	    }
-		});
-
+	function setPublisherEvents() {
 		publisher.on({
+			streamCreated: function (event) {
+				console.log('The publisher started streaming with id ' + event.stream.id);
+		   
+		   	if (event.stream && event.stream.id) Intercom('update', { "latestTokboxStreamId": event.stream.id });
+				if (event.connection && event.connection.connectionId) Intercom('update', { "latestTokboxConnectionId": event.connection.connectionId });
+			},
+			streamDestroyed: function (event) {
+				event.preventDefault();
+			  console.log("The publisher stopped streaming. Reason: " + event.reason);
+			  if (event.reason === 'networkDisconnected') {
+		      alert('You lost internet connection, so we sent you to the dashboard. Please try joining the class again.');
+		      goBackToClassStarting()
+		    }
+			},
 		  accessAllowed: function (event) {
 		    // The user has granted access to the camera and mic.
 		  },
@@ -401,7 +406,7 @@ angular.module('bodyAppApp')
 	function subscribeToStream(streamEvent, subscriberBox, instructorStream, vidWidth, vidHeight) {
 		var streamId = streamEvent.connection.data.toString()
 	  var subscriber = session.subscribe(streamEvent, subscriberBox, {
-	    insertMode: 'append',
+	    insertMode: 'after',
 	    width: vidWidth,
 		  height: vidHeight,
 		  mirror: true,
@@ -479,63 +484,47 @@ angular.module('bodyAppApp')
 	  });
 	}
 
-	function setSessionEvents(session, classToJoin) {
-		session.on('streamCreated', function(event) {
-			var instructorStream = false
-			var instructorInfo;
-			var vidWidth = "48%";
-			var vidHeight = 70;
-			var subscriberBox = null;
-			// var vidHeight = 70;
-
-			if (userIsInstructor) {
-				vidWidth = "16.67%";
-				vidHeight = "16.67%";
-			}
-
-			var streamId = event.stream.connection.data.toString();
-			// var streamBoxNumber = 1;
-
-			if (streamId === classToJoin.instructor.toString()) {
-				console.log("Received trainer stream")
-				instructorStream = true;
-				vidWidth = "100%";
-			} else {
-			// if ($scope.consumerObjects[streamId]) {
-				// streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
-				// subscriberBox = instructorStream ? "trainerVideo" : "consumer" + streamBoxNumber)
-			// } else {
-				if (!userIsInstructor && Object.keys($scope.consumerObjects).length > 3) return //Consumers should only see 3 other consumers
-				if (bookedUsers && bookedUsers[streamId]) $scope.consumerObjects[streamId] = bookedUsers[streamId]
-				if(!$scope.$$phase) $scope.$apply();
-				var subscriberBox = instructorStream ? "trainerVideo" : "consumer" + Object.keys($scope.consumerObjects).length-1
-			}	
-			subscribeToStream(event.stream, null, true, vidWidth, vidHeight)		
-		});
-
-		session.on("streamDestroyed", function (event) {
-			// event.preventDefault() // User picture now displayed when they disconnect.
-			var streamId = event.stream.connection.data.toString();
-			if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
-			if (streamId === $classDetails.instructor) $scope.instructorDisplayed = false;
-			if(!$scope.$$phase) $scope.$apply();
-
-			// if (event.reason === 'networkDisconnected') {
-			// 	console.log(event);
-	  //     event.preventDefault(); // prevents object from being destroyed and removed from the DOM.  Replace with the user's picture?
-	  //     var subscribers = session.getSubscribersForStream(event.stream); // returns all of the Subscriber objects for a Stream
-	  //     if (subscribers.length > 0) {
-	  //     	console.log(subscribers);
-	  //       var subscriber = document.getElementById(subscribers[0].id);
-	  //       // Display error message inside the Subscriber
-	  //       subscriber.innerHTML = 'Lost connection. This could be due to your internet connection '
-	  //         + 'or because the other party lost their connection.';
-	  //       event.preventDefault();   // Prevent the Subscriber from being removed
-	  //     }
-	  //   }
-		});
-
+	function setSessionEvents(classToJoin) {
 		session.on({
+			streamCreated: function (event) {
+				var instructorStream = false
+				var instructorInfo;
+				var vidWidth = "100%";
+				// var vidHeight = 70;
+				var subscriberBox = null;
+				// var vidHeight = 70;
+
+				// if (userIsInstructor) {
+				// 	vidWidth = "16.67%";
+				// 	vidHeight = "16.67%";
+				// }
+
+				var streamId = event.stream.connection.data.toString();
+				// var streamBoxNumber = 1;
+
+				if (streamId === classToJoin.instructor.toString()) {
+					console.log("Received trainer stream")
+					instructorStream = true;
+					// vidWidth = "100%";
+				} else {
+				// if ($scope.consumerObjects[streamId]) {
+					// streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
+					// subscriberBox = instructorStream ? "trainerVideo" : "consumer" + streamBoxNumber)
+				// } else {
+					if (!userIsInstructor && Object.keys($scope.consumerObjects).length > 3) return //Consumers should only see 3 other consumers
+					if ($scope.bookedUsers && $scope.bookedUsers[streamId]) $scope.consumerObjects[streamId] = $scope.bookedUsers[streamId]
+					if(!$scope.$$phase) $scope.$apply();
+				}	
+				subscriberBox = instructorStream ? "trainerVideo" : "consumer" + (Object.keys($scope.consumerObjects).length-1).toString()
+				console.log(subscriberBox)
+				subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)		
+			},
+			streamDestroyed: function (event) {
+				var streamId = event.stream.connection.data.toString();
+				if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
+				if (streamId === $scope.classDetails.instructor) $scope.instructorDisplayed = false;
+				if(!$scope.$$phase) $scope.$apply();
+			},
 		  connectionCreated: function (event) {
 		    connectionCount++;
 		    if (event.connection.connectionId != session.connection.connectionId) {

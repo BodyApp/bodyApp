@@ -426,7 +426,6 @@ iframe#audioPlayer {
   position: absolute;
   top: -999px;
   left: -999px;
-  /*display: none !important;*/
 }
 
 .modal.modal-tall .modal-body {
