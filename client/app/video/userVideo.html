@@ -12,10 +12,10 @@
 					<div class="music-icon music-on">
 						<i class="fa fa-music"></i>
 					</div>
-					<div class="volume-bars1 music-level"></div>
-					<div class="volume-bars2 music-level"></div>
-					<div class="volume-bars3 music-level"></div>
-					<div class="volume-bars4"></div>
+					<div class="volume-bars1" ng-class = "{'music-level': musicVolume >=25}"></div>
+					<div class="volume-bars2" ng-class = "{'music-level': musicVolume >=50}"></div>
+					<div class="volume-bars3" ng-class = "{'music-level': musicVolume >=75}"></div>
+					<div class="volume-bars4" ng-class = "{'music-level': musicVolume >=100}"></div>
 				</div>
 			</div>
 		</div>
@@ -49,19 +49,19 @@
 		<!-- <div class="control-tab-open">
 			<a href="#"><i class="fa fa-bars"></i></a>
 		</div> -->
-		<div class="row mt16 control-menu-icons" ng-show = "numBookedUsers > 1">
+		<div class="row mt16 control-menu-icons">
 			<div class="col-xs-3 text-center white">
-				<a href="#" ng-click = "showWorkout = true; showClassmates = false;">
+				<a href="#" ng-click = "showWorkout = true; showClassmates = false; showPlaylist = false;">
 					<i class="fa fa-list"><md-tooltip md-direction="bottom">Workout</md-tooltip></i>
 				</a>
 			</div>
-			<!-- <div class="col-xs-3 text-center white">
-				<a href="#">
+			<div class="col-xs-3 text-center white">
+				<a href="#" ng-click = "showPlaylist = true; showWorkout = false; showClassmates = false;"> 
 					<i class="ti-music-alt"><md-tooltip md-direction="bottom">Playlist</md-tooltip></i>
 				</a>
-			</div> -->
+			</div>
 			<div class="col-xs-3 text-center white">
-				<a href="#" ng-click = "showWorkout = false; showClassmates = true;">
+				<a href="#" ng-click = "showWorkout = false; showClassmates = true; showPlaylist = false;">
 					<i class="fa fa-users"><md-tooltip md-direction="bottom">Class</md-tooltip></i>
 				</a>
 			</div>
@@ -74,46 +74,37 @@
 					<hr class="content-divider mb8 mt8">
 					<div ng-repeat = "exercise in set.exercises">
 						<h4 class="white mb8">{{exercise.name}}</h4>
-						<!-- <h4 class="white mb8">10 Squats</h4>
-						<h4 class="white mb8">10 Planks</h4>
-						<h4 class="white mb8">10 Jumping Jacks</h4> -->
 					</div>
 				</div>
 			</div>
-			<!-- <div class="row workout-set">
-				<div class="col-xs-12 text-left">
-					<h5 class="white hidden next-workout">Next up</h5>
-					<h4 class="white mb8">EMOM 10 min</h4>
-					<hr class="content-divider mb8 mt8">
-					<h4 class="white mb8">10 Burpees</h4>
-					<h4 class="white mb8">10 Squats</h4>
-					<h4 class="white mb8">10 Planks</h4>
-					<h4 class="white mb8">10 Jumping Jacks</h4>
-				</div>
-			</div> -->
 		</div>
 
-		<!-- <div class="panel-body control-menu-music hidden">
+		<div class="panel-body control-menu-music" ng-show = "showPlaylist">
 			<div class="row">
 				<div class="col-xs-12 text-left">
-					<h4 class="white mb8 playlist-name">WERK</h4>
+					<iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=30"></iframe>
+					<h4 class="white mb8 playlist-name">{{playlist.title}}</h4>
 					<hr class="content-divider mb8 mt8">
-					<img class="mb8" src="assets/images/justin-photo.jpg" width="100%">
-					<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
-					<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
-					<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
-					<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
-					<h4 class="white mb8 playlist-song">To U What What</h4>
-					<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
-					<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
-					<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
-					<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
-					<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
-					<h4 class="white mb8 playlist-song">To U What What</h4>
-					<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
+					<div class = "white">{{currentSong.title}}</div>
+					<div class = "white mb8 playlist-song">Uploaded by {{currentSong.user.username}}</div>
+					<img class="mb8" ng-src="{{currentSong.artwork_url}}" width="100%">
+					<div ng-repeat = "song in songArray">
+						<h4 class="white mb8 playlist-song">{{song.title}}</h4>
+						<!-- <h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
+						<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
+						<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
+						<h4 class="white mb8 playlist-song">To U What What</h4>
+						<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
+						<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
+						<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
+						<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
+						<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
+						<h4 class="white mb8 playlist-song">To U What What</h4>
+						<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4> -->
+					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 
 		<div class="panel-body control-menu-class" ng-show = "showClassmates">
 			<div class="row">

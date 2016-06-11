@@ -16,6 +16,8 @@ angular.module('bodyAppApp')
   var storageRef = firebase.storage().ref().child('studios').child(studioId);
   var auth = firebase.auth();
 
+  var audioPlayer;
+
   $scope.showWorkout = true;
   var userIsInstructor;
 
@@ -39,6 +41,7 @@ angular.module('bodyAppApp')
     	if ($scope.bookedUsers) connect($scope.classDetails)
     	getWorkout($scope.classDetails.workout)
 	    getInstructorDetails($scope.classDetails.instructor)
+	    setMusicPlayer($scope.classDetails)
     })
   }
 
@@ -83,6 +86,18 @@ angular.module('bodyAppApp')
   	})
   }
 
+  function getMusicVolume() {
+  	ref.child('realTimeControls').child(classId).child('musicVolume').on('value', function(snapshot) {
+  		$scope.musicVolume = snapshot.val()
+  		if(!$scope.$$phase) $scope.$apply();
+  		
+  		if (!userIsInstructor) {
+  			audioPlayer.setVolume(snapshot.val() / 100);
+  			console.log("Music volume set to " + snapshot.val())
+  		}
+  	})
+  }
+
 	$scope.openIntercomMessage = function() {
 		Intercom('showNewMessage', "");
 	}
@@ -96,6 +111,71 @@ angular.module('bodyAppApp')
 
 	function goBackToClassStarting() {
 		$location.path('/studios/'+studioId+'/classstarting/'+classId)
+	}
+
+	function setMusicPlayer(classToJoin) {
+		var firstTimePlayingSong = true;
+		$scope.currentSong = {};
+		var currentSongIndex = 0;
+		var soundsLength = 0
+		var songArray = [];
+		var elapsedTime;
+
+		ref.child("playlists").child(classToJoin.playlist).once('value', function(snapshot) {
+			$scope.playlist = snapshot.val()
+			console.log($scope.playlist)
+			if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
+				var element = document.getElementById('audioPlayer')
+				audioPlayer = SC.Widget(element);
+				audioPlayer.load(snapshot.val().soundcloudUrl);
+
+				getMusicVolume();
+
+				audioPlayer.bind(SC.Widget.Events.READY, function() {
+					if (firstTimePlayingSong) {
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime + 1000*60*5), 0) //Starts music 5 minutes before official class start time
+						console.log(elapsedTime)
+						// setMusicVolume($scope.musicVolume);
+
+						audioPlayer.getSounds(function(soundArray) {
+							songArray = soundArray
+							$scope.soundArray = soundArray;
+				  		if(!$scope.$$phase) $scope.$apply();
+
+							for (var i = 0; i < soundArray.length; i++) {
+								if (elapsedTime > soundsLength + soundArray[i].duration) {
+									soundsLength += soundArray[i].duration;
+									if (audioPlayer) audioPlayer.next();
+								} else {
+									console.log("seeking to track " + (i+1));
+									currentSongIndex = i;			
+									return audioPlayer.play()
+								}
+							}	
+						})
+					}
+				})		
+
+				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
+					if (!firstTimePlayingSong && songArray.length > 0) {
+						currentSongIndex++
+						$scope.currentSong = songArray[currentSongIndex];
+						if(!$scope.$$phase) $scope.$apply();
+					}
+					if (firstTimePlayingSong) {
+						elapsedTime = Math.round((new Date().getTime() - classToJoin.dateTime + 1000*60*5), 0) //Starts music 5 minutes before official class start time
+						var seekingTo = elapsedTime - soundsLength
+						if (audioPlayer) audioPlayer.seekTo(seekingTo);
+						console.log("seeking to position " + seekingTo);
+						$scope.currentSong = songArray[currentSongIndex];
+						if(!$scope.$$phase) $scope.$apply();
+						firstTimePlayingSong = false;
+					} 
+				});
+			} else {
+				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+			}
+		})
 	}
 
 	function connect(classToJoin) {
@@ -326,21 +406,31 @@ angular.module('bodyAppApp')
 
 		  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
 				  console.log('started talking');
-				  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
-				  setMusicVolume($scope.musicVolume/2.5)
+				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
+				  // setMusicVolume($scope.musicVolume/2.5)
+				  audioPlayer.setVolume($scope.musicVolume / 250);
 				}, function() {
-					setMusicVolume($scope.musicVolume)
+					// setMusicVolume($scope.musicVolume)
+					audioPlayer.setVolume($scope.musicVolume / 100);
 				  console.log('stopped talking');
-				  if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
+				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
 				});
 
-		  	if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
+		  	if (!instructorStream) {
 		  		subscriber.setAudioVolume(100);
-		  		subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
+		  		subscriber.subscribeToAudio(false);
 		  	} else {
 		  		subscriber.setAudioVolume(100);
-		  		subscriber.subscribeToAudio(true); // Audio on in any other case
+		  		subscriber.subscribeToAudio(true);
 		  	}
+
+		  	// if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
+		  	// 	subscriber.setAudioVolume(100);
+		  	// 	subscriber.subscribeToAudio(false); // audio off only if user is a consumer and stream is a consumer or if user is instructor.
+		  	// } else {
+		  	// 	subscriber.setAudioVolume(100);
+		  	// 	subscriber.subscribeToAudio(true); // Audio on in any other case
+		  	// }
 
 				// if (userIsInstructor) {
 				// 	subscriber.setStyle("nameDisplayMode", "on");
