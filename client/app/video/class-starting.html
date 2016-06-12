@@ -91,7 +91,7 @@
 						<div class="col-sm-9">
 							<div class="row mb8 classmate" ng-repeat = "(key, booking) in bookings">
 								<div class="col-xs-12">	
-									<img class="round-photo inline-block classmate-photo" width="50" height="50" src="/assets/images/justin-photo.jpg">
+									<img class="round-photo inline-block classmate-photo" width="50" height="50" ng-src="{{booking.picture}}">
 									<h5 class="inline-block">{{booking.firstName}} {{booking.lastName}} 
 										<span>in {{bookings[key].geolocation.city}}, {{bookings[key].geolocation.region}} {{bookings[key].geolocation.countryCode}}</span>
 									</h5>
