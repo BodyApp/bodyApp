@@ -17,7 +17,6 @@ angular.module('bodyAppApp')
 	    		getPicture(studioId.key)
 	    		ref.child('studios').child(studioId.key).child('storefrontInfo').once('value', function(snapshot) {
 	    			$scope.studios.push(snapshot.val())
-	    			console.log($scope.studios)
 				    if(!$scope.$$phase) $scope.$apply();
 	    		})
 	    	})
@@ -26,7 +25,6 @@ angular.module('bodyAppApp')
 
 	  function getPicture(studioId) {
 	  	storageRef.child('studios').child(studioId).child('images/header.jpg').getDownloadURL().then(function(url) {
-        // $scope.headerUrl = url;
         $scope.studioPictures[studioId] = url
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
@@ -37,10 +35,10 @@ angular.module('bodyAppApp')
 
 	.filter('filterByCategory', function() {
   return function(items, field) {
-        var result = {};
-        angular.forEach(items, function(value, key) {
-          if (value.categories[field]) result[key] = value;
-        });
-        return result;
-    };
+    var result = {};
+    angular.forEach(items, function(value, key) {
+      if (value.categories[field]) result[key] = value;
+    });
+    return result;
+  };
 });

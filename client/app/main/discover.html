@@ -50,7 +50,7 @@
     <div class="row">
 
       <div class="col-md-4" ng-repeat = "studio in studios | filterByCategory: categoryFilter"> <!-- Studio Listing -->
-        <a href="#">
+         <a href="/studios/{{studio.studioId}}">
           <div class="panel">
             <div class="studio-listing-container">
               <div class="studio-listing-image">

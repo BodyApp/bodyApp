@@ -109,7 +109,7 @@
 <div id="studio-hero">
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
-      <a href="#" class="">
+      <a href="#" class="" ng-show = "storefrontInfo.youtubeId">
         <i class="fa fa-play-circle video-play" ng-click = "playYoutubeVideo()"></i>
       </a>
     </div>
@@ -383,7 +383,7 @@
                     <div class="row mb8">
                       <div class="col-md-12">
                         <!-- <h5 class="mb8">Promos: <span class="royalblue bold">First class free</span></h5> -->
-                        <h5>Cancellation penalty: <span class="royalblue bold">$0</span></h5>
+                        <h5 ng-show = "storefrontInfo.cancellationPolicy">Cancellation penalty: <span class="royalblue bold">$0</span></h5>
                       </div>
                     </div>
                   </div>                  

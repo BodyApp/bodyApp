@@ -20,7 +20,7 @@ angular.module('bodyAppApp')
     };
 
     function getStudios() {
-      ref.child('studioIds').on('value', function(snapshot) {
+      ref.child('studioIds').limitToLast(1).on('value', function(snapshot) {
         $scope.studios = {};
         snapshot.forEach(function(studio) {
           // if (!studio.exists()) delete $scope.studios[studio.key]
