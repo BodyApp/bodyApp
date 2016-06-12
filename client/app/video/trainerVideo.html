@@ -8,9 +8,7 @@
 			</div>
 			<div class="timer">
 				<h1 class="white timer mb24">
-					<timer id = "timer" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}
-
-					</timer>
+					<timer id = "timer" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer>
 				</h1>
 				<h3 class="white rounds">{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
 				<div class="volume-bars">
@@ -115,7 +113,7 @@
 						  <div class="select display-block">
 						    <select id="timer-options" ng-model = "timer.type">
 						      <option value = "Tabata">Tabata</option>
-						      <option value = "countUp">Count Up</option>
+						      <!-- <option value = "countUp">Count Up</option> -->
 						      <!-- <option>No Timer</option> -->
 						    </select>
 						  </div>

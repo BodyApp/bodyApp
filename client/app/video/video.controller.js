@@ -95,37 +95,6 @@ angular.module('bodyAppApp')
     if(!$scope.$$phase) $scope.$apply();
 	}
 
-	function generateTimerOptions() {
-		$scope.workOptions = [];
-		$scope.restOptions = [];
-		$scope.roundOptions = [];
-		
-		for (var i = 0; i < 20; i++) {
-			$scope.workOptions.push(i+1)
-		}
-
-		for (var i = 0; i < 5; i++) {
-			$scope.restOptions.push(i+1)
-		}
-
-		for (var i = 0; i < 20; i++) {
-			$scope.roundOptions.push(i+1)
-		}
-
-		$scope.timer = {};
-		$scope.timer.type = 'Tabata';
-		$scope.timer.work = $scope.workOptions[9];
-		$scope.timer.rest = $scope.restOptions[4];
-		$scope.timer.rounds = $scope.roundOptions[9];
-	}
-
-	$scope.saveTimer = function() {
-		ref.child('realTimeControls').child(classId).child('timer').update({"type": $scope.timer.type, "work": $scope.timer.work, "rest": $scope.timer.rest, "rounds": $scope.timer.rounds}, function(err) {
-			if (err) return console.log(err)
-			console.log("Timer updated")
-		})
-	}
-
   function getClassDetails() {
     ref.child('classes').child(classId).on('value', function(snapshot) {
     	if (!snapshot.exists()) return console.log("No class found") //Instead, should return $location.path('/studios/'+studioId)
@@ -219,6 +188,37 @@ angular.module('bodyAppApp')
   	})
   }
 
+  function generateTimerOptions() {
+		$scope.workOptions = [];
+		$scope.restOptions = [];
+		$scope.roundOptions = [];
+		
+		for (var i = 0; i < 20; i++) {
+			$scope.workOptions.push(i+1)
+		}
+
+		for (var i = 0; i < 5; i++) {
+			$scope.restOptions.push(i+1)
+		}
+
+		for (var i = 0; i < 20; i++) {
+			$scope.roundOptions.push(i+1)
+		}
+
+		$scope.timer = {};
+		$scope.timer.type = 'Tabata';
+		$scope.timer.work = $scope.workOptions[9];
+		$scope.timer.rest = $scope.restOptions[4];
+		$scope.timer.rounds = $scope.roundOptions[9];
+	}
+
+	$scope.saveTimer = function() {
+		ref.child('realTimeControls').child(classId).child('timer').update({"type": $scope.timer.type, "work": $scope.timer.work, "rest": $scope.timer.rest, "rounds": $scope.timer.rounds, "saved": new Date().getTime()}, function(err) {
+			if (err) return console.log(err)
+			console.log("Timer updated")
+		})
+	}
+
   function getTimer() {
   	ref.child('realTimeControls').child(classId).child('timer').on('value', function(snapshot) {
   		if (!snapshot.exists()) return
@@ -226,13 +226,13 @@ angular.module('bodyAppApp')
   		$scope.currentTimerSeconds = snapshot.val().work*60;
   		$scope.roundsLeft = snapshot.val().rounds;
   		if(!$scope.$$phase) $scope.$apply();
+  		if (snapshot.val().reset > snapshot.val().start) document.getElementById('timer').reset();	
+  		if (snapshot.val().saved > snapshot.val().start) return;
   		if (snapshot.val().start > snapshot.val().reset || (snapshot.val().start && !snapshot.val().reset)) {
   			document.getElementById('timer').reset();
   			document.getElementById('timer').start();	
   			$scope.timerWorking = true;
-  		} else {
-  			document.getElementById('timer').reset();	
-  		}
+  		} 
   	})
   }
 
