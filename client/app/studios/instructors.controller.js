@@ -102,6 +102,9 @@ angular.module('bodyAppApp')
       ref.child('instructors').child(instructorToSave._id).update(instructorToSave, function(err) {
         if (err) return console.log(err)
         console.log("Saved / Updated instructor")
+        ref.child('toSetup').child('instructors').remove(function(err) {
+          if (err) console.log(err)
+        })
         $scope.returnedInstructor = false;
         $scope.showAddInstructor = false;
         $scope.showEditInstructor = false;

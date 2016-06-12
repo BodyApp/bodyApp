@@ -94,7 +94,12 @@ angular.module('bodyAppApp')
       var toPush = ref.child("classTypes").push(classToSave, function(err) {
         if (err) return console.log(err);
         console.log("Class successfully saved")
-        ref.child("classTypes").child(toPush.key).update({id: toPush.key})
+        ref.child('toSetup').child('classTypes').remove(function(err) {
+          if (err) console.log(err)
+        })
+        ref.child("classTypes").child(toPush.key).update({id: toPush.key}, function(err) {
+          if (err) return console.log(err)
+        })
         $scope.classToCreate = {};
         $scope.classToCreate.openTo = "All (Members &amp; Drop Ins)";
         $scope.missingName = false;

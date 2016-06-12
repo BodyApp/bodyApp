@@ -88,7 +88,13 @@ angular.module('bodyAppApp')
                 // secretUri: playlists[i].secret_uri,
                 sharing: playlists[i].sharing,
                 user_id: playlists[i].user_id
-              }, function(err){if (err) console.log(err)})
+              }, function(err){
+                if (err) return console.log(err)
+                console.log("Playlists updated")
+                ref.child('toSetup').child('playlists').remove(function(err) {
+                  if (err) console.log(err)
+                })
+              })
             }
             // $scope.playlists = playlists;
             // $scope.playlists.push(defaultPlaylist);

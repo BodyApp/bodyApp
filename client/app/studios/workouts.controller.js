@@ -122,7 +122,10 @@ angular.module('bodyAppApp')
     		ref.child('workouts').child(pushedWorkout.key).update({id: pushedWorkout.key}, function(err) {
     			if (err) return console.log(err);
     			console.log("workout successfully created")
-					$scope.showAddWorkout = false;
+				$scope.showAddWorkout = false;
+                ref.child('toSetup').child('workouts').remove(function(err) {
+                  if (err) console.log(err)
+                })
 		      if(!$scope.$$phase) $scope.$apply();
     			for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
     				ref.child('classTypes').child(workoutToSave.classTypes[i].id).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {

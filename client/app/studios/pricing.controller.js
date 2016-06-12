@@ -177,6 +177,9 @@ angular.module('bodyAppApp')
           accessCode: accessCode
 	      }).$promise.then(function(subscription) {
 	      	console.log("Saved new subscription");
+          ref.child('toSetup').child('pricing').remove(function(err) {
+            if (err) console.log(err)
+          })
 	      	listSubscriptionPlans()
 	      	$scope.showAddPricingPlan = false;
 	    		if(!$scope.$$phase) $scope.$apply();
@@ -203,6 +206,10 @@ angular.module('bodyAppApp')
     	planToEdit.amount = planToEdit.amountInDollars * 100;
     	ref.child("stripeConnected").child('dropinPlan').update(planToEdit, function(err) {
   			if (err) return console.log(err)
+        console.log("Dropin plan updated")
+        ref.child('toSetup').child('pricing').remove(function(err) {
+          if (err) console.log(err)
+        })
 				$scope.showAddPricingPlan = false;
 				$scope.editing = false;
     		if(!$scope.$$phase) $scope.$apply();
