@@ -3,11 +3,14 @@
 	<div class="timer-rounds text-right">
 		<div layout="row" class="mb16">
 			<div >
-				<md-progress-circular md-mode="determinate" value="100" md-diameter="60"></md-progress-circular>
+				<md-progress-circular ng-show = "timerWorking" md-mode="determinate" value="{{timeCountdown}}" md-diameter="60"></md-progress-circular>
+				<md-progress-circular ng-show = "timerResting" md-mode="determinate" value="{{timeCountdown}}" md-diameter="60"></md-progress-circular>
 			</div>
 			<div class="timer">
-				<h1 class="white timer mb24">0:00</h1>
-				<h3 class="white rounds">4/4</h3>
+				<h1 class="white timer mb24">
+					<timer id = "timer" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer>
+				</h1>
+				<h3 class="white rounds">{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
 				<div class="volume-bars">
 					<div class="music-icon" ng-class = "{'music-on': musicVolume > 0, 'music-off': musicVolume === 0}">
 						<i class="fa fa-music"></i>
@@ -46,10 +49,10 @@
 		</li> -->
 		
 	</ul>
-	<div class="control-menu-open">
-		<!-- <div class="control-tab-open">
+	<div ng-class="{'control-menu-open': menuOpen, 'control-menu-closed': !menuOpen}">
+		<div ng-class="{'control-tab-open': menuOpen, 'control-tab-closed': !menuOpen}" ng-click = "menuOpen = !menuOpen" ng-init = "menuOpen = false;">
 			<a href="#"><i class="fa fa-bars"></i></a>
-		</div> -->
+		</div>
 		<div class="row mt16 control-menu-icons">
 			<div class="col-xs-3 text-center white">
 				<a href="#" ng-click = "showWorkout = true; showClassmates = false; showPlaylist = false;">

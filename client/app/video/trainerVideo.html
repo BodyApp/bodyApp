@@ -3,11 +3,16 @@
 	<div class="timer-rounds text-right">
 		<div layout="row" class="mb16">
 			<div>
-				<md-progress-circular md-mode="determinate" value="100" md-diameter="60"></md-progress-circular>
+				<md-progress-circular ng-show = "timerWorking" md-mode="determinate" value="{{timeCountdown}}" md-diameter="60"></md-progress-circular>
+				<md-progress-circular ng-show = "timerResting" md-mode="determinate" value="{{timeCountdown}}" md-diameter="60"></md-progress-circular>
 			</div>
 			<div class="timer">
-				<h1 class="white timer mb24">0:30</h1>
-				<h3 class="white rounds">1/4</h3>
+				<h1 class="white timer mb24">
+					<timer id = "timer" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}
+
+					</timer>
+				</h1>
+				<h3 class="white rounds">{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
 				<div class="volume-bars">
 					<div class="music-icon" ng-class = "{'music-on': musicVolume > 0, 'music-off': musicVolume === 0}">
 						<i class="fa fa-music"></i>
@@ -21,16 +26,6 @@
 		</div>
 	</div>
 	<ul ng-class = "videoView">
-	<!-- apply class .user-videos-stack to switch to stacked layout -->
-	<!-- apply class .user-videos-boxed-7andUnder to switch to boxed layout with 7 or less feeds -->
-	<!-- apply class .user-videos-boxed-over7 to switch to boxed layout with 8 or more feeds -->
-	<!-- apply class .user-videos-grid-1 to switch to grid layout with 1 feed-->
-	<!-- apply class .user-videos-grid-2 to switch to grid layout with 2 feeds-->
-	<!-- apply class .user-videos-grid-3or4 to switch to grid layout with 3 or 4 feeds-->
-	<!-- apply class .user-videos-grid-5or6 to switch to grid layout with 5 or 6 feeds-->
-	<!-- apply class .user-videos-grid-7or8 to switch to grid layout with 7 or 8 feeds-->
-	<!-- apply class .user-videos-grid-9 to switch to grid layout with 9 feeds-->
-	<!-- apply class .user-videos-grid-12andUnder to switch to grid layout with 12 or less feeds-->
 		<li>
 			<div id="myfeed"></div>
 			<span class="classmates-video-name text-center">You</span>
@@ -76,50 +71,38 @@
 			<span class="classmates-video-name text-center">Justin M</span>
 		</li> -->
 	</ul>
-	<div class="control-menu-closed">
-		<div class="control-tab-closed">
+	<div ng-class="{'control-menu-open': menuOpen, 'control-menu-closed': !menuOpen}">
+		<div ng-class="{'control-tab-open': menuOpen, 'control-tab-closed': !menuOpen}" ng-click = "menuOpen = !menuOpen" ng-init = "menuOpen = false;">
 			<a href="#"><i class="fa fa-bars"></i></a>
 		</div>
 		<div class="row mt16 control-menu-icons">
 			<div class="col-xs-3 text-center white">
-				<a href="#"><i class="fa fa-list"></i></a>
+				<a href="#" ng-click = "showWorkout = true; showTimer = false; showPlaylist = false; showUsers = false;"><i class="fa fa-list"></i></a>
 			</div>
 			<div class="col-xs-3 text-center white">
-				<a href="#"><i class="ti-timer"></i></a>
+				<a href="#" ng-click = "showWorkout = false; showTimer = true; showPlaylist = false; showUsers = false;"><i class="ti-timer"></i></a>
 			</div>
 			<div class="col-xs-3 text-center white">
-				<a href="#"><i class="ti-music-alt"></i></a>
+				<a href="#" ng-click = "showWorkout = false; showTimer = false; showPlaylist = true; showUsers = false;"><i class="ti-music-alt"></i></a>
 			</div>
 			<div class="col-xs-3 text-center white">
-				<a href="#"><i class="fa fa-users"></i></a>
+				<a href="#" ng-click = "showWorkout = false; showTimer = false; showPlaylist = false; showUsers = true;"><i class="fa fa-users"></i></a>
 			</div>
 		</div>
-		<div class="panel-body control-menu-workout hidden">
-			<div class="row workout-set">
+		<div class="panel-body control-menu-workout" ng-show = "showWorkout">
+			<div class="row workout-set" ng-repeat = "set in workout.sets">
 				<div class="col-xs-12 text-left">
-					<h5 class="white hidden next-workout">Next</h5>
-					<h4 class="white mb8">EMOM 10 min</h4>
+					<!-- <h5 class="white hidden next-workout">Next</h5> -->
+					<h4 class="white mb8">{{set.title}}</h4>
 					<hr class="content-divider mb8 mt8">
-					<h4 class="white mb8">10 Burpees</h4>
-					<h4 class="white mb8">10 Squats</h4>
-					<h4 class="white mb8">10 Planks</h4>
-					<h4 class="white mb8">10 Jumping Jacks</h4>
-				</div>
-			</div>
-			<div class="row workout-set">
-				<div class="col-xs-12 text-left">
-					<h5 class="white hidden next-workout">Next up</h5>
-					<h4 class="white mb8">EMOM 10 min</h4>
-					<hr class="content-divider mb8 mt8">
-					<h4 class="white mb8">10 Burpees</h4>
-					<h4 class="white mb8">10 Squats</h4>
-					<h4 class="white mb8">10 Planks</h4>
-					<h4 class="white mb8">10 Jumping Jacks</h4>
+					<div ng-repeat = "exercise in set.exercises">
+						<h4 class="white mb8">{{exercise.name}}</h4>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="panel-body control-menu-timer">
+		<div class="panel-body control-menu-timer" ng-show = "showTimer">
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<h4 class="white mb8">Timer Settings</h4>
@@ -130,10 +113,10 @@
 						</label>
 						<div class="col-sm-9">
 						  <div class="select display-block">
-						    <select id="timer-options">
-						      <option>Tabata</option>
-						      <option>Count Up</option>
-						      <option>No Timer</option>
+						    <select id="timer-options" ng-model = "timer.type">
+						      <option value = "Tabata">Tabata</option>
+						      <option value = "countUp">Count Up</option>
+						      <!-- <option>No Timer</option> -->
 						    </select>
 						  </div>
 						</div>
@@ -144,11 +127,7 @@
 						</label>
 						<div class="col-sm-9">
 						  <div class="select display-block">
-						    <select id="timer-options">
-						      <option>0</option>
-						      <option>5</option>
-						      <option>10</option>
-						    </select>
+						    <select id="timer-options" ng-model = "timer.work" ng-options = "option for option in workOptions"></select>
 						  </div>
 						</div>
 					</div>
@@ -158,11 +137,7 @@
 						</label>
 						<div class="col-sm-9">
 						  <div class="select display-block">
-						    <select id="timer-options">
-						      <option>0</option>
-						      <option>5</option>
-						      <option>10</option>
-						    </select>
+						    <select id="timer-options" ng-model = "timer.rest" ng-options = "option for option in restOptions"></select>
 						  </div>
 						</div>
 					</div>
@@ -172,48 +147,57 @@
 						</label>
 						<div class="col-sm-9">
 						  <div class="select display-block">
-						    <select id="timer-options">
-						      <option>1</option>
-						      <option>2</option>
-						      <option>3</option>
-						    </select>
+						    <select id="timer-options" ng-model = "timer.rounds" ng-options = "option for option in roundOptions"></select>
 						  </div>
 						</div>
 					</div>
-					<a href="#" class="mt16 btn btn-block">Save Settings</a>
+					<a href="#" class="mt16 btn btn-block" ng-click = "saveTimer(timer)">Save Settings</a>
 				</div>
 			</div>
 		</div>	
 
-		<div class="panel-body control-menu-music hidden">
+		<div class="panel-body control-menu-music" ng-show = "showPlaylist">
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<iframe id = "audioPlayer" height="1" width="10%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=0"></iframe>
-					<h4 class="white mb8 playlist-name">WERK</h4>
+					<h4 class="white mb8 playlist-name">{{playlist.title}}</h4>
 					<hr class="content-divider mb8 mt8">
-					<img class="mb8" src="assets/images/justin-photo.jpg" width="100%">
-					<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
-					<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
-					<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
-					<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
-					<h4 class="white mb8 playlist-song">To U What What</h4>
-					<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
-					<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
-					<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
-					<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
-					<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
-					<h4 class="white mb8 playlist-song">To U What What</h4>
-					<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
+					<div class = "white">{{currentSong.title}}</div>
+					<div class = "white mb8 playlist-song">Uploaded by {{currentSong.user.username}}</div>
+					<img class="mb8" ng-src="{{currentSong.artwork_url}}" width="100%">
+					<div ng-repeat = "song in songArray">
+						<h4 class="white mb8 playlist-song">{{song.title}}</h4>
+						<!-- <h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
+						<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
+						<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
+						<h4 class="white mb8 playlist-song">To U What What</h4>
+						<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
+						<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
+						<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
+						<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
+						<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
+						<h4 class="white mb8 playlist-song">To U What What</h4>
+						<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4> -->
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="panel-body control-menu-class hidden">
+		<div class="panel-body control-menu-class" ng-show = "showUsers">
 			<div class="row">
 				<div class="col-xs-12 text-left">
-					<h4 class="white mb8">12 Classmates</h4>
+					<h4 class="white mb8">{{numBookedUsers}} Classmates</h4>
 					<hr class="content-divider mb8 mt8">
-					<div class="row menu-class-member mb8">
+					<div class="row menu-class-member mb8" ng-repeat = "bookedUser in bookedUsers">
+						<div class="col-xs-12">
+							<img class="menu-class-photo profile-photo" ng-src="{{bookedUser.picture}}" width="50" height="50">
+							<div class="menu-class-contact">
+								<h4 class="white mb0">{{bookedUser.firstName}} {{bookedUser.lastName}}</h4>
+								<h5 class="white mb0" ng-show = "bookedUser.location">{{bookedUser.location.city}}, {{bookedUser.location.region}}</h5>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="row menu-class-member mb8">
 						<div class="col-xs-12">
 							<img class="menu-class-photo profile-photo" src="assets/images/justin-photo.jpg" width="50" height="50">
 							<div class="menu-class-contact">
@@ -221,21 +205,12 @@
 								<h5 class="white mb0">New York USA</h5>
 							</div>
 						</div>
-					</div>
-					<div class="row menu-class-member mb8">
-						<div class="col-xs-12">
-							<img class="menu-class-photo profile-photo" src="assets/images/justin-photo.jpg" width="50" height="50">
-							<div class="menu-class-contact">
-								<h4 class="white mb0">Jake R</h4>
-								<h5 class="white mb0">New York USA</h5>
-							</div>
-						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
 		<div class="support-details text-center">
-			<a href="#">Call support</a>
+			<a href="#" ng-click = "openIntercomMessage()">Message Support Team</a>
 		</div>
 	</div>
 
@@ -249,7 +224,7 @@
 		  </md-button>
 		</div>
 		<div class="inline-block">
-		  <md-button class="md-fab trainer-remote-btn" aria-label="Start Timer">
+		  <md-button ng-click = "playButtonPushed()" class="md-fab trainer-remote-btn" aria-label="Start Timer">
 		    <i class="fa fa-play"></i>
 		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
 		      Start Timer
@@ -257,7 +232,7 @@
 		  </md-button>
 		</div>
 		<div class="inline-block">
-		  <md-button class="md-fab trainer-remote-btn" aria-label="Reset Timer">
+		  <md-button ng-click = "resetButtonPushed()" class="md-fab trainer-remote-btn" aria-label="Reset Timer">
 		    <i class="fa fa-undo"></i>
 		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
 		      Reset Timer
