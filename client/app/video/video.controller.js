@@ -237,9 +237,14 @@ angular.module('bodyAppApp')
   }
 
   $scope.$on('timer-tick', function (event, args) {
-  	$scope.timeCountdown = args.millis/($scope.timer.work*60)
-  	if(!$scope.$$phase) $scope.$apply();
-      // $scope.timerConsole += $scope.timerType  + ' - event.name = '+ event.name + ', timeoutId = ' + args.timeoutId + ', millis = ' + args.millis +'\n';
+  	if ($scope.timerWorking) {
+  		$scope.timeCountdown = (args.millis/1000)/($scope.realTimeTimer.work*60)*100
+	  	if(!$scope.$$phase) $scope.$apply();	
+  	} else {
+  		$scope.timeCountdown = (args.millis/1000)/($scope.realTimeTimer.rest*60)*100
+  		if(!$scope.$$phase) $scope.$apply();	
+  	}
+  	console.log($scope.timeCountdown)
   });
 
   $scope.playButtonPushed = function() {
