@@ -24,11 +24,13 @@ angular.module('bodyAppApp')
       if (user) {
         getStorefrontInfo();
         getImages();
+        getToSetup();
       } else {
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
             if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
             getStorefrontInfo();
+            getToSetup();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -208,6 +210,19 @@ angular.module('bodyAppApp')
         console.log($scope.storefrontInfo)
         if(!$scope.$$phase) $scope.$apply();
       })  
+    }
+
+    function getToSetup() {
+      ref.child('toSetup').once('value', function(snapshot) {
+        $scope.toSetup = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
+        if ($scope.toSetup.storefrontAlert) {
+          ref.child('toSetup').child('storefrontAlert').remove(function(err) {
+            if (err) return console.log(err)
+            delete $scope.toSetup.storefrontAlert
+          })  
+        }
+      })
     }
 
     $scope.saveStorefrontInfo = function(storefrontInfo) {

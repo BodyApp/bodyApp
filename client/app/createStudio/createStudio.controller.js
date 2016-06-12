@@ -78,7 +78,17 @@ angular.module('bodyAppApp')
           $scope.step++;
           if(!$scope.$$phase) $scope.$apply();
 					Studios.setCurrentStudio(studioId);
-					ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
+
+          ref.child('studios').child(studioId).child("toSetup").update({
+            "classTypes": true, 
+            "instructors": true, 
+            "playlists": true, 
+            "pricing": true, 
+            "storefrontAlert": true, 
+            "workouts": true
+          }, function(err) {if (err) console.log(err)})
+					
+          ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
 						if (err) return console.log(err);
 						console.log("Set current user "+ currentUser._id + " as admin of " + studioId)
 						User.getInstructorByEmail({

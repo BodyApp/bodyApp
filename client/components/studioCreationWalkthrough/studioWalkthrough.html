@@ -1,6 +1,6 @@
 <div class="col-md-12" >
-  <div class="panel space-4" ng-controller="StudioWalkthroughCtrl">
-    <div class="panel-body">
+  <div class="panel space-4" ng-show = "toSetup" ng-controller="StudioWalkthroughCtrl">
+    <div class="panel-body" >
       <div class="row">
         <div class="col-sm-12">
           <div class="studio-setup-shrink">
@@ -23,7 +23,7 @@
       </div>
       <div class="studio-setup-notifications" ng-show = "!collapse">
         <ul class="notifications">
-          <li>
+          <li ng-show = "toSetup.pricing">
             <div class="row">
               <div class="col-sm-11">
                 <a href="#">Set pricing for monthly members and drop ins <i class="fa fa-caret-right"></i></a>
@@ -33,7 +33,7 @@
               </div>
             </div>
           </li>
-          <li>
+          <li ng-show = "toSetup.instructors">
             <div class="row">
               <div class="col-sm-11">
                 <a href="#">Add a position title and bio to your instructor profile <i class="fa fa-caret-right"></i></a>
@@ -43,7 +43,7 @@
               </div>
             </div>
           </li>
-          <li>
+          <li ng-show = "toSetup.classTypes">
             <div class="row">
               <div class="col-sm-11">
                 <a href="#">Create your first class type <i class="fa fa-caret-right"></i></a>
@@ -53,7 +53,7 @@
               </div>
             </div>
           </li>
-          <li>
+          <li ng-show = "toSetup.playlists">
             <div class="row">
               <div class="col-sm-11">
                 <a href="#">Sync your Soundcloud account to access playlists <i class="fa fa-caret-right"></i></a>
@@ -63,7 +63,7 @@
               </div>
             </div>
           </li>
-          <li>
+          <li ng-show = "toSetup.workouts">
             <div class="row">
               <div class="col-sm-11">
                 <a href="#">Create and assign a workout to one of your class types <i class="fa fa-caret-right"></i></a>
