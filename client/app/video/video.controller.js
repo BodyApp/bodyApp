@@ -244,7 +244,6 @@ angular.module('bodyAppApp')
   		$scope.timeCountdown = (args.millis/1000)/($scope.realTimeTimer.rest*60)*100
   		if(!$scope.$$phase) $scope.$apply();	
   	}
-  	console.log($scope.timeCountdown)
   });
 
   $scope.playButtonPushed = function() {
@@ -325,6 +324,7 @@ angular.module('bodyAppApp')
 									console.log("seeking to track " + (i+1));
 									currentSongIndex = i;			
 									if (userIsInstructor) audioPlayer.setVolume(0)
+									if (!userIsInstructor) audioPlayer.setVolume($scope.musicVolume ? $scope.musicVolume : 50)
 									return audioPlayer.play()
 								}
 							}	

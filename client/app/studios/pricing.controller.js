@@ -22,12 +22,14 @@ angular.module('bodyAppApp')
       if (user) {
         getDropinPlan();
         getAccessCode();
+        getSyncedStudioName();
       } else {
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
             if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
             getDropinPlan();
             getAccessCode();
+            getSyncedStudioName();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -67,6 +69,13 @@ angular.module('bodyAppApp')
     //     }
     //   }
     // })
+
+    function getSyncedStudioName() {
+      ref.child('stripeConnected').child('detailedAccountInfo').child('display_name').on('value', function(snapshot) {
+        if (!snapshot.exists) return
+        $scope.connectedStripeAccount = snapshot.val()
+      })
+    }
 
     function getAccessCode() {
       ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
@@ -112,9 +121,9 @@ angular.module('bodyAppApp')
 
     function getDropinPlan() {
     	ref.child("stripeConnected").child('dropinPlan').on('value', function(snapshot) {
-        if (!snapshot.exists()) return
+        // if (!snapshot.exists()) return
     		$scope.dropinPlan = snapshot.val()
-        ref.child('storefrontInfo').update({dropinPricing: snapshot.val().amount})
+        // ref.child('storefrontInfo').update({'dropinPricing': snapshot.val().amount})
     		if(!$scope.$$phase) $scope.$apply();
     	})
     }
@@ -163,7 +172,7 @@ angular.module('bodyAppApp')
   				$scope.showAddPricingPlan = false;
 	    		if(!$scope.$$phase) $scope.$apply();
     		})
-    	} else {
+    	} else if (planToSave.pricingType === 'Monthly'){
     		Studio.createSubscriptionPlan({
 	        id: currentUser._id
 	      }, {
@@ -193,7 +202,10 @@ angular.module('bodyAppApp')
     $scope.deleteDropinPlan = function() {
     	ref.child("stripeConnected").child('dropinPlan').remove(function(err) {
     		if (err) return console.log(err)
-    		console.log("Dropin plan removed");
+        ref.child('storefrontInfo').child('dropinPricing').remove(function(err) {
+          if (err) return console.log(err)
+          console.log("Dropin plan removed");
+        })
     	})
     }
 

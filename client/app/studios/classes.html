@@ -6,7 +6,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
 
-      <div class="panel ss-help-panel help-panel-small mt40"> <!-- HELPER TIP -->
+      <div class="panel ss-help-panel help-panel-small mt40" ng-show = "classNameHover"> <!-- HELPER TIP -->
         <div class="help-header-icon-container-sm text-center va-container-h">
           <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
         </div>
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+      <div class="panel ss-help-panel help-panel-small mt40" ng-show = "specialtyClassHover"> <!-- HELPER TIP -->
         <div class="help-header-icon-container-sm text-center va-container-h">
           <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
         </div>
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+      <div class="panel ss-help-panel help-panel-small mt40" ng-show = "openToHover"> <!-- HELPER TIP -->
         <div class="help-header-icon-container-sm text-center va-container-h">
           <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
         </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+      <div class="panel ss-help-panel help-panel-small mt40" ng-show = "equipmentHover"> <!-- HELPER TIP -->
         <div class="help-header-icon-container-sm text-center va-container-h">
           <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
         </div>
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class="panel ss-help-panel help-panel-small mt40 hidden"> <!-- HELPER TIP -->
+      <div class="panel ss-help-panel help-panel-small mt40" ng-show = "classDescriptionHover"> <!-- HELPER TIP -->
         <div class="help-header-icon-container-sm text-center va-container-h">
           <img src="https://www.getbodyapp.com/assets/images/contact-us.png" width="50" height="50" class="col-center">
         </div>
@@ -63,7 +63,7 @@
 
     <div class="col-md-9">
 
-      <div class="panel space-4">   <!-- No classes added yet -->
+      <div class="panel space-4" ng-if = "!savedClassTypes">   <!-- No classes added yet -->
         <div class="panel-body">
           <div class="row col-sm-12">
             <h5 class="mb8">Looks like you don't have any classes created yet! Classes help create variety for your clients. Use class names that will be easy to understand (e.g. Fundamentals, Level One, Advanced, etc).</h5>
@@ -90,10 +90,12 @@
             </label>
             <div class="col-sm-9">
               <div style = "color: red" ng-show = "missingName">You're missing a class name!</div>
-              <input ng-if = "showAddClass" id="class-name" ng-model = "classToCreate.name" name="" size="30" type="text" placeholder="e.g. Level One">
-              <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.name" name="" size="30" type="text" placeholder="e.g. Level One">
+              <div ng-mouseenter = "classNameHover = true;" ng-mouseleave = "classNameHover = false;">
+                <input ng-if = "showAddClass" id="class-name" ng-model = "classToCreate.name" name="" size="30" type="text" placeholder="e.g. Level One">
+                <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.name" name="" size="30" type="text" placeholder="e.g. Level One">
+              </div>
               <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
-              <div class="row col-sm-12">
+              <div class="row col-sm-12" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;">
                 <input ng-if = "showAddClass" id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" size="15" type="checkbox">
                 <input ng-if = "showEditClass" id="specialty-class-check" ng-model = "showEditClass.classToEdit.specialtyClass" name="specialty-class" size="15" type="checkbox">
                 <label for="specialty-class-check" class="check-selector">
@@ -109,7 +111,7 @@
             </div>            
           </div>
 
-          <div class="row space-4" ng-show = "classToCreate.specialtyClass || showEditClass.classToEdit.specialtyClassRate">
+          <div class="row space-4" ng-show = "classToCreate.specialtyClass || showEditClass.classToEdit.specialtyClass" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;">
             <label class="col-sm-3" for="specialty-class-price">
               Specialty Rate
             </label>
@@ -134,7 +136,7 @@
             <label class="col-sm-3" for="class-reg-types">
               Open To
             </label>
-            <div class="col-sm-9">
+            <div class="col-sm-9" ng-mouseenter = "openToHover = true;" ng-mouseleave = "openToHover = false;">
               <div class="select" >
                 <select ng-if = "showAddClass" id="class-reg-types" ng-init = "classToCreate.openTo = 'All (Members &amp; Drop Ins)'" ng-model = "classToCreate.openTo">
                   <option>All (Members &amp; Drop Ins)</option>
@@ -150,7 +152,7 @@
             </div>
           </div>
 
-          <div class="row space-4">
+          <div class="row space-4" ng-mouseenter = "equipmentHover = true;" ng-mouseleave = "equipmentHover = false;">
             <label class="col-sm-3" for="equipment-needed">
               Equipment Required
             </label>
@@ -192,7 +194,7 @@
             </div>            
           </div>
 
-          <div class="row space-4">
+          <div class="row space-4" ng-mouseenter = "classDescriptionHover = true;" ng-mouseleave = "classDescriptionHover = false;">
             <label class="col-sm-3" for="class-description">
               Class Description
             </label>
