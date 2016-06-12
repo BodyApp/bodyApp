@@ -7,15 +7,15 @@
         <div class="sorter-text">
           Show me
           <div class="select">
-            <select>
-              <option>Strength</option>
-              <option>HIIT</option>
-              <option>Yoga</option>
-              <option>Dance</option>
-              <option>Boxing</option>
-              <option>Pilates</option>
-              <option>Barre</option>
-              <option>Martial Arts</option>
+            <select ng-model = "categoryFilter">
+              <option value = "strength">Strength</option>
+              <option value = "hiit">HIIT</option>
+              <option value = "yoga">Yoga</option>
+              <option value = "dance">Dance</option>
+              <option value = "boxing">Boxing</option>
+              <option value = "pilates">Pilates</option>
+              <option value = "barre">Barre</option>
+              <option value = "martialArts">Martial Arts</option>
             </select>
           </div>
           studios<!-- sorted by
@@ -28,7 +28,7 @@
               <option>Top grossing</option>
             </select>
           </div> -->
-          from
+<!--           from
           <div class="select">
             <select>
               <option>Earth</option>
@@ -38,7 +38,7 @@
               <option>Asia</option>
               <option>Australia</option>
             </select>
-          </div>
+          </div> -->
         </div class="sorter-text">
       </div>
     </div>
@@ -49,33 +49,34 @@
   <div class="page-container-responsive">
     <div class="row">
 
-      <div class="col-md-4"> <!-- Studio Listing -->
+      <div class="col-md-4" ng-repeat = "studio in studios | filterByCategory: categoryFilter"> <!-- Studio Listing -->
         <a href="#">
           <div class="panel">
             <div class="studio-listing-container">
               <div class="studio-listing-image">
                 <div class="studio-listing-tags text-center">
-                  <span>
-                    #bootcamp
-                    #strength
+                  <span ng-repeat = "(category, active) in studio.categories" ng-show = "active">
+                    #{{category}}
                   </span>
                 </div>
-                <img src="assets/images/studios/body/findprogram.jpg">
+                <img ng-src="{{studioPictures[studio.studioId]}}">
               </div>
               <div class="panel-body">
                 <!-- <div class="studio-listing-stars">
                 </div> -->
-                <h4>RALABALA</h4>
-                <h5 class="lightgray">By Beth Anne Lazaro</h5>
-                <h5 class="mt8">Founded by two adventure seekers who share a passion for inspiring others to live more active lives.</h5>
+                <h4>{{studio.studioName}}</h4>
+                <h5 class="lightgray">By {{studio.ownerName}}</h5>
+                <h5 class="mt8">{{studio.shortDescription}}</h5>
                 <div class="studio-listing-pricing mt16">
                   <div class="studio-listing-subscription">
                     <span class="royalblue">Subscription</span>
-                    <h4>$30</h4>
+                    <h4 ng-if = "studio.subscriptionPricing">${{studio.subscriptionPricing/100}}</h4>
+                    <h4 ng-if = "!studio.subscriptionPricing">None</h4>
                   </div>
                   <div class="studio-listing-dropIn">
                     <span class="royalblue">Drop In</span>
-                    <h4>$5</h4>
+                    <h4 ng-if = "studio.dropinPricing">${{studio.dropinPricing/100}}</h4>
+                    <h4 ng-if = "!studio.dropinPricing">None</h4>
                   </div>
                 </div>
               </div>

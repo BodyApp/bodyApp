@@ -19,18 +19,10 @@ angular.module('bodyAppApp')
   })
   .config(function ($stateProvider) {
     $stateProvider
-      .state('trainerVideoTemplate', {
-        url: '/trainerVideoTemplate',
-        templateUrl: 'app/main/trainerVideoTemplate.html',
-        controller: 'MainCtrl'
-      });
-  })
-  .config(function ($stateProvider) {
-    $stateProvider
       .state('discover', {
         url: '/discover',
         templateUrl: 'app/main/discover.html',
-        controller: 'MainCtrl'
+        controller: 'DiscoverCtrl'
       });
   })
   .config(function ($stateProvider) {
