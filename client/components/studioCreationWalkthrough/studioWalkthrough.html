@@ -1,0 +1,80 @@
+<div class="col-md-12" >
+  <div class="panel space-4" ng-controller="StudioWalkthroughCtrl">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="studio-setup-shrink">
+            <a href="#" ng-show = "!collapse" ng-click = "collapse = true">
+              <i class="ti-angle-double-up">
+                <md-tooltip md-direction="bottom">Collapse</md-tooltip>
+              </i>
+            </a>
+            <a href="#" ng-show = "collapse" ng-click = "collapse = false">
+              <i class="ti-angle-double-down">
+                <md-tooltip md-direction="bottom">Expand</md-tooltip>
+              </i>
+            </a>
+          </div>
+          <div class="studio-setup-header">
+            <h4>Prepare your first class</h4>
+            <hr class="content-divider mt16 mb16">
+          </div>
+        </div>
+      </div>
+      <div class="studio-setup-notifications" ng-show = "!collapse">
+        <ul class="notifications">
+          <li>
+            <div class="row">
+              <div class="col-sm-11">
+                <a href="#">Set pricing for monthly members and drop ins <i class="fa fa-caret-right"></i></a>
+              </div>
+              <div class="col-sm-1 text-right">
+                <!-- <a href="#"><i class="ti-close lightgray"></i></a> -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-sm-11">
+                <a href="#">Add a position title and bio to your instructor profile <i class="fa fa-caret-right"></i></a>
+              </div>
+              <div class="col-sm-1 text-right">
+                <!-- <a href="#"><i class="ti-close lightgray"></i></a> -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-sm-11">
+                <a href="#">Create your first class type <i class="fa fa-caret-right"></i></a>
+              </div>
+              <div class="col-sm-1 text-right">
+                <!-- <a href="#"><i class="ti-close lightgray"></i></a> -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-sm-11">
+                <a href="#">Sync your Soundcloud account to access playlists <i class="fa fa-caret-right"></i></a>
+              </div>
+              <div class="col-sm-1 text-right">
+                <!-- <a href="#"><i class="ti-close lightgray"></i></a> -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-sm-11">
+                <a href="#">Create and assign a workout to one of your class types <i class="fa fa-caret-right"></i></a>
+              </div>
+              <div class="col-sm-1 text-right">
+                <!-- <a href="#"><i class="ti-close lightgray"></i></a> -->
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
