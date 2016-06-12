@@ -20,7 +20,7 @@
 			</div>
 		</div>
 	</div>
-	<ul class="user-videos-grid-7or8">
+	<ul ng-class = "videoView">
 	<!-- apply class .user-videos-stack to switch to stacked layout -->
 	<!-- apply class .user-videos-boxed-7andUnder to switch to boxed layout with 7 or less feeds -->
 	<!-- apply class .user-videos-boxed-over7 to switch to boxed layout with 8 or more feeds -->
@@ -241,7 +241,7 @@
 
 	<div class="trainer-remote text-center">
 		<div class="inline-block">
-		  <md-button class="md-fab trainer-remote-btn" aria-label="Switch View">
+		  <md-button ng-click = "switchView()" class="md-fab trainer-remote-btn" aria-label="Switch View">
 		    <i class="fa fa-th"></i>
 		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
 		      Switch View

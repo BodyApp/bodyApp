@@ -28,6 +28,9 @@ angular.module('bodyAppApp')
   $scope.consumerObjects = {};
   var connectionCount = 0;
 
+  var viewCounter = 2;
+  var viewOptions = ["user-videos-stack", "user-videos-boxed", "user-videos-grid"]
+
 	auth.onAuthStateChanged(function(user) {
     if (user) {     
       getClassDetails()
@@ -49,6 +52,57 @@ angular.module('bodyAppApp')
 		ref.child('realTimeControls').child(classId).update({'musicVolume': $scope.musicVolume - 25}, function(err) {
 			if (err) return console.log(err)
 		})	
+	}
+
+	$scope.switchView = function() {
+		viewCounter++;
+		var optionChosen = viewCounter % 3;
+		$scope.videoView = viewOptions[optionChosen];
+ 
+		switch (optionChosen) {
+			case 0: 
+			$scope.videoView += ""; 
+			break;
+			case 1: 
+			if (Object.keys($scope.consumerObjects).length > 7) {
+				$scope.videoView += "-over7";
+			} else {
+				$scope.videoView += "-7andUnder";
+			}
+			break;
+			case 2:
+			switch (Object.keys($scope.consumerObjects).length) {
+				case 0: $scope.videoView += "-1";
+				case 1: $scope.videoView += "-1";
+				case 2: $scope.videoView += "-2";
+				case 3: $scope.videoView += "-3or4";
+				case 4: $scope.videoView += "-3or4";
+				case 5: $scope.videoView += "-5or6";
+				case 6: $scope.videoView += "-5or6";
+				case 7: $scope.videoView += "-7or8";
+				case 8: $scope.videoView += "-7or8";
+				case 9: $scope.videoView += "-9";
+				case 10: $scope.videoView += "-12andUnder";
+				case 11: $scope.videoView += "-12andUnder";
+				case 12: $scope.videoView += "-12andUnder";
+			}
+			break;
+			default: $scope.videoView += "";
+		}
+  
+    if(!$scope.$$phase) $scope.$apply();
+
+		console.log($scope.videoView)
+	// 	<!-- apply class .user-videos-stack to switch to stacked layout -->
+	// <!-- apply class .user-videos-boxed-7andUnder to switch to boxed layout with 7 or less feeds -->
+	// <!-- apply class .user-videos-boxed-over7 to switch to boxed layout with 8 or more feeds -->
+	// <!-- apply class .user-videos-grid-1 to switch to grid layout with 1 feed-->
+	// <!-- apply class .user-videos-grid-2 to switch to grid layout with 2 feeds-->
+	// <!-- apply class .user-videos-grid-3or4 to switch to grid layout with 3 or 4 feeds-->
+	// <!-- apply class .user-videos-grid-5or6 to switch to grid layout with 5 or 6 feeds-->
+	// <!-- apply class .user-videos-grid-7or8 to switch to grid layout with 7 or 8 feeds-->
+	// <!-- apply class .user-videos-grid-9 to switch to grid layout with 9 feeds-->
+	// <!-- apply class .user-videos-grid-12andUnder to switch to grid layout with 12 or less feeds-->
 	}
 
   function getClassDetails() {
