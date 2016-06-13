@@ -30,8 +30,8 @@
 			<span class="classmates-video-name text-center">You</span>
 		</li>
 		<li class="trainer-video-large">
-			<div class="trainer-video-large" id="trainerVideo">
-				<img class="trainer-video-large" ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
+			<div id="trainerVideo">
+				<img ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
 			</div>
 			<span class="classmates-video-name text-center">{{instructor.firstName}} {{instructor.lastName}}</span>
 		</li>
@@ -39,15 +39,6 @@
 			<div ng-attr-id="{{'consumer'+$index}}"></div>
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
 		</li>
-		<!-- <li>
-			<div id = "consumer1"></div>
-			<span class="classmates-video-name text-center">Justin M</span>
-		</li>
-		<li>
-			<div id = "consumer2"></div>
-			<span class="classmates-video-name text-center">Justin M</span>
-		</li> -->
-		
 	</ul>
 	<div ng-class="{'control-menu-open': menuOpen, 'control-menu-closed': !menuOpen}">
 		<div ng-class="{'control-tab-open': menuOpen, 'control-tab-closed': !menuOpen}" ng-click = "menuOpen = !menuOpen" ng-init = "menuOpen = false;">
