@@ -28,9 +28,9 @@ angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('newSignUp', {
-        url: '/newSignUp',
+        url: '/newsignup',
         templateUrl: 'app/main/newSignUp.html',
-        controller: 'MainCtrl'
+        controller: 'NewSignupCtrl'
       });
   })
   .config(function ($stateProvider) {

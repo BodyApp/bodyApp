@@ -29,8 +29,9 @@ angular.module('bodyAppApp')
   var previouslyClickedConsumerId;
   var connectionCount = 0;
 
-  var viewCounter = 2;
+  var viewCounter = 3;
   var viewOptions = ["user-videos-stack", "user-videos-boxed", "user-videos-grid"]
+  $scope.videoView = viewOptions[0]
 
   generateTimerOptions()
 
@@ -57,8 +58,8 @@ angular.module('bodyAppApp')
 		})	
 	}
 
-	$scope.switchView = function() {
-		viewCounter++;
+	$scope.switchView = function(incrementBy) {
+		viewCounter += incrementBy;
 		var optionChosen = viewCounter % 3;
 		$scope.videoView = viewOptions[optionChosen];
  
@@ -75,24 +76,27 @@ angular.module('bodyAppApp')
 				break;
 			case 2:
 				switch (Object.keys($scope.consumerObjects).length) {
-					case 0: $scope.videoView += "-1";
-					case 1: $scope.videoView += "-1";
-					case 2: $scope.videoView += "-2";
-					case 3: $scope.videoView += "-3or4";
-					case 4: $scope.videoView += "-3or4";
-					case 5: $scope.videoView += "-5or6";
-					case 6: $scope.videoView += "-5or6";
-					case 7: $scope.videoView += "-7or8";
-					case 8: $scope.videoView += "-7or8";
-					case 9: $scope.videoView += "-9";
-					case 10: $scope.videoView += "-12andUnder";
-					case 11: $scope.videoView += "-12andUnder";
-					case 12: $scope.videoView += "-12andUnder";
+					case 0: $scope.videoView += "-1"; break;
+					case 1: $scope.videoView += "-1"; break;
+					case 2: $scope.videoView += "-2"; break;
+					case 3: $scope.videoView += "-3or4"; break;
+					case 4: $scope.videoView += "-3or4"; break;
+					case 5: $scope.videoView += "-5or6"; break;
+					case 6: $scope.videoView += "-5or6"; break;
+					case 7: $scope.videoView += "-7or8"; break;
+					case 8: $scope.videoView += "-7or8"; break;
+					case 9: $scope.videoView += "-9"; break;
+					case 10: $scope.videoView += "-12andUnder"; break;
+					case 11: $scope.videoView += "-12andUnder"; break;
+					case 12: $scope.videoView += "-12andUnder"; break;
+					default: $scope.videoView += "-1"; break;
 				}
 				break;
-			default: $scope.videoView += "";
+			default: $scope.videoView += ""; break;
 		}
-  
+  	console.log(Object.keys($scope.consumerObjects).length)
+  	console.log($scope.videoView)
+
     if(!$scope.$$phase) $scope.$apply();
 	}
 
@@ -643,6 +647,10 @@ angular.module('bodyAppApp')
 					previouslyClickedConsumerId = streamId;
 				}
 
+				if (userIsInstructor) {
+					$scope.switchView(0)
+				}
+
 		  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
 				  console.log('started talking');
 				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
@@ -723,7 +731,7 @@ angular.module('bodyAppApp')
 					if(!$scope.$$phase) $scope.$apply();
 				}	
 				subscriberBox = instructorStream ? "trainerVideo" : "consumer" + (Object.keys($scope.consumerObjects).length-1).toString()
-				$scope.consumerObjects[streamId].subscriberBox = subscriberBox;
+				if (!instructorStream) $scope.consumerObjects[streamId].subscriberBox = subscriberBox;
 				console.log(subscriberBox)
 				subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)		
 			},
@@ -732,6 +740,9 @@ angular.module('bodyAppApp')
 				if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
 				if (streamId === $scope.classDetails.instructor) $scope.instructorDisplayed = false;
 				if(!$scope.$$phase) $scope.$apply();
+				if (userIsInstructor) {
+					$scope.switchView(0)
+				}
 			},
 		  connectionCreated: function (event) {
 		    connectionCount++;
