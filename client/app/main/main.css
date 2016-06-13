@@ -196,11 +196,18 @@
     line-height: 24px;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 990px) {
   .earn-panel-content {
+    padding-right: 0;
+  }
+  .earn-panel-content h4,
+  .earn-panel-content h5,
+  .earn-panel-content a {
     text-align: center;
-    padding: 30px;
     color: #fff;
+  }
+  .earn-panel-content h4 {
+    font-size: 28px;
   }
 }
 .discovery-card {
@@ -234,7 +241,13 @@
   color: #4E95FF;
   font-weight: 700;
 }
-
+.separator {
+  padding: 0 20px;
+}
+.perMonth {
+  font-size: 14px;
+  font-weight: 800;
+}
 /*------OLD MAIN-------*/
 
 .bodylife {

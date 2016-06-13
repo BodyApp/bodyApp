@@ -506,9 +506,9 @@
                     <th>Code</th>
                     <th>Discount</th>
                     <th>Applies</th>
-                    <th>Redemptions</th>
+                    <th class="hidden-xs">Redemptions</th>
                     <th>Expiration</th>
-                    <th>Used</th>
+                    <th class="hidden-xs">Used</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -520,12 +520,12 @@
                     <td ng-if = "coupon.duration === 'once'">1 month</td>
                     <td ng-if = "coupon.duration === 'repeating'">{{coupon.duration_in_months}} months</td>
                     <td ng-if = "coupon.duration === 'forever'">Forever</td>
-                    <td ng-if = "!coupon.max_redemptions">Unlimited</td>
-                    <td ng-if = "coupon.max_redemptions">{{coupon.max_redemptions}} Allowed</td>
+                    <td class="hidden-xs" ng-if = "!coupon.max_redemptions">Unlimited</td>
+                    <td class="hidden-xs" ng-if = "coupon.max_redemptions">{{coupon.max_redemptions}} Allowed</td>
                     <td ng-if = "!coupon.redeem_by">Never</td>
                     <td ng-if = "coupon.redeem_by">{{formatDate(coupon.redeem_by)}}</td>
-                    <td ng-if = "coupon.times_redeemed > 0">{{coupon.times_redeemed}}</td>
-                    <td ng-if = "coupon.times_redeemed === 0">Never</td>
+                    <td class="hidden-xs" ng-if = "coupon.times_redeemed > 0">{{coupon.times_redeemed}}</td>
+                    <td class="hidden-xs" ng-if = "coupon.times_redeemed === 0">Never</td>
                     <td><a href="#" ng-click = "deleteCoupon(coupon)">Delete</a></td>
                   </tr> 
 <!--                   <tr>

@@ -6,7 +6,7 @@
         <div class="col-sm-6 hidden-xs text-left mt16">
           <h1 class="royalblue mb8">How It Works</h1>
           <h2 class="darkblue">Take classes with live coaches and teammates</h2>
-          <a href="#" ng-click="signUp()" class="btn-blue big-btn mt16 mb8">Get started</a>
+          <a href="#" ng-click="signUp()" class="btn-blue big-btn mt24 mb8">Get started</a>
         </div>
         <div class="col-sm-6 visible-xs text-center mb48">
           <h1 class="royalblue mb8">How It Works</h1>
@@ -26,11 +26,11 @@
 
   <section id="scroll-link" class="white-section">
     <div class="container">
-        <div class="col-sm-7 col-sm-push-5">
+        <div class="col-sm-6 col-sm-push-6">
           <h2 class="mt56 mb16 royalblue">It's like a boutique studio in your living room.</h2>
           <h4 class="darkblue thin500">We’re using technology to enhance your home fitness experience. BODY is a leader in multi-way video technology, so you can join classes with your favorite instructors and teammates in real-time.</h4>
         </div>      
-        <div class="col-sm-5 col-sm-pull-7">
+        <div class="col-sm-5 col-sm-pull-6">
           <img alt = "live classes" class="mt16" src="assets/images/living-room-workout.png">
         </div>
     </div>
@@ -78,21 +78,23 @@
   <div class="page-container-responsive">
     <div class="panel">
       <div class="row">
-        <div class="col-sm-8 hidden-xs">
+        <div class="col-md-8 hidden-xs hidden-sm">
           <div class="earn-banner">
-            <a href="/createstudio">
+            <a href="/discover">
               <img src="/assets/images/studios/body/findprogram.jpg">
             </a>
           </div>
         </div>
-        <div class="col-sm-4 earn-panel-body">
-          <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}">
+        <div class="col-md-4 earn-panel-body">
+          <!-- <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}"> -->
+          <div class="earn-banner-hero visible-sm visible-xs" style="background-image:url('/assets/images/studios/body/findprogram.jpg')">
+          <div class="cover-gradient-darker visible-sm visible-xs"></div>
           </div>
           <div class="va-container va-container-v va-container-h earn-panel-content">
             <div class="va-middle">
               <h4 class="mb16">Find a program you love</h4>
               <h5>Hate commitment? No problem. Drop in for a class with any studio.</h5>
-              <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">View Studios</a>
+              <a ng-href="/discover" class="btn-blue btn-block btn-large mt32">Find a Studio</a>
             </div>
           </div>
         </div>

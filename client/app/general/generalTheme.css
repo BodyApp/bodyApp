@@ -752,7 +752,7 @@ footer.bg-dark li,
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: none;
+  border: 2px solid #3E7EDF;
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
@@ -766,7 +766,35 @@ footer.bg-dark li,
 }
 .btn-blue:hover, .btn-blue:visited, .btn-blue:focus {
   color: white;
-  opacity: 0.9;
+  background: rgba(62, 126, 223, 0.9);
+  border: 2px solid #3E7EDF;
+  text-decoration: none;
+}
+.btn-clear {
+  color: white;
+  background: rgba(255,255,255,0);
+  font-size: 14px;
+  padding: 7px 21px;
+  display: inline-block;
+  margin-bottom: 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  border: 2px solid white;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  line-height: 1.43;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn-clear:hover, .btn-clear:visited, .btn-clear:focus {
+  color: white;
+  background: rgba(255,255,255,0.1);
   text-decoration: none;
 }
 .btn-tag {

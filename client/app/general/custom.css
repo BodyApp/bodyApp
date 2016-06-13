@@ -504,6 +504,25 @@
   margin-right: auto;
   margin-left: auto;
   border-bottom: 1px solid #EFF1EF;
+  min-height: 116px;
+}
+.studio-classes:last-child hr,
+.studio-instructors:last-child hr {
+  display: none;
+}
+.studio-instructors-content {
+  min-height: 125px;
+}
+
+.no-classes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 70px;
+  bottom: 0;
+  font-size: 18px;
+  font-weight: 500;
+  height: 0px;
 }
 .cal-controls {
   position: absolute;

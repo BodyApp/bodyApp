@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<div id="studio-hero">
+<div class="storefront-hero">
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
       <a href="#" class="" ng-show = "storefrontInfo.youtubeId">
@@ -114,10 +114,6 @@
       </a>
     </div>
   </div>
-  <!-- <div class="video-full-width">
-    <iframe width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
-  </div> -->
-  
   <div id="hero-video-player" class="fullscreen-video-player" ng-show = "showVideoPlayer" tabindex="1" style="z-index:2001;">
     <div class="row row-table row-full-height">
       <div class="col-sm-12 col-middle text-center" id = "youtubeContainer">
@@ -128,9 +124,7 @@
       </div>
     </div>
   </div>
-
-    <div class="cover-img" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}"></div>
-
+  <div class="cover-img" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}"></div>
 </div>
 
 <div id="summary" class="panel studio-section">
@@ -249,7 +243,7 @@
   </div>
 </div>
 
-<div id="details">
+<div id="details" class="pt16 pb16">
   <div class="page-container-responsive">
     
     <div class="row">
@@ -275,9 +269,10 @@
           </div>
         </div> -->
 
-        <div class="row mb16"> <!-- CALENDAR WEEK VIEW -->
+        <div class="row mb24"> <!-- CALENDAR WEEK VIEW -->
           <div class="cal-container text-center">         
             <div class="header-cover"></div>
+            <div class="no-classes">No classes this week</div>
             <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
             <div class="cal-column" ng-class = "'sched-day-'+($index+1)" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
@@ -330,7 +325,7 @@
               </div>
               <div class="col-md-10" >
 
-                <div class="row mb16" ng-repeat = "classType in classTypes"> <!-- FIRST CLASS -->
+                <div class="row studio-classes" ng-repeat = "classType in classTypes"> <!-- FIRST CLASS -->
                   <div class="col-md-12">
                     <div class="row mb8">
                       <div class="col-md-12">
@@ -355,6 +350,7 @@
                         <h5 class="lightgray">24 times</h5>
                       </div> -->
                     </div>
+                    <hr class="content-divider mt16 mb16">
                   </div>
                 </div>
 
@@ -421,7 +417,6 @@
               </div>
             </div>
 
-            <hr class="content-divider mt16 mb16">
 
             <!-- STATS SECTION -->
             <!-- <div class="row">
@@ -760,9 +755,9 @@
   </div>
 </div> -->
 
-<div id="studio-team">
+<div class="panel-dark">
   <div class="page-container-responsive">
-    <div class="row pt24 pb24">
+    <div class="row pt32 pb32">
       <div class="col-md-8">
         <div class="row">
           <div class="col-sm-12">
@@ -773,13 +768,13 @@
             </div>
             <hr class="content-divider mt16 mb16">
 
-            <div class="row mt24 mb-xs-16" ng-repeat = "instructor in instructors">
+            <div class="row mt24 mb-xs-16 studio-instructors" ng-repeat = "instructor in instructors">
               <div class="col-sm-3">
                 <div class="studio-instructor-photo text-center">
                   <img ng-src="{{instructor.picture}}">
                 </div>
               </div>
-              <div class="col-sm-9">
+              <div class="col-sm-9 studio-instructors-content">
                 <h3 class="mb0 text-center-xs">{{instructor.firstName}} {{instructor.lastName}}</h3>
                 <h5 class="mb8 lightgray text-center-xs">{{instructor.title}}</h5>
                 <h5 class="mb8">{{instructor.bio}}</h5>
@@ -793,6 +788,11 @@
                     <h5 class="lightgray">304</h5>
                   </div> -->
                 <!-- </div> -->
+                <div class="row">
+                  <div class="col-sm-12">
+                    <hr class="divider mt16 mb16">
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -804,22 +804,6 @@
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
