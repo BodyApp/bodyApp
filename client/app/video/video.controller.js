@@ -184,7 +184,7 @@ angular.module('bodyAppApp')
   // 		$scope.consumersCanHearEachOther = snapshot.val()
   // 		if(!$scope.$$phase) $scope.$apply();
 
-  // 		for (prop in $scope.consumerObjects) {
+  // 		for (var prop in $scope.consumerObjects) {
 	 //  		if ($scope.consumersCanHearEachOther) {
 	 //  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
 	 //  		} else {
@@ -372,7 +372,7 @@ angular.module('bodyAppApp')
 
 		if ($scope.hearAll) {
 			$scope.hearAll = false;
-			for (prop in $scope.consumerObjects) {
+			for (var prop in $scope.consumerObjects) {
 				$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
 			}
 		}
@@ -389,7 +389,7 @@ angular.module('bodyAppApp')
 		$scope.hearAll = false;
 		$scope.trainerClickedHimself = true;
 		if (audioPlayer) audioPlayer.setVolume($scope.musicVolume/200);
-		for (prop in $scope.consumerObjects) {
+		for (var prop in $scope.consumerObjects) {
 			$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
 		}
 	}
@@ -398,12 +398,12 @@ angular.module('bodyAppApp')
 		if (audioPlayer) audioPlayer.setVolume(0);
 		if ($scope.hearAll) {
 			$scope.hearAll = false;
-			for (prop in $scope.consumerObjects) {
+			for (var prop in $scope.consumerObjects) {
 				$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
 			}	
 		} else {
 			$scope.hearAll = true;
-			for (prop in $scope.consumerObjects) {
+			for (var prop in $scope.consumerObjects) {
 				$scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
 			}	
 		}
@@ -750,11 +750,11 @@ angular.module('bodyAppApp')
 		      console.log('Another client connected. ' + connectionCount + ' total.');
 		    }
 		  },
-		  connectionDestroyed: function connectionDestroyedHandler(event) {
+		  connectionDestroyed: function (event) {
 		    connectionCount--;
 		    console.log('A client disconnected. ' + connectionCount + ' total.');
 		  },
-		  sessionDisconnected: function sessionDisconnectHandler(event) {
+		  sessionDisconnected: function (event) {
 	      // The event is defined by the SessionDisconnectEvent class
 	      console.log('Disconnected from the session.');
 	      console.log(event.reason);
