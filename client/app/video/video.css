@@ -9,6 +9,9 @@
 #myfeed .OT_video-element {
   height: 50% !important;
 }
+#myfeed .OT_publisher {
+  z-index: 1;
+}
 .classfeeds .OT_publisher,
 .classfeeds .OT_subscriber {
   height: 100% !important;
@@ -164,7 +167,7 @@
 .control-menu-icons a,
 .control-tab-open a,
 .control-tab-closed a {
-  color: #fff;
+  color: #fff !important;
 }
 .control-menu-icons a:hover,
 .control-menu-icons a:visited,
@@ -174,7 +177,7 @@
 .control-tab-open a:focus,
 .control-tab-closed a:hover,
 .control-tab-closed a:visited,
-.control-tab-closed a:focus, {
+.control-tab-closed a:focus {
   color: #fff;
 }
 .control-menu-workout, .control-menu-music, .control-menu-class, .control-menu-timer {
@@ -184,7 +187,6 @@
 }
 .control-icon i {
   font-size: 30px;
-  color: white;
 }
 .workout-set:last-of-type {
   margin-top: 15px;
