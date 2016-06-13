@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('CreateStudioCtrl', function ($scope, $location, $timeout, $rootScope, $window, $sce, $uibModal, Auth, Studios, User) {
+  .controller('CreateStudioCtrl', function ($scope, $location, $cookies, $timeout, $rootScope, $window, $sce, $uibModal, $state, Auth, Studios, User) {
   	var currentUser = Auth.getCurrentUser();
     var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref();
@@ -34,12 +34,15 @@ angular.module('bodyAppApp')
       if (currentUser._id) {
         $scope.creationStarted = true
       } else {
-        var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'app/account/signup/signup.html',
-          controller: 'SignupCtrl',
-          windowClass: "modal-tall"
-        });
+        // var modalInstance = $uibModal.open({
+        //   animation: true,
+        //   templateUrl: 'app/account/signup/signup.html',
+        //   controller: 'SignupCtrl',
+        //   windowClass: "modal-tall"
+        // });
+        $cookies.put('loggedInPath', $location.path())
+        // $rootScope.loggedInPath = $location.path()
+        $state.go('signup', {step: 0, mode: 'signup'})
       }
     }
 

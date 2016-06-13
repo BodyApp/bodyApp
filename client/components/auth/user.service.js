@@ -90,6 +90,12 @@ angular.module('bodyAppApp')
           controller:'saveInjuriesGoalsEmergency'
         }
       },
+      saveEmergency: {
+        method: 'PUT',
+        params: {
+          controller:'saveEmergency'
+        }
+      },
       getInstructors: {
         method: 'GET',
         isArray: true,

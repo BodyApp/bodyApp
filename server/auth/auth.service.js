@@ -67,10 +67,11 @@ function setTokenCookie(req, res) {
   if (!req.user) return res.status(404).json({ message: 'Something went wrong, please try again.'});
   var token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
-  var toRouteTo = ''
-  if (req.headers.referer) toRouteTo = req.headers.referer.substr(req.headers.referer.lastIndexOf('/') + 1)
-  console.log(toRouteTo)
-  res.redirect('/' + toRouteTo.toString());
+  // var toRouteTo = ''
+  // if (req.headers.referer) toRouteTo = req.headers.referer.substr(req.headers.referer.lastIndexOf('/') + 1)
+  // console.log(toRouteTo)
+  // res.redirect('/' + toRouteTo.toString());
+  res.redirect('/signup');
 }
 
 exports.isAuthenticated = isAuthenticated;

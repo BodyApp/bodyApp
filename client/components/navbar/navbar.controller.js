@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NavbarCtrl', function ($scope, $location, $state, $stateParams, $uibModal, $window, $rootScope, Auth, Studios, User, Video) {
+  .controller('NavbarCtrl', function ($scope, $location, $state, $cookies, $stateParams, $uibModal, $window, $rootScope, Auth, Studios, User, Video) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -234,22 +234,28 @@ angular.module('bodyAppApp')
     };
 
     $scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
+      $cookies.put('loggedInPath', $location.path())
+      // $rootScope.loggedInPath = $location.path()
+      $state.go('signup', {step: 0, mode: 'login', provider: 'facebook'})
+      // $window.location.href = '/auth/' + provider;
     };
 
     $scope.signUp = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/account/signup/signup.html',
-        controller: 'SignupCtrl',
-        windowClass: "modal-tall"
-      });
+      $cookies.put('loggedInPath', $location.path())
+      // $rootScope.loggedInPath = $location.path()
+      $state.go('signup', {step: 0, mode: 'signup'})
+      // var modalInstance = $uibModal.open({
+      //   animation: true,
+      //   templateUrl: 'app/account/signup/signup.html',
+      //   controller: 'SignupCtrl',
+      //   windowClass: "modal-tall"
+      // });
 
-      modalInstance.result.then(function (selectedItem) {
-        // openStripePayment()
-      }, function () {
-        // $window.location.href = '/auth/' + 'facebook';
-      });
+      // modalInstance.result.then(function (selectedItem) {
+      //   // openStripePayment()
+      // }, function () {
+      //   // $window.location.href = '/auth/' + 'facebook';
+      // });
     }
 
     $scope.openSpreadTheWordModal = function() {

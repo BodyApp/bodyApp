@@ -4,7 +4,7 @@
 <div class="testing-overlay">
   <div class="modal-container">
 
-    <div class="modalSignup">
+    <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/signupLogin.jpg">
@@ -15,14 +15,14 @@
             <img src="assets/images/BodyLogo_white_small.png">
           </div>
           <h4 class="white mt16">Live Classes with Real Coaches</h4>
-          <h5 class="white mt24">Connect with Facebook to take classes with friends. Don't worry we never post to your page.</h5>
-          <a href="#" class="btn-blue big-btn mt24 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Continue with Facebook</a>
-          <h5 class="whitegray thin500 mt24">Have an account? <a href="#">Log in</a></h5>
+          <h5 class="white mt24">Connect with Facebook to take classes with friends. Don't worry, we never post to your page.</h5>
+          <a href="#" ng-click = "loginOauth('facebook')" class="btn-blue big-btn mt24 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Continue with Facebook</a>
+          <h5 class="whitegray thin500 mt24">Have an account? <a ng-click = "mode = 'login'" href="#">Log in</a></h5>
         </div>
       </div>
     </div>
 
-    <div class="modalLogin hidden">
+    <div class="modalLogin" ng-show = "mode === 'login' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/signupLogin.jpg">
@@ -33,14 +33,14 @@
             <img src="assets/images/BodyLogo_white_small.png">
           </div>
           <h4 class="white mt16">Live Classes with Real Coaches</h4>
-          <h5 class="white mt24">Connect with Facebook to take classes with friends. Don't worry we never post to your page.</h5>
-          <a href="#" class="btn-blue big-btn mt24 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Log in with Facebook</a>
-          <h5 class="whitegray thin500 mt24">Don't have an account? <a href="#">Sign Up</a></h5>
+          <h5 class="white mt24">Connect with Facebook to take classes with friends. Don't worry, we never post to your page.</h5>
+          <a href="#" ng-click = "loginOauth('facebook')" class="btn-blue big-btn mt24 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Log in with Facebook</a>
+          <h5 class="whitegray thin500 mt24">Don't have an account? <a ng-click = "mode = 'signup'" href="#">Sign Up</a></h5>
         </div>
       </div>
     </div>    
 
-    <div class="modalWelcome hidden">
+    <div class="modalWelcome" ng-show = "step === 1">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/signupWelcome.jpg">
@@ -52,12 +52,12 @@
           </div>
           <h4 class="white mt16">Welcome to BODY</h4>
           <h5 class="white mt24">Instructors and clients on BODY are real people in live classes. That's why we'll have you confirm a few details for your account.</h5>
-          <a href="#" class="btn-blue btn-block big-btn mt24">Continue</a>
+          <a href="#" ng-click = "step = 2" class="btn-blue btn-block big-btn mt24">Continue</a>
         </div>
       </div>
     </div>
 
-    <div class="modalEmail hidden">
+    <div class="modalEmail" ng-show = "step === 2">
       <div class="signUp-panel"> 
         <div class="signUp-steps">
           <i class="fa fa-circle"></i>
@@ -67,18 +67,18 @@
           <h4 class="mb8">Confirm your email</h4>
           <h5>Thanks for putting a face to your name. Confirming your email address helps us send you important class reservations and updates.</h5>
           <div class="signUp-image">
-            <img class="round-photo mt24" src="assets/images/justin-photo.jpg" width="140" height="140">
+            <img class="round-photo mt24" ng-src="{{userPicture}}" width="140" height="140">
             <div class="signUp-checked">
               <i class="fa fa-check-circle"></i>
             </div>
           </div>
-          <input class="signUp-email mt40" name="" type="text" value="jmendelson22@gmail.com">
-          <a href="#" class="btn-blue btn-block big-btn mt24">Continue</a>
+          <input class="signUp-email mt40" name="" type="text" ng-model = "userEmail">
+          <a href="#" ng-click = "updateEmail()" class="btn-blue btn-block big-btn mt24">Continue</a>
         </div>
       </div>
     </div>
 
-    <div class="modalEmergency hidden">
+    <div class="modalEmergency" ng-show = "step === 3">
       <div class="signUp-panel"> 
         <div class="signUp-steps">
           <i class="fa fa-circle-o"></i>
@@ -95,7 +95,7 @@
               Full Name
             </label>
             <div class="col-sm-8">
-              <input id="emergency-fullname" name="" size="30" type="text" placeholder="">
+              <input id="emergency-fullname" ng-model = "emergencyName" name="" size="30" type="text" placeholder="">
             </div>
           </div>
           <div class="row text-left">
@@ -103,7 +103,7 @@
               Phone
             </label>
             <div class="col-sm-8">
-              <input id="emergency-phone" name="" size="30" type="text" placeholder="">
+              <input id="emergency-phone" ng-model = "emergencyPhone" name="" size="30" type="text" placeholder="">
             </div>
           </div>
           <div class="row text-left">
@@ -111,16 +111,16 @@
               Relationship
             </label>
             <div class="col-sm-8">
-              <input id="emergency-relationship" name="" size="30" type="text" placeholder="">
+              <input id="emergency-relationship" ng-model = "emergencyRelationship" name="" size="30" type="text" placeholder="">
             </div>
           </div>
           <h5 class="mt8 lightgray">By signing up, I agree to BODY's <a href="#">medical disclaimer</a>, <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</h5>
-          <a href="#" class="btn-blue btn-block big-btn mt24">Continue</a>
+          <a href="#" ng-click = "saveEmergencyContactInfo()" class="btn-blue btn-block big-btn mt24">Continue</a>
         </div>
       </div>
     </div>
 
-    <div class="modalComplete hidden">
+    <div class="modalComplete" ng-show = "step === 4">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/signupComplete.jpg">
@@ -135,7 +135,7 @@
           </div>
           <h4 class="white mt8">You're all set!</h4>
           <h5 class="white mt24">You can now take classes with a global community of classmates and instructors.</h5>
-          <a href="#" class="btn-blue big-btn btn-block mt24"></i>Let's go!</a>
+          <a href="#" ng-click = "routeToLoggedInPath()" class="btn-blue big-btn btn-block mt24"></i>Let's go!</a>
         </div>
       </div>
     </div>

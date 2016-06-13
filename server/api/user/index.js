@@ -23,6 +23,7 @@ router.put('/:id/cancelIntroClass', auth.isAuthenticated(), controller.cancelInt
 router.put('/:id/takeIntroClass', auth.isAuthenticated(), controller.takeIntroClass);
 router.put('/:id/saveClassTaught', auth.isAuthenticated(), controller.saveClassTaught);
 router.put('/:id/saveInjuriesGoalsEmergency', auth.isAuthenticated(), controller.saveInjuriesGoalsEmergency);
+router.put('/:id/saveEmergency', auth.isAuthenticated(), controller.saveEmergency);
 router.put('/:id/saveEmail', auth.isAuthenticated(), controller.saveEmail);
 router.put('/:id/getUser', auth.isAuthenticated(), controller.getUser);
 router.put('/:id/getMembersOfStudio', auth.isAuthenticated(), controller.getMembersOfStudio);

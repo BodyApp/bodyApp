@@ -20,7 +20,8 @@ router
     session: false
   }))
 
-  .get('/callback', passport.authenticate('facebook', {
+  .get('/callback', 
+    passport.authenticate('facebook', {
     failureRedirect: '/signup',
     // successRedirect: '/createstudio',
     session: false

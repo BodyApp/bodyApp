@@ -1222,6 +1222,21 @@ exports.saveInjuriesGoalsEmergency = function(req, res, next) {
   });
 };
 
+exports.saveEmergency = function(req, res, next) {
+  var userId = req.user._id;
+  var emergencyContact = req.body.emergencyContact;
+
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
+    if(err) { return err } else { 
+      user.emergencyContact = emergencyContact;
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.status(200).json(user);
+      });
+    } 
+  });
+};
+
 exports.createTokBoxSession = function(req, res, next) {
   // The session will the OpenTok Media Router:
   opentok.createSession({mediaMode:"routed"}, function(err, session) {

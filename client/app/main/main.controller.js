@@ -54,8 +54,9 @@ angular.module('bodyAppApp')
         });
     }
 
-    $scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
+    $scope.login = function() {
+      $state.go('signup', {step: 0, mode: 'login'})
+      // $window.location.href = '/auth/' + provider;
     };
 
     $scope.scrollDown = function() {
@@ -63,19 +64,20 @@ angular.module('bodyAppApp')
     }
 
     $scope.signUp = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/account/signup/signup.html',
-        controller: 'SignupCtrl',
-        windowClass: "modal-tall"
-      });
+      $state.go('signup', {step: 0, mode: 'signup'})
+      // var modalInstance = $uibModal.open({
+      //   animation: true,
+      //   templateUrl: 'app/account/signup/signup.html',
+      //   controller: 'SignupCtrl',
+      //   windowClass: "modal-tall"
+      // });
 
-      modalInstance.result.then(function (selectedItem) {
-        // $window.location.href = '/auth/' + 'facebook';
-        $window.location.reload()
-      }, function () {
-        $window.location.reload()
-      });
+      // modalInstance.result.then(function (selectedItem) {
+      //   // $window.location.href = '/auth/' + 'facebook';
+      //   $window.location.reload()
+      // }, function () {
+      //   $window.location.reload()
+      // });
     }
 
     // Auth.isLoggedInAsync(function(loggedIn) {
