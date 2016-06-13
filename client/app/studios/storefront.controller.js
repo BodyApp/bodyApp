@@ -498,59 +498,65 @@ angular.module('bodyAppApp')
     $scope.reserveClicked = function(slot) {
       // console.log(slot)
       if ($rootScope.subscribing) return
-      if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
+      if (currentUser && currentUser.role === 'admin') {
+        bookClass(slot)
+      } else if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")
         checkMembership(slot)
       } else {
         // console.log("Beginning to book class " +slot.dateTime)
-        var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'app/schedule/bookingConfirmation.html',
-          controller: 'BookingConfirmationCtrl',
-          resolve: {
-            slot: function () {
-              return slot;
-            }
-          }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-          // $scope.selected = selectedItem;
-        }, function () {
-          // $log.info('Modal dismissed at: ' + new Date());
-        });
-
-        User.addBookedClass({ id: currentUser._id }, {
-          classToAdd: slot.dateTime
-        }, function(user) {
-          ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""}, function(err) {
-            if (err) return console.log(err)
-            console.log("Added booking")
-          });
-          ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout}, function(err) {
-            if (err) return console.log(err)
-            console.log("Added user booking")
-          });
-          // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
-          // getInfo(slot.date);
-          // slot.bookedUsers = slot.bookedUsers || {};
-          // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
-          // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
-          // slot.bookedFbUserIds[currentUser.facebook.id] = true
-          // slot.$save();
-          currentUser = user;
-          // $scope.currentUser = currentUser;
-          Intercom('update', {
-              "latestClassTaken_at": Math.floor(new Date(slot.dateTime*1) / 1000)
-          });
-        }, function(err) {
-            console.log("Error adding class: " + err)
-            // slot.bookedUsers = slot.bookedUsers || {};
-            // delete slot.bookedUsers[currentUser._id];
-            // delete slot.bookedFbUserIds[currentUser.facebook.id];
-            // alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
-        }).$promise;
+        bookClass(slot)
       }
+    }
+
+    function bookClass(slot) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/schedule/bookingConfirmation.html',
+        controller: 'BookingConfirmationCtrl',
+        resolve: {
+          slot: function () {
+            return slot;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        // $scope.selected = selectedItem;
+      }, function () {
+        // $log.info('Modal dismissed at: ' + new Date());
+      });
+
+      User.addBookedClass({ id: currentUser._id }, {
+        classToAdd: slot.dateTime
+      }, function(user) {
+        ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""}, function(err) {
+          if (err) return console.log(err)
+          console.log("Added booking")
+        });
+        ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout}, function(err) {
+          if (err) return console.log(err)
+          console.log("Added user booking")
+        });
+        // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId});
+        // getInfo(slot.date);
+        // slot.bookedUsers = slot.bookedUsers || {};
+        // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
+        // slot.bookedUsers[currentUser._id] = {firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture, facebookId: currentUser.facebookId};
+        // slot.bookedFbUserIds[currentUser.facebook.id] = true
+        // slot.$save();
+        currentUser = user;
+        // $scope.currentUser = currentUser;
+        Intercom('update', {
+            "latestClassTaken_at": Math.floor(new Date(slot.dateTime*1) / 1000)
+        });
+      }, function(err) {
+          console.log("Error adding class: " + err)
+          // slot.bookedUsers = slot.bookedUsers || {};
+          // delete slot.bookedUsers[currentUser._id];
+          // delete slot.bookedFbUserIds[currentUser.facebook.id];
+          // alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
+      }).$promise;
     }
 
     $scope.cancelClass = function(classToCancel) {
