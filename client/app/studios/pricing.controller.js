@@ -23,6 +23,7 @@ angular.module('bodyAppApp')
         getDropinPlan();
         getAccessCode();
         getSyncedStudioName();
+        getToSetup();
       } else {
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
@@ -30,6 +31,7 @@ angular.module('bodyAppApp')
             getDropinPlan();
             getAccessCode();
             getSyncedStudioName();
+            getToSetup();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -126,6 +128,20 @@ angular.module('bodyAppApp')
         // ref.child('storefrontInfo').update({'dropinPricing': snapshot.val().amount})
     		if(!$scope.$$phase) $scope.$apply();
     	})
+    }
+
+    function getToSetup() {
+      ref.child('toSetup').child('storefrontAlert').once('value', function(snapshot) {
+        $scope.storefrontAlert = snapshot.val()
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    $scope.closeAlertPushed = function() {
+      $scope.closeAlert = true;
+      ref.child('toSetup').child('storefrontAlert').remove(function(err) {
+        if (err) return console.log(err);
+      })  
     }
 
     //Add billing controller

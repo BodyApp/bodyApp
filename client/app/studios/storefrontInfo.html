@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb70 mb-sm-48"></div>
 
-<div class="studio-alert" ng-show = "!closeAlert && toSetup.storefrontAlert">
+<!-- <div class="studio-alert" ng-show = "!closeAlert && toSetup.storefrontAlert">
   <div class="page-container-responsive pt16 pb16">
     <div class="studio-alert-container">
       <div class="studio-alert-close">
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <div class="page-container-responsive row-space-top-4 row-space-4">
@@ -99,7 +99,7 @@
             </div>
             <!-- <img ng-src = "{{iconUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img> -->
           </div>
-          <div class="row mb16">
+          <div class="row mb16" ng-show = "iconUrl">
             <label class="col-sm-3" for="coupon-code">
               Icon Image Preview
             </label>
@@ -115,7 +115,7 @@
             </div>
             <!-- <img ng-src = "{{headerUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img> -->
           </div>
-          <div class="row mb16">
+          <div class="row mb16" ng-show = "headerUrl">
             <label class="col-sm-3" for="coupon-code">
               Header Image Preview
             </label>
