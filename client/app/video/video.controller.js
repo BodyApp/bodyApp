@@ -173,7 +173,7 @@ angular.module('bodyAppApp')
   		if(!$scope.$$phase) $scope.$apply();
   		
   		if (!userIsInstructor) {
-  			audioPlayer.setVolume(snapshot.val() / 100);
+  			audioPlayer.setVolume($scope.musicVolume / 100);
   			console.log("Music volume set to " + snapshot.val())
   		}
   	})
@@ -330,7 +330,7 @@ angular.module('bodyAppApp')
 									console.log("seeking to track " + (i+1));
 									currentSongIndex = i;			
 									if (userIsInstructor) audioPlayer.setVolume(0)
-									if (!userIsInstructor) audioPlayer.setVolume($scope.musicVolume ? $scope.musicVolume : 50)
+									if (!userIsInstructor) audioPlayer.setVolume(($scope.musicVolume ? $scope.musicVolume : 50)/100);
 									return audioPlayer.play()
 								}
 							}	
@@ -339,7 +339,7 @@ angular.module('bodyAppApp')
 				})		
 
 				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-					if (!userIsInstructor) audioPlayer.setVolume($scope.musicVolume);
+					if (!userIsInstructor) audioPlayer.setVolume(($scope.musicVolume ? $scope.musicVolume : 50)/100);
 
 					if (!firstTimePlayingSong && songArray.length > 0) {
 						currentSongIndex++
