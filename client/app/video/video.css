@@ -1,4 +1,19 @@
 /*------USER VIDEO-------*/
+.classmates-video-name {
+  z-index: 2;
+}
+.OT_video-element {
+  transform: scale(-1,1) !important;
+  transform-origin: 50% 50% !important;
+}
+#myfeed .OT_video-element {
+  height: 50% !important;
+}
+.classfeeds .OT_publisher,
+.classfeeds .OT_subscriber {
+  height: 100% !important;
+  z-index: 0;
+}
 .video-container {
   position: relative;
   height: 100vh;
@@ -222,14 +237,6 @@
   min-height: 50%;
   height: 100% !important;
 }
-.trainer-video-large .OT_video-element,
-.user-videos-large .OT_video-element {
-  transform: scale(-1,1) !important;
-  transform-origin: 50% 50% !important;
-}
-#myfeed .OT_video-element {
-  height: 50% !important;
-}
 .user-videos-stack .classmates-video-name {
   position: absolute;
   bottom: 1px;
@@ -242,6 +249,7 @@
 .user-videos-stack .trainer-video-large .classmates-video-name {
   bottom: 20px;
   font-size: 30px;
+  z-index: 1;
 }
 .user-videos-stack li {
   position: absolute;
