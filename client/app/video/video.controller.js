@@ -26,6 +26,7 @@ angular.module('bodyAppApp')
   var publisherInitialized;
 	var connected;
   $scope.consumerObjects = {};
+  var previouslyClickedConsumerId;
   var connectionCount = 0;
 
   var viewCounter = 2;
@@ -101,7 +102,7 @@ angular.module('bodyAppApp')
     	$scope.classDetails = snapshot.val();
     	if(!$scope.$$phase) $scope.$apply();
     	userIsInstructor = $scope.classDetails.instructor === Auth.getCurrentUser()._id;
-    	if ($scope.bookedUsers) connect($scope.classDetails)
+    	if ($scope.bookingsPulled) connect($scope.classDetails)
     	getWorkout($scope.classDetails.workout)
 	    getInstructorDetails($scope.classDetails.instructor)
 	    setMusicPlayer($scope.classDetails)
@@ -121,11 +122,12 @@ angular.module('bodyAppApp')
 
   function getBookedUsers() {
   	ref.child('bookings').child(classId).on('value', function(snapshot) {
+  		$scope.bookingsPulled = true;
+  		if ($scope.classDetails) connect($scope.classDetails)
   		if (!snapshot.exists()) return $scope.numBookedUsers = 0;
   		$scope.bookedUsers = snapshot.val()
   		$scope.numBookedUsers = Object.keys($scope.bookedUsers).length
     	if(!$scope.$$phase) $scope.$apply();
-  		if ($scope.classDetails) connect($scope.classDetails)
   		snapshot.forEach(function(bookedUser) {
   			var userDetails = bookedUser.val()
   			firebase.database().ref().child('fbUsers').child(userDetails.facebookId).child('location').on('value', function(snapshot) {
@@ -152,7 +154,7 @@ angular.module('bodyAppApp')
 
   function receiveRealTimeData() {
   	getMusicVolume();
-  	canConsumersHearEachOther();
+  	// canConsumersHearEachOther();
   	getTimer()
   }
 
@@ -173,20 +175,20 @@ angular.module('bodyAppApp')
   	})
   }
 
-  function canConsumersHearEachOther() {
-  	ref.child('realTimeControls').child(classId).child('consumersCanHearEachOther').on('value', function(snapshot) {
-  		$scope.consumersCanHearEachOther = snapshot.val()
-  		if(!$scope.$$phase) $scope.$apply();
+  // function canConsumersHearEachOther() {
+  // 	ref.child('realTimeControls').child(classId).child('consumersCanHearEachOther').on('value', function(snapshot) {
+  // 		$scope.consumersCanHearEachOther = snapshot.val()
+  // 		if(!$scope.$$phase) $scope.$apply();
 
-  		for (prop in $scope.consumerObjects) {
-	  		if ($scope.consumersCanHearEachOther) {
-	  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
-	  		} else {
-	  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
-	  		}
-  		}
-  	})
-  }
+  // 		for (prop in $scope.consumerObjects) {
+	 //  		if ($scope.consumersCanHearEachOther) {
+	 //  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
+	 //  		} else {
+	 //  			$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+	 //  		}
+  // 		}
+  // 	})
+  // }
 
   function generateTimerOptions() {
 		$scope.workOptions = [];
@@ -354,6 +356,53 @@ angular.module('bodyAppApp')
 				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 			}
 		})
+	}
+
+	$scope.clickOnConsumer = function(consumerId) { //Trainer only
+		if (audioPlayer) audioPlayer.setVolume(0);
+		if (previouslyClickedConsumerId) {
+			$scope.consumerObjects[previouslyClickedConsumerId].subscriber.subscribeToAudio(false)	
+			var previousSubscriberBox = $scope.consumerObjects[previouslyClickedConsumerId].subscriberBox;
+			$('#' + previousSubscriberBox).removeClass('user-videos-large');
+		}
+
+		if ($scope.hearAll) {
+			$scope.hearAll = false;
+			for (prop in $scope.consumerObjects) {
+				$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+			}
+		}
+		
+		if (consumerId) {
+			$scope.consumerObjects[consumerId].subscriber.subscribeToAudio(true)
+			var subscriberBox = $scope.consumerObjects[consumerId].subscriberBox;
+			$('#' + subscriberBox).addClass('user-videos-large');
+			previouslyClickedConsumerId = consumerId;
+		}
+	} 
+
+	$scope.trainerClicksOnSelf = function() {
+		$scope.hearAll = false;
+		$scope.trainerClickedHimself = true;
+		if (audioPlayer) audioPlayer.setVolume($scope.musicVolume/200);
+		for (prop in $scope.consumerObjects) {
+			$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+		}
+	}
+
+	$scope.trainerClicksHearAll = function() {
+		if (audioPlayer) audioPlayer.setVolume(0);
+		if ($scope.hearAll) {
+			$scope.hearAll = false;
+			for (prop in $scope.consumerObjects) {
+				$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+			}	
+		} else {
+			$scope.hearAll = true;
+			for (prop in $scope.consumerObjects) {
+				$scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
+			}	
+		}
 	}
 
 	//Only gets called if/when at least 1 user has booked class.
@@ -579,9 +628,19 @@ angular.module('bodyAppApp')
 					if(!$scope.$$phase) $scope.$apply();
 				}
 
-				if (!$scope.firstStream) {
+		  	if (!instructorStream) {
+		  		subscriber.setAudioVolume(100);
+		  		subscriber.subscribeToAudio(false);
+		  	} else {
+		  		subscriber.setAudioVolume(100);
+		  		subscriber.subscribeToAudio(true);
+		  	}
+
+				if (!$scope.firstStream && !instructorStream) {
 					$scope.firstStream = true;
 					$('#' + subscriberBox).addClass('user-videos-large')
+					subscriber.subscribeToAudio(true);
+					previouslyClickedConsumerId = streamId;
 				}
 
 		  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'
@@ -596,13 +655,7 @@ angular.module('bodyAppApp')
 				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
 				});
 
-		  	if (!instructorStream) {
-		  		subscriber.setAudioVolume(100);
-		  		subscriber.subscribeToAudio(false);
-		  	} else {
-		  		subscriber.setAudioVolume(100);
-		  		subscriber.subscribeToAudio(true);
-		  	}
+
 
 		  	// if ((!userIsInstructor && !instructorStream) || userIsInstructor) { // Now turns all consumer sound off for instructor. Instructor turns on sound streams by putting mouse over consumer.
 		  	// 	subscriber.setAudioVolume(100);
@@ -670,6 +723,7 @@ angular.module('bodyAppApp')
 					if(!$scope.$$phase) $scope.$apply();
 				}	
 				subscriberBox = instructorStream ? "trainerVideo" : "consumer" + (Object.keys($scope.consumerObjects).length-1).toString()
+				$scope.consumerObjects[streamId].subscriberBox = subscriberBox;
 				console.log(subscriberBox)
 				subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)		
 			},
