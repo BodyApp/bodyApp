@@ -380,6 +380,7 @@ angular.module('bodyAppApp')
     }
 
     function checkMembership(slot) {
+      $rootScope.subscriptions = $rootScope.subscriptions || {};
       if (!slot) slot = null
       Auth.isLoggedInAsync(function(loggedIn) {
         if (!loggedIn) {
@@ -400,7 +401,7 @@ angular.module('bodyAppApp')
             $window.location.reload()
           });
           // }
-        } else if ($rootScope.subscriptions[studioId] != 'active') {
+        } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'app/membership/membership.html',
