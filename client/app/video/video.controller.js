@@ -237,10 +237,10 @@ angular.module('bodyAppApp')
   }
 
   $scope.$on('timer-tick', function (event, args) {
-  	if ($scope.timerWorking) {
+  	if ($scope.timerWorking && $scope.realTimeTimer.work) {
   		$scope.timeCountdown = (args.millis/1000)/($scope.realTimeTimer.work*60)*100
 	  	if(!$scope.$$phase) $scope.$apply();	
-  	} else {
+  	} else if ($scope.realTimeTimer.rest){
   		$scope.timeCountdown = (args.millis/1000)/($scope.realTimeTimer.rest*60)*100
   		if(!$scope.$$phase) $scope.$apply();	
   	}
@@ -555,7 +555,7 @@ angular.module('bodyAppApp')
 	function subscribeToStream(streamEvent, subscriberBox, instructorStream, vidWidth, vidHeight) {
 		var streamId = streamEvent.connection.data.toString()
 	  var subscriber = session.subscribe(streamEvent, subscriberBox, {
-	    insertMode: 'after',
+	    insertMode: 'append',
 	    width: vidWidth,
 		  height: vidHeight,
 		  mirror: true,
@@ -577,6 +577,11 @@ angular.module('bodyAppApp')
 				} else {
 					$scope.instructorDisplayed = true;
 					if(!$scope.$$phase) $scope.$apply();
+				}
+
+				if (!$scope.firstStream) {
+					$scope.firstStream = true;
+					$('#' + subscriberBox).addClass('user-videos-large')
 				}
 
 		  	SpeakerDetection(subscriber, function() { //Used to turn volume down or highlight box when stream is 'talking'

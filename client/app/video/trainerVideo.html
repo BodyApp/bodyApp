@@ -24,16 +24,14 @@
 		</div>
 	</div>
 	<ul ng-class = "videoView">
-		<li>
-			<div id="myfeed"></div>
+		<li id="myfeed">
 			<span class="classmates-video-name text-center">You</span>
 		</li>
-		<li class="user-videos-large">
+		<!-- <li class="user-videos-large"> -->
 			<!-- <img src="/assets/images/video/vid-c.jpg"> -->
-			<span class="classmates-video-name text-center">Justin M</span>
-		</li>
-		<li ng-repeat = "consumer in consumerObjects">
-			<div ng-attr-id="{{'consumer'+$index}}"></div>
+			<!-- <span class="classmates-video-name text-center">Justin M</span> -->
+		<!-- </li> -->
+		<li ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
 		</li>
 	</ul>

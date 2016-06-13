@@ -25,18 +25,14 @@
 		</div>
 	</div>
 	<ul class="user-videos-stack">
-		<li>
-			<div id="myfeed"></div>
+		<li id="myfeed">
 			<span class="classmates-video-name text-center">You</span>
 		</li>
-		<li class="trainer-video-large">
-			<div id="trainerVideo">
-				<img ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
-			</div>
+		<li class="trainer-video-large" id="trainerVideo">
+			<img ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
 			<span class="classmates-video-name text-center">{{instructor.firstName}} {{instructor.lastName}}</span>
 		</li>
-		<li ng-repeat = "consumer in consumerObjects">
-			<div ng-attr-id="{{'consumer'+$index}}"></div>
+		<li ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
 		</li>
 	</ul>
