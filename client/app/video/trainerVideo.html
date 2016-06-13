@@ -24,14 +24,14 @@
 		</div>
 	</div>
 	<ul ng-class = "videoView">
-		<li id="myfeed">
+		<li id="myfeed" ng-click = "trainerClicksOnSelf()">
 			<span class="classmates-video-name text-center">You</span>
 		</li>
 		<!-- <li class="user-videos-large"> -->
 			<!-- <img src="/assets/images/video/vid-c.jpg"> -->
 			<!-- <span class="classmates-video-name text-center">Justin M</span> -->
 		<!-- </li> -->
-		<li class="classfeeds" ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
+		<li class="classfeeds" ng-repeat = "(consumerId, consumer) in consumerObjects" ng-attr-id="{{'consumer'+$index}}" ng-click = "clickOnConsumer(consumerId)">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
 		</li>
 	</ul>
@@ -216,6 +216,14 @@
 		    <i class="fa fa-volume-up"></i>
 		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
 		      Volume Up
+		    </md-tooltip>
+		  </md-button>
+		</div>
+		<div class="inline-block">
+		  <md-button ng-click = "trainerClicksHearAll()" class="md-fab" ng-class = "{'trainer-remote-btn': !hearAll, 'trainer-blue-btn': hearAll}" aria-label="Hear All">
+		    <i class="fa fa-headphones"></i>
+		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
+		      Hear All
 		    </md-tooltip>
 		  </md-button>
 		</div>
