@@ -187,7 +187,7 @@
 								<hr class="content-divider mt16 mb24">
 
 								<form>
-							    <div layout="row" flex class="mb8" ng-mouseenter = "showIDHelper = true; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
+							    <div layout="row" flex class="mb8" ng-mouseenter = "showIDHelper = true;" ng-mouseleave = "showIDHelper = false;">
 						        <md-input-container flex class="md-block" >
 					            <label class="angular-label">Claim your studio URL</label>
 					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
@@ -206,7 +206,7 @@
 							    </div>
 
 							    <div layout="column" flex class="mb8">
-							    	<md-input-container class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = true; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
+							    	<md-input-container class="md-block" ng-mouseenter = "showNameHelper = true;" ng-mouseleave = "showNameHelper = false;">
 							        <label class="angular-label">Studio Name</label>
 							        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.studioName" class="angular-input">
 							        <div class="form-hint">Every great service starts with a great name.</div>
@@ -218,7 +218,7 @@
 							    </div>
 
 							    <div layout="row" flex class="mb8">
-							    	<md-input-container flex class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = true; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
+							    	<md-input-container flex class="md-block" ng-mouseenter = "showProfilePhotoHelper = true;" ng-mouseleave = "showProfilePhotoHelper = false;">
 					            <!-- <label class="angular-label">Upload profile photo</label> -->
 					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
@@ -227,7 +227,7 @@
 				          </div>
 
 				          <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = true; showYoutubeVideoHelper = false;">
+						        <md-input-container flex class="md-block" ng-mouseenter = "showHeaderPhotoHelper = true;" ng-mouseleave = "showHeaderPhotoHelper = false;">
 					            <!-- <label class="angular-label">Upload header photo</label> -->
 					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
 					            <br>
@@ -271,10 +271,10 @@
 							    </div> -->
 
 							    <div layout="column" flex class="mb8">
-							    	<md-input-container class="md-block" ng-mouseenter = "showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = true;">
+							    	<md-input-container class="md-block" ng-mouseenter = "showYoutubeVideoHelper = true;" ng-mouseleave = "showYoutubeVideoHelper = false;">
 							        <label class="angular-label">Studio Video YouTube ID</label>
 							        <input type="text" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input">
-							        <div class="form-hint">The best videos tend to be between 1 to 2 minutes.</div>
+							        <div class="form-hint">The best videos tend to be between 1 to 2 minutes. <a href="https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id" target="_blank">Here's where to find your ID</a>.</div>
 							        <div ng-messages="projectForm.description.$error" class="hidden">
 							          <div ng-message="required">This is required.</div>
 							          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
@@ -292,7 +292,7 @@
 								<a href="#" ng-click = "creationStarted = false;">Back</a>
 							</div>
 							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); scrollTop(); showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">Next</a>
+								<a href="#" class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); scrollTop();">Next</a>
 							</div>
 						</div>
 					</div>
@@ -307,7 +307,7 @@
 
 									<div class="row mb8">
 							    	<div class="col-sm-12">
-								    	<md-input-container class="md-block" ng-mouseenter = "showShortDescriptionHelper = true; showLongDescriptionHelper = false; showCategoriesHelper = false;">
+								    	<md-input-container class="md-block" ng-mouseenter = "showShortDescriptionHelper = true;" ng-mouseleave = "showShortDescriptionHelper = false;">
 								        <label class="angular-label">Short Blurb</label>
 								        <textarea ng-model="studioToCreate.shortDescription" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea"></textarea>
 								        <div class="form-hint">Be clear and descriptive.</div>
@@ -321,7 +321,7 @@
 
 							    <div class="row mb8">
 							    	<div class="col-sm-12">
-							    		<md-input-container class="md-block" ng-mouseenter = "showShortDescriptionHelper = false; showLongDescriptionHelper = true; showCategoriesHelper = false;">
+							    		<md-input-container class="md-block" ng-mouseenter = "showLongDescriptionHelper = true;" ng-mouseleave = "showLongDescriptionHelper = false;">
 								        <label class="angular-label">Studio Description</label>
 								        <textarea ng-model="studioToCreate.longDescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea"></textarea>
 								        <div class="form-hint">Provide clients a full description of your service.</div>
@@ -333,7 +333,7 @@
 							    	</div>
 							    </div>
 
-							    <div class="row mb8" ng-mouseenter = "showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = true;">
+							    <div class="row mb8" ng-mouseenter = "showCategoriesHelper = true;" ng-mouseleave = "showCategoriesHelper = false;">
 							    	<div class="col-sm-12 mb8">
 							    		<label class="angular-label">Studio Categories</label>
 							    		<span class="list-hint">Provide max of 3</span>
@@ -404,7 +404,7 @@
 								<h5 class="lightgray mb8">Transactions are handling through Stripe payment processing. <a href="#" ng-click = "beginStripeConnect()">Setup a Stripe account</a> 
 										and connect it to BODY to receive payments.
 								</h5>
-								<button class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button>
+								<!-- <button class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button> -->
 								<!-- <h5 class="success-check">Your account has been successfully synced <i class="fa fa-check"></i></h5> -->
 							</div>
 						</div>
@@ -461,7 +461,7 @@
 							</div>
 						</div> -->
 
-						<div class="row">
+						<div class="row mt64">
 							<div class="col-sm-2 mt8">
 								<a href="#" ng-click = "step = 1">Back</a>
 							</div>
@@ -1037,7 +1037,9 @@
 								</div>
 								<div class="panel-body">
 									<h4 class="text-center mb16">Studio Video</h4>
-									<h5 class="mb0">Have fun – add a video! Studios with a video have a much higher chance of success.<br><br>Provide your YouTube video ID. <a href="https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id" target="_blank">Here's where to find it</a>.</h5>
+									<h5 class="mb0">Have fun – add a video! Studios with a video have a much higher chance of success.<br><br>Provide your YouTube video ID. 
+										<!-- <a href="https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id" target="_blank">Here's where to find it</a> -->
+									</h5>
 								</div>
 							</div>
 						</div>

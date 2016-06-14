@@ -155,9 +155,6 @@ angular.module('bodyAppApp')
         'categories': studioToCreate.categories
       }, function(err) {
         if (err) return console.log(err)
-        $scope.showShortDescriptionHelper = false; 
-        $scope.showLongDescriptionHelper = false; 
-        $scope.showCategoriesHelper = false;
         $scope.step++;
         $scope.descriptionComplete = true;
         if(!$scope.$$phase) $scope.$apply();
