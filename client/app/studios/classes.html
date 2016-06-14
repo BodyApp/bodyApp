@@ -156,6 +156,9 @@
             <label class="col-sm-3" for="equipment-needed">
               Equipment Required
             </label>
+            <!-- <md-chips name = "equipment" ng-model = "classToCreate.equipment" placeholder = "e.g. Dumbbells" md-max-chips = "5" md-require-match = "true">
+              <md-autocomplete></md-autocomplete>
+            </md-chips> -->
             <div class="col-sm-9" ng-if = "showAddClass">
               <tags-input id="equipment-needed" 
                 ng-model="classToCreate.equipment" 
@@ -165,13 +168,13 @@
                 replace-spaces-with-dashes="false"
                 template="tag-template"
                 >
-                <auto-complete source="loadEquipment($query)"
+                <!-- <auto-complete source="loadEquipment($query)"
                   min-length="0"
                   load-on-focus="true"
                   load-on-empty="true"
                   max-results-to-show="32"
                   template="autocomplete-template">
-                 </auto-complete>
+                 </auto-complete> -->
               </tags-input>
             </div>            
             <div class="col-sm-9" ng-if = "showEditClass">
@@ -183,13 +186,13 @@
                 replace-spaces-with-dashes="false"
                 template="tag-template"
                 >
-                <auto-complete source="loadEquipment($query)"
+                <!-- <auto-complete source="loadEquipment($query)"
                   min-length="0"
                   load-on-focus="true"
                   load-on-empty="true"
                   max-results-to-show="32"
                   template="autocomplete-template">
-                 </auto-complete>
+                 </auto-complete> -->
               </tags-input>
             </div>            
           </div>
