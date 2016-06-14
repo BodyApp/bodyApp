@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, Studios, Auth, User, Schedule, Studio, $rootScope) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, Studios, Auth, User, Schedule, Studio, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
     $scope.currentUser = currentUser;
     console.log(currentUser)
@@ -385,22 +385,25 @@ angular.module('bodyAppApp')
       if (!slot) slot = null
       Auth.isLoggedInAsync(function(loggedIn) {
         if (!loggedIn) {
+          $cookies.put('loggedInPath', $location.path())
+          // $rootScope.loggedInPath = $location.path()
+          $state.go('signup', {step: 0, mode: 'signup'})
           // if (Auth.getCurrentUser().completedNewUserFlow || Auth.getCurrentUser().injuries || Auth.getCurrentUser().goals) {
           //   $state.go('storefront');
           // } else {
-          var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'app/account/signup/signup.html',
-            controller: 'SignupCtrl',
-            windowClass: "modal-tall"
-          });
+          // var modalInstance = $uibModal.open({
+          //   animation: true,
+          //   templateUrl: 'app/account/signup/signup.html',
+          //   controller: 'SignupCtrl',
+          //   windowClass: "modal-tall"
+          // });
 
-          modalInstance.result.then(function (selectedItem) {
-            // $window.location.href = '/auth/' + 'facebook';
-            $window.location.reload()
-          }, function () {
-            $window.location.reload()
-          });
+          // modalInstance.result.then(function (selectedItem) {
+          //   // $window.location.href = '/auth/' + 'facebook';
+          //   $window.location.reload()
+          // }, function () {
+          //   $window.location.reload()
+          // });
           // }
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({

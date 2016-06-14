@@ -181,10 +181,10 @@
               <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
                   <div class="col-md-6">
-                    <h4 ng-show="subscriptionPlan">Unlimited</h4>
+                    <h4 ng-show="storefrontInfo.subscriptionPricing">Unlimited</h4>
                   </div>
                   <div class="col-md-6">
-                    <h4 class="lightgray" ng-show="subscriptionPlan">${{subscriptionPlan.amount/100}}/mo</h4>
+                    <h4 class="lightgray" ng-show="storefrontInfo.subscriptionPricing">${{storefrontInfo.subscriptionPricing/100}}/mo</h4>
                   </div>
                 </div>
               </div>
@@ -200,7 +200,7 @@
               </div>
 
               <div class="col-xs-12 mt16">
-                <a href="#" class="btn-blue btn-block" ng-show = "subscriptions[studioId] != 'active' && subscriptionPlan" ng-click = "joinStudioClicked()">Join Studio</a>
+                <a href="#" class="btn-blue btn-block" ng-show = "subscriptions[studioId] != 'active' && storefrontInfo.subscriptionPricing" ng-click = "joinStudioClicked()">Join Studio</a>
                 <a href="#" class="btn-blue btn-block" ng-show = "subscriptions[studioId] === 'active'" ng-click = "cancelSubscription()">Unsubscribe From Studio</a>
                 <div class="" ng-show = "subscriptions[studioId] === 'active'">You are a member of this studio!</div>
               </div>
