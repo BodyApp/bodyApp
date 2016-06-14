@@ -1,13 +1,13 @@
 <div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
 
-
 <div class="testing-overlay">
+  <a class="testing-overlay-click" href="./"></a>
   <div class="modal-container">
 
     <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
-        <img src="/assets/images/studios/body/signUp.jpg">
+        <img src="/assets/images/studios/body/SignUp.jpg">
       </div>
       <div class="signUp-panel"> 
         <div class="signUp-content text-center">
@@ -25,7 +25,7 @@
     <div class="modalLogin" ng-show = "mode === 'login' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
-        <img src="/assets/images/studios/body/signUp.jpg">
+        <img src="/assets/images/studios/body/SignUp.jpg">
       </div>
       <div class="signUp-panel"> 
         <div class="signUp-content text-center">
@@ -148,56 +148,20 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="studio-hero">
+<div class="studio-hero">
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
-      <div class="col-sm-8 col-sm-push-2">
-        <h1 class="white mb16 bold">Welcome to Class</h1>
+      <div class="col-md-8 col-md-push-2">
+        <h1 class="white mb16 bold">Live Virtual Classes from Anywhere</h1>
         <h3 class="white mb40">Earn more money by offering live health and fitness services to your global following</h3>
-        <a href="/createstudio" class="btn big-btn">Get Started</a>
+        <a href="/discover" class="btn-clear big-btn">Take Classes</a>
+        <span class="white separator hidden-xs">- or -</span>
+        <a href="/createstudio" class="btn-blue big-btn hidden-xs">Open a Studio</a>
       </div>
     </div>
   </div>
-  <div class="cover-img" ng-style="{'background-image':'url('+ headerImageUrl +')'}"></div>
-  <div class="cover-gradient-darker"></div>
+  <div class="cover-img" style="background-image: url('/assets/images/studios/body/home-hero.jpg')"></div>
+  <div class="cover-gradient"></div>
 </div>
 
 <div class="panel-dark pt48 pb40">
@@ -207,12 +171,14 @@
         <div class="col-sm-8 hidden-xs">
           <div class="earn-banner">
             <a href="/createstudio">
-              <img ng-src="{{mainPageImageUrl}}">
+              <!-- <img ng-src="{{mainPageImageUrl}}"> -->
+              <img src="assets/images/studios/body/teaching-view.jpg">
             </a>
           </div>
         </div>
         <div class="col-sm-4 earn-panel-body">
-          <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}">
+          <!-- <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}"> -->
+          <div class="earn-banner-hero visible-xs" style="background-image: url('/assets/images/studios/body/teaching-view.jpg')">
           </div>
           <div class="va-container va-container-v va-container-h earn-panel-content">
             <div class="va-middle">
@@ -230,8 +196,8 @@
   <div class="page-container-responsive">
     <div class="row">
       <div class="col-xs-12 mb32 text-center">
-        <h3 class="bold mb8">Take Classes</h3>
-        <h5>Choose How You Move. Live interaction with a real coach to help you achieve results.</h5>
+        <h3 class="bold mb8">Choose how you move</h3>
+        <h5>Live interaction with a real coach to help you achieve results.</h5>
       </div>
       <!-- <div class="col-md-4">
         <div class="discovery-card" style="background-image:url('assets/images/studios/ralabala/discovery.jpg');">
@@ -250,7 +216,8 @@
       </div> -->
       <div class="col-md-12">
         <div class="discovery-card discovery-card-tall" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
-          <a href="/studios/{{id}}">
+          <!-- <a href="/studios/{{id}}"> -->
+          <a href="/discover">
             <div class="va-container va-container-v va-container-h">
               <div class="va-middle text-center">
                 <div class="discovery-content">
@@ -285,12 +252,12 @@
   <div class="cover-gradient"></div>
 </div> -->
 
-<div id="studio-hero" class="hero-tall">
+<div class="studio-hero">
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
       <div class="col-sm-8 col-sm-push-2">
         <h1 class="white mb16 bold">Connect With Real People</h1>
-        <h3 class="white mb40">See how studio owners connect with busy Moms like Ali</h3>
+        <h3 class="white mb40">See how studio owners connect with Moms like Ali</h3>
         <h5></h5>
         <a href="#" class="">
           <i class="fa fa-play-circle video-play" ng-click = "playYoutubeVideo()"></i>
@@ -312,8 +279,8 @@
       </div>
     </div>
   </div>
-  <div class="cover-img" style="background-image:url(assets/images/ali.jpg);"></div>
-  <div class="cover-gradient"></div>
+  <div class="cover-img" style="background-image:url(assets/images/studios/body/mom-hero.jpg);"></div>
+  <div class="cover-gradient-darker"></div>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
