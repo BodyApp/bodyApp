@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
 
 <div class="testing-overlay">
-  <a class="testing-overlay-click" href="./"></a>
+  <a class="testing-overlay-click" ng-click = "userClickedOutside()"></a>
   <div class="modal-container">
 
     <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">

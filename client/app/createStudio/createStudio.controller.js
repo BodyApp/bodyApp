@@ -157,6 +157,11 @@ angular.module('bodyAppApp')
       });
     }
 
+    $scope.updateCategoryCount = function(category) {
+      if ($scope.studioToCreate.categories[category] === false) delete $scope.studioToCreate.categories[category]
+      $scope.categoriesSelected = Object.keys($scope.studioToCreate.categories).length
+    }
+
     $scope.playYoutubeVideo = function() {
       $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay=1');
       // $scope.youtubeLink + '&autoplay=1';

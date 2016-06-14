@@ -232,7 +232,7 @@
 <!-- PANEL -->
       <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes | orderBy: '-updated'">
         <div class="panel-header" >
-          {{classType.name}}
+          {{classType.name}} <span ng-if = "classType.specialtyClassRate">(${{classType.specialtyClassRate}})</span>
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>

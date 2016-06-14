@@ -57,6 +57,10 @@ angular.module('bodyAppApp')
     	$location.path(loggedInPath)
     }
 
+    $scope.userClickedOutside = function() {
+    	if ($scope.step < 1) $location.path(loggedInPath)	
+    }
+
     Auth.isLoggedInAsync(function(loggedIn) {
     	loggedInPath = $cookies.get('loggedInPath')
       if (loggedIn) {

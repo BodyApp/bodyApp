@@ -143,37 +143,37 @@
                       <div class="col-sm-6">
                         <md-list-item>
                           <h5 class="lightgray">Strength</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.strength"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.strength" ng-change = "updateCategoryCount('strength');" ng-disabled = "!storefrontInfo.categories.strength && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                         <md-list-item>
                           <h5 class="lightgray">HIIT</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.hiit"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.hiit" ng-change = "updateCategoryCount('hiit');" ng-disabled = "!storefrontInfo.categories.hiit && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                         <md-list-item>
                           <h5 class="lightgray">Yoga</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.yoga"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.yoga" ng-change = "updateCategoryCount('yoga');" ng-disabled = "!storefrontInfo.categories.yoga && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                         <md-list-item>
                           <h5 class="lightgray">Dance</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.dance"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.dance" ng-change = "updateCategoryCount('dance');" ng-disabled = "!storefrontInfo.categories.dance && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                       </div>
                       <div class="col-sm-6">
                         <md-list-item>
                           <h5 class="lightgray">Boxing</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.boxing"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.boxing" ng-change = "updateCategoryCount('boxing');" ng-disabled = "!storefrontInfo.categories.boxing && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                         <md-list-item>
                           <h5 class="lightgray">Pilates</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.pilates"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.pilates" ng-change = "updateCategoryCount('pilates');" ng-disabled = "!storefrontInfo.categories.pilates && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                         <md-list-item>
                           <h5 class="lightgray">Barre</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.barre"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.barre" ng-change = "updateCategoryCount('barre');" ng-disabled = "!storefrontInfo.categories.barre && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                         <md-list-item>
                           <h5 class="lightgray">Martial Arts</h5>
-                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.martialArts"  ng-change = "saveStorefrontInfo(storefrontInfo)"></md-checkbox>
+                          <md-checkbox class="md-secondary" ng-model = "storefrontInfo.categories.martialArts" ng-change = "updateCategoryCount('martialArts');" ng-disabled = "!storefrontInfo.categories.martialArts && categoriesSelected >= 3"></md-checkbox>
                         </md-list-item>
                       </div>
                     </md-list>
