@@ -219,7 +219,7 @@
               <div class="row">
                 <div class="col-sm-12">
                   <a href="#" ng-click = "showAddSet = {}; initAddExercises();" class="btn mb8">Add set</a>
-                  <h5 class="lightgray">Each set can contain a max of six exercises. You can add an unlimited number of sets to each workout.</h5>
+                  <h5 class="lightgray">Will be displayed to your students. Each set can contain a max of six exercises. You can add an unlimited number of sets to each workout.</h5>
                 </div>
               </div>
 
@@ -281,9 +281,9 @@
             <li>
               <a href="#" class="panel-action-item" ng-click = "editWorkout(workout);">Edit</a>
             </li>
-            <!-- <li>
-              <a href="#" class="panel-action-item">Delete</a>
-            </li>             -->
+            <li>
+              <a href="#" class="panel-action-item" ng-click = "deleteById(workout.id)">Delete</a>
+            </li>            
           </ul>
         </div>
         <div class="panel-body">

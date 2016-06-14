@@ -68,16 +68,15 @@ angular.module('bodyAppApp')
     function getClassTypes() {
       ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
         if (!snapshot.exists()) return $scope.savedClassTypes = false;
-        $scope.savedClassTypes = []
-        snapshot.forEach(function(classType) {
-          $scope.savedClassTypes.push(classType.val());
-          // console.log(classType.val().updated)
-          if(!$scope.$$phase) $scope.$apply();
-        })
+        $scope.savedClassTypes = snapshot.val()
+        if(!$scope.$$phase) $scope.$apply();
+        // snapshot.forEach(function(classType) {
+        //   $scope.savedClassTypes.push(classType.val());
+        //   // console.log(classType.val().updated)
+        //   if(!$scope.$$phase) $scope.$apply();
+        // })
         // $scope.savedClassTypes = snapshot.val()
         // console.log($scope.savedClassTypes)
-        
-
       })  
     }
     
@@ -169,6 +168,33 @@ angular.module('bodyAppApp')
 
     $scope.scrollTop = function() {
       window.scrollTo(0, 0);
+    }
+
+    $scope.deleteClassType = function(classTypeId) {
+      var rightNow = new Date().getTime();
+      console.log($scope.savedClassTypes)
+      if ($scope.savedClassTypes[classTypeId].workoutsUsingClass) return alert("There are workouts that use this class type.  Please delete the workouts prior to deleting this class type.")
+      ref.child('classes').orderByChild('classType').equalTo(classTypeId).once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("No classes found for specified class. Safe to delete.")
+        var futureClasses = [];
+
+        snapshot.forEach(function(classPulled) {
+          if (classPulled.val().dateTime > rightNow) {
+            futureClasses.push(classPulled.val())
+            // console.log(classPulled.val());
+            // ref.child('bookings').child(classPulled.val().dateTime).once('value', function(snapshot) {
+            //   if (!snapshot.exists()) {
+
+            //   }
+            // })
+          }
+        })
+        if (futureClasses.length > 0) return alert("There are " + futureClasses.length + " classes coming up that use this class type.  Can't delete without first deleting those classes.")
+        ref.child('classTypes').child(classTypeId).remove(function(err) {
+          if (err) return console.log(err)
+          console.log("Successfully removed class type since there were no workouts or future classes based on it.")
+        })
+      })
     }
 
   });

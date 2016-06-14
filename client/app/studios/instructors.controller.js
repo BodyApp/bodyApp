@@ -129,6 +129,45 @@ angular.module('bodyAppApp')
       $scope.scrollTop()
     }
 
+    $scope.deleteById = function(idToDelete) {
+      var rightNow = new Date().getTime();
+      ref.child('classes').orderByChild('instructor').equalTo(idToDelete).once('value', function(snapshot) {
+        if (!snapshot.exists()) {
+            console.log("No classes found for specified class. Safe to delete.")
+            return ref.child('instructors').child(idToDelete).remove(function(err) {
+              if (err) return console.log(err)
+              ref.child('admins').child(idToDelete).remove(function(err) {
+                if (err) return console.log(err)
+                console.log("Removed admin")
+              })
+              return console.log("Successfully removed instructor since they aren't scheduled to teach any future classes.")
+            })
+        }
+        var futureClasses = [];
+
+        snapshot.forEach(function(classPulled) {
+          if (classPulled.val().dateTime > rightNow) {
+            futureClasses.push(classPulled.val())
+            // console.log(classPulled.val());
+            // ref.child('bookings').child(classPulled.val().dateTime).once('value', function(snapshot) {
+            //   if (!snapshot.exists()) {
+
+            //   }
+            // })
+          }
+        })
+        if (futureClasses.length > 0) return alert("Instructor is schedule to teach " + futureClasses.length + " classes.  Can't delete instructor without first editing or deleting those classes.")
+        ref.child('instructors').child(idToDelete).remove(function(err) {
+          if (err) return console.log(err)
+            ref.child('admins').child(idToDelete).remove(function(err) {
+              if (err) return console.log(err)
+              console.log("Removed admin")
+            })
+          console.log("Successfully removed instructor since they aren't scheduled to teach any future classes.")
+        })
+      })
+    }
+
     $scope.keyPressed = function(key, enteredSoFar) {
       if (key.keyCode === 13) $scope.searchForUser(enteredSoFar)
     }

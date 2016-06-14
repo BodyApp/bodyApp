@@ -112,6 +112,7 @@ angular.module('bodyAppApp')
     	workoutToSave.created = new Date().getTime();
     	workoutToSave.updated = new Date().getTime();
     	workoutToSave.createdBy = currentUser._id;
+
     	var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
     		if (err) return console.log(err);
     		ref.child('workouts').child(pushedWorkout.key).update({id: pushedWorkout.key}, function(err) {
@@ -171,4 +172,34 @@ angular.module('bodyAppApp')
     	// })
     }
 
+    $scope.deleteById = function(idToDelete) {
+      var rightNow = new Date().getTime();
+      ref.child('classes').orderByChild('workout').equalTo(idToDelete).once('value', function(snapshot) {
+        if (!snapshot.exists()) {
+            console.log("No classes found for specified workout. Safe to delete.")
+            return ref.child('workouts').child(idToDelete).remove(function(err) {
+              if (err) return console.log(err)
+              return console.log("Successfully removed workout type since there were no workouts or future classes based on it.")
+            })
+        }
+        var futureClasses = [];
+
+        snapshot.forEach(function(classPulled) {
+          if (classPulled.val().dateTime > rightNow) {
+            futureClasses.push(classPulled.val())
+            // console.log(classPulled.val());
+            // ref.child('bookings').child(classPulled.val().dateTime).once('value', function(snapshot) {
+            //   if (!snapshot.exists()) {
+
+            //   }
+            // })
+          }
+        })
+        if (futureClasses.length > 0) return alert("There are " + futureClasses.length + " classes coming up that use this workout type.  Can't delete without first deleting those classes.")
+        ref.child('workouts').child(idToDelete).remove(function(err) {
+          if (err) return console.log(err)
+          console.log("Successfully removed workout type since there aren't any scheduled classes based on it.")
+        })
+      })
+    }
   });
