@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NewSignupCtrl', function ($scope, $state, $cookies, $location, $window, Auth, User) {
+  .controller('NewSignupCtrl', function ($scope, $state, $cookies, $location, $window, $rootScope, Auth, User) {
 
     var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref()
 
     $scope.step = $state.params.step;
     $scope.mode = $state.params.mode;
+
+    console.log($scope.step)
 
   	var loggedInPath = '/'
 
@@ -66,11 +68,13 @@ angular.module('bodyAppApp')
       if (loggedIn) {
         if (Auth.getCurrentUser().emergencyContact && Auth.getCurrentUser().email) {
           $location.path(loggedInPath)
+          $location.replace()
+          if(!$scope.$$phase) $scope.$apply();
         } else {
         	$scope.userEmail = Auth.getCurrentUser().email
         	$scope.userPicture = Auth.getCurrentUser().picture
-          $scope.step = 1;
-	        if(!$scope.$$phase) $scope.$apply();
+	        $scope.step = 1;
+          if(!$scope.$$phase) $scope.$apply();
         }
       }
     });

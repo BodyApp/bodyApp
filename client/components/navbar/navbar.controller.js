@@ -160,7 +160,7 @@ angular.module('bodyAppApp')
         var timeOneHourAgo = new Date().getTime() - 1000*60*60
         if (!snapshot.exists() || snapshot.val().lastUpdated < timeOneHourAgo) { //Only run geolocator every hour
           var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
-          geolocator.locate(onGeoSuccess, function(err) {console.log(err)}, true, html5Options);    
+          geolocator.locate(onGeoSuccess, function(err) {console.log(err)}, true, html5Options, null);    
         }
       })
     }
