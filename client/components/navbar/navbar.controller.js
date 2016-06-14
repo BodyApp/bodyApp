@@ -210,6 +210,8 @@ angular.module('bodyAppApp')
         if (!snapshot.exists()) return
         $rootScope.subscriptions = $rootScope.subscriptions || {}
         $rootScope.subscriptions[studioId] = snapshot.val().status
+        if(!$rootScope.$$phase) $rootScope.$apply();
+
         // console.log($rootScope.subscriptions)
       })
     }
