@@ -207,6 +207,8 @@ angular.module('bodyAppApp')
     }
 
     $scope.savePricingPlan = function(planToSave) {
+      if (planToSave.amountInDollars < 1) return $scope.greaterThanZeroRequired = true;
+      $scope.greaterThanZeroRequired = false;
     	if (planToSave.pricingType === 'Drop In') {
     		planToSave.amount = planToSave.amountInDollars * 100;
     		ref.child("stripeConnected").child('dropinPlan').update(planToSave, function(err) {
@@ -259,6 +261,8 @@ angular.module('bodyAppApp')
     }
 
     $scope.updateDropinPlan = function(planToEdit) {
+      if (planToEdit.amountInDollars < 1) return $scope.greaterThanZeroRequired = true;
+      $scope.greaterThanZeroRequired = false;
     	planToEdit.amount = planToEdit.amountInDollars * 100;
     	ref.child("stripeConnected").child('dropinPlan').update(planToEdit, function(err) {
   			if (err) return console.log(err)
