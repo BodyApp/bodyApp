@@ -272,7 +272,7 @@
         <div class="row mb24"> <!-- CALENDAR WEEK VIEW -->
           <div class="cal-container text-center">         
             <div class="header-cover"></div>
-            <div class="no-classes">No classes this week</div>
+            <div class="no-classes" ng-if = "!classSchedule">No classes this week</div>
             <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
             <div class="cal-column" ng-class = "'sched-day-'+($index+1)" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
@@ -371,7 +371,9 @@
                     <div class="row mb8">
                       <div class="col-md-12">
                         <h5 class="mb8" ng-show = 'subscriptionPlan'>Monthly Unlimited Classes: ${{subscriptionPlan.amount/100}}/mo</h5>
+                        <h5 class="mb8" ng-show = '!subscriptionPlan'>Monthly Unlimited Classes: None</h5>
                         <h5 ng-show = 'storefrontInfo.dropinPricing'>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
+                        <h5 ng-show = '!storefrontInfo.dropinPricing'>Drop In Class: None</h5>
                       </div>
                     </div>
                   </div>
