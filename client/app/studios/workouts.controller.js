@@ -63,9 +63,13 @@ angular.module('bodyAppApp')
 
     function loadWorkouts() {
     	ref.child('workouts').on('value', function(snapshot) {
-        if (!snapshot.exists()) return;
+            if (!snapshot.exists()) {
+                $scope.workouts = [];
+                if(!$scope.$$phase) $scope.$apply();
+                return;
+            }
     	   $scope.workouts = []
-	      snapshot.forEach(function(classType) {
+	       snapshot.forEach(function(classType) {
 	        $scope.workouts.push(classType.val());
             if(!$scope.$$phase) $scope.$apply();
 	      })
@@ -113,6 +117,9 @@ angular.module('bodyAppApp')
     	workoutToSave.updated = new Date().getTime();
     	workoutToSave.createdBy = currentUser._id;
 
+        if (!workoutToSave.title) return $scope.noTitle = true;
+        if (!workoutToSave.classTypes) return $scope.noClassTypes = true;
+
     	var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
     		if (err) return console.log(err);
     		ref.child('workouts').child(pushedWorkout.key).update({id: pushedWorkout.key}, function(err) {
@@ -123,6 +130,7 @@ angular.module('bodyAppApp')
                   if (err) console.log(err)
                 })
 		      if(!$scope.$$phase) $scope.$apply();
+                if (!workoutToSave.classTypes) return;
     			for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
     				ref.child('classTypes').child(workoutToSave.classTypes[i].id).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {
     					if (err) return console.log(err)
@@ -170,6 +178,13 @@ angular.module('bodyAppApp')
     	// 		}
     	// 	})
     	// })
+    }
+
+    $scope.removeErrorMessage = function() {
+        $scope.noClassTypes = false;
+          if(!$scope.$$phase) $scope.$apply();      
+          return true;
+
     }
 
     $scope.deleteById = function(idToDelete) {

@@ -39,8 +39,9 @@
             <label class="col-sm-3" for="workout-title">
               Workout Title
             </label>
+            <div style = "color: red" ng-show = "noTitle">You need to name your workout!</div>
             <div class="col-sm-9">
-              <input id="workout-title" ng-model = "showAddWorkout.title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
+              <input id="workout-title" ng-change = "noTitle = false;" ng-model = "showAddWorkout.title" name="" size="30" type="text" placeholder="e.g. Workout #28: Squat Intervals">
               <h5 class="lightgray mt8 mb8">Give your workout a name that will be easy for you to remember. This is only viewable by studio staff, not by clients.</h5>      
             </div>
           </div>
@@ -49,6 +50,7 @@
             <label class="col-sm-3" for="class-reg-types">
               Assign To
             </label>
+            <div style = "color: red" ng-show = "noClassTypes">This workout needs to be assigned to at least one class type</div>
             <div class="col-sm-9">
               <tags-input id="equipment-needed" 
                 ng-model="showAddWorkout.classTypes" 
@@ -57,6 +59,8 @@
                 placeholder="Click to choose from your class types" 
                 replace-spaces-with-dashes="false"
                 template="tag-template"
+                on-tag-adding = "removeErrorMessage()"
+                add-from-autocomplete-only="true"
                 >
                 <auto-complete source="classTypes"
                   min-length="0"

@@ -67,7 +67,11 @@ angular.module('bodyAppApp')
     // ];
     function getClassTypes() {
       ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
-        if (!snapshot.exists()) return $scope.savedClassTypes = false;
+        if (!snapshot.exists()) {
+          $scope.savedClassTypes = false;
+          if(!$scope.$$phase) $scope.$apply();
+          return;
+        }
         $scope.savedClassTypes = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
         // snapshot.forEach(function(classType) {

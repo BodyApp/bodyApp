@@ -104,7 +104,11 @@ angular.module('bodyAppApp')
 
     function listSubscriptionPlans() {
       ref.child('stripeConnected').child('subscriptionPlans').on('value', function(snapshot) {
-        if (!snapshot.exists()) return $scope.subscriptionPlan = false;
+        if (!snapshot.exists()) {
+          $scope.subscriptionPlan = false;
+          if(!$scope.$$phase) $scope.$apply();  
+          return;
+        }
         snapshot.forEach(function(plan) {
           $scope.subscriptionPlan = plan.val();
           if(!$scope.$$phase) $scope.$apply();  
