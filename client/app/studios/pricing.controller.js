@@ -103,18 +103,43 @@ angular.module('bodyAppApp')
     }
 
     function listSubscriptionPlans() {
+      ref.child('stripeConnected').child('subscriptionPlans').on('value', function(snapshot) {
+        if (!snapshot.exists()) return $scope.subscriptionPlan = false;
+        snapshot.forEach(function(plan) {
+          $scope.subscriptionPlan = plan.val();
+          if(!$scope.$$phase) $scope.$apply();  
+        })
+        if(!$scope.$$phase) $scope.$apply();
+      })
+
       Studio.listSubscriptionPlans({
         id: currentUser._id          
       }, {
         studioId: studioId,
         accessCode: accessCode
       }).$promise.then(function(plans) {
-        console.log("Retrieved " + plans.length + " subscription plans");
-        if (plans.length < 1) return $scope.subscriptionPlan = false;
-        $scope.subscriptionPlan = plans[0];
-        if(!$scope.$$phase) $scope.$apply();
-        ref.child('storefrontInfo').update({subscriptionPricing: plans[0].amount})
-        ref.child('stripeConnected').child('subscriptionPlans').child(plans[0].id).update($scope.subscriptionPlan)
+        console.log(plans.length + " subscription plans exist in this Stripe account");
+        // if (plans.length < 1) $scope.subscriptionPlan = false;
+                    
+        //Checks whether the subscription still exists in Stripe.  Removes it if not.
+        var planGone = true;
+        for (var i = 0; i < plans.length; i++) {
+          if (plans[i].id === $scope.subscriptionPlan.id) planGone = false;
+        }
+
+        if (planGone) {
+          ref.child("stripeConnected").child('subscriptionPlans').remove(function(err) {
+            if (err) return console.log(err)
+              console.log("Removed subscription plan because it didn't exist in Stripe")
+              $scope.subscriptionPlan = false;
+              ref.child("storefrontInfo").child('subscriptionPricing').remove();
+          })
+        }
+
+        // $scope.subscriptionPlan = plans[0];
+        // if(!$scope.$$phase) $scope.$apply();
+        // ref.child('storefrontInfo').update({subscriptionPricing: plans[0].amount})
+        // ref.child('stripeConnected').child('subscriptionPlans').child(plans[0].id).update($scope.subscriptionPlan)
         // for (var plan = 0; plan < plans.length; plan++) { //This is no longer necessary as doing on backend.
         //   ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
         // }
@@ -132,6 +157,7 @@ angular.module('bodyAppApp')
 
     function getToSetup() {
       ref.child('toSetup').child('storefrontAlert').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.storefrontAlert = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
       })
@@ -187,6 +213,7 @@ angular.module('bodyAppApp')
     			if (err) return console.log(err)
   				$scope.showAddPricingPlan = false;
 	    		if(!$scope.$$phase) $scope.$apply();
+          ref.child('storefrontInfo').child('dropinPricing').set(planToSave.amount)
     		})
     	} else if (planToSave.pricingType === 'Monthly'){
     		Studio.createSubscriptionPlan({
@@ -197,15 +224,16 @@ angular.module('bodyAppApp')
 	        name: studioId + " BODY Subscription",
 	        currency: "usd",
 	        interval: "month",
-	        statement_descriptor: studioId + " Subscription",
+	        statement_descriptor: $scope.connectedStripeAccount,
 	        userThatCreatedPlan: currentUser._id,
           accessCode: accessCode
 	      }).$promise.then(function(subscription) {
 	      	console.log("Saved new subscription");
+          ref.child('storefrontInfo').child('subscriptionPricing').set(planToSave.amountInDollars*100)
           ref.child('toSetup').child('pricing').remove(function(err) {
             if (err) console.log(err)
           })
-	      	listSubscriptionPlans()
+	      	// listSubscriptionPlans()
 	      	$scope.showAddPricingPlan = false;
 	    		if(!$scope.$$phase) $scope.$apply();
 

@@ -214,6 +214,7 @@ angular.module('bodyAppApp')
 
     function getToSetup() {
       ref.child('toSetup').once('value', function(snapshot) {
+        if (!snapshot.exists()) return
         $scope.toSetup = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
         if ($scope.toSetup.storefrontAlert) {
