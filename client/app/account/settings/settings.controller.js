@@ -42,8 +42,6 @@ angular.module('bodyAppApp')
       $scope.numReferrals = currentUser.referrals ? Object.keys(currentUser.referrals).length : 0;
       if ($scope.numReferrals) pullReferrals(currentUser);
 
-      $scope.friendList = [];
-
       if (!$scope.currentUser.referralCode) {
         User.generateReferralCode({id: $scope.currentUser._id}, {}, function(user){
             console.log("Successfully generated referral code " + user.referralCode)
@@ -144,12 +142,14 @@ angular.module('bodyAppApp')
       //     if(!$scope.$$phase) $scope.$apply();
       //   })
       // }
+      $scope.friendList = {};
       if (currentUser.friendList) {
         
         for (var i = 0; i < currentUser.friendList.length; i++) {
           
           ref.child("fbUsers").child(currentUser.friendList[i].id).once('value', function(snapshot) {
-            if (snapshot.val()) $scope.friendList.push(snapshot.val())
+            if (snapshot.val()) $scope.friendList[snapshot.key] = snapshot.val()
+            $scope.friendListLength = Object.keys($scope.friendList).length;
             if(!$scope.$$phase) $scope.$apply();
           })
         }     

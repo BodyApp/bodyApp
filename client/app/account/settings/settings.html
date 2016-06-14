@@ -51,7 +51,7 @@
 
 
 		<!-- REFERRALS -->
-		<div class="col-sm-9 mb32" ng-show="teammates">
+		<div class="col-sm-9 mb32" ng-show="false">
 			<div >
 				<div class="col-sm-9">
 					<h3 class="royalblue shorterMargin">Referrals ({{numReferrals}})</h3>
@@ -115,7 +115,7 @@
 		<div class="col-sm-9" ng-show="teammates">
 			<div class="mb8">
 				<div class="col-sm-9">
-					<h3 class="royalblue">Teammates ({{friendList.length}})</h3>
+					<h3 class="royalblue">Teammates ({{friendListLength}})</h3>
 				</div>
 				<div class="col-sm-3">
 					<!-- <a class="btn addTeammates" href="#">Add Teammates</a> -->
@@ -127,9 +127,9 @@
 			</div>
 			<div class="col-sm-12">
 				<ul class="friendList">
-					<li ng-repeat = "friend in friendList" ng-show = "friendList.length > 0">
+					<li ng-repeat = "(id, friend) in friendList" ng-show = "friendListLength > 0">
 						<div class="friends-User-col">
-							<div class="friendPhoto"><img src="{{friend.picture}}"></div>
+							<div class="friendPhoto"><img ng-src="https://graph.facebook.com/{{id}}/picture?type=square"></div>
 							<div class="friendName"><span>{{friend.firstName}} {{friend.lastName}}</span></div>
 						</div>
 						<div class="friends-Action-col">
