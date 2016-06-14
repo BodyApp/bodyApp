@@ -189,7 +189,7 @@
 								<form>
 							    <div layout="row" flex class="mb8">
 						        <md-input-container flex class="md-block" ng-mouseenter = "showIDHelper = true; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
-					            <label class="angular-label">Claim your studio ID</label>
+					            <label class="angular-label">Claim your studio URL</label>
 					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
 					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId)">
 				              <div class="form-hint" ng-show = "!takenId">Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
