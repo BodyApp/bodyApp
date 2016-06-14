@@ -156,16 +156,19 @@ angular.module('bodyAppApp')
     }
 
     function geolocate() {
+      if (!$scope.doneGeolocating) return
+      $scope.doneGeolocating = false;
       firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('location').once('value', function(snapshot) {
         var timeOneHourAgo = new Date().getTime() - 1000*60*60
         if (!snapshot.exists() || snapshot.val().lastUpdated < timeOneHourAgo) { //Only run geolocator every hour
           var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
-          geolocator.locate(onGeoSuccess, function(err) {console.log(err)}, true, html5Options, null);    
+          geolocator.locate(onGeoSuccess, function(err) {console.log(err); $scope.doneGeolocating = true;}, true, html5Options, null);    
         }
       })
     }
 
     function onGeoSuccess(location) {
+      $scope.doneGeolocating = true;
       // console.log(location)
       if (location && location.address) {
         firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('location').update({
