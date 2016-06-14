@@ -94,15 +94,26 @@ angular.module('bodyAppApp')
           ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
 						if (err) return console.log(err);
 						console.log("Set current user "+ currentUser._id + " as admin of " + studioId)
-						User.getInstructorByEmail({
-			        id: currentUser._id
-			      }, {
-			        email: currentUser.email
-			      }).$promise.then(function(instructor) {
-			        if (instructor._id) {
-                if (instructor.$promise) delete instructor.$promise;
-                if (instructor.$resolved) delete instructor.$resolved;
-			          ref.child('studios').child(studioId).child('instructors').child(instructor._id).update(instructor, function(err) {
+						// User.getInstructorByEmail({
+			   //      id: currentUser._id
+			   //    }, {
+			   //      email: currentUser.email
+			   //    }).$promise.then(function(instructor) {
+			        if (currentUser._id) {
+                if (currentUser.$promise) delete currentUser.$promise;
+                if (currentUser.$resolved) delete currentUser.$resolved;
+			          ref.child('studios').child(studioId).child('instructors').child(currentUser._id).update({
+                   "_id": currentUser._id,
+                   "facebookId": currentUser.facebookId,
+                   "firstName": currentUser.firstName,
+                   "gender": currentUser.gender,
+                   "lastName": currentUser.lastName,
+                   "nickName": currentUser.nickName,
+                   "permissions": "Studio Admin",
+                   "picture": currentUser.picture,
+                   "trainerNumRatings": 0,
+                   "trainerRating": 5
+                }, function(err) {
 		  						if (err) return console.log(err);
 		  						console.log("Saved current user "+ currentUser._id + " as instructor of " + studioId)
 		  						// $rootScope.$apply(function() {
@@ -114,13 +125,14 @@ angular.module('bodyAppApp')
 			        }
 			      })
   					
-					})
+					// })
 				})
   		})
   	}
 
     $scope.goToStep = function(step) {
       if ($scope.basicsComplete) $scope.step = step;
+      if(!$scope.$$phase) $scope.$apply();
     }
 
     //Add billing controller
@@ -137,8 +149,12 @@ angular.module('bodyAppApp')
         'categories': studioToCreate.categories
       }, function(err) {
         if (err) return console.log(err)
+        $scope.showShortDescriptionHelper = false; 
+        $scope.showLongDescriptionHelper = false; 
+        $scope.showCategoriesHelper = false;
         $scope.step++;
         $scope.descriptionComplete = true;
+        if(!$scope.$$phase) $scope.$apply();
       })
     }
 
