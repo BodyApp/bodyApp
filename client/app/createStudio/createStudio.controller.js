@@ -18,6 +18,11 @@ angular.module('bodyAppApp')
       if (key.keyCode === 13) $scope.checkId(idToCheck);
     }
 
+    $scope.scrollTop = function() {
+      // window.scrollTo(0, 0);
+      $('.ss-content-container').scrollTop(0);
+    }
+
     $scope.checkId = function(idToCheck) {
       ref.child('studios').child(idToCheck).child('storefrontInfo').once('value', function(snapshot) {
         if (snapshot.exists()) {
@@ -132,6 +137,7 @@ angular.module('bodyAppApp')
 
     $scope.goToStep = function(step) {
       if ($scope.basicsComplete) $scope.step = step;
+      $scope.scrollTop();
       if(!$scope.$$phase) $scope.$apply();
     }
 
