@@ -99,6 +99,24 @@
   padding-right: 15px;
 }
 /*------ANGULAR MATERIAL FORMS-------*/
+
+.errorMessage {
+  position: absolute;
+  left: 175px;
+  bottom: 0px;
+  right: auto;
+  font-size: 12px;
+  line-height: 14px;
+}
+.categoryError {
+  position: absolute;
+  left: 200px;
+  bottom: 250px;
+  right: auto;
+  font-size: 12px;
+  line-height: 14px;
+  color: rgb(221,44,0);
+}
 .form-hint {
   position: absolute;
   left: 2px;

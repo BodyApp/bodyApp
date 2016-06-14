@@ -186,18 +186,19 @@
 								<h5 class="lightgray">Add images, a video, and a name.</h5>
 								<hr class="content-divider mt16 mb24">
 
-								<form>
+								<form name = "createStudioForm">
 							    <div layout="row" flex class="mb8" ng-mouseenter = "showIDHelper = true;" ng-mouseleave = "showIDHelper = false;">
 						        <md-input-container flex class="md-block" >
-					            <label class="angular-label">Claim your studio URL</label>
-					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
-					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId)" md-maxlength="20">
-				              <div class="form-hint" ng-show = "!takenId">Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
-				              <div class="form-hint" ng-show = "takenId">The ID {{studioToCreate.studioId}} is already taken.  Please try another.</div>
-				              <div ng-messages="projectForm.description.$error" class="hidden">
+						        	<div class = "errorMessage" ng-messages="createStudioForm.studioId.$error">
 							          <div ng-message="required">This is required.</div>
 							          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
 							        </div>
+					            <label class="angular-label">Claim your studio URL</label>
+					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
+					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="studioId" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId)" md-maxlength="20" required>
+				              <div class="form-hint" ng-show = "!takenId">Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
+				              <div class="form-hint" ng-show = "takenId">The ID {{studioToCreate.studioId}} is already taken.  Please try another.</div>
+				              
 						        </md-input-container>
 						        <div>
 					            <md-button class="md-primary md-raised" ng-show = "!idSaved" ng-click = "checkId(studioToCreate.studioId)">Available?</md-button>
@@ -207,13 +208,14 @@
 
 							    <div layout="column" flex class="mb8">
 							    	<md-input-container class="md-block" ng-mouseenter = "showNameHelper = true;" ng-mouseleave = "showNameHelper = false;">
-							        <label class="angular-label">Studio Name</label>
-							        <input type="text" md-maxlength="20" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.studioName" class="angular-input">
-							        <div class="form-hint">Every great service starts with a great name.</div>
-							        <div ng-messages="projectForm.description.$error" class="hidden">
+								    	<div class = "errorMessage" ng-messages="createStudioForm.studioName.$error">
 							          <div ng-message="required">This is required.</div>
 							          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
 							        </div>
+							        <label class="angular-label">Studio Name</label>
+							        <input type="text" md-maxlength="20" md-no-asterisk="" name="studioName" ng-model="studioToCreate.studioName" class="angular-input" required>
+							        <div class="form-hint">Every great service starts with a great name.</div>
+							        
 							      </md-input-container>
 							    </div>
 
@@ -273,28 +275,30 @@
 							    <div layout="column" flex class="mb8">
 							    	<md-input-container class="md-block" ng-mouseenter = "showYoutubeVideoHelper = true;" ng-mouseleave = "showYoutubeVideoHelper = false;">
 							        <label class="angular-label">Studio Video YouTube ID</label>
-							        <input type="text" required="" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input">
+							        <input type="text" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input" >
 							        <div class="form-hint">The best videos tend to be between 1 to 2 minutes. <a href="https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id" target="_blank">Here's where to find your ID</a>.</div>
-							        <div ng-messages="projectForm.description.$error" class="hidden">
+							        <div ng-messages="projectForm.description.$error" >
 							          <div ng-message="required">This is required.</div>
-							          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+							          <div ng-message="md-maxlength">The URL has to be less than 20 characters long.</div>
 							        </div>
 							      </md-input-container>
 							    </div>						    
+
+							    <div class="row">
+										<div class="col-sm-2 mt8">
+											<a href="#" ng-click = "creationStarted = false;">Back</a>
+										</div>
+										<div class="col-sm-10 text-right">
+											<button href="#" type = 'submit' class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); scrollTop();">Next</button>
+										</div>
+									</div>
 
 								</form>
 
 							</div>
 						</div>
 
-						<div class="row">
-							<div class="col-sm-2 mt8">
-								<a href="#" ng-click = "creationStarted = false;">Back</a>
-							</div>
-							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); scrollTop();">Next</a>
-							</div>
-						</div>
+						
 					</div>
 
 					<div id="ss-content-description" ng-show = "step === 1">
@@ -303,18 +307,18 @@
 								<h4 class="mb8">Help clients find the right fit</h4>
 								<h5 class="lightgray">Every studio on BODY is unique. Highlight what makes your service safe and effective so that it stands out to clients.</h5>
 								<hr class="content-divider mt16 mb24">
-								<form>
+								<form name = "addDescriptionForm">
 
 									<div class="row mb8">
 							    	<div class="col-sm-12">
 								    	<md-input-container class="md-block" ng-mouseenter = "showShortDescriptionHelper = true;" ng-mouseleave = "showShortDescriptionHelper = false;">
-								        <label class="angular-label">Short Blurb</label>
-								        <textarea ng-model="studioToCreate.shortDescription" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea"></textarea>
-								        <div class="form-hint">Be clear and descriptive.</div>
-								        <div ng-messages="projectForm.shortblurb.$error" class="hidden">
+								    		<div class = "errorMessage" ng-messages="addDescriptionForm.shortDescription.$error">
 								          <div ng-message="required">This is required.</div>
-								          <div ng-message="md-maxlength">The blurb has to be less than 100 characters long.</div>
+								          <div ng-message="md-maxlength">The short blurb has to be less than 100 characters long.</div>
 								        </div>
+								        <label class="angular-label">Short Blurb</label>
+								        <textarea ng-model="studioToCreate.shortDescription" name = "shortDescription" md-maxlength="100" rows="5" md-select-on-focus class="angular-textarea" required></textarea>
+								        <div class="form-hint">Be clear and descriptive.</div>
 								      </md-input-container>
 								    </div>
 							    </div>
@@ -322,13 +326,13 @@
 							    <div class="row mb8">
 							    	<div class="col-sm-12">
 							    		<md-input-container class="md-block" ng-mouseenter = "showLongDescriptionHelper = true;" ng-mouseleave = "showLongDescriptionHelper = false;">
-								        <label class="angular-label">Studio Description</label>
-								        <textarea ng-model="studioToCreate.longDescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea"></textarea>
-								        <div class="form-hint">Provide clients a full description of your service.</div>
-								        <div ng-messages="projectForm.studiodescription.$error" class="hidden">
+							    			<div class = "errorMessage" ng-messages="addDescriptionForm.longDescription.$error">
 								          <div ng-message="required">This is required.</div>
-								          <div ng-message="md-maxlength">The description has to be less than 500 characters long.</div>
+								          <div ng-message="md-maxlength">The studio description has to be less than 500 characters long.</div>
 								        </div>
+								        <label class="angular-label">Studio Description</label>
+								        <textarea name = "longDescription" ng-model="studioToCreate.longDescription" md-maxlength="500" rows="15" md-select-on-focus class="angular-textarea" required></textarea>
+								        <div class="form-hint">Provide clients a full description of your service.</div>
 								      </md-input-container>
 							    	</div>
 							    </div>
@@ -338,6 +342,9 @@
 							    		<label class="angular-label">Studio Categories</label>
 							    		<span class="list-hint">Provide max of 3</span>
 							    	</div>
+							    	<div class = "categoryError" ng-show="!studioToCreate.categories && triedSettingDescription">
+						          <div >Please select at least 1 category.</div>
+						        </div>
 							    	<md-list>
 							    		<div class="col-sm-6">
 											  <md-list-item>
@@ -377,18 +384,19 @@
 										  </div>
 										</md-list>
 							    </div>
+							    <div class="row">
+										<div class="col-sm-2 mt8">
+											<a href="#" ng-click = "step = 0">Back</a>
+										</div>
+										<div class="col-sm-10 text-right">
+											<button href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate); scrollTop();">Next</button>
+										</div>
+									</div>
 								</form>						
 							</div>					
 						</div>
 
-						<div class="row">
-							<div class="col-sm-2 mt8">
-								<a href="#" ng-click = "step = 0">Back</a>
-							</div>
-							<div class="col-sm-10 text-right">
-								<a href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate); scrollTop();">Next</a>
-							</div>
-						</div>	
+	
 					</div>
 
 					<div id="ss-content-pricing" ng-show = "step === 2">

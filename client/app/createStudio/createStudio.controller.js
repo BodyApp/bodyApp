@@ -11,7 +11,7 @@ angular.module('bodyAppApp')
 
 
   	$scope.sanitizeUrl = function(currentUrl) {
-  		return currentUrl.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase()
+      if (currentUrl) return currentUrl.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase()
   	}
 
   	$scope.keyPressed = function(key, idToCheck) {
@@ -59,7 +59,7 @@ angular.module('bodyAppApp')
   		if (currentUser.$$state) delete currentUser.$$state;
   		if (currentUser.$promise) delete currentUser.$promise;
   		if (currentUser.$resolved) delete currentUser.$resolved;
-  		
+
   		var studioId = studioToCreate.studioId;
   		studioId = studioId.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase() //Gets rid of all special characters and spaces, but allows dash and underscore
 
@@ -149,11 +149,14 @@ angular.module('bodyAppApp')
     }
 
     $scope.setDescription = function(studioToCreate) {
+      $scope.triedSettingDescription = true;
+      if(!$scope.$$phase) $scope.$apply();
       ref.child('studios').child(studioToCreate.studioId).child('storefrontInfo').update({
         'shortDescription': studioToCreate.shortDescription,
         'longDescription': studioToCreate.longDescription,
         'categories': studioToCreate.categories
       }, function(err) {
+        
         if (err) return console.log(err)
         $scope.step++;
         $scope.descriptionComplete = true;
@@ -179,6 +182,7 @@ angular.module('bodyAppApp')
     $scope.updateCategoryCount = function(category) {
       if ($scope.studioToCreate.categories[category] === false) delete $scope.studioToCreate.categories[category]
       $scope.categoriesSelected = Object.keys($scope.studioToCreate.categories).length
+      if(!$scope.$$phase) $scope.$apply();
     }
 
     $scope.playYoutubeVideo = function() {

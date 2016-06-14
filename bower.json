@@ -33,7 +33,8 @@
     "angular-material": "*",
     "angular-material-datetimepicker": "*",
     "lf-ng-md-file-input": "*",
-    "geolocator": "*"
+    "geolocator": "*",
+    "angular-messages": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

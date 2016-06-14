@@ -236,6 +236,7 @@ angular.module('bodyAppApp')
    $scope.updateCategoryCount = function(category) {
       if ($scope.storefrontInfo.categories[category] === false) delete $scope.storefrontInfo.categories[category]
       $scope.categoriesSelected = Object.keys($scope.storefrontInfo.categories).length
+      if(!$scope.$$phase) $scope.$apply();
       ref.child('storefrontInfo').update($scope.storefrontInfo, function(err) {
         if (err) return console.log(err)
         console.log("Saved storefront info.")

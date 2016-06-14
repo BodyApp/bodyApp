@@ -19,7 +19,8 @@ angular.module('bodyAppApp', [
   'ngTagsInput',
   'ngMaterial',
   'ngMaterialDatePicker',
-  'lfNgMdFileInput'
+  'lfNgMdFileInput',
+  'ngMessages'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
