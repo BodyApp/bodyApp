@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, Studios, $http, Auth) {
+  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, $mdToast, $timeout, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
     
     var ref;
@@ -229,6 +229,20 @@ angular.module('bodyAppApp')
     $scope.saveStorefrontInfo = function(storefrontInfo) {
     	ref.child('storefrontInfo').update(storefrontInfo, function(err) {
     		if (err) return console.log(err)
+          if (!$scope.showingToast) {
+            $scope.showingToast = true;
+            $timeout(function() {
+              $timeout(function(){$scope.showingToast = false}, 10000)  
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Storefront information saved!')
+                  .position('right')
+                  .hideDelay(3000)
+                  .parent('#toastContainer')
+              );
+            }, 1000)
+          }
+          
     		console.log("Saved storefront info.")
     	})
     }
