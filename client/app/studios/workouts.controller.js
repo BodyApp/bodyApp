@@ -14,8 +14,6 @@ angular.module('bodyAppApp')
     
     $scope.workoutToCreate = {};
     
-    var classTypes;
-
     if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
@@ -66,11 +64,12 @@ angular.module('bodyAppApp')
     function loadWorkouts() {
     	ref.child('workouts').on('value', function(snapshot) {
         if (!snapshot.exists()) return;
-    		$scope.workouts = []
+    	   $scope.workouts = []
 	      snapshot.forEach(function(classType) {
 	        $scope.workouts.push(classType.val());
+            if(!$scope.$$phase) $scope.$apply();
 	      })
-		    if(!$scope.$$phase) $scope.$apply();
+		    
     	})
     }
 
@@ -95,17 +94,13 @@ angular.module('bodyAppApp')
     }
 
     function getClassTypes() {
-    	classTypes = [];
+    	$scope.classTypes = [];
     	ref.child('classTypes').once('value', function(snapshot) {
         if (!snapshot.exists()) return;
     		snapshot.forEach(function(classType) {
-    			classTypes.push(classType.val())
+    			$scope.classTypes.push(classType.val())
     		})
     	})
-    }
-
-    $scope.loadClassTypes = function($query) {
-			return classTypes;
     }
 
     $scope.addExercise = function() {

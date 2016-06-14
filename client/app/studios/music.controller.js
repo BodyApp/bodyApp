@@ -57,14 +57,13 @@ angular.module('bodyAppApp')
 
     function getPlaylists() {
 	    ref.child('playlists').orderByChild("lastModified").on('value', function(snapshot) {
-        if (!snapshot.exists()) return;
+        if (!snapshot.exists()) return $scope.playlists = false;
 	    	$scope.playlists = [];
 	      snapshot.forEach(function(playlist) {
 	        $scope.playlists.unshift(playlist.val())
+          if(!$scope.$$phase) $scope.$apply();
 	        // $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
 	      })
-	      if(!$scope.$$phase) $scope.$apply();
-
 	    })
     }
 

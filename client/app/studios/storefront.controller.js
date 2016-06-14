@@ -233,7 +233,8 @@ angular.module('bodyAppApp')
 
       ref.child("stripeConnected").child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
         snapshot.forEach(function(plan) {
-          $scope.subscriptionPlan = plan.val()  
+          $scope.subscriptionPlan = plan.val()
+          if(!$scope.$$phase) $scope.$apply();
         })      
       })
     }

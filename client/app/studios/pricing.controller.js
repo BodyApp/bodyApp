@@ -109,7 +109,6 @@ angular.module('bodyAppApp')
           $scope.subscriptionPlan = plan.val();
           if(!$scope.$$phase) $scope.$apply();  
         })
-        if(!$scope.$$phase) $scope.$apply();
       })
 
       Studio.listSubscriptionPlans({

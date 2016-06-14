@@ -60,7 +60,7 @@ angular.module('bodyAppApp')
 
     function getInstructors() {
       ref.child('instructors').on('value', function(snapshot) {
-        if (!snapshot.exists()) return;
+        if (!snapshot.exists()) return $scope.instructorsPulled = false;
         $scope.instructorsPulled = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
       })  
