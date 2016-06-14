@@ -202,7 +202,7 @@
               </div>
 
               <div class="col-xs-12 mt16">
-                <a href="#" class="btn-blue btn-block" ng-show = "storefrontInfo && storefrontInfo.subscriptionPricing && subscriptions && subscriptions[studioId] != 'active'" ng-click = "joinStudioClicked()">Join Studio</a>
+                <a href="#" class="btn-blue btn-block" ng-show = "(storefrontInfo && storefrontInfo.subscriptionPricing && subscriptions && subscriptions[studioId] != 'active') || showLoginButton" ng-click = "joinStudioClicked()">Join Studio</a>
                 <a href="#" class="btn-blue btn-block" ng-show = "storefrontInfo && subscriptions[studioId] === 'active'" ng-click = "cancelSubscription()">Unsubscribe From Studio</a>
                 <div class="" ng-show = "subscriptions[studioId] === 'active'">You are a member of this studio!</div>
               </div>

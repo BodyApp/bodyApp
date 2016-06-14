@@ -38,6 +38,13 @@ angular.module('bodyAppApp')
 
     var accountId;
 
+    Auth.isLoggedInAsync(function(loggedIn) {
+      if (!loggedIn) {        
+        $scope.showLoginButton = true;
+        if(!$scope.$$phase) $scope.$apply();
+      }
+    });
+
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(data) {
         // updateIntercom(data)

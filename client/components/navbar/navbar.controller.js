@@ -207,8 +207,8 @@ angular.module('bodyAppApp')
 
     function getSubscriptionStatus() {
       firebase.database().ref().child('fbUsers').child(Auth.getCurrentUser().facebookId).child('studioSubscriptions').child(studioId).child('subscription').on('value', function(snapshot) {
-        if (!snapshot.exists()) return
         $rootScope.subscriptions = $rootScope.subscriptions || {}
+        if (!snapshot.exists()) return
         $rootScope.subscriptions[studioId] = snapshot.val().status
         if(!$rootScope.$$phase) $rootScope.$apply();
 
