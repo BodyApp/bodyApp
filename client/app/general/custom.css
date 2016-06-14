@@ -499,11 +499,11 @@
   white-space: nowrap;
 }
 .cal-container {
-  background: #EFF1EF;
+  background: #f5f5f5;
   position: relative;
   margin-right: auto;
   margin-left: auto;
-  border-bottom: 1px solid #EFF1EF;
+  border-bottom: 1px solid #f5f5f5;
   min-height: 116px;
 }
 .studio-classes:last-child hr,
@@ -513,7 +513,6 @@
 .studio-instructors-content {
   min-height: 125px;
 }
-
 .no-classes {
   position: absolute;
   left: 0;
@@ -822,6 +821,23 @@
   .cal-container {
     width: 678px;
   }
+}
+.specialty-class li {
+  border-top: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+.specialty-class li:last-child {
+  margin-bottom: 0;
+}
+.specialty-class-name h4,
+.specialty-class-name a {
+  vertical-align: middle;
+  display: inline-block;
+}
+.specialty-class-name a {
+  margin-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 /*------PANELS-------*/
