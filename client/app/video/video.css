@@ -21,7 +21,7 @@
   position: relative;
   height: 100vh;
   width: 100%;
-  background-color: black;
+  background-color: #181818;
 }
 .timer-rounds {
   position: absolute;
@@ -219,28 +219,24 @@
 }
 
 /*------CONSUMER VIDEO FORMAT -------*/
-.consumer-video .user-videos-large, .consumer-video .trainer-video-large {
-  position: absolute !important;
-  top: 0 !important; 
-  left: 0 !important; 
-  width: 100% !important; 
-  height: 100vh !important;
-  overflow: hidden !important;
+.consumer-video .user-videos-large,
+.consumer-video .trainer-video-large {
+  width: 100vw; 
+  height: 75.43vw; /* 100/75.43 = 1.778 */
+  max-height: 100vh;
+  max-width: 132.57vh; /* 350/264 = 1.3257 */
+  margin: auto;
+  position: absolute;
+  top:0 !important;
+  bottom:0 !important; /* vertical center */
+  left:0 !important;
+  right:0 !important; /* horizontal center */
   z-index: 1 !important;
 }
-.consumer-video .user-videos-large div,
-.consumer-video .trainer-video-large div,
-.consumer-video .user-videos-large img,
+.consumer-video .trainer-video-large .OT_subscriber,
 .consumer-video .trainer-video-large img {
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
-  margin: auto; 
-  min-width: 50%;
-  min-height: 50%;
   height: 100% !important;
+  width: 100% !important;
 }
 .consumer-video .classmates-video-name {
   position: absolute;
@@ -296,27 +292,24 @@
 
 /*------USER VIDEO FORMAT - STACKED-------*/
 .user-videos-stack .user-videos-large, .user-videos-stack .trainer-video-large {
-  position: absolute !important;
-  top: 0 !important; 
-  left: 0 !important; 
-  width: 100% !important; 
-  height: 100vh !important;
-  overflow: hidden !important;
+  width: 100vw; 
+  height: 75.43vw; /* 100/75.43 = 1.778 */
+  max-height: 100vh;
+  max-width: 132.57vh; /* 350/264 = 1.3257 */
+  margin: auto;
+  position: absolute;
+  top:0 !important;
+  bottom:0 !important; /* vertical center */
+  left:0 !important;
+  right:0 !important; /* horizontal center */
   z-index: 1 !important;
 }
 .user-videos-stack .user-videos-large div,
 .user-videos-stack .trainer-video-large div,
 .user-videos-stack .user-videos-large img,
 .user-videos-stack .trainer-video-large img {
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
-  margin: auto; 
-  min-width: 50%;
-  min-height: 50%;
   height: 100% !important;
+  width: 100% !important;
 }
 .user-videos-stack .classmates-video-name {
   position: absolute;

@@ -30,7 +30,7 @@
 		</li>
 		<li class="trainer-video-large" id="trainerVideo">
 			<img ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
-			<span class="classmates-video-name text-center">{{instructor.firstName}} {{instructor.lastName}}</span>
+			<span class="classmates-video-name text-center">{{instructor.firstName}}</span>
 		</li>
 		<li ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
