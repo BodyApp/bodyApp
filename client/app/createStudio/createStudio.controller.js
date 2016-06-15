@@ -9,6 +9,22 @@ angular.module('bodyAppApp')
     $scope.step = 0;
     getAssets();
 
+    $scope.drop1 = false;
+    $scope.drop2 = false;
+    $scope.drop3 = false;
+    $scope.drop4 = false;
+    $scope.drop5 = false;
+    $scope.drop6 = false
+    $scope.drop7 = false;
+    $scope.drop8 = false;
+    $scope.drop9 = false;
+    $scope.drop10 = false
+    $scope.drop11 = false;
+    $scope.drop12 = false;
+
+    $scope.openNewMessage = function() {
+      Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
+    }
 
   	$scope.sanitizeUrl = function(currentUrl) {
       if (currentUrl) return currentUrl.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase()

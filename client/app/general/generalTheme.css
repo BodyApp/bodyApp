@@ -2251,6 +2251,30 @@ form iframe.mail-list-form {
 .accordion-2 .title:hover {
   opacity: 1;
 }
+
+.drop .title {
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: rgba(62, 126, 223, 0.08);
+  border-radius: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 12px;
+  margin-bottom: 10px;
+}
+.drop .content {
+  padding-bottom: 20px;
+}
+.drop .title i {
+  padding-right: 8px;
+}
+
+
 /*!---------- 13. TABBED CONTENT ----------*/
 .tabs {
   overflow: hidden;
