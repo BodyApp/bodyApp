@@ -7,6 +7,11 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref();
 
     $scope.step = 0;
+    $scope.calcDuration = 'Yearly';
+    $scope.subscriptionPrice = 30;
+    $scope.numSubscribers = 250;
+    calcTakeHome()
+
     getAssets();
 
     $scope.drop1 = false;
@@ -24,6 +29,40 @@ angular.module('bodyAppApp')
 
     $scope.openNewMessage = function() {
       Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
+    }
+
+    function calcTakeHome() {
+      $scope.subscriptionPrice
+      $scope.numSubscribers
+
+      if ($scope.subscriptionPrice > 0 && $scope.numSubscribers > 0) {
+        var durationModifier;
+        if ($scope.calcDuration === 'Monthly') durationModifier = 1
+        if ($scope.calcDuration === 'Yearly') durationModifier = 12
+
+        var grossRevenue = $scope.subscriptionPrice * $scope.numSubscribers * durationModifier
+        $scope.grossRevenue = Math.round(grossRevenue, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        var bodyFee = grossRevenue * .17;
+        $scope.bodyFee = Math.round(bodyFee, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        var processingFee = grossRevenue * .03
+        $scope.processingFee = Math.round(processingFee, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        $scope.calculatedTakeHome = Math.round(grossRevenue - bodyFee - processingFee, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    }
+
+    $scope.calcTakeHome = function() {
+      calcTakeHome()
+    }
+
+    $scope.switchCalcDuration = function() {
+      if ($scope.calcDuration === 'Monthly') {
+        $scope.calcDuration = 'Yearly'; 
+        return $scope.calcTakeHome();
+      }
+      if ($scope.calcDuration === 'Yearly') {
+        $scope.calcDuration = 'Monthly'; 
+        return $scope.calcTakeHome();
+      }
     }
 
   	$scope.sanitizeUrl = function(currentUrl) {

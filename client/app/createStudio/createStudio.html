@@ -130,11 +130,11 @@
 					<div class="row calculator-inputs">
 						<div class="col-xs-6">
 							<h5 class="mb8 royalblue">Subscription Price</h5>
-							<input name="" inputmode="numeric" value="30">
+							<input name="" ng-change = "calcTakeHome()" ng-model = "subscriptionPrice" inputmode="numeric" value="30">
 						</div>
 						<div class="col-xs-6">
 							<h5 class="mb8 royalblue"># of Subscribers</h5>
-							<input name="" inputmode="numeric" value="100">
+							<input name="" ng-change = "calcTakeHome()" ng-model = "numSubscribers" inputmode="numeric" value="100">
 						</div>
 					</div>
 					<div class="row mt16">
@@ -153,35 +153,37 @@
 				</div>
 				<div class="col-md-6 pt-sm-24">
 					<div class="estimated-takehome">
-						<h5 class="white">Estimated Take Home</h5>
-						<h1 class="white bold"><sup>$</sup>5,000<span class="currency-symbol">USD</span></h1>
+						<h5 class="white">Estimated {{calcDuration}} Take Home</h5>
+						<h1 class="white bold"><sup>$</sup>{{calculatedTakeHome}}<span class="currency-symbol">USD</span></h1>
 					</div>
-					<h5 class="lightgray">Calculate <a href="#">yearly</a> or <a href="#">monthly</a>.</h5>
-					<h5 class="lightgray mt16">Breakdown</h5>
-					<div class="row">
-						<div class="col-xs-6 text-left">
-							<h5>Subscriber Revenue</h5>
-							<h5>BODY Fee</h5>
-							<h5>Processing Fees</h5>
-						</div>
-						<div class="col-xs-6 text-right">
-							<div class="takehome-amounts">
-								<h5>$80,000</h5>
-								<h5>($13,600)</h5>
-								<h5>($2,400)</h5>
+					<div ng-show = "calculatedTakeHome">
+						<h5 class="lightgray">Calculating <a href="#" ng-show = "calcDuration" ng-click = "switchCalcDuration()">{{calcDuration}}</a></h5>
+						<h5 class="lightgray mt16">Breakdown</h5>
+						<div class="row">
+							<div class="col-xs-6 text-left">
+								<h5>Subscriber Revenue</h5>
+								<h5>BODY Fee</h5>
+								<h5>Processing Fees</h5>
 							</div>
-						</div>
-						<div class="col-xs-12">
-							<hr class="content-divider mt8 mb0">
-						</div>
-						<div class="col-xs-6 text-left">
-							<div class="total-takehome-empty">
-								<h5>Yearly Take Home</h5>
+							<div class="col-xs-6 text-right">
+								<div class="takehome-amounts">
+									<h5>${{grossRevenue}}</h5>
+									<h5>(${{bodyFee}})</h5>
+									<h5>(${{processingFee}})</h5>
+								</div>
 							</div>
-						</div>
-						<div class="col-xs-6 text-right">
-							<div class="total-takehome">
-								<h5>$50,000</h5>
+							<div class="col-xs-12">
+								<hr class="content-divider mt8 mb0">
+							</div>
+							<div class="col-xs-6 text-left">
+								<div class="total-takehome-empty">
+									<h5>Yearly Take Home</h5>
+								</div>
+							</div>
+							<div class="col-xs-6 text-right">
+								<div class="total-takehome">
+									<h5>${{calculatedTakeHome}}</h5>
+								</div>
 							</div>
 						</div>
 					</div>
