@@ -287,7 +287,7 @@ angular.module('bodyAppApp')
   		if(!$scope.$$phase) $scope.$apply();
   		document.getElementById('timer').reset();
 			document.getElementById('timer').start();
-  	} else {
+  	} else if ($scope.roundsLeft > 0){
   		$scope.timerWorking = true;
   		$scope.timerResting = false;
   		$scope.currentTimerSeconds = $scope.realTimeTimer.work*60;
