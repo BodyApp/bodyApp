@@ -283,7 +283,7 @@
                 <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
               </div>
               <div class="cal-allClasses" >
-                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
                   <div class="cal-duration">{{class.duration}}m</div>
                   <div class="cal-class">{{classTypes[class.classType].name}}</div>
@@ -307,62 +307,67 @@
             </div>
           </div>
 
-          <div class="specialty-class-container panel-dark mt16"> <!-- HIDE THIS IF NO SPECIALTY CLASSES -->
+          <div class="specialty-class-container panel-dark mt16" ng-show = "specialtyClasses" ng-repeat = "specialtyClass in specialtyClasses"> <!-- HIDE THIS IF NO SPECIALTY CLASSES -->
             <div class="panel-body">
               <h4 class="mb16">Upcoming Specialty Classes</h4>
               <ul class="specialty-class">
                 <li> <!-- REPEAT THIS FOR EACH SPECIALTY CLASS -->
                   <div class="row pt16">
                     <div class="col-sm-2">
-                      <h5>June 14</h5>
-                      <h5>12:00p ET</h5>
+                      <h5>{{getFormattedDateTime(specialtyClass.dateTime).month}} {{getFormattedDateTime(specialtyClass.dateTime).day}}</h5>
+                      <h5>{{getFormattedDateTime(specialtyClass.dateTime).classTime}} {{timezone}}</h5>
                     </div>
                     <div class="col-sm-10">
                       <div class="row">
                         <div class="col-xs-12">
                           <div class="specialty-class-name">
-                            <h4>Devotion in Motion ($120)</h4>
-                            <a href="#" class="btn-blue">Register</a>
+                            <h4>{{classTypes[specialtyClass.classType].name}} (${{classTypes[specialtyClass.classType].specialtyClassRate}})</h4>
+                            <a href="#" ng-click = "joinClass(specialtyClass)" ng-if = "instructors[specialtyClass.instructor]._id === currentUser._id" class="btn-blue">Teach Class</a>
+                            <a href="#" class="btn-blue" ng-show = "!userBookings[specialtyClass.dateTime] && specialtyClass.instructor != currentUser._id" ng-click = "reserveClicked(specialtyClass)">Register</a>
+                            <!-- <a class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-disabled ng-click = "cancelClass(class)">Booked</a> -->
+                            <a class="btn-blue" ng-show = "userBookings[specialtyClass.dateTime] && rightNow < classesJoinTime[specialtyClass.dateTime]" ng-click = "joinClass(class)">Class Booked</a>
+                            <a ng-href="#" class="btn-blue" ng-show = "userBookings[specialtyClass.dateTime] && rightNow > classesJoinTime[specialtyClass.dateTime] " ng-click = "joinClass(specialtyClass)">Join Class</a>
                           </div>
                         </div>
                       </div>
                       <div class="row mt8">
                         <div class="col-xs-12">
-                          <h5>A vinyasa practice infused with a deep sense of Devotion as we begin to clarify what is the seed of our asana practice and how we can use the postures as a way of accessing our hearts deepest longing. This delicious, strong, and fluid practice cultivates opening around the heart and brings stability and strength through the legs. Bhakti yoga, is the yoga of the heart, we'll allow the movements to be filled with devotion.</h5>
+                          <h5>{{classTypes[specialtyClass.classType].classDescription}}</h5>
                         </div>
                       </div>
                       <div class="row mt8">
                         <div class="col-xs-5">
                           <div class="row">
                             <div class="col-xs-4">
-                              <img class="round-photo" src="/assets/images/justin-photo.jpg">
+                              <img class="round-photo" ng-src="{{instructors[specialtyClass.instructor].picture}}">
                             </div>
                             <div class="col-xs-8">
                               <h5>Instructor</h5>
-                              <h5 class="lightgray">Justin Mendelson</h5>
+                              <h5 class="lightgray">{{instructors[specialtyClass.instructor].firstName}} {{instructors[specialtyClass.instructor].lastName}}</h5>
                             </div>
                           </div>
                         </div>
                         <div class="col-xs-2">
                           <h5>Duration</h5>
-                          <h5 class="lightgray">60 min</h5>
+                          <h5 class="lightgray">{{specialtyClass.duration}} min</h5>
                         </div>
-                        <div class="col-xs-2">
+                        <!-- <div class="col-xs-2">
                           <h5>Open To</h5>
                           <h5 class="lightgray">All</h5>
-                        </div>
+                        </div> -->
                         <div class="col-xs-2">
                           <h5>Requires</h5>
-                          <h5 class="lightgray">Dumbbells</h5>
+                          <div ng-repeat = "equipment in classTypes[specialtyClass.classType].equipment">
+                            <h5 class="lightgray">{{equipment.name}}</h5>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </li>
-
               </ul>
             </div>
-          </div>
+          </div> <!-- ENDS SPECIALTY CLASS SECTION -->
 
         </div>
 

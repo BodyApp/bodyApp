@@ -13,23 +13,40 @@ angular.module('bodyAppApp')
       var slotTime = moment(slot.dateTime).format('LT')
     }
 
+    console.log(slot)
+
     var planInfo;
     var dropinRate;
-
+    var specialtyRate;
     var ref = firebase.database().ref().child('studios').child(studioId);
-    ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
-      if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
-      planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
-      $scope.planInfo = planInfo;
-      if(!$scope.$$phase) $scope.$apply();
-    })
 
-    ref.child('stripeConnected').child('dropinPlan').once('value', function(snapshot) {
-      if (!snapshot.exists()) return console.log("No dropin plan set for this studio.")
-      dropinRate = snapshot.val().amount
-      $scope.dropinRate = dropinRate;
-      if(!$scope.$$phase) $scope.$apply();
-    })
+    if (slot && slot.typeOfClass === 'Specialty') {
+      ref.child('classTypes').child(slot.classType).once('value', function(snapshot) {
+        specialtyRate = snapshot.val().specialtyClassRate*100
+        $scope.specialtyRate = specialtyRate;
+        $scope.classInfo = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    } else {
+      getRates()
+    }
+
+    function getRates() {
+      ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
+        planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
+        $scope.planInfo = planInfo;
+        if(!$scope.$$phase) $scope.$apply();
+      })
+
+      ref.child('stripeConnected').child('dropinPlan').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("No dropin plan set for this studio.")
+        dropinRate = snapshot.val().amount
+        $scope.dropinRate = dropinRate;
+        if(!$scope.$$phase) $scope.$apply();
+      })  
+    }
+    
 
     $scope.closeModal = function() {
       $uibModalInstance.close()
@@ -257,6 +274,73 @@ angular.module('bodyAppApp')
       var handlerObject = {};
       handlerObject.name = '$'+amountToPay/100 +' DROP IN CLASS';
       handlerObject.description = "Book " + slotTime + " class on " + slotDate;
+      handlerObject.panelLabel = "Pay $" + amountToPay / 100;
+      handlerObject.shippingAddress = true;
+      handlerObject.zipCode = true;
+      // handlerObject.closed = function() { $rootScope.subscribing = false;}
+      if (currentUser.email && currentUser.email.length > 4) {
+        handlerObject.email = currentUser.email
+      }
+      handler.open(handlerObject)
+    } 
+
+    $scope.paySpecialtyClicked = function() {
+      openStripeSpecialty()
+    }
+
+    function openStripeSpecialty() {
+      if (!slot) return
+      if ($rootScope.subscribing) return
+      
+      var amountToPay = specialtyRate;
+      // $scope.invalidCouponEntered = false;
+      $uibModalInstance.dismiss('join');
+      
+      // if (coupon && coupon.valid) {
+      //   amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+      // }
+      // Stripe.setPublishableKey('pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi');
+      // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
+      var handler = StripeCheckout.configure({
+        key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
+        image: '../../assets/images/body-stripe.jpg',
+        locale: 'auto',
+        token: function(token, args) {
+          var modalInstance = openDropInPaymentConfirmedModal()
+          $rootScope.subscribing = true
+          $http.post('/api/payments/chargedropin', {
+            amount: dropinRate,
+            stripeToken: token,
+            shippingAddress: args,
+            slot: slot,
+            studioId: studioId,
+            accountId: accountId
+          })
+          .success(function(data) {
+            $rootScope.subscribing = false;
+            console.log("Successfully posted to /user/chargedropin");
+            modalInstance.close()
+            // Auth.updateUser(data);
+            // currentUser = data;
+            // currentUser = currentUser;
+            // $rootScope.subscriptionActive = true;
+            if (slot) bookClass(slot);
+          })
+          .error(function(err) {
+            $rootScope.subscribing = false;
+            console.log(err)
+            modalInstance.close()
+            // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
+            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+          }.bind(this));
+        }
+      });
+      // if (currentUser.stripe && currentUser.stripe.customer && currentUser.stripe.customer.customerId) {
+        //If user has already signed up previously
+
+      var handlerObject = {};
+      handlerObject.name = '$'+amountToPay/100 + " " + $scope.classInfo.name;
+      handlerObject.description = slotTime + " on " + slotDate;
       handlerObject.panelLabel = "Pay $" + amountToPay / 100;
       handlerObject.shippingAddress = true;
       handlerObject.zipCode = true;

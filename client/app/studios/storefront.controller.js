@@ -27,6 +27,7 @@ angular.module('bodyAppApp')
     var numDaysToShow = 7;
 
     getClasses(0, 7);
+    getSpecialtyClasses();
     getStorefrontInfo();
     getInstructors();
     getClassTypes();
@@ -336,6 +337,22 @@ angular.module('bodyAppApp')
       })
     }
 
+    function getSpecialtyClasses() {
+      var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
+      startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
+
+      $scope.specialtyClasses = {};
+      ref.child('specialtyClasses').orderByKey().startAt(startAt).on('value', function(snapshot) {
+        snapshot.forEach(function(specialtyClass) {
+          ref.child('classes').child(specialtyClass.key).once('value', function(snapshot) {
+            console.log(snapshot.val())
+            $scope.specialtyClasses[snapshot.key] = snapshot.val();  
+            if(!$scope.$$phase) $scope.$apply();
+          })
+        })
+      })
+    }
+
     function createSchedule(days, daysInFuture) {
       $scope.daysToShow = [];
       var dateTimeNow = new Date();
@@ -509,6 +526,9 @@ angular.module('bodyAppApp')
     $scope.reserveClicked = function(slot) {
       // console.log(slot)
       if ($rootScope.subscribing) return
+      if (slot.typeOfClass === 'Specialty') {
+        return bookSpecialtyClass(slot)
+      }
       if (currentUser && currentUser.role === 'admin') {
         bookClass(slot)
       } else if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
@@ -518,6 +538,28 @@ angular.module('bodyAppApp')
         // console.log("Beginning to book class " +slot.dateTime)
         bookClass(slot)
       }
+    }
+
+    function bookSpecialtyClass(slot) {
+      console.log(slot)
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/membership/membership.html',
+        controller: 'MembershipCtrl',
+        windowClass: "modal-wide",
+        resolve: {
+          slot: function() {
+            return slot
+          },
+          studioId: function() {
+            return studioId
+          },
+          accountId: function() {
+            return accountId
+          }
+        }
+        // scope: {classToJoin: slot} //passed current scope to the modal
+      });
     }
 
     function bookClass(slot) {

@@ -325,7 +325,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 
 
 
-  <div class="specialty-class-container panel-dark mt16" ng-repeat = "specialtyClass in specialtyClasses"> <!-- HIDE THIS IF NO SPECIALTY CLASSES -->
+  <div class="specialty-class-container panel-dark mt16" ng-show = "specialtyClasses" ng-repeat = "specialtyClass in specialtyClasses"> <!-- HIDE THIS IF NO SPECIALTY CLASSES -->
     <div class="panel-body">
       <h4 class="mb16">Upcoming Specialty Classes</h4>
       <ul class="specialty-class">
