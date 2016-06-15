@@ -132,8 +132,11 @@ angular.module('bodyAppApp')
 		      if(!$scope.$$phase) $scope.$apply();
                 if (!workoutToSave.classTypes) return;
     			for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
-    				ref.child('classTypes').child(workoutToSave.classTypes[i].id).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {
+                    var type = workoutToSave.classTypes[i]
+                    console.log(type.id)
+    				var classTypeToSave = ref.child('classTypes').child(type.id).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {
     					if (err) return console.log(err)
+                        console.log("Saved workout " + pushedWorkout.key + " to classType.")
     				})
     			}
     		})
@@ -156,7 +159,8 @@ angular.module('bodyAppApp')
     		if (err) return console.log(err);
     		$scope.showAddWorkout = false;
     		$scope.editing = false;
-	      if(!$scope.$$phase) $scope.$apply(); 
+	      if(!$scope.$$phase) $scope.$apply();
+          if (!workoutToUpdate.classTypes) return;
 	      for (var i = 0; i < workoutToUpdate.classTypes.length; i++) { //Saves workout within the class types selected
   				ref.child('classTypes').child(workoutToUpdate.classTypes[i].id).child('workoutsUsingClass').child(workoutToUpdate.id).set({dateSaved: new Date().getTime()}, function(err) {
   					if (err) return console.log(err)
@@ -187,14 +191,22 @@ angular.module('bodyAppApp')
 
     }
 
-    $scope.deleteById = function(idToDelete) {
+    $scope.deleteById = function(workout) {
+        var idToDelete = workout.id
       var rightNow = new Date().getTime();
       ref.child('classes').orderByChild('workout').equalTo(idToDelete).once('value', function(snapshot) {
         if (!snapshot.exists()) {
             console.log("No classes found for specified workout. Safe to delete.")
             return ref.child('workouts').child(idToDelete).remove(function(err) {
               if (err) return console.log(err)
-              return console.log("Successfully removed workout type since there were no workouts or future classes based on it.")
+              console.log("Successfully removed workout type since there were no workouts or future classes based on it.")
+                for (var i = 0; i < workout.classTypes.length; i++) {
+                    var prop = workout.classTypes[i]
+                    ref.child('classTypes').child(prop.id).child('workoutsUsingClass').child(idToDelete).remove(function(err) {
+                        if (err) return console.log(err)
+                        return console.log("Removed workout from classType " + prop.id)
+                    })
+                } 
             })
         }
         var futureClasses = [];
@@ -214,6 +226,13 @@ angular.module('bodyAppApp')
         ref.child('workouts').child(idToDelete).remove(function(err) {
           if (err) return console.log(err)
           console.log("Successfully removed workout type since there aren't any scheduled classes based on it.")
+          for (var i = 0; i < workout.classTypes.length; i++) {
+            var prop = workout.classTypes[i]
+                ref.child('classTypes').child(prop.id).child('workoutsUsingClass').child(idToDelete).remove(function(err) {
+                    if (err) return console.log(err)
+                    return console.log("Removed workout from classType " + prop.id)
+                })
+            } 
         })
       })
     }

@@ -168,11 +168,12 @@ angular.module('bodyAppApp')
 
     function selectClassType(classType) {
       $scope.workoutOptions = {};
+      console.log(classType.workoutsUsingClass)
       for (var prop in classType.workoutsUsingClass) {
         ref.child('workouts').child(prop).once('value', function(snapshot) {
           if (!snapshot.exists()) return
-          $scope.workoutOptions[prop] = snapshot.val() 
-          if (!$scope.workoutToCreate.workout) $scope.workoutToCreate.workout = $scope.workoutOptions[prop] //Initiates workout
+          $scope.workoutOptions[snapshot.key] = snapshot.val() 
+          $scope.workoutToCreate.workout = $scope.workoutOptions[snapshot.key] //Initiates workout
           if(!$scope.$$phase) $scope.$apply();
         })
       }
