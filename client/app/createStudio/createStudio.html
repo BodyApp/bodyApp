@@ -62,7 +62,7 @@
 		</div>
 		<div class="row mt40">
 			<div class="col-sm-4 text-center">
-				<h3 class="mb0 royalblue">$70k+</h3>
+				<h3 class="mb0 royalblue">$60k+</h3>
 				<h3 class="mb8 royalblue">Income potential</h3>
 				<h5>achievable with only a few hundred members paying $30/mo.</h5>
 			</div>
@@ -72,7 +72,7 @@
 				<h5>creating your studio is free - we take a percentage when users pay you.</h5>
 			</div>
 			<div class="col-sm-4 text-center">
-				<h3 class="mb0 royalblue">8-10</h3>
+				<h3 class="mb0 royalblue">5-8</h3>
 				<h3 class="mb8 royalblue">Classes per week</h3>
 				<h5>the average number of classes other studios are choosing to offer.</h5>
 			</div>
@@ -117,7 +117,80 @@
 
 	</div> -->
 
-	<div class="page-container-responsive pt48 pb48">
+	<div class="panel-dark pt48 pb48">
+		<div class="page-container-responsive">
+			<div class="row text-center">
+				<div class="col-sm-12">
+					<h3 class="bold mb8">See how much you can make</h3>
+					<h5>Get an estimate of your take home profit from running your virtual studio.</h5>
+				</div>
+			</div>
+			<div class="row pt24 pb24">
+				<div class="col-md-5">
+					<div class="row calculator-inputs">
+						<div class="col-xs-6">
+							<h5 class="mb8 royalblue">Subscription Price</h5>
+							<input name="" inputmode="numeric" value="30">
+						</div>
+						<div class="col-xs-6">
+							<h5 class="mb8 royalblue"># of Subscribers</h5>
+							<input name="" inputmode="numeric" value="100">
+						</div>
+					</div>
+					<div class="row mt16">
+						<div class="col-md-1 hidden-sm hidden-xs">
+							<i class="fa fa-lightbulb-o fa-3x lightgray"></i>
+						</div>
+						<div class="col-md-11">
+							<span class="lightgray disclaimer">
+								You can also set Drop In pricing and Specialty Classes which will increase your total revenue.
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1 hidden-sm hidden-xs">
+					<span class="calculator-equals lightgray">=</span>
+				</div>
+				<div class="col-md-6 pt-sm-24">
+					<div class="estimated-takehome">
+						<h5 class="white">Estimated Take Home</h5>
+						<h1 class="white bold"><sup>$</sup>5,000<span class="currency-symbol">USD</span></h1>
+					</div>
+					<h5 class="lightgray">Calculate <a href="#">yearly</a> or <a href="#">monthly</a>.</h5>
+					<h5 class="lightgray mt16">Breakdown</h5>
+					<div class="row">
+						<div class="col-xs-6 text-left">
+							<h5>Subscriber Revenue</h5>
+							<h5>BODY Fee</h5>
+							<h5>Processing Fees</h5>
+						</div>
+						<div class="col-xs-6 text-right">
+							<div class="takehome-amounts">
+								<h5>$80,000</h5>
+								<h5>($13,600)</h5>
+								<h5>($2,400)</h5>
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<hr class="content-divider mt8 mb0">
+						</div>
+						<div class="col-xs-6 text-left">
+							<div class="total-takehome-empty">
+								<h5>Yearly Take Home</h5>
+							</div>
+						</div>
+						<div class="col-xs-6 text-right">
+							<div class="total-takehome">
+								<h5>$50,000</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page-container-responsive pt48 pb16">
 		<div class="row text-center mb48">
 			<div class="col-sm-12">
 				<h3 class="bold">Learn more about opening your own virtual studio.</h3>
@@ -145,6 +218,123 @@
 				<img class="mt-xs-48 mb16" src="/assets/images/contact-us.png" height="150">
 				<h4 class="bold mb8">Run your business with support</h4>
 				<h5 class="lightgray">Focus on what you do best - inspiring others by providing your fitness services to your clients and followers. We will take care of the rest.</h5>
+			</div>
+		</div>
+	</div>
+
+	<div class="page-container-responsive pt16 pb48">
+		<div class="row">
+			<div class="col-md-5 col-md-push-1">
+				<ul class="drop">
+					<li>
+						<div class="title" ng-click="drop1=!drop1">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>How do I get paid?</h4>
+						</div>
+						<div class="content" ng-show="drop1">
+							<h5 class="mt8">Operating a BODY virtual studio is like running your own business. You get paid directly by your customers.<br><br>
+
+							Transactions are deposited directly into your bank account by our payments partner, Stripe.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop2=!drop2">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>What is the BODY fee?</h4>
+						</div>
+						<div class="content" ng-show="drop2">
+							<h5 class="mt8">BODY collects a 17% fee from each transaction. There are no upfront or monthly maintenance fees. We only make money if you make money.<br><br>
+
+							Customer transactions on BODY are collected and processed by our payments partner, Stripe. These payment processing fees work out to roughly 3%.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop3=!drop3">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Where do clients come from?</h4>
+						</div>
+						<div class="content" ng-show="drop3">
+							<h5 class="mt8">Traction for your virtual studio always begins with the people you know. Since your service offering is global, anyone anywhere can take classes with you. Friends, fans, and the communities you're a part of will be your biggest supporters. They'll help spread the word to people they know, and so on. An effective offering, communicated well, can spread fast and wide.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop4=!drop4">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Do I set my own rates and income?</h4>
+						</div>
+						<div class="content" ng-show="drop4">
+							<h5 class="mt8">Yes. You can set Monthly Subscription and Drop In rates for your regularly scheduled classes in addition to Specialty classes which have their own price.<br><br>
+
+							Some studios start off with a lower price and raise it after gaining traction. You can always adjust your price in response to changes in demand.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop5=!drop5">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>What equipment do I need?</h4>
+						</div>
+						<div class="content" ng-show="drop5">
+							<h5 class="mt8">All you need is a quality laptop (roughly 3 years or newer) and robust internet connection. We recommend plugging your laptop into an ethernet cable to ensure a high speed connection.<br><br>
+
+							Optional equipment may include: Studio lighting (<a href="https://www.amazon.com/LimoStudio-Photography-Lighting-Equipment-AGG814/dp/B00E4YS2XU/177-7389146-6582061?ie=UTF8&redirect=true&ref_=s9_top_hd_bw_bE2vv_g421_i6">example</a>), TV to plug your laptop into, Webcam to orient your camera angle (<a href="http://www.logitech.com/en-us/product/hd-pro-webcam-c920">example</a>), and bluetooth mouse to easily control class settings (<a href="http://www.logitech.com/en-us/product/wireless-mouse-m320">example</a>).</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop6=!drop6">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Do I have to make a video?</h4>
+						</div>
+						<div class="content" ng-show="drop6">
+							<h5 class="mt8">A video is strongly encouraged but not required. Most studios have videos, and those that don't have a much lower success rate.</h5>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-5 col-md-push-1">
+				<ul class="drop">
+					<li>
+						<div class="title" ng-click="drop7=!drop7">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Are the classes live?</h4>
+						</div>
+						<div class="content" ng-show="drop7">
+							<h5 class="mt8">Yes our classes are live. We use the video camera in your computer to provide a multi-way live feed between you and your class members.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop8=!drop8">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>How many clients can be in class?</h4>
+						</div>
+						<div class="content" ng-show="drop8">
+							<h5 class="mt8">You can host up to 12 class members in class. We cap your class size at 12 because when class sizes become larger than this, the experience becomes more similar to a live stream rather than an interactive session.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop9=!drop9">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Can I offer live streaming?</h4>
+						</div>
+						<div class="content" ng-show="drop9">
+							<h5 class="mt8">Streaming classes are coming soon. Streaming your classes is ideal for group sizes larger than 12 clients.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop10=!drop10">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Can I offer on demand classes?</h4>
+						</div>
+						<div class="content" ng-show="drop10">
+							<h5 class="mt8">On demand classes are coming soon.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop11=!drop11">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>What if I have technical issues?</h4>
+						</div>
+						<div class="content" ng-show="drop11">
+							<h5 class="mt8">To receive the fastest response <a href="#" ng-click = "openNewMessage()">message Client Support</a>.</h5>
+						</div>
+					</li>
+					<li>
+						<div class="title" ng-click="drop12=!drop12">
+							<h4 class="royalblue"><i class="fa fa-caret-right"></i>How do I get in touch?</h4>
+						</div>
+						<div class="content" ng-show="drop12">
+							<h5 class="mt8">We're always available for questions <a href="mailto:concierge@getbodyapp.com">here</a>.</h5>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
