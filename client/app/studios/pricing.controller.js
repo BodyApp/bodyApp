@@ -271,6 +271,7 @@ angular.module('bodyAppApp')
     	ref.child("stripeConnected").child('dropinPlan').update(planToEdit, function(err) {
   			if (err) return console.log(err)
         console.log("Dropin plan updated")
+        ref.child('storefrontInfo').child('dropinPricing').set(planToEdit.amount)
         ref.child('toSetup').child('pricing').remove(function(err) {
           if (err) console.log(err)
         })
