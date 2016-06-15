@@ -114,7 +114,7 @@ angular.module('bodyAppApp')
     	$scope.classDetails = snapshot.val();
     	if(!$scope.$$phase) $scope.$apply();
     	userIsInstructor = $scope.classDetails.instructor === Auth.getCurrentUser()._id;
-    	if ($scope.bookingsPulled) connect($scope.classDetails)
+    	if ($scope.bookingsPulled && !session) connect($scope.classDetails)
     	getWorkout($scope.classDetails.workout)
 	    getInstructorDetails($scope.classDetails.instructor)
 	    setMusicPlayer($scope.classDetails)
@@ -135,7 +135,7 @@ angular.module('bodyAppApp')
   function getBookedUsers() {
   	ref.child('bookings').child(classId).on('value', function(snapshot) {
   		$scope.bookingsPulled = true;
-  		if ($scope.classDetails) connect($scope.classDetails)
+  		if ($scope.classDetails && !session) connect($scope.classDetails)
   		if (!snapshot.exists()) return $scope.numBookedUsers = 0;
   		$scope.bookedUsers = snapshot.val()
   		$scope.numBookedUsers = Object.keys($scope.bookedUsers).length
