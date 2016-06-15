@@ -422,6 +422,7 @@ angular.module('bodyAppApp')
 		// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 		var apiKey = 45425152;
 		var sessionId = classToJoin.sessionId;
+		if (session) return
 
 		setPublisher();
 
