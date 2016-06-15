@@ -654,6 +654,11 @@ angular.module('bodyAppApp')
       $location.path('/studios/' + studioId + '/classstarting/' + classToJoin.dateTime)
     }
 
+    $scope.goToDiscover = function(tag) {
+       // $location.path('/discover/' + tag) 
+       $state.go('discover', {tag: tag})
+    }
+
     $scope.getFormattedDateTime = function(dateTime, noToday) {
       return getFormattedDateTime(dateTime, noToday);
     }

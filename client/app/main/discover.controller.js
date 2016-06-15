@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('DiscoverCtrl', function ($scope) {
+  .controller('DiscoverCtrl', function ($scope, $state) {
   	var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref();
     $scope.studioPictures = {};
 
     getStudios();
 
-    $scope.categoryFilter = "strength";
+    $scope.categoryFilter = $state.params.tag;
 
     function getStudios() {
 	    ref.child('studioIds').on('value', function(snapshot) {

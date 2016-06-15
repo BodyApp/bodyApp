@@ -21,6 +21,9 @@ angular.module('bodyAppApp')
     $stateProvider
       .state('discover', {
         url: '/discover',
+        params: {
+          tag: 'strength',
+        },
         templateUrl: 'app/main/discover.html',
         controller: 'DiscoverCtrl'
       });
