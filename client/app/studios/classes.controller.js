@@ -88,7 +88,7 @@ angular.module('bodyAppApp')
       if (!classToSave.name) return $scope.missingName = true;
       // if (!classToSave.equipment) return $scope.missingEquipment = true
       if (!classToSave.classDescription) return $scope.missingDescription = true;
-      if (classToSave.classDescription.length > 200) return $scope.descriptionTooLong = classToSave.classDescription.length;
+      if (classToSave.classDescription.length > 500) return $scope.descriptionTooLong = classToSave.classDescription.length;
       classToSave.created = new Date().getTime();
       classToSave.updated = new Date().getTime();
       classToSave.createdBy = Auth.getCurrentUser()._id

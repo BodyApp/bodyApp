@@ -203,9 +203,9 @@
             </label>
             <div class="col-sm-9">
               <div style = "color: red" ng-show = "missingDescription">You're missing a description! Doesn't have to be long, but please add one.</div>
-              <div style = "color: red" ng-show = "descriptionTooLong">Your description is currently {{descriptionTooLong}} characters, please make it less than 200 characters! </div>
-              <textarea ng-if = "showAddClass" cols="40" rows="5" id="class-description" placeholder="0/200 characters" ng-model = "classToCreate.classDescription"></textarea>
-              <textarea ng-if = "showEditClass" cols="40" rows="5" id="class-description" placeholder="0/200 characters" ng-model = "showEditClass.classToEdit.classDescription"></textarea>
+              <div style = "color: red" ng-show = "descriptionTooLong">Your description is currently {{descriptionTooLong}} characters, please make it less than 500 characters! </div>
+              <textarea ng-if = "showAddClass" cols="40" rows="5" id="class-description" placeholder="0/500 characters" ng-model = "classToCreate.classDescription"></textarea>
+              <textarea ng-if = "showEditClass" cols="40" rows="5" id="class-description" placeholder="0/500 characters" ng-model = "showEditClass.classToEdit.classDescription"></textarea>
               <h5 class="lightgray mt8 mb8">Class descriptions help your customers understand what they're getting themselves into. Tell them if it's a beginner or advanced class or if there is prior experience necessary.</h5>     
             </div>            
           </div>
