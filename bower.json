@@ -34,7 +34,9 @@
     "angular-material-datetimepicker": "*",
     "lf-ng-md-file-input": "*",
     "geolocator": "*",
-    "angular-messages": "*"
+    "angular-messages": "*",
+    "eonasdan-bootstrap-datetimepicker": "*",
+    "angular-eonasdan-datetimepicker": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

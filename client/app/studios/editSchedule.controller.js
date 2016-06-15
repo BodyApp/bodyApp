@@ -24,6 +24,7 @@ angular.module('bodyAppApp')
         createSchedule(numDaysToShow, daysInFuture);
         createInitialTokBoxSession();
         getSpecialtyClasses();
+        // setDateTimePicker();
       } else {
         // console.log("User is logged out");
         if (currentUser.firebaseToken) {
@@ -38,6 +39,7 @@ angular.module('bodyAppApp')
             createSchedule(numDaysToShow, daysInFuture);
             createInitialTokBoxSession();
             getSpecialtyClasses();
+            // setDateTimePicker();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -114,6 +116,12 @@ angular.module('bodyAppApp')
         nextSessionToSave = session;
       })
     }
+
+    // function setDateTimePicker() {
+    //   $('#datetimepicker').datetimepicker();
+    //   // var something = $('#datetimepicker').data("DateTimePicker")
+    //   // console.log(something)
+    // }
 
     function getClasses(daysInFuture) {
       var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago

@@ -149,6 +149,10 @@ angular.module('bodyAppApp')
     }
 
     $scope.joinClass = function() {
+    	if (!($scope.bookings && $scope.bookings[$scope.currentUser._id]) && $scope.classDetails.instructor != $scope.currentUser._id) {
+    		return alert("You aren't registered for this class!  Go back and sign up!")
+    	}
+
     	Video.setStudio(studioId);
     	Video.setClassId(classId);
     	if ($scope.currentUser._id === $scope.classDetails.instructor) {
