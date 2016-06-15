@@ -10,14 +10,16 @@
         <div class="panel-body">
 
           <div class="row">
+
             <label class="col-sm-12 pb0" for="class-time">
               Day and Time
             </label>
+
           </div>
 
-
+          <div style = "color: red" ng-show = "dateTimeNotEntered">*Required</div>
           <div class="row mb8">
-            <div class="col-sm-12">
+            <div class="col-sm-12" >
               <!-- <md-content>               -->
                 <!-- <input type="text" placeholder="05/09/18"> -->
                 <!-- <md-datepicker md-min-date="minDate" ng-model="workoutToCreate.date" md-placeholder="Enter date"></md-datepicker> -->
@@ -109,14 +111,15 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
             </div>
           </div>
  -->          
-
+          
           <div class="row mb8">
             <div class="col-sm-12">
               <label for="class-choice" class="pb0">
                 Duration (minutes)
               </label>
+              <div style = "color: red" ng-show = "durationNotEntered">*Required</div>
               <div class="select display-block">
-                <select id="class-choice" ng-model = "workoutToCreate.duration" ng-options = "value for value in durationOptions">
+                <select ng-change = "durationNotEntered = false;" id="class-choice" ng-model = "workoutToCreate.duration" ng-options = "value for value in durationOptions">
                   <!-- <option>Level One</option> -->
                 </select>
               </div>
@@ -128,8 +131,9 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <label for="class-choice" class="pb0">
                 Class
               </label>
+              <div style = "color: red" ng-show = "classTypeNotEntered">*Required</div>
               <div class="select display-block">
-                <select id="class-choice" ng-model = "workoutToCreate.classType" ng-change = "selectClassType(workoutToCreate.classType)" ng-options = "value.name group by value.classType for (key, value) in classTypes">
+                <select id="class-choice" ng-model = "workoutToCreate.classType" ng-change = "selectClassType(workoutToCreate.classType) classTypeNotEntered = false;" ng-options = "value.name group by value.classType for (key, value) in classTypes">
                   <!-- <option>Level One</option> -->
                 </select>
               </div>
@@ -141,8 +145,9 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <label for="workout-choice" class="pb0">
                 Workout
               </label>
+              <div style = "color: red" ng-show = "workoutNotEntered">*Required</div>
               <div class="select display-block">
-                <select id="workout-choice" ng-model = "workoutToCreate.workout" ng-options = "value as value.title for (key, value) in workoutOptions">
+                <select id="workout-choice" ng-model = "workoutToCreate.workout" ng-options = "value as value.title for (key, value) in workoutOptions" ng-change = "workoutNotEntered = false;">
                   <!-- <option>Workout #34: Fight Gone Bad</option> -->
                 </select>
               </div>
@@ -154,8 +159,9 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <label for="instructor-choice" class="pb0">
                 Instructor
               </label>
+              <div style = "color: red" ng-show = "instructorNotEntered">*Required</div>
               <div class="select display-block">
-                <select id="instructor-choice" ng-model = "workoutToCreate.instructor" ng-options = "value as (value.firstName + ' ' + value.lastName) for (key, value) in instructors">
+                <select id="instructor-choice" ng-model = "workoutToCreate.instructor" ng-options = "value as (value.firstName + ' ' + value.lastName) for (key, value) in instructors" ng-change = "instructorNotEntered = false;">
                   <!-- <option>Beth Anne Lazaro (You)</option> -->
                 </select>
               </div>
@@ -167,8 +173,9 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <label for="playlist-choice" class="pb0">
                 Playlist
               </label>
+              <div style = "color: red" ng-show = "playlistNotEntered">*Required</div>
               <div class="select display-block">
-                <select id="playlist-choice" ng-model = "workoutToCreate.playlist" ng-options = "value as value.title for (key, value) in playlists">
+                <select id="playlist-choice" ng-model = "workoutToCreate.playlist" ng-options = "value as value.title for (key, value) in playlists" ng-change = "playlistNotEntered = false;">
                   <!-- <option>Top 20 Beats</option> -->
                 </select>
               </div>

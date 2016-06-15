@@ -226,6 +226,15 @@ angular.module('bodyAppApp')
 
     $scope.saveWorkout = function(workoutToCreate) {
 
+      $scope.dateTimeNotEntered = false;
+
+      if (!workoutToCreate.dateTime) return $scope.dateTimeNotEntered = true;
+      if (!workoutToCreate.duration) return $scope.durationNotEntered = true;
+      if (!workoutToCreate.classType) return $scope.classTypeNotEntered = true;
+      if (!workoutToCreate.workout) return $scope.workoutNotEntered = true;
+      if (!workoutToCreate.instructor) return $scope.instructorNotEntered = true;
+      if (!workoutToCreate.playlist) return $scope.playlistNotEntered = true;
+
       var workoutToSave = {};
       workoutToSave.classType = workoutToCreate.classType.id;
       workoutToSave.dateTime = new Date(workoutToCreate.dateTime).getTime();
