@@ -392,8 +392,8 @@
               </div>
               <div class="col-md-10" >
 
-                <div class="row studio-classes" ng-repeat = "classType in classTypes"> <!-- FIRST CLASS -->
-                  <div class="col-md-12">
+                <div class="row studio-classes" ng-repeat = "classType in classTypes" > <!-- FIRST CLASS -->
+                  <div class="col-md-12" ng-show = "classType.classType != 'Specialty'">
                     <div class="row mb8">
                       <div class="col-md-12">
                         <h5 class="mb0">{{classType.name}}</h5>
@@ -401,10 +401,10 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-5">
+                      <!-- <div class="col-md-5">
                         <h5 class="mb0">Open to</h5>
                         <h5 class="lightgray">{{classType.openTo}}</h5>
-                      </div>
+                      </div> -->
                       <div class="col-md-4">
                         <h5 class="mb0">Requires</h5>
                         <div ng-repeat = "equipment in classType.equipment">
