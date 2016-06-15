@@ -46,11 +46,11 @@
 					<i class="fa fa-list"><md-tooltip md-direction="bottom">Workout</md-tooltip></i>
 				</a>
 			</div>
-			<div class="col-xs-3 text-center white">
+<!-- 			<div class="col-xs-3 text-center white">
 				<a href="#" ng-click = "showPlaylist = true; showWorkout = false; showClassmates = false;"> 
 					<i class="ti-music-alt"><md-tooltip md-direction="bottom">Playlist</md-tooltip></i>
 				</a>
-			</div>
+			</div> -->
 			<div class="col-xs-3 text-center white">
 				<a href="#" ng-click = "showWorkout = false; showClassmates = true; showPlaylist = false;">
 					<i class="fa fa-users"><md-tooltip md-direction="bottom">Class</md-tooltip></i>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 
-		<div class="panel-body control-menu-music" ng-show = "showPlaylist">
+		<!-- <div class="panel-body control-menu-music" ng-show = "showPlaylist">
 			<div class="row">
 				<div class="col-xs-12 text-left">
 					<iframe id = "audioPlayer" height="100" width="100%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/165421585&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;volume=0"></iframe>
@@ -81,23 +81,9 @@
 						<div class = "white mb8 playlist-song">Uploaded by {{currentSong.user.username}}</div>
 						<img class="mb8" ng-src="{{currentSong.artwork_url}}" width="100%">
 					</div>
-					<!-- <div ng-repeat = "song in songArray"> -->
-						<!-- <h4 class="white mb8 playlist-song">{{song.title}}</h4> -->
-						<!-- <h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
-						<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
-						<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
-						<h4 class="white mb8 playlist-song">To U What What</h4>
-						<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4>
-						<h4 class="white mb8 playlist-song">Saved (feat. E40) - This is the song</h4>
-						<h4 class="white mb8 playlist-song">Missy Elliot Lose it all day every day</h4>
-						<h4 class="white mb8 playlist-song">MISSY ELLIOT</h4>
-						<h4 class="white mb8 playlist-song">TWRK & LAMB</h4>
-						<h4 class="white mb8 playlist-song">To U What What</h4>
-						<h4 class="white mb8 playlist-song">Sia - Cheap Thrills</h4> -->
-					<!-- </div> -->
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="panel-body control-menu-class" ng-show = "showClassmates">
 			<div class="row">
@@ -125,13 +111,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="support-details text-left">
-			<a href="#" ng-click = "openIntercomMessage()">Message Support</a>
-			<a href="/studios/{{studioId}}">Exit Class</a>
-		</div>
+
 	</div>
 
-</div>
 
+</div>
+	<div class="support-details text-left">
+		<a href="#" ng-click = "openIntercomMessage()">Message Support</a> | 
+		<a href="/studios/{{studioId}}">Exit Class</a>
+	</div>
 
 <div ng-include="'components/footer/footer.html'" class="display-none"></div>

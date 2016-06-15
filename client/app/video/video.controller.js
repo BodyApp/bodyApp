@@ -4,6 +4,7 @@ angular.module('bodyAppApp')
 .controller('VideoCtrl', function ($scope, $location, Video, User, Auth) {
 
 	var studioId = Video.getStudio();
+	$scope.studioId = studioId;
 	var classId = Video.getClassId();
 
 	var currentUser = Auth.getCurrentUser()
