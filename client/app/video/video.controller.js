@@ -35,6 +35,7 @@ angular.module('bodyAppApp')
   $scope.videoView = viewOptions[0]
 
   generateTimerOptions()
+  $scope.timerWorking = true;
 
 	auth.onAuthStateChanged(function(user) {
     if (user) {     

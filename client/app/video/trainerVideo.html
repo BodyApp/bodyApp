@@ -8,9 +8,9 @@
 			</div>
 			<div class="timer">
 				<h1 class="white timer mb24">
-					<timer id = "timer" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer>
+					<timer id = "timer" ng-class = "{workingColor: timerWorking, restingColor: !timerWorking}" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer>
 				</h1>
-				<h3 class="white rounds">{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
+				<h3 class="rounds" ng-class = "{workingColor: timerWorking, restingColor: !timerWorking}" >{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
 				<div class="volume-bars">
 					<div class="music-icon" ng-class = "{'music-on': musicVolume > 0, 'music-off': musicVolume === 0}">
 						<i class="fa fa-music"></i>

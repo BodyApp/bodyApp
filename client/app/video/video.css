@@ -43,6 +43,12 @@
   right: 0;
   bottom: -10px;
 }
+.workingColor {
+  color: white;
+}
+.restingColor {
+  color: #F0E68C;
+}
 .volume-bars {
   width: 50px;
   height: 40px;
