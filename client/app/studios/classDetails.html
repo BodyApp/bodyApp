@@ -6,7 +6,7 @@
 
       <div class="panel"> <!-- CLASS DETAIL PANEL -->
         <div class="panel-header">
-          Class Details
+          <span style = "font-weight: 500" ng-if = "classTypes[classDetails.classType].classType === 'Specialty'">Specialty </span>Class Details
         </div>
         <div class="panel-body">
           <h5 class="mb0">Date</h5>
@@ -16,10 +16,13 @@
           <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
 
           <h5 class="mt8 mb0">Class</h5>
-          <h5 class="lightgray mb0" ng-hide = "editing">{{classTypes[classDetails.classType].name}}</h5>
-          <div class="select display-block" ng-show = "editing">
+          <h5 class="lightgray mb0" ng-hide = "editing && classTypes[classDetails.classType].classType != 'Specialty'">{{classTypes[classDetails.classType].name}}</h5>
+          <div class="select display-block" ng-show = "editing && !classTypes[classDetails.classType].classType === 'Specialty'">
             <select id="class-choice" ng-model = "classDetails.classType" ng-change = "selectClassType(classDetails.classType)" ng-options = "key as value.name for (key, value) in classTypes"></select>
           </div>
+
+          <h5 class="mt8 mb0">Specialty Class Rate</h5>
+          <h5 class="lightgray mb0" ng-show = "classTypes[classDetails.classType].classType === 'Specialty'">${{classTypes[classDetails.classType].specialtyClassRate}}</h5>
 
           <h5 class="mt8 mb0">Workout</h5>
           <h5 class="lightgray mb0" ng-hide = "editing">{{workouts[classDetails.workout].title}}</h5>

@@ -23,6 +23,7 @@ angular.module('bodyAppApp')
         getPlaylistObjects();
         createSchedule(numDaysToShow, daysInFuture);
         createInitialTokBoxSession();
+        getSpecialtyClasses();
       } else {
         // console.log("User is logged out");
         if (currentUser.firebaseToken) {
@@ -36,6 +37,7 @@ angular.module('bodyAppApp')
             getPlaylistObjects();
             createSchedule(numDaysToShow, daysInFuture);
             createInitialTokBoxSession();
+            getSpecialtyClasses();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -176,6 +178,19 @@ angular.module('bodyAppApp')
       }
     }
 
+    function getSpecialtyClasses() {
+      $scope.specialtyClasses = {};
+      ref.child('specialtyClasses').on('value', function(snapshot) {
+        snapshot.forEach(function(specialtyClass) {
+          ref.child('classes').child(specialtyClass.key).once('value', function(snapshot) {
+            console.log(snapshot.val())
+            $scope.specialtyClasses[snapshot.key] = snapshot.val();  
+            if(!$scope.$$phase) $scope.$apply();
+          })
+        })
+      })
+    }
+
     $scope.selectClassType = function(classType) {
        return selectClassType(classType); 
     }
@@ -189,6 +204,12 @@ angular.module('bodyAppApp')
           ref.child('classes').child(workoutToSave.dateTime).update(workoutToSave, function(err) {
             if (err) return console.log(err);
             console.log("Saved Class")
+            if (workoutToSave.typeOfClass === 'Specialty') {
+              ref.child('specialtyClasses').child(workoutToSave.dateTime).update({lastUpdated: new Date().getTime()}, function(err) {
+                if (err) return console.log(err);
+                console.log("Saved specialty class");
+              })
+            }
             User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
               nextSessionToSave = session;
             })
@@ -198,11 +219,13 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveWorkout = function(workoutToCreate) {
+
       var workoutToSave = {};
       workoutToSave.classType = workoutToCreate.classType.id;
       workoutToSave.dateTime = new Date(workoutToCreate.dateTime).getTime();
       workoutToSave.instructor = workoutToCreate.instructor._id;
       workoutToSave.playlist = workoutToCreate.playlist.id;
+      workoutToSave.typeOfClass = workoutToCreate.classType.classType;
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.spots = 12;

@@ -7,7 +7,7 @@
   transform-origin: 50% 50% !important;
 }
 #myfeed .OT_video-element {
-  height: 50% !important;
+  height: 100% !important;
 }
 #myfeed .OT_publisher {
   z-index: 1;

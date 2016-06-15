@@ -372,7 +372,7 @@ angular.module('bodyAppApp')
 
 	$scope.clickOnConsumer = function(consumerId) { //Trainer only
 		if (audioPlayer) audioPlayer.setVolume(0);
-		if (previouslyClickedConsumerId) {
+		if (previouslyClickedConsumerId && $scope.consumerObjects[previouslyClickedConsumerId]) {
 			$scope.consumerObjects[previouslyClickedConsumerId].subscriber.subscribeToAudio(false)	
 			var previousSubscriberBox = $scope.consumerObjects[previouslyClickedConsumerId].subscriberBox;
 			$('#' + previousSubscriberBox).removeClass('user-videos-large');
@@ -396,7 +396,7 @@ angular.module('bodyAppApp')
 	$scope.trainerClicksOnSelf = function() {
 		$scope.hearAll = false;
 		$scope.trainerClickedHimself = true;
-		if (audioPlayer) audioPlayer.setVolume($scope.musicVolume/200);
+		// if (audioPlayer) audioPlayer.setVolume($scope.musicVolume/200);
 		for (var prop in $scope.consumerObjects) {
 			$scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
 		}

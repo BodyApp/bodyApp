@@ -210,7 +210,7 @@ exports.addCustomerSubscription = function(req, res, next){
       // }
 
       if (coupon) {
-        user.firstCouponUsed = user.firstCouponUsed ? userr.firstCouponUsed: coupon.id; 
+        user.firstCouponUsed = user.firstCouponUsed ? user.firstCouponUsed: coupon.id; 
         user.mostRecentCoupon = coupon.id;
 
         ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('usedBy').child(user._id.toString()).update({"dateTimeUsed": new Date().getTime(), "customerId": customer.id})

@@ -93,6 +93,12 @@ angular.module('bodyAppApp')
       classToSave.updated = new Date().getTime();
       classToSave.createdBy = Auth.getCurrentUser()._id
 
+      if (classToSave.specialtyClass) {
+        classToSave.classType = "Specialty"
+      } else {
+        classToSave.classType = "Regular"
+      }
+
       //Should change equipment so not array.
 
       var toPush = ref.child("classTypes").push(classToSave, function(err) {
@@ -130,6 +136,12 @@ angular.module('bodyAppApp')
       }
 
       if (classToEdit.$$hashKey) delete classToEdit.$$hashKey
+
+      if (classToEdit.specialtyClass) {
+        classToEdit.classType = "Specialty"
+      } else {
+        classToEdit.classType = "Regular"
+      }
 
       classToEdit.updated = new Date().getTime();
       classToEdit.updatedBy = Auth.getCurrentUser()._id
