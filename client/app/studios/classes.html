@@ -235,7 +235,7 @@
 <!-- PANEL -->
       <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes | orderBy: '-updated'">
         <div class="panel-header" >
-          {{classType.name}} <span ng-if = "classType.specialtyClassRate">(${{classType.specialtyClassRate}})</span>
+          {{classType.name}} <span ng-if = "classType.specialtyClassRate">(Specialty Class - ${{classType.specialtyClassRate}})</span>
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>
@@ -247,10 +247,10 @@
         </div>
         <div class="panel-body">
           <div class="row">
-            <div class="col-sm-4 mb16">
+            <!-- <div class="col-sm-4 mb16">
               <h5 class="mb0">Open To</h5>
               <h5 class="lightgray">{{classType.openTo}}</h5>
-            </div>
+            </div> -->
             <div class="col-sm-3 mb16">
               <h5 class="mb0">Requires</h5>
               <ul>
