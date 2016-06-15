@@ -198,6 +198,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.selectClassType = function(classType) {
+       $scope.classTypeNotEntered = false;
        return selectClassType(classType); 
     }
 

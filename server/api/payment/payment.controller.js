@@ -318,7 +318,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 30-3,
+                  application_fee_percent: 20-3,
                   coupon: coupon.id,
                   metadata: {
                     "facebookId": user.facebookId.toString(),
@@ -336,7 +336,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 30-3,
+                  application_fee_percent: 20-3,
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()
@@ -356,7 +356,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 30-3,
+                  application_fee_percent: 20-3,
                   coupon: coupon.id,
                   metadata: {
                     "facebookId": user.facebookId.toString(),
@@ -375,7 +375,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 30-3,
+                  application_fee_percent: 20-3,
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()
@@ -606,7 +606,7 @@ exports.chargeDropin = function(req, res, next){
                   description: "BODY Consumer",
                   amount: amount,
                   currency: "usd",
-                  application_fee: Math.max(Math.round(amount*.3 - amount*0.029 - 30), 0),
+                  application_fee: Math.max(Math.round(amount*.2 - amount*0.029 - 30), 0),
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()
@@ -638,7 +638,7 @@ exports.chargeDropin = function(req, res, next){
                   description: "BODY Consumer",
                   amount: amount,
                   currency: "usd",
-                  application_fee: Math.max(Math.round(amount*.3 - amount*0.029 - 30), 0),
+                  application_fee: Math.max(Math.round(amount*.2 - amount*0.029 - 30), 0),
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()

@@ -133,7 +133,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               </label>
               <div style = "color: red" ng-show = "classTypeNotEntered">*Required</div>
               <div class="select display-block">
-                <select id="class-choice" ng-model = "workoutToCreate.classType" ng-change = "selectClassType(workoutToCreate.classType) classTypeNotEntered = false;" ng-options = "value.name group by value.classType for (key, value) in classTypes">
+                <select id="class-choice" ng-model = "workoutToCreate.classType" ng-change = "selectClassType(workoutToCreate.classType)" ng-options = "value.name group by value.classType for (key, value) in classTypes">
                   <!-- <option>Level One</option> -->
                 </select>
               </div>
