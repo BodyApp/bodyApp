@@ -44,6 +44,14 @@ angular.module('bodyAppApp')
     }
   })
 
+  $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
+  	console.log("Disconnecting session because navigated away.")
+    session.disconnect()
+    Video.destroyHardwareSetup()
+    publisher.destroy();
+    // session.destroy();
+  });
+
 	$scope.increaseVolume = function() {
 		if ($scope.musicVolume >= 100) return
 		ref.child('realTimeControls').child(classId).update({'musicVolume': $scope.musicVolume + 25}, function(err) {
@@ -419,14 +427,15 @@ angular.module('bodyAppApp')
 
 		if (OT.checkSystemRequirements() == 1) {
 			session = OT.initSession(apiKey, sessionId);
+			setSessionEvents(classToJoin)
 			
-			$scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
-      	console.log("Disconnecting session because navigated away.")
-        session.disconnect()
-        Video.destroyHardwareSetup()
-        publisher.destroy();
-        // session.destroy();
-	    });
+			// $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
+   //    	console.log("Disconnecting session because navigated away.")
+   //      session.disconnect()
+   //      Video.destroyHardwareSetup()
+   //      publisher.destroy();
+   //      // session.destroy();
+	  //   });
 		} else {
 		  // The client does not support WebRTC.
 		  console.log("Not using Chrome or Firefox")
@@ -453,7 +462,6 @@ angular.module('bodyAppApp')
 			  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 			  	}
 			  } else {
-			  	setSessionEvents(classToJoin)
 				  connected = true;
 			    publish();
 			    if (session.capabilities.publish != 1) {
@@ -620,8 +628,8 @@ angular.module('bodyAppApp')
 	  	if (err) {
 	  		console.log(err)
 	  	} else {
-	  		if (!userIsInstructor && !instructorStream) subscriber.restrictFrameRate(true); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
-		  	console.log("Received stream with streamId " +streamId);
+	  		// if (!userIsInstructor && !instructorStream && Object.keys($scope.consumerObjects).length > 4) subscriber.restrictFrameRate(true); // When the frame rate is restricted, the Subscriber video frame will update once or less per second and only works with router, not relayed. It reduces CPU usage. It reduces the network bandwidth consumed by the app. It lets you subscribe to more streams simultaneously.
+		  	// console.log("Received stream with streamId " +streamId);
 
 		  	if (!instructorStream) {
 					// if (!$scope.consumerObjects[streamId]) console.log("subscriber with id " + streamId + " successfully added to subscriber list.")
@@ -640,7 +648,7 @@ angular.module('bodyAppApp')
 		  		subscriber.subscribeToAudio(true);
 		  	}
 
-				if (!$scope.firstStream && !instructorStream) {
+				if (!$scope.firstStream && !instructorStream && userIsInstructor) {
 					$scope.firstStream = true;
 					$('#' + subscriberBox).addClass('user-videos-large')
 					subscriber.subscribeToAudio(true);
@@ -702,7 +710,7 @@ angular.module('bodyAppApp')
 	function setSessionEvents(classToJoin) {
 		session.on({
 			streamCreated: function (event) {
-				var instructorStream = false
+				var instructorStream = false;
 				var instructorInfo;
 				var vidWidth = "100%";
 				// var vidHeight = 70;
@@ -715,13 +723,15 @@ angular.module('bodyAppApp')
 				// }
 
 				var streamId = event.stream.connection.data.toString();
+
 				// var streamBoxNumber = 1;
 
 				if (streamId === classToJoin.instructor.toString()) {
-					console.log("Received trainer stream")
+					console.log("Received trainer stream " + streamId)
 					instructorStream = true;
 					// vidWidth = "100%";
 				} else {
+					console.log("Received consumer stream " + streamId)
 				// if ($scope.consumerObjects[streamId]) {
 					// streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
 					// subscriberBox = instructorStream ? "trainerVideo" : "consumer" + streamBoxNumber)
@@ -737,6 +747,7 @@ angular.module('bodyAppApp')
 			},
 			streamDestroyed: function (event) {
 				var streamId = event.stream.connection.data.toString();
+				console.log("Stream " + streamId + " disconnected")
 				if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
 				if (streamId === $scope.classDetails.instructor) $scope.instructorDisplayed = false;
 				if(!$scope.$$phase) $scope.$apply();
@@ -745,14 +756,16 @@ angular.module('bodyAppApp')
 				}
 			},
 		  connectionCreated: function (event) {
-		    connectionCount++;
 		    if (event.connection.connectionId != session.connection.connectionId) {
+		    	connectionCount++;
 		      console.log('Another client connected. ' + connectionCount + ' total.');
 		    }
 		  },
 		  connectionDestroyed: function (event) {
-		    connectionCount--;
-		    console.log('A client disconnected. ' + connectionCount + ' total.');
+		    if (event.connection.connectionId != session.connection.connectionId) {
+		    	connectionCount--;
+			    console.log('A client disconnected. ' + connectionCount + ' total.');
+			  }
 		  },
 		  sessionDisconnected: function (event) {
 	      // The event is defined by the SessionDisconnectEvent class
