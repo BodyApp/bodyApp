@@ -341,8 +341,9 @@ angular.module('bodyAppApp')
       var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
       startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
 
-      $scope.specialtyClasses = {};
       ref.child('specialtyClasses').orderByKey().startAt(startAt).on('value', function(snapshot) {
+        $scope.specialtyClasses = $scope.specialtyClasses || {};
+        if (!snapshot.exists()) return $scope.specialtyClasses = false;
         snapshot.forEach(function(specialtyClass) {
           ref.child('classes').child(specialtyClass.key).once('value', function(snapshot) {
             console.log(snapshot.val())

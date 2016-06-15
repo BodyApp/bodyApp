@@ -233,7 +233,14 @@ angular.module('bodyAppApp')
     	ref.child('classes').child(classId).remove(function(err) {
     		if (err) return console.log(err)
   			console.log("Class successfully deleted.")
-  			$scope.returnToSchedule();
+        if ($scope.classTypes[$scope.classDetails.classType].classType === 'Specialty') {
+          ref.child('specialtyClasses').child(classId).remove(function(err) {
+            if (err) return console.log(err)
+            $scope.returnToSchedule();
+          })
+        } else {
+    			$scope.returnToSchedule();
+        }
     	})
     }
 
