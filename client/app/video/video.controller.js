@@ -102,8 +102,8 @@ angular.module('bodyAppApp')
 				break;
 			default: $scope.videoView += ""; break;
 		}
-  	console.log(Object.keys($scope.consumerObjects).length)
-  	console.log($scope.videoView)
+  	// console.log(Object.keys($scope.consumerObjects).length)
+  	// console.log($scope.videoView)
 
     if(!$scope.$$phase) $scope.$apply();
 	}
