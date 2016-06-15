@@ -222,15 +222,17 @@ angular.module('bodyAppApp')
 
 		$scope.timer = {};
 		$scope.timer.type = 'Tabata';
-		$scope.timer.work = $scope.workOptions[9];
-		$scope.timer.rest = $scope.restOptions[4];
-		$scope.timer.rounds = $scope.roundOptions[9];
+		$scope.timer.work = $scope.workOptions[4];
+		$scope.timer.rest = $scope.restOptions[1];
+		$scope.timer.rounds = $scope.roundOptions[4];
 	}
 
 	$scope.saveTimer = function() {
+		if (!$scope.timer.work) return
 		ref.child('realTimeControls').child(classId).child('timer').update({"type": $scope.timer.type, "work": $scope.timer.work, "rest": $scope.timer.rest, "rounds": $scope.timer.rounds, "saved": new Date().getTime()}, function(err) {
 			if (err) return console.log(err)
 			console.log("Timer updated")
+			$scope.resetButtonPushed()
 		})
 	}
 
@@ -244,6 +246,7 @@ angular.module('bodyAppApp')
   		if (snapshot.val().reset > snapshot.val().start) document.getElementById('timer').reset();	
   		if (snapshot.val().saved > snapshot.val().start) return;
   		if (snapshot.val().start > snapshot.val().reset || (snapshot.val().start && !snapshot.val().reset)) {
+  			// Can add functionality that catches user up to wherever the class is if join late
   			document.getElementById('timer').reset();
   			document.getElementById('timer').start();	
   			$scope.timerWorking = true;
@@ -262,6 +265,7 @@ angular.module('bodyAppApp')
   });
 
   $scope.playButtonPushed = function() {
+  	if (!$scope.realTimeTimer.work) return
   	ref.child('realTimeControls').child(classId).child('timer').update({"start": new Date().getTime()}, function(err) {
   		if (err) return console.log(err)
   	})
