@@ -1,7 +1,7 @@
 <link href="assets/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
 <link href="assets/fonts/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
 <footer>
-        <div class="footer-nav">
+        <div class="footer-nav" ng-controller="FooterCtrl">
           <div class="footer-nav-container">
             <div class="row">
               <div class="col-sm-2">
@@ -19,14 +19,16 @@
                 <h5 class="purpleblue">Company</h5>
                 <ul>
                   <li><a href="/about">About</a></li>
-                  <li><a href="/faq">Help</a></li>
-                  <li><a href="/blog">Blog</a></li>
+                  <!-- <li><a href="/faq">Help</a></li> -->
+                  <!-- <li><a href="/blog">Blog</a></li> -->
                 </ul>               
               </div>
               <div class="col-sm-3 on-dark">
                 <h5 class="purpleblue">Have Questions</h5>
                 <ul>
-                  <li><a href="mailto:support@getbodyapp.com?Subject=Question%20About%20BODY">concierge@getbodyapp.com</a></li>
+                  <li><a href="#" ng-click = "openIntercomMessage()">Chat Live</a></li>
+                  <!-- <li class = "white" style = "color: #fff; font-weight: 300;">or</li> -->
+                  <li><a href="mailto:support@getbodyapp.com?Subject=Question%20About%20BODY">Email us</a></li>
                 </ul>               
               </div>              
               <!-- <div class="col-sm-3 on-dark"> -->

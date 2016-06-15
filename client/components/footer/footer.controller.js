@@ -3,7 +3,11 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('NavbarCtrl', function ($scope, $location, $state, $uibModal, $window, Auth) {
+  .controller('FooterCtrl', function ($scope, $location, $state, $uibModal, $window, Auth) {
     $scope.getCurrentUser = Auth.getCurrentUser;
+
+    $scope.openIntercomMessage = function() {
+    	Intercom('showNewMessage');
+    }
 
   });

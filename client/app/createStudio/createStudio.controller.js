@@ -241,7 +241,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.playYoutubeVideo = function() {
-      $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay=1');
+      $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/pZtWOp-zxok?rel=0&amp;showinfo=0&autoplay=1');
       // $scope.youtubeLink + '&autoplay=1';
       $scope.showVideoPlayer = true;
       $scope.hidePlayer = false;
@@ -249,7 +249,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.stopPlayingVideo = function() {
-      $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay=0');
+      $("#youtubeVideo")[0].src = $sce.trustAsResourceUrl('https://www.youtube.com/embed/pZtWOp-zxok?rel=0&amp;showinfo=0&autoplay=0');
       // $('#youtubeVideo').attr('src', $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0&autoplay'));
       // $("#youtubeVideo")[0].src = $scope.youtubeLink;
       $scope.showVideoPlayer = false;
