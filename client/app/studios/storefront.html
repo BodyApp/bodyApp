@@ -295,11 +295,13 @@
                     <img src="/assets/images/bern-prince.jpg" width="20" height="20">
                   </div> -->
                   <div class="cal-action">
-                    <a href="#" class="btn-blue" ng-show = "!userBookings[class.dateTime] && class.instructor != currentUser._id" ng-click = "reserveClicked(class)">Reserve</a>
-                    <!-- <a class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-disabled ng-click = "cancelClass(class)">Booked</a> -->
-                    <a class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-click = "joinClass(class)">Booked</a>
-                    <a ng-href="#" class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow > classesJoinTime[class.dateTime] " ng-click = "joinClass(class)">Join</a>
-                    <a ng-href="#" class="btn-blue" ng-show = "class.instructor === currentUser._id" ng-click = "joinClass(class)">Teaching</a>
+                    <a href="#" class="btn-blue">
+                      <span style = "font-weight: 600;" ng-show = "!userBookings[class.dateTime] && class.instructor != currentUser._id" ng-click = "reserveClicked(class)">Reserve
+                      </span>
+                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-click = "joinClass(class)">Booked</span>
+                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow > classesJoinTime[class.dateTime] " ng-click = "joinClass(class)">Join</span>
+                      <span style = "font-weight: 600;" ng-show = "class.instructor === currentUser._id" ng-click = "joinClass(class)">Teaching</span>
+                    </a>
                   </div>
                 </div>
                 <!-- <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div> -->

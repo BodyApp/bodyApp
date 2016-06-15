@@ -17,7 +17,9 @@
       </div>
 
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "soundcloudAuth()">Sync Soundcloud</a>
+        <a href="#" class="btn btn-block" ng-show = "loaded && !playlists" ng-click = "soundcloudAuth()">Sync Soundcloud</a>
+        <a href="#" class="btn btn-block" ng-show = "loaded && playlists" ng-click = "soundcloudAuth()">Update playlists</a>
+
       </div>
     </div>
 
@@ -27,8 +29,9 @@
       <div class="panel space-4">
         <div class="panel-body">
           <div class="row col-sm-12">
-            <h5 class="mb8">Connect your Soundcloud account to update and sync playlists</h5>
-            <a href="#" ng-click = "soundcloudAuth()">Sync Soundcloud</a>
+            <h5 class="mb8" ng-show = "loaded && !playlists">Connect your Soundcloud account to update and sync playlists</h5>
+            <a href="#" ng-show = "loaded && !playlists" ng-click = "soundcloudAuth()">Sync Soundcloud</a>
+            <a href="#" ng-show = "loaded && playlists" ng-click = "soundcloudAuth()">Update Soundcloud playlists</a>
           </div>
         </div>
       </div>
@@ -101,7 +104,8 @@
 <!-- PANEL END--> 
 
       <div class="subpanel-btn">
-        <a href="#" ng-click = "soundcloudAuth()">Sync Soundcloud<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-show = "loaded && !playlists" ng-click = "soundcloudAuth()">Sync Soundcloud<i class="ti-arrow-circle-right icon-spacing"></i></a>
+        <a href="#" ng-show = "loaded && playlists" ng-click = "soundcloudAuth()">Update Soundcloud Playlists<i class="ti-arrow-circle-right icon-spacing"></i></a>
       </div>
 
     </div>

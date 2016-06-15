@@ -60,7 +60,7 @@
       </div>
 
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add Pricing Plan</a>
+        <a href="#" class="btn btn-block" ng-click = "initPricingPlan()" ng-show = "loaded && (!subscriptionPlan || !dropinPlan)">Add Pricing Plan</a>
         <!-- <a href="#" class="mt16 btn btn-block">Add Promotion</a> -->
         <a href="#" class="mt16 btn btn-block" ng-click = "initShowAddCoupon()">Add Coupon</a>
       </div>
@@ -69,12 +69,12 @@
     <div class="col-md-9">
 
 <!-- PANEL -->
-      <div class="panel space-4" ng-show = "connectedStripeAccount">
+      <div class="panel space-4" ng-show = "loaded && connectedStripeAccount">
         <div class="panel-header">
           Studio Pricing Plans
           <ul class="panel-action-list">
             <li>
-              <a href="#" class="panel-action-item" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add new pricing plan</a>
+              <a href="#" class="panel-action-item" ng-click = "initPricingPlan()" ng-show = "loaded && (!subscriptionPlan || !dropinPlan)">Add new pricing plan</a>
             </li>
           </ul>          
         </div>

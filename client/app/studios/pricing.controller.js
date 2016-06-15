@@ -104,6 +104,7 @@ angular.module('bodyAppApp')
 
     function listSubscriptionPlans() {
       ref.child('stripeConnected').child('subscriptionPlans').on('value', function(snapshot) {
+        $scope.loaded = true;
         if (!snapshot.exists()) {
           $scope.subscriptionPlan = false;
           if(!$scope.$$phase) $scope.$apply();  

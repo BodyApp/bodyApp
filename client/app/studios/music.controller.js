@@ -57,7 +57,11 @@ angular.module('bodyAppApp')
 
     function getPlaylists() {
 	    ref.child('playlists').orderByChild("lastModified").on('value', function(snapshot) {
-        if (!snapshot.exists()) return $scope.playlists = false;
+        $scope.loaded = true;
+        if (!snapshot.exists()) {
+          $scope.playlists = false;
+          if(!$scope.$$phase) $scope.$apply();
+        }
 	    	$scope.playlists = [];
 	      snapshot.forEach(function(playlist) {
 	        $scope.playlists.unshift(playlist.val())
