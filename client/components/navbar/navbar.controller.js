@@ -299,6 +299,10 @@ angular.module('bodyAppApp')
       $scope.clicked = !$scope.clicked;
     }
 
+    $scope.closeAlertPushed = function() {
+      $rootScope.closedAlert = true;
+    }
+
     $scope.showMembershipModal = function() {
       if ($rootScope.subscribing) return
       var modalInstance = $uibModal.open({

@@ -131,10 +131,15 @@
                   </div>
               </div>
             </div>
-            <div id="browser-alert" ng-show = "wrongBrowser">  <!-- BROWSER ALERT -->
+            <div id="browser-alert" ng-show = "wrongBrowser && !closedAlert">  <!-- BROWSER ALERT -->
+            <div ng-click = "closeAlertPushed()">
+              <a class="cancel-modal-membership" href="#">
+                <img ng-src = "../assets/images/icons/x_button.png"></img>
+              </a>
+            </div>
               <div class="row text-center">
                 <div class="col-sm-12">
-                  <h5 class="white">
+                  <h5 class="white" style>
                     Blast! Your browser or device isn't supported. To be able to join class, please use the latest version of <a ng-click = "downloadChrome()" href="#">Chrome</a> on a PC or Mac computer.</h5>
                 </div>
               </div>
