@@ -72,6 +72,7 @@
 											<h4>{{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
 											<!-- <h5 class="lightgray">Pepper Pike, USA</h5> -->
 											<h5 class="lightgray"><span class="bold">{{instructorDetails.title}}</span> with a <span class="bold royalblue">{{instructorDetails.trainerRating}} / 5</span> rating</h5>
+											<h5 class="lightgray" ng-show = "instructorDetails.geolocation"><span>Teaching from {{instructorDetails.geolocation.city}}, {{instructorDetails.geolocation.region}} ({{instructorDetails.geolocation.countryCode}})</span></h5>
 										</div>
 									</div>
 								</div>
@@ -93,7 +94,7 @@
 								<div class="col-xs-12">	
 									<img class="round-photo inline-block classmate-photo" width="50" height="50" ng-src="{{booking.picture}}">
 									<h5 class="inline-block">{{booking.firstName}} {{booking.lastName}} 
-										<span>in {{bookings[key].geolocation.city}}, {{bookings[key].geolocation.region}} {{bookings[key].geolocation.countryCode}}</span>
+										<span ng-show = "bookings[key].geolocation">in {{bookings[key].geolocation.city}}, {{bookings[key].geolocation.region}} ({{bookings[key].geolocation.countryCode}})</span>
 									</h5>
 								</div>
 							</div>

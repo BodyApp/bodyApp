@@ -56,6 +56,11 @@ angular.module('bodyAppApp')
 	  	ref.child('instructors').child(instructorId).once('value', function(snapshot) {
 	  		$scope.instructorDetails = snapshot.val();
 	  		if(!$scope.$$phase) $scope.$apply();
+	  		firebase.database().ref().child('fbUsers').child($scope.instructorDetails.facebookId).child('location').on('value', function(snapshot) {
+  				if (!snapshot.exists()) return
+  				$scope.instructorDetails.geolocation = snapshot.val()
+  				if(!$scope.$$phase) $scope.$apply();
+  			})
 	  	})
 	  }
 

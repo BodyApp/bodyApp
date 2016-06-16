@@ -27,12 +27,12 @@
                             </li>
                             <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
                               <p ng-class="{active: isActive('/schedule')}">
-                                <a ng-href="/studios/{{studioId}}/editschedule">Class Calendar</a>
+                                <a ng-href="/studios/{{studioId}}/editschedule">Schedule</a>
                               </p>
                             </li> 
                             <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
                               <p ng-class="{active: isActive('/schedule')}">
-                                <a ng-href="/studios/{{studioId}}/storefrontinfo">Manage Studio</a>
+                                <a ng-href="/studios/{{studioId}}/storefrontinfo">Studio Settings</a>
                               </p>
                             </li>                   
                             <li ng-show="isLoggedIn()">
@@ -85,12 +85,12 @@
                         </li>                    
                         <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
                           <p ng-class="{active: isActive('/schedule')}">
-                            <a ng-href="/studios/{{studioId}}/editschedule">Class Calendar</a>
+                            <a ng-href="/studios/{{studioId}}/editschedule">Schedule</a>
                           </p>
                         </li>
                         <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
                           <p ng-class="{active: isActive('/schedule')}">
-                            <a ng-href="/studios/{{studioId}}/storefrontinfo">Manage Studio</a>
+                            <a ng-href="/studios/{{studioId}}/storefrontinfo">Studio Settings</a>
                           </p>
                         </li>
                         <li ng-show="isLoggedIn()">
