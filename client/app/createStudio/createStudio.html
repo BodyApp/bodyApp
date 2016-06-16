@@ -313,7 +313,7 @@
 							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Can I offer live broacast classes?</h4>
 						</div>
 						<div class="content" ng-show="drop9">
-							<h5 class="mt8">Broadcast classes are coming soon. Broadcast your classes is ideal for group sizes larger than 12 clients.</h5>
+							<h5 class="mt8">Broadcast classes are coming soon and are ideal for classes with more than than 12 clients.</h5>
 						</div>
 					</li>
 					<li>
@@ -321,7 +321,7 @@
 							<h4 class="royalblue"><i class="fa fa-caret-right"></i>Can I offer on-demand classes?</h4>
 						</div>
 						<div class="content" ng-show="drop10">
-							<h5 class="mt8">On-demand classes are coming soon.</h5>
+							<h5 class="mt8">Coming soon!</h5>
 						</div>
 					</li>
 					<li>
@@ -337,7 +337,7 @@
 							<h4 class="royalblue"><i class="fa fa-caret-right"></i>How do I get in touch?</h4>
 						</div>
 						<div class="content" ng-show="drop12">
-							<h5 class="mt8">We are always available for questions <a href="mailto:concierge@getbodyapp.com">here</a>.</h5>
+							<h5 class="mt8">We are always available for questions via email <a href="mailto:concierge@getbodyapp.com">here</a> or you can set up a time to chat with us live <a href="https://calendly.com/dlieb/20min">here</a></h5>
 						</div>
 					</li>
 				</ul>
@@ -379,10 +379,22 @@
 						<div class="row">
 							<div class="col-sm-12">
 								<h4 class="mb8">Let's start building your studio!</h4>
-								<h5 class="lightgray">Add images, a video, and a name.</h5>
-								<hr class="content-divider mt16 mb24">
+								<!-- <h5 class="lightgray">Add images, a video, and a name.</h5> -->
+								<!-- <hr class="content-divider mt16 mb24"> -->
 
 								<form name = "createStudioForm">
+									<div layout="column" flex class="mb8">
+							    	<md-input-container class="md-block" ng-mouseenter = "showNameHelper = true;" ng-mouseleave = "showNameHelper = false;">
+								    	<div class = "errorMessage" ng-messages="createStudioForm.studioName.$error">
+							          <div ng-message="required">This is required.</div>
+							          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
+							        </div>
+							        <label class="angular-label">Studio Name</label>
+							        <input type="text" ng-change = "studioNameChanged()" md-maxlength="20" md-no-asterisk="" name="studioName" ng-model="studioToCreate.studioName" class="angular-input" required>
+							        <div class="form-hint">Every great service starts with a great name.</div>
+							        
+							      </md-input-container>
+							    </div>
 							    <div layout="row" flex class="mb8" ng-mouseenter = "showIDHelper = true;" ng-mouseleave = "showIDHelper = false;">
 						        <md-input-container flex class="md-block" >
 						        	<div class = "errorMessage" ng-messages="createStudioForm.studioId.$error">
@@ -391,7 +403,7 @@
 							        </div>
 					            <label class="angular-label">Claim your studio URL</label>
 					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
-					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="studioId" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId)" md-maxlength="20" required>
+					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="studioId" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId); idEditedDirectly = true;" md-maxlength="20" required>
 				              <div class="form-hint" ng-show = "!takenId">Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
 				              <div class="form-hint" ng-show = "takenId">The ID {{studioToCreate.studioId}} is already taken.  Please try another.</div>
 				              
@@ -400,19 +412,6 @@
 					            <md-button class="md-primary md-raised" ng-show = "!idSaved" ng-click = "checkId(studioToCreate.studioId)">Available?</md-button>
 					            <md-button class="md-primary" ng-show="idSaved" disabled>ID Available</md-button>
 						        </div>
-							    </div>
-
-							    <div layout="column" flex class="mb8">
-							    	<md-input-container class="md-block" ng-mouseenter = "showNameHelper = true;" ng-mouseleave = "showNameHelper = false;">
-								    	<div class = "errorMessage" ng-messages="createStudioForm.studioName.$error">
-							          <div ng-message="required">This is required.</div>
-							          <div ng-message="md-maxlength">The name has to be less than 20 characters long.</div>
-							        </div>
-							        <label class="angular-label">Studio Name</label>
-							        <input type="text" md-maxlength="20" md-no-asterisk="" name="studioName" ng-model="studioToCreate.studioName" class="angular-input" required>
-							        <div class="form-hint">Every great service starts with a great name.</div>
-							        
-							      </md-input-container>
 							    </div>
 
 							    <div layout="row" flex class="mb8">

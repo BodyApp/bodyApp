@@ -78,6 +78,12 @@ angular.module('bodyAppApp')
       $('.ss-content-container').scrollTop(0);
     }
 
+    $scope.studioNameChanged = function() {
+      if (!$scope.idEditedDirectly) {
+        $scope.studioToCreate.studioId = $scope.sanitizeUrl($scope.studioToCreate.studioName)
+      }
+    }
+
     $scope.checkId = function(idToCheck) {
       ref.child('studios').child(idToCheck).child('storefrontInfo').once('value', function(snapshot) {
         if (snapshot.exists()) {
