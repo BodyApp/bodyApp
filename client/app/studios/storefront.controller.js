@@ -532,6 +532,8 @@ angular.module('bodyAppApp')
       }
       if (currentUser && currentUser.role === 'admin') {
         bookClass(slot)
+      } else if (studioId === 'body') {
+        bookClass(slot)
       } else if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")
         checkMembership(slot)
