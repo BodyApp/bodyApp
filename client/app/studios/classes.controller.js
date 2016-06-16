@@ -70,6 +70,7 @@ angular.module('bodyAppApp')
       ref.child('classTypes').orderByChild('updated').on('value', function(snapshot) {
         if (!snapshot.exists()) {
           $scope.savedClassTypes = false;
+          $scope.showAddClass = true;
           if(!$scope.$$phase) $scope.$apply();
           return;
         }

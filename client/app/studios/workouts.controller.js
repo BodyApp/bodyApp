@@ -65,6 +65,7 @@ angular.module('bodyAppApp')
     	ref.child('workouts').on('value', function(snapshot) {
             if (!snapshot.exists()) {
                 $scope.workouts = [];
+                $scope.showAddWorkout = {};
                 if(!$scope.$$phase) $scope.$apply();
                 return;
             }
