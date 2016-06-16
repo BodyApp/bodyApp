@@ -220,6 +220,9 @@ angular.module('bodyAppApp')
   				$scope.showAddPricingPlan = false;
 	    		if(!$scope.$$phase) $scope.$apply();
           ref.child('storefrontInfo').child('dropinPricing').set(planToSave.amount)
+          ref.child('toSetup').child('pricing').remove(function(err) {
+            if (err) console.log(err)
+          })
     		})
     	} else if (planToSave.pricingType === 'Monthly'){
     		Studio.createSubscriptionPlan({

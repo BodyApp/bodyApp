@@ -15,6 +15,7 @@ angular.module('bodyAppApp')
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
+    $scope.maxDescriptionLength = 500;
 
     if (!studioId) studioId = 'body'
     var ref = firebase.database().ref().child('studios').child(studioId);
@@ -88,7 +89,7 @@ angular.module('bodyAppApp')
       if (!classToSave.name) return $scope.missingName = true;
       // if (!classToSave.equipment) return $scope.missingEquipment = true
       if (!classToSave.classDescription) return $scope.missingDescription = true;
-      if (classToSave.classDescription.length > 500) return $scope.descriptionTooLong = classToSave.classDescription.length;
+      if (classToSave.classDescription.length > $scope.maxDescriptionLength) return $scope.descriptionTooLong = classToSave.classDescription.length;
       classToSave.created = new Date().getTime();
       classToSave.updated = new Date().getTime();
       classToSave.createdBy = Auth.getCurrentUser()._id
@@ -148,7 +149,7 @@ angular.module('bodyAppApp')
 
       if (!classToEdit.name) return $scope.missingName = true;
       if (!classToEdit.classDescription) return $scope.missingDescription = true;
-      if (classToEdit.classDescription.length > 200) return $scope.descriptionTooLong = classToEdit.classDescription.length;
+      if (classToEdit.classDescription.length > $scope.maxDescriptionLength) return $scope.descriptionTooLong = classToEdit.classDescription.length;
       ref.child('classTypes').child(classKey).update(classToEdit, function(err) {
         console.log("Class successfully updated")
         $scope.showEditClass = false;
