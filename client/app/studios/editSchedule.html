@@ -17,18 +17,17 @@
 
           </div>
 
-          <div style = "color: red" ng-show = "dateTimeNotEntered">*Required</div>
+          <div style = "color: red" ng-show = "">*Required</div>
           <div class="row mb8">
             <div class="col-sm-12" >
-              
-<!--               <div class="input-group" datetimepicker date="vm.date">
-                  <input ng-model = "workoutToCreate.dateTime" type="text" class="form-control"/>
+              <input type='text' class="form-control" id='datetimepicker'/>
+ <!--              <div class="input-group" datetimepicker ng-model="vm.date">
+                  <input type="text" class="form-control"/>
                   <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                   </span>
               </div> -->
-              <!-- <input type='text' class="form-control" id='datetimepicker' />   -->
-              <input mdc-datetime-picker="" date="true" min-date="minDate" time="true" type="text" id="datetime" placeholder="Enter date and time" ng-model="workoutToCreate.dateTime" short-time="true" format="M/D/Y hh:mm a" class="md-input">
+              <!-- <input mdc-datetime-picker="" date="true" min-date="minDate" time="true" type="text" id="datetime" placeholder="Enter date and time" ng-model="workoutToCreate.dateTime" short-time="true" format="M/D/Y hh:mm a" class="md-input"> -->
               
             </div>
           </div>

@@ -520,3 +520,13 @@
   }
 }
 
+/*-------DATE PICKER -------*/
+
+.bootstrap-datetimepicker-widget table td span {
+  height: 30px !important;
+  line-height: 30px !important;
+  margin: 1px 1.5px !important;
+}
+
+
+
