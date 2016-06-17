@@ -9,7 +9,7 @@
 				{{classType.name}} with {{storefrontInfo.studioName}}</h3>
 		</div>
 		<div class="col-md-6 text-center-sm text-center-xs mb-sm-16">
-			<h5 ng-show = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass(class)">cancel</a> your reservation?</h5>
+			<h5 ng-show = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass($event)">cancel</a> your reservation?</h5>
 		</div>
 		<div class="col-md-6 text-right text-center-sm text-center-xs">
 			<ul class="starting-action-btns">

@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $rootScope, studioId, classId, Auth, Video) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $rootScope, $mdDialog, studioId, classId, Auth, Video) {
   	var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -138,10 +138,20 @@ angular.module('bodyAppApp')
     	Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
     }
 
-	  $scope.cancelClass = function() {
+	  $scope.cancelClass = function(ev) {
 	  	if ($scope.bookings[$scope.currentUser._id]) {
-	  		if (confirm("Are you sure you want to cancel class?")) {
-	        ref.child("bookings").child(classId).child($scope.currentUser._id).remove()
+	  		var confirm = $mdDialog.confirm({
+          title: "Cancel Class",
+          textContent: "Are you sure you want to cancel this class?",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'Yes',
+          cancel: 'No'
+        });
+
+        return $mdDialog
+        .show( confirm ).then(function() {
+          ref.child("bookings").child(classId).child($scope.currentUser._id).remove()
 	        ref.child("userBookings").child($scope.currentUser._id).child(classId).remove(function(err) {
 	        	if (err) return console.log(err)
 	        	$rootScope.$apply(function() {
@@ -149,7 +159,10 @@ angular.module('bodyAppApp')
 			      });
 	        })
 	        ref.child("cancellations").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""})
-	      }	
+        });
+	  		// if (confirm("Are you sure you want to cancel class?")) {
+	        
+	    //   }	
 	  	}
     }
 

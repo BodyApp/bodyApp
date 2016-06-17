@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('DiscoverCtrl', function ($scope, $state) {
+  .controller('DiscoverCtrl', function ($scope, $state, $mdDialog) {
   	var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref();
     $scope.studioPictures = {};

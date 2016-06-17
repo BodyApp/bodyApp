@@ -1,3 +1,8 @@
+/*------$mdDialog-------*/
+.mdDialogWidth button {
+  width: 200px; 
+}
+
 /*------CREATE STUDIO-------*/
 .calculator-inputs input {
   padding: 10px 0 10px 15px;

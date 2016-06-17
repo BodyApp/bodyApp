@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, Studios, $http, Auth, User, Schedule) {
+  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, $mdDialog, Studios, $http, Auth, User, Schedule) {
     var currentUser = Auth.getCurrentUser()
     
     var studioId = $stateParams.studioId;
@@ -229,7 +229,19 @@ angular.module('bodyAppApp')
     }
 
     $scope.deleteClass = function() {
-    	if ($scope.bookings && Object.keys($scope.bookings).length > 0) return alert("There are users signed up for this class!")
+    	if ($scope.bookings && Object.keys($scope.bookings).length > 0) {
+        var alert = $mdDialog.alert({
+          title: "Can't Delete Class",
+          textContent: "There are users signed up for this class!",
+          ok: 'OK!'
+        });
+
+        return $mdDialog
+        .show( alert )
+        .finally(function() {
+          alert = undefined;
+        });
+      }
     	ref.child('classes').child(classId).remove(function(err) {
     		if (err) return console.log(err)
   			console.log("Class successfully deleted.")
