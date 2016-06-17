@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, Studios, Auth, User, Schedule, Studio, $rootScope) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, Studios, Auth, User, Schedule, Studio, Video, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
     $scope.currentUser = currentUser;
     console.log(currentUser)
@@ -35,6 +35,8 @@ angular.module('bodyAppApp')
     getPlaylistObjects();
     createSchedule(numDaysToShow, daysInFuture);
     getImages()
+
+    Video.destroyHardwareSetup()
     // ref.unauth()
 
     var accountId;
