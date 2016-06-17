@@ -1,44 +1,54 @@
 <div class="modal-body">
-    <div ng-hide = "showFriendModal">
-        <img class="cancel-modal" href="#" ng-src = "../assets/images/icons/x_button.png" ng-click = "closeModal()"></img>
-        <div class="col-sm-12 text-center">
-            <h3 class="mb16 darkblue" style = "color: #ffffff;">Your class has been reserved for:</h3>
-            <h4 class="mb0 gray">{{dayOfWeek}} {{month}} {{day}}</h4>
-            <h3 class="mb8 gray">{{classTime}} {{timezone}}</h4>
-            <addtocalendarmediumimage
-                start-date= "{{calendarDateSetter()}}"
-                end-date="{{calendarDateSetterEnd()}}"
-                title="BODY Class with {{bookedClass.trainer.firstName}} {{bookedClass.trainer.lastName}}"
-                location="https://www.getbodyapp.com/"
-                description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{bookedClass.trainer.firstName}} is excited to workout with you!"   
-            ></addtocalendarmediumimage>
-        </div>
-        <div class="col-sm-12 text-center mt32">
-            <p class="darkblue">Please add the class to your calendar by clicking above. If you have any questions, shoot us an email at <a href="#" style = "color: #FF6700;">support@getbodyapp.com</a> or give us a call at 857-600-2410.</p>
-        </div>
-    </div>
 
-    <div ng-show = "showFriendModal">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <h3 class="mb16 uppercase" style = "color: #ffffff;">Invite Your Friends!</h3>
-            </div>
-        </div>
-        <div class="row">
-            <!-- <div class="col-md-1"></div> -->
-                <div style = "color: white; margin-left: 30px" ng-repeat = "friend in friendList">
-                    <div>
-                        <input style = "color: white" type="checkbox" data-checklist-model="friendsSelected.friends" data-checklist-value="friend"> {{friend.name}}
-                    </div>
-                </div>
-            <!-- <div class="col-md-1"></div> -->
-        </div>
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <!-- <h5 class="mb16 uppercase" style = "color: #ffffff;">Don't leave your friends behind</h5> -->
-                <a class="btn btn-filled btn-lg" href="#" ng-click = "backToMain()"><i class=""></i>&nbsp;BACK</a>
-                <a class="btn btn-filled btn-lg" href="#" ng-click = "inviteSelectedFriends()"><i class="ti-facebook"></i>&nbsp;INVITE FRIENDS</a>
-            </div>
-        </div>
+  <div class="cancel-modal" href="#" ng-click = "closeModal()">
+    <span><i class="ti-close"></i></span>
+  </div>
+
+  <div class="class-booked">
+    <span class="white"><i class="fa fa-check-circle-o"></i> RESERVED</span>
+  </div>
+
+  <div class="class-booked-content">
+    <div class="mt16 col-sm-12 text-center">
+      <h5>Your class is with Justin from Perfect Burpee.</h5>
+      <img class="round-photo lightBorder mt8 mb8" src="/assets/images/bern-prince.jpg" width="60" height="60">
     </div>
+    <div class="col-sm-12 text-left">
+      <hr class="content-divider mt8 mb8">
+      <h4 class="bold">Level One with Justin Mendelson</h4>
+      <h4 class="royalblue mb8">{{classTime}} {{timezone}} - {{dayOfWeek}}, {{month}}, {{day}}</h4>
+      <h5 class="lightgray">
+          Requires: Kettlebell, Mat
+      </h5>
+      <h5 class="lightgray">This class is all about the establishment of your kettlebell strength. We'll cover lots of different moves and it's going to be a lot of fun. You'll definitely get stronger after this class and have skills to continue to improve your abilities.</h5>
+      <div class="text-center mt16 mb16">
+        <a class="btn-blue" href="#"><i class="fa fa-calendar"></i> Add to your calendar</a>
+      </div>
+      <hr class="content-divider mt8 mb8">
+    </div>
+  </div>
+
+  <div class="close-modal-btn">
+    <div class="col-sm-12 text-center">
+      <a href="#" class="btn btn-collapse" ng-click="closeModal()">Close</a>
+    </div>
+  </div>
+
 </div>
+
+          
+
+      <!-- <h3 class="mb16 darkblue" style = "color: #ffffff;">Your class has been reserved for:</h3>
+      <h4 class="mb0 gray">{{dayOfWeek}} {{month}} {{day}}</h4>
+      <h3 class="mb8 gray">{{classTime}} {{timezone}}</h4>
+      <addtocalendarmediumimage
+          start-date= "{{calendarDateSetter()}}"
+          end-date="{{calendarDateSetterEnd()}}"
+          title="BODY Class with {{bookedClass.trainer.firstName}} {{bookedClass.trainer.lastName}}"
+          location="https://www.getbodyapp.com/"
+          description="Get fired up! You've got a BODY Class reserved. Please join 5 minutes in advance if possible. {{bookedClass.trainer.firstName}} is excited to workout with you!"   
+      ></addtocalendarmediumimage>
+  </div>
+  <div class="col-sm-12 text-center mt32">
+      <p class="darkblue">Please add the class to your calendar by clicking above. If you have any questions, shoot us an email at <a href="#" style = "color: #FF6700;">support@getbodyapp.com</a> or give us a call at 857-600-2410.</p>
+  </div> -->

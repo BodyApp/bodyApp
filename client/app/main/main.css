@@ -146,6 +146,11 @@
 }
 .studio-listing-image {
   position: relative;
+  width: 100%;
+  height: 133px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .studio-listing-tags {
   position: absolute;
