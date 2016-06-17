@@ -1,46 +1,73 @@
 angular.module('bodyAppApp')
-  .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, Studios, Studio, $http, Auth, User) {
+  .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, $rootScope, $timeout, Studios, Studio, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
-    if (currentUser.$promise) {
-      currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
-        // listCoupons(data);
-        // listSubscriptionPlans(data);
-      })
-    } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
-    }
-
-    var accessCode;
-
-    if (!studioId) studioId = 'body'
-    Studios.setCurrentStudio(studioId);
-    var ref = firebase.database().ref().child('studios').child(studioId);
-    var auth = firebase.auth();
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        getDropinPlan();
-        getAccessCode();
-        getSyncedStudioName();
-        getToSetup();
-      } else {
-        if (currentUser.firebaseToken) {
-          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
-            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-            getDropinPlan();
-            getAccessCode();
-            getSyncedStudioName();
-            getToSetup();
-          }); 
-        } else {
-          console.log("User doesn't have a firebase token saved, should retrieve one.")
-        }
+    
+    // $rootScope.adminOf = $rootScope.adminOf || {};
+    Studios.setCurrentStudio(studioId)
+    .then(function(){
+      console.log("Succeeded")
+      delayedStartup()
+    }, function(){
+      console.log("Failed")
+      // if (!currentUser.role === 'admin') return $state.go('storefront', { "studioId": studioId });  
+      if (currentUser.$promise) {
+        currentUser.$promise.then(function(data) {
+          if (data.role != 'admin') return $state.go('storefront', { "studioId": studioId });        
+        })
+      } else if (currentUser.role) {
+        if (currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
       }
     })
     
-    $scope.studioId = studioId;
-    $scope.classToCreate = {};
+    // if (currentUser.$promise) {
+    //   currentUser.$promise.then(function(data) {
+    //     $timeout(function(){
+    //       if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });  
+    //       delayedStartup()
+    //     },2000)
+        
+    //   })
+    // } else if (currentUser.role) {
+    //   $timeout(function(){
+    //     if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+    //     delayedStartup()
+    //   },2000)
+    // }
+
+    var accessCode;
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    var auth = firebase.auth();
+
+    function delayedStartup() {
+      $scope.startedLoading = true
+      if (!studioId) studioId = 'body'
+
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          getDropinPlan();
+          getAccessCode();
+          getSyncedStudioName();
+          getToSetup();
+        } else {
+          if (currentUser.firebaseToken) {
+            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+              getDropinPlan();
+              getAccessCode();
+              getSyncedStudioName();
+              getToSetup();
+            }); 
+          } else {
+            console.log("User doesn't have a firebase token saved, should retrieve one.")
+          }
+        }
+      })
+      
+      $scope.studioId = studioId;
+      $scope.classToCreate = {};
+
+    }
 
     // ref.onAuth(function(authData) {
     //   if (authData) {

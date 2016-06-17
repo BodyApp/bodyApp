@@ -3,8 +3,15 @@
 angular.module('bodyAppApp')
   .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, $mdDialog, Studios, $http, Auth, User, Schedule) {
     var currentUser = Auth.getCurrentUser()
-    
     var studioId = $stateParams.studioId;
+    $rootScope.adminOf = $rootScope.adminOf || {};
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+      })
+    } else if (currentUser.role) {
+      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+    }
     $scope.classToCreate = {};
     $scope.minDate = new Date();
     Studios.setCurrentStudio(studioId);

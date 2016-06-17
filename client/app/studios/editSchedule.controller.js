@@ -1,15 +1,17 @@
 angular.module('bodyAppApp')
-  .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, Studios, $http, Auth, User) {
+  .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, $rootScope, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+    
+    $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
+        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
+      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
-    
+
     if (!studioId) studioId = 'body'
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -118,7 +120,18 @@ angular.module('bodyAppApp')
     }
 
     function setDateTimePicker() {
-      $('#datetimepicker').datetimepicker();
+      $('#datetimepicker').datetimepicker({
+        sideBySide: true,
+      });
+      $('#datetimepicker').data("DateTimePicker").minDate(new Date());
+      // $('#datetimepicker').data("DateTimePicker").date(moment().tz('America/New_York'));
+      // $('#datetimepicker').data("DateTimePicker").defaultDate(new Date());
+      // $('#datetimepicker').data("DateTimePicker").sideBySide(true);
+
+
+      // $("#datetimepicker").on("dp.change", function (e) {
+      //       $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+      //   });
       // var something = $('#datetimepicker').data("DateTimePicker")
       // console.log(something)
     }
@@ -236,6 +249,10 @@ angular.module('bodyAppApp')
     $scope.saveWorkout = function(workoutToCreate) {
 
       $scope.dateTimeNotEntered = false;
+
+      $scope.workoutToCreate.dateTime = $('#datetimepicker').data().date;
+      // var workoutToCreate.dateTime = new Date(dataReturned)
+      // console.log(workoutToCreate.dateTime)
 
       if (!workoutToCreate.dateTime) return $scope.dateTimeNotEntered = true;
       if (!workoutToCreate.duration) return $scope.durationNotEntered = true;

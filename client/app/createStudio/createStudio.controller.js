@@ -126,6 +126,9 @@ angular.module('bodyAppApp')
 
   		if (!studioToCreate) return;
   		if (studioId.length < 4) return $scope.invalidId = true;
+      $rootScope.adminOf = $rootScope.adminOf || {};
+      $rootScope.adminOf[studioId] = true;
+      if(!$scope.$$phase) $scope.$apply();
   		ref.child('studios').child(studioId).child('storefrontInfo').once('value', function(snapshot) {
 				var ownerName = currentUser.firstName + " " + currentUser.lastName;
 				ref.child('studios').child(studioId).child('storefrontInfo').set({
@@ -135,7 +138,9 @@ angular.module('bodyAppApp')
           'dateCreated': new Date().getTime()
 				}, function(err) {
 					if (err) return console.log(err);
+          
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
+          
           var storageRef = firebase.storage().ref().child('studios').child(studioId);
           angular.forEach($scope.iconImage,function(obj){
             var uploadTask = storageRef.child('images/icon.jpg').put(obj.lfFile);
@@ -143,10 +148,10 @@ angular.module('bodyAppApp')
           angular.forEach($scope.headerImage,function(obj){
             var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
           })
+          
           $scope.basicsComplete = true;
           $scope.step++;
           if(!$scope.$$phase) $scope.$apply();
-					Studios.setCurrentStudio(studioId);
 
           ref.child('studios').child(studioId).child("toSetup").update({
             "classTypes": true, 
@@ -160,6 +165,7 @@ angular.module('bodyAppApp')
           ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
 						if (err) return console.log(err);
 						console.log("Set current user "+ currentUser._id + " as admin of " + studioId)
+            Studios.setCurrentStudio(studioId);
 						// User.getInstructorByEmail({
 			   //      id: currentUser._id
 			   //    }, {

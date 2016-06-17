@@ -20,17 +20,17 @@
                             <!-- <li>
                                 <a href="#">Sign In</a>
                             </li> -->
-                            <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
+                            <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
                               </p>
                             </li>
-                            <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
+                            <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a ng-href="/studios/{{studioId}}/editschedule">Schedule</a>
                               </p>
                             </li> 
-                            <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
+                            <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
                               <p ng-class="{active: isActive('/schedule')}">
                                 <a ng-href="/studios/{{studioId}}/storefrontinfo">Studio Settings</a>
                               </p>
@@ -78,17 +78,17 @@
                         <!-- <li>
                             <a href="#">Sign In</a>
                         </li> -->
-                        <li ng-show="!isCurrentStudioAdmin() && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
+                        <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
                           </p>
                         </li>                    
-                        <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
+                        <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a ng-href="/studios/{{studioId}}/editschedule">Schedule</a>
                           </p>
                         </li>
-                        <li ng-show="isCurrentStudioAdmin() && isLoggedIn() || getCurrentUser().role === 'admin'">
+                        <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
                           <p ng-class="{active: isActive('/schedule')}">
                             <a ng-href="/studios/{{studioId}}/storefrontinfo">Studio Settings</a>
                           </p>
@@ -118,7 +118,7 @@
                             <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                           </a>
                         </li>
-                        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
+                        <li ng-show="isLoggedIn()"g ng-class="{active: isActive('/logout')}">
                           <a href="" ng-click="logout()">Logout</a>
                         </li>
                         <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">

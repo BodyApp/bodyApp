@@ -48,7 +48,7 @@ User.find({}).remove(function() {
             "max": 17
         }
     },
-    role: "admin",
+    role: "user",
     __v: 51,
     injuries: "Nothing really",
     goals: "To be able to fly",
@@ -68,7 +68,7 @@ User.find({}).remove(function() {
     facebookId: "112747679089662",
     email: "donna_mhsvoea_letuch@tfbnw.net",
     provider: "facebook",
-    role: "admin",
+    role: "user",
     __v: 51,
     injuries: "No problemos",
     bookedIntroClass: true,

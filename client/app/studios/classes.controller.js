@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassesCtrl', function ($scope, $stateParams, $state, $window, Studios, $http, Auth) {
+  .controller('ClassesCtrl', function ($scope, $stateParams, $state, $window, $rootScope, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
+    var studioId = $stateParams.studioId;
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront');  
+        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');  
+      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
     // if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront');
     // var ref;
-    var studioId = $stateParams.studioId;
+    
     $scope.classToCreate = {};
     Studios.setCurrentStudio(studioId);
     $scope.maxDescriptionLength = 500;

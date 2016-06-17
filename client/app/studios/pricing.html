@@ -69,7 +69,7 @@
     <div class="col-md-9">
 
 <!-- PANEL -->
-      <div class="panel space-4" ng-show = "loaded && connectedStripeAccount">
+      <div class="panel space-4" ng-show = "connectedStripeAccount">
         <div class="panel-header">
           Studio Pricing Plans
           <ul class="panel-action-list">
@@ -242,7 +242,7 @@
       </div>
 <!-- PANEL END--> 
 
-        <div class="panel space-4">
+        <div class="panel space-4" ng-show = "startedLoading">
           <div class="panel-header">
             Payout Details          
           </div>

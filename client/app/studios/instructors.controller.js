@@ -1,20 +1,22 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('InstructorsCtrl', function ($scope, $state, $stateParams, $window, Studios, $http, Auth, User) {
+  .controller('InstructorsCtrl', function ($scope, $state, $stateParams, $window, $rootScope, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+    
+    $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
+        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
+      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
+
     $scope.classToCreate = {};
-    
-    
-    if (!studioId) studioId = 'body'
+        
+    // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();

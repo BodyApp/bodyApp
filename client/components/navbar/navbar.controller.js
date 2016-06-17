@@ -26,8 +26,7 @@ angular.module('bodyAppApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.isInstructor = Auth.isInstructor;
     $scope.getCurrentUser = Auth.getCurrentUser;
-    $scope.isCurrentStudioAdmin = Studios.isAdmin;
-
+    
     $scope.clicked = false;
 
     $scope.logoStyle = {"background-color": "white"};
@@ -37,6 +36,7 @@ angular.module('bodyAppApp')
     // $scope.isCurrentStudioAdmin = false;
 
     var studioId = $stateParams.studioId;
+
     var accountId;
     var currentUser;
 

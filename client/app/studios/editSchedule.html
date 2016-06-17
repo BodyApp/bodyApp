@@ -17,10 +17,11 @@
 
           </div>
 
-          <div style = "color: red" ng-show = "">*Required</div>
+          <div style = "color: red" ng-show = "dateTimeNotEntered">*Required</div>
           <div class="row mb8">
             <div class="col-sm-12" >
-              <input type='text' class="form-control" id='datetimepicker'/>
+              <input type='text' class="form-control" id='datetimepicker' minDate = "{{rightNow}}"/>
+              
  <!--              <div class="input-group" datetimepicker ng-model="vm.date">
                   <input type="text" class="form-control"/>
                   <span class="input-group-addon">
