@@ -20,8 +20,8 @@ angular.module('bodyAppApp', [
   'ngMaterial',
   'ngMaterialDatePicker',
   'lfNgMdFileInput',
-  'ngMessages'
-  // 'ae-datetimepicker'
+  'ngMessages',
+  'ae-datetimepicker'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
