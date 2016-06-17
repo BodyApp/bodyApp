@@ -573,6 +573,9 @@ angular.module('bodyAppApp')
         resolve: {
           slot: function () {
             return slot;
+          },
+          studioId: function () {
+            return studioId;
           }
         }
       });

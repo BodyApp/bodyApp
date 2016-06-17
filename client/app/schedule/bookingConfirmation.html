@@ -10,19 +10,30 @@
 
   <div class="class-booked-content">
     <div class="mt16 col-sm-12 text-center">
-      <h5>Your class is with Justin from Perfect Burpee.</h5>
-      <img class="round-photo lightBorder mt8 mb8" src="/assets/images/bern-prince.jpg" width="60" height="60">
+      <h5>Your class is with {{instructorDetails.firstName}} from {{storefrontInfo.studioName}}.</h5>
+      <img class="round-photo lightBorder mt8 mb8" ng-src="{{instructorDetails.picture}}" width="60" height="60">
     </div>
     <div class="col-sm-12 text-left">
       <hr class="content-divider mt8 mb8">
-      <h4 class="bold">Level One with Justin Mendelson</h4>
+      <h4 class="bold">{{classType.name}} with {{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
       <h4 class="royalblue mb8">{{classTime}} {{timezone}} - {{dayOfWeek}}, {{month}}, {{day}}</h4>
       <h5 class="lightgray">
-          Requires: Kettlebell, Mat
+          Requires: <span style = "font-weight: 500;" ng-repeat = "equipment in classType.equipment">{{equipment.name}}<span ng-show = "$index < classType.equipment.length-1">, </span></span>
       </h5>
-      <h5 class="lightgray">This class is all about the establishment of your kettlebell strength. We'll cover lots of different moves and it's going to be a lot of fun. You'll definitely get stronger after this class and have skills to continue to improve your abilities.</h5>
+      <h5 class="lightgray">{{classType.classDescription}}</h5>
       <div class="text-center mt16 mb16">
-        <a class="btn-blue" href="#"><i class="fa fa-calendar"></i> Add to your calendar</a>
+        <!-- <a class="btn-blue" href="#"><i class="fa fa-calendar"></i> Add to your calendar</a> -->
+        <addtocalendarplain
+          ng-show = "startDateTime && endDateTime"
+          start-date= "{{startDateTime}}"
+          end-date="{{endDateTime}}"
+          title="{{classType.name}} Class with {{storefrontInfo.studioName}}"
+          location="https://www.getbodyapp.com/studios/{{studioId}}/classstarting/{{classId}}"
+          
+          class-name="panel-action-item btn-blue"
+          description="Instructor: {{instructorDetails.firstName}} {{instructorDetails.lastName}}. {{instructorDetails.bio}}\n\nClass Description: {{classType.classDescription}}\n\n{{storefrontInfo.studioName}} Description: {{storefrontInfo.shortDescription}}"
+          btn-text="Add to calendar"           
+        ></addtocalendarplain>
       </div>
       <hr class="content-divider mt8 mb8">
     </div>

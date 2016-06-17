@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-    .controller('BookingConfirmationCtrl', function ($scope, Auth, Schedule, slot, $uibModalInstance) {
+    .controller('BookingConfirmationCtrl', function ($scope, Auth, Schedule, slot, studioId, $uibModalInstance) {
         var currentUser = Auth.getCurrentUser();
         $scope.currentUser = currentUser;
         $scope.bookedClass = slot;
@@ -11,11 +11,44 @@ angular.module('bodyAppApp')
             friends: []
         };
     
+        var ref = firebase.database().ref().child('studios').child(studioId);
         var date = new Date(slot.dateTime)
         // $scope.calendarDateSetter = "20150704T210000"
         // $scope.calendarDateSetterEnd = "20150704T220000"
         //Formatting for calendar appointment setting
-        $scope.scheduledClass = slot
+        $scope.scheduledClass = slot;
+        console.log(slot);
+        $scope.studioId = studioId;
+
+        var classId = slot.dateTime;
+        $scope.classId = classId;
+
+        getClassType()
+        getInstructorDetails()
+        getStudioName()
+        calendarDateSetter()
+        calendarDateSetterEnd()
+
+        function getStudioName() {
+            ref.child('storefrontInfo').once('value', function(snapshot) {
+                $scope.storefrontInfo = snapshot.val()
+                if(!$scope.$$phase) $scope.$apply();
+            })
+        }
+
+        function getClassType() {
+            ref.child('classTypes').child(slot.classType).once('value', function(snapshot) {
+                $scope.classType = snapshot.val();
+                if(!$scope.$$phase) $scope.$apply();
+            })
+        }
+
+        function getInstructorDetails() {
+            ref.child('instructors').child(slot.instructor).once('value', function(snapshot) {
+                $scope.instructorDetails  = snapshot.val();
+                if(!$scope.$$phase) $scope.$apply();
+            })
+        }
 
         setTimezone()
         function setTimezone() {
@@ -61,6 +94,18 @@ angular.module('bodyAppApp')
         month[11] = "Dec";
 
         $scope.month = month[date.getMonth()];
+
+        function calendarDateSetter() {
+          var timeOffset = moment().utcOffset();
+          var date = new Date(classId*1 - timeOffset*60*1000);
+          $scope.startDateTime = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        } 
+
+        function calendarDateSetterEnd(duration) {
+          var timeOffset = moment().utcOffset();
+          var date = new Date(classId*1 - timeOffset*60*1000 + slot.duration*60*1000);
+          $scope.endDateTime = date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):(date.getMonth()+1))+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())+"T"+((date.getHours() < 10)?"0"+date.getHours():date.getHours())+""+((date.getMinutes() < 10)?"0"+date.getMinutes():date.getMinutes())+"00"
+        }
 
         $scope.inviteFriendsClicked = function() {
             var user = Auth.getCurrentUser();
