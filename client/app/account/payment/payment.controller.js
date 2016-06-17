@@ -1,34 +1,52 @@
 
 angular.module('bodyAppApp')
-  .controller('PaymentCtrl', function ($scope, Auth, $uibModalInstance, $interval, $timeout) {
+  .controller('PaymentCtrl', function ($scope, Auth, instructorPicture, studioName, $uibModalInstance, $rootScope, $interval, $timeout) {
 
   	$scope.currentUser = Auth.getCurrentUser();
 
-    var checkPayment = $interval(function(){
-      if (checkPaymentStatus()) {
-        $scope.paymentComplete = true;
-        $interval.cancel(checkPayment)
-      }
-    }, 1000, 15)
+    // var checkPayment = $interval(function(){
+    //   if (checkPaymentStatus()) {
+    //     $scope.paymentComplete = true;
+    //     $interval.cancel(checkPayment)
+    //   }
+    // }, 1000, 15)
+
+    // $timeout(function(){
+    //   if (!$scope.paymentComplete && !$scope.letIn) {
+    //     $scope.errorPocessingPayment = true
+    //   }
+    // }, 16)
+
+    $scope.studioName = studioName;
+    $scope.instructorPicture = instructorPicture;
 
     $timeout(function(){
-      if (!$scope.paymentComplete && !$scope.letIn) {
-        $scope.errorPocessingPayment = true
+      if ($rootScope.subscribing) {
+        $rootScope.errorProcessingPayment = true;
+        $rootScope.subscribing = false;
+        if(!$scope.$$phase) $scope.$apply();
       }
-    }, 16)
+    }, 30000)
+
+    
 
   	$scope.closeModal = function() {
   		$uibModalInstance.close()
   	}
 
-    $scope.letMeIn = function() {
-      $scope.letIn = true
+    $scope.openNewMessage = function() {
+      // $uibModalInstance.close()
+      Intercom('showNewMessage', "I had trouble with my payment. Please help!");
     }
 
-  	function checkPaymentStatus() {
+    // $scope.letMeIn = function() {
+    //   $scope.letIn = true
+    // }
+
+  	// function checkPaymentStatus() {
       // if (Auth.getCurrentUser() && Auth.getCurrentUser().stripe && Auth.
       // return Auth.getCurrentUser().stripe ? Auth.getCurrentUser().stripe.subscription.status === "active" : false
-  	}
+  	// }
 
   	// $timeout(function(){
   	// 	if (checkPaymentStatus()) {

@@ -105,7 +105,7 @@ exports.cancelCustomerSubscription = function(req, res, next) {
         snapshot.val().id, 
       { stripe_account: accountId },
       function(err, confirmation) {
-        if (err) return console.log(err)
+        if (err) return next(err)
         ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': confirmation.status})
         return res.status(200).json(confirmation);
         // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
@@ -149,7 +149,7 @@ exports.addCustomerSubscription = function(req, res, next){
     };
 
     var createPlatformCustomerHandler = function(err, customer) {
-      if (err) return console.log(err);
+      if (err) return cb(err);
       if (userEmail) {
         user.email = userEmail;
       }
@@ -165,6 +165,7 @@ exports.addCustomerSubscription = function(req, res, next){
       }
 
       user.save(function(err){
+        if (err) return cb(err);
         if (studioId && accountId) {
           // ref.child("studios").child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(retrievedId) {
           //   if (!retrievedId.exists()) {
@@ -216,7 +217,7 @@ exports.addCustomerSubscription = function(req, res, next){
         ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('usedBy').child(user._id.toString()).update({"dateTimeUsed": new Date().getTime(), "customerId": customer.id})
 
         User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
-          if(err) return console.log(err);
+          if(err) return cb(err);
           if(pulledUser) {
             pulledUser.referrals = pulledUser.referrals || {}
             pulledUser.referrals[studioId] = pulledUser.referrals[studioId] || {};
@@ -225,7 +226,7 @@ exports.addCustomerSubscription = function(req, res, next){
             pulledUser.save(function(err){
               console.log("Successfully saved referral of user " + user._id + " to studio " + studioId + " by user " + pulledUser._id)
               ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('couponOwner').update({'id': pulledUser._id, 'firstName': pulledUser.firstName, 'lastName': pulledUser.lastName, 'facebookId': pulledUser.facebookId, 'email': pulledUser.email})
-              if (err) return console.log(err);
+              if (err) return cb(err);
               return
             });
           }
@@ -245,7 +246,7 @@ exports.addCustomerSubscription = function(req, res, next){
         'planId': subData.plan.id,
         'status': subData.status
       }, function(err) {
-        if (err) console.log(err);
+        if (err) return cb(err);
         res.status(200).send("Added subscription " + subData.id + " for user " + user._id)
         if (err) return cb(err);
         return cb(null);
@@ -307,7 +308,7 @@ exports.addCustomerSubscription = function(req, res, next){
         // connectedAccountAccessToken,
         { stripe_account: connectedAccountId },
         function(err, newToken) {
-          if (err) return console.log(err)
+          if (err) return cb(err);
           // var connectedStripe = require("stripe")(connectedAccountAccessToken)
           //If user already has a customer Id with the connected account
           ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('customerId').once('value', function(snapshot) {
@@ -327,7 +328,7 @@ exports.addCustomerSubscription = function(req, res, next){
                 }, 
                 { stripe_account: connectedAccountId },
                 function(err, customer) {
-                  if (err) return console.log(err)
+                  if (err) return cb(err);
                   createCustomerSubscriptionHandler(err, customer, connectedAccountId);
                   // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
                 })  
@@ -344,7 +345,7 @@ exports.addCustomerSubscription = function(req, res, next){
                 }, 
                 { stripe_account: connectedAccountId },
                 function(err, customer) {
-                  if (err) return console.log(err)
+                  if (err) return cb(err);
                   createCustomerSubscriptionHandler(err, customer, connectedAccountId);
                   // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
                 })
@@ -365,7 +366,7 @@ exports.addCustomerSubscription = function(req, res, next){
                 }, 
                 { stripe_account: connectedAccountId },
                 function(err, customer) {
-                  if (err) return console.log(err)
+                  if (err) return cb(err);
                   createCustomerSubscriptionHandler(err, customer, connectedAccountId);
                   // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
                 })  
@@ -383,7 +384,7 @@ exports.addCustomerSubscription = function(req, res, next){
                 }, 
                 { stripe_account: connectedAccountId },
                 function(err, customer) {
-                  if (err) return console.log(err)
+                  if (err) return cb(err);
                   createCustomerSubscriptionHandler(err, customer, connectedAccountId);
                   // createSubscription(newToken, customer, connectedAccountId, connectedAccountAccessToken)
                 })
@@ -470,7 +471,7 @@ exports.chargeDropin = function(req, res, next){
     };
 
     var createPlatformCustomerHandler = function(err, customer) {
-      if (err) return console.log(err);
+      if (err) return cb(err);
       if (userEmail) {
         user.email = userEmail;
       }
@@ -584,7 +585,7 @@ exports.chargeDropin = function(req, res, next){
         // connectedAccountAccessToken,
         { stripe_account: connectedAccountId },
         function(err, newToken) {
-          if (err) return console.log(err)
+          if (err) return cb(err);
           // var connectedStripe = require("stripe")(connectedAccountAccessToken)
           //If user already has a customer Id with the connected account
           ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('customerId').once('value', function(snapshot) {
@@ -599,7 +600,7 @@ exports.chargeDropin = function(req, res, next){
               }, 
               { stripe_account: connectedAccountId },
               function(err, customer) {
-                if (err) return console.log(err)
+                if (err) return cb(err);
                 stripe.charges.create( 
                 {
                   customer: customer.id,
@@ -614,7 +615,7 @@ exports.chargeDropin = function(req, res, next){
                 }, 
                 { stripe_account: connectedAccountId },
                 function(err, charge) {
-                  if (err) return console.log(err)
+                  if (err) return cb(err);
                   createCustomerChargeHandler(err, charge, connectedAccountId, customer);
                 })  
               })  
@@ -631,7 +632,7 @@ exports.chargeDropin = function(req, res, next){
               }, 
               { stripe_account: connectedAccountId },
               function(err, customer) {
-                if (err) return console.log(err)
+                if (err) return cb(err);
                 stripe.charges.create( 
                 {
                   customer: customer.id,
@@ -646,7 +647,7 @@ exports.chargeDropin = function(req, res, next){
                 }, 
                 { stripe_account: connectedAccountId },
                 function(err, charge) {
-                  if (err) return console.log(err)
+                  if (err) return cb(err);
                   createCustomerChargeHandler(err, charge, connectedAccountId, customer);
                 })  
               })

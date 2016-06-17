@@ -1,10 +1,10 @@
 <div class="modal-body">
 
-  <div class="cancel-modal" href="#" ng-click = "letMeIn()">
+  <div class="cancel-modal" href="#" ng-click = "closeModal()" ng-show = "!subscribing">
     <span><i class="ti-close"></i></span>
   </div>
 
-  <div class="payment-processing-container" ng-show = "!errorProcessingPayment && !letIn">
+  <div class="payment-processing-container" ng-show = "subscribing && !errorProcessingPayment">
     <div class="payment-processing">
       <span class="white"><i class="fa fa-spinner fa-spin"></i> JUST A SEC...</span>
     </div>
@@ -12,31 +12,31 @@
     <div class="payment-content">
       <div class="mt48 col-sm-12 text-center">
           <i class="fa fa-credit-card" style="font-size:100px;"></i>
-          <h3 class="mt16">Hold tight while we process your payment.</h3>
+          <h3 class="mt16">Hold tight while we process your payment with {{studioName}}.</h3>
           <h5 class="lightgray mt16">This should take 30 seconds or less.</h5>
       </div>
     </div>
   </div>
 
-  <div class="payment-confirmed-container" ng-show = "paymentComplete">
+  <div class="payment-confirmed-container" ng-show = "!subscribing && !errorProcessingPayment">
     <div class="payment-confirmed">
       <span class="white"><i class="fa fa-check-circle-o"></i> ALL SET!</span>
     </div>
 
     <div class="payment-content">
       <div class="mt16 col-sm-12 text-center">
-          <img class="round-photo lightBorder mt16 mb16" src="/assets/images/bern-prince.jpg" width="100" height="100">
+          <img class="round-photo lightBorder mt16 mb16" ng-src="{{instructorPicture}}" width="100" height="100">
           <h3>Payment Recieved</h3>
-          <h5 class="lightgray mt8">Your Drop In purchase with Perfect Burpee is confirmed. You will receive an email shortly with your payment receipt.</h5>
-          <hr class="content-divider mt8 mb16">
+          <h5 class="lightgray mt8">Your Drop In purchase with {{studioName}} is confirmed. You will receive an email shortly with your payment receipt.</h5>
+          <!-- <hr class="content-divider mt8 mb16">
           <h5 class="mb8">Have a question about class?</h5>
           <a class="btn-blue" href="#">Contact Perfect Burpee</a>
-          <hr class="content-divider mt16 mb8">
+          <hr class="content-divider mt16 mb8"> -->
       </div>
     </div>
   </div>
 
-  <div class="payment-failed-container" ng-show = "errorProcessingPayment">
+  <div class="payment-failed-container" ng-show = "!subscribing && errorProcessingPayment">
     <div class="payment-failed">
       <span class="white"><i class="fa fa-warning"></i> BLAST!</span>
     </div>
@@ -53,9 +53,9 @@
     </div>
   </div>
 
-  <div class="close-modal-btn">
+  <div class="close-modal-btn" ng-show = "!subscribing">
     <div class="col-sm-12 text-center">
-      <a href="#" class="btn btn-collapse" ng-show = "paymentComplete || errorProcessingPayment" ng-click = "letMeIn()">Close</a>
+      <a href="#" class="btn btn-collapse" ng-show = "paymentComplete || errorProcessingPayment" ng-click = "closeModal()">Close</a>
     </div>
   </div>
  

@@ -37,6 +37,8 @@ angular.module('bodyAppApp')
         planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
         $scope.planInfo = planInfo;
         if(!$scope.$$phase) $scope.$apply();
+        getInstructorPicture()
+        getStudioName()
       })
 
       ref.child('stripeConnected').child('dropinPlan').once('value', function(snapshot) {
@@ -44,7 +46,21 @@ angular.module('bodyAppApp')
         dropinRate = snapshot.val().amount
         $scope.dropinRate = dropinRate;
         if(!$scope.$$phase) $scope.$apply();
+        getInstructorPicture()
+        getStudioName()
       })  
+    }
+
+    function getStudioName() {
+      ref.child('storefrontInfo').child('studioName').once('value', function(snapshot) {
+        $scope.studioName = snapshot.val()
+      })
+    }
+
+    function getInstructorPicture() {
+      ref.child('instructors').child(slot.instructor).child('picture').once('value', function(snapshot) {
+        $scope.instructorPicture = snapshot.val();
+      })
     }
     
 
@@ -157,6 +173,7 @@ angular.module('bodyAppApp')
 
 		function openStripePayment(coupon) {
       if ($rootScope.subscribing) return
+      $rootScope.errorProcessingPayment = false;
       
       // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
       // if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
@@ -190,20 +207,23 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
             console.log("Successfully created new customer subscription.");
-            modalInstance.close();
+            // modalInstance.close();
             // Auth.updateUser(data);
             // currentUser = data;
             // currentUser = currentUser;
             // $rootScope.subscriptions = $rootScope.subscriptions || {};
             // $rootScope.subscriptions[studioId] = 'active';
             $rootScope.subscribing = false;
+            if(!$scope.$$phase) $scope.$apply();
             if (slot) bookClass(slot);               
           })
           .error(function(err) {
             console.log(err)
             $rootScope.subscribing = false;
-            modalInstance.close()
-            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+            $rootScope.errorProcessingPayment = true;
+            if(!$scope.$$phase) $scope.$apply();
+            // modalInstance.close()
+            // return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
           }.bind(this));
         }
       });
@@ -224,7 +244,8 @@ angular.module('bodyAppApp')
     function openStripeDropIn() {
       if (!slot) return
       if ($rootScope.subscribing) return
-      
+      $rootScope.errorProcessingPayment = false;
+
       var amountToPay = dropinRate;
       // $scope.invalidCouponEntered = false;
       $uibModalInstance.dismiss('join');
@@ -240,7 +261,8 @@ angular.module('bodyAppApp')
         locale: 'auto',
         token: function(token, args) {
           var modalInstance = openDropInPaymentConfirmedModal()
-          $rootScope.subscribing = true
+          $rootScope.subscribing = true;
+          
           $http.post('/api/payments/chargedropin', {
             amount: dropinRate,
             stripeToken: token,
@@ -251,8 +273,10 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
             $rootScope.subscribing = false;
+            $rootScope.errorProcessingPayment = false;
+            if(!$scope.$$phase) $scope.$apply();
             console.log("Successfully posted to /user/chargedropin");
-            modalInstance.close()
+            // modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
             // currentUser = currentUser;
@@ -261,10 +285,12 @@ angular.module('bodyAppApp')
           })
           .error(function(err) {
             $rootScope.subscribing = false;
+            $rootScope.errorProcessingPayment = true;
+            if(!$scope.$$phase) $scope.$apply();
             console.log(err)
-            modalInstance.close()
+            // modalInstance.close()
             // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
-            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+            // return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
           }.bind(this));
         }
       });
@@ -291,6 +317,7 @@ angular.module('bodyAppApp')
     function openStripeSpecialty() {
       if (!slot) return
       if ($rootScope.subscribing) return
+      $rootScope.errorProcessingPayment = false;
       
       var amountToPay = specialtyRate;
       // $scope.invalidCouponEntered = false;
@@ -318,8 +345,10 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
             $rootScope.subscribing = false;
+            $rootScope.errorProcessingPayment = false;
+            if(!$scope.$$phase) $scope.$apply();
             console.log("Successfully posted to /user/chargedropin");
-            modalInstance.close()
+            // modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
             // currentUser = currentUser;
@@ -328,10 +357,13 @@ angular.module('bodyAppApp')
           })
           .error(function(err) {
             $rootScope.subscribing = false;
+            $rootScope.errorProcessingPayment = true;
+            if(!$scope.$$phase) $scope.$apply();
+
             console.log(err)
-            modalInstance.close()
+            // modalInstance.close()
             // if (err.message) return alert(err.message + " Please try again or contact daniel@getbodyapp.com for assistance.")
-            return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
+            // return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
           }.bind(this));
         }
       });
@@ -357,6 +389,14 @@ angular.module('bodyAppApp')
         templateUrl: 'app/account/payment/paymentThanks.html',
         controller: 'PaymentCtrl',
         backdrop: "static",
+        resolve: {
+          studioName: function() {
+            return $scope.studioName;
+          },
+          instructorPicture: function() {
+            return $scope.instructorPicture;
+          }
+        },
         keyboard: false
       });
 
@@ -373,6 +413,14 @@ angular.module('bodyAppApp')
         templateUrl: 'app/account/payment/dropInThanks.html',
         controller: 'PaymentCtrl',
         backdrop: "static",
+        resolve: {
+          studioName: function() {
+            return $scope.studioName;
+          },
+          instructorPicture: function() {
+            return $scope.instructorPicture;
+          }
+        },
         keyboard: false
       });
 
