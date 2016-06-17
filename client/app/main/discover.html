@@ -53,13 +53,13 @@
          <a href="/studios/{{studio.studioId}}">
           <div class="panel">
             <div class="studio-listing-container">
-              <div class="studio-listing-image" style = "min-height: 125px;">
+              <div class="studio-listing-image" ng-style="{'background-image':'url('+ studioPictures[studio.studioId] +')'}">
                 <div class="studio-listing-tags text-center">
                   <span ng-repeat = "(category, active) in studio.categories" ng-show = "active">
                     #{{category}}
                   </span>
                 </div>
-                <img ng-src="{{studioPictures[studio.studioId]}}">
+                <!-- <img ng-src="{{studioPictures[studio.studioId]}}"> -->
               </div>
               <div class="panel-body">
                 <!-- <div class="studio-listing-stars">
