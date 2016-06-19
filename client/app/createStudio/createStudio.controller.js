@@ -7,6 +7,11 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref();
 
     $scope.step = 0;
+    if ($cookies.get('studioCreationStarted')) {
+      $scope.creationStarted = true;
+      $cookies.remove('studioCreationStarted');
+    }
+
     $scope.calcDuration = 'Yearly';
     $scope.subscriptionPrice = 30;
     $scope.numSubscribers = 250;
@@ -107,6 +112,7 @@ angular.module('bodyAppApp')
         //   windowClass: "modal-tall"
         // });
         $cookies.put('loggedInPath', $location.path())
+        $cookies.put('studioCreationStarted', true)
         // $rootScope.loggedInPath = $location.path()
         $state.go('signup', {step: 0, mode: 'signup'})
       }
@@ -140,6 +146,8 @@ angular.module('bodyAppApp')
 					if (err) return console.log(err);
           
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
+
+          $cookies.remove('studioCreationStarted');
           
           var storageRef = firebase.storage().ref().child('studios').child(studioId);
           angular.forEach($scope.iconImage,function(obj){
@@ -205,11 +213,13 @@ angular.module('bodyAppApp')
     $scope.goToStep = function(step) {
       if ($scope.basicsComplete) $scope.step = step;
       $scope.scrollTop();
+      $cookies.remove('studioCreationStarted');
       if(!$scope.$$phase) $scope.$apply();
     }
 
     //Add billing controller
     $scope.beginStripeConnect = function() {
+      $cookies.remove('studioCreationStarted');
       $window.location.href = '/auth/stripe?studioid=' + $scope.studioToCreate.studioId;
       // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')

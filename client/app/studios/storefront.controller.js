@@ -432,6 +432,12 @@ angular.module('bodyAppApp')
           //   $window.location.reload()
           // });
           // }
+        } else if (slot.typeOfClass === 'Specialty') {
+          return bookSpecialtyClass(slot)
+        } else if (currentUser && currentUser.role === 'admin') {
+          return bookClass(slot)
+        } else if (studioId === 'body') {
+          return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
@@ -529,14 +535,15 @@ angular.module('bodyAppApp')
     $scope.reserveClicked = function(slot) {
       // console.log(slot)
       if ($rootScope.subscribing) return
-      if (slot.typeOfClass === 'Specialty') {
-        return bookSpecialtyClass(slot)
-      }
-      if (currentUser && currentUser.role === 'admin') {
-        bookClass(slot)
-      } else if (studioId === 'body') {
-        bookClass(slot)
-      } else if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
+      // if (slot.typeOfClass === 'Specialty') {
+      //   return bookSpecialtyClass(slot)
+      // }
+      // if (currentUser && currentUser.role === 'admin') {
+      //   bookClass(slot)
+      // } else if (studioId === 'body') {
+      //   bookClass(slot)
+      // } else 
+      if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")
         checkMembership(slot)
       } else {
