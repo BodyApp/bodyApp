@@ -30,6 +30,7 @@ angular.module('bodyAppApp')
     //Check and handle if mobile
     if(window.innerWidth <= 800 && window.innerHeight <= 600) {
       $scope.clicked = false;
+      $scope.isMobile = true;
       if(!$scope.$$phase) $scope.$apply();
    } else {
      $scope.clicked = true;

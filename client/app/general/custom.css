@@ -2,6 +2,15 @@
 .mdDialogWidth button {
   width: 200px; 
 }
+/*navbar*/
+
+#menuleft.addRightMargin > li {
+  padding-right: 32px !important;
+}
+
+#menuright.addRightMargin > li {
+  padding-right: 32px !important;
+}
 
 /*------CREATE STUDIO-------*/
 .calculator-inputs input {

@@ -5,18 +5,23 @@
     <div class="nav-container">
         <nav>
             <div class="nav-bar">
-                <div class="module left">
+                <!-- <div class="module left">
                     <a href="/">
                         <img ng-style = "logoStyle" ng-src="{{imageSrc}}">
                     </a>
-                </div>
+                </div> -->
                 <div class="module widget-handle mobile-toggle right visible-sm visible-xs" ng-click = "checkClickCorrect()">
                     <!-- <i class="ti-menu-alt loggedinHamburger"></i> -->
                     <a style = "line-height: 55px !important;">&#9776;</a>
                 </div>                
                 <div class="module-group left" ng-show = "clicked">
                   <div class="">
-                    <ul class="menu">
+                    <ul class="menu" id = "menuleft" ng-class="{addRightMargin: isMobile}">
+                      <li>
+                        <a href="/">
+                          <img ng-style = "logoStyle" ng-src="{{imageSrc}}">
+                        </a>
+                      </li>
                       <li ng-show="!studioId">
                         <p ng-class="{active: isActive('/experience')}">
                           <a href="/experience">How It Works</a>
@@ -42,7 +47,7 @@
                 </div>
                 <div class="module-group right" ng-show = "clicked">
                   <div class="">
-                    <ul class="menu">
+                    <ul class="menu" id = "menuright" ng-class="{addRightMargin: isMobile}">
                       <li ng-show="adminSelected && isLoggedIn() || getCurrentUser().role === 'admin'">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a ng-href="/studios/{{adminSelected}}/editschedule">{{adminSelected}} Schedule</a>

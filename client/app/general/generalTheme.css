@@ -1056,7 +1056,8 @@ nav.bg-dark .logo-dark {
   opacity: 1 !important;
 }
 .menu > li {
-  margin-right: 32px;
+  margin-left: 16px;
+  margin-right: 16px;
   float: left;
   position: relative;
   transition: all 0.3s ease;
