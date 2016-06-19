@@ -5,11 +5,11 @@
     <div class="nav-container">
         <nav>
             <div class="nav-bar">
-                <!-- <div class="module left">
+                <div class="module left" style = "padding-left: 16px !important; padding-right: 16px !important;">
                     <a href="/">
                         <img ng-style = "logoStyle" ng-src="{{imageSrc}}">
                     </a>
-                </div> -->
+                </div>
                 <div class="module widget-handle mobile-toggle right visible-sm visible-xs" ng-click = "checkClickCorrect()">
                     <!-- <i class="ti-menu-alt loggedinHamburger"></i> -->
                     <a style = "line-height: 55px !important;">&#9776;</a>
@@ -17,11 +17,6 @@
                 <div class="module-group left" ng-show = "clicked">
                   <div class="">
                     <ul class="menu" id = "menuleft" ng-class="{addRightMargin: isMobile}">
-                      <li>
-                        <a href="/">
-                          <img ng-style = "logoStyle" ng-src="{{imageSrc}}">
-                        </a>
-                      </li>
                       <li ng-show="!studioId">
                         <p ng-class="{active: isActive('/experience')}">
                           <a href="/experience">How It Works</a>
@@ -78,14 +73,14 @@
                           <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                         </a>
                       </li>
-                      <li ng-show="isLoggedIn()"g ng-class="{active: isActive('/logout')}">
+                      <li ng-show="isLoggedIn()">
                         <a href="" ng-click="logout()">Logout</a>
                       </li>
-                      <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                        <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
+                      <li ng-show="!isLoggedIn()">
+                        <a href="" ng-click="signUp()">Sign up</a>
                       </li>
-                      <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                        <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
+                      <li ng-show="!isLoggedIn()">
+                        <a href="" ng-click="loginOauth('facebook')">Log in</a>
                       </li>                        
                     </ul>
                   </div>

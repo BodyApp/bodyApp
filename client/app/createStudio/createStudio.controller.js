@@ -140,6 +140,8 @@ angular.module('bodyAppApp')
 				ref.child('studios').child(studioId).child('storefrontInfo').set({
 					'studioId':studioId, 
 					'ownerName': ownerName,
+          'ownerEmail': currentUser.email,
+          'ownerFbId': currentUser.facebookId,
           'studioName': studioToCreate.studioName,
           'dateCreated': new Date().getTime()
 				}, function(err) {
