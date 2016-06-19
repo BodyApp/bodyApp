@@ -26,8 +26,15 @@ angular.module('bodyAppApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.isInstructor = Auth.isInstructor;
     $scope.getCurrentUser = Auth.getCurrentUser;
-    
-    $scope.clicked = false;
+
+    //Check and handle if mobile
+    if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+      $scope.clicked = false;
+      if(!$scope.$$phase) $scope.$apply();
+   } else {
+     $scope.clicked = true;
+      if(!$scope.$$phase) $scope.$apply();
+   }
 
     $scope.logoStyle = {"background-color": "white"};
     $scope.imageSrc = "../assets/images/BodyLogo_blue_small.png"
@@ -40,11 +47,11 @@ angular.module('bodyAppApp')
     var accountId;
     var currentUser;
 
-    if (!studioId) {
-      studioId = 'body'
-    }
+    // if (!studioId) {
+    //   studioId = 'body'
+    // }
 
-    var ref = firebase.database().ref().child('studios').child(studioId);
+    var ref = studioId ? firebase.database().ref().child('studios').child(studioId): null;
     Studios.setCurrentStudio(studioId);
     // currentUser = Auth.getCurrentUser()
 
@@ -58,30 +65,39 @@ angular.module('bodyAppApp')
         auth.onAuthStateChanged(function(user) {
           if (user) {
             console.log("User is authenticated with fb ");
-            getAccountId()
-            getSubscriptionStatus()
+            if (ref) {
+              getAccountId()
+              getSubscriptionStatus()  
+            }
             updateIntercom(currentUser)
             geolocate()
+            getStudiosAdmin()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
             if (currentUser.firebaseToken) {
               auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
                 if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-                getAccountId()
-                getSubscriptionStatus()
+                if (ref) {
+                  getAccountId()
+                  getSubscriptionStatus()  
+                }
                 updateIntercom(currentUser)
                 geolocate()
+                getStudiosAdmin()
                   // checkIfStudioAdmin()
               }); 
             } else {
               User.createFirebaseToken({ id: currentUser._id }, {}, function(token) {
                 auth.signInWithCustomToken(token).then(function(user) {
                   if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-                  getAccountId()
-                  getSubscriptionStatus()
+                  if (ref) {
+                    getAccountId()
+                    getSubscriptionStatus()  
+                  }
                   updateIntercom(currentUser)
                   geolocate()
+                  getStudiosAdmin()
                     // checkIfStudioAdmin()
                 }); 
               })
@@ -150,6 +166,38 @@ angular.module('bodyAppApp')
     if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
       $scope.wrongBrowser = true;
     }
+
+    function getStudiosAdmin() {
+      firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('studiosAdmin').on('value', function(snapshot) {
+        $rootScope.adminOf = snapshot.val();
+        $rootScope.adminSelected = $rootScope.adminSelected || Object.keys(snapshot.val())[0];
+        console.log($rootScope.adminSelected)
+        snapshot.forEach(function(studio) {
+          getStudioLogos(studio.key)
+        })        
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    function getStudioLogos(studio) {
+      firebase.storage().ref().child('studios').child(studio).child('images/icon.jpg').getDownloadURL().then(function(url) {
+        $scope.adminStudioLogos = $scope.adminStudioLogos || {};
+        $scope.adminStudioLogos[studio] = url;
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+    $scope.goToStorefront = function(studioToSelect) {
+      $rootScope.adminSelected = studioToSelect;
+      if(!$scope.$$phase) $scope.$apply();
+      $location.path('/studios/'+$rootScope.adminSelected)      
+    }
+
+    // $scope.openMenu = function(ev) {
+    //   $mdOpenMenu(ev)
+    // }
 
     $scope.downloadChrome = function() {
       $window.open("https://www.google.com/chrome/index.html");

@@ -14,119 +14,74 @@
                     <!-- <i class="ti-menu-alt loggedinHamburger"></i> -->
                     <a style = "line-height: 55px !important;">&#9776;</a>
                 </div>                
-                <div id="tour-results" class="module-group right" ng-show = "clicked">
-                    <div class="module left">
-                        <ul class="menu">
-                            <!-- <li>
-                                <a href="#">Sign In</a>
-                            </li> -->
-                            <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
-                              <p ng-class="{active: isActive('/schedule')}">
-                                <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
-                              </p>
-                            </li>
-                            <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
-                              <p ng-class="{active: isActive('/schedule')}">
-                                <a ng-href="/studios/{{studioId}}/editschedule">Schedule</a>
-                              </p>
-                            </li> 
-                            <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
-                              <p ng-class="{active: isActive('/schedule')}">
-                                <a ng-href="/studios/{{studioId}}/storefrontinfo">Studio Settings</a>
-                              </p>
-                            </li>                   
-                            <li ng-show="isLoggedIn()">
-                              <p ng-class="{active: isActive('/schedule')}">
-                                <a href="/studios/{{studioId}}">Storefront</a>
-                              </p>
-                            </li>
-                            <!-- <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
-                              <p ng-class="{active: isActive('/results')}">
-                                <a href="/results">Results</a>
-                              </p>
-                            </li> -->
-                            <!-- <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
-                              <p ng-class="{active: false}">
-                                <a href = "#" ng-click="openSpreadTheWordModal()">Share</a>
-                              </p>
-                            </li> -->
-<!--                             <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
-                              <p ng-class="{active: isActive('/results')}">
-                                <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
-                              </p>
-                            </li> -->
-                            <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
-                              <a href="/settings">
-                                Hi {{getCurrentUser().firstName}}
-                              </a>
-                            </li>
-                            <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
-                              <a href="" ng-click="logout()">Logout</a>
-                            </li>
-                            <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                              <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
-                            </li>
-                            <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                              <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
-                            </li>                                                        
-                        </ul>
-                    </div>
-                </div>
-                <div id="tour-results" class="module-group right visible-md visible-lg">
-                  <div class="module left">
+                <div class="module-group left" ng-show = "clicked">
+                  <div class="">
                     <ul class="menu">
-                        <!-- <li>
-                            <a href="#">Sign In</a>
-                        </li> -->
-                        <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
-                          <p ng-class="{active: isActive('/schedule')}">
-                            <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
-                          </p>
-                        </li>                    
-                        <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
-                          <p ng-class="{active: isActive('/schedule')}">
-                            <a ng-href="/studios/{{studioId}}/editschedule">Schedule</a>
-                          </p>
-                        </li>
-                        <li ng-show="adminOf[studioId] && isLoggedIn() || getCurrentUser().role === 'admin'">
-                          <p ng-class="{active: isActive('/schedule')}">
-                            <a ng-href="/studios/{{studioId}}/storefrontinfo">Studio Settings</a>
-                          </p>
-                        </li>
-                        <li ng-show="isLoggedIn()">
-                          <p ng-class="{active: isActive('/schedule')}">
-                            <a href="/studios/{{studioId}}">Storefront</a>
-                          </p>
-                        </li>
-                       <!--  <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
-                          <p ng-class="{active: isActive('/results')}">
-                            <a href="/results">Results</a>
-                          </p>
-                        </li> -->
-                        <!-- <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
-                          <p ng-class="{active: false}">
-                            <a href = "#" ng-click="openSpreadTheWordModal()">Share</a>
-                          </p>
-                        </li> -->
-  <!--                       <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)">
-                          <p ng-class="{active: isActive('/results')}">
-                            <a href="http://vip.getbodyapp.com" target="_blank">VIP</a>
-                          </p>
-                        </li> -->
-                        <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
-                          <a href="/settings">
-                            <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
+                      <li ng-show="!studioId">
+                        <p ng-class="{active: isActive('/experience')}">
+                          <a href="/experience">How It Works</a>
+                        </p>
+                      </li>
+                      <li>
+                        <p ng-class="{active: isActive('/discover')}">
+                          <a href="/discover">Discover</a>
+                        </p>
+                      </li>
+                      <li ng-show="studioId && isLoggedIn() && !adminOf[studioId]">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a href="/studios/{{studioId}}">Storefront</a>
+                        </p>
+                      </li>
+                      <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
+                        </p>
+                      </li>   
+                    </ul>
+                  </div>
+                </div>
+                <div class="module-group right" ng-show = "clicked">
+                  <div class="">
+                    <ul class="menu">
+                      <li ng-show="adminSelected && isLoggedIn() || getCurrentUser().role === 'admin'">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a ng-href="/studios/{{adminSelected}}/editschedule">{{adminSelected}} Schedule</a>
+                        </p>
+                      </li>
+                      <li ng-show="adminSelected && isLoggedIn() || getCurrentUser().role === 'admin'">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a ng-href="/studios/{{adminSelected}}/storefrontinfo">{{adminSelected}} Settings</a>
+                        </p>
+                      </li>
+                      <li ng-show="adminOf && isLoggedIn()" ng-mouseenter = "storefrontsMenuOpened = true" ng-mouseleave = "storefrontsMenuOpened = false">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a href="/studios/{{adminSelected}}" >
+                            <img class="nav-profile-pic" src="{{adminStudioLogos[adminSelected]}}"> My storefronts
                           </a>
-                        </li>
-                        <li ng-show="isLoggedIn()"g ng-class="{active: isActive('/logout')}">
-                          <a href="" ng-click="logout()">Logout</a>
-                        </li>
-                        <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                          <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
-                        </li>
-                        <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
-                          <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
-                        </li>                        
+                          <md-menu-content ng-show = "storefrontsMenuOpened" ng-repeat = "(studioId, bool) in adminOf">
+                            <md-menu-item><md-button ng-click="goToStorefront(studioId)">{{studioId}}</md-button></md-menu-item>
+                          </md-menu-content>
+                        </p>
+                      </li>
+                      <!-- <li ng-show="studioId && isLoggedIn() && !adminOf[studioId]">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a href="/studios/{{studioId}}">Storefront</a>
+                        </p>
+                      </li> -->
+                      <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
+                        <a href="/settings">
+                          <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
+                        </a>
+                      </li>
+                      <li ng-show="isLoggedIn()"g ng-class="{active: isActive('/logout')}">
+                        <a href="" ng-click="logout()">Logout</a>
+                      </li>
+                      <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
+                        <a id="#nav-fb-login" href="#" ng-click="signUp()">Sign up</a>
+                      </li>
+                      <li ng-show="!isLoggedIn()" ng-class="{active: isActive('/login')}">
+                        <a id="#nav-fb-login" href="#" ng-click="loginOauth('facebook')">Log in</a>
+                      </li>                        
                     </ul>
                   </div>
               </div>

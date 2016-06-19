@@ -161,6 +161,10 @@ angular.module('bodyAppApp')
           $scope.step++;
           if(!$scope.$$phase) $scope.$apply();
 
+          ref.child('fbUsers').child(currentUser.facebookId).child('studiosAdmin').child(studioId).set(true, function(err) {
+            if (err) console.log(err)
+          })          
+
           ref.child('studios').child(studioId).child("toSetup").update({
             "classTypes": true, 
             "instructors": true, 
