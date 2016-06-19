@@ -170,6 +170,11 @@ angular.module('bodyAppApp')
 
     function getStudiosAdmin() {
       firebase.database().ref().child('fbUsers').child(currentUser.facebookId).child('studiosAdmin').on('value', function(snapshot) {
+        if (!snapshot.exists()) {
+          $rootScope.adminOf = false;
+          if(!$scope.$$phase) $scope.$apply();
+          return
+        }
         $rootScope.adminOf = snapshot.val();
         $rootScope.adminSelected = $rootScope.adminSelected || Object.keys(snapshot.val())[0];
         console.log($rootScope.adminSelected)

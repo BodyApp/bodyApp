@@ -63,11 +63,11 @@ angular.module('bodyAppApp')
     //This should have promise in it
     service.setCurrentStudio = function(studioId) {
       var currentUser = Auth.getCurrentUser();
-      $rootScope.adminOf = $rootScope.adminOf || {};
+      // $rootScope.adminOf = $rootScope.adminOf || {};
       deferObject =  deferObject || $q.defer();
       service.currentStudio = studioId
       
-      if ($rootScope.adminOf[studioId]) {
+      if ($rootScope.adminOf && $rootScope.adminOf[studioId]) {
         deferObject.resolve(true);
       } else if (currentUser.$promise) {
         currentUser.$promise.then(function(data) {
