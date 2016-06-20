@@ -27,6 +27,7 @@ angular.module('bodyAppApp')
         createInitialTokBoxSession();
         getSpecialtyClasses();
         setDateTimePicker();
+        getStudioName();
       } else {
         // console.log("User is logged out");
         if (currentUser.firebaseToken) {
@@ -42,6 +43,7 @@ angular.module('bodyAppApp')
             createInitialTokBoxSession();
             getSpecialtyClasses();
             setDateTimePicker();
+            getStudioName();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -306,6 +308,13 @@ angular.module('bodyAppApp')
       ref.child('playlists').once('value', function(snapshot) {
         $scope.playlistObjects = snapshot.val();
         Studios.savePlaylistObjects(snapshot.val())
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    function getStudioName() {
+      ref.child('storefrontInfo').child('studioName').once('value', function(snapshot) {
+        $scope.studioName = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
       })
     }
