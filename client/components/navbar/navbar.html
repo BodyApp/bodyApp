@@ -27,11 +27,11 @@
                           <a href="/discover">Discover</a>
                         </p>
                       </li>
-                      <li ng-show="studioId && isLoggedIn() && !adminOf[studioId]">
+                      <!-- <li ng-show="studioId && isLoggedIn() && !adminOf[studioId]">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="/studios/{{studioId}}">Storefront</a>
                         </p>
-                      </li>
+                      </li> -->
                       <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
@@ -43,7 +43,7 @@
                 <div class="module-group right" ng-show = "clicked">
                   <div class="">
                     <ul class="menu" id = "menuright" ng-class="{addRightMargin: isMobile}">
-                      <li ng-show="adminSelected && isLoggedIn() || getCurrentUser().role === 'admin'">
+                      <!-- <li ng-show="adminSelected && isLoggedIn() || getCurrentUser().role === 'admin'">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a ng-href="/studios/{{adminSelected}}/editschedule">{{adminSelected}} Schedule</a>
                         </p>
@@ -52,15 +52,30 @@
                         <p ng-class="{active: isActive('/schedule')}">
                           <a ng-href="/studios/{{adminSelected}}/storefrontinfo">{{adminSelected}} Settings</a>
                         </p>
-                      </li>
-                      <li ng-show="adminOf && isLoggedIn()" ng-mouseenter = "storefrontsMenuOpened = true" ng-mouseleave = "storefrontsMenuOpened = false">
+                      </li> -->
+                      <li style = "min-width: 226px;" ng-show="adminOf && isLoggedIn()" ng-mouseenter = "storefrontsMenuOpened = true" ng-mouseleave = "storefrontsMenuOpened = false">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="/studios/{{adminSelected}}" >
-                            <img class="nav-profile-pic" src="{{adminStudioLogos[adminSelected]}}"> My storefronts
+                            <img class="nav-profile-pic" ng-src="{{adminStudioLogos[adminSelected]}}"> Storefront
                           </a>
-                          <md-menu-content ng-show = "storefrontsMenuOpened" ng-repeat = "(studioId, bool) in adminOf">
-                            <md-menu-item><md-button ng-click="goToStorefront(studioId)">{{studioId}}</md-button></md-menu-item>
+                          <md-menu-content ng-show = "storefrontsMenuOpened">
+                            <md-menu-item>
+                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToSchedule(studioId)">Schedule</md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToSettings(studioId)">Settings</md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                              <md-content style = "font-weight: 600;" ng-show = "numStudiosAdmin > 1">Switch To:</md-content>
+                            </md-menu-item>
+                            <md-menu-item ng-repeat = "(studioId, bool) in adminOf" ng-show = "studioId != adminSelected">
+                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToStorefront(studioId)">
+                                <img class="nav-profile-pic" ng-src="{{adminStudioLogos[studioId]}}"> 
+                                {{studioNames[studioId]}} 
+                              </md-button>
+                            </md-menu-item>
                           </md-menu-content>
+
                         </p>
                       </li>
                       <!-- <li ng-show="studioId && isLoggedIn() && !adminOf[studioId]">
@@ -68,14 +83,17 @@
                           <a href="/studios/{{studioId}}">Storefront</a>
                         </p>
                       </li> -->
-                      <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}">
+                      <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}" ng-mouseenter = "displayLogout = true" ng-mouseleave = "displayLogout = false">
                         <a href="/settings">
                           <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                         </a>
+                        <md-menu-content ng-show = "displayLogout && isLoggedIn()">
+                          <md-menu-item><md-button ng-click="logout()">Logout</md-button></md-menu-item>
+                        </md-menu-content>
                       </li>
-                      <li ng-show="isLoggedIn()">
+                      <!-- <li ng-show="isLoggedIn()">
                         <a href="" ng-click="logout()">Logout</a>
-                      </li>
+                      </li> -->
                       <li ng-show="!isLoggedIn()">
                         <a href="" ng-click="signUp()">Sign up</a>
                       </li>

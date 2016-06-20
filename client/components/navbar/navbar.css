@@ -2,3 +2,7 @@
 	content: "\e68e";
 	/*font-size: 20px;*/
 }
+
+.textRight {
+	text-align: right !important;
+}

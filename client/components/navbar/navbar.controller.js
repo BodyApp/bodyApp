@@ -28,7 +28,7 @@ angular.module('bodyAppApp')
     $scope.getCurrentUser = Auth.getCurrentUser;
 
     //Check and handle if mobile
-    if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+    if(window.innerWidth <= 990) {
       $scope.clicked = false;
       $scope.isMobile = true;
       if(!$scope.$$phase) $scope.$apply();
@@ -176,19 +176,32 @@ angular.module('bodyAppApp')
           return
         }
         $rootScope.adminOf = snapshot.val();
+        $rootScope.numStudiosAdmin = Object.keys(snapshot.val()).length;
         $rootScope.adminSelected = $rootScope.adminSelected || Object.keys(snapshot.val())[0];
-        console.log($rootScope.adminSelected)
         snapshot.forEach(function(studio) {
-          getStudioLogos(studio.key)
+          getStudioLogos(studio.key);
+          getStudioNames(studio.key);
         })        
         if(!$scope.$$phase) $scope.$apply();
       })
     }
 
     function getStudioLogos(studio) {
+      if ($rootScope.adminStudioLogos && $rootScope.adminStudioLogos[studio]) return
       firebase.storage().ref().child('studios').child(studio).child('images/icon.jpg').getDownloadURL().then(function(url) {
-        $scope.adminStudioLogos = $scope.adminStudioLogos || {};
-        $scope.adminStudioLogos[studio] = url;
+        $rootScope.adminStudioLogos = $rootScope.adminStudioLogos || {};
+        $rootScope.adminStudioLogos[studio] = url;
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+    function getStudioNames(studio) {
+      if ($rootScope.studioNames && $rootScope.studioNames[studio]) return
+      firebase.database().ref().child('studios').child(studio).child('storefrontInfo').child('studioName').once('value', function(snapshot) {
+        $rootScope.studioNames = $rootScope.studioNames || {};
+        $rootScope.studioNames[studio] = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
         console.log(error)
@@ -199,6 +212,18 @@ angular.module('bodyAppApp')
       $rootScope.adminSelected = studioToSelect;
       if(!$scope.$$phase) $scope.$apply();
       $location.path('/studios/'+$rootScope.adminSelected)      
+    }
+
+    $scope.goToSchedule = function(studioToSelect) {
+      $rootScope.adminSelected = studioToSelect;
+      if(!$scope.$$phase) $scope.$apply();
+      $location.path('/studios/'+$rootScope.adminSelected + '/editschedule')      
+    }
+
+    $scope.goToSettings = function(studioToSelect) {
+      $rootScope.adminSelected = studioToSelect;
+      if(!$scope.$$phase) $scope.$apply();
+      $location.path('/studios/'+$rootScope.adminSelected + '/storefrontinfo')
     }
 
     // $scope.openMenu = function(ev) {
