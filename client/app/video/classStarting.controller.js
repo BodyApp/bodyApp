@@ -13,8 +13,6 @@ angular.module('bodyAppApp')
     calculateTimeUntilClassStarts()
     setupVidAud()
 
-
-
     auth.onAuthStateChanged(function(user) {
       if (user) {     
         getClassDetails()
@@ -117,12 +115,12 @@ angular.module('bodyAppApp')
 
     function calculateTimeUntilClassStarts() {
     	var timeNow = new Date().getTime();
-    	var minutesUntilClassStarts = Math.round((classId*1 - timeNow) / (1000*60),0);
+    	$scope.minutesUntilClassStarts = Math.round((classId*1 - timeNow) / (1000*60),0);
     
-    	if (minutesUntilClassStarts < 0) return $scope.timeUntilClassStarts = "Click to join class!"	
-    	$scope.timeUntilClassStarts = "Class starting in " + minutesUntilClassStarts + " minutes";
-    	if (minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = "Class starting in " + Math.round(minutesUntilClassStarts / 60, 0) + (Math.round(minutesUntilClassStarts / 60, 0) < 2 ? " hour" : " hours");
-    	if (minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = "Class starting in " + Math.round(minutesUntilClassStarts / 60 / 24, 0) + (Math.round(minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
+    	if ($scope.minutesUntilClassStarts <= 0) return $scope.timeUntilClassStarts = "Click to join class!"	
+    	$scope.timeUntilClassStarts = "Class starting in " + $scope.minutesUntilClassStarts + " minutes";
+    	if ($scope.minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = "Class starting in " + Math.round($scope.minutesUntilClassStarts / 60, 0) + (Math.round($scope.minutesUntilClassStarts / 60, 0) < 2 ? " hour" : " hours");
+    	if ($scope.minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = "Class starting in " + Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) + (Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
     }
 
     function setupVidAud() {
@@ -167,7 +165,29 @@ angular.module('bodyAppApp')
     }
 
     $scope.joinClass = function(ev) {
-    	if (!($scope.bookings && $scope.bookings[$scope.currentUser._id]) && $scope.classDetails.instructor != $scope.currentUser._id) {
+      if ($scope.minutesUntilClassStarts > 5 && $scope.classDetails.instructor != $scope.currentUser._id) {
+        var alert = $mdDialog.alert({
+          title: "Class Not Started Yet",
+          textContent: $scope.timeUntilClassStarts + "!",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'OK!'
+        });
+
+        return $mdDialog
+        .show( alert )
+      } else if ($scope.minutesUntilClassStarts > 10 && $scope.classDetails.instructor === $scope.currentUser._id) {
+        var alert = $mdDialog.alert({
+          title: "Class Not Started Yet",
+          textContent: "You'll be able to join class 10 minutes before it begins.",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'OK!'
+        });
+
+        return $mdDialog
+        .show( alert )
+      } else if (!($scope.bookings && $scope.bookings[$scope.currentUser._id]) && $scope.classDetails.instructor != $scope.currentUser._id) {
     		var alert = $mdDialog.alert({
           title: "Not Signed Up",
           textContent: "You aren't registered for this class!  Go back and sign up!",
