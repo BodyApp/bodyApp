@@ -12,7 +12,9 @@ angular.module('bodyAppApp')
       if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
 
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
+    $scope.workoutToCreate = $scope.workoutToCreate || {}
+    $scope.workoutToCreate.duration = 30;
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {
@@ -269,6 +271,7 @@ angular.module('bodyAppApp')
       workoutToSave.instructor = workoutToCreate.instructor._id;
       workoutToSave.playlist = workoutToCreate.playlist.id;
       workoutToSave.typeOfClass = workoutToCreate.classType.classType;
+      console.log(workoutToCreate.workout)
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.spots = 12;

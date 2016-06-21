@@ -244,7 +244,8 @@ angular.module('bodyAppApp')
       workoutToSave.updated = new Date().getTime();
       workoutToSave.createdBy = currentUser._id;
 
-      workoutToSave.title = "Default workout"
+      workoutToSave.title = "Default workout";
+      workoutToSave.id = "defaultWorkout";
       workoutToSave.classTypes = {};
       workoutToSave.classTypes[defaultClassType] = {dateSaved: new Date().getTime()}
 
