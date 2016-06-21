@@ -72,8 +72,16 @@ angular.module('bodyAppApp')
                 return;
             }
     	   $scope.workouts = []
-	       snapshot.forEach(function(classType) {
-	        $scope.workouts.push(classType.val());
+	       snapshot.forEach(function(workout) {
+            var workoutRetrieved = workout.val()
+            var classTypeArray = [];
+            for (var prop in workoutRetrieved.classTypes) {
+                classTypeArray.push(workoutRetrieved.classTypes[prop])
+            }
+
+            workoutRetrieved.classTypes = classTypeArray
+            
+	        $scope.workouts.push(workoutRetrieved);
             if(!$scope.$$phase) $scope.$apply();
 	      })
 		    
@@ -106,12 +114,17 @@ angular.module('bodyAppApp')
         if (!snapshot.exists()) return;
     		snapshot.forEach(function(classType) {
     			$scope.classTypes.push(classType.val())
+                console.log($scope.classTypes)
     		})
     	})
     }
 
     $scope.addExercise = function() {
       if ($scope.showAddSet.exercises.length < 6) $scope.showAddSet.exercises.push({name: ''})
+    }
+
+    function formatClassTypesForTags(workoutId) {
+
     }
 
     $scope.saveWorkout = function(workoutToSave) {
@@ -122,6 +135,13 @@ angular.module('bodyAppApp')
 
         if (!workoutToSave.title) return $scope.noTitle = true;
         if (!workoutToSave.classTypes) return $scope.noClassTypes = true;
+
+        var classTypesObject = {};
+        for (var i = 0; i < workoutToSave.classTypes.length; i++) {
+            classTypesObject[workoutToSave.classTypes[i].id] = workoutToSave.classTypes[i]
+        }
+
+        workoutToSave.classTypes = classTypesObject;
 
     	var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
     		if (err) return console.log(err);
@@ -134,7 +154,8 @@ angular.module('bodyAppApp')
                 })
 		      if(!$scope.$$phase) $scope.$apply();
                 if (!workoutToSave.classTypes) return;
-    			for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
+                console.log(workoutToSave.classTypes)
+    			for (var i in workoutToSave.classTypes) { //Saves workout within the class types selected
                     var type = workoutToSave.classTypes[i]
                     console.log(type.id)
     				var classTypeToSave = ref.child('classTypes').child(type.id).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {
@@ -148,7 +169,6 @@ angular.module('bodyAppApp')
 
     $scope.editWorkout = function(workoutToEdit) {
     	$scope.editing = true;
-    	console.log(workoutToEdit);
     	$scope.showAddWorkout = workoutToEdit;
     	$scope.scrollTop()
       if(!$scope.$$phase) $scope.$apply();  	
@@ -158,13 +178,21 @@ angular.module('bodyAppApp')
     $scope.updateWorkout = function(workoutToUpdate) {
     	workoutToUpdate.updated = new Date().getTime();
     	workoutToUpdate.updatedBy = currentUser._id;
+
+        var classTypesObject = {};
+        for (var i = 0; i < workoutToUpdate.classTypes.length; i++) {
+            classTypesObject[workoutToUpdate.classTypes[i].id] = workoutToUpdate.classTypes[i]
+        }
+
+        workoutToUpdate.classTypes = classTypesObject;
+
     	ref.child('workouts').child(workoutToUpdate.id).update(workoutToUpdate, function(err) {
     		if (err) return console.log(err);
     		$scope.showAddWorkout = false;
     		$scope.editing = false;
 	      if(!$scope.$$phase) $scope.$apply();
           if (!workoutToUpdate.classTypes) return;
-	      for (var i = 0; i < workoutToUpdate.classTypes.length; i++) { //Saves workout within the class types selected
+	      for (var i in workoutToUpdate.classTypes) { //Saves workout within the class types selected
   				ref.child('classTypes').child(workoutToUpdate.classTypes[i].id).child('workoutsUsingClass').child(workoutToUpdate.id).set({dateSaved: new Date().getTime()}, function(err) {
   					if (err) return console.log(err)
   				})
