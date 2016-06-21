@@ -165,7 +165,10 @@ angular.module('bodyAppApp')
 
           ref.child('fbUsers').child(currentUser.facebookId).child('studiosAdmin').child(studioId).set(true, function(err) {
             if (err) console.log(err)
-          })          
+          })   
+
+          createDefaultClassType(studioId);
+          addDefaultPlaylist(studioId);     
 
           ref.child('studios').child(studioId).child("toSetup").update({
             "classTypes": true, 
@@ -216,7 +219,7 @@ angular.module('bodyAppApp')
   		})
   	}
 
-    function createDefaultClassType() {
+    function createDefaultClassType(studioId) {
       var classToSave = {};
       classToSave.name = "Trial Class"
       classToSave.classDescription = "Come try out a class at my studio!"
@@ -230,12 +233,41 @@ angular.module('bodyAppApp')
         console.log("Default class successfully saved")
         ref.child('studios').child(studioId).child("classTypes").child(toPush.key).update({id: toPush.key}, function(err) {
           if (err) return console.log(err)
+          createDefaultWorkout(studioId, toPush.key)
         })
       })
     }
 
-    function createDefaultWorkout() {
-      
+    function createDefaultWorkout(studioId, defaultClassType) {
+      var workoutToSave = {};
+      workoutToSave.created = new Date().getTime();
+      workoutToSave.updated = new Date().getTime();
+      workoutToSave.createdBy = currentUser._id;
+
+      workoutToSave.title = "Default workout"
+      workoutToSave.classTypes = {};
+      workoutToSave.classTypes[defaultClassType] = {dateSaved: new Date().getTime()}
+
+      var savedWorkout = ref.child('studios').child(studioId).child('workouts').update({'defaultWorkout': workoutToSave}, function(err) {
+        if (err) return console.log(err);
+        console.log("Default workout successfully saved.")
+        console.log(savedWorkout.key)
+        ref.child('studios').child(studioId).child('classTypes').child(defaultClassType).child('workoutsUsingClass').child('defaultWorkout').update({'dateSaved': new Date().getTime()}, function(err) {
+          if (err) return console.log(err);
+          console.log("Default workout successfully saved as a workout of Default class type.")
+        })        
+      })
+    }
+
+    function addDefaultPlaylist(studioId) {
+      ref.child('defaultPlaylist').limitToFirst(1).once('value', function(snapshot) {
+        snapshot.forEach(function(playlist) {
+          ref.child('studios').child(studioId).child('playlists').child(playlist.val().id).update(playlist.val(), function(err) {
+            if (err) return console.log(err);
+            console.log("Default playlist successfully saved.")
+          })
+        })
+      })
     }
 
     $scope.goToStep = function(step) {
