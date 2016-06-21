@@ -4,6 +4,7 @@ angular.module('bodyAppApp')
   .controller('ClassesCtrl', function ($scope, $stateParams, $state, $window, $rootScope, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+    $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
         if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
@@ -18,7 +19,7 @@ angular.module('bodyAppApp')
     Studios.setCurrentStudio(studioId);
     $scope.maxDescriptionLength = 500;
 
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {

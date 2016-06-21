@@ -14,7 +14,7 @@ angular.module('bodyAppApp')
       if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
 
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();

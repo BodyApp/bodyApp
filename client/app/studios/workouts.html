@@ -293,7 +293,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-12 mb16" >
-              <h5 class="mb0">Assigned To: <span ng-repeat = "classTypes in workout.classTypes track by $index" class="lightgray bold">{{classTypes.name}}, </span></h5>
+              <h5 class="mb0">Assigned To: <span ng-repeat = "classTypes in workout.classTypes track by $index" class="lightgray bold">{{classTypes.name}}<span ng-show = "$index < workout.classTypes.length-1">,</span> </span></h5>
             </div>
           </div>
           <div class="row" ng-init = "limit = 3">

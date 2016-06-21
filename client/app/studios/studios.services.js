@@ -15,7 +15,7 @@ angular.module('bodyAppApp')
     service.instructor;
 
     var testingAdmin = false;
-    var deferObject;
+    // var deferObject;
 
     // var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     var ref = firebase.database().ref().child('studios');
@@ -64,7 +64,7 @@ angular.module('bodyAppApp')
     service.setCurrentStudio = function(studioId) {
       var currentUser = Auth.getCurrentUser();
       // $rootScope.adminOf = $rootScope.adminOf || {};
-      deferObject =  deferObject || $q.defer();
+      var deferObject = $q.defer();
       service.currentStudio = studioId
       
       if ($rootScope.adminOf && $rootScope.adminOf[studioId]) {
@@ -87,6 +87,7 @@ angular.module('bodyAppApp')
                 // service.admin = false
               }
             }, function(error) {
+              console.log(error)
               deferObject.reject(error);
             })
           }
@@ -108,6 +109,7 @@ angular.module('bodyAppApp')
               // service.admin = false
             }
           }, function(error) {
+            console.log(error)
             deferObject.reject(error);
           })
         } else {

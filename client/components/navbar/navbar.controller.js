@@ -53,7 +53,7 @@ angular.module('bodyAppApp')
     // }
 
     var ref = studioId ? firebase.database().ref().child('studios').child(studioId): null;
-    Studios.setCurrentStudio(studioId);
+    // if (studioId) Studios.setCurrentStudio(studioId);
     // currentUser = Auth.getCurrentUser()
 
     $scope.studioId = studioId;
@@ -178,11 +178,12 @@ angular.module('bodyAppApp')
         $rootScope.adminOf = snapshot.val();
         $rootScope.numStudiosAdmin = Object.keys(snapshot.val()).length;
         $rootScope.adminSelected = $rootScope.adminSelected || Object.keys(snapshot.val())[0];
+        if(!$scope.$$phase) $scope.$apply();
         snapshot.forEach(function(studio) {
           getStudioLogos(studio.key);
           getStudioNames(studio.key);
         })        
-        if(!$scope.$$phase) $scope.$apply();
+        // if(!$scope.$$phase) $scope.$apply();
       })
     }
 
@@ -193,7 +194,7 @@ angular.module('bodyAppApp')
         $rootScope.adminStudioLogos[studio] = url;
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
-        console.log(error)
+        // console.log(error)
       });
     }
 

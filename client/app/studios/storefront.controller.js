@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
 
     var ref = firebase.database().ref().child('studios').child(studioId);
@@ -432,8 +432,11 @@ angular.module('bodyAppApp')
           //   $window.location.reload()
           // });
           // }
+
         } else if (slot.typeOfClass === 'Specialty') {
           return bookSpecialtyClass(slot)
+        } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
+          return bookClass(slot)
         } else if (currentUser && currentUser.role === 'admin') {
           return bookClass(slot)
         } else if (studioId === 'body') {
