@@ -415,9 +415,9 @@
 						        </div>
 							    </div>
 
-							    <div layout="row" flex class="mb8">
+
+							    <!-- <div layout="row" flex class="mb8">
 							    	<md-input-container flex class="md-block" ng-mouseenter = "showProfilePhotoHelper = true;" ng-mouseleave = "showProfilePhotoHelper = false;">
-					            <!-- <label class="angular-label">Upload profile photo</label> -->
 					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
 					            <div class="form-hint">Recommended 400 x 400 pixels.</div>
@@ -426,49 +426,12 @@
 
 				          <div layout="row" flex class="mb8">
 						        <md-input-container flex class="md-block" ng-mouseenter = "showHeaderPhotoHelper = true;" ng-mouseleave = "showHeaderPhotoHelper = false;">
-					            <!-- <label class="angular-label">Upload header photo</label> -->
-					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
+					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
 					            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
 						        </md-input-container>
-						        <!-- <div>
-					            <md-button class="md-primary md-raised">Add photo</md-button>
-						        </div> -->
 							    </div>
-
-				          <!-- <div class="row mb16">
-				            <label class="col-sm-3" for="coupon-code">
-				              Add Header Image
-				            </label>
-				            <div class="col-sm-6">
-				              <lf-ng-md-file-input ng-show = "!headerUrl" lf-placeholder = "Pick Header Image" lf-files="headerImage" lf-caption=""></lf-ng-md-file-input>
-				              <lf-ng-md-file-input ng-show = "headerUrl" lf-placeholder = "Replace" lf-files="headerImage" lf-caption="Replace"></lf-ng-md-file-input>
-				            </div>
-				          </div>
-
-							    <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block">
-					            <label class="angular-label">Upload profile photo</label>
-					            <input type="text" class="angular-input">
-					            <div class="form-hint">Recommended 400 x 400 pixels.</div>
-						        </md-input-container>
-						        <div>
-					            <md-button class="md-primary md-raised">Add photo</md-button>
-						        </div>
-							    </div>
-
-							    <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block">
-					            <label class="angular-label">Upload header photo</label>
-					            <input type="text" class="angular-input">
-					            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
-						        </md-input-container>
-						        <div>
-					            <md-button class="md-primary md-raised">Add photo</md-button>
-						        </div>
-							    </div> -->
-
-							    <div layout="column" flex class="mb8">
+ 							    <div layout="column" flex class="mb8">
 							    	<md-input-container class="md-block" ng-mouseenter = "showYoutubeVideoHelper = true;" ng-mouseleave = "showYoutubeVideoHelper = false;">
 							        <label class="angular-label">Studio Video YouTube ID</label>
 							        <input type="text" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input" >
@@ -478,9 +441,8 @@
 							          <div ng-message="md-maxlength">The URL has to be less than 20 characters long.</div>
 							        </div>
 							      </md-input-container>
-							    </div>						    
-
-							    <div class="row">
+							    </div> -->
+							     <div class="row">
 										<div class="col-sm-2 mt8">
 											<a href="#" ng-click = "creationStarted = false;">Back</a>
 										</div>
@@ -488,7 +450,6 @@
 											<button href="#" type = 'submit' class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); scrollTop();">Next</button>
 										</div>
 									</div>
-
 								</form>
 
 							</div>
