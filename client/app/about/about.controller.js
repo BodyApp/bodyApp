@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, Auth) {
+  .controller('AboutCtrl', function ($scope, $uibModal, $http, $window, $state, $cookies, $location, Auth) {
     // var ref = new Firebase("https://bodyapp.firebaseio.com");
     
     // $scope.challenges;
@@ -9,7 +9,7 @@ angular.module('bodyAppApp')
     // getWods()
     // window.scrollTo(0, 0);
   	$scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
+      // $window.location.href = '/auth/' + provider;
     };
 
     function getWods() {
@@ -30,17 +30,20 @@ angular.module('bodyAppApp')
     }
 
     $scope.signUp = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/account/signup/signup.html',
-        controller: 'SignupCtrl',
-        windowClass: "modal-tall"
-      });
+      $cookies.put('loggedInPath', '/')
+      // $rootScope.loggedInPath = $location.path()
+      $state.go('signup', {step: 0, mode: 'signup'})
+      // var modalInstance = $uibModal.open({
+      //   animation: true,
+      //   templateUrl: 'app/account/signup/signup.html',
+      //   controller: 'SignupCtrl',
+      //   windowClass: "modal-tall"
+      // });
 
-      modalInstance.result.then(function (selectedItem) {
-        // $window.location.href = '/auth/' + 'facebook';
-      }, function () {
-      });
+      // modalInstance.result.then(function (selectedItem) {
+      //   // $window.location.href = '/auth/' + 'facebook';
+      // }, function () {
+      // });
     }
 
     $scope.scrollDown = function() {

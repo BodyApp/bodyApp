@@ -216,6 +216,28 @@ angular.module('bodyAppApp')
   		})
   	}
 
+    function createDefaultClassType() {
+      var classToSave = {};
+      classToSave.name = "Trial Class"
+      classToSave.classDescription = "Come try out a class at my studio!"
+      classToSave.created = new Date().getTime();
+      classToSave.updated = new Date().getTime();
+      classToSave.createdBy = Auth.getCurrentUser()._id
+      classToSave.classType = "Regular"
+
+      var toPush = ref.child('studios').child(studioId).child("classTypes").push(classToSave, function(err) {
+        if (err) return console.log(err);
+        console.log("Default class successfully saved")
+        ref.child('studios').child(studioId).child("classTypes").child(toPush.key).update({id: toPush.key}, function(err) {
+          if (err) return console.log(err)
+        })
+      })
+    }
+
+    function createDefaultWorkout() {
+      
+    }
+
     $scope.goToStep = function(step) {
       if ($scope.basicsComplete) $scope.step = step;
       $scope.scrollTop();
