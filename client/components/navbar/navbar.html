@@ -56,14 +56,14 @@
                       <li style = "min-width: 226px;" ng-show="adminOf && isLoggedIn()" ng-mouseenter = "storefrontsMenuOpened = true" ng-mouseleave = "storefrontsMenuOpened = false">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="/studios/{{adminSelected}}" >
-                            <img class="nav-profile-pic" ng-src="{{adminStudioLogos[adminSelected]}}"> Storefront
+                            <img class="nav-profile-pic" ng-src="{{adminStudioLogos[adminSelected]}}">{{studioNames[adminSelected]}} Storefront
                           </a>
                           <md-menu-content ng-show = "storefrontsMenuOpened">
                             <md-menu-item>
-                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToSchedule(studioId)">Schedule</md-button>
+                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToSchedule(adminSelected)">Schedule</md-button>
                             </md-menu-item>
                             <md-menu-item>
-                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToSettings(studioId)">Settings</md-button>
+                              <md-button ng-class = "{textRight: isMobile}" ng-click="goToSettings(adminSelected)">Settings</md-button>
                             </md-menu-item>
                             <md-menu-item>
                               <md-content style = "font-weight: 600;" ng-show = "numStudiosAdmin > 1">Switch To:</md-content>
