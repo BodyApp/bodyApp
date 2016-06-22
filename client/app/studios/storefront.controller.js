@@ -433,7 +433,7 @@ angular.module('bodyAppApp')
           // });
           // }
 
-        } else if (slot.typeOfClass === 'Specialty') {
+        } else if (slot && slot.typeOfClass === 'Specialty') {
           return bookSpecialtyClass(slot)
         } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
           return bookClass(slot)
