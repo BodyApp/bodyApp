@@ -1,55 +1,45 @@
 angular.module('bodyAppApp')
-  .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, Studios, $http, Auth, User) {
+  .controller('EditScheduleCtrl', function ($scope, $stateParams, $cookies, $state, $location, $window, $rootScope, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
-    if (currentUser.$promise) {
-      currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
-      })
-    } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
-    }
+    $scope.studioId = studioId;    
+
+    $scope.showScheduleAlert = $cookies.get('showScheduleAlert')
     
-    if (!studioId) studioId = 'body'
-    var ref = firebase.database().ref().child('studios').child(studioId);
-    var auth = firebase.auth();
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        getClassTypes();
-        getInstructors();
-        getPlaylists();
-        getClasses(daysInFuture);
-        getWorkouts();
-        getPlaylistObjects();
-        createSchedule(numDaysToShow, daysInFuture);
-        createInitialTokBoxSession();
-        getSpecialtyClasses();
-        setDateTimePicker();
-      } else {
-        // console.log("User is logged out");
-        if (currentUser.firebaseToken) {
-          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
-            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-            getClassTypes();
-            getInstructors();
-            getPlaylists();
-            getClasses(daysInFuture);
-            getWorkouts();
-            getPlaylistObjects();
-            createSchedule(numDaysToShow, daysInFuture);
-            createInitialTokBoxSession();
-            getSpecialtyClasses();
-            setDateTimePicker();
-          }); 
-        } else {
-          console.log("User doesn't have a firebase token saved, should retrieve one.")
-        }
+    Studios.setCurrentStudio(studioId)
+    .then(function(){
+      console.log("Succeeded")
+      delayedStartup()
+    }, function(){
+      console.log("Failed")
+      // if (!currentUser.role === 'admin') return $state.go('storefront', { "studioId": studioId });  
+      if (currentUser.$promise) {
+        currentUser.$promise.then(function(data) {
+          if (data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+          if (data.role === 'admin') return delayedStartup()
+        })
+      } else if (currentUser.role) {
+        if (currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+        if (currentUser.role === 'admin') return delayedStartup()
       }
     })
 
-    $scope.minDate = new Date();
-    Studios.setCurrentStudio(studioId);
-    
+    // $rootScope.adminOf = $rootScope.adminOf || {};
+    // if (currentUser.$promise) {
+    //   currentUser.$promise.then(function(data) {
+    //     if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+    //   })
+    // } else if (currentUser.role) {
+    //   if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+    // }
+
+    // if (!studioId) studioId = 'body'
+    $scope.workoutToCreate = $scope.workoutToCreate || {}
+    $scope.workoutToCreate.duration = 30;
+    var ref = firebase.database().ref().child('studios').child(studioId);
+    var auth = firebase.auth();
+
+    $scope.minDate = new Date();  
 
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
@@ -72,6 +62,44 @@ angular.module('bodyAppApp')
     $scope.durationOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
     var nextSessionToSave;
+
+    function delayedStartup() {
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          getClassTypes();
+          getInstructors();
+          getPlaylists();
+          getClasses(daysInFuture);
+          getWorkouts();
+          getPlaylistObjects();
+          createSchedule(numDaysToShow, daysInFuture);
+          createInitialTokBoxSession();
+          getSpecialtyClasses();
+          setDateTimePicker();
+          getStudioName();
+        } else {
+          // console.log("User is logged out");
+          if (currentUser.firebaseToken) {
+            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+              getClassTypes();
+              getInstructors();
+              getPlaylists();
+              getClasses(daysInFuture);
+              getWorkouts();
+              getPlaylistObjects();
+              createSchedule(numDaysToShow, daysInFuture);
+              createInitialTokBoxSession();
+              getSpecialtyClasses();
+              setDateTimePicker();
+              getStudioName();
+            }); 
+          } else {
+            console.log("User doesn't have a firebase token saved, should retrieve one.")
+          }
+        }
+      })
+    }
 
     // ref.onAuth(function(authData) {
     //   if (authData) {
@@ -118,7 +146,18 @@ angular.module('bodyAppApp')
     }
 
     function setDateTimePicker() {
-      $('#datetimepicker').datetimepicker();
+      $('#datetimepicker').datetimepicker({
+        sideBySide: true,
+      });
+      $('#datetimepicker').data("DateTimePicker").minDate(new Date());
+      // $('#datetimepicker').data("DateTimePicker").date(moment().tz('America/New_York'));
+      // $('#datetimepicker').data("DateTimePicker").defaultDate(new Date());
+      // $('#datetimepicker').data("DateTimePicker").sideBySide(true);
+
+
+      // $("#datetimepicker").on("dp.change", function (e) {
+      //       $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+      //   });
       // var something = $('#datetimepicker').data("DateTimePicker")
       // console.log(something)
     }
@@ -140,8 +179,15 @@ angular.module('bodyAppApp')
 
     function getPlaylists() {
       ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
-        if (!snapshot.exists()) return;
         $scope.playlists = [];
+        $scope.playlists.push({title: "None", id: "None"})
+        if (!snapshot.exists()) {
+          $scope.workoutToCreate = $scope.workoutToCreate || {};
+          $scope.workoutToCreate.playlist = $scope.playlists[0];
+          if(!$scope.$$phase) $scope.$apply();
+          return;
+        }
+        
         snapshot.forEach(function(playlist) {
           $scope.playlists.unshift(playlist.val())
         })
@@ -175,12 +221,21 @@ angular.module('bodyAppApp')
     }
 
     function selectClassType(classType) {
-      $scope.workoutOptions = {};
-      console.log(classType.workoutsUsingClass)
+      $scope.workoutOptions = {None: {title: "None", id: "None"}};
+      if (!classType.workoutsUsingClass) {
+        $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+        if(!$scope.$$phase) $scope.$apply();
+        return;
+      }
       for (var prop in classType.workoutsUsingClass) {
         ref.child('workouts').child(prop).once('value', function(snapshot) {
-          if (!snapshot.exists()) return
+          if (!snapshot.exists()) {
+            $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+            if(!$scope.$$phase) $scope.$apply();
+            return;
+          }
           $scope.workoutOptions[snapshot.key] = snapshot.val() 
+          console.log($scope.workoutOptions)
           $scope.workoutToCreate.workout = $scope.workoutOptions[snapshot.key] //Initiates workout
           if(!$scope.$$phase) $scope.$apply();
         })
@@ -237,6 +292,10 @@ angular.module('bodyAppApp')
 
       $scope.dateTimeNotEntered = false;
 
+      $scope.workoutToCreate.dateTime = $('#datetimepicker').data().date;
+      // var workoutToCreate.dateTime = new Date(dataReturned)
+      // console.log(workoutToCreate.dateTime)
+
       if (!workoutToCreate.dateTime) return $scope.dateTimeNotEntered = true;
       if (!workoutToCreate.duration) return $scope.durationNotEntered = true;
       if (!workoutToCreate.classType) return $scope.classTypeNotEntered = true;
@@ -250,6 +309,7 @@ angular.module('bodyAppApp')
       workoutToSave.instructor = workoutToCreate.instructor._id;
       workoutToSave.playlist = workoutToCreate.playlist.id;
       workoutToSave.typeOfClass = workoutToCreate.classType.classType;
+      console.log(workoutToCreate.workout)
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.spots = 12;
@@ -293,6 +353,13 @@ angular.module('bodyAppApp')
       })
     }
 
+    function getStudioName() {
+      ref.child('storefrontInfo').child('studioName').once('value', function(snapshot) {
+        $scope.studioName = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
     $scope.getNumberOfBookings = function(dateTime) {
       if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
       ref.child('bookings').child(dateTime).once('value', function(snapshot) {
@@ -329,6 +396,11 @@ angular.module('bodyAppApp')
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
       return getFormattedDateTime(dateTime, noToday);
+    }
+
+    $scope.closeAlertPushed = function() {
+      $cookies.remove('showScheduleAlert')
+      $scope.showScheduleAlert = false;
     }
 
     function getFormattedDateTime(dateTime, noToday) {

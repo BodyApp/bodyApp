@@ -1056,7 +1056,8 @@ nav.bg-dark .logo-dark {
   opacity: 1 !important;
 }
 .menu > li {
-  margin-right: 32px;
+  margin-left: 16px;
+  margin-right: 16px;
   float: left;
   position: relative;
   transition: all 0.3s ease;
@@ -1064,9 +1065,9 @@ nav.bg-dark .logo-dark {
   -moz-transition: all 0.3s ease;
   opacity: 1;
 }
-.menu > li:last-child {
+/*.menu > li:last-child {
   margin-right: 0;
-}
+}*/
 .menu > li:last-child > ul {
   right: 0;
 }

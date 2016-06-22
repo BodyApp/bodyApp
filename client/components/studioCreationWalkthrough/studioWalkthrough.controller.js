@@ -4,7 +4,7 @@ angular.module('bodyAppApp')
   .controller('StudioWalkthroughCtrl', function ($scope, $location, $stateParams) {
     var studioId = $stateParams.studioId;
     $scope.studioId = studioId;
-    console.log(studioId)
+    $scope.collapse = true;
     var ref = firebase.database().ref().child('studios').child(studioId);
 
     getToSetup()

@@ -1,9 +1,40 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
+<div class="studio-alert" ng-show = "studioName && showScheduleAlert">
+  <div class="page-container-responsive pt16 pb16">
+    <div class="studio-alert-container">
+      <div class="studio-alert-close">
+        <a href="#" ng-click = "closeAlertPushed()">
+          <i class="ti-close">
+            <md-tooltip md-direction="bottom">Close</md-tooltip>
+          </i>
+        </a>
+      </div>
+      <div class="row">
+        <!-- <div ng-if = "headerUrl" class="col-md-3 hidden-sm hidden-xs">
+          <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
+        </div> -->
+        <div class="col-md-11">
+          <h5 class="mb8 bold">Congrats, {{studioName}} is live!</h5>
+          <h5 class="lightgray">Go ahead and schedule a class, then invite friends / clients to try out your classes for free! You can <a href="/studios/{{studioId}}/pricing">click here to go to your Settings</a> and set pricing to start charging for classes.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class = "row"> -->
+  <a class="pt16 pb16 col-sm-12" style = "text-align:center;" ng-show = "!showScheduleAlert" ng-click = "showScheduleAlert = true;"> Show Schedule Description </a>
+
+  <!-- <div class="col-sm-2">
+    <a class="btn-blue btn-block mt16 mt16" style = "max-width: 200px;" ng-href="/studios/{{studioId}}/storefrontinfo">Go To Settings</a>
+  </div> -->
+<!-- </div> -->
+
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
     <div class="col-md-3">
-      <div class="panel space-4">
+      <div class="panel space-4 mb16">
         <div class="panel-header">
           Add class
         </div>
@@ -17,10 +48,11 @@
 
           </div>
 
-          <div style = "color: red" ng-show = "">*Required</div>
+          <div style = "color: red" ng-show = "dateTimeNotEntered">*Required</div>
           <div class="row mb8">
             <div class="col-sm-12" >
-              <input type='text' class="form-control" id='datetimepicker'/>
+              <input type='text' class="form-control" id='datetimepicker' minDate = "{{rightNow}}"/>
+              
  <!--              <div class="input-group" datetimepicker ng-model="vm.date">
                   <input type="text" class="form-control"/>
                   <span class="input-group-addon">
@@ -132,6 +164,20 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 
           <div class="row mb8">
             <div class="col-sm-12">
+              <label for="instructor-choice" class="pb0">
+                Instructor
+              </label>
+              <div style = "color: red" ng-show = "instructorNotEntered">*Required</div>
+              <div class="select display-block">
+                <select id="instructor-choice" ng-model = "workoutToCreate.instructor" ng-options = "value as (value.firstName + ' ' + value.lastName) for (key, value) in instructors" ng-change = "instructorNotEntered = false;">
+                  <!-- <option>Beth Anne Lazaro (You)</option> -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
               <label for="class-choice" class="pb0">
                 Class
               </label>
@@ -160,20 +206,6 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 
           <div class="row mb8">
             <div class="col-sm-12">
-              <label for="instructor-choice" class="pb0">
-                Instructor
-              </label>
-              <div style = "color: red" ng-show = "instructorNotEntered">*Required</div>
-              <div class="select display-block">
-                <select id="instructor-choice" ng-model = "workoutToCreate.instructor" ng-options = "value as (value.firstName + ' ' + value.lastName) for (key, value) in instructors" ng-change = "instructorNotEntered = false;">
-                  <!-- <option>Beth Anne Lazaro (You)</option> -->
-                </select>
-              </div>
-            </div>
-          </div> 
-
-          <div class="row mb8">
-            <div class="col-sm-12">
               <label for="playlist-choice" class="pb0">
                 Playlist
               </label>
@@ -187,12 +219,14 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
           </div>
 
           <div class="space-top-4">
-            <a href="#" class="btn-blue btn-block" ng-click = "saveWorkout(workoutToCreate)">Add to schedule</a>
-          </div>
+            <a class="btn-blue btn-block" ng-click = "saveWorkout(workoutToCreate)">Add to schedule
 
+            </a>
+          </div>
 
         </div>
       </div>
+      <a ng-href="/studios/{{studioId}}/storefrontinfo">Go To Settings</a>
     </div>
 
     <div class="col-md-9">
@@ -202,7 +236,7 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 -->
       <div class="panel">
         <div class="panel-header">
-          Your Schedule
+          {{studioName}} Schedule
           <div class="cal-controls text-left">
             <!-- <a href="#" class="btn hidden-xs"><i class="bold ti-calendar"></i></a> -->
             <!-- <a href="#" class="btn">Today</a> -->

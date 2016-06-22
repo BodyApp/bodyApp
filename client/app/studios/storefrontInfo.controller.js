@@ -1,21 +1,24 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, $mdToast, $timeout, Studios, $http, Auth) {
+  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, $rootScope, $mdToast, $timeout, $cookies, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
     
     var ref;
     var studioId = $stateParams.studioId;
     
+    $scope.showStorefrontInfoAlert = $cookies.get('showStorefrontInfoAlert')
+
+    $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });  
+        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });  
+      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
 
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
@@ -184,6 +187,9 @@ angular.module('bodyAppApp')
               break;
           }
         }, function() {
+          ref.child('toSetup').child('images').remove(function(err) {
+            if (err) console.log(err)
+          })
           // Upload completed successfully, now we can get the download URL
           $scope.iconUrl = uploadTask.snapshot.downloadURL;
           if(!$scope.$$phase) $scope.$apply();
@@ -256,6 +262,11 @@ angular.module('bodyAppApp')
         if (err) return console.log(err)
         console.log("Saved storefront info.")
       })
+    }
+
+   $scope.closeAlertPushed = function() {
+      $cookies.remove('showStorefrontInfoAlert')
+      $scope.showStorefrontInfoAlert = false;
     }
 
     $scope.scrollTop = function() {

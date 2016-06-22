@@ -43,7 +43,7 @@ router.put('/:id/sendWelcomeEmail', auth.isAuthenticated(), controller.sendWelco
 
 router.get('/:id/getSubscription', auth.isAuthenticated(), controller.getSubscription);
 
-router.get('/:id/createTokBoxSession', auth.hasRole('admin'), controller.createTokBoxSession);
+router.get('/:id/createTokBoxSession', auth.isAuthenticated(), controller.createTokBoxSession);
 router.put('/:id/createTokBoxToken', auth.isAuthenticated(), controller.createTokBoxToken);
 
 router.put('/:id/addRating', auth.isAuthenticated(), controller.addRating);

@@ -8,7 +8,7 @@ angular.module('bodyAppApp')
 
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
 
     var ref = firebase.database().ref().child('studios').child(studioId);
@@ -432,6 +432,15 @@ angular.module('bodyAppApp')
           //   $window.location.reload()
           // });
           // }
+
+        } else if (slot && slot.typeOfClass === 'Specialty') {
+          return bookSpecialtyClass(slot)
+        } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
+          return bookClass(slot)
+        } else if (currentUser && currentUser.role === 'admin') {
+          return bookClass(slot)
+        } else if (studioId === 'body') {
+          return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
@@ -529,14 +538,15 @@ angular.module('bodyAppApp')
     $scope.reserveClicked = function(slot) {
       // console.log(slot)
       if ($rootScope.subscribing) return
-      if (slot.typeOfClass === 'Specialty') {
-        return bookSpecialtyClass(slot)
-      }
-      if (currentUser && currentUser.role === 'admin') {
-        bookClass(slot)
-      } else if (studioId === 'body') {
-        bookClass(slot)
-      } else if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
+      // if (slot.typeOfClass === 'Specialty') {
+      //   return bookSpecialtyClass(slot)
+      // }
+      // if (currentUser && currentUser.role === 'admin') {
+      //   bookClass(slot)
+      // } else if (studioId === 'body') {
+      //   bookClass(slot)
+      // } else 
+      if (!currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")
         checkMembership(slot)
       } else {

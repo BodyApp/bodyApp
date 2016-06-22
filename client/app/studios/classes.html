@@ -1,5 +1,32 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
+<div class="studio-alert" ng-show = "showClassTypesAlert">
+  <div class="page-container-responsive pt16 pb16">
+    <div class="studio-alert-container">
+      <div class="studio-alert-close">
+        <a href="#" ng-click = "closeAlertPushed()">
+          <i class="ti-close">
+            <md-tooltip md-direction="bottom">Close</md-tooltip>
+          </i>
+        </a>
+      </div>
+      <div class="row">
+        <!-- <div ng-if = "headerUrl" class="col-md-3 hidden-sm hidden-xs">
+          <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
+        </div> -->
+        <div class="col-md-11">
+          <!-- <h5 class="mb8 bold">Congrats, {{storefrontInfo.}} is live!</h5> -->
+          <h5 class="lightgray">This is where you can set your class types! We went ahead and added a default 'trial class' to your studio.  These will be the title / description displayed when you schedule classes.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a class="col-sm-12 pt16 pb16" style = "text-align:center;" ng-show = "!showClassTypesAlert" ng-click = "showClassTypesAlert = true;" ng-cloak>
+  Show Classes Description
+</a>
+
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
     <div ng-include="'components/studioCreationWalkthrough/studioWalkthrough.html'"></div>

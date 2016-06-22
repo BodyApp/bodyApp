@@ -7,6 +7,11 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref();
 
     $scope.step = 0;
+    if ($cookies.get('studioCreationStarted')) {
+      $scope.creationStarted = true;
+      $cookies.remove('studioCreationStarted');
+    }
+
     $scope.calcDuration = 'Yearly';
     $scope.subscriptionPrice = 30;
     $scope.numSubscribers = 250;
@@ -107,6 +112,7 @@ angular.module('bodyAppApp')
         //   windowClass: "modal-tall"
         // });
         $cookies.put('loggedInPath', $location.path())
+        $cookies.put('studioCreationStarted', true)
         // $rootScope.loggedInPath = $location.path()
         $state.go('signup', {step: 0, mode: 'signup'})
       }
@@ -126,16 +132,30 @@ angular.module('bodyAppApp')
 
   		if (!studioToCreate) return;
   		if (studioId.length < 4) return $scope.invalidId = true;
+      $rootScope.adminOf = $rootScope.adminOf || {};
+      $rootScope.adminOf[studioId] = true;
+      if(!$scope.$$phase) $scope.$apply();
   		ref.child('studios').child(studioId).child('storefrontInfo').once('value', function(snapshot) {
 				var ownerName = currentUser.firstName + " " + currentUser.lastName;
 				ref.child('studios').child(studioId).child('storefrontInfo').set({
 					'studioId':studioId, 
 					'ownerName': ownerName,
+          'ownerEmail': currentUser.email,
+          'ownerFbId': currentUser.facebookId,
           'studioName': studioToCreate.studioName,
           'dateCreated': new Date().getTime()
 				}, function(err) {
 					if (err) return console.log(err);
+          
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
+
+          $cookies.remove('studioCreationStarted');
+          $cookies.put('showScheduleAlert', true)
+          $cookies.put('showStorefrontInfoAlert', true)
+          $cookies.put('showClassTypesAlert', true)
+          $cookies.put('showPricingAlert', true)
+          $cookies.put('showWorkoutsAlert', true)
+          
           var storageRef = firebase.storage().ref().child('studios').child(studioId);
           angular.forEach($scope.iconImage,function(obj){
             var uploadTask = storageRef.child('images/icon.jpg').put(obj.lfFile);
@@ -143,10 +163,17 @@ angular.module('bodyAppApp')
           angular.forEach($scope.headerImage,function(obj){
             var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
           })
+          
           $scope.basicsComplete = true;
           $scope.step++;
           if(!$scope.$$phase) $scope.$apply();
-					Studios.setCurrentStudio(studioId);
+
+          ref.child('fbUsers').child(currentUser.facebookId).child('studiosAdmin').child(studioId).set(true, function(err) {
+            if (err) console.log(err)
+          })   
+
+          createDefaultClassType(studioId);
+          addDefaultPlaylist(studioId);     
 
           ref.child('studios').child(studioId).child("toSetup").update({
             "classTypes": true, 
@@ -154,12 +181,14 @@ angular.module('bodyAppApp')
             "playlists": true, 
             "pricing": true, 
             "storefrontAlert": true, 
-            "workouts": true
+            "workouts": true,
+            "images": true
           }, function(err) {if (err) console.log(err)})
 					
           ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {
 						if (err) return console.log(err);
 						console.log("Set current user "+ currentUser._id + " as admin of " + studioId)
+            Studios.setCurrentStudio(studioId);
 						// User.getInstructorByEmail({
 			   //      id: currentUser._id
 			   //    }, {
@@ -196,14 +225,68 @@ angular.module('bodyAppApp')
   		})
   	}
 
+    function createDefaultClassType(studioId) {
+      var classToSave = {};
+      classToSave.name = "Trial Class"
+      classToSave.classDescription = "Come try out a class at my studio!"
+      classToSave.created = new Date().getTime();
+      classToSave.updated = new Date().getTime();
+      classToSave.createdBy = Auth.getCurrentUser()._id
+      classToSave.classType = "Regular"
+
+      var toPush = ref.child('studios').child(studioId).child("classTypes").push(classToSave, function(err) {
+        if (err) return console.log(err);
+        console.log("Default class successfully saved")
+        ref.child('studios').child(studioId).child("classTypes").child(toPush.key).update({id: toPush.key}, function(err) {
+          if (err) return console.log(err)
+          createDefaultWorkout(studioId, toPush.key)
+        })
+      })
+    }
+
+    function createDefaultWorkout(studioId, defaultClassType) {
+      var workoutToSave = {};
+      workoutToSave.created = new Date().getTime();
+      workoutToSave.updated = new Date().getTime();
+      workoutToSave.createdBy = currentUser._id;
+
+      workoutToSave.title = "Default workout";
+      workoutToSave.id = "defaultWorkout";
+      workoutToSave.classTypes = {};
+      workoutToSave.classTypes[defaultClassType] = {dateSaved: new Date().getTime()}
+
+      var savedWorkout = ref.child('studios').child(studioId).child('workouts').update({'defaultWorkout': workoutToSave}, function(err) {
+        if (err) return console.log(err);
+        console.log("Default workout successfully saved.")
+        console.log(savedWorkout.key)
+        ref.child('studios').child(studioId).child('classTypes').child(defaultClassType).child('workoutsUsingClass').child('defaultWorkout').update({'dateSaved': new Date().getTime()}, function(err) {
+          if (err) return console.log(err);
+          console.log("Default workout successfully saved as a workout of Default class type.")
+        })        
+      })
+    }
+
+    function addDefaultPlaylist(studioId) {
+      ref.child('defaultPlaylist').limitToFirst(1).once('value', function(snapshot) {
+        snapshot.forEach(function(playlist) {
+          ref.child('studios').child(studioId).child('playlists').child(playlist.val().id).update(playlist.val(), function(err) {
+            if (err) return console.log(err);
+            console.log("Default playlist successfully saved.")
+          })
+        })
+      })
+    }
+
     $scope.goToStep = function(step) {
       if ($scope.basicsComplete) $scope.step = step;
       $scope.scrollTop();
+      $cookies.remove('studioCreationStarted');
       if(!$scope.$$phase) $scope.$apply();
     }
 
     //Add billing controller
     $scope.beginStripeConnect = function() {
+      $cookies.remove('studioCreationStarted');
       $window.location.href = '/auth/stripe?studioid=' + $scope.studioToCreate.studioId;
       // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')

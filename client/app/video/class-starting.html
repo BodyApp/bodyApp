@@ -64,14 +64,16 @@
 						<div class="col-sm-9">
 							<div class="row">
 								<div class="col-xs-3">
-									<img ng-src="{{instructorDetails.picture}}" class="round-photo">
+									<img ng-src="https://graph.facebook.com/{{instructorDetails.facebookId}}/picture?height=100&width=100" class="round-photo">
 								</div>
 								<div class="col-xs-9">
 									<div class="row">
 										<div class="col-xs-12">
 											<h4>{{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
 											<!-- <h5 class="lightgray">Pepper Pike, USA</h5> -->
-											<h5 class="lightgray"><span class="bold">{{instructorDetails.title}}</span> with a <span class="bold royalblue">{{instructorDetails.trainerRating}} / 5</span> rating</h5>
+											<h5 class="lightgray"><span class="bold">{{instructorDetails.title}}</span> 
+												<!-- with a <span class="bold royalblue">{{instructorDetails.trainerRating}} / 5</span> rating -->
+											</h5>
 											<h5 class="lightgray" ng-show = "instructorDetails.geolocation"><span>Teaching from {{instructorDetails.geolocation.city}}, {{instructorDetails.geolocation.region}} ({{instructorDetails.geolocation.countryCode}})</span></h5>
 										</div>
 									</div>
@@ -92,7 +94,7 @@
 						<div class="col-sm-9">
 							<div class="row mb8 classmate" ng-repeat = "(key, booking) in bookings">
 								<div class="col-xs-12">	
-									<img class="round-photo inline-block classmate-photo" width="50" height="50" ng-src="{{booking.picture}}">
+									<img class="round-photo inline-block classmate-photo" width="50" height="50" ng-src="https://graph.facebook.com/{{booking.facebookId}}/picture?height=50&width=50">
 									<h5 class="inline-block">{{booking.firstName}} {{booking.lastName}} 
 										<span ng-show = "bookings[key].geolocation">in {{bookings[key].geolocation.city}}, {{bookings[key].geolocation.region}} ({{bookings[key].geolocation.countryCode}})</span>
 									</h5>
@@ -109,12 +111,12 @@
 							<div class="row">
 								<div class="col-xs-12">
 									<h4 class="mb8 royalblue">{{classType.name}}</h4>
-									<h5>Requires: 
+									<h5 ng-show = "classType.equipment">Requires: 
 										<span ng-repeat = "requirement in classType.equipment">
 											{{requirement.name}}<span ng-show="classType.equipment.length > 1 && $index != classType.equipment.length-1">, </span>
 										</span>
 									</h5>
-									<h5>Open to: <span>{{classType.openTo}}</span></h5>
+									<!-- <h5>Open to: <span>{{classType.openTo}}</span></h5> -->
 									<hr class="small-divider">
 									<h5 class="lightgray">{{classType.classDescription}}</h5>
 								</div>
@@ -122,8 +124,8 @@
 						</div>
 					</div>
 
-					<hr class="content-divider mt16 mb16">
-					<div class="row">
+					<hr class="content-divider mt16 mb16" ng-show = "workout">
+					<div class="row" ng-show = "workout">
 						<div class="col-sm-3 mb-xs-16">
 							<h5>Workout</h5>
 						</div>

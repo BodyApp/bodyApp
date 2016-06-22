@@ -1,33 +1,37 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('WorkoutsCtrl', function ($scope, $stateParams, $q, $window, $state, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
+  .controller('WorkoutsCtrl', function ($scope, $stateParams, $cookies, $q, $window, $state, $rootScope, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
   	var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+
+    $scope.showWorkoutsAlert = $cookies.get('showWorkoutsAlert')
+    
+    $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
-        if (!Studios.isAdmin() && data.role != 'admin') $state.go('storefront', { "studioId": studioId });
+        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
       })
     } else if (currentUser.role) {
-      if (!Studios.isAdmin() && currentUser.role != 'admin') $state.go('storefront', { "studioId": studioId });
+      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
     }
     
     $scope.workoutToCreate = {};
     
-    if (!studioId) studioId = 'body'
+    // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
     auth.onAuthStateChanged(function(user) {
       if (user) {
         getClassTypes();
-        loadWorkouts();
+        // loadWorkouts();
       } else {
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
             if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
             getClassTypes();
-            loadWorkouts();
+            // loadWorkouts();
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -70,8 +74,17 @@ angular.module('bodyAppApp')
                 return;
             }
     	   $scope.workouts = []
-	       snapshot.forEach(function(classType) {
-	        $scope.workouts.push(classType.val());
+	       snapshot.forEach(function(workout) {
+            var workoutRetrieved = workout.val()
+            var classTypeArray = [];
+            for (var prop in workoutRetrieved.classTypes) {
+                classTypeArray.push($scope.classTypeObjects[prop])
+            }
+
+            workoutRetrieved.classTypes = classTypeArray
+            console.log(workoutRetrieved)
+            
+	        $scope.workouts.push(workoutRetrieved);
             if(!$scope.$$phase) $scope.$apply();
 	      })
 		    
@@ -101,15 +114,25 @@ angular.module('bodyAppApp')
     function getClassTypes() {
     	$scope.classTypes = [];
     	ref.child('classTypes').once('value', function(snapshot) {
-        if (!snapshot.exists()) return;
+            if (!snapshot.exists()) return loadWorkouts();
+            
+            $scope.classTypeObjects = snapshot.val()
+            loadWorkouts();
+
+            if(!$scope.$$phase) $scope.$apply();
     		snapshot.forEach(function(classType) {
     			$scope.classTypes.push(classType.val())
+                if(!$scope.$$phase) $scope.$apply();
     		})
     	})
     }
 
     $scope.addExercise = function() {
       if ($scope.showAddSet.exercises.length < 6) $scope.showAddSet.exercises.push({name: ''})
+    }
+
+    function formatClassTypesForTags(workoutId) {
+
     }
 
     $scope.saveWorkout = function(workoutToSave) {
@@ -120,6 +143,14 @@ angular.module('bodyAppApp')
 
         if (!workoutToSave.title) return $scope.noTitle = true;
         if (!workoutToSave.classTypes) return $scope.noClassTypes = true;
+
+        var classTypesObject = {};
+        for (var i = 0; i < workoutToSave.classTypes.length; i++) {
+            classTypesObject[workoutToSave.classTypes[i].id] = {dateSaved: new Date().getTime()}
+        }
+
+        workoutToSave.classTypes = classTypesObject;
+        $scope.showAddWorkout = false;
 
     	var pushedWorkout = ref.child('workouts').push(workoutToSave, function(err) {
     		if (err) return console.log(err);
@@ -132,10 +163,9 @@ angular.module('bodyAppApp')
                 })
 		      if(!$scope.$$phase) $scope.$apply();
                 if (!workoutToSave.classTypes) return;
-    			for (var i = 0; i < workoutToSave.classTypes.length; i++) { //Saves workout within the class types selected
-                    var type = workoutToSave.classTypes[i]
-                    console.log(type.id)
-    				var classTypeToSave = ref.child('classTypes').child(type.id).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {
+                console.log(workoutToSave.classTypes)
+    			for (var classType in workoutToSave.classTypes) { //Saves workout within the class types selected
+    				var classTypeToSave = ref.child('classTypes').child(classType).child('workoutsUsingClass').child(pushedWorkout.key).set({dateSaved: new Date().getTime()}, function(err) {
     					if (err) return console.log(err)
                         console.log("Saved workout " + pushedWorkout.key + " to classType.")
     				})
@@ -146,7 +176,6 @@ angular.module('bodyAppApp')
 
     $scope.editWorkout = function(workoutToEdit) {
     	$scope.editing = true;
-    	console.log(workoutToEdit);
     	$scope.showAddWorkout = workoutToEdit;
     	$scope.scrollTop()
       if(!$scope.$$phase) $scope.$apply();  	
@@ -156,14 +185,24 @@ angular.module('bodyAppApp')
     $scope.updateWorkout = function(workoutToUpdate) {
     	workoutToUpdate.updated = new Date().getTime();
     	workoutToUpdate.updatedBy = currentUser._id;
+
+        var classTypesObject = {};
+        for (var i = 0; i < workoutToUpdate.classTypes.length; i++) {
+            classTypesObject[workoutToUpdate.classTypes[i].id] = {dateSaved: new Date().getTime()}
+        }
+
+        workoutToUpdate.classTypes = classTypesObject;
+        $scope.showAddWorkout = false;
+
     	ref.child('workouts').child(workoutToUpdate.id).update(workoutToUpdate, function(err) {
     		if (err) return console.log(err);
     		$scope.showAddWorkout = false;
     		$scope.editing = false;
 	      if(!$scope.$$phase) $scope.$apply();
           if (!workoutToUpdate.classTypes) return;
-	      for (var i = 0; i < workoutToUpdate.classTypes.length; i++) { //Saves workout within the class types selected
-  				ref.child('classTypes').child(workoutToUpdate.classTypes[i].id).child('workoutsUsingClass').child(workoutToUpdate.id).set({dateSaved: new Date().getTime()}, function(err) {
+          console.log(workoutToUpdate.classTypes)
+	      for (var classType in workoutToUpdate.classTypes) { //Saves workout within the class types selected
+  				ref.child('classTypes').child(classType).child('workoutsUsingClass').child(workoutToUpdate.id).set({dateSaved: new Date().getTime()}, function(err) {
   					if (err) return console.log(err)
   				})
   			} 	    		
@@ -183,6 +222,11 @@ angular.module('bodyAppApp')
     	// 		}
     	// 	})
     	// })
+    }
+
+    $scope.closeWorkoutAlertPushed = function() {
+      $cookies.remove('showWorkoutsAlert')
+      $scope.showWorkoutsAlert = false;
     }
 
     $scope.removeErrorMessage = function() {

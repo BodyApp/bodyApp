@@ -1,5 +1,32 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
+<div class="studio-alert" ng-show = "showWorkoutsAlert">
+  <div class="page-container-responsive pt16 pb16">
+    <div class="studio-alert-container">
+      <div class="studio-alert-close">
+        <a href="#" ng-click = "closeWorkoutsAlertPushed()">
+          <i class="ti-close">
+            <md-tooltip md-direction="bottom">Close</md-tooltip>
+          </i>
+        </a>
+      </div>
+      <div class="row">
+        <!-- <div ng-if = "headerUrl" class="col-md-3 hidden-sm hidden-xs">
+          <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
+        </div> -->
+        <div class="col-md-11">
+          <!-- <h5 class="mb8 bold">Congrats, {{storefrontInfo.}} is live!</h5> -->
+          <h5 class="lightgray">Create a workout and add a routine, then assign your workouts to your class types.  Class types will often have many workouts assigned to them. Class types will be displayed to your customers in your schedule and the workout sets / excercises will be displayed during class. Feel free to use the default workout, which doesn't have any sets or exercises.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a class="col-sm-12 pt16 pb16" style = "text-align:center;" ng-show = "!showWorkoutsAlert" ng-click = "showWorkoutsAlert = true;" ng-cloak>
+  Show Workouts Description
+</a>
+
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
     <div ng-include="'components/studioCreationWalkthrough/studioWalkthrough.html'"></div>
@@ -293,7 +320,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-12 mb16" >
-              <h5 class="mb0">Assigned To: <span ng-repeat = "classTypes in workout.classTypes track by $index" class="lightgray bold">{{classTypes.name}}, </span></h5>
+              <h5 class="mb0">Assigned To: <span ng-repeat = "classTypes in workout.classTypes track by $index" class="lightgray bold">{{classTypes.name}}<span ng-show = "$index < workout.classTypes.length-1">,</span> </span></h5>
             </div>
           </div>
           <div class="row" ng-init = "limit = 3">

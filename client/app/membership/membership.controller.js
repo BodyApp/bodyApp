@@ -13,8 +13,6 @@ angular.module('bodyAppApp')
       var slotTime = moment(slot.dateTime).format('LT')
     }
 
-    console.log(slot)
-
     var planInfo;
     var dropinRate;
     var specialtyRate;
@@ -58,6 +56,7 @@ angular.module('bodyAppApp')
     }
 
     function getInstructorPicture() {
+      if (!slot) return
       ref.child('instructors').child(slot.instructor).child('picture').once('value', function(snapshot) {
         $scope.instructorPicture = snapshot.val();
       })

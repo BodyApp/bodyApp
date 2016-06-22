@@ -1,27 +1,31 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
-<div class="studio-alert" ng-show = "!closeAlert && storefrontAlert">
+<div class="studio-alert" ng-show = "showPricingAlert">
   <div class="page-container-responsive pt16 pb16">
     <div class="studio-alert-container">
       <div class="studio-alert-close">
-        <a href="#" ng-click = "closeAlertPushed()">
+        <a href="#" ng-click = "closePricingAlertPushed()">
           <i class="ti-close">
             <md-tooltip md-direction="bottom">Close</md-tooltip>
           </i>
         </a>
       </div>
       <div class="row">
-        <div ng-if = "headerUrl" class="col-md-3 hidden-sm hidden-xs">
+        <!-- <div ng-if = "headerUrl" class="col-md-3 hidden-sm hidden-xs">
           <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
-        </div>
-        <div class="col-md-9">
-          <h5 class="mb8 bold">Congrats your studio is live!</h5>
-          <h5 class="lightgray">That's the first big hurdle over! Your studio is always available from the <a href="#">Storefront tab</a> in the navigation bar. We leave you here at your studio dashboard, the place where you'll manage classes, pricing, and members.</h5>
+        </div> -->
+        <div class="col-md-11">
+          <!-- <h5 class="mb8 bold">Congrats, {{storefrontInfo.}} is live!</h5> -->
+          <h5 class="lightgray">Setting a price for either subscribers or dropins will prevent users from taking classes for free and it's how you'll make money! The average subscription price is ~$40 and the average dropin price is ~$7. Your subscribers will be able to take an unlimited number of your classes each month.  You can set both subscription and dropin pricing rates, or just choose one!</h5>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<a class="col-sm-12 pt16 pb16" style = "text-align:center;" ng-show = "!showPricingAlert" ng-click = "showPricingAlert = true;" ng-cloak>
+  Show Pricing Description
+</a>
 
 <div class="page-container-responsive row-space-top-4 row-space-4">
   <div class="row">
@@ -69,7 +73,7 @@
     <div class="col-md-9">
 
 <!-- PANEL -->
-      <div class="panel space-4" ng-show = "loaded && connectedStripeAccount">
+      <div class="panel space-4" ng-show = "connectedStripeAccount">
         <div class="panel-header">
           Studio Pricing Plans
           <ul class="panel-action-list">
@@ -84,7 +88,7 @@
           <div class="panel space-4" ng-show = "!subscriptionPlan && !dropinPlan">   <!-- No pricing added yet -->
             <div class="panel-body">
               <div class="row col-sm-12">
-                <h5 class="mb8">Looks like you don't have pricing set. Some studios start off with a lower price and raise it after gaining traction. You can always adjust your price in response to changes in demand.</h5>
+                <h5 class="mb8">Looks like you don't have pricing set. Users will be able to try out your classes for free until you set pricing. Some studios start off with a lower price and raise it after gaining traction. You can always adjust your price in response to changes in demand.</h5>
                 <a href="#" ng-click = "initPricingPlan()" ng-show = "!subscriptionPlan || !dropinPlan">Add pricing plan<i class="ti-arrow-circle-right icon-spacing"></i></a>
               </div>
             </div>
@@ -242,7 +246,7 @@
       </div>
 <!-- PANEL END--> 
 
-        <div class="panel space-4">
+        <div class="panel space-4" ng-show = "startedLoading">
           <div class="panel-header">
             Payout Details          
           </div>

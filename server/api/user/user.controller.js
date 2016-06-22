@@ -1240,7 +1240,7 @@ exports.saveEmergency = function(req, res, next) {
 exports.createTokBoxSession = function(req, res, next) {
   // The session will the OpenTok Media Router:
   opentok.createSession({mediaMode:"routed"}, function(err, session) {
-    if (err) return console.log(err);
+    if (err) return res.status(400).send(err);
     // save the session.sessionId back in firebase
     res.status(200).json(session);
   });

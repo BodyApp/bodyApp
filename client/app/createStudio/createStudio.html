@@ -51,13 +51,14 @@
 	<div class="page-container-responsive pt48 pb48">
 		<div class="row">
 			<div class="col-sm-push-1 col-sm-10 text-center">
-				<h3 class="mb16 bold">Run your virtual studio, on your terms.</h3>
-				<h4>We make running your live interactive video sessions simple by taking care of all the hard stuff - live video, virtual studio setup, class scheduling, payments, tech support and more.</h4>
+				<h3 class="mb16 bold">Run virtual fitness studio, on your terms.</h3>
+				<h4>We make running live interactive video sessions simple by taking care of all the hard stuff - live video, virtual studio setup, class scheduling, payments, and tech support.</h4>
 			</div>
 		</div>
 		<div class="row mt40 text-center">
 			<div class="col-sm-12">
-				<a href="#" class="btn-blue big-btn" style = "font-size: 20px;" ng-click = "beginStudioCreation()">Launch Your Studio</a>
+				<a href="#" class="btn-blue big-btn" style = "font-size: 20px;" ng-click = "beginStudioCreation()">Launch Your Studio in Under 5 Minutes</a>
+				<!-- <h5>... in less than 5 minutes</h5> -->
 			</div>
 		</div>
 		<div class="row mt40">
@@ -68,7 +69,7 @@
 			</div>
 			<div class="col-sm-4 pt-xs-16 text-center">
 				<h3 class="mb0 royalblue">$0</h3>
-				<h3 class="mb8 royalblue">Setup fee</h3>
+				<h3 class="mb8 royalblue">Setup/Monthly fee</h3>
 				<h5>creating your studio is free - we take a percentage when users pay you.</h5>
 			</div>
 			<div class="col-sm-4 pt-xs-16 text-center">
@@ -415,9 +416,9 @@
 						        </div>
 							    </div>
 
-							    <div layout="row" flex class="mb8">
+
+							    <!-- <div layout="row" flex class="mb8">
 							    	<md-input-container flex class="md-block" ng-mouseenter = "showProfilePhotoHelper = true;" ng-mouseleave = "showProfilePhotoHelper = false;">
-					            <!-- <label class="angular-label">Upload profile photo</label> -->
 					            <lf-ng-md-file-input class = "angular-label" ng-show = "!iconUrl" lf-placeholder = "Upload profile photo" lf-files="iconImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
 					            <div class="form-hint">Recommended 400 x 400 pixels.</div>
@@ -426,49 +427,12 @@
 
 				          <div layout="row" flex class="mb8">
 						        <md-input-container flex class="md-block" ng-mouseenter = "showHeaderPhotoHelper = true;" ng-mouseleave = "showHeaderPhotoHelper = false;">
-					            <!-- <label class="angular-label">Upload header photo</label> -->
-					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>					            <!-- <input type="text" class="angular-input"> -->
+					            <lf-ng-md-file-input class="angular-label" ng-show = "!headerUrl" lf-placeholder = "Upload header photo" lf-files="headerImage" accept="image/*" preview></lf-ng-md-file-input>
 					            <br>
 					            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
 						        </md-input-container>
-						        <!-- <div>
-					            <md-button class="md-primary md-raised">Add photo</md-button>
-						        </div> -->
 							    </div>
-
-				          <!-- <div class="row mb16">
-				            <label class="col-sm-3" for="coupon-code">
-				              Add Header Image
-				            </label>
-				            <div class="col-sm-6">
-				              <lf-ng-md-file-input ng-show = "!headerUrl" lf-placeholder = "Pick Header Image" lf-files="headerImage" lf-caption=""></lf-ng-md-file-input>
-				              <lf-ng-md-file-input ng-show = "headerUrl" lf-placeholder = "Replace" lf-files="headerImage" lf-caption="Replace"></lf-ng-md-file-input>
-				            </div>
-				          </div>
-
-							    <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block">
-					            <label class="angular-label">Upload profile photo</label>
-					            <input type="text" class="angular-input">
-					            <div class="form-hint">Recommended 400 x 400 pixels.</div>
-						        </md-input-container>
-						        <div>
-					            <md-button class="md-primary md-raised">Add photo</md-button>
-						        </div>
-							    </div>
-
-							    <div layout="row" flex class="mb8">
-						        <md-input-container flex class="md-block">
-					            <label class="angular-label">Upload header photo</label>
-					            <input type="text" class="angular-input">
-					            <div class="form-hint">Recommended 1280 x 540 pixels.</div>
-						        </md-input-container>
-						        <div>
-					            <md-button class="md-primary md-raised">Add photo</md-button>
-						        </div>
-							    </div> -->
-
-							    <div layout="column" flex class="mb8">
+ 							    <div layout="column" flex class="mb8">
 							    	<md-input-container class="md-block" ng-mouseenter = "showYoutubeVideoHelper = true;" ng-mouseleave = "showYoutubeVideoHelper = false;">
 							        <label class="angular-label">Studio Video YouTube ID</label>
 							        <input type="text" md-no-asterisk="" name="description" ng-model="studioToCreate.youtubeId" class="angular-input" >
@@ -478,9 +442,8 @@
 							          <div ng-message="md-maxlength">The URL has to be less than 20 characters long.</div>
 							        </div>
 							      </md-input-container>
-							    </div>						    
-
-							    <div class="row">
+							    </div> -->
+							     <div class="row">
 										<div class="col-sm-2 mt8">
 											<a href="#" ng-click = "creationStarted = false;">Back</a>
 										</div>
@@ -488,7 +451,6 @@
 											<button href="#" type = 'submit' class="btn-blue btn-large" ng-click = "createStudio(studioToCreate); scrollTop();">Next</button>
 										</div>
 									</div>
-
 								</form>
 
 							</div>
@@ -501,7 +463,7 @@
 						<div class="row mb32">
 							<div class="col-sm-12">
 								<h4 class="mb8">Help clients find the right fit</h4>
-								<h5 class="lightgray">Every studio on BODY is unique. Highlight what makes your service safe and effective so that it stands out to clients.</h5>
+								<h5 class="lightgray">Every studio on BODY is unique. Highlight what makes your service safe and effective so that it stands out to clients. Don't worry, you can change all of this later.</h5>
 								<hr class="content-divider mt16 mb24">
 								<form name = "addDescriptionForm">
 

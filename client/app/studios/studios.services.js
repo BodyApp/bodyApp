@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .factory('Studios', function(Auth) {
+  .factory('Studios', function(Auth, $rootScope, $q) {
   	
   	var service = {};
   	service.currentStudio;
@@ -14,11 +14,14 @@ angular.module('bodyAppApp')
     service.admin;
     service.instructor;
 
+    var testingAdmin = false;
+    // var deferObject;
+
     // var ref = new Firebase("https://bodyapp.firebaseio.com/studios"); 
     var ref = firebase.database().ref().child('studios');
     // var fbObject;
 
-    service.isAdmin = function() {
+    // service.isAdmin = function() {
       // console.log(service.admin)
       // return service.admin;
       // if (!service.admin && service.currentStudio) {
@@ -34,9 +37,9 @@ angular.module('bodyAppApp')
       //   })
       // } else {
       //   console.log("here")
-        return service.admin;
+        // return service.admin;
       // }
-    }
+    // }
 
     service.isInstructor = function() {
       // return service.admin;
@@ -57,26 +60,97 @@ angular.module('bodyAppApp')
       // }
     }
 
-    service.setCurrentStudio = function(studio) {
-      service.currentStudio = studio
-      if (!service.admin && studio && Auth.getCurrentUser()._id) {
-        ref.child(studio).child('admins').child(Auth.getCurrentUser()._id).on('value', function(snapshot) {
-          if (snapshot.exists()) {
-            service.admin = true
-          } else {
-            service.admin = false
+    //This should have promise in it
+    service.setCurrentStudio = function(studioId) {
+      var currentUser = Auth.getCurrentUser();
+      // $rootScope.adminOf = $rootScope.adminOf || {};
+      var deferObject = $q.defer();
+      service.currentStudio = studioId
+      
+      if ($rootScope.adminOf && $rootScope.adminOf[studioId]) {
+        deferObject.resolve(true);
+      } else if (currentUser.$promise) {
+        currentUser.$promise.then(function(data) {
+          if (studioId && data._id && !testingAdmin) {        
+            testingAdmin = true;
+            ref.child(studioId).child('admins').child(data._id).once('value').then(function(snapshot) {
+              if (snapshot.exists()) {
+                $rootScope.adminOf = $rootScope.adminOf || {};
+                $rootScope.adminOf[studioId] = true;
+                console.log($rootScope.adminOf)
+                testingAdmin = false;
+                deferObject.resolve(true);
+                // service.admin = true
+              } else {
+                testingAdmin = false;
+                deferObject.reject(false);
+                // service.admin = false
+              }
+            }, function(error) {
+              console.log(error)
+              deferObject.reject(error);
+            })
           }
         })
+      } else if (currentUser._id) {
+        if (studioId && currentUser._id && !testingAdmin) {
+          testingAdmin = true;
+          ref.child(studioId).child('admins').child(currentUser._id).once('value').then(function(snapshot) {
+            if (snapshot.exists()) {
+              $rootScope.adminOf = $rootScope.adminOf || {};
+              $rootScope.adminOf[studioId] = true;
+              console.log($rootScope.adminOf)
+              testingAdmin = false;
+              deferObject.resolve(true);
+              // service.admin = true
+            } else {
+              testingAdmin = false;
+              deferObject.reject(false);
+              // service.admin = false
+            }
+          }, function(error) {
+            console.log(error)
+            deferObject.reject(error);
+          })
+        } else {
+          deferObject.reject("Couldn't get current user");
+        }
       }
-      if (!service.instructor && studio && Auth.getCurrentUser()._id) {
-        ref.child(studio).child('instructors').child(Auth.getCurrentUser()._id).on('value', function(snapshot) {
-          if (snapshot.exists()) {
-            service.instructor = true
-          } else {
-            service.instructor = false
-          }
-        })
-      }
+
+      // if (!$rootScope.adminOf[studioId] && studioId && currentUser._id && !testingAdmin) {
+      //   testingAdmin = true;
+      //   ref.child(studioId).child('admins').child(currentUser._id).once('value').then(function(snapshot) {
+      //     if (snapshot.exists()) {
+      //       $rootScope.adminOf = $rootScope.adminOf || {};
+      //       $rootScope.adminOf[studioId] = true;
+      //       console.log($rootScope.adminOf)
+      //       testingAdmin = false;
+      //       deferObject.resolve(true);
+      //       // service.admin = true
+      //     } else {
+      //       testingAdmin = false;
+      //       deferObject.reject(false);
+      //       // service.admin = false
+      //     }
+      //   }, function(error) {
+      //     deferObject.reject(error);
+      //   })
+      // } 
+
+      return deferObject.promise;
+      // if (!service.instructor && studioId && Auth.getCurrentUser()._id) {
+      //   ref.child(studioId).child('instructors').child(Auth.getCurrentUser()._id).on('value', function(snapshot) {
+      //     if (snapshot.exists()) {
+      //       $rootScope.adminOf = $rootScope.adminOf || {};
+      //       $rootScope.adminOf[studioId] = true;
+      //       // service.instructor = true
+      //     } else {
+      //       $rootScope.adminOf = $rootScope.adminOf || {};
+      //       $rootScope.adminOf[studioId] = false;
+      //       // service.instructor = false
+      //     }
+      //   })
+      // }
     }    
 
     service.getCurrentStudio = function() {
