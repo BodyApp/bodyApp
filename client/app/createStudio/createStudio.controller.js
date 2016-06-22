@@ -150,6 +150,11 @@ angular.module('bodyAppApp')
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
 
           $cookies.remove('studioCreationStarted');
+          $cookies.put('showScheduleAlert', true)
+          $cookies.put('showStorefrontInfoAlert', true)
+          $cookies.put('showClassTypesAlert', true)
+          $cookies.put('showPricingAlert', true)
+          $cookies.put('showWorkoutsAlert', true)
           
           var storageRef = firebase.storage().ref().child('studios').child(studioId);
           angular.forEach($scope.iconImage,function(obj){
@@ -176,7 +181,8 @@ angular.module('bodyAppApp')
             "playlists": true, 
             "pricing": true, 
             "storefrontAlert": true, 
-            "workouts": true
+            "workouts": true,
+            "images": true
           }, function(err) {if (err) console.log(err)})
 					
           ref.child('studios').child(studioId).child('admins').child(currentUser._id).update({'isInstructor': true}, function(err) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, $mdDialog, Studios, $http, Auth, User, Schedule) {
+  .controller('ClassDetailsCtrl', function ($scope, $stateParams, $location, $rootScope, $window, $mdDialog, $state, Studios, $http, Auth, User, Schedule) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
     $rootScope.adminOf = $rootScope.adminOf || {};
@@ -158,13 +158,21 @@ angular.module('bodyAppApp')
     }
 
     $scope.selectClassType = function(classType) {
-      $scope.workoutOptions = {};
+      $scope.workoutOptions = {None: {title: "None", id: "None"}};
       ref.child('classTypes').child(classType).child('workoutsUsingClass').once('value', function(workoutList) {
-        if (!workoutList.exists()) return;
+        if (!workoutList.exists()) {
+          $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+          if(!$scope.$$phase) $scope.$apply();
+          return;
+        }
 	      workoutList.forEach(function(workout) {
 	      	var prop = workout.key;
 	        ref.child('workouts').child(prop).once('value', function(snapshot) {
-	          if (!snapshot.exists()) return
+	          if (!snapshot.exists()) {
+              $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+              if(!$scope.$$phase) $scope.$apply();
+              return;
+            }
 	          $scope.workoutOptions[prop] = snapshot.val()
 	        	if (!$scope.workoutOptions[$scope.classDetails.workout]) $scope.classDetails.workout = prop; //If change class type, automatically choses a workout.
 	          if(!$scope.$$phase) $scope.$apply();
@@ -204,9 +212,15 @@ angular.module('bodyAppApp')
 
       if (!$scope.workouts) {
       	ref.child('workouts').once('value', function(snapshot) {
-          if (!snapshot.exists()) return;
-	        $scope.workouts = snapshot.val()
-	        if(!$scope.$$phase) $scope.$apply();
+          if (snapshot.exists()) {
+  	        $scope.workouts = snapshot.val()
+            $scope.workouts['None'] = {title: "None", id: "None"}
+  	        if(!$scope.$$phase) $scope.$apply();
+          } else {
+            $scope.workouts = $scope.workouts || {};
+            $scope.workouts['None'] = {title: "None", id: "None"}
+            if(!$scope.$$phase) $scope.$apply();
+          }
 	      })	
       }
     }
@@ -217,10 +231,16 @@ angular.module('bodyAppApp')
       
       if (!$scope.playlistObjects) {
 	      ref.child('playlists').once('value', function(snapshot) {
-          if (!snapshot.exists()) return;
-	        $scope.playlistObjects = snapshot.val();
-	        console.log($scope.playlistObjects)
-	        if(!$scope.$$phase) $scope.$apply();
+          if (snapshot.exists()) {
+            $scope.playlistObjects = snapshot.val();
+            $scope.playlistObjects['None'] = {title: "None", id: "None"}
+            if(!$scope.$$phase) $scope.$apply();
+            return  
+          } else {
+            $scope.playlistObjects = $scope.playlistObjects || {};
+            $scope.playlistObjects['None'] = {title: "None", id: "None"}
+            if(!$scope.$$phase) $scope.$apply();
+          }
 	      })
 			}
     }
@@ -286,6 +306,10 @@ angular.module('bodyAppApp')
     		if (err) return console.log(err)
     		console.log("Successfully updated class.")
     	})
+    }
+
+    $scope.cancelEditing = function() {
+      $scope.editing = false;
     }
 
     $scope.joinClass = function(classToJoin) {

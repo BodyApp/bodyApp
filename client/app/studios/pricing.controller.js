@@ -1,7 +1,9 @@
 angular.module('bodyAppApp')
-  .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, $rootScope, $timeout, Studios, Studio, $http, Auth, User) {
+  .controller('PricingCtrl', function ($scope, $stateParams, $window, $state, $rootScope, $timeout, $cookies, Studios, Studio, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+
+    $scope.showPricingAlert = $cookies.get('showPricingAlert')
     
     // $rootScope.adminOf = $rootScope.adminOf || {};
     Studios.setCurrentStudio(studioId)
@@ -13,10 +15,12 @@ angular.module('bodyAppApp')
       // if (!currentUser.role === 'admin') return $state.go('storefront', { "studioId": studioId });  
       if (currentUser.$promise) {
         currentUser.$promise.then(function(data) {
-          if (data.role != 'admin') return $state.go('storefront', { "studioId": studioId });        
+          if (data.role != 'admin') return $state.go('storefront', { "studioId": studioId });       
+          if (data.role === 'admin') return delayedStartup();
         })
       } else if (currentUser.role) {
         if (currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+        if (currentUser.role === 'admin') return delayedStartup();
       }
     })
     
@@ -367,6 +371,11 @@ angular.module('bodyAppApp')
     $scope.formatDate = function(dateToFormat) {
     	moment.locale('en');
     	return moment(dateToFormat*1000).format('l'); //Times 1000 to convert from Unix
+    }
+
+    $scope.closePricingAlertPushed = function() {
+      $cookies.remove('showPricingAlert')
+      $scope.showPricingAlert = false;
     }
 
   });

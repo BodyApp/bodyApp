@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('ClassesCtrl', function ($scope, $stateParams, $state, $window, $rootScope, Studios, $http, Auth) {
+  .controller('ClassesCtrl', function ($scope, $stateParams, $state, $window, $rootScope, $cookies, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+
+    $scope.showClassTypesAlert = $cookies.get('showClassTypesAlert')
+
     $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
@@ -220,6 +223,11 @@ angular.module('bodyAppApp')
           console.log("Successfully removed class type since there were no workouts or future classes based on it.")
         })
       })
+    }
+
+    $scope.closeAlertPushed = function() {
+      $cookies.remove('showClassTypesAlert')
+      $scope.showScheduleAlert = false;
     }
 
   });

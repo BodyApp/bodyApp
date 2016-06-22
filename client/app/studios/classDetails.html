@@ -15,13 +15,19 @@
           <h5 class="mt8">Time</h5>
           <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
 
+          <h5 class="mt8 mb0">Instructor</h5>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="instructor-choice" ng-model = "classDetails.instructor" ng-options = "key as (value.firstName + ' ' + value.lastName) for (key, value) in instructors"></select>
+          </div>
+
           <h5 class="mt8 mb0">Class</h5>
           <h5 class="lightgray mb0" ng-hide = "editing && classTypes[classDetails.classType].classType != 'Specialty'">{{classTypes[classDetails.classType].name}}</h5>
-          <div class="select display-block" ng-show = "editing && !classTypes[classDetails.classType].classType === 'Specialty'">
+          <div class="select display-block" ng-show = "editing && classTypes[classDetails.classType].classType != 'Specialty'">
             <select id="class-choice" ng-model = "classDetails.classType" ng-change = "selectClassType(classDetails.classType)" ng-options = "key as value.name for (key, value) in classTypes"></select>
           </div>
 
-          <h5 class="mt8 mb0">Specialty Class Rate</h5>
+          <h5 class="mt8 mb0" ng-show = "classTypes[classDetails.classType].classType === 'Specialty'">Specialty Class Rate</h5>
           <h5 class="lightgray mb0" ng-show = "classTypes[classDetails.classType].classType === 'Specialty'">${{classTypes[classDetails.classType].specialtyClassRate}}</h5>
 
           <h5 class="mt8 mb0">Workout</h5>
@@ -30,20 +36,17 @@
             <select id="workout-choice" ng-model = "classDetails.workout" ng-options = "key as value.title for (key, value) in workoutOptions"></select>
           </div>
 
-          <h5 class="mt8 mb0">Instructor</h5>
-          <h5 class="lightgray mb0" ng-hide = "editing">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
-          <div class="select display-block" ng-show = "editing">
-            <select id="instructor-choice" ng-model = "classDetails.instructor" ng-options = "key as (value.firstName + ' ' + value.lastName) for (key, value) in instructors"></select>
-          </div>
-
           <h5 class="mt8 mb0">Playlist</h5>
           <h5 class="lightgray" ng-hide = "editing">{{playlistObjects[classDetails.playlist].title}}</h5>
           <div class="select display-block" ng-show = "editing">
           <select id="playlist-choice" ng-model = "classDetails.playlist" ng-options = "value.id as value.title for (key, value) in playlistObjects"></select>
           </div>
 
-          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "!editing" ng-click = "joinClass(classDetails)">Start Class</a>
-          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "editing" ng-click = "updateClass(classDetails)">Update</a>
+          <a href="#" class="mt16 btn btn-blue btn-block">
+            <span style = "font-weight: 600" ng-show = "!editing" ng-click = "joinClass(classDetails)">Start Class</span>
+            <span style = "font-weight: 600" ng-show = "editing" ng-click = "updateClass(classDetails)">Update</span>
+          </a>
+          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "editing" ng-click = "cancelEditing()">Cancel</a>
         </div>
       </div>
 

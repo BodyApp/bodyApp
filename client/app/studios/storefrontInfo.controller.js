@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, $rootScope, $mdToast, $timeout, Studios, $http, Auth) {
+  .controller('StorefrontInfoCtrl', function ($scope, $stateParams, $window, $state, $rootScope, $mdToast, $timeout, $cookies, Studios, $http, Auth) {
     var currentUser = Auth.getCurrentUser()
     
     var ref;
     var studioId = $stateParams.studioId;
     
+    $scope.showStorefrontInfoAlert = $cookies.get('showStorefrontInfoAlert')
+
     $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
       currentUser.$promise.then(function(data) {
@@ -185,6 +187,9 @@ angular.module('bodyAppApp')
               break;
           }
         }, function() {
+          ref.child('toSetup').child('images').remove(function(err) {
+            if (err) console.log(err)
+          })
           // Upload completed successfully, now we can get the download URL
           $scope.iconUrl = uploadTask.snapshot.downloadURL;
           if(!$scope.$$phase) $scope.$apply();
@@ -257,6 +262,11 @@ angular.module('bodyAppApp')
         if (err) return console.log(err)
         console.log("Saved storefront info.")
       })
+    }
+
+   $scope.closeAlertPushed = function() {
+      $cookies.remove('showStorefrontInfoAlert')
+      $scope.showStorefrontInfoAlert = false;
     }
 
     $scope.scrollTop = function() {

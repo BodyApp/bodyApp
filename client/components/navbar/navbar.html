@@ -65,10 +65,10 @@
                             <md-menu-item>
                               <md-button ng-class = "{textRight: isMobile}" ng-click="goToSettings(adminSelected)">Settings</md-button>
                             </md-menu-item>
-                            <md-menu-item>
-                              <md-content style = "font-weight: 600;" ng-show = "numStudiosAdmin > 1">Switch To:</md-content>
+                            <md-menu-item ng-show = "numStudiosAdmin > 1">
+                              <md-content style = "font-weight: 600;">Switch To:</md-content>
                             </md-menu-item>
-                            <md-menu-item ng-repeat = "(studioId, bool) in adminOf" ng-show = "studioId != adminSelected">
+                            <md-menu-item ng-show = "numStudiosAdmin > 1" ng-repeat = "(studioId, bool) in adminOf" ng-show = "studioId != adminSelected">
                               <md-button ng-class = "{textRight: isMobile}" ng-click="goToStorefront(studioId)">
                                 <img class="nav-profile-pic" ng-src="{{adminStudioLogos[studioId]}}"> 
                                 {{studioNames[studioId]}} 

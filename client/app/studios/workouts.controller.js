@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('WorkoutsCtrl', function ($scope, $stateParams, $q, $window, $state, $rootScope, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
+  .controller('WorkoutsCtrl', function ($scope, $stateParams, $cookies, $q, $window, $state, $rootScope, Studios, Auth, SoundCloudLogin, SoundCloudAPI) {
   	var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+
+    $scope.showWorkoutsAlert = $cookies.get('showWorkoutsAlert')
     
     $rootScope.adminOf = $rootScope.adminOf || {};
     if (currentUser.$promise) {
@@ -220,6 +222,11 @@ angular.module('bodyAppApp')
     	// 		}
     	// 	})
     	// })
+    }
+
+    $scope.closeWorkoutAlertPushed = function() {
+      $cookies.remove('showWorkoutsAlert')
+      $scope.showWorkoutsAlert = false;
     }
 
     $scope.removeErrorMessage = function() {

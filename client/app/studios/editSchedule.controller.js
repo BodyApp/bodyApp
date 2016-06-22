@@ -1,61 +1,45 @@
 angular.module('bodyAppApp')
-  .controller('EditScheduleCtrl', function ($scope, $stateParams, $state, $location, $window, $rootScope, Studios, $http, Auth, User) {
+  .controller('EditScheduleCtrl', function ($scope, $stateParams, $cookies, $state, $location, $window, $rootScope, Studios, $http, Auth, User) {
     var currentUser = Auth.getCurrentUser()
     var studioId = $stateParams.studioId;
+    $scope.studioId = studioId;    
+
+    $scope.showScheduleAlert = $cookies.get('showScheduleAlert')
     
-    $rootScope.adminOf = $rootScope.adminOf || {};
-    if (currentUser.$promise) {
-      currentUser.$promise.then(function(data) {
-        if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
-      })
-    } else if (currentUser.role) {
-      if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
-    }
+    Studios.setCurrentStudio(studioId)
+    .then(function(){
+      console.log("Succeeded")
+      delayedStartup()
+    }, function(){
+      console.log("Failed")
+      // if (!currentUser.role === 'admin') return $state.go('storefront', { "studioId": studioId });  
+      if (currentUser.$promise) {
+        currentUser.$promise.then(function(data) {
+          if (data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+          if (data.role === 'admin') return delayedStartup()
+        })
+      } else if (currentUser.role) {
+        if (currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+        if (currentUser.role === 'admin') return delayedStartup()
+      }
+    })
+
+    // $rootScope.adminOf = $rootScope.adminOf || {};
+    // if (currentUser.$promise) {
+    //   currentUser.$promise.then(function(data) {
+    //     if (!$rootScope.adminOf[studioId] && data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+    //   })
+    // } else if (currentUser.role) {
+    //   if (!$rootScope.adminOf[studioId] && currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+    // }
 
     // if (!studioId) studioId = 'body'
     $scope.workoutToCreate = $scope.workoutToCreate || {}
     $scope.workoutToCreate.duration = 30;
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        getClassTypes();
-        getInstructors();
-        getPlaylists();
-        getClasses(daysInFuture);
-        getWorkouts();
-        getPlaylistObjects();
-        createSchedule(numDaysToShow, daysInFuture);
-        createInitialTokBoxSession();
-        getSpecialtyClasses();
-        setDateTimePicker();
-        getStudioName();
-      } else {
-        // console.log("User is logged out");
-        if (currentUser.firebaseToken) {
-          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
-            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-            getClassTypes();
-            getInstructors();
-            getPlaylists();
-            getClasses(daysInFuture);
-            getWorkouts();
-            getPlaylistObjects();
-            createSchedule(numDaysToShow, daysInFuture);
-            createInitialTokBoxSession();
-            getSpecialtyClasses();
-            setDateTimePicker();
-            getStudioName();
-          }); 
-        } else {
-          console.log("User doesn't have a firebase token saved, should retrieve one.")
-        }
-      }
-    })
 
-    $scope.minDate = new Date();
-    Studios.setCurrentStudio(studioId);
-    
+    $scope.minDate = new Date();  
 
     var tzName = jstz().timezone_name;
     $scope.timezone = moment().tz(tzName).format('z');
@@ -78,6 +62,44 @@ angular.module('bodyAppApp')
     $scope.durationOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
     var nextSessionToSave;
+
+    function delayedStartup() {
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          getClassTypes();
+          getInstructors();
+          getPlaylists();
+          getClasses(daysInFuture);
+          getWorkouts();
+          getPlaylistObjects();
+          createSchedule(numDaysToShow, daysInFuture);
+          createInitialTokBoxSession();
+          getSpecialtyClasses();
+          setDateTimePicker();
+          getStudioName();
+        } else {
+          // console.log("User is logged out");
+          if (currentUser.firebaseToken) {
+            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+              getClassTypes();
+              getInstructors();
+              getPlaylists();
+              getClasses(daysInFuture);
+              getWorkouts();
+              getPlaylistObjects();
+              createSchedule(numDaysToShow, daysInFuture);
+              createInitialTokBoxSession();
+              getSpecialtyClasses();
+              setDateTimePicker();
+              getStudioName();
+            }); 
+          } else {
+            console.log("User doesn't have a firebase token saved, should retrieve one.")
+          }
+        }
+      })
+    }
 
     // ref.onAuth(function(authData) {
     //   if (authData) {
@@ -157,8 +179,15 @@ angular.module('bodyAppApp')
 
     function getPlaylists() {
       ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
-        if (!snapshot.exists()) return;
         $scope.playlists = [];
+        $scope.playlists.push({title: "None", id: "None"})
+        if (!snapshot.exists()) {
+          $scope.workoutToCreate = $scope.workoutToCreate || {};
+          $scope.workoutToCreate.playlist = $scope.playlists[0];
+          if(!$scope.$$phase) $scope.$apply();
+          return;
+        }
+        
         snapshot.forEach(function(playlist) {
           $scope.playlists.unshift(playlist.val())
         })
@@ -192,12 +221,21 @@ angular.module('bodyAppApp')
     }
 
     function selectClassType(classType) {
-      $scope.workoutOptions = {};
-      console.log(classType.workoutsUsingClass)
+      $scope.workoutOptions = {None: {title: "None", id: "None"}};
+      if (!classType.workoutsUsingClass) {
+        $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+        if(!$scope.$$phase) $scope.$apply();
+        return;
+      }
       for (var prop in classType.workoutsUsingClass) {
         ref.child('workouts').child(prop).once('value', function(snapshot) {
-          if (!snapshot.exists()) return
+          if (!snapshot.exists()) {
+            $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+            if(!$scope.$$phase) $scope.$apply();
+            return;
+          }
           $scope.workoutOptions[snapshot.key] = snapshot.val() 
+          console.log($scope.workoutOptions)
           $scope.workoutToCreate.workout = $scope.workoutOptions[snapshot.key] //Initiates workout
           if(!$scope.$$phase) $scope.$apply();
         })
@@ -358,6 +396,11 @@ angular.module('bodyAppApp')
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
       return getFormattedDateTime(dateTime, noToday);
+    }
+
+    $scope.closeAlertPushed = function() {
+      $cookies.remove('showScheduleAlert')
+      $scope.showScheduleAlert = false;
     }
 
     function getFormattedDateTime(dateTime, noToday) {

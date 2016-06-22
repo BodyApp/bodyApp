@@ -109,12 +109,12 @@
 							<div class="row">
 								<div class="col-xs-12">
 									<h4 class="mb8 royalblue">{{classType.name}}</h4>
-									<h5>Requires: 
+									<h5 ng-show = "classType.equipment">Requires: 
 										<span ng-repeat = "requirement in classType.equipment">
 											{{requirement.name}}<span ng-show="classType.equipment.length > 1 && $index != classType.equipment.length-1">, </span>
 										</span>
 									</h5>
-									<h5>Open to: <span>{{classType.openTo}}</span></h5>
+									<!-- <h5>Open to: <span>{{classType.openTo}}</span></h5> -->
 									<hr class="small-divider">
 									<h5 class="lightgray">{{classType.classDescription}}</h5>
 								</div>
@@ -122,8 +122,8 @@
 						</div>
 					</div>
 
-					<hr class="content-divider mt16 mb16">
-					<div class="row">
+					<hr class="content-divider mt16 mb16" ng-show = "workout">
+					<div class="row" ng-show = "workout">
 						<div class="col-sm-3 mb-xs-16">
 							<h5>Workout</h5>
 						</div>

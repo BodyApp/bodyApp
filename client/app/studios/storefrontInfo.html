@@ -1,27 +1,31 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb70 mb-sm-48"></div>
 
-<!-- <div class="studio-alert" ng-show = "!closeAlert && toSetup.storefrontAlert">
+<div class="studio-alert" ng-show = "showStorefrontInfoAlert">
   <div class="page-container-responsive pt16 pb16">
     <div class="studio-alert-container">
       <div class="studio-alert-close">
-        <a href="#" ng-click = "closeAlert = true;">
+        <a href="#" ng-click = "closeAlertPushed();">
           <i class="ti-close">
             <md-tooltip md-direction="bottom">Close</md-tooltip>
           </i>
         </a>
       </div>
       <div class="row">
-        <div class="col-md-3 hidden-sm hidden-xs">
+        <!-- <div ng-if = "headerUrl" class="col-md-3 hidden-sm hidden-xs">
           <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
-        </div>
-        <div class="col-md-9">
-          <h5 class="mb8 bold">Congrats your studio is live!</h5>
-          <h5 class="lightgray">That's the first big hurdle over! Your studio is always available from the <a href="#">Storefront tab</a> in the navigation bar. We leave you here at your studio dashboard, the place where you'll manage classes, pricing, and members.</h5>
+        </div> -->
+        <div class="col-md-11">
+          <!-- <h5 class="mb8 bold">Congrats, {{storefrontInfo.studioName}} is live!</h5> -->
+          <h5 class="lightgray">Welcome to your Studio Settings!  This is where you can do things like change your studio's name, change your descriptions, add photos, and add a Youtube link ID.  You can access other areas of your studio management dashboard by using the navigation links on the left.</h5>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+
+<a class="col-sm-12 pt16 pb16" style = "text-align:center;" ng-show = "!showStorefrontInfoAlert" ng-click = "showStorefrontInfoAlert = true;" ng-cloak>
+  Show Storefront Info Description
+</a>
 
 
 <div class="page-container-responsive row-space-top-4 row-space-4">
