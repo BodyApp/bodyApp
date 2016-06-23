@@ -21,6 +21,8 @@ angular.module('bodyAppApp')
       }
     })
 
+    window.prerenderReady = false;
+
     $scope.studioId = studioId;
 
     var daysInFuture = 0;
@@ -40,6 +42,15 @@ angular.module('bodyAppApp')
     // ref.unauth()
 
     var accountId;
+
+    $http.post('https://api.prerender.io/recache', {
+      "prerenderToken": "0xk2UugZ3MhosEzMYKrg",
+      "url": "https://www.getbodyapp.com" + $location.path()
+    }).then(function(){
+      console.log("Successfully posted to prerender")
+    }, function(err){
+      console.log(err)
+    });
 
     Auth.isLoggedInAsync(function(loggedIn) {
       if (!loggedIn) {        
@@ -227,6 +238,7 @@ angular.module('bodyAppApp')
 
       storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
         // $scope.headerUrl = url;
+        window.prerenderReady = true;
         $scope.backgroundImageUrl = url
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
@@ -286,6 +298,7 @@ angular.module('bodyAppApp')
       ref.child('storefrontInfo').once('value', function(snapshot) {
         if (!snapshot.exists()) return;
         $scope.storefrontInfo = snapshot.val();
+
         $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
         if(!$scope.$$phase) $scope.$apply();
       })

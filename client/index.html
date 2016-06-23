@@ -13,21 +13,28 @@
     <meta name="description" content="BODY's multi-way video fitness platform lets you take live fitness classes with friends and your favorite instructors from anywhere. Group training increases results, burns more calories and improves heart health. Plus it’s a lot more fun. BODY is a strength and conditioning program that blends high intensity interval training with functional movements to increase your body’s response and achieve results quickly.">    
 
     <!-- Facebook tags -->
-    <meta property="og:title" content="BODY - Take Live Fitness Classes Online With Friends" />
+<!--     <meta property="og:title" content="{{ngMeta.ogTitle}}" />
     <meta property="og:type" content="website" />       
-    <meta property="og:image" content="https://www.getbodyapp.com/assets/images/user-video-on-laptop.jpg" />
-    <meta property="og:description" content="BODY's multi-way video fitness platform lets you take live fitness classes with friends and your favorite instructors from anywhere. Group training increases results, burns more calories and improves heart health. Plus it’s a lot more fun!" />      
-    <meta property="og:url" content="https://www.getbodyapp.com/" />
+    <meta property="og:image" content="{{ngMeta.ogImage}}" />
+    <meta property="og:description" content="{{ngMeta.ogDescription}}" />      
+    <meta property="og:url" content="{{ngMeta.ogUrl}}" />
+    <meta property="fb:app_id" content="501927126632986"/> -->
+
+    <meta property="og:title" content="My new virtual fitness studio" />
+    <meta property="og:type" content="website" />       
+    <meta property="og:image" content="https://www.getbodyapp.com/assets/images/studios/body/home-hero.jpg" />
+    <meta property="og:description" content="I recently created a virtual fitness studio so I can teach live group classes where we'll be able to see each other and interact in real-time." />      
+    <meta property="og:url" content="https://www.getbodyapp.com" />
     <meta property="fb:app_id" content="501927126632986"/>
 
     <!-- Twitter tags -->
-    <meta name="twitter:card" content="https://www.getbodyapp.com/assets/images/user-video-on-laptop.jpg">
+<!--     <meta name="twitter:card" content="https://www.getbodyapp.com/assets/images/user-video-on-laptop.jpg">
     <meta name="twitter:site" content="@bodyapp">
     <meta name="twitter:title" content="BODY - Take Live Fitness Classes Online With Friends & Instructors">
     <meta name="twitter:description" content="BODY's multi-way video fitness platform lets you take live fitness classes with friends and your favorite instructors from anywhere. Group training increases results, burns more calories and improves heart health. Plus it’s a lot more fun!">
-    <meta name="twitter:creator" content="@bodyapp">
+    <meta name="twitter:creator" content="@bodyapp"> -->
     <!-- Twitter summary card with large image must be at least 280x150px -->
-    <meta name="twitter:image:src" content="https://www.getbodyapp.com/assets/images/user-video-on-laptop.jpg">
+    <!-- <meta name="twitter:image:src" content="https://www.getbodyapp.com/assets/images/user-video-on-laptop.jpg"> -->
 
     
     <meta name="viewport" content="width=device-width">
@@ -156,6 +163,7 @@
       <link rel="stylesheet" href="bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.css">
       <script src="bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.js"></script>  
       
+      <script src="bower_components/angular-update-meta/dist/update-meta.min.js"></script>  
       <script src="bower_components/geolocator/src/geolocator.min.js"></script>  
       <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
       <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">

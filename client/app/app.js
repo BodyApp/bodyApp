@@ -21,7 +21,8 @@ angular.module('bodyAppApp', [
   'ngMaterialDatePicker',
   'lfNgMdFileInput',
   'ngMessages',
-  'ae-datetimepicker'
+  'ae-datetimepicker',
+  'updateMeta'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

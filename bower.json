@@ -36,7 +36,9 @@
     "geolocator": "*",
     "angular-messages": "*",
     "eonasdan-bootstrap-datetimepicker": "*",
-    "angular-eonasdan-datetimepicker": "*"
+    "angular-eonasdan-datetimepicker": "*",
+    "ngMeta": "*",
+    "angular-update-meta": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

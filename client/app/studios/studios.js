@@ -140,7 +140,8 @@ angular.module('bodyAppApp')
         // authenticate: true,
         resolve: {
           studioId: function($stateParams) {
-            return $stateParams.studioId
+            // ngMeta.setTag('ogUrl': "https://www.getbodyapp.com/studios/" + $stateParams.studioId);
+            return $stateParams.studioId;
           }
         }
       })

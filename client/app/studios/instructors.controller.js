@@ -116,9 +116,15 @@ angular.module('bodyAppApp')
         $scope.showEditInstructor = false;
         if(!$scope.$$phase) $scope.$apply();
         if (instructorToSave.permissions === "Studio Admin") {
-          ref.child('admins').child(instructorToSave._id).set({"isInstructor": true}, function(err) {
+          ref.child('admins').child(instructorToSave._id).set({"isInstructor": true, facebookId: instructorToSave.facebookId}, function(err) {
             if (err) return console.log(err)
             console.log("Instructor updated as admin")
+            var toSet = {};
+            toSet[studioId] = true;
+            firebase.database().ref().child('fbUsers').child(instructorToSave.facebookId).child('studiosAdmin').update(toSet, function(err) {
+              if (err) return console.log("Error setting studiosAdmin in fbUsers object")
+              console.log("Set studiosAdmin in fbUsers object");
+            })
           })
         }
       })
