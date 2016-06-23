@@ -254,7 +254,7 @@
           <div class="panel-body">
             <h5 class="lightgray mb8">Your studio transactions are handled through Stripe payment processing.</h5>
             <h5 class="green" ng-if = "connectedStripeAccount">Account Synced: {{connectedStripeAccount}} <i class="fa fa-check"></i></h5>
-            <h5 class="orange" ng-if = "!connectedStripeAccount">No Stripe account synced. You must do this before you can be paid. <i class="fa fa-check"></i></h5>
+            <h5 class="orange" ng-if = "!connectedStripeAccount">No Stripe account synced. You must do this before you can be paid. <i class="fa fa-times"></i></h5>
             <!-- <button ng-if = "!stripeConnected" class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button> -->
             <a ng-if = "!stripeConnected" ng-href = "#" class = "btn mt16" ng-click = "beginStripeConnect()">Connect with Stripe <i class="fa fa-cc-stripe"></i></a>
             <a ng-if = "stripeConnected" ng-href = "#" class = "btn mt16" ng-click = "beginStripeConnect()">Change your connected Stripe account</a>
