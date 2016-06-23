@@ -1624,14 +1624,16 @@ h1 {
   position: absolute;
   right: 10px;
   top: 10px;
-
   z-index: 2;
   color: white;
 }
-.cancel-modal:hover {
-  color: #3E7EDF;
+.cancel-modal:hover,
+.cancel-modal:visited,
+.cancel-modal:active {
+  color: #fff;
 }
 .class-booked,
+.purchase-details,
 .payment-processing,
 .payment-confirmed,
 .payment-failed {
@@ -1648,6 +1650,9 @@ h1 {
   color: white;
   padding-top: 9px;
   z-index: 1;
+}
+.purchase-details {
+  background-color: #3E7EDF;
 }
 .payment-processing {
   background-color: #ffca00;
@@ -1672,6 +1677,18 @@ h1 {
   padding-top: 3px !important;
   padding-bottom: 3px !important;
 }
+
+/*.modal.modal-wide .modal-dialog {
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.modal.modal-short .modal-dialog {
+  max-height: 10%;
+  overflow-y: hidden;
+}*/
+
 
 /*------FOOTER-------*/
 

@@ -1,3 +1,147 @@
+<div class="modal-body">
+
+  <div class="cancel-modal" href="#" ng-click = "closeModal()">
+    <span><i class="ti-close"></i></span>
+  </div>
+
+  <div class="purchase-details">
+    <span class="white">PURCHASE DETAILS</span>
+  </div>
+
+  <div class="payment-content">
+    <div class="mt32 mb16 col-sm-12 text-center">
+      <img class="round-photo mb8" src="/assets/images/justin-photo.jpg" height="100" width="100">
+      <h4>Sandbox Studio</h4>
+    </div>
+    <div class="col-sm-12 text-center">
+      <h5 class="lightgray">Choose your purchase method</h5>
+      <a href="#" class="btn-blue btn-block mt8 mb8">
+        <div class="row">
+          <div class="col-xs-8 text-left">
+            <h4 class="white">Subscription</h4>
+            <h5 class="white">Unlimited classes/month</h5>
+          </div>
+          <div class="col-xs-4 text-right">
+            <span class="white" style="font-size:34px;">${{planInfo.amount/100}}</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="btn-blue btn-block mt8 mb8">
+        <div class="row">
+          <div class="col-xs-8 text-left">
+            <h4 class="white">Drop In</h4>
+            <h5 class="white">1 class</h5>
+          </div>
+          <div class="col-xs-4 text-right">
+            <span class="white" style="font-size:34px;">${{dropinRate/100}}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="payment-content hidden">
+    <div class="mt16 mb8 col-sm-12 text-center">
+      <img class="round-photo mb8" src="/assets/images/justin-photo.jpg" height="50" width="50">
+      <h5>Sandbox Subscription</h5>
+      <h5>Unlimited classes per month</h5>
+    </div>
+    <div class="col-sm-12 text-left">
+      <h5 class="lightgray">There is no limit to the number of classes you can take with this studio each month. You will be charged automatically every month until you cancel your subscription.</h5>
+      <hr class="content-divider mt16 mb8">
+      <div class="row">
+        <div class="col-xs-8 text-left">
+          <h5 class="mb8">Sandbox Subscription</h5>
+          <a href="#" ng-hide = "enterCoupon" ng-click="enterCoupon = true">Apply a coupon</a>
+          <div class="input-addon" ng-show = "enterCoupon">
+            <input type="text" class="input-stem input-stem-suffix" placeholder="Enter coupon code" style="width:215px;" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)">
+            <span class="input-suffix">
+              <a href="#">Apply coupon</a>
+              <span style = "color: red;" ng-if = "invalidCouponEntered">Invalid code</span>
+              <span style = "color: red;" ng-if = "userEnteredOwnCoupon">You can't use your own code!</span>
+            </span>                
+          </div>
+        </div>
+        <div class="col-xs-4 text-right">
+          <h5>${{planInfo.amount/100}}</h5>
+        </div>
+      </div>
+      <hr class="content-divider mt8 mb8">
+      <div class="row">
+        <div class="col-xs-8 text-left">
+          <h4 class="bold">Total Due</h4>
+        </div>
+        <div class="col-xs-4 text-right">
+          <h4 class="bold">${{planInfo.amount/100}}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 text-center mt32">
+      <a href="#" class="btn-blue" ng-click = "joinClicked(couponEntered)">Continue to payment</a>
+    </div>
+  </div>
+
+  <div class="payment-content hidden">
+    <div class="mt16 mb8 col-sm-12 text-center">
+      <img class="round-photo mb8" src="/assets/images/justin-photo.jpg" height="50" width="50">
+      <h5>Sandbox Drop In</h5>
+      <h5>1 class</h5>
+    </div>
+    <div class="col-sm-12 text-left">
+      <h5 class="lightgray">This is a one time payment and good for one class with this studio.</h5>
+      <hr class="content-divider mt16 mb8">
+      <div class="row">
+        <div class="col-xs-8 text-left">
+          <h5 class="mb8">Sandbox Drop In</h5>
+          <a href="#" ng-hide = "enterCoupon" ng-click="enterCoupon = true">Apply a coupon</a>
+          <div class="input-addon" ng-show = "enterCoupon">
+            <input type="text" class="input-stem input-stem-suffix" placeholder="Enter coupon code" style="width:215px;" ng-model = "couponEntered" my-enter = "joinClicked(couponEntered)">
+            <span class="input-suffix">
+              <a href="#">Apply coupon</a>
+              <span style = "color: red;" ng-if = "invalidCouponEntered">Invalid code</span>
+              <span style = "color: red;" ng-if = "userEnteredOwnCoupon">You can't use your own code!</span>
+            </span>                
+          </div>
+        </div>
+        <div class="col-xs-4 text-right">
+          <h5>${{dropinRate/100}}</h5>
+        </div>
+      </div>
+      <hr class="content-divider mt8 mb8">
+      <div class="row">
+        <div class="col-xs-8 text-left">
+          <h4 class="bold">Total Due</h4>
+        </div>
+        <div class="col-xs-4 text-right">
+          <h4 class="bold">${{dropinRate/100}}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 text-center mt32">
+      <a href="#" class="btn-blue" ng-click = "payClicked()">Continue to payment</a>
+      <span class="gray mt8 display-block"><i class="fa fa-credit-card"></i> Payment secured by SSL</span>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
 <meta name="fragment" content="!">
   <section style = "padding-top: 0px;">
     <div class="membershipModal">
@@ -9,8 +153,8 @@
       
       <div class="container">
         <div class="row half-way-down">
-          <!-- <div class="visible-sm col-sm-12 pt72"></div> -->
-          <!--<div class="col-sm-6 col-md-7 text-center">
+          <div class="visible-sm col-sm-12 pt72"></div>
+          <div class="col-sm-6 col-md-7 text-center">
              <div class="visible-lg visible-md pt72"></div>
             <h1 class="darkblue">Just 30 bucks per month</h1>
             <h5 class="margins">No contracts. Cancel anytime.</h5>
@@ -31,13 +175,13 @@
               <a class = "mb16" href='https://www.ssllabs.com/ssltest/analyze.html?d=getbodyapp.com&hideResults=on&latest' target='_blank' rel='nofollow'>
                 <img src='https://www.expeditedssl.com/assets/lock-logo-70px-8fcd38ddb815b36d2cfdfdb9f67d60cf.png' alt='Expedited SSL Scanner'>
               </a>
-            </div> -->
-  <!--           <div class="hidden-sm hidden-xs arrow mt32" ng-click="scrollDown()" style="bottom: 0px;">
+            </div> 
+            <div class="hidden-sm hidden-xs arrow mt32" ng-click="scrollDown()" style="bottom: 0px;">
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="37" height="16" viewBox="0 0 37 16" class="js-svg replaced-svg"><path d="M19.075 15.43c-.35.366-.926.414-1.334.097L.76 2.08C.326 1.743.248 1.115.587.68.926.242 1.553.163 1.99.502L18.35 13.46 34.864.617c.436-.34 1.064-.26 1.403.175.34.436.26 1.065-.175 1.404L19.075 15.43z" fill="#909090" fill-rule="evenodd"></path></svg>
               </span>
-            </div> -->          
-          <!-- </div> -->
+            </div>          
+          </div>
 
           <div class="visible-xs pt72"></div>
           <div ng-class = "{'col-sm-2': slot, 'col-sm-4': !slot}"></div>
@@ -51,11 +195,11 @@
                   <span class="pricingTime royalblue">/mo</span>
                   <span class="pricingType royalblue">Unlimited classes</span>
                 </div>
-                <!-- <div style="width: 40%; display: inline-block;">
+                <div style="width: 40%; display: inline-block;">
                   <h1 class="pricingAmt strikeout lightgray"><sup>$</sup></h1><h1 class="pricingAmt strikeout lightgray">70</h1>
                   <span class="pricingTime lightgray">/mo</span>
                   <span class="pricingType lightgray">Regular pricing</span>
-                </div>             -->
+                </div>            
               </div>
               <div class="bulletFeatures">
                 <hr>
@@ -64,12 +208,12 @@
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>No contracts, cancel anytime</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Classes with friends</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Unlimited classes per month</span></li>
-                  <!-- <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li> -->
+                  <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>$50 starter kit of equipment</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Progression tracking</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Wellness hotline</span></li>
                 </ul>
-                <!-- <hr> -->
-                <!-- </div> -->
+                <hr>
+                </div>
                 <div class="text-center" style = "font-size: 12px;">
                   <div ng-hide = "enterCoupon" class="darkgray mb8">Have a referral code or coupon? <a href="#" ng-click="enterCoupon = true">Click here</a></div>
                   <div ng-show = "enterCoupon" class="darkgray mb8">Nevermind, no coupon <a href="#" ng-click="enterCoupon = false">Click here</a></div>
@@ -90,8 +234,8 @@
               </div>
             </div>
           </div>
-          <!-- <div class="visible-xs pt72"></div> -->
-           <!-- <div class="col-sm-6 col-md-4" ng-hide = "true"> -->
+          <div class="visible-xs pt72"></div>
+           <div class="col-sm-6 col-md-4" ng-hide = "true">
            <div class="col-sm-6 col-md-4" ng-hide = "!slot || !dropinRate">
             <div class="stripeBlue"></div>
             <div class="membershipFeatures">
@@ -131,12 +275,12 @@
               <h3 class="royalblue pt32 mb8 text-center bold">Specialty Class</h3>
               <div class="text-center" style="margin-bottom: 14px;">
                 <h2 class="pricingAmt royalblue"><sup>$</sup></h2><h2 class="pricingAmt royalblue">{{specialtyRate/100}}</h2>
-                <!-- <span class="pricingTime royalblue">/ class</span> -->
+                <span class="pricingTime royalblue">/ class</span>
                 <span class="pricingType royalblue">To join this {{classInfo.name}}</span>
               </div>
               
               <div class="bulletFeatures">
-                <!-- <hr>
+                <hr>
                 <ul class="bulletChecks">
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>Drop-in Class</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-blue.png"><span>No contract</span></li>
@@ -144,7 +288,7 @@
                   <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Unlimited classes per month</span></li>                  
                   <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Progression tracking</span></li>
                   <li><img class="checkMarks" src="assets/images/icons/check-gray.png"><span class="lightgray">Wellness hotline</span></li>
-                </ul> -->
+                </ul>
                 <div class="text-center" style = "font-size: 12px;">
                   <div class="darkgray mb8">Pay for a single class</div>
                   <a class="join-btn btn mt4 mb8" ng-click = "paySpecialtyClicked()" href="#" style = "color: white;">Pay</a>
@@ -161,7 +305,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- <section class="white-section scroll-to" id = "scroll-link1">
     <div class="container mt72">
@@ -238,3 +382,17 @@
       </div> 
     </div>
   </section>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
