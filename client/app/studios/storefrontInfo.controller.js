@@ -6,6 +6,7 @@ angular.module('bodyAppApp')
     
     var ref;
     var studioId = $stateParams.studioId;
+    $scope.studioId = studioId;
     
     $scope.showStorefrontInfoAlert = $cookies.get('showStorefrontInfoAlert')
 
