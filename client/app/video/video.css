@@ -7,7 +7,8 @@
   transform-origin: 50% 50% !important;
 }
 #myfeed .OT_video-element {
-  height: 100% !important;
+  width: 13vw;
+  height: 10vw;
 }
 #myfeed .OT_publisher {
   z-index: 1;
@@ -188,18 +189,18 @@
 }
 .control-menu-workout, .control-menu-music, .control-menu-class, .control-menu-timer {
   border-top: none;
-  max-height: 98%;
-  overflow-y: hidden;
+  max-height: 85vh;
+  overflow-y: scroll;
 }
 .control-icon i {
   font-size: 30px;
 }
-.workout-set:last-of-type {
+/*.workout-set:last-of-type {
   margin-top: 15px;
 }
 .workout-set:last-of-type .next-workout {
   display: block!important;
-}
+}*/
 .control-menu-music .playlist-song {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -259,45 +260,49 @@
   font-size: 30px;
   z-index: 1;
 }
+.classmate-vid video {
+  width: 6.5vw !important;
+  height: 5vw !important;
+}
 .consumer-video li {
   position: absolute;
-  width: 7%;
-  height: 8%;
+  width: 6.5vw;
+  height: 5vw;
   overflow: hidden;
   z-index: 2;
 }
 .consumer-video li:first-child {
-  right: 1%;
-  bottom: 2%;
-  width: 14%;
-  height: 16%;
+  right: 1vw;
+  bottom: 1vw;
+  width: 13vw;
+  height: 10vw;
 }
 .consumer-video li:nth-child(3) {
-  right: 1%;
-  bottom: 18%;
+  right: 1vw;
+  bottom: 11vw;
 }
 .consumer-video li:nth-child(4) {
-  right: 8%;
-  bottom: 18%;
+  right: 7.5vw;
+  bottom: 11vw;
 }
 .consumer-video li:nth-child(5) {
-  right: 1%;
-  bottom: 26%;
+  right: 1vw;
+  bottom: 16vw;
 }
 .consumer-video li:nth-child(6) {
-  right: 8%;
-  bottom: 26%;
+  right: 7.5vw;
+  bottom: 16vw;
 }
 .consumer-video li:nth-child(7) {
-  right: 1%;
-  bottom: 34%;
+  right: 1vw;
+  bottom: 21vw;
 }
 .consumer-video li:nth-child(8) {
-  right: 8%;
-  bottom: 34%;
+  right: 7.5vw;
+  bottom: 21vw;
 }
 
-/*------USER VIDEO FORMAT - STACKED-------*/
+/*------TRAINER VIDEO FORMAT - STACKED-------*/
 .user-videos-stack .user-videos-large, .user-videos-stack .trainer-video-large {
   width: 100vw; 
   height: 75.43vw; /* 100/75.43 = 1.778 */
@@ -334,67 +339,70 @@
 }
 .user-videos-stack li {
   position: absolute;
-  width: 7%;
-  height: 8%;
+  width: 6.5vw;
+  height: 5vw;
   overflow: hidden;
   z-index: 2;
 }
 .user-videos-stack li:first-child {
-  right: 1%;
-  bottom: 2%;
-  width: 14%;
-  height: 16%;
+  right: 1vw;
+  bottom: 1vw;
+  width: 13vw;
+  height: 10vw;
 }
 .user-videos-stack li:nth-child(2) {
-  right: 1%;
-  bottom: 18%;
+  right: 1vw;
+  bottom: 11vw;
 }
 .user-videos-stack li:nth-child(3) {
-  right: 8%;
-  bottom: 18%;
+  right: 7.5vw;
+  bottom: 11vw;
 }
 .user-videos-stack li:nth-child(4) {
-  right: 1%;
-  bottom: 26%;
+  right: 1vw;
+  bottom: 16vw;
 }
 .user-videos-stack li:nth-child(5) {
-  right: 8%;
-  bottom: 26%;
+  right: 7.5vw;
+  bottom: 16vw;
 }
 .user-videos-stack li:nth-child(6) {
-  right: 1%;
-  bottom: 34%;
+  right: 1vw;
+  bottom: 21vw;
 }
 .user-videos-stack li:nth-child(7) {
-  right: 8%;
-  bottom: 34%;
+  right: 7.5vw;
+  bottom: 21vw;
 }
 .user-videos-stack li:nth-child(8) {
-  right: 1%;
-  bottom: 42%;
+  right: 1vw;
+  bottom: 26vw;
 }
 .user-videos-stack li:nth-child(9) {
-  right: 8%;
-  bottom: 42%;
+  right: 7.5vw;
+  bottom: 26vw;
 }
 .user-videos-stack li:nth-child(10) {
-  right: 1%;
-  bottom: 50%;
+  right: 1vw;
+  bottom: 31vw;
 }
 .user-videos-stack li:nth-child(11) {
-  right: 8%;
-  bottom: 50%;
+  right: 7.5vw;
+  bottom: 31vw;
 }
 .user-videos-stack li:nth-child(12) {
-  right: 1%;
-  bottom: 58%;
+  right: 1vw;
+  bottom: 36vw;
 }
 .user-videos-stack li:nth-child(13) {
-  right: 8%;
-  bottom: 58%;
+  right: 7.5vw;
+  bottom: 36vw;
 }
 
-/*------USER VIDEO FORMAT - BOXED 7 & UNDER-------*/
+/*------TRAINER VIDEO FORMAT - BOXED 7 & UNDER-------*/
+.user-videos-boxed-7andUnder #myfeed .OT_video-element {
+  width: 100%;
+}
 .user-videos-boxed-7andUnder .user-videos-large {
   position: absolute !important;
   top: 0 !important; 
@@ -489,6 +497,9 @@
 }
 
 /*------USER VIDEO FORMAT - BOXED OVER 7-------*/
+.user-videos-boxed-over7 #myfeed .OT_video-element {
+  width: 100%;
+}
 .user-videos-boxed-over7 .user-videos-large {
   position: absolute !important;
   top: 0 !important; 
@@ -584,13 +595,19 @@
   bottom: 80%;
 }
 
-/*------USER VIDEO FORMAT - GRID1-------*/
+/*------TRAINER VIDEO FORMAT - GRID1-------*/
 .user-videos-grid-1 .user-videos-large, .user-videos-grid-1 li {
+  width: 100vw; 
+  height: 75.43vw; /* 100/75.43 = 1.778 */
+  max-height: 100vh;
+  max-width: 132.57vh; /* 350/264 = 1.3257 */
+  margin: auto;
   position: absolute;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 2;
+  top:0 !important;
+  bottom:0 !important; /* vertical center */
+  left:0 !important;
+  right:0 !important; /* horizontal center */
+  z-index: 1 !important;
 }
 
 .user-videos-grid-1 div,
@@ -659,7 +676,7 @@
   display: none;
 }
 
-/*------USER VIDEO FORMAT - GRID2-------*/
+/*------TRAINER VIDEO FORMAT - GRID2-------*/
 .user-videos-grid-2 .user-videos-large, .user-videos-grid-2 li {
   position: absolute;
   width: 50%;
@@ -669,12 +686,9 @@
 }
 .user-videos-grid-2 div {
   position: absolute; 
-  top: 0; 
-  left: -20%; 
-  right: -20%; 
+  top: 0;
   bottom: 0; 
   margin: auto; 
-  min-width: 140%;
   min-height: 50%;
 }
 .user-videos-grid-2 .classmates-video-name {
@@ -732,7 +746,7 @@
   display: none;
 }
 
-/*------USER VIDEO FORMAT - GRID-3or4-------*/
+/*------TRAINER VIDEO FORMAT - GRID-3or4-------*/
 .user-videos-grid-3or4 .user-videos-large, .user-videos-grid-3or4 li {
   position: absolute;
   width: 50%;
@@ -808,7 +822,7 @@
   display: none;
 }
 
-/*------USER VIDEO FORMAT - GRID-5or6-------*/
+/*------TRAINER VIDEO FORMAT - GRID-5or6-------*/
 .user-videos-grid-5or6 .user-videos-large, .user-videos-grid-5or6 li {
   position: absolute;
   width: 33.33333333%;
@@ -819,11 +833,8 @@
 .user-videos-grid-5or6 div {
   position: absolute; 
   top: 0; 
-  left: -25%; 
-  right: -25%; 
   bottom: 0; 
   margin: auto; 
-  min-width: 150%;
 }
 .user-videos-grid-5or6 .classmates-video-name {
   position: absolute;
@@ -884,7 +895,7 @@
   display: none;
 }
 
-/*------USER VIDEO FORMAT - GRID-7or8-------*/
+/*------TRAINER VIDEO FORMAT - GRID-7or8-------*/
 .user-videos-grid-7or8 .user-videos-large, .user-videos-grid-7or8 li {
   position: absolute;
   width: 25%;
@@ -895,11 +906,8 @@
 .user-videos-grid-7or8 div {
   position: absolute; 
   top: 0; 
-  left: -20%; 
-  right: -20%; 
   bottom: 0; 
   margin: auto; 
-  min-width: 140%;
 }
 .user-videos-grid-7or8 .classmates-video-name {
   position: absolute;
@@ -962,7 +970,7 @@
   display: none;
 }
 
-/*------USER VIDEO FORMAT - GRID-9-------*/
+/*------TRAINER VIDEO FORMAT - GRID-9-------*/
 .user-videos-grid-9 .user-videos-large, .user-videos-grid-9 li {
   position: absolute;
   width: 33.33333333%;
@@ -1043,7 +1051,7 @@
 }
 
 
-/*------USER VIDEO FORMAT - GRID-12andUnder-------*/
+/*------TRAINER VIDEO FORMAT - GRID-12andUnder-------*/
 .user-videos-grid-12andUnder .user-videos-large {
   position: absolute;
   width: 25%;

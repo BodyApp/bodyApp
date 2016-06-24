@@ -7,7 +7,7 @@
             <div class="nav-bar">
                 <div class="module left" style = "padding-left: 16px !important; padding-right: 16px !important;">
                     <a href="/">
-                        <img ng-style = "logoStyle" ng-src="{{imageSrc}}">
+                        <img class="nav-logo" ng-style = "logoStyle" ng-src="{{imageSrc}}">
                     </a>
                 </div>
                 <div class="module widget-handle mobile-toggle right visible-sm visible-xs" ng-click = "checkClickCorrect()">
@@ -105,15 +105,15 @@
               </div>
             </div>
             <div id="browser-alert" ng-show = "wrongBrowser && !closedAlert">  <!-- BROWSER ALERT -->
-            <div ng-click = "closeAlertPushed()">
-              <a class="cancel-modal-membership" href="#">
-                <img ng-src = "../assets/images/icons/x_button.png"></img>
-              </a>
-            </div>
-              <div class="row text-center">
+              <div class="cancel-modal-membership" ng-click = "closeAlertPushed()">
+                <a href="#">
+                  <i class="ti-close" style="font-size:15px;"></i>
+                </a>
+              </div>
+              <div class="row text-center text-left-xs">
                 <div class="col-sm-12">
-                  <h5 class="white" style>
-                    Blast! Your browser or device isn't supported. To be able to join class, please use the latest version of <a ng-click = "downloadChrome()" href="#">Chrome</a> on a PC or Mac computer.</h5>
+                  <h5 class="white">
+                    Blast! Your browser or device isn't supported. To join class, please use the latest version of <a ng-click = "downloadChrome()" class="chrome" href="#">Chrome</a> on a PC or Mac computer.</h5>
                 </div>
               </div>
             </div> <!-- BROWSER ALERT END -->

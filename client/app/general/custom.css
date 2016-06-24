@@ -2,7 +2,6 @@
 .mdDialogWidth button {
   width: 200px; 
 }
-/*navbar*/
 
 #menuleft.addRightMargin > li {
   padding-right: 32px !important;
@@ -11,6 +10,20 @@
 #menuright.addRightMargin > li {
   padding-right: 32px !important;
 }
+
+@media (min-width: 990px) {
+  .nav-bar {
+    padding: 0 15px;
+  }
+}
+@media (max-width: 990px) {
+  .nav-bar .nav-logo {
+    height: 36px;
+    width: auto;
+    margin-top: 11px;
+  }
+}
+
 
 /*------CREATE STUDIO-------*/
 .calculator-inputs input {
@@ -480,14 +493,6 @@
   }
 }
 
-#browser-alert {
-  padding: 5px;
-  background: #E40824;
-}
-#browser-alert a {
-  color: white;
-  text-decoration: underline;
-}
 .display-none {
   display: none;
 }
@@ -544,7 +549,11 @@
 }
 
 /*------SCHEDULE-------*/
-
+.cal-btn-sm {
+  font-size: 13px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
 .tiny {
   font-size: 12px;
   font-weight: 500;
@@ -659,6 +668,8 @@
   padding: 10px;
   margin-top: -1px;
   margin-bottom: -1px;
+  max-width: 100px;
+  overflow: hidden;
 }
 .cal-time, .cal-class, .cal-instructor, .cal-friends, .cal-duration {
   margin-bottom: 3px;
@@ -992,6 +1003,7 @@
 .workout-card {
   padding: 10px;
   margin-bottom: 10px;
+  min-height: 206px;
 }
 .panel-member {
   padding: 20px;
@@ -1433,7 +1445,6 @@ select {
   color: #5978D0;
   font-weight: 700;
   font-size: 16px;
-  margin-bottom: 10px;
 }
 .on-dark p {
   color: #fff;
