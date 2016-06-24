@@ -6,3 +6,42 @@
 .textRight {
 	text-align: right !important;
 }
+
+#browser-alert {
+  padding: 10px 5px;
+  background: #f4463a;
+  position: relative;
+}
+#browser-alert a {
+  color: white;
+}
+
+#browser-alert .chrome {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  #browser-alert {
+  	padding-right: 40px;
+  	padding-left: 20px;
+  }
+  #browser-alert h5 {
+  	font-size: 14px;
+  	line-height: 18px;
+  }
+}
+
+.cancel-modal-membership {
+    position: absolute;
+    float: right;
+    top: 9px;
+    right: 15px;
+    font-size: 20px;
+    line-height: 20px;
+    z-index: 10000000;
+}
+.cancel-modal-membership:hover {
+  opacity: 0.8;
+  /*cursor: pointer;*/
+
+}

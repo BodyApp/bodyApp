@@ -49,7 +49,7 @@
   <div class="page-container-responsive">
     <div class="row">
 
-      <div class="col-md-4" ng-repeat = "studio in studios | filterByCategory: categoryFilter"> <!-- Studio Listing -->
+      <div class="col-sm-6 col-md-4 studio-listings-card" ng-repeat = "studio in studios | filterByCategory: categoryFilter"> <!-- Studio Listing -->
          <a href="/studios/{{studio.studioId}}">
           <div class="panel">
             <div class="studio-listing-container">
@@ -61,12 +61,12 @@
                 </div>
                 <!-- <img ng-src="{{studioPictures[studio.studioId]}}"> -->
               </div>
-              <div class="panel-body">
+              <div class="panel-body studio-listing-card-body">
                 <!-- <div class="studio-listing-stars">
                 </div> -->
                 <h4>{{studio.studioName}}</h4>
                 <h5 class="lightgray">By {{studio.ownerName}}</h5>
-                <h5 class="mt8">{{studio.shortDescription}}</h5>
+                <h5 class="mt8 studio-listing-description">{{studio.shortDescription}}</h5>
                 <div class="studio-listing-pricing mt16">
                   <div class="studio-listing-subscription">
                     <span class="royalblue">Subscription</span>

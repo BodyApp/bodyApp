@@ -46,25 +46,3 @@
 	background: #D3D3D3;
 	padding: 30px 0;
 }
-.cancel-modal-membership {
-    text-align: center;
-    /*background: #BDBDBD;*/
-    /*color: #fff !important;*/
-    position: relative;
-    /*padding: 0 5px;*/
-    /*width: 22px;*/
-    /*height: 22px;*/
-    float: right;
-    top: 5px;
-    right: 5px;
-    font-size: 20px;
-    line-height: 20px;
-    border-radius: 8px;
-    border-radius: 50%;
-    z-index: 100;
-}
-.cancel-modal-membership:hover {
-  opacity: 0.8;
-  /*cursor: pointer;*/
-
-}

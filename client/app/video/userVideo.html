@@ -32,7 +32,7 @@
 			<img ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
 			<span class="classmates-video-name text-center">{{instructor.firstName}}</span>
 		</li>
-		<li ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
+		<li class="classmate-vid" ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
 		</li>
 	</ul>
@@ -58,7 +58,7 @@
 			</div>
 		</div>
 		<div class="panel-body control-menu-workout" ng-show = "showWorkout">
-			<div class="row workout-set" ng-repeat = "set in workout.sets">
+			<div class="row workout-set mb16" ng-repeat = "set in workout.sets">
 				<div class="col-xs-12 text-left">
 					<!-- <h5 class="white hidden next-workout">Next</h5> -->
 					<h4 class="white mb8">{{set.title}}</h4>
@@ -117,8 +117,8 @@
 
 </div>
 	<div class="support-details text-left">
-		<a href="#" ng-click = "openIntercomMessage()">Message Support</a> | 
-		<a href="/studios/{{studioId}}">Exit Class</a>
+		<a class="display-block" href="#" ng-click = "openIntercomMessage()">Message Support</a>
+		<a class="display-block" href="/studios/{{studioId}}">Exit Class</a>
 	</div>
 
 <div ng-include="'components/footer/footer.html'" class="display-none"></div>
