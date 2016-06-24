@@ -274,6 +274,11 @@ angular.module('bodyAppApp')
           ref.child('classes').child(workoutToSave.dateTime).update(workoutToSave, function(err) {
             if (err) return console.log(err);
             console.log("Saved Class")
+            Intercom('update', {
+              "studioClassCreated_at": Math.floor(new Date() / 1000),
+              "studioClassScheduledFor": Math.floor(workoutToSave.dateTime/1000),
+              "studioLatestClassScheduledAt": studioId
+            });
             if (workoutToSave.typeOfClass === 'Specialty') {
               ref.child('specialtyClasses').child(workoutToSave.dateTime).update({lastUpdated: new Date().getTime()}, function(err) {
                 if (err) return console.log(err);

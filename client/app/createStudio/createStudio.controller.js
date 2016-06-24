@@ -148,7 +148,11 @@ angular.module('bodyAppApp')
 					if (err) return console.log(err);
           
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
-          Intercom('update', {"createdStudio_at": Math.floor(new Date() / 1000)});
+          Intercom('update', {
+            "createdStudio_at": Math.floor(new Date() / 1000),
+            "studioOwnedId": studioId,
+            "studioOwnedName": studioToCreate.studioName
+          });
 
           $cookies.remove('studioCreationStarted');
           $cookies.put('showScheduleAlert', true)
