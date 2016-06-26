@@ -32,7 +32,7 @@
                           <a href="/studios/{{studioId}}">Storefront</a>
                         </p>
                       </li> -->
-                      <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals) && subscriptions[studioId] !== 'active'">
+                      <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && subscriptions[studioId] !== 'active'">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
                         </p>
@@ -83,7 +83,7 @@
                           <a href="/studios/{{studioId}}">Storefront</a>
                         </p>
                       </li> -->
-                      <li ng-show="isLoggedIn() && (getCurrentUser().completedNewUserFlow || getCurrentUser().injuries || getCurrentuser().goals)" ng-class="{active: isActive('/settings')}" ng-mouseenter = "displayLogout = true" ng-mouseleave = "displayLogout = false">
+                      <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}" ng-mouseenter = "displayLogout = true" ng-mouseleave = "displayLogout = false">
                         <a href="/settings">
                           <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                         </a>

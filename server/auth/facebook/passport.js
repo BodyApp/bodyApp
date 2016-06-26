@@ -82,7 +82,7 @@ exports.setup = function (User, config) {
             // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             // }); 
 
-            usersRef.child(profile.id).set({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
+            usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
             done(err, user);  
             
           });

@@ -112,7 +112,12 @@ angular.module('bodyAppApp')
 
     function getAccessCode() {
       ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
-        if (!snapshot.exists) accessCode = null
+        if (!snapshot.exists) {
+          $scope.stripeConnected = false;
+          accessCode = null;
+          if(!$scope.$$phase) $scope.$apply(); 
+          return
+        }
         $scope.stripeConnected = true;
         accessCode = snapshot.val();
         listCoupons();
@@ -121,6 +126,7 @@ angular.module('bodyAppApp')
     }
 
     function listCoupons() {
+      if (!accessCode) return
       Studio.listCoupons({
         id: currentUser._id
       }, {
@@ -134,6 +140,7 @@ angular.module('bodyAppApp')
     }
 
     function listSubscriptionPlans() {
+      if (!accessCode) return
       ref.child('stripeConnected').child('subscriptionPlans').on('value', function(snapshot) {
         $scope.loaded = true;
         if (!snapshot.exists()) {
