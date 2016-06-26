@@ -18,6 +18,11 @@ angular.module('bodyAppApp')
   var auth = firebase.auth();
 
   var audioPlayer;
+  var element = document.getElementById('audioPlayer')
+  if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
+		audioPlayer = SC.Widget(element);
+		audioPlayer.setVolume(0)
+	}
 
   $scope.showWorkout = true;
   var userIsInstructor;
@@ -175,17 +180,20 @@ angular.module('bodyAppApp')
   function getMusicVolume() {
   	ref.child('realTimeControls').child(classId).child('musicVolume').on('value', function(snapshot) {
   		if (snapshot.exists()) {
-  			$scope.musicVolume = snapshot.val()
+			$scope.musicVolume = snapshot.val();
+			 // || 50;
   		} else {
   			$scope.musicVolume = 50;
   		}
   		
   		if(!$scope.$$phase) $scope.$apply();
   		
-  		if (!userIsInstructor) {
-  			if (audioPlayer) audioPlayer.setVolume($scope.musicVolume / 100);
-  			console.log("Music volume set to " + snapshot.val())
-  		}
+			if (!userIsInstructor && audioPlayer && $scope.musicVolume > 0) {
+				audioPlayer.setVolume($scope.musicVolume / 100);
+				console.log("Music volume set to " + snapshot.val())
+			} else {
+				audioPlayer.setVolume(0);
+			}
   	})
   }
 
@@ -323,9 +331,10 @@ angular.module('bodyAppApp')
 		ref.child("playlists").child(classToJoin.playlist).once('value', function(snapshot) {
 			$scope.playlist = snapshot.val()
 			if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
-				var element = document.getElementById('audioPlayer')
-				audioPlayer = SC.Widget(element);
+				// var element = document.getElementById('audioPlayer')
+				// audioPlayer = SC.Widget(element);
 				audioPlayer.load(snapshot.val().soundcloudUrl);
+				// if (!userIsInstructor && audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume/100);
 
 				audioPlayer.bind(SC.Widget.Events.READY, function() {
 					if (firstTimePlayingSong) {
@@ -343,8 +352,16 @@ angular.module('bodyAppApp')
 								} else {
 									console.log("seeking to track " + (i+1));
 									currentSongIndex = i;			
-									if (userIsInstructor && audioPlayer) audioPlayer.setVolume(0)
-									if (!userIsInstructor && audioPlayer) audioPlayer.setVolume(($scope.musicVolume ? $scope.musicVolume : 50)/100);
+									// if (userIsInstructor && audioPlayer) audioPlayer.setVolume(0)
+									if (!userIsInstructor && $scope.musicVolume > 0) {
+										audioPlayer.setVolume($scope.musicVolume/100)
+										// if ($scope.musicVolume > 0) audioPlayer.setVolume($scope.musicVolume/100)
+										// if ($scope.musicVolume === 0) audioPlayer.setVolume(0)
+										console.log("Playing song with volume " + $scope.musicVolume)
+									} else {
+										audioPlayer.setVolume(0)
+									}
+									// if (!userIsInstructor && audioPlayer) audioPlayer.setVolume(($scope.musicVolume ? $scope.musicVolume : 50)/100);
 									if (audioPlayer) return audioPlayer.play()
 								}
 							}	
@@ -353,7 +370,7 @@ angular.module('bodyAppApp')
 				})		
 
 				audioPlayer.bind(SC.Widget.Events.PLAY, function(){
-					if (!userIsInstructor && audioPlayer) audioPlayer.setVolume(($scope.musicVolume ? $scope.musicVolume : 50)/100);
+					// if (!userIsInstructor && audioPlayer) audioPlayer.setVolume(($scope.musicVolume ? $scope.musicVolume : 50)/100);
 
 					if (!firstTimePlayingSong && songArray.length > 0) {
 						currentSongIndex++
@@ -670,10 +687,10 @@ angular.module('bodyAppApp')
 				  console.log('started talking');
 				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
 				  // setMusicVolume($scope.musicVolume/2.5)
-				  if (audioPlayer) audioPlayer.setVolume($scope.musicVolume / 250);
+				  if (audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume / 250);
 				}, function() {
 					// setMusicVolume($scope.musicVolume)
-					if (audioPlayer) audioPlayer.setVolume($scope.musicVolume / 100);
+					if (audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume / 100);
 				  console.log('stopped talking');
 				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
 				});
