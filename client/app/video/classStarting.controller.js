@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassStartingCtrl', function ($scope, $location, $rootScope, $mdDialog, studioId, classId, Auth, Video) {
+  .controller('ClassStartingCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, studioId, classId, Auth, Video) {
   	var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -11,6 +11,12 @@ angular.module('bodyAppApp')
 
     formatDateTime()
     calculateTimeUntilClassStarts()
+    var calculateTime = $interval(calculateTimeUntilClassStarts, 30000)
+
+    $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
+      $interval.cancel(calculateTime)
+    });
+
     setupVidAud()
 
     auth.onAuthStateChanged(function(user) {
