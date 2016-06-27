@@ -35,6 +35,7 @@ angular.module('bodyAppApp')
 
 	.filter('filterByCategory', function() {
   return function(items, field) {
+    if (field.length < 1) return items
     var result = {};
     angular.forEach(items, function(value, key) {
       if (value.categories[field]) result[key] = value;

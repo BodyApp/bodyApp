@@ -22,7 +22,7 @@ angular.module('bodyAppApp')
       .state('discover', {
         url: '/discover',
         params: {
-          tag: 'strength',
+          tag: '',
         },
         templateUrl: 'app/main/discover.html',
         controller: 'DiscoverCtrl'

@@ -118,6 +118,7 @@ angular.module('bodyAppApp')
           app_id: "daof2xrs",
           name: user.firstName + " " + user.lastName, // Full name
           email: user.email, // Email address
+          'facebookId': user.facebookId,
           user_id: user._id,
           user_hash: user.intercomHash,
           "goals": user.goals,
@@ -142,6 +143,7 @@ angular.module('bodyAppApp')
             app_id: "daof2xrs",
             name: user.firstName + " " + user.lastName, // Full name
             email: user.email, // Email address
+            'facebookId': user.facebookId,
             user_id: user._id,
             user_hash: user.intercomHash,
             "goals": user.goals,
