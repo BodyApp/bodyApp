@@ -123,6 +123,8 @@ angular.module('bodyAppApp')
     };
 
   	$scope.createStudio = function(studioToCreate) {
+      // if ($scope.creatingStudio) return
+      // $scope.creatingStudio = true;
   		if (currentUser.$$state) delete currentUser.$$state;
   		if (currentUser.$promise) delete currentUser.$promise;
   		if (currentUser.$resolved) delete currentUser.$resolved;
@@ -136,6 +138,12 @@ angular.module('bodyAppApp')
       $rootScope.adminOf[studioId] = true;
       if(!$scope.$$phase) $scope.$apply();
   		ref.child('studios').child(studioId).child('storefrontInfo').once('value', function(snapshot) {
+        if (snapshot.exists()) {
+          console.log('ID taken')
+          return $scope.takenId = true;
+        } else {
+          $scope.idSaved = true;
+        }
 				var ownerName = currentUser.firstName + " " + currentUser.lastName;
 				ref.child('studios').child(studioId).child('storefrontInfo').set({
 					'studioId':studioId, 
@@ -146,7 +154,7 @@ angular.module('bodyAppApp')
           'dateCreated': new Date().getTime()
 				}, function(err) {
 					if (err) return console.log(err);
-          
+          // $scope.creatingStudio = false;
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
           Intercom('update', {
             "createdStudio_at": Math.floor(new Date() / 1000),
@@ -171,6 +179,7 @@ angular.module('bodyAppApp')
           
           $scope.basicsComplete = true;
           $scope.step++;
+          
           if(!$scope.$$phase) $scope.$apply();
 
           var toSet = {};

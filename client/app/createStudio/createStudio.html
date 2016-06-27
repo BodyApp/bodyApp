@@ -411,7 +411,7 @@
 					            <!-- <input type="text" ng-model="studio.id" class="angular-input"> -->
 					            <input ng-model = "studioToCreate.studioId" class="angular-input" id="coupon-code" name="studioId" size="30" type="text" ng-change = "invalidId = false; takenId = false; studioToCreate.studioId = sanitizeUrl(studioToCreate.studioId); idSaved = false;" ng-keypress="keyPressed($event, studioToCreate.studioId); idEditedDirectly = true;" md-maxlength="20" ng-minlength="4" required>
 				              <div class="form-hint" ng-show = "!takenId">Your storefront will be www.getbodyapp.com/studios/{{studioToCreate.studioId}}</div>
-				              <div class="form-hint" ng-show = "takenId">The ID {{studioToCreate.studioId}} is already taken.  Please try another.</div>
+				              <div class="form-hint" style = "color: red;" ng-show = "takenId">The ID {{studioToCreate.studioId}} is already taken.  Please try another.</div>
 				              
 						        </md-input-container>
 						        <div>
@@ -556,7 +556,7 @@
 							    </div>
 							    <div class="row">
 										<div class="col-sm-2 mt8">
-											<a href="#" ng-click = "step = 0">Back</a>
+											<!-- <a href="#" ng-click = "step = 0">Back</a> -->
 										</div>
 										<div class="col-sm-10 text-right">
 											<button href="#" class="btn-blue btn-large" ng-click = "setDescription(studioToCreate); scrollTop();">Next</button>
@@ -1451,7 +1451,7 @@
 				</div>
 				<ul class="mb32 list-unstyled">
 					<li class="nav-item pre-listed" ng-class = "{'nav-active': step === 0}">
-						<a href="#" ng-click = "step = 0; showShortDescriptionHelper = false; showLongDescriptionHelper = false; showCategoriesHelper = false; showIDHelper = false; showNameHelper = false; showProfilePhotoHelper = false; showHeaderPhotoHelper = false; showYoutubeVideoHelper = false;">
+						<a>
 							<div class="row nav-item">
 								<div class="col-sm-12 va-container">
 									<div class="text-wrap va-middle">
