@@ -30,151 +30,151 @@ var User = require('../api/user/user.model');
 //   });
 // });
 
-User.find({}).remove(function() {
-  User.create({
-    firstName: "Daniel",
-    lastName: "Liebeskind",
-    nickName: "Daniel",
-    gender: "male",
-    picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
-    facebookId: "10100958748247716",
-    // level: 0,
-    email: "daniel.liebeskind@gmail.com",
-    provider: "facebook",
-    facebook: {
-        "id": "598183923663488",
-        "age_range": {
-            "min": 13,
-            "max": 17
-        }
-    },
-    role: "user",
-    __v: 51,
-    injuries: "Nothing really",
-    goals: "To be able to fly",
-    bookedIntroClass: true,
-    completedNewUserFlow: true,
-    introClassTaken: true,
-    // welcomeEmailSent: false,
-    // welcomeEmailSent: new Date(),
-    // level: 1
-    }, 
-    {
-    firstName: "Donna",
-    lastName: "Letuch",
-    nickName: "Donna",
-    gender: "female",
-    picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
-    facebookId: "112747679089662",
-    email: "donna_mhsvoea_letuch@tfbnw.net",
-    provider: "facebook",
-    role: "user",
-    __v: 51,
-    injuries: "No problemos",
-    bookedIntroClass: true,
-    completedNewUserFlow: true,
-    introClassTaken: true,
-    welcomeEmailSent: true,
-    // level: 1
-    },
-    // {
-    // "firstName": "Justin",
-    // "lastName": "Mendelson",
-    // "nickName": "Justin",
-    // "gender": "male",
-    // "picture": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p200x200/12038409_10100959572480946_3016946238099409288_n.jpg?oh=b5110d7e2ceb46095af05e6858bc8173&oe=573FA2F3",
-    // "facebookId": "10100966322997856",
-    // "email": "jmendelson22@gmail.com",
-    // "provider": "facebook",
-    // "facebook": {
-    //     "id": "10100966322997856",
-    //     "friends": {
-    //         "summary": {
-    //             "total_count": 1390
-    //         },
-    //         "paging": {
-    //             "next": "https://graph.facebook.com/v2.4/10100966322997856/friends?access_token=CAAHIgAQWChoBAL5JzHxk1faknu6nA21KYZAvbAQvIT6sVLj9chl6E09Ith1BnpjYTE4oEvZA9YtJEhiK7Bvi55MuUODq3EcZCrMfPQ7ZBJSrr6dpG7CvnnmTuRnw8rHj5r6MRv97uJ0R143eQ6AdM5F21juHzGT36N9qHCZCxaZBRa8AUnHcq6WTXY3NjxPRYZD&limit=25&offset=25&__after_id=enc_AdAuzyegHEUSMqdfECECaQJbFuNev0Rx8g0dpUZCIkQArDOXZCNyULkElAwayDqRsoKqV7VmXgomMndXuEcz4aKGZBt"
-    //         },
-    //         "data": [
-    //             {
-    //                 "id": "10102803377216385",
-    //                 "name": "Matt Jones"
-    //             },
-    //             {
-    //                 "id": "10102197121188327",
-    //                 "name": "Tivan Amour"
-    //             }
-    //         ]
-    //     },
-    //     "picture": {
-    //         "data": {
-    //             "url": "https://scontent.xx.fbcdn.net/hprofile-xta1/v/t1.0-1/p200x200/12038409_10100959572480946_3016946238099409288_n.jpg?oh=b5110d7e2ceb46095af05e6858bc8173&oe=573FA2F3",
-    //             "is_silhouette": false
-    //         }
-    //     },
-    //     "gender": "male",
-    //     "email": "jmendelson22@gmail.com",
-    //     "name": "Justin Mendelson"
-    // },
-    // "trainerCredential1": "CF-L1 Trainer",
-    // "trainerRating": 5,
-    // "trainerNumRatings": 14,
-    // "friendList": [
-    //     {
-    //         "name": "Matt Jones",
-    //         "id": "10102803377216385"
-    //     },
-    //     {
-    //         "name": "Tivan Amour",
-    //         "id": "10102197121188327"
-    //     }
-    // ],
-    // "classesTaught": [
-    //     1452812400000,
-    //     1452826800000,
-    //     1453226400000,
-    //     1453554000000,
-    //     1453572000000,
-    //     1453575600000,
-    //     1453557600000,
-    //     1452892500000,
-    //     1453042800000,
-    //     1452990000000,
-    //     1452993000000,
-    //     1452995700000,
-    //     1453048740000,
-    //     1453049160000,
-    //     1453057800000,
-    //     1453236540000,
-    //     1453250820000,
-    //     1453251600000
-    // ],
-    // "classesTaken": [
-    //     1452805200000
-    // ],
-    // "role": "admin",
-    // "__v": 72,
-    // "injuries": "asdf",
-    // "bookedIntroClass": false,
-    // "tourtipShown": "1452838410731",
-    // welcomeEmailSent: true,
-    // "classesBooked": {
-    //     "1452898800000": true
-    // },
-    // "completedNewUserFlow": true
-    // },
-    {
-    provider: 'local',
-    role: 'admin',
-    firstName: 'Body',
-    lastName: 'Admin',
-    nickname: 'Admin',
-    birthday: new Date(),
-    email: 'admin@getbodyapp.com',
-    gender: 'Male',
-    password: 'delts'
-  }, function() {
-      console.log('finished populating users');
-    }
-  );
-});
+// User.find({}).remove(function() {
+//   User.create({
+//     firstName: "Daniel",
+//     lastName: "Liebeskind",
+//     nickName: "Daniel",
+//     gender: "male",
+//     picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
+//     facebookId: "10100958748247716",
+//     // level: 0,
+//     email: "daniel.liebeskind@gmail.com",
+//     provider: "facebook",
+//     facebook: {
+//         "id": "598183923663488",
+//         "age_range": {
+//             "min": 13,
+//             "max": 17
+//         }
+//     },
+//     role: "user",
+//     __v: 51,
+//     injuries: "Nothing really",
+//     goals: "To be able to fly",
+//     bookedIntroClass: true,
+//     completedNewUserFlow: true,
+//     introClassTaken: true,
+//     // welcomeEmailSent: false,
+//     // welcomeEmailSent: new Date(),
+//     // level: 1
+//     }, 
+//     {
+//     firstName: "Donna",
+//     lastName: "Letuch",
+//     nickName: "Donna",
+//     gender: "female",
+//     picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
+//     facebookId: "112747679089662",
+//     email: "donna_mhsvoea_letuch@tfbnw.net",
+//     provider: "facebook",
+//     role: "user",
+//     __v: 51,
+//     injuries: "No problemos",
+//     bookedIntroClass: true,
+//     completedNewUserFlow: true,
+//     introClassTaken: true,
+//     welcomeEmailSent: true,
+//     // level: 1
+//     },
+//     // {
+//     // "firstName": "Justin",
+//     // "lastName": "Mendelson",
+//     // "nickName": "Justin",
+//     // "gender": "male",
+//     // "picture": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p200x200/12038409_10100959572480946_3016946238099409288_n.jpg?oh=b5110d7e2ceb46095af05e6858bc8173&oe=573FA2F3",
+//     // "facebookId": "10100966322997856",
+//     // "email": "jmendelson22@gmail.com",
+//     // "provider": "facebook",
+//     // "facebook": {
+//     //     "id": "10100966322997856",
+//     //     "friends": {
+//     //         "summary": {
+//     //             "total_count": 1390
+//     //         },
+//     //         "paging": {
+//     //             "next": "https://graph.facebook.com/v2.4/10100966322997856/friends?access_token=CAAHIgAQWChoBAL5JzHxk1faknu6nA21KYZAvbAQvIT6sVLj9chl6E09Ith1BnpjYTE4oEvZA9YtJEhiK7Bvi55MuUODq3EcZCrMfPQ7ZBJSrr6dpG7CvnnmTuRnw8rHj5r6MRv97uJ0R143eQ6AdM5F21juHzGT36N9qHCZCxaZBRa8AUnHcq6WTXY3NjxPRYZD&limit=25&offset=25&__after_id=enc_AdAuzyegHEUSMqdfECECaQJbFuNev0Rx8g0dpUZCIkQArDOXZCNyULkElAwayDqRsoKqV7VmXgomMndXuEcz4aKGZBt"
+//     //         },
+//     //         "data": [
+//     //             {
+//     //                 "id": "10102803377216385",
+//     //                 "name": "Matt Jones"
+//     //             },
+//     //             {
+//     //                 "id": "10102197121188327",
+//     //                 "name": "Tivan Amour"
+//     //             }
+//     //         ]
+//     //     },
+//     //     "picture": {
+//     //         "data": {
+//     //             "url": "https://scontent.xx.fbcdn.net/hprofile-xta1/v/t1.0-1/p200x200/12038409_10100959572480946_3016946238099409288_n.jpg?oh=b5110d7e2ceb46095af05e6858bc8173&oe=573FA2F3",
+//     //             "is_silhouette": false
+//     //         }
+//     //     },
+//     //     "gender": "male",
+//     //     "email": "jmendelson22@gmail.com",
+//     //     "name": "Justin Mendelson"
+//     // },
+//     // "trainerCredential1": "CF-L1 Trainer",
+//     // "trainerRating": 5,
+//     // "trainerNumRatings": 14,
+//     // "friendList": [
+//     //     {
+//     //         "name": "Matt Jones",
+//     //         "id": "10102803377216385"
+//     //     },
+//     //     {
+//     //         "name": "Tivan Amour",
+//     //         "id": "10102197121188327"
+//     //     }
+//     // ],
+//     // "classesTaught": [
+//     //     1452812400000,
+//     //     1452826800000,
+//     //     1453226400000,
+//     //     1453554000000,
+//     //     1453572000000,
+//     //     1453575600000,
+//     //     1453557600000,
+//     //     1452892500000,
+//     //     1453042800000,
+//     //     1452990000000,
+//     //     1452993000000,
+//     //     1452995700000,
+//     //     1453048740000,
+//     //     1453049160000,
+//     //     1453057800000,
+//     //     1453236540000,
+//     //     1453250820000,
+//     //     1453251600000
+//     // ],
+//     // "classesTaken": [
+//     //     1452805200000
+//     // ],
+//     // "role": "admin",
+//     // "__v": 72,
+//     // "injuries": "asdf",
+//     // "bookedIntroClass": false,
+//     // "tourtipShown": "1452838410731",
+//     // welcomeEmailSent: true,
+//     // "classesBooked": {
+//     //     "1452898800000": true
+//     // },
+//     // "completedNewUserFlow": true
+//     // },
+//     {
+//     provider: 'local',
+//     role: 'admin',
+//     firstName: 'Body',
+//     lastName: 'Admin',
+//     nickname: 'Admin',
+//     birthday: new Date(),
+//     email: 'admin@getbodyapp.com',
+//     gender: 'Male',
+//     password: 'delts'
+//   }, function() {
+//       console.log('finished populating users');
+//     }
+//   );
+// });

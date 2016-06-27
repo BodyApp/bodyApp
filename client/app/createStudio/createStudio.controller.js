@@ -131,7 +131,7 @@ angular.module('bodyAppApp')
   		studioId = studioId.replace(/[^a-zA-Z0-9_-]/g,'').toLowerCase() //Gets rid of all special characters and spaces, but allows dash and underscore
 
   		if (!studioToCreate) return;
-  		if (studioId.length < 4) return $scope.invalidId = true;
+  		// if (studioId.length < 4) return $scope.invalidId = true;
       $rootScope.adminOf = $rootScope.adminOf || {};
       $rootScope.adminOf[studioId] = true;
       if(!$scope.$$phase) $scope.$apply();
@@ -161,13 +161,13 @@ angular.module('bodyAppApp')
           $cookies.put('showPricingAlert', true)
           $cookies.put('showWorkoutsAlert', true)
           
-          var storageRef = firebase.storage().ref().child('studios').child(studioId);
-          angular.forEach($scope.iconImage,function(obj){
-            var uploadTask = storageRef.child('images/icon.jpg').put(obj.lfFile);
-          })
-          angular.forEach($scope.headerImage,function(obj){
-            var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
-          })
+          // var storageRef = firebase.storage().ref().child('studios').child(studioId);
+          // angular.forEach($scope.iconImage,function(obj){
+          //   var uploadTask = storageRef.child('images/icon.jpg').put(obj.lfFile);
+          // })
+          // angular.forEach($scope.headerImage,function(obj){
+          //   var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
+          // })
           
           $scope.basicsComplete = true;
           $scope.step++;
@@ -265,7 +265,6 @@ angular.module('bodyAppApp')
       var savedWorkout = ref.child('studios').child(studioId).child('workouts').update({'defaultWorkout': workoutToSave}, function(err) {
         if (err) return console.log(err);
         console.log("Default workout successfully saved.")
-        console.log(savedWorkout.key)
         ref.child('studios').child(studioId).child('classTypes').child(defaultClassType).child('workoutsUsingClass').child('defaultWorkout').update({'dateSaved': new Date().getTime()}, function(err) {
           if (err) return console.log(err);
           console.log("Default workout successfully saved as a workout of Default class type.")
@@ -321,13 +320,13 @@ angular.module('bodyAppApp')
         // $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
       })
       
-      storageRef.child('studios').child('body').child('images/header.jpg').getDownloadURL().then(function(url) {
+      // storageRef.child('studios').child('body').child('images/header.jpg').getDownloadURL().then(function(url) {
         // $scope.headerUrl = url;
-        $scope.backgroundImageUrl = url
-        if(!$scope.$$phase) $scope.$apply();
-      }).catch(function(error) {
-        console.log(error)
-      });
+        // $scope.backgroundImageUrl = url
+        // if(!$scope.$$phase) $scope.$apply();
+      // }).catch(function(error) {
+        // console.log(error)
+      // });
     }
 
     $scope.updateCategoryCount = function(category) {
