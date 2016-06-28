@@ -549,6 +549,10 @@ angular.module('bodyAppApp')
     }
 
     $scope.reserveClicked = function(slot) {
+      if (($scope.userBookings && $scope.userBookings[slot.dateTime]) || slot.instructor === currentUser._id) {
+        return $scope.joinClass(slot)
+      }
+
       // console.log(slot)
       if ($rootScope.subscribing) return
       // if (slot.typeOfClass === 'Specialty') {

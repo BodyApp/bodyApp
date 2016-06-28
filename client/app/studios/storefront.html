@@ -307,12 +307,12 @@
                     <img src="/assets/images/bern-prince.jpg" width="20" height="20">
                   </div> -->
                   <div class="cal-action mt8">
-                    <a href="#" class="btn-blue">
-                      <span style = "font-weight: 600;" ng-show = "!userBookings[class.dateTime] && class.instructor != currentUser._id" ng-click = "reserveClicked(class)">Reserve
+                    <a href="#" class="btn-blue" ng-click = "reserveClicked(class)">
+                      <span style = "font-weight: 600;" ng-show = "!userBookings[class.dateTime] && class.instructor != currentUser._id">Reserve
                       </span>
-                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-click = "joinClass(class)">Booked</span>
-                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow > classesJoinTime[class.dateTime] " ng-click = "joinClass(class)">Join</span>
-                      <span style = "font-weight: 600;" ng-show = "class.instructor === currentUser._id" ng-click = "joinClass(class)">Teaching</span>
+                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]">Booked</span>
+                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow > classesJoinTime[class.dateTime] " >Join</span>
+                      <span style = "font-weight: 600;" ng-show = "class.instructor === currentUser._id">Teaching</span>
                     </a>
                   </div>
                 </div>
