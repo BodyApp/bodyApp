@@ -7,7 +7,8 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref();
 
     $scope.step = 0;
-    if ($cookies.get('studioCreationStarted')) {
+    // if (!Auth.getCurrentUser()) $cookies.remove('studioCreationStarted')
+    if ($cookies.get('studioCreationStarted') && currentUser._id) {
       $scope.creationStarted = true;
       $cookies.remove('studioCreationStarted');
     }
