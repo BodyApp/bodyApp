@@ -17,6 +17,8 @@ angular.module('bodyAppApp')
     var dropinRate;
     var specialtyRate;
     var ref = firebase.database().ref().child('studios').child(studioId);
+    var storageRef = firebase.storage().ref().child('studios').child(studioId);
+    var decodedIcon;
 
     if (slot && slot.typeOfClass === 'Specialty') {
       ref.child('classTypes').child(slot.classType).once('value', function(snapshot) {
@@ -37,6 +39,7 @@ angular.module('bodyAppApp')
         if(!$scope.$$phase) $scope.$apply();
         getInstructorPicture()
         getStudioName()
+        getStudioPicture();
       })
 
       ref.child('stripeConnected').child('dropinPlan').once('value', function(snapshot) {
@@ -53,6 +56,17 @@ angular.module('bodyAppApp')
       ref.child('storefrontInfo').child('studioName').once('value', function(snapshot) {
         $scope.studioName = snapshot.val()
       })
+    }
+
+    function getStudioPicture() {
+      storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
+        $scope.iconUrl = url;
+        decodedIcon = decodeURI(url)
+        console.log($scope.iconUrl)
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
 
     function getInstructorPicture() {
@@ -120,7 +134,7 @@ angular.module('bodyAppApp')
 	  var currentUser = Auth.getCurrentUser();
     // $scope.couponEntered = currentUser.referredBy;
 
-    if ($scope.couponEntered) {
+    // if ($scope.couponEntered) {
       // User.checkCoupon({ id: currentUser._id }, {
       //   couponString: $scope.couponEntered
       // }, function(coupon) {
@@ -131,38 +145,51 @@ angular.module('bodyAppApp')
       //     $scope.couponEntered = undefined
       //     console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
       // }).$promise
-      Studio.checkCoupon({ id: currentUser._id }, {
-        couponString: $scope.couponEntered,
-        studioId: studioId
-      }, function(coupon) {
-        if (!coupon.valid) {
-          $scope.couponEntered = undefined
-        }
-      }, function(err) {
-          $scope.couponEntered = undefined
-          console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
-      }).$promise
-    }
+    //   Studio.checkCoupon({ id: currentUser._id }, {
+    //     couponString: $scope.couponEntered,
+    //     studioId: studioId
+    //   }, function(coupon) {
+    //     if (!coupon.valid) {
+    //       $scope.couponEntered = undefined
+    //     }
+    //   }, function(err) {
+    //       $scope.couponEntered = undefined
+    //       console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
+    //   }).$promise
+    // }
 
-		$scope.joinClicked = function(couponEntered) {
-      if (!couponEntered) {
-  			openStripePayment()
-      } else if (couponEntered === currentUser.referralCode){
-        $scope.userEnteredOwnCoupon = true;
-      } else {
-        Studio.checkCoupon({ id: currentUser._id }, {
+    $scope.applyCoupon = function() {
+      Studio.checkCoupon({ id: currentUser._id }, {
           couponString: $scope.couponEntered,
           studioId: studioId
         }, function(coupon) {
           if (coupon.valid) {
-            openStripePayment(coupon)
+            console.log("Coupon valid") 
+            $scope.validCoupon = coupon;
+            console.log(coupon)
+            if(!$scope.$$phase) $scope.$apply();
           } else {
             $scope.invalidCouponEntered = true;
+            $scope.enterCoupon = false;
+            if(!$scope.$$phase) $scope.$apply();
           }
         }, function(err) {
-            $scope.couponEntered = undefined
+            $scope.couponEntered = undefined;
+            $scope.enterCoupon = false;
+            $scope.invalidCouponEntered = true;
+            if(!$scope.$$phase) $scope.$apply();
             console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
         }).$promise
+    }
+
+		$scope.joinClicked = function(couponEntered) {
+      if (!$scope.validCoupon) {
+  			openStripePayment()
+      } else if (couponEntered === currentUser.referralCode){
+        $scope.userEnteredOwnCoupon = true;
+        if(!$scope.$$phase) $scope.$apply();
+      } else {
+        openStripePayment($scope.validCoupon)
       }
 		}
 
@@ -191,7 +218,7 @@ angular.module('bodyAppApp')
       var handler = StripeCheckout.configure({
         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
         // key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
-        image: '../../assets/images/body-stripe.jpg',
+        // image: $scope.iconUrl,
         locale: 'auto',
         token: function(token, args) {
           var modalInstance = openPaymentConfirmedModal()
@@ -228,7 +255,7 @@ angular.module('bodyAppApp')
       });
 
       var handlerObject = {};
-      handlerObject.name = planInfo.statement_descriptor;
+      handlerObject.name = $scope.studioName;
       handlerObject.description = (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!";
       handlerObject.panelLabel = "Pay $" + amountToPay / 100 + " / Month";
       handlerObject.shippingAddress = true;
@@ -256,7 +283,7 @@ angular.module('bodyAppApp')
       // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
       var handler = StripeCheckout.configure({
         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-        image: '../../assets/images/body-stripe.jpg',
+        // image: $scope.iconUrl.replace("252F", "2F"),
         locale: 'auto',
         token: function(token, args) {
           var modalInstance = openDropInPaymentConfirmedModal()
@@ -313,6 +340,14 @@ angular.module('bodyAppApp')
       openStripeSpecialty()
     }
 
+    $scope.chooseDropin = function() {
+      $scope.dropinChosen = true;
+    }
+
+    $scope.chooseSubscription = function() {
+      $scope.subscriptionChosen = true;
+    }
+
     function openStripeSpecialty() {
       if (!slot) return
       if ($rootScope.subscribing) return
@@ -329,7 +364,7 @@ angular.module('bodyAppApp')
       // console.log(Stripe.Coupons.retrieve("BODY4AYEAR", function(err, coupon) {console.log(coupon)}))
       var handler = StripeCheckout.configure({
         key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-        image: '../../assets/images/body-stripe.jpg',
+        // image: $scope.iconUrl.replace("252F", "2F"),
         locale: 'auto',
         token: function(token, args) {
           var modalInstance = openDropInPaymentConfirmedModal()
