@@ -11,7 +11,7 @@ angular.module('bodyAppApp')
     $scope.categoryFilter = $state.params.tag;
 
     function getStudios() {
-	    ref.child('studioIds').on('value', function(snapshot) {
+	    ref.child('studioIds').orderByValue().on('value', function(snapshot) {
 	    	$scope.studios = [];
 	    	snapshot.forEach(function(studioId) {
 	    		getPicture(studioId.key)
