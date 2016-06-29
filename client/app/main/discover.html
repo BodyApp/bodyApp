@@ -70,7 +70,7 @@
                 <h4>{{studio.studioName}}</h4>
                 <h5 class="lightgray">By {{studio.ownerName}}</h5>
                 <h5 class="mt8 studio-listing-description">{{studio.shortDescription}}</h5>
-                <div class="studio-listing-pricing mt16">
+                <div class="studio-listing-pricing mt16" ng-if = "studio.subscriptionPricing || studio.dropinPricing">
                   <div class="studio-listing-subscription">
                     <span class="royalblue">Subscription</span>
                     <h4 ng-if = "studio.subscriptionPricing">${{studio.subscriptionPricing/100}}<span class="perMonth">/mo</span></h4>
@@ -81,6 +81,9 @@
                     <h4 ng-if = "studio.dropinPricing">${{studio.dropinPricing/100}}</h4>
                     <h4 ng-if = "!studio.dropinPricing">None</h4>
                   </div>
+                </div>
+                <div class="studio-listing-pricing mt16" ng-if = "!studio.subscriptionPricing && !studio.dropinPricing">
+                  <h4 class = "mt32"> Free Classes!</h4>
                 </div>
               </div>
             </div>

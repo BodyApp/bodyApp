@@ -135,6 +135,9 @@
   .studio-listing-card-body {
     height: 233px;
   }
+  .studio-listing-description {
+    min-height: 64px;
+  }
 }
 @media (min-width: 767px) and (max-width: 1100px) {
   .studio-listing-card-body h5 {

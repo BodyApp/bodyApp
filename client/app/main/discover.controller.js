@@ -9,6 +9,7 @@ angular.module('bodyAppApp')
     getStudios();
 
     $scope.categoryFilter = $state.params.tag;
+    Intercom('trackEvent', 'navigatedToDiscover');
 
     function getStudios() {
 	    ref.child('studioIds').orderByValue().on('value', function(snapshot) {
