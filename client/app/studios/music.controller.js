@@ -15,6 +15,7 @@ angular.module('bodyAppApp')
     }
 
     // if (!studioId) studioId = 'body'
+    Intercom('trackEvent', 'navigatedToMusic', { studio: studioId });
     Studios.setCurrentStudio(studioId);
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();

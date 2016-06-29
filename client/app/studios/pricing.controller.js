@@ -44,6 +44,7 @@ angular.module('bodyAppApp')
     var auth = firebase.auth();
 
     function delayedStartup() {
+      Intercom('trackEvent', 'navigatedToPricing', { studio: studioId });
       $scope.startedLoading = true
       if (!studioId) studioId = 'body'
 

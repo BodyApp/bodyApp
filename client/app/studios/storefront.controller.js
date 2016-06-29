@@ -28,6 +28,10 @@ angular.module('bodyAppApp')
     var daysInFuture = 0;
     var numDaysToShow = 7;
 
+    Intercom('trackEvent', 'visitedStudioStorefront', {
+      studio: studioId
+    });
+
     getClasses(0, 7);
     getSpecialtyClasses();
     getStorefrontInfo();
@@ -638,6 +642,12 @@ angular.module('bodyAppApp')
         Intercom('update', {
             "latestClassTaken_at": Math.floor(new Date(slot.dateTime*1) / 1000)
         });
+
+        Intercom('trackEvent', 'bookedClass', {
+          studioId: studioId,
+          classToBook: slot ? slot.dateTime : "None",
+          dateOfClass: Math.floor(slot.dateTime/1000)
+        });
       }, function(err) {
           console.log("Error adding class: " + err)
           // slot.bookedUsers = slot.bookedUsers || {};
@@ -656,6 +666,11 @@ angular.module('bodyAppApp')
         ref.child("bookings").child(classToCancel.dateTime).child(currentUser._id).remove()
         ref.child("userBookings").child(currentUser._id).child(classToCancel.dateTime).remove()
         ref.child("cancellations").child(classToCancel.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+        Intercom('trackEvent', 'cancelledClass', {
+          studioId: studioId,
+          classToCancel: slot ? slot.dateTime : "None",
+          dateOfClass: Math.floor(slot.dateTime/1000)
+        });
         // Auth.updateUser(user);
         // currentUser = user;
         // $scope.currentUser = currentUser;  

@@ -20,6 +20,11 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var decodedIcon;
 
+    Intercom('trackEvent', 'openedPaymentModal', {
+      studioId: studioId,
+      classToBook: slot ? slot.dateTime : "None"
+    });
+
     if (slot && slot.typeOfClass === 'Specialty') {
       ref.child('classTypes').child(slot.classType).once('value', function(snapshot) {
         specialtyRate = snapshot.val().specialtyClassRate*100
@@ -213,6 +218,10 @@ angular.module('bodyAppApp')
       
       if (coupon && coupon.valid) {
         amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
+        Intercom('trackEvent', 'usedCoupon', {
+          studioId: studioId,
+          coupon: coupon.id
+        });
       }
 
       var handler = StripeCheckout.configure({
@@ -233,6 +242,11 @@ angular.module('bodyAppApp')
           })
           .success(function(data) {
             console.log("Successfully created new customer subscription.");
+            Intercom('trackEvent', 'addedStudioSubscription', {
+              studioId: studioId,
+              planInfo: planInfo
+            });
+
             // modalInstance.close();
             // Auth.updateUser(data);
             // currentUser = data;
@@ -290,7 +304,7 @@ angular.module('bodyAppApp')
           $rootScope.subscribing = true;
           
           $http.post('/api/payments/chargedropin', {
-            amount: dropinRate,
+            amount: amountToPay,
             stripeToken: token,
             shippingAddress: args,
             slot: slot,
@@ -302,6 +316,11 @@ angular.module('bodyAppApp')
             $rootScope.errorProcessingPayment = false;
             if(!$scope.$$phase) $scope.$apply();
             console.log("Successfully posted to /user/chargedropin");
+            Intercom('trackEvent', 'paidDropin', {
+              studioId: studioId,
+              classToBook: slot ? slot.dateTime : "None",
+              amount: amount
+            });
             // modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
@@ -370,7 +389,7 @@ angular.module('bodyAppApp')
           var modalInstance = openDropInPaymentConfirmedModal()
           $rootScope.subscribing = true
           $http.post('/api/payments/chargedropin', {
-            amount: dropinRate,
+            amount: amountToPay,
             stripeToken: token,
             shippingAddress: args,
             slot: slot,
@@ -382,6 +401,12 @@ angular.module('bodyAppApp')
             $rootScope.errorProcessingPayment = false;
             if(!$scope.$$phase) $scope.$apply();
             console.log("Successfully posted to /user/chargedropin");
+            Intercom('trackEvent', 'paidSpecialty', {
+              studioId: studioId,
+              classToBook: slot ? slot.dateTime : "None",
+              amount: amountToPay,
+              specialtyType: slot ? slot.classType : "None"
+            });
             // modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
@@ -484,6 +509,11 @@ angular.module('bodyAppApp')
       User.addBookedClass({ id: currentUser._id }, {
         classToAdd: slot.dateTime
       }, function(user) {
+        Intercom('trackEvent', 'bookedClass', {
+          studioId: studioId,
+          classToBook: slot ? slot.dateTime : "None",
+          dateOfClass: Math.floor(slot.dateTime/1000)
+        });
         // getInfo(slot.dateTime);
         ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
         ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})

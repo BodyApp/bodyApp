@@ -13,6 +13,8 @@ angular.module('bodyAppApp')
       $cookies.remove('studioCreationStarted');
     }
 
+    Intercom('trackEvent', 'navigatedToCreateStudio');
+
     $scope.calcDuration = 'Yearly';
     $scope.subscriptionPrice = 30;
     $scope.numSubscribers = 250;
@@ -162,6 +164,11 @@ angular.module('bodyAppApp')
             "createdStudio_at": Math.floor(new Date() / 1000),
             "studioOwnedId": studioId,
             "studioOwnedName": studioToCreate.studioName
+          });
+
+          Intercom('trackEvent', 'createdStudio', {
+            studioId: studioId,
+            studioName: studioToCreate.studioName
           });
 
           $cookies.remove('studioCreationStarted');

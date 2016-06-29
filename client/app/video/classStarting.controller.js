@@ -11,6 +11,12 @@ angular.module('bodyAppApp')
 
     formatDateTime()
     calculateTimeUntilClassStarts()
+    
+    Intercom('trackEvent', 'wentToClassStarting', {
+      classId: classId,
+      studioId: studioId
+    });
+
     var calculateTime = $interval(calculateTimeUntilClassStarts, 30000)
 
     $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
@@ -158,6 +164,11 @@ angular.module('bodyAppApp')
           ref.child("bookings").child(classId).child($scope.currentUser._id).remove()
 	        ref.child("userBookings").child($scope.currentUser._id).child(classId).remove(function(err) {
 	        	if (err) return console.log(err)
+            Intercom('trackEvent', 'cancelledClass', {
+              studioId: studioId,
+              classToCancel: slot ? slot.dateTime : "None",
+              dateOfClass: Math.floor(slot.dateTime/1000)
+            });
 	        	$rootScope.$apply(function() {
 			        $location.path('/studios/' + studioId)
 			      });

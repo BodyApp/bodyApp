@@ -21,7 +21,7 @@ exports.setup = function (User, config) {
       // done(null, null)
       var dataToSave = stripe_properties;
       dataToSave.refreshToken = refreshToken;
-      dataToSave.applicationFeePercent = 30;
+      dataToSave.applicationFeePercent = 20;
       var ref = baseRef.child('studios').child(req.query.state);
       // var firebaseToken = tokenGenerator.createToken({ uid: "excellentBodyServer" });
 

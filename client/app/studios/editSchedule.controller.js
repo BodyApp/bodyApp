@@ -64,6 +64,7 @@ angular.module('bodyAppApp')
     var nextSessionToSave;
 
     function delayedStartup() {
+      Intercom('trackEvent', 'navigatedToEditSchedule', { studio: studioId });
       auth.onAuthStateChanged(function(user) {
         if (user) {
           getClassTypes();
@@ -278,6 +279,12 @@ angular.module('bodyAppApp')
               "studioClassCreated_at": Math.floor(new Date() / 1000),
               "studioClassScheduledFor": Math.floor(workoutToSave.dateTime/1000),
               "studioLatestClassScheduledAt": studioId
+            });
+            Intercom('trackEvent', 'scheduledAClass', {
+              dateOfClass: Math.floor(workoutToSave.dateTime/1000),
+              studio: studioId,
+              classType: workoutToSave.classType,
+              instructor: workoutToSave.instructor,
             });
             if (workoutToSave.typeOfClass === 'Specialty') {
               ref.child('specialtyClasses').child(workoutToSave.dateTime).update({lastUpdated: new Date().getTime()}, function(err) {

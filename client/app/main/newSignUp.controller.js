@@ -13,6 +13,8 @@ angular.module('bodyAppApp')
 
   	var loggedInPath = '/'
 
+    Intercom('trackEvent', 'navigatedToSignup');
+
     $scope.getBackgroundImages = function() {
       storageRef.child('signupImages').getDownloadURL().then(function(urls) {
         // $scope.headerUrl = url;

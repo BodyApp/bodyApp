@@ -17,6 +17,7 @@ angular.module('bodyAppApp')
     }
     
     $scope.workoutToCreate = {};
+    Intercom('trackEvent', 'navigatedToWorkouts', { studio: studioId });
     
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);

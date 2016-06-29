@@ -125,6 +125,22 @@ angular.module('bodyAppApp')
     	getWorkout($scope.classDetails.workout)
 	    getInstructorDetails($scope.classDetails.instructor)
 	    setMusicPlayer($scope.classDetails)
+	    if (!userIsInstructor) {
+	    	Intercom('trackEvent', 'tookClass', {
+          dateOfClass: Math.floor(classId/1000),
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType,
+          instructor: $scope.classDetails.instructor
+        });
+	    } else {
+	    	Intercom('trackEvent', 'taughtClass', {
+          dateOfClass: Math.floor($scope.classDetails.dateTime/1000),
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType
+        });
+	    }
     })
   }
 
