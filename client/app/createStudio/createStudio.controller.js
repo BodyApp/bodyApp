@@ -126,6 +126,7 @@ angular.module('bodyAppApp')
   	$scope.createStudio = function(studioToCreate) {
       // if ($scope.creatingStudio) return
       // $scope.creatingStudio = true;
+      if (!currentUser) $scope.beginStudioCreation();
   		if (currentUser.$$state) delete currentUser.$$state;
   		if (currentUser.$promise) delete currentUser.$promise;
   		if (currentUser.$resolved) delete currentUser.$resolved;
@@ -318,7 +319,8 @@ angular.module('bodyAppApp')
       }, function(err) {
         
         if (err) return console.log(err)
-        $scope.step++;
+        // $scope.step++;
+        $location.path('/studios/' + studioToCreate.studioId + "/editschedule")
         $scope.descriptionComplete = true;
         if(!$scope.$$phase) $scope.$apply();
       })
