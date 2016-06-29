@@ -4,6 +4,23 @@
   <a class="testing-overlay-click" ng-click = "userClickedOutside()"></a>
   <div class="modal-container">
 
+    <div class="modalSignup" ng-show = "mode === 'studioSignup' && step === 0">
+      <div class="signUp-wallpaper">
+        <div class="signUp-wallpaper-dimmer"></div>
+        <img src="/assets/images/studios/body/SignUp.jpg">
+      </div>
+      <div class="signUp-panel"> 
+        <div class="signUp-content text-center">
+          <div class="signUp-logo">
+            <img src="assets/images/BodyLogo_white_small.png">
+          </div>
+          <h4 class="white mt16">Live Classes Where You Can See Your Clients</h4>
+          <h5 class="white mt24">Connect with Facebook to teach classes. Don't worry, we won't have permission to post to your page.</h5>
+          <a href="#" ng-click = "loginOauth('facebook')" class="btn-blue big-btn mt24 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Continue with Facebook</a>
+          <!-- <h5 class="whitegray thin500 mt24">Have an account? <a ng-click = "mode = 'login'" href="#">Log in</a></h5> -->
+        </div>
+      </div>
+    </div>
     <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>

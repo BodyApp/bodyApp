@@ -115,7 +115,7 @@ angular.module('bodyAppApp')
         $cookies.put('loggedInPath', $location.path())
         $cookies.put('studioCreationStarted', true)
         // $rootScope.loggedInPath = $location.path()
-        $state.go('signup', {step: 0, mode: 'signup'})
+        $state.go('signup', {step: 0, mode: 'studioSignup'})
       }
     }
 
