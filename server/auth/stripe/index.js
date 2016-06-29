@@ -19,8 +19,8 @@ router
         function(err, studioId) {
           if (err) console.log(err)
           console.log(req.query.state)
-          if (studioId) return res.redirect('/studios/'+studioId+'/editschedule');
-          if (req.query.state) return res.redirect('/studios/'+req.query.state+'/editschedule');
+          if (studioId) return res.redirect('/studios/'+studioId+'/pricing');
+          if (req.query.state) return res.redirect('/studios/'+req.query.state+'/pricing');
           res.redirect('/');
         }
       )(req, res, next)
