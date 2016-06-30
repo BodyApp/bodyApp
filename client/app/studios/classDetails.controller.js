@@ -312,6 +312,14 @@ angular.module('bodyAppApp')
       $scope.editing = false;
     }
 
+    $scope.joinOrUpdateClass = function(classDetails) {
+      if ($scope.editing) {
+        $scope.updateClass(classDetails);
+      } else {
+        $scope.joinClass(classDetails);
+      }
+    }
+
     $scope.joinClass = function(classToJoin) {
       Schedule.setClassUserJustJoined(studioId, classToJoin);
       $location.path('/studios/' + studioId + '/classstarting/'+classToJoin.dateTime)

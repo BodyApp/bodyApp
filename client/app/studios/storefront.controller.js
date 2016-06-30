@@ -451,12 +451,19 @@ angular.module('bodyAppApp')
           // }
 
         } else if (slot && slot.typeOfClass === 'Specialty') {
+          console.log("Booking specialty class")
           return bookSpecialtyClass(slot)
+        } else if (slot && $scope.classTypes && $scope.classTypes[slot.classType] && $scope.classTypes[slot.classType].freeClass) { //Book class if studio hasn't set pricing.
+          console.log("Booking for free because this is a free class.")
+          return bookClass(slot)
         } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
+          console.log("Booking for free because no pricing is set")
           return bookClass(slot)
         } else if (currentUser && currentUser.role === 'admin') {
+          console.log("Booking for free because user is admin.")
           return bookClass(slot)
         } else if (studioId === 'body') {
+          console.log("Booking for free because this is the BODY studio.")
           return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
@@ -559,9 +566,7 @@ angular.module('bodyAppApp')
 
       // console.log(slot)
       if ($rootScope.subscribing) return
-      // if (slot.typeOfClass === 'Specialty') {
-      //   return bookSpecialtyClass(slot)
-      // }
+
       // if (currentUser && currentUser.role === 'admin') {
       //   bookClass(slot)
       // } else if (studioId === 'body') {
@@ -646,7 +651,7 @@ angular.module('bodyAppApp')
         Intercom('trackEvent', 'bookedClass', {
           studioId: studioId,
           classToBook: slot ? slot.dateTime : "None",
-          dateOfClass: Math.floor(slot.dateTime/1000)
+          dateOfClass_at: Math.floor(slot.dateTime/1000)
         });
       }, function(err) {
           console.log("Error adding class: " + err)
@@ -669,7 +674,7 @@ angular.module('bodyAppApp')
         Intercom('trackEvent', 'cancelledClass', {
           studioId: studioId,
           classToCancel: slot ? slot.dateTime : "None",
-          dateOfClass: Math.floor(slot.dateTime/1000)
+          dateOfClass_at: Math.floor(slot.dateTime/1000)
         });
         // Auth.updateUser(user);
         // currentUser = user;

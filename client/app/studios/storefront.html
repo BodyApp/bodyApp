@@ -190,7 +190,7 @@
           <div class="panel-body">
             <div class="callToAction-pricing">
 
-              <div class="col-xs-6 col-md-12 mb8">
+              <div class="col-xs-6 col-md-12 mb8" ng-if = "storefrontInfo.subscriptionPricing || storefrontInfo.dropinPricing">
                 <div class="row">
                   <div class="col-md-6">
                     <h4>Unlimited</h4>
@@ -201,7 +201,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6 col-md-12 mb8">
+              <div class="col-xs-6 col-md-12 mb8" ng-if = "storefrontInfo.subscriptionPricing || storefrontInfo.dropinPricing">
                 <div class="row">
                   <div class="col-md-6">
                     <h4>Drop In</h4>
@@ -211,6 +211,13 @@
                     <h4 class="lightgray" ng-show = "storefrontInfo && !storefrontInfo.dropinPricing">None</h4>
                   </div>
                 </div>
+              </div>
+              <div class="col-xs-6 col-md-12 mb8" ng-if = "!storefrontInfo.subscriptionPricing && !storefrontInfo.dropinPricing">
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-md-12"> -->
+                    <h4 class = "mt32" style = "text-align: center;">Free Classes!</h4>
+                  <!-- </div> -->
+                <!-- </div> -->
               </div>
 
               <div class="col-xs-12 mt16">
@@ -299,7 +306,7 @@
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
                   <div class="cal-duration">{{class.duration}}m</div>
                   <div class="cal-class">{{classTypes[class.classType].name}}</div>
-                  <div class="cal-instructor">{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName.charAt(0)}}</div>
+                  <div class="cal-instructor">{{instructors[class.instructor].firstName}}</div>
                   <!-- <div class="cal-friends">2 friends</div>
                   <div class="cal-bubbles">
                     <img src="/assets/images/bern-prince.jpg" width="20" height="20">
@@ -418,7 +425,7 @@
                         <h5 class="lightgray">{{classType.openTo}}</h5>
                       </div> -->
                       <div class="col-md-4">
-                        <h5 class="mb0">Requires</h5>
+                        <h5 class="mb0">Equipment Required</h5>
                         <div ng-repeat = "equipment in classType.equipment">
                           <h5 class="lightgray">{{equipment.name}}</h5>
                         </div>

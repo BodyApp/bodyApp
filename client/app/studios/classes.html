@@ -122,7 +122,14 @@
                 <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.name" name="" size="30" type="text" placeholder="e.g. Level One">
               </div>
               <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
-              <div class="row col-sm-12" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;">
+              <div class="row col-sm-12" ng-mouseenter = "freeClassHover = true;" ng-mouseleave = "freeClassHover = false;">
+                <input ng-if = "showAddClass" id="free-class-check" ng-model = "classToCreate.freeClass" name="free-class" size="15" type="checkbox">
+                <input ng-if = "showEditClass" id="free-class-check" ng-model = "showEditClass.classToEdit.freeClass" name="free-class" size="15" type="checkbox">
+                <label for="free-class-check" class="check-selector">
+                  Free Class?
+                </label>              
+              </div>
+              <div class="row col-sm-12" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;" ng-hide = "classToCreate.freeClass || showEditClass.classToEdit.freeClass">
                 <input ng-if = "showAddClass" id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" size="15" type="checkbox">
                 <input ng-if = "showEditClass" id="specialty-class-check" ng-model = "showEditClass.classToEdit.specialtyClass" name="specialty-class" size="15" type="checkbox">
                 <label for="specialty-class-check" class="check-selector">
@@ -262,7 +269,9 @@
 <!-- PANEL -->
       <div class="panel space-4" ng-repeat = "(key, classType) in savedClassTypes | orderBy: '-updated'">
         <div class="panel-header" >
-          {{classType.name}} <span ng-if = "classType.specialtyClassRate">(Specialty Class - ${{classType.specialtyClassRate}})</span>
+          {{classType.name}} 
+          <span ng-if = "classType.specialtyClassRate">(Specialty Class - ${{classType.specialtyClassRate}})</span>
+          <span ng-if = "classType.freeClass">(Free)</span>
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>
@@ -279,7 +288,7 @@
               <h5 class="lightgray">{{classType.openTo}}</h5>
             </div> -->
             <div class="col-sm-3 mb16">
-              <h5 class="mb0">Requires</h5>
+              <h5 class="mb0">Equipment Required</h5>
               <ul>
                 <li ng-repeat = "item in classType.equipment">
                   <h5 class="lightgray">{{item.name}}</h5>

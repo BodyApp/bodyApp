@@ -121,13 +121,9 @@ angular.module('bodyAppApp')
     	$scope.classDetails = snapshot.val();
     	if(!$scope.$$phase) $scope.$apply();
     	userIsInstructor = $scope.classDetails.instructor === Auth.getCurrentUser()._id;
-    	if ($scope.bookingsPulled && !session) connect($scope.classDetails)
-    	getWorkout($scope.classDetails.workout)
-	    getInstructorDetails($scope.classDetails.instructor)
-	    setMusicPlayer($scope.classDetails)
-	    if (!userIsInstructor) {
+    	if (!userIsInstructor) {
 	    	Intercom('trackEvent', 'tookClass', {
-          dateOfClass: Math.floor(classId/1000),
+          dateOfClass_at: Math.floor($scope.classDetails.dateTime/1000),
           classId: classId,
           studioId: studioId,
           classType: $scope.classDetails.classType,
@@ -135,12 +131,17 @@ angular.module('bodyAppApp')
         });
 	    } else {
 	    	Intercom('trackEvent', 'taughtClass', {
-          dateOfClass: Math.floor($scope.classDetails.dateTime/1000),
+          dateOfClass_at: Math.floor($scope.classDetails.dateTime/1000),
           classId: classId,
           studioId: studioId,
           classType: $scope.classDetails.classType
         });
 	    }
+    	if ($scope.bookingsPulled && !session) connect($scope.classDetails)
+    	getWorkout($scope.classDetails.workout)
+	    getInstructorDetails($scope.classDetails.instructor)
+	    setMusicPlayer($scope.classDetails)
+	    
     })
   }
 

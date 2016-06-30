@@ -166,8 +166,8 @@ angular.module('bodyAppApp')
 	        	if (err) return console.log(err)
             Intercom('trackEvent', 'cancelledClass', {
               studioId: studioId,
-              classToCancel: slot ? slot.dateTime : "None",
-              dateOfClass: Math.floor(slot.dateTime/1000)
+              classToCancel: classId ? classId : "None",
+              dateOfClass_at: Math.floor(classId/1000)
             });
 	        	$rootScope.$apply(function() {
 			        $location.path('/studios/' + studioId)

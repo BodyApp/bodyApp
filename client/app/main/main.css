@@ -136,7 +136,7 @@
     height: 233px;
   }
   .studio-listing-description {
-    min-height: 64px;
+    height: 64px;
   }
 }
 @media (min-width: 767px) and (max-width: 1100px) {
@@ -147,7 +147,7 @@
     height: 225px;
   }
   .studio-listing-description {
-    height: 66px;
+    height: 64px;
   }
 }
 

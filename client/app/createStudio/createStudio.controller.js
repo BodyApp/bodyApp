@@ -252,8 +252,9 @@ angular.module('bodyAppApp')
 
     function createDefaultClassType(studioId) {
       var classToSave = {};
-      classToSave.name = "Trial Class"
+      classToSave.name = "Free Class"
       classToSave.classDescription = "Come try out a class at my studio!"
+      classToSave.freeClass = true;
       classToSave.created = new Date().getTime();
       classToSave.updated = new Date().getTime();
       classToSave.createdBy = Auth.getCurrentUser()._id
