@@ -262,6 +262,7 @@ angular.module('bodyAppApp')
           ref.child('toSetup').child('pricing').remove(function(err) {
             if (err) console.log(err)
           })
+          Intercom('trackEvent', 'setDropinPricing', { studio: studioId, dropinPricing: planToSave.amount });
     		})
     	} else if (planToSave.pricingType === 'Monthly'){
     		Studio.createSubscriptionPlan({
@@ -281,6 +282,7 @@ angular.module('bodyAppApp')
           ref.child('toSetup').child('pricing').remove(function(err) {
             if (err) console.log(err)
           })
+          Intercom('trackEvent', 'setSubscriptionPricing', { studio: studioId, subscriptionPricing: planToSave.amount });
 	      	// listSubscriptionPlans()
 	      	$scope.showAddPricingPlan = false;
 	    		if(!$scope.$$phase) $scope.$apply();

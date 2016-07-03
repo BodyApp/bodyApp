@@ -111,7 +111,7 @@ angular.module('jshor.angular-addtocalendar', [])
       template: '\
       	<div class="btn-group" ng-click="getIcsCalendarUrl()">\
 					<a class="btn-blue" href="#"><i class="fa fa-calendar" style = "padding-right: 10px;"></i>\
-					Add to your calendar</a>\
+					Add to calendar</a>\
 					</span>\
 				</div>\
 			'
