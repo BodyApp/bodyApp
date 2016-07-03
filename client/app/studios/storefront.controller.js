@@ -625,7 +625,14 @@ angular.module('bodyAppApp')
       });
 
       User.addBookedClass({ id: currentUser._id }, {
-        classToAdd: slot.dateTime
+        classToAdd: slot.dateTime,
+        className: $scope.classTypes[slot.classType].name,
+        studioName: $scope.storefrontInfo.studioName,
+        instructorFullName: $scope.instructors[slot.instructor].firstName + " " + $scope.instructors[slot.instructor].lastName,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
+        equipmentRequired: $scope.classTypes[slot.classType].equipment,
+        classDescription: $scope.classTypes[slot.classType].classDescription,
+        studioIconUrl: $scope.iconUrl
       }, function(user) {
         ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""}, function(err) {
           if (err) return console.log(err)

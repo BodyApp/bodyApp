@@ -1003,28 +1003,44 @@ exports.takeIntroClass = function(req, res, next) {
 exports.addBookedClass = function(req, res, next) {
   var userId = req.user._id;
   var classToAdd = req.body.classToAdd;
+  var className = req.body.className;
+  var studioName = req.body.studioName;
+  var instructorFullName = req.body.instructorFullName;
+  var classStartingUrl = req.body.classStartingUrl;
+  var equipmentUnformatted = req.body.equipmentRequired;
+  var classDescription = req.body.classDescription;
+  var studioIconUrl = req.body.studioIconUrl;
+
+  var equipmentRequired = "";
+
+  if (equipmentUnformatted && equipmentUnformatted.length > 0) {
+    for (var i = 0; i < equipmentUnformatted.length; i++) {
+      if (i > 0) equipmentRequired += ", "
+      equipmentRequired += equipmentUnformatted[i].name
+    }
+  }
 
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
-    if(err) { return err } else { 
-      user.classesBooked = user.classesBooked || {};
-      user.classesBooked[classToAdd] = new Date().getTime();
-      user.classesBookedArray = user.classesBookedArray || [];
-      user.classesBookedArray.push(classToAdd)
-      user.save(function(err) {
-        if (err) return validationError(res, err);
-        sendEmail(user)
-        ref.child("bookings").child(classToAdd).once('value', function(snapshot) {
-          if (snapshot.numChildren() < 2) sendClassBookedEmailToAdmins(user.firstName, user.lastName, classToAdd, "Level 1")
-        })
-        res.status(200).json(user);
-      });
-    } 
+    if(err) return res.status(400).json(err) 
+      // user.classesBooked = user.classesBooked || {};
+      // user.classesBooked[classToAdd] = new Date().getTime();
+      // user.classesBookedArray = user.classesBookedArray || [];
+      // user.classesBookedArray.push(classToAdd)
+      // user.save(function(err) {
+      //   if (err) return validationError(res, err);
+      sendEmail(user)
+      // ref.child("bookings").child(classToAdd).once('value', function(snapshot) {
+      //   if (snapshot.numChildren() < 2) sendClassBookedEmailToAdmins(user.firstName, user.lastName, classToAdd, "Level 1")
+      // })
+      res.status(200).json(user);
+      // });
+    // } 
   });
   function sendEmail(user) {
     if (!user.email) return;
     var dateTime = formattedDateTime(classToAdd, user)
     var emailAddress = user.email;
-    var recipientName = user.firstName;
+    // var recipientName = user.firstName;
     // var mailgun = new Mailgun({apiKey: api_key, domain: domain});
     fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
       if (err) throw err; 
@@ -1035,8 +1051,9 @@ exports.addBookedClass = function(req, res, next) {
         var data = {
           from: from_who,
           to: emailAddress,
-          subject: 'Your BODY Class Is Booked!',
-          html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">High fives!</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">You’ve registered for the following class:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;"><a>' + dateTime.date+'<br>'+ dateTime.classTime +'</a><br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits (Click this to join class)</a>' + classReservedTemplate.toString()
+          bcc: "concierge@getbodyapp.com",
+          subject: 'Your '+ studioName + ' Class Is Booked!',
+          html: classReservedHeader.toString() + '<table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"<tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="left"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; padding: 10px 0;" align="center" valign="left"><h2 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 400; font-size: 24px; color: #565a5c; margin-top: 4px;">'+studioName+' Class Reservation</h2><img src="'+studioIconUrl+'" style="border-radius: 50%; margin: 10px 0;" width="100" height="100"><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #565a5c; margin-top: 4px;">You are attending '+className+' with '+instructorFullName+'</h3><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #3E7EDF; margin-top: 4px;">'+dateTime.classTime+' - '+dateTime.date+'</h3><a href="'+classStartingUrl+'" style="color: white; background: #3E7EDF; font-size: 14px; padding: 7px 0; width:200px; display: inline-block; margin-top: 15px; margin-bottom: 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #3E7EDF; text-align: center; vertical-align: middle; font-weight: bold; line-height: 1.43; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; white-space: nowrap; cursor: pointer; text-decoration: none;">Join class</a></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 10px 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><hr style="clear:both; max-width:600px; border-right:0; border-bottom:1px solid #cacaca; border-left:0; border-top:0; background-color:#dbdbdb; min-height:2px; width:600px; border:none; margin:auto"></td></tr></tbody></table></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 0 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 4px;">Equipment Required:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+equipmentRequired+'</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 15px;">Class Details:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+classDescription+'</h4></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>' + classReservedTemplate.toString()
         }
         //Invokes the method to send emails given the above data with the helper library
         mailgun.messages().send(data, function (err, body) {
@@ -1053,8 +1070,8 @@ exports.addBookedClass = function(req, res, next) {
                 from: from_who,
                 to: emailAddress,
                 "o:deliverytime": deliveryDate.toUTCString(), // Send 2 hours before class
-                subject: 'Reminder: Your BODY Class',
-                html: classReservedHeader.toString() + '<h1 style="padding-bottom: 5px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 200; font-size: 30px; color: #224893; margin: 0px;">Your class reminder</h1><h3 style="font-family: sans-serif, arial; letter-spacing: 0.01em; line-height: 18px; font-weight: 200; font-size: 18px; color: #747475; margin: 0px;">Looks like you have a class coming up:</h3></td></tr></tbody></table></td></tr></tbody></table><!-- RESERVATION --><table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"><tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; margin: 0 auto; padding: 0px 25px;" align="center" valign="middle"><hr style="color: #DCDCDC; width: 550px; margin: 0px auto;"><h4 style="padding-top: 20px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 22px; font-weight: 400; font-size: 20px; color: #0d1c45; margin: 0px;">BODY Class<h5 style="padding-bottom: 10px; font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 200; font-size: 16px; color: #747475; margin: 0px;"><a>' + dateTime.date+'<br>'+ dateTime.classTime +'</a><br><a href="https://www.getbodyapp.com/" style="font-family: Helvetica, Arial, sans-serif; height: auto; min-width: 150px; line-height: 36px; font-size: 16px; font-weight: 100; letter-spacing: 1px; background-color: #224893; border-radius: 0; color: #fff; text-align: center; transition: all 0.3s ease; -webkit-transition: all 0.3s ease; -moz-transition: all 0.3s ease; text-decoration: none; padding: 10px 25px; border: 1px solid #fff; margin-top: 16px;">Your chariot awaits (Click this to join class)</a>' + classReservedTemplate.toString()
+                subject: 'Reminder: Your '+ studioName + ' Class',
+                html: classReservedHeader.toString() + '<table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"<tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="left"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; padding: 10px 0;" align="center" valign="left"><h2 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 400; font-size: 24px; color: #565a5c; margin-top: 4px;">'+studioName+' Class Reservation</h2><img src="'+studioIconUrl+'" style="border-radius: 50%; margin: 10px 0;" width="100" height="100"><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #565a5c; margin-top: 4px;">You are attending '+className+' with '+instructorFullName+'</h3><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #3E7EDF; margin-top: 4px;">'+dateTime.classTime+' - '+dateTime.date+'</h3><a href="'+classStartingUrl+'" style="color: white; background: #3E7EDF; font-size: 14px; padding: 7px 0; width:200px; display: inline-block; margin-top: 15px; margin-bottom: 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #3E7EDF; text-align: center; vertical-align: middle; font-weight: bold; line-height: 1.43; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; white-space: nowrap; cursor: pointer; text-decoration: none;">Join class</a></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 10px 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><hr style="clear:both; max-width:600px; border-right:0; border-bottom:1px solid #cacaca; border-left:0; border-top:0; background-color:#dbdbdb; min-height:2px; width:600px; border:none; margin:auto"></td></tr></tbody></table></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 0 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 4px;">Equipment Required:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+equipmentRequired+'</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 15px;">Class Details:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+classDescription+'</h4></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>' + classReservedTemplate.toString()
               }
               mailgun.messages().send(delayedData, function (err, body) {
                 //If there is an error, render the error page

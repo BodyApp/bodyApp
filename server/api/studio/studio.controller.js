@@ -312,6 +312,7 @@ exports.sendCreatedStudioEmail = function(req,res) {
     var data = {
       from: from_who,
       to: emailAddress,
+      cc: "claire@getbodyapp.com",
       subject: 'Congrats on ' + req.body.studioName + "!",
       html: createdStudioEmail.toString()
     }
