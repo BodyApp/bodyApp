@@ -18,6 +18,8 @@ router.put('/:id/createCoupon', auth.isAuthenticated(), controller.createCoupon)
 router.put('/:id/deleteCoupon', auth.isAuthenticated(), controller.deleteCoupon);
 router.put('/:id/checkCoupon', auth.isAuthenticated(), controller.checkCoupon);
 
+router.put('/:id/sendCreatedStudioEmail', auth.isAuthenticated(), controller.sendCreatedStudioEmail);
+
 router.put('/:id/getUserRevenue', auth.isAuthenticated(), controller.getUserRevenue);
 
 module.exports = router;

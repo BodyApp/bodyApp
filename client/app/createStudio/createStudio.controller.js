@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('CreateStudioCtrl', function ($scope, $location, $cookies, $timeout, $rootScope, $window, $sce, $uibModal, $state, Auth, Studios, User) {
+  .controller('CreateStudioCtrl', function ($scope, $location, $cookies, $timeout, $rootScope, $window, $sce, $uibModal, $state, Auth, Studios, Studio, User) {
   	var currentUser = Auth.getCurrentUser();
     var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref();
@@ -170,6 +170,16 @@ angular.module('bodyAppApp')
             studioId: studioId,
             studioName: studioToCreate.studioName
           });
+
+          Studio.sendCreatedStudioEmail({ id: Auth.getCurrentUser()._id }, {
+            studioId: studioId, 
+            studioName: studioToCreate.studioName,
+            emailAddress: Auth.getCurrentUser().email
+            }, function(user) {
+              console.log("Sent created studio email.")
+            }, function(err) {
+              console.log("Error: " + err)
+          })  
 
           $cookies.remove('studioCreationStarted');
           $cookies.put('showScheduleAlert', true)

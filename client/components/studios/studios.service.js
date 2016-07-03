@@ -62,6 +62,12 @@ angular.module('bodyAppApp')
         params: {
           controller: "getUserRevenue"
         }
+      },
+      sendCreatedStudioEmail: {
+        method: 'PUT',
+        params: {
+          controller: 'sendCreatedStudioEmail'
+        }
       }
 	  });
   });

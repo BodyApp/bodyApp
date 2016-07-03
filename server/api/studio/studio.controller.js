@@ -7,6 +7,7 @@ var api_key = config.mailgunApiKey;
 var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
 var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+var fs = require('fs')
 
 // var Firebase = require('firebase');
 // var ref = new Firebase("https://bodyapp.firebaseio.com/");
@@ -302,4 +303,28 @@ exports.getUserRevenue = function(req, res, next) {
     })
   })
 }
+
+exports.sendCreatedStudioEmail = function(req,res) {
+  var emailAddress = req.body.emailAddress
+  fs.readFile(__dirname + '/emails/createdStudio.html', function (err, html) {
+    if (err) throw err; 
+    var createdStudioEmail = html
+    var data = {
+      from: from_who,
+      to: emailAddress,
+      subject: 'Congrats on ' + req.body.studioName + "!",
+      html: createdStudioEmail.toString()
+    }
+    mailgun.messages().send(data, function (err, body) {
+      if (err) {
+        console.log("Error sending created studio email to " + emailAddress)
+        console.log(err)
+        res.status(400).send("Error sending createdStudio email to " + emailAddress);
+      }
+      else {
+        res.status(200).send("Sent created studio email successfully");
+      }
+    });
+  });  
+};
 
