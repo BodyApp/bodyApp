@@ -73,6 +73,13 @@ angular.module('bodyAppApp')
           $location.replace()
           if(!$scope.$$phase) $scope.$apply();
         } else {
+          User.sendWelcomeEmail({ id: Auth.getCurrentUser()._id }, {
+            }, function(user) {
+              console.log("Sent welcome email since first time logging in.")
+            }, function(err) {
+              console.log("Error: " + err)
+          })  
+
         	$scope.userEmail = Auth.getCurrentUser().email
         	$scope.userPicture = Auth.getCurrentUser().picture
 	        $scope.step = 1;

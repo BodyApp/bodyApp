@@ -31,34 +31,34 @@ var User = require('../api/user/user.model');
 // });
 
 // User.find({}).remove(function() {
-//   User.create({
-//     firstName: "Daniel",
-//     lastName: "Liebeskind",
-//     nickName: "Daniel",
-//     gender: "male",
-//     picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
-//     facebookId: "10100958748247716",
-//     // level: 0,
-//     email: "daniel.liebeskind@gmail.com",
-//     provider: "facebook",
-//     facebook: {
-//         "id": "598183923663488",
-//         "age_range": {
-//             "min": 13,
-//             "max": 17
-//         }
-//     },
-//     role: "user",
-//     __v: 51,
-//     injuries: "Nothing really",
-//     goals: "To be able to fly",
-//     bookedIntroClass: true,
-//     completedNewUserFlow: true,
-//     introClassTaken: true,
-//     // welcomeEmailSent: false,
-//     // welcomeEmailSent: new Date(),
-//     // level: 1
-//     }, 
+  User.create({
+    firstName: "Daniel",
+    lastName: "Liebeskind",
+    nickName: "Daniel",
+    gender: "male",
+    picture: "https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/s200x200/1484103_10100651628887376_1489797280_n.jpg?oh=51bf0d530da80068bf38f6ae71946bda&oe=56E8DAD8",
+    facebookId: "10100958748247716",
+    // level: 0,
+    email: "daniel.liebeskin@gmail.com",
+    provider: "facebook",
+    facebook: {
+        "id": "598183923663488",
+        "age_range": {
+            "min": 13,
+            "max": 17
+        }
+    },
+    role: "user",
+    __v: 51,
+    injuries: "Nothing really",
+    goals: "To be able to fly",
+    bookedIntroClass: true,
+    completedNewUserFlow: true,
+    introClassTaken: true,
+    // welcomeEmailSent: false,
+    // welcomeEmailSent: new Date(),
+    // level: 1
+    }
 //     {
 //     firstName: "Donna",
 //     lastName: "Letuch",
@@ -176,5 +176,5 @@ var User = require('../api/user/user.model');
 //   }, function() {
 //       console.log('finished populating users');
 //     }
-//   );
+  );
 // });
