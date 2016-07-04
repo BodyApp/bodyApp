@@ -8,6 +8,7 @@ var from_who = config.mailgunFromWho;
 var domain = 'getbodyapp.com';  
 var mailgun = new Mailgun({apiKey: api_key, domain: domain});
 var fs = require('fs')
+var nunjucks = require('nunjucks');
 
 // var Firebase = require('firebase');
 // var ref = new Firebase("https://bodyapp.firebaseio.com/");
@@ -305,27 +306,39 @@ exports.getUserRevenue = function(req, res, next) {
 }
 
 exports.sendCreatedStudioEmail = function(req,res) {
-  var emailAddress = req.body.emailAddress
-  fs.readFile(__dirname + '/emails/createdStudio.html', function (err, html) {
-    if (err) throw err; 
-    var createdStudioEmail = html
-    var data = {
-      from: from_who,
-      to: emailAddress,
-      cc: "claire@getbodyapp.com",
-      subject: 'Congrats on ' + req.body.studioName + "!",
-      html: createdStudioEmail.toString()
+  var emailAddress = req.body.emailAddress;
+  var studioId = req.body.studioId;
+  var studioName = req.body.studioName;
+  var ownerName = req.body.ownerName;
+
+  // fs.readFile(__dirname + '/emails/createdStudio.html', function (err, html) {
+    // if (err) throw err; 
+    // var createdStudioEmail = html
+
+  var createdStudioEmail = nunjucks.render(__dirname + '/emails/createdStudio.html', {
+    studioUrl: "https://www.getbodyapp.com/studios/" + studioId,
+    studioName: studioName,
+    ownerName: ownerName
+  });
+
+
+  var data = {
+    from: from_who,
+    to: emailAddress,
+    cc: "claire@getbodyapp.com",
+    subject: 'Congrats on ' + req.body.studioName + "!",
+    html: createdStudioEmail
+  }
+  mailgun.messages().send(data, function (err, body) {
+    if (err) {
+      console.log("Error sending created studio email to " + emailAddress)
+      console.log(err)
+      res.status(400).send("Error sending createdStudio email to " + emailAddress);
     }
-    mailgun.messages().send(data, function (err, body) {
-      if (err) {
-        console.log("Error sending created studio email to " + emailAddress)
-        console.log(err)
-        res.status(400).send("Error sending createdStudio email to " + emailAddress);
-      }
-      else {
-        res.status(200).send("Sent created studio email successfully");
-      }
-    });
-  });  
+    else {
+      res.status(200).send("Sent created studio email successfully");
+    }
+  });
+  // });  
 };
 

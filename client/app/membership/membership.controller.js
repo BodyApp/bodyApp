@@ -76,8 +76,9 @@ angular.module('bodyAppApp')
 
     function getInstructorPicture() {
       if (!slot) return
-      ref.child('instructors').child(slot.instructor).child('picture').once('value', function(snapshot) {
-        $scope.instructorPicture = snapshot.val();
+      ref.child('instructors').child(slot.instructor).once('value', function(snapshot) {
+        $scope.instructorInfo = snapshot.val();
+        $scope.instructorPicture = snapshot.val().picture;
       })
     }
     
@@ -507,10 +508,18 @@ angular.module('bodyAppApp')
       });
 
       User.addBookedClass({ id: currentUser._id }, {
-        classToAdd: slot.dateTime
+        classToAdd: slot.dateTime,
+        className: $scope.classInfo.name,
+        studioName: $scope.studioName,
+        instructorFullName: $scope.instructorInfo.firstName + " " + $scope.instructorInfo.lastName,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
+        equipmentRequired: $scope.classInfo.equipment,
+        classDescription: $scope.classInfo.classDescription,
+        studioIconUrl: $scope.iconUrl
       }, function(user) {
         Intercom('trackEvent', 'bookedClass', {
           studioId: studioId,
+          classType: $scope.classInfo.id,
           classToBook: slot ? slot.dateTime : "None",
           dateOfClass: Math.floor(slot.dateTime/1000)
         });

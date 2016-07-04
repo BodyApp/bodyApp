@@ -182,10 +182,28 @@ angular.module('bodyAppApp')
       if(!$scope.$$phase) $scope.$apply();  	
     }
 
+    $scope.editSet = function(setIdToEdit) {
+        $scope.showAddSet = $scope.showAddWorkout.sets[setIdToEdit];
+        $scope.editingSet = true;
+    }
+
+    $scope.deleteSet = function(setIdToDelete) {
+        delete $scope.showAddWorkout.sets[setIdToDelete]
+        ref.child('workouts').child($scope.showAddWorkout.id).update($scope.showAddWorkout, function(err) {})
+    }
+
+    $scope.updateSet = function(setIdToUpdate) {
+        $scope.editingSet = false;
+        $scope.showAddSet = false;
+        ref.child('workouts').child($scope.showAddWorkout.id).update($scope.showAddWorkout, function(err) {
+        })
+    }
 
     $scope.updateWorkout = function(workoutToUpdate) {
     	workoutToUpdate.updated = new Date().getTime();
     	workoutToUpdate.updatedBy = currentUser._id;
+
+        $scope.editingSet = false;
 
         var classTypesObject = {};
         for (var i = 0; i < workoutToUpdate.classTypes.length; i++) {

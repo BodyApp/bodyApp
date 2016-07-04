@@ -117,19 +117,21 @@
               Sets
             </label>
             <div class="col-sm-7">
-              <div class="panel workout-card" ng-repeat = "set in showAddWorkout.sets track by $index">                
+              <div class="panel workout-card" ng-repeat = "(setId, set) in showAddWorkout.sets track by $index">                
                 <ul class="panel-action-list">
                   <li>
-                    <a href="#" class="panel-action-item">Edit</a>
+                    <a href="#" ng-click = "editSet(setId)" class="panel-action-item">Edit</a>
                   </li>
                   <li>
-                    <a href="#" class="panel-action-item">Delete</a>
+                    <a href="#" ng-click = "deleteSet(setId)" class="panel-action-item">Delete</a>
                   </li>            
                 </ul>
                 <h5 class="mb0">Set {{$index+1}} <span class="success"><i class="ti-check-box bold"></i></span></h5>
                 <h5 class="lightgray">{{set.title}}</h5>
+
                 <!-- <h5 class="mt8 mb0">Timer Setting</h5>
                 <h5 class="lightgray">60s:0s (10 rds)</h5> -->
+
                 <h5 class="mt8 mb0">Exercises</h5>
                 <div ng-repeat = "exercise in set.exercises track by $index">
                   <h5 class="lightgray">{{exercise.name}}</h5>
@@ -239,7 +241,8 @@
                         <a href="#" class="panel-action-item" ng-click = "showAddSet = false;">Cancel</a>
                       </li>
                       <li>
-                        <a href="#" class="panel-action-item btn-primary btn" ng-click = "addSet(showAddSet)">Add</a>
+                        <a href="#" class="panel-action-item btn-primary btn" ng-if = "!editingSet" ng-click = "addSet(showAddSet)">Add</a>
+                        <a href="#" class="panel-action-item btn-primary btn" ng-if = "editingSet" ng-click = "updateSet(showAddSet)">Update</a>
                       </li>            
                     </ul>              
                   </div>
@@ -327,8 +330,8 @@
             <div class="col-md-4" ng-repeat = "set in workout.sets | limitTo:limit track by $index">
               <div class="panel workout-card">
                 <h5 class="mb0">Set {{$index + 1}}</h5>
-                <!-- <h5 class="lightgray">EMOM 10 min</h5>
-                <h5 class="mt8 mb0">Timer Setting</h5>
+                <h5 class="lightgray">{{set.title}}</h5>
+                <!-- <h5 class="mt8 mb0">Timer Setting</h5>
                 <h5 class="lightgray">60s:0s (10 rds)</h5> -->
                 <h5 class="mt8 mb0">Exercises</h5>
                 <div ng-repeat = "exercise in set.exercises track by $index">

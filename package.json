@@ -40,7 +40,8 @@
     "firebase-token-generator": "*",
     "helmet":"*",
     "throng":"*",
-    "passport-oauth": "*"
+    "passport-oauth": "*",
+    "nunjucks": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

@@ -174,7 +174,8 @@ angular.module('bodyAppApp')
           Studio.sendCreatedStudioEmail({ id: Auth.getCurrentUser()._id }, {
             studioId: studioId, 
             studioName: studioToCreate.studioName,
-            emailAddress: Auth.getCurrentUser().email
+            emailAddress: Auth.getCurrentUser().email,
+            ownerName: Auth.getCurrentUser().firstName
             }, function(user) {
               console.log("Sent created studio email.")
             }, function(err) {
