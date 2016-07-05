@@ -318,7 +318,8 @@ exports.sendCreatedStudioEmail = function(req,res) {
   var createdStudioEmail = nunjucks.render(__dirname + '/emails/createdStudio.html', {
     studioUrl: "https://www.getbodyapp.com/studios/" + studioId,
     studioName: studioName,
-    ownerName: ownerName
+    ownerName: ownerName,
+    studioId: studioId
   });
 
 
