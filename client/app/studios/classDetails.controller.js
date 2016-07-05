@@ -208,6 +208,7 @@ angular.module('bodyAppApp')
 
     function getWorkouts() {
     	$scope.workouts = Studios.getWorkouts();
+      if ($scope.workouts) $scope.workouts['None'] = {title: "None", id: "None"}
       if(!$scope.$$phase) $scope.$apply();
 
       if (!$scope.workouts) {
@@ -227,6 +228,8 @@ angular.module('bodyAppApp')
 
     function getPlaylistObjects() {
     	$scope.playlistObjects = Studios.getPlaylistObjects();
+      if ($scope.playlistObjects) $scope.playlistObjects['None'] = {title: "None", id: "None"}
+
       if(!$scope.$$phase) $scope.$apply();
       
       if (!$scope.playlistObjects) {

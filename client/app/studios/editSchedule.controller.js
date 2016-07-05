@@ -281,7 +281,7 @@ angular.module('bodyAppApp')
               "studioLatestClassScheduledAt": studioId
             });
             Intercom('trackEvent', 'scheduledAClass', {
-              dateOfClass: Math.floor(workoutToSave.dateTime/1000),
+              dateOfClass_at: Math.floor(workoutToSave.dateTime/1000),
               studio: studioId,
               classType: workoutToSave.classType,
               instructor: workoutToSave.instructor,

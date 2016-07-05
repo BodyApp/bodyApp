@@ -64,7 +64,7 @@ angular.module('bodyAppApp')
 
     function listCustomers() { //Can also pass in a particular planId to only get subscriptions for that plan.
       ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
-        if (!snapshot.exists) return
+        if (!snapshot.exists()) return
         Studio.listCustomers({
           id: currentUser._id
         }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
