@@ -16,7 +16,9 @@
 <!-- FORM PANEL -->
       <div class="panel space-4" ng-show = "showAddInstructor || showEditInstructor">
         <div class="panel-header">
-          Add Instructor
+          <span ng-if="showAddInstructor" style = "font-weight: 500">Add </span>
+          <span ng-if="showEditInstructor" style = "font-weight: 500">Edit </span>
+          Instructor
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "showAddInstructor = false; showEditInstructor = false; returnedInstructor = false;"><i class="ti-close"></i></a>
@@ -25,7 +27,7 @@
         </div>
         <div class="panel-body">
 
-          <div class="row space-4">
+          <div class="row space-4" ng-if = "showAddInstructor">
             <label class="col-sm-3" for="search-user">
               Search
             </label>
@@ -129,7 +131,7 @@
 
 
 <!-- PANEL -->
-      <div class="panel space-4" ng-repeat = "instructor in instructorsPulled">
+      <div class="panel space-4" ng-repeat = "instructor in instructorsPulled" ng-show = "instructor._id != returnedInstructor._id">
         <div class="panel-header">
           {{instructor.firstName}} {{instructor.lastName}}
           <ul class="panel-action-list">

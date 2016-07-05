@@ -704,10 +704,10 @@ angular.module('bodyAppApp')
 				  console.log('started talking');
 				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "thick solid #0000FF"; }
 				  // setMusicVolume($scope.musicVolume/2.5)
-				  if (audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume / 250);
+				  if (audioPlayer && $scope.musicVolume && !userIsInstructor) audioPlayer.setVolume($scope.musicVolume / 350);
 				}, function() {
 					// setMusicVolume($scope.musicVolume)
-					if (audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume / 100);
+					if (audioPlayer && $scope.musicVolume && !userIsInstructor) audioPlayer.setVolume($scope.musicVolume / 100);
 				  console.log('stopped talking');
 				  // if (userIsInstructor) { document.getElementById(getIdOfBox(streamBoxNumber)).style.border = "none"; }
 				});
