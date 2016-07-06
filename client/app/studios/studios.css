@@ -222,6 +222,16 @@
 	padding: 5px 10px;
 }
 
+.videoLibrary-panel {
+  position:relative;
+}
+
+.videolibrary-panel img {
+  height: 202px;
+  width: 270px;
+  border-radius: 2px;
+}
+
 .stories-panel {
   position: relative;
 }

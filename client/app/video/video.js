@@ -20,6 +20,17 @@ angular.module('bodyAppApp')
         controller: 'VideoCtrl',
         authenticate: true,
       })
+      .state('recordVideo', {
+        url: '/studios/:studioId/recordvideo',
+        templateUrl: 'app/video/recordVideo.html',
+        controller: 'RecordVideoCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
       
       .state('classStarting', {
         url: '/studios/:studioId/classstarting/:classId',

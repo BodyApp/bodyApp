@@ -41,6 +41,7 @@ angular.module('bodyAppApp')
     getPlaylistObjects();
     createSchedule(numDaysToShow, daysInFuture);
     getImages()
+    getVideoLibrary()
 
     Video.destroyHardwareSetup()
     // ref.unauth()
@@ -718,6 +719,30 @@ angular.module('bodyAppApp')
     $scope.goToDiscover = function(tag) {
        // $location.path('/discover/' + tag) 
        $state.go('discover', {tag: tag})
+    }
+
+    function getVideoLibrary() {
+      $http.post('/api/videolibrary/getstudiovideos', {
+        studioId: studioId,
+      })
+      .success(function(data) {
+        console.log("Successfully retrieved videos.");
+        console.log(data)
+        $scope.videoLibrary = data;
+        if(!$scope.$$phase) $scope.$apply();
+      })
+      .error(function(err) {
+        console.log(err)
+        console.log("Error retrieving videos")
+      }.bind(this));
+    }
+
+    $scope.playVideo = function(videoToPlay) {
+      ZiggeoApi.Embed.popup({
+        video: videoToPlay.token,
+        autoplay: true,
+        title: "Hey there"
+      });
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {

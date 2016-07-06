@@ -229,6 +229,12 @@ angular.module('bodyAppApp')
       $location.path('/studios/'+$rootScope.adminSelected + '/storefrontinfo')
     }
 
+    $scope.goToRecordVideo = function(studioToSelect) {
+      $rootScope.adminSelected = studioToSelect;
+      if(!$scope.$$phase) $scope.$apply();
+      $location.path('/studios/'+$rootScope.adminSelected + '/recordvideo')
+    }    
+
     // $scope.openMenu = function(ev) {
     //   $mdOpenMenu(ev)
     // }

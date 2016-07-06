@@ -14,6 +14,7 @@ module.exports = function(app) {
   app.use('/api/users', require('./api/user'));
   app.use('/api/studios', require('./api/studio'));
   app.use('/api/payments', require('./api/payment'));
+  app.use('/api/videolibrary', require('./api/videolibrary'));
 
   app.use('/auth', require('./auth'));
   

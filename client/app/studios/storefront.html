@@ -227,36 +227,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="panel space-4">
-            <div class="panel-header text-center">
-              Studio Stories
-            </div>
-            <div class="panel-body">
-              <div class="stories-panel text-center">
-                <a href="#">
-                  <img src="assets/images/ralabala/story1.png">
-                  <div class="stories-overlay text-left">
-                    <h4 class="white bold">Ally M</h4>
-                    <h5 class="white">Ally needed a new way to fit in her workout. She’s down 15 pounds.</h5>
-=======
-               <div class="col-md-12 mb8">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h4>1st Class</h4>
-                  </div>
-                  <div class="col-md-6">
-                    <h4 class="lightgray">Free</h4>
->>>>>>> 969facc620940a8494890ff77ced318bb3fb42d9
-                  </div>
-                </div>
-              </div> -->
-            <!-- </div>
-            <div class="col-xs-12 mt16">
-              <a href="#" class="btn-blue btn-block" ng-click = "joinStudioClicked()">Join Studio</a>
-            </div> -->
-
-          <!-- </div> -->
         </div>      <!-- PRICING PANEL END -->
       </div>     <!-- STUDIO CALL TO ACTION END -->
 
@@ -598,6 +568,24 @@
         </div>
       </div>
 
+      <div class = "col-md-4">
+        <div class="panel space-4">
+          <div class="panel-header text-center"> 
+            Watch Latest Videos
+          </div>
+          <div class="panel-body">
+            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary">
+              <a href="#" ng-click = "playVideo(video)">
+                <img ng-src="https://{{video.embed_image_url}}" >
+                <!-- <div class="stories-overlay text-left">
+                  <h4 class="white bold">Ally M</h4>
+                  <h5 class="white">Ally needed a new way to fit in her workout. She’s down 15 pounds.</h5>
+                </div> -->
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- <div class="col-md-4">
         <div class="panel space-4 hidden-sm hidden-xs">
           <div class="panel-header text-center">

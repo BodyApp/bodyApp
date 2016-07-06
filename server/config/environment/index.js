@@ -71,6 +71,12 @@ var all = {
 
   intercomSecret: process.env.intercomSecret,
 
+  ziggeo: {
+    token: process.env.ziggeo_token,
+    private_key: process.env.ziggeo_private_key,
+    encryption_key: process.env.ziggeo_encryption_key
+  },
+  
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',

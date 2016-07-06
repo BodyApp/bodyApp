@@ -41,7 +41,8 @@
     "helmet":"*",
     "throng":"*",
     "passport-oauth": "*",
-    "nunjucks": "*"
+    "nunjucks": "*",
+    "ziggeo": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
