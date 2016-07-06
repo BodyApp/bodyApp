@@ -22,9 +22,9 @@
             </select>
           </div>
           <div class="select">
-            <select ng-model = "">
-              <option value = "">classes</option>
-              <option value = "">studios</option>
+            <select ng-model = "classesVsStudios">
+              <option value = "classes">classes</option>
+              <option value = "studios">studios</option>
             </select>
           </div><!-- sorted by
           <div class="select">
@@ -53,25 +53,25 @@
   </div>
 </div>
 
-<div class="class-listings pt48 pb48">
+<div class="class-listings pt48 pb48" ng-show = "classesVsStudios === 'classes'">
   <div class="page-container-responsive">
     
     <div class="row mb24">
-      <div class="col-xs-1 text-left">
+      <!-- <div class="col-xs-1 text-left">
         <i class="fa fa-caret-left" style="font-size:30px; line-height:55px;"></i>
+      </div> -->
+      <div class="col-xs-12 text-center">
+        <h2>Upcoming classes for {{today}} - {{sevenDaysFromNow}}</h2>
       </div>
-      <div class="col-xs-10 text-center">
-        <h2>Upcoming classes for Jun 05 -  Jun 15</h2>
-      </div>
-      <div class="col-xs-1 text-right">
+      <!-- <div class="col-xs-1 text-right">
         <i class="fa fa-caret-right" style="font-size:30px; line-height:55px;"></i>
-      </div>
+      </div> -->
     </div>
 
     <div class="row">
       <div class="col-xs-12">
         <ul class="class-list-date">
-          <li> <!-- REPEAT THIS FOR ALL DAYS -->
+          <li ng-repeat = "day in upcomingClasses"> <!-- REPEAT THIS FOR ALL DAYS -->
             <div class="row">
               <div class="col-sm-2 hidden-xs">
                 <h3 class="mb0">Wed</h3>
@@ -152,7 +152,7 @@
   </div>
 </div>
 
-<div class="studio-listings pt48 pb48 hidden">
+<div class="studio-listings pt48 pb48" ng-show = "classesVsStudios === 'studios'">
   <div class="page-container-responsive">
     <div class="row">
 
