@@ -71,76 +71,78 @@
     <div class="row">
       <div class="col-xs-12">
         <ul class="class-list-date">
-          <li ng-repeat = "day in upcomingClasses"> <!-- REPEAT THIS FOR ALL DAYS -->
+          <li ng-repeat = "(day, value) in upcomingClasses"> <!-- REPEAT THIS FOR ALL DAYS -->
             <div class="row">
               <div class="col-sm-2 hidden-xs">
-                <h3 class="mb0">Wed</h3>
-                <h3 class="mb0">Jun 14</h3>
+                <h3 class="mb0">{{getDayOfWeek(day)}}</h3>
+                <h3 class="mb0">{{getDate(day)}}</h3>
               </div>
               <div class="mb16 col-xs-12 visible-xs text-center">
-                <h2 class="mb0 bold">Wed Jun 14</h2>
+                <h2 class="mb0 bold">{{getFullDate(day)}}</h2>
               </div>
               <div class="col-sm-10">
                 <ul class="class-list-info">
-                  <li> <!-- REPEAT THIS FOR ALL TIMES DURING DAY -->
-                    <div class="row mb-xs-8">
-                      <div class="col-xs-7">
-                        <h3>12:00p ET (60 min)</h3>
+                  <div ng-repeat = "(time, value) in upcomingClasses[day]"> <!-- REPEAT THIS FOR ALL TIMES DURING DAY -->
+                    <li ng-repeat = "instance in upcomingClasses[day][time]" >
+                      <div class="row mb-xs-8">
+                        <div class="col-xs-7">
+                          <h3>{{getTime(time)}} ({{instance.duration}} min)</h3>
+                        </div>
+                        <div class="col-xs-5 text-right">
+                          <a href="/studios/{{instance.studioId}}" class="btn-blue hidden-xs">Learn More</a>
+                          <a href="/studios/{{instance.studioId}}" class="btn-blue btn-collapse visible-xs">Learn More</a>
+                        </div>
                       </div>
-                      <div class="col-xs-5 text-right">
-                        <a href="" class="btn-blue hidden-xs">Learn More</a>
-                        <a href="" class="btn-blue btn-collapse visible-xs">Learn More</a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="row text-center-xs">
-                          <div class="col-sm-12">
-                            <a href="#"><h4 class="lightgray mb8">Devotion in Motion by Perfect Burpee <i class="fa fa-caret-down"></i></h4></a>
-                            <div class="display-block mb8">
-                              <a href="" class="btn-tag inline-block">Pilates</a>
-                              <a href="" class="btn-tag inline-block">Barre</a>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="row text-center-xs">
+                            <div class="col-sm-12">
+                              <a href="#" ng-mouseenter = "showClassInfo[instance.classType] = true;" ng-mouseleave = "showClassInfo[instance.classType] = false;"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
+                              <div class="display-block mb8">
+                                <div class="btn-tag inline-block" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</div>
+                                <!-- <a href="" class="btn-tag inline-block">Barre</a> -->
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row mb8" ng-show = "showClassInfo[instance.classType]"> <!-- SHOW THIS WHEN CARET-DOWN CLICKED -->
+                            <div class="col-sm-4">
+                              <img ng-src="{{studioPictures[instance.studioId]}}" width="100%">
+                            </div>
+                            <div class="col-sm-8">
+                              <h5 class="lightgray mt-xs-8">{{classTypes[instance.classType].classDescription}}</h5>
                             </div>
                           </div>
                         </div>
-                        <div class="row mb8 hidden"> <!-- SHOW THIS WHEN CARET-DOWN CLICKED -->
-                          <div class="col-sm-4">
-                            <img src="/assets/images/studios/body/studio-hero.jpg" width="100%">
+                      </div>
+                      <div class="row mt8">
+                        <div class="col-xs-8 col-sm-4">
+                          <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-3">
+                              <img class="round-photo" src="/assets/images/justin-photo.jpg">
+                            </div>
+                            <div class="col-xs-8 col-sm-8 col-md-9">
+                              <h5>Instructor</h5>
+                              <h5 class="lightgray">Justin Mendelson</h5>
+                            </div>
                           </div>
-                          <div class="col-sm-8">
-                            <h5 class="lightgray mt-xs-8">Wellness is a part of our everyday lives and you deserve a level of treatment that enhances your life: great instruction, a high level of attention, and genuine care. With a focus and background in anatomy, physiology, and functional movement, Dani personalizes each workout, ensuring they are always functional and effective. You will learn ways to integrate fitness and wellness into your daily life, so you can feel great on the inside and out. Let’s make your health and happiness non-negotiable!</h5>
+                        </div>
+                        <div class="col-sm-2 hidden-xs">
+                          <h5>Duration</h5>
+                          <h5 class="lightgray">60 min</h5>
+                        </div>
+                        <!-- <div class="col-sm-2">
+                          <h5>Open To</h5>
+                          <h5 class="lightgray">All</h5>
+                        </div> -->
+                        <div class="col-xs-4 col-sm-2">
+                          <h5>Requires</h5>
+                          <div>
+                            <h5 class="lightgray">Dumbbells</h5>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row mt8">
-                      <div class="col-xs-8 col-sm-4">
-                        <div class="row">
-                          <div class="col-xs-4 col-sm-4 col-md-3">
-                            <img class="round-photo" src="/assets/images/justin-photo.jpg">
-                          </div>
-                          <div class="col-xs-8 col-sm-8 col-md-9">
-                            <h5>Instructor</h5>
-                            <h5 class="lightgray">Justin Mendelson</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-2 hidden-xs">
-                        <h5>Duration</h5>
-                        <h5 class="lightgray">60 min</h5>
-                      </div>
-                      <!-- <div class="col-sm-2">
-                        <h5>Open To</h5>
-                        <h5 class="lightgray">All</h5>
-                      </div> -->
-                      <div class="col-xs-4 col-sm-2">
-                        <h5>Requires</h5>
-                        <div>
-                          <h5 class="lightgray">Dumbbells</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+                  </div>
                 </ul>
               </div>
             </div>

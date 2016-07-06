@@ -5,6 +5,7 @@ angular.module('bodyAppApp')
   	var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref();
     $scope.studioPictures = {};
+    $scope.classTypes = {};
 
     getStudios();
     getDates();
@@ -24,12 +25,12 @@ angular.module('bodyAppApp')
 
     function getStudios() {
 	    ref.child('studioIds').orderByValue().on('value', function(snapshot) {
-	    	$scope.studios = [];
+	    	$scope.studios = {};
 	    	snapshot.forEach(function(studioId) {
 	    		getPicture(studioId.key);
           getUpcomingClasses(studioId.key);
 	    		ref.child('studios').child(studioId.key).child('storefrontInfo').once('value', function(snapshot) {
-	    			$scope.studios.push(snapshot.val())
+	    			$scope.studios[studioId.key] = snapshot.val()
 				    if(!$scope.$$phase) $scope.$apply();
 	    		})
 	    	})
@@ -49,21 +50,49 @@ angular.module('bodyAppApp')
       var rightNow = new Date().getTime().toString();
       var sevenDaysFromNow = new Date(new Date().getTime() + (7*24*60*60*1000)).toString();
 
-      console.log(rightNow)
+      ref.child('studios').child(studioId).child('classTypes').on('value', function(snapshot) {
+        snapshot.forEach(function(classType) {
+          $scope.classTypes[classType.key] = classType.val()
+          console.log($scope.classTypes)
+          if(!$scope.$$phase) $scope.$apply();  
+        })
+      })
 
       ref.child('studios').child(studioId).child('classes').startAt(rightNow).orderByKey().on('value', function(snapshot) {
         snapshot.forEach(function(classToAdd) {
-          console.log(classToAdd.val())
-          var dayOfClass = new Date(classToAdd.val().dateTime).getDay();
+          var dateToUse = new Date(classToAdd.val().dateTime)
+          var dateOfClass = new Date(dateToUse.getFullYear(), dateToUse.getMonth(), dateToUse.getDate(), 12, 0, 0, 0);
           var timeOfClass = classToAdd.val().dateTime
           $scope.upcomingClasses = $scope.upcomingClasses || {};
-          $scope.upcomingClasses[dayOfClass] = $scope.upcomingClasses[dayOfClass] || {};
-          $scope.upcomingClasses[dayOfClass][timeOfClass] = $scope.upcomingClasses[dayOfClass][timeOfClass] || [];
-          $scope.upcomingClasses[dayOfClass][timeOfClass].push(classToAdd.val());
+          $scope.upcomingClasses[dateOfClass] = $scope.upcomingClasses[dateOfClass] || {};
+          $scope.upcomingClasses[dateOfClass][timeOfClass] = $scope.upcomingClasses[dateOfClass][timeOfClass] || [];
+          var toPush = classToAdd.val()
+          toPush.studioId = studioId;
+          $scope.upcomingClasses[dateOfClass][timeOfClass].push(toPush);
           if(!$scope.$$phase) $scope.$apply();
         })
         
       })
+    }
+
+    $scope.getDayOfWeek = function(day) {
+      var dayToFormat = new Date(day)
+      return moment(dayToFormat).format('ddd')
+    }
+
+    $scope.getDate = function(day) {
+      var dayToFormat = new Date(day)
+      return moment(dayToFormat).format("MMM Do")
+    }
+
+    $scope.getFullDate = function(day) {
+      var dayToFormat = new Date(day)
+      return moment(dayToFormat).format('ddd MMM Do')
+    }
+
+    $scope.getTime = function(timeToFormat) {
+      timeToFormat = new Date(timeToFormat*1);
+      return moment(timeToFormat).format('h:mma');
     }
 
   })
