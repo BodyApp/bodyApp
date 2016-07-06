@@ -741,7 +741,8 @@ angular.module('bodyAppApp')
       ZiggeoApi.Embed.popup({
         video: videoToPlay.token,
         autoplay: true,
-        title: "Hey there"
+        popup_width: window.innerWidth*.7,
+        popup_height: window.innerHeight*.7
       });
     }
 
