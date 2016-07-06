@@ -404,6 +404,12 @@
   .text-right-sm {
     text-align: right;
   }
+  .inline-block-sm {
+    display: inline-block;
+  }
+  .display-block-sm {
+    display: block;
+  }
 }
 
 @media (max-width: 767px) {
@@ -415,6 +421,12 @@
   }
   .text-right-xs {
     text-align: right;
+  }
+  .inline-block-xs {
+    display: inline-block;
+  }
+  .display-block-xs {
+    display: block;
   }
 }
 

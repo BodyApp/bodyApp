@@ -197,7 +197,18 @@
   display: inline-block;
 }
 
-
+.class-list-date li {
+  border-top: 1px solid #dce0e0;
+  padding-top: 20px;
+}
+.class-list-info li {
+  border-top: 1px solid #dce0e0;
+  padding: 20px 0;
+}
+.class-list-info li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
 
 
 
