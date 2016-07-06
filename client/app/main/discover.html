@@ -61,7 +61,7 @@
         <i class="fa fa-caret-left" style="font-size:30px; line-height:55px;"></i>
       </div> -->
       <div class="col-xs-12 text-center">
-        <h2>Upcoming classes for {{today}} - {{sevenDaysFromNow}}</h2>
+        <h2>Upcoming Classes for Today - {{sevenDaysFromNow}}</h2>
       </div>
       <!-- <div class="col-xs-1 text-right">
         <i class="fa fa-caret-right" style="font-size:30px; line-height:55px;"></i>
@@ -71,7 +71,7 @@
     <div class="row">
       <div class="col-xs-12">
         <ul class="class-list-date">
-          <li ng-repeat = "(day, value) in upcomingClasses"> <!-- REPEAT THIS FOR ALL DAYS -->
+          <li ng-repeat = "(day, value) in upcomingClasses" ng-hide = "(value | filter:categoryFilter).length === 0"> <!-- REPEAT THIS FOR ALL DAYS -->
             <div class="row">
               <div class="col-sm-2 hidden-xs">
                 <h3 class="mb0">{{getDayOfWeek(day)}}</h3>
@@ -83,7 +83,7 @@
               <div class="col-sm-10">
                 <ul class="class-list-info">
                   <div ng-repeat = "(time, value) in upcomingClasses[day]"> <!-- REPEAT THIS FOR ALL TIMES DURING DAY -->
-                    <li ng-repeat = "instance in upcomingClasses[day][time]" >
+                    <li ng-repeat = "instance in upcomingClasses[day][time]" ng-show = "!categoryFilter || studios[instance.studioId].categories[categoryFilter]" >
                       <div class="row mb-xs-8">
                         <div class="col-xs-7">
                           <h3>{{getTime(time)}} ({{instance.duration}} min)</h3>
@@ -99,7 +99,7 @@
                             <div class="col-sm-12">
                               <a href="#" ng-mouseenter = "showClassInfo[instance.classType] = true;" ng-mouseleave = "showClassInfo[instance.classType] = false;"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
                               <div class="display-block mb8">
-                                <div class="btn-tag inline-block" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</div>
+                                <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
                                 <!-- <a href="" class="btn-tag inline-block">Barre</a> -->
                               </div>
                             </div>
@@ -118,26 +118,27 @@
                         <div class="col-xs-8 col-sm-4">
                           <div class="row">
                             <div class="col-xs-4 col-sm-4 col-md-3">
-                              <img class="round-photo" src="/assets/images/justin-photo.jpg">
+                              <img class="round-photo" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=45&height=45">
                             </div>
                             <div class="col-xs-8 col-sm-8 col-md-9">
                               <h5>Instructor</h5>
-                              <h5 class="lightgray">Justin Mendelson</h5>
+                              <h5 class="lightgray">{{instructors[instance.instructor].firstName}} {{instructors[instance.instructor].lastName}}</h5>
                             </div>
                           </div>
                         </div>
                         <div class="col-sm-2 hidden-xs">
                           <h5>Duration</h5>
-                          <h5 class="lightgray">60 min</h5>
+                          <h5 class="lightgray">{{instance.duration}} min</h5>
                         </div>
                         <!-- <div class="col-sm-2">
                           <h5>Open To</h5>
                           <h5 class="lightgray">All</h5>
                         </div> -->
                         <div class="col-xs-4 col-sm-2">
-                          <h5>Requires</h5>
-                          <div>
-                            <h5 class="lightgray">Dumbbells</h5>
+                          <h5>Equipment</h5>
+                          <h5 class="lightgray" ng-if = "!classTypes[instance.classType].equipment">None</h5>
+                          <div ng-repeat = "equipment in classTypes[instance.classType].equipment">
+                            <h5 class="lightgray">{{equipment.name}}</h5>
                           </div>
                         </div>
                       </div>

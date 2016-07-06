@@ -6,6 +6,7 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref();
     $scope.studioPictures = {};
     $scope.classTypes = {};
+    $scope.instructors = {};
 
     getStudios();
     getDates();
@@ -19,7 +20,7 @@ angular.module('bodyAppApp')
       var today = new Date();
       $scope.today = moment(today).format('MMM Do')
 
-      var sevenDaysFromNow = new Date(today.getTime() + (7*24*60*60*1000));
+      var sevenDaysFromNow = new Date(today.getTime() + (8*24*60*60*1000));
       $scope.sevenDaysFromNow = moment(sevenDaysFromNow).format('MMM Do');
     }
 
@@ -48,18 +49,12 @@ angular.module('bodyAppApp')
   
     function getUpcomingClasses(studioId) {
       var rightNow = new Date().getTime().toString();
-      var sevenDaysFromNow = new Date(new Date().getTime() + (7*24*60*60*1000)).toString();
+      var sevenDaysFromNow = new Date(new Date().getTime() + (7*24*60*60*1000)).toString();    
 
-      ref.child('studios').child(studioId).child('classTypes').on('value', function(snapshot) {
-        snapshot.forEach(function(classType) {
-          $scope.classTypes[classType.key] = classType.val()
-          console.log($scope.classTypes)
-          if(!$scope.$$phase) $scope.$apply();  
-        })
-      })
-
-      ref.child('studios').child(studioId).child('classes').startAt(rightNow).orderByKey().on('value', function(snapshot) {
+      ref.child('studios').child(studioId).child('classes').startAt(rightNow).endAt(sevenDaysFromNow).orderByKey().on('value', function(snapshot) {
         snapshot.forEach(function(classToAdd) {
+          getClassTypes(studioId, classToAdd.val().classType)
+          getInstructors(studioId, classToAdd.val().instructor)
           var dateToUse = new Date(classToAdd.val().dateTime)
           var dateOfClass = new Date(dateToUse.getFullYear(), dateToUse.getMonth(), dateToUse.getDate(), 12, 0, 0, 0);
           var timeOfClass = classToAdd.val().dateTime
@@ -72,6 +67,24 @@ angular.module('bodyAppApp')
           if(!$scope.$$phase) $scope.$apply();
         })
         
+      })
+    }
+
+    function getClassTypes(studioId, classTypeId) {
+      ref.child('studios').child(studioId).child('classTypes').child(classTypeId).once('value', function(snapshot) {
+        // snapshot.forEach(function(classType) {
+          $scope.classTypes[snapshot.key] = snapshot.val()
+          if(!$scope.$$phase) $scope.$apply();  
+        // })
+      })
+    }
+
+    function getInstructors(studioId, instructorId) {
+      ref.child('studios').child(studioId).child('instructors').child(instructorId).once('value', function(snapshot) {
+        // snapshot.forEach(function(classType) {
+          $scope.instructors[snapshot.key] = snapshot.val()
+          if(!$scope.$$phase) $scope.$apply();  
+        // })
       })
     }
 
@@ -93,6 +106,10 @@ angular.module('bodyAppApp')
     $scope.getTime = function(timeToFormat) {
       timeToFormat = new Date(timeToFormat*1);
       return moment(timeToFormat).format('h:mma');
+    }
+
+    $scope.setCategoryFilter = function(tag) {
+      $scope.categoryFilter = tag
     }
 
   })
