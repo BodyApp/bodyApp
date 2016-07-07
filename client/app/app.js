@@ -82,8 +82,12 @@ angular.module('bodyAppApp', [
           event.preventDefault();
           $state.go('main');
         } else if (loggedIn) {
+          console.log("Booting Intercom")
           Intercom("boot", {
             app_id: "daof2xrs",
+            email: Auth.getCurrentUser().email,
+            name: Auth.getCurrentUser().firstName + " " + Auth.getCurrentUser().lastName,
+            user_id: Auth.getCurrentUser()._id,
             widget: {
               activator: "#IntercomDefaultWidget"
             }

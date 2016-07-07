@@ -200,7 +200,7 @@ angular.module('bodyAppApp')
 			$scope.musicVolume = snapshot.val();
 			 // || 50;
   		} else {
-  			$scope.musicVolume = 50;
+  			$scope.musicVolume = 0;
   		}
   		
   		if(!$scope.$$phase) $scope.$apply();

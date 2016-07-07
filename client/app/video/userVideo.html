@@ -2,15 +2,17 @@
 <div class="video-container">
 	<div class="timer-rounds text-right">
 		<div layout="row" class="mb16">
-			<div >
+			<div ng-show = "realTimeTimer">
 				<md-progress-circular ng-show = "timerWorking" md-mode="determinate" value="{{timeCountdown}}" md-diameter="60"></md-progress-circular>
 				<md-progress-circular ng-show = "timerResting" md-mode="determinate" value="{{timeCountdown}}" md-diameter="60"></md-progress-circular>
 			</div>
-			<div class="timer">
+			<div class="timer" ng-show = "realTimeTimer">
 				<h1 class="white timer mb24">
-					<timer id = "timer" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer>
+					<timer id = "timer" ng-class = "{workingColor: timerWorking, restingColor: !timerWorking}" autostart="false" interval="1000" countdown="currentTimerSeconds" finish-callback="timerAtZero()">{{minutes}}:{{sseconds}}</timer>
 				</h1>
-				<h3 class="white rounds">{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
+				<h3 class="rounds" ng-class = "{workingColor: timerWorking, restingColor: !timerWorking}" >{{roundsLeft}}/{{realTimeTimer.rounds}}</h3>
+			</div>
+			<div>
 				<div class="volume-bars">
 					<div class="music-icon" ng-class = "{'music-on': musicVolume > 0, 'music-off': musicVolume === 0}">
 						<i class="fa fa-music"></i>
