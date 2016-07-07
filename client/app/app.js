@@ -81,6 +81,14 @@ angular.module('bodyAppApp', [
         if (next.authenticate && !loggedIn) {
           event.preventDefault();
           $state.go('main');
+        } else if (loggedIn) {
+          Intercom("boot", {
+            app_id: "daof2xrs",
+            widget: {
+              activator: "#IntercomDefaultWidget"
+            }
+         });
+          Intercom('update');
         }
       });
       $window.scrollTo(0,0);    //scroll to top of page after each route change

@@ -326,10 +326,11 @@ angular.module('bodyAppApp')
 		Intercom('showNewMessage', "");
 	}
 
-	function sendIntercomTokboxError(error) {
+	function sendIntercomTokboxError(error, message) {
 		Intercom('trackEvent', 'tokboxError', {
-			errorDate_at: Math.floor(new Date() / 1000),
-			error: error
+			errorDate_at: new Date(),
+			errorCode: error.code,
+			message: message ? message : ""
 		});
 	}
 
@@ -496,7 +497,7 @@ angular.module('bodyAppApp')
 			session.connect(token, function(error) {
 			  if (error) {
 			  	console.log(error);
-			  	sendIntercomTokboxError(error)
+			  	sendIntercomTokboxError(error.code)
 			  	if (error.code === 1006) {
 			  		alert('Failed to connect. Please check your connection and try connecting again.');
 			  	} else {
@@ -579,7 +580,7 @@ angular.module('bodyAppApp')
 		      }
 		    }, function(err) {
 		    	if (err) {
-		    		sendIntercomTokboxError(err);
+		    		sendIntercomTokboxError(err.code, "Publisher Access Denied");
 				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
 				      // Access denied can also be handled by the accessDenied event
 				      alert('Please allow access to the Camera and Microphone and try publishing again.');
@@ -605,7 +606,7 @@ angular.module('bodyAppApp')
 	  if (connected && publisherInitialized) {
 	    session.publish(publisher, function(err) {
 			  if(err) {
-			  	sendIntercomTokboxError(err);
+			  	sendIntercomTokboxError(err.code);
 			  	console.log(err);
 			    if (err.code === 1553 || (err.code === 1500 && err.message.indexOf("Publisher PeerConnection Error:") >= 0)) {
 			      alert("Streaming connection failed. This could be due to a restrictive firewall.");
