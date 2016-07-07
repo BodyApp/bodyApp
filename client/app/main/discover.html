@@ -71,7 +71,7 @@
     <div class="row">
       <div class="col-xs-12">
         <ul class="class-list-date">
-          <li ng-repeat = "(day, value) in upcomingClasses" ng-hide = "(value | filter:categoryFilter).length === 0"> <!-- REPEAT THIS FOR ALL DAYS -->
+          <li ng-repeat = "(day, value) in upcomingClasses | orderBy:'dateTime'"> <!-- REPEAT THIS FOR ALL DAYS -->
             <div class="row">
               <div class="col-sm-2 hidden-xs">
                 <h3 class="mb0">{{getDayOfWeek(day)}}</h3>
