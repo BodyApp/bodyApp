@@ -1,9 +1,24 @@
 <div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
 <div class="video-container">
-	<div class="recording-screen">
-			<div class = "col-sm-1"></div>
-			<div id="ziggeoVideo" class = "col-sm-10 mt64"></div>
-			<div class = "col-sm-1"></div>
-		<!-- <ziggeo ziggeo-disable_first_screen=true ziggeo-responsive=true ziggeo-tags="[{{studioId}}]"></ziggeo> -->
+	<!-- <div class="recording-screen"> -->	
+	<div class = "row">
+		<div class = "col-xs-4"></div>
+		<a href="" ng-click="recordVideo()" class=" col-xs-4 btn btn-primary mt64">Record A New Video</a>
+		<div class = "col-xs-4"></div>
 	</div>
+	<div class = "row mt64"></div>
+
+    <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "video in videoLibrary">
+      <a href="#" ng-click = "playVideo(video)">
+        <img ng-src="https://{{video.embed_image_url}}" >
+      </a>
+      <a class="btn btn-danger active col-xs-12" ng-click="deleteVideo(video, $event)">Delete</a>
+    </div>
+          
+	</div>
+			<!-- <div class = "col-sm-1"></div>
+			<div id="ziggeoVideo" class = "col-sm-10 mt64"></div>
+			<div class = "col-sm-1"></div> -->
+		<!-- <ziggeo ziggeo-disable_first_screen=true ziggeo-responsive=true ziggeo-tags="[{{studioId}}]"></ziggeo> -->
+	<!-- </div> -->
 </div>

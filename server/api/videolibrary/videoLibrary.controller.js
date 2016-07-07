@@ -10,8 +10,22 @@ exports.getStudioVideos = function(req, res, next){
 	ZiggeoSdk.Videos.index({
 		tags: studioId
 	}, function(data){
-		console.log(data)
 		res.status(200).json(data)
+	}, function(err){
+		console.log(err)
+		res.status(400)
+	}) 
+}
+
+exports.deleteStudioVideo = function(req, res, next){
+	var studioId = req.body.studioId;
+	var videoToken = req.body.videoToken
+	
+	if (!studioId || !videoToken) return res.status(400)
+
+	ZiggeoSdk.Videos.destroy(videoToken, function(data){
+		console.log("Successfully deleted video")
+		res.status(200).send("Successfully deleted video")
 	}, function(err){
 		console.log(err)
 		res.status(400)

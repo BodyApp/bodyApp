@@ -7,5 +7,6 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.post('/getstudiovideos', controller.getStudioVideos);
+router.post('/deletestudiovideo', controller.deleteStudioVideo);
 
 module.exports = router;

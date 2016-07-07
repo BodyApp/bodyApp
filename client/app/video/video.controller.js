@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-.controller('VideoCtrl', function ($scope, $location, Video, User, Auth) {
+.controller('VideoCtrl', function ($scope, $location, $timeout, $mdDialog, Video, User, Auth) {
 
 	var studioId = Video.getStudio();
 	$scope.studioId = studioId;
@@ -23,6 +23,11 @@ angular.module('bodyAppApp')
 		audioPlayer = SC.Widget(element);
 		audioPlayer.setVolume(0)
 	}
+
+	var ziggeoEmbedding;
+	var progressAlert;
+	$scope.progressAlertText = "Uploading is 0% complete";
+	$scope.shouldShowProgressAlert = true;
 
   $scope.showWorkout = true;
   var userIsInstructor;
@@ -58,6 +63,76 @@ angular.module('bodyAppApp')
     publisher.destroy();
     // session.destroy();
   });
+
+  $scope.recordVideoClicked = function() {
+  	if (!$scope.recording) {
+	  	$scope.recording = true;
+	  	if (!ziggeoEmbedding) {
+				ziggeoEmbedding = ZiggeoApi.Embed.embed("#ziggeoVideo", {
+					tags: [studioId],
+					disable_first_screen: true,
+					height: 0,
+					width: 0,
+					disable_snapshots: true,
+					countdown: 0,
+				});
+			} else {
+				ziggeoEmbedding.rerecord()
+			}
+			$timeout(function(){ziggeoEmbedding.record()}, 1000)
+		} else {
+			$scope.recording = false;
+	  	$timeout(function(){ziggeoEmbedding.stopRecord()}, 1000)
+	  	progressAlert = $mdDialog.alert({
+	      // title: "Uploading Your Video, please don't close the browser!",
+	      // textContent: $scope.progressAlertText,
+	      template:
+            '<md-dialog ng-show = "shouldShowProgressAlert">' +
+            // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
+            '  <md-dialog-content>{{progressAlertText}}</md-dialog-content>' +
+            '  <md-dialog-actions>' +
+            '    <md-button ng-click="closeDialog()" class="md-primary">' +
+            '      OK!' +
+            '    </md-button>' +
+            '  </md-dialog-actions>' +
+            '</md-dialog>',
+	      // clickOutsideToClose: false,
+	      locals: { progressAlertText: $scope.progressAlertText },
+	      controller: "VideoCtrl"
+	      // ok: 'OK!'
+	    });
+	    return $mdDialog
+	    .show( progressAlert )
+		}
+  }
+
+  ZiggeoApi.Events.on("upload_progress", function (uploaded, total, data) {
+  	// if (uploaded / total >= 1) $scope.closeDialog()
+		//uploaded: Bytes uploaded, total: Bytes total, data: The object data
+		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete"
+  	if(!$scope.$$phase) $scope.$apply();
+		// progressAlert = $mdDialog.alert({
+  //     title: "Uploading Your Video, please don't close the browser!",
+  //     textContent: "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete",
+  //     clickOutsideToClose: false,
+  //     ok: 'OK!'
+  //   });
+	});
+
+	ZiggeoApi.Events.on("submitted", function (data) {
+		$scope.closeDialog()
+	});
+
+	$scope.closeDialog = function() {
+		$mdDialog.hide(progressAlert)
+		// progressAlert.hide()
+	}
+
+ //  ZiggeoApi.Events.on("processing_progress", function (percentage, data) {	
+	// 	$scope.shouldShowProgressAlert = percentage < 1
+	// 	$scope.progressAlertText = "Processing is " + Math.round(percentage*100,0) + "% complete"
+	// 	if(!$scope.$$phase) $scope.$apply();
+	// });
 
 	$scope.increaseVolume = function() {
 		if ($scope.musicVolume >= 100) return

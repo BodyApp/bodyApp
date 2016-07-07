@@ -329,7 +329,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.getNumOf = function(objectToCheck) {
-      console.log(objectToCheck)
+      // console.log(objectToCheck)
       return Object.keys(objectToCheck).length
     }
 
