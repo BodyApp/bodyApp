@@ -571,12 +571,16 @@
       <div class = "col-md-4" ng-if = "videoLibrary.length > 0">
         <div class="panel space-4">
           <div class="panel-header text-center"> 
-            Watch Latest Videos
+            Watch Latest Videos <div ng-if="numSubscriberVideos"><span>({{numSubscriberVideos}} Available to Subscribers)</span></div>
           </div>
           <div class="panel-body">
-            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary">
+            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary" ng-if="videosFirebase[video.token] && !videosFirebase[video.token].subscribersOnly">
               <a href="#" ng-click = "playVideo(video)">
-                <img ng-src="https://{{video.embed_image_url}}" >
+                <div>
+                  <img ng-src="https://{{video.embed_image_url}}" >
+                  <span class = "durationFormat">{{formatDuration(video.duration)}}</span>
+                  <span class = "playButton"><i class="fa fa-play-circle-o fa-4x"></i></span>
+                </div>
                 <!-- <div class="stories-overlay text-left">
                   <h4 class="white bold">Ally M</h4>
                   <h5 class="white">Ally needed a new way to fit in her workout. She’s down 15 pounds.</h5>

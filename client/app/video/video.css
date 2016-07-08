@@ -5,6 +5,26 @@
   /*height: 100px ;*/
 }
 
+.playButtonRecording {
+  position:absolute;
+  width: 75px;
+  height: 75px;
+  bottom:70px;
+  left:30px;
+  z-index: 10000;
+  color: white;
+}
+
+.durationFormatRecording {
+  color: white;
+  position:absolute;
+  bottom:75px;
+  right:30px;
+  font-weight:600;
+  font-size: 18px;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
 /*------USER VIDEO-------*/
 .classmates-video-name {
   z-index: 2;

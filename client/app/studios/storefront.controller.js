@@ -42,6 +42,7 @@ angular.module('bodyAppApp')
     createSchedule(numDaysToShow, daysInFuture);
     getImages()
     getVideoLibrary()
+    getVideoStatus()
 
     Video.destroyHardwareSetup()
     // ref.unauth()
@@ -727,7 +728,6 @@ angular.module('bodyAppApp')
       })
       .success(function(data) {
         console.log("Successfully retrieved videos.");
-        console.log(data)
         $scope.videoLibrary = data;
         if(!$scope.$$phase) $scope.$apply();
       })
@@ -737,6 +737,15 @@ angular.module('bodyAppApp')
       }.bind(this));
     }
 
+    function getVideoStatus() {
+      ref.child('videoLibrary').child('videos').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
+        $scope.videosFirebase = snapshot.val()
+        $scope.numSubscriberVideos = Object.keys($scope.videosFirebase).length;
+        if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
     $scope.playVideo = function(videoToPlay) {
       ZiggeoApi.Embed.popup({
         video: videoToPlay.token,
@@ -744,6 +753,23 @@ angular.module('bodyAppApp')
         popup_width: window.innerWidth*.7,
         popup_height: window.innerHeight*.7
       });
+    }
+
+    $scope.formatDuration = function(duration) {
+      return duration.toString().toHHMMSS();
+    }
+
+    String.prototype.toHHMMSS = function () {
+      var sec_num = parseInt(this, 10); // don't forget the second param
+      var hours   = 0;
+      // var hours   = Math.floor(sec_num / 3600);
+      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+      var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+      // if (hours   < 10) {hours   = "0"+hours;}
+      // if (minutes < 10) {minutes = "0"+minutes;}
+      if (seconds < 10) {seconds = "0"+seconds;}
+      return minutes+':'+seconds;
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {

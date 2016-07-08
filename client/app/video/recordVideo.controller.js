@@ -4,6 +4,9 @@ angular.module('bodyAppApp')
 	var ziggeoEmbedding;
 	getVideoLibrary()
 
+	var ref = firebase.database().ref().child('studios').child(studioId);
+	getVideoStatus()
+
 	$scope.recordVideo = function(){
 		ziggeoEmbedding = ZiggeoApi.Embed.popup({
 			tags: [studioId], 
@@ -19,6 +22,10 @@ angular.module('bodyAppApp')
 
 	ZiggeoApi.Events.on("submitted", function (data) {
 		getVideoLibrary()
+		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
+			if (err) return console.log(err)
+			console.log("Added video to library.")
+		})
 	});
 
 	function getVideoLibrary() {
@@ -37,6 +44,14 @@ angular.module('bodyAppApp')
     }.bind(this));
   }
 
+  function getVideoStatus() {
+  	ref.child('videoLibrary').child('videos').once('value', function(snapshot) {
+  		$scope.subscribersOnly = snapshot.val()
+  		console.log($scope.subscribersOnly)
+      if(!$scope.$$phase) $scope.$apply();
+  	})
+  }
+
   $scope.playVideo = function(videoToPlay) {
     ZiggeoApi.Embed.popup({
       video: videoToPlay.token,
@@ -45,6 +60,30 @@ angular.module('bodyAppApp')
       popup_height: window.innerHeight*.7
     });
   }
+
+  $scope.publicPrivateChanged = function(videoToken, publicVsPrivate) {
+  	ref.child('videoLibrary').child('videos').child(videoToken).update(publicVsPrivate, function(err) {
+  		if (err) return console.log(err)
+  		console.log("Updated video settings.");
+  	})
+  }
+
+  $scope.formatDuration = function(duration) {
+  	return duration.toString().toHHMMSS();
+  }
+
+  String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = 0;
+    // var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    // if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return minutes+':'+seconds;
+	}
 
   $scope.deleteVideo = function(videoToDelete, ev) {
   	var confirm = $mdDialog.confirm({
@@ -63,6 +102,7 @@ angular.module('bodyAppApp')
 	      videoToken: videoToDelete.token
 	    })
 	    .success(function(data) {
+	    	ref.child('videoLibrary').child('videos').child(videoToDelete.token).remove()
 	      console.log("Successfully deleted video.");
 	      return getVideoLibrary()
 	    })

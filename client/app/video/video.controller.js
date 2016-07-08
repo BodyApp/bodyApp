@@ -121,6 +121,10 @@ angular.module('bodyAppApp')
 
 	ZiggeoApi.Events.on("submitted", function (data) {
 		$scope.closeDialog()
+		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
+			if (err) return console.log(err)
+			console.log("Added video to library.")
+		})
 	});
 
 	$scope.closeDialog = function() {

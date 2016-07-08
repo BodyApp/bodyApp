@@ -10,9 +10,20 @@
 
     <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "video in videoLibrary">
       <a href="#" ng-click = "playVideo(video)">
-        <img ng-src="https://{{video.embed_image_url}}" >
+      	<div>
+	        <img ng-src="https://{{video.embed_image_url}}" >
+	        <span class = "durationFormatRecording">{{formatDuration(video.duration)}}</span>
+	        <!-- <span class = "playButtonRecording"><i class="playButtonRecording fa fa-play-circle-o fa-3x"></i></span> -->
+	      </div>
       </a>
-      <a class="btn btn-danger active col-xs-12" ng-click="deleteVideo(video, $event)">Delete</a>
+      <div class = "col-xs-6">
+      	<!-- <span>Public</span> -->
+	      <md-switch class="md-primary" ng-model="subscribersOnly[video.token].subscribersOnly" ng-change="publicPrivateChanged(video.token, subscribersOnly[video.token])" aria-label="Available to Public?">
+	      <span ng-show = "!subscribersOnly[video.token].subscribersOnly" style = "color:white;">Available To Public</span>
+	      <span ng-show = "subscribersOnly[video.token].subscribersOnly" style = "color:white;">Subscribers Only</span>
+	    	</md-switch>
+	    </div>
+      <a class="btn btn-danger active col-xs-6 mt16" ng-click="deleteVideo(video, $event)">Delete</a>
     </div>
           
 	</div>
