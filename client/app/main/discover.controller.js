@@ -31,7 +31,7 @@ angular.module('bodyAppApp')
     }
 
     function getStudios() {
-	    ref.child('studioIds').orderByValue().on('value', function(snapshot) {
+	    ref.child('studioIds').orderByValue().once('value', function(snapshot) {
 	    	$scope.studios = {};
 	    	snapshot.forEach(function(studioId) {
 	    		getPicture(studioId.key);
@@ -54,10 +54,10 @@ angular.module('bodyAppApp')
 	  }
   
     function getUpcomingClasses(studioId) {
-      var rightNow = (new Date().getTime() - 15*60*1000).toString(); //Can see clases that started up to 15 minutes ago
+      var rightNow = (new Date().getTime() - 30*60*1000).toString(); //Can see clases that started up to 30 minutes ago
       var sevenDaysFromNow = new Date(new Date().getTime() + (7*24*60*60*1000)).toString();    
 
-      ref.child('studios').child(studioId).child('classes').startAt(rightNow).endAt(sevenDaysFromNow).orderByKey().on('value', function(snapshot) {
+      ref.child('studios').child(studioId).child('classes').startAt(rightNow).endAt(sevenDaysFromNow).orderByKey().once('value', function(snapshot) {
         snapshot.forEach(function(classToAdd) {
           getClassTypes(studioId, classToAdd.val().classType);
           getInstructors(studioId, classToAdd.val().instructor);
