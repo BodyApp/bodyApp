@@ -141,7 +141,7 @@ angular.module('bodyAppApp')
     // })
 
     function createInitialTokBoxSession() {
-      User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+      User.createTokBoxSession({id: Auth.getCurrentUser()._id}, {}).$promise.then(function(session) {
         nextSessionToSave = session;
       })
     }
@@ -292,7 +292,7 @@ angular.module('bodyAppApp')
                 console.log("Saved specialty class");
               })
             }
-            User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
+            User.createTokBoxSession({id: Auth.getCurrentUser()._id}, {}).$promise.then(function(session) {
               nextSessionToSave = session;
             })
           })      

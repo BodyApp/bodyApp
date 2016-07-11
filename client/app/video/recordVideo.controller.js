@@ -1,11 +1,33 @@
 angular.module('bodyAppApp')
-.controller('RecordVideoCtrl', function ($scope, $location, $http, $mdDialog, Video, User, Auth, studioId) {
+.controller('RecordVideoCtrl', function ($scope, $location, $http, $mdDialog, $state, Video, User, Auth, studioId, Studios) {
 	$scope.studioId = studioId
 	var ziggeoEmbedding;
-	getVideoLibrary()
-
 	var ref = firebase.database().ref().child('studios').child(studioId);
-	getVideoStatus()
+	var currentUser = Auth.getCurrentUser()
+
+	Studios.setCurrentStudio(studioId)
+  .then(function(){
+    console.log("Succeeded")
+    delayedStartup()
+  }, function(){
+    console.log("Failed")
+    // if (!currentUser.role === 'admin') return $state.go('storefront', { "studioId": studioId });  
+    if (currentUser.$promise) {
+      currentUser.$promise.then(function(data) {
+        if (data.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+        if (data.role === 'admin') return delayedStartup()
+      })
+    } else if (currentUser.role) {
+      if (currentUser.role != 'admin') return $state.go('storefront', { "studioId": studioId });
+      if (currentUser.role === 'admin') return delayedStartup()
+    }
+  })
+
+	function delayedStartup() {
+		$scope.loaded = true;
+		getVideoLibrary();	
+		getVideoStatus();
+	}	
 
 	$scope.recordVideo = function(){
 		ziggeoEmbedding = ZiggeoApi.Embed.popup({
@@ -97,13 +119,15 @@ angular.module('bodyAppApp')
 
     return $mdDialog
     .show( confirm ).then(function() {
-    	$http.post('/api/videolibrary/deletestudiovideo', {
+    	$http.post('/api/videolibrary/'+currentUser._id+'/deletestudiovideo', {
 	      studioId: studioId,
 	      videoToken: videoToDelete.token
 	    })
 	    .success(function(data) {
 	    	ref.child('videoLibrary').child('videos').child(videoToDelete.token).remove()
 	      console.log("Successfully deleted video.");
+	      delete $scope.videoLibrary[videoToDelete.token]
+	      if(!$scope.$$phase) $scope.$apply();
 	      return getVideoLibrary()
 	    })
 	    .error(function(err) {

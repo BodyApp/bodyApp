@@ -200,22 +200,6 @@ angular.module('bodyAppApp')
     	$scope.classDetails = snapshot.val();
     	if(!$scope.$$phase) $scope.$apply();
     	userIsInstructor = $scope.classDetails.instructor === Auth.getCurrentUser()._id;
-    	if (!userIsInstructor) {
-	    	Intercom('trackEvent', 'tookClass', {
-          dateOfClass_at: Math.floor($scope.classDetails.dateTime/1000),
-          classId: classId,
-          studioId: studioId,
-          classType: $scope.classDetails.classType,
-          instructor: $scope.classDetails.instructor
-        });
-	    } else {
-	    	Intercom('trackEvent', 'taughtClass', {
-          dateOfClass_at: Math.floor($scope.classDetails.dateTime/1000),
-          classId: classId,
-          studioId: studioId,
-          classType: $scope.classDetails.classType
-        });
-	    }
     	if ($scope.bookingsPulled && !session) connect($scope.classDetails)
     	getWorkout($scope.classDetails.workout)
 	    getInstructorDetails($scope.classDetails.instructor)

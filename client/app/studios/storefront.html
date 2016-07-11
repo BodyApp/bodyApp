@@ -574,7 +574,7 @@
             Watch Latest Videos <div ng-if="numSubscriberVideos"><span>({{numSubscriberVideos}} Available to Subscribers)</span></div>
           </div>
           <div class="panel-body">
-            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary" ng-if="videosFirebase[video.token] && !videosFirebase[video.token].subscribersOnly">
+            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary" ng-if="subscriptions[studioId] === 'active' || (videosFirebase[video.token] && !videosFirebase[video.token].subscribersOnly)">
               <a href="#" ng-click = "playVideo(video)">
                 <div>
                   <img ng-src="https://{{video.embed_image_url}}" >

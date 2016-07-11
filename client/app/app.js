@@ -88,6 +88,7 @@ angular.module('bodyAppApp', [
             email: Auth.getCurrentUser().email,
             name: Auth.getCurrentUser().firstName + " " + Auth.getCurrentUser().lastName,
             user_id: Auth.getCurrentUser()._id,
+            user_hash: Auth.getCurrentUser().intercomHash,
             widget: {
               activator: "#IntercomDefaultWidget"
             }

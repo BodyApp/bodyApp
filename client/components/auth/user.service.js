@@ -160,7 +160,7 @@ angular.module('bodyAppApp')
         }
       },
       createTokBoxSession: {
-        method: 'GET',
+        method: 'PUT',
         params: {
           controller: 'createTokBoxSession'
         }

@@ -78,14 +78,15 @@
 
       <div class="panel"> <!-- SIGN UPS PANEL -->
         <div class="panel-header">
-          <span> Sign Ups ({{getNumOf(bookings)}} of {{classDetails.spots}})</span>
+          <span ng-show = "getNumOf(bookings) < 1">Nobody signed up</span>
+          <span ng-show = "getNumOf(bookings) >= 1"> Sign Ups ({{getNumOf(bookings)}} of {{classDetails.spots}})</span>
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "returnToSchedule()">Return to Schedule</a>
             </li>      
           </ul>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" ng-show = "getNumOf(bookings) >= 1">
           <div class="row mb16">
             <div class="col-sm-12">
               <table class="table mb0 table-condensed table-hover member-table">

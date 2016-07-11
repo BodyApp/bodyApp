@@ -51,6 +51,7 @@ angular.module('bodyAppApp')
 	  function getBookedUsersInformation() {
 	  	ref.child('bookings').child(classId).on('value', function(snapshot) {
 	  		$scope.bookings = snapshot.val();
+        $scope.numBookings = Object.keys($scope.bookings).length;
 	  		if(!$scope.$$phase) $scope.$apply();
 	  		snapshot.forEach(function(booking) {
 	  			firebase.database().ref().child('fbUsers').child(booking.val().facebookId).child('location').on('value', function(snapshot) {
@@ -219,9 +220,25 @@ angular.module('bodyAppApp')
 
     	Video.setStudio(studioId);
     	Video.setClassId(classId);
+      
     	if ($scope.currentUser._id === $scope.classDetails.instructor) {
+        Intercom('trackEvent', 'taughtClass', {
+          dateOfClass_at: Math.floor($scope.classDetails.dateTime/1000)*1,
+          created_at: Math.floor($scope.classDetails.dateTime/1000)*1,
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType
+        });
     		$location.path('/trainervideo')	
     	} else {
+        Intercom('trackEvent', 'tookClass', {
+          dateOfClass_at: Math.floor($scope.classDetails.dateTime/1000)*1,
+          created_at: Math.floor($scope.classDetails.dateTime/1000)*1,
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType,
+          instructor: $scope.classDetails.instructor
+        });
     		$location.path('/uservideo')	
     	}
     }
