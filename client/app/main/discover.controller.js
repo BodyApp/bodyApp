@@ -54,7 +54,7 @@ angular.module('bodyAppApp')
 	  }
   
     function getUpcomingClasses(studioId) {
-      var rightNow = new Date().getTime().toString();
+      var rightNow = (new Date().getTime() - 15*60*1000).toString(); //Can see clases that started up to 15 minutes ago
       var sevenDaysFromNow = new Date(new Date().getTime() + (7*24*60*60*1000)).toString();    
 
       ref.child('studios').child(studioId).child('classes').startAt(rightNow).endAt(sevenDaysFromNow).orderByKey().on('value', function(snapshot) {
