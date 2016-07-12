@@ -19,6 +19,7 @@ angular.module('bodyAppApp')
     var ref = firebase.database().ref().child('studios').child(studioId);
 
     var classId = $stateParams.classId;
+    Intercom('trackEvent', 'navigatedToClassDetails', { studio: studioId, classId: classId });
 
     $scope.bookings = {};
 
