@@ -4,11 +4,11 @@
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
       <div class="col-md-8 col-md-push-2">
-        <h1 class="white mb16 bold">Live Virtual Classes from Anywhere</h1>
-        <h3 class="white mb40">Earn more money by offering live health and fitness services to a global following</h3>
-        <a href="/discover" class="btn-clear big-btn mb-xs-8">Take Classes</a>
-        <span class="white separator hidden-xs">- or -</span>
-        <a href="/createstudio" class="btn-blue big-btn mb-xs-8">Open a Studio</a>
+        <h1 class="white mb16 bold">Live Virtual Fitness Classes from Anywhere</h1>
+        <h3 class="white mb40">Take interactive classes with real coaches to help you achieve results</h3>
+        <a href="/discover" class="btn-blue big-btn mb-xs-8" style = "font-size: 24px;">Take Classes</a>
+        <!-- <span class="white separator hidden-xs">- or -</span>
+        <a href="/createstudio" class="btn-blue big-btn mb-xs-8">Open a Studio</a> -->
       </div>
     </div>
   </div>
@@ -35,8 +35,12 @@
           <div class="cover-gradient visible-xs"></div>
           <div class="va-container va-container-v va-container-h earn-panel-content">
             <div class="va-middle">
-              <strong class="hidden-xs">Virtual instruction opens up a world of opportunity</strong>
+              <strong class="hidden-xs">Open a Virtual Studio</strong>
+              <br>
+              <br>
+              <div class="hidden-xs">Virtual instruction opens up a world of opportunity</div>
               <div class="text-center visible-xs">
+                <h2 class="white mb16 bold">Open a Virtual Studio</h2>
                 <h3 class="white mb16 bold">Virtual instruction opens up a world of opportunity</h3>
               </div>
               <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">See What You Can Earn</a>
@@ -53,7 +57,7 @@
     <div class="row">
       <div class="col-xs-12 mb32 text-center">
         <h3 class="bold mb8">Choose how you move</h3>
-        <h5>Live interaction with a real coach to help you achieve results.</h5>
+        <a href="/discover" class="btn-blue big-btn mb-xs-8">Find a Fitness Studio</a>
       </div>
       <!-- <div class="col-md-4">
         <div class="discovery-card" style="background-image:url('assets/images/studios/ralabala/discovery.jpg');">
@@ -73,7 +77,7 @@
       <div class="col-md-12">
         <div class="discovery-card discovery-card-tall" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
           <!-- <a href="/studios/{{id}}"> -->
-          <a href="/discover">
+          <a ng-href = "/studios/{{id}}">
             <div class="va-container va-container-v va-container-h">
               <div class="va-middle text-center">
                 <div class="discovery-content">
