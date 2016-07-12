@@ -27,6 +27,7 @@ angular.module('bodyAppApp')
 		$scope.loaded = true;
 		getVideoLibrary();	
 		getVideoStatus();
+    Intercom('trackEvent', 'navigatedToRecordVideo', { studio: studioId });
 	}	
 
 	$scope.recordVideo = function(){

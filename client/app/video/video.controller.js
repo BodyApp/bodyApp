@@ -392,7 +392,7 @@ angular.module('bodyAppApp')
 	function sendIntercomTokboxError(error, message) {
 		Intercom('trackEvent', 'tokboxError', {
 			errorDate_at: new Date(),
-			errorCode: error.code,
+			errorCode: error,
 			message: message ? message : ""
 		});
 	}

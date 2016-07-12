@@ -28,12 +28,14 @@ angular.module('bodyAppApp')
     auth.onAuthStateChanged(function(user) {
       if (user) {
         getClassTypes();
+        Intercom('trackEvent', 'navigatedToEditSchedule', { studio: studioId });
       } else {
         // console.log("User is logged out");
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
             if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
             getClassTypes();
+            Intercom('trackEvent', 'navigatedToClassTypes', { studio: studioId });
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
