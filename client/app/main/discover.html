@@ -92,29 +92,29 @@
                           <h3>{{getTime(instance.dateTime)}} ({{instance.duration}} min)</h3>
                         </div>
                         <div class="col-xs-5 text-right">
-                          <a href="/studios/{{instance.studioId}}" class="btn-blue hidden-xs">Learn More</a>
-                          <a href="/studios/{{instance.studioId}}" class="btn-blue btn-collapse visible-xs">Learn More</a>
+                          <a href="/studios/{{instance.studioId}}" class="btn-blue hidden-xs">Go To Studio</a>
+                          <a href="/studios/{{instance.studioId}}" class="btn-blue btn-collapse visible-xs">Go To Studio</a>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-sm-12">
                           <div class="row text-center-xs">
                             <div class="col-sm-12">
-                              <a href="#" ng-mouseenter = "showClassInfo[instance.classType] = true;" ng-mouseleave = "showClassInfo[instance.classType] = false;"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
+                              <a href="#" ng-click = "showClassInfo[instance.classType] = !showClassInfo[instance.classType];"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
                               <div class="display-block mb8">
                                 <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
                                 <!-- <a href="" class="btn-tag inline-block">Barre</a> -->
                               </div>
                             </div>
                           </div>
-                          <div class="row mb8" ng-show = "showClassInfo[instance.classType]"> <!-- SHOW THIS WHEN CARET-DOWN CLICKED -->
+                          <a class="row mb8" ng-show = "showClassInfo[instance.classType]" ng-href = "/studios/{{instance.studioId}}"> <!-- SHOW THIS WHEN CARET-DOWN CLICKED -->
                             <div class="col-sm-4">
                               <img ng-src="{{studioPictures[instance.studioId]}}" width="100%">
                             </div>
                             <div class="col-sm-8">
                               <h5 class="lightgray mt-xs-8">{{classTypes[instance.classType].classDescription}}</h5>
                             </div>
-                          </div>
+                          </a>
                         </div>
                       </div>
                       <div class="row mt8">
@@ -141,7 +141,7 @@
                           <h5>Equipment</h5>
                           <h5 class="lightgray" ng-if = "!classTypes[instance.classType].equipment">None</h5>
                           <div ng-repeat = "equipment in classTypes[instance.classType].equipment">
-                            <h5 class="lightgray">{{equipment.name}}</h5>
+                            <h5 class="lightgray" ng-if = "$index < 2">{{equipment.name.trunc(15, true)}}</h5>
                           </div>
                         </div>
                       </div>

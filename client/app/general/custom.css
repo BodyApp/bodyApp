@@ -264,7 +264,7 @@
 }
 .ss-content-container {
   height: 100%;
-  margin-left: 224px;
+  /*margin-left: 224px;*/
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
@@ -281,7 +281,7 @@
   padding: 40px 40px 80px;
   float: none;
   min-height: 100%;
-  width: 654px;  
+  max-width: 654px;  
 }
 .ss-help {
   height: 100%;
@@ -302,7 +302,7 @@
   width: 224px;
   border-right: 0;
   height: 100%;
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   -webkit-transform: translateZ(0);

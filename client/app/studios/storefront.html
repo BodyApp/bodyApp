@@ -273,9 +273,9 @@
               </div>
               <div class="cal-allClasses" >
                 <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}}</div>
-                  <div class="cal-duration">{{class.duration}}m</div>
-                  <div class="cal-class">{{classTypes[class.classType].name}}</div>
+                  <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}} ({{class.duration}}m)</div>
+                  <!-- <div class="cal-duration">{{class.duration}}m</div> -->
+                  <div class="cal-class">{{classTypes[class.classType].name}} <span ng-if = "classTypes[class.classType].freeClass">(Free)</span></div>
                   <div class="cal-instructor">{{instructors[class.instructor].firstName}}</div>
                   <!-- <div class="cal-friends">2 friends</div>
                   <div class="cal-bubbles">
@@ -385,7 +385,7 @@
                   <div class="col-md-12" ng-show = "classType.classType != 'Specialty'">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb0">{{classType.name}}</h5>
+                        <h5 class="mb0">{{classType.name}} <span ng-if = "classType.freeClass">(Free)</span></h5>
                         <h5 class="lightgray" style = "white-space: pre-line;">{{classType.classDescription}}</h5>
                       </div>
                     </div>

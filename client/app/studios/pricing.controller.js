@@ -105,7 +105,7 @@ angular.module('bodyAppApp')
     // })
 
     function getSyncedStudioName() {
-      ref.child('stripeConnected').child('detailedAccountInfo').child('display_name').on('value', function(snapshot) {
+      ref.child('stripeConnected').child('detailedAccountInfo').child('statement_descriptor').on('value', function(snapshot) {
         if (!snapshot.exists) return
         $scope.connectedStripeAccount = snapshot.val()
       })
