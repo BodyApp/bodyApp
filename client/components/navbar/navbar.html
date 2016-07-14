@@ -23,6 +23,11 @@
                         </p>
                       </li>
                       <li>
+                        <p ng-show="!adminOf" ng-class="{active: isActive('/experience')}">
+                          <a href="/createstudio">Open Studio</a>
+                        </p>
+                      </li>
+                      <li>
                         <p ng-class="{active: isActive('/discover')}">
                           <a href="/discover">Find Classes</a>
                         </p>
