@@ -27,28 +27,28 @@
 
     <div class="row"> <!-- .........TOP ROW......... -->
       <div class="col-md-8 mb-sm-16">
-        <div class="discovery-card" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
-          <a ng-href = "/studios/{{id}}">
+        <div class="discovery-card" ng-style="{'background-image':'url('+ backgroundImages[studios[0].studioId] +')'}">
+          <a ng-href = "/studios/{{studios[0].studioId}}">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container pt64">
               <div class="discovery-card-info">
-                <img class="round-photo" ng-src="{{logos[id]}}" width="60" height="60">
-                <h4 class="mt16 white bold" style="font-size:24px;">{{studio.studioName}}</h4>
-                <h5 class="white mb16">by Alexis Olson</h5>
+                <img class="round-photo" ng-src="{{logos[studios[0].studioId]}}" width="60" height="60">
+                <h4 class="mt16 white bold" style="font-size:24px;">{{studios[0].studioName}}</h4>
+                <h5 class="white mb16">by {{studios[0].ownerName}}</h5>
                 <div class="discovery-card-love trending">
                   <i class="fa fa-flash"></i> Trending Studio
                 </div>
               </div>
             </div>
-            <div class="discovery-card-price">
-              <span class="bold">$7 / class</span>
+            <div class="discovery-card-price" ng-if = "studios[0].dropinPricing">
+              <span class="bold">${{studios[0].dropinPricing/100}} / class</span>
             </div>
           </a>
         </div>
       </div>
       <div class="col-md-4 mb-sm-16">
         <div class="discovery-card" style="background-image:url('/assets/images/studios/category-pilates.jpg');">
-          <a ng-href = "/discover">
+          <a ng-href = "" ng-click = "goToDiscover('pilates')">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container studio-type">
               <h3 class="white bold">Pilates</h3>
@@ -61,7 +61,7 @@
     <div class="row mt24 mt-sm-0">   <!-- .........MIDDLE ROW......... -->
       <div class="col-md-4 mb-sm-16">
         <div class="discovery-card" style="background-image:url('/assets/images/studios/category-hiit.jpg');">
-          <a ng-href = "/discover">
+          <a ng-href = "" ng-click = "goToDiscover('hiit')">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container studio-type">
               <h3 class="white bold">HIIT</h3>
@@ -70,28 +70,28 @@
         </div>
       </div>
       <div class="col-md-4 mb-sm-16">
-        <div class="discovery-card" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
-          <a ng-href = "/studios/{{id}}">
+        <div class="discovery-card" ng-style="{'background-image':'url('+ backgroundImages[studios[1].studioId] +')'}">
+          <a ng-href = "/studios/{{studios[1].studioId}}">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container pt72">
               <div class="discovery-card-info">
-                <img class="round-photo" ng-src="{{logos[id]}}" width="60" height="60">
-                <h4 class="mt16 white bold" style="font-size:24px;">{{studio.studioName}}</h4>
-                <h5 class="white mb16">by Alexis Olson</h5>
+                <img class="round-photo" ng-src="{{logos[studios[1].studioId]}}" width="60" height="60">
+                <h4 class="mt16 white bold" style="font-size:24px;">{{studios[1].studioName}}</h4>
+                <h5 class="white mb16">by {{studios[1].ownerName}}</h5>
                 <div class="discovery-card-love">
                   <i class="fa fa-heart"></i> Studio We Love
                 </div>
               </div>
             </div>
-            <div class="discovery-card-price">
-              <span class="bold">$7 / class</span>
+            <div class="discovery-card-price" ng-if = "studios[1].dropinPricing">
+              <span class="bold">${{studios[1].dropinPricing/100}} / class</span>
             </div>
           </a>
         </div>
       </div>
       <div class="col-md-4 mb-sm-16">
         <div class="discovery-card" style="background-image:url('/assets/images/studios/category-nutrition.jpg');">
-          <a ng-href = "/discover">
+          <a ng-href = "" ng-click = "goToDiscover('nutrition')">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container studio-type">
               <h3 class="white bold">Nutrition</h3>
@@ -104,7 +104,7 @@
     <div class="row mt24 mt-sm-0"> <!-- .........BOTTOM ROW......... -->
       <div class="col-md-4 mb-sm-16">
         <div class="discovery-card" style="background-image:url('/assets/images/studios/category-strength.jpg');">
-          <a ng-href = "/discover">
+          <a ng-href = "" ng-click = "goToDiscover('strength')">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container studio-type">
               <h3 class="white bold">Strength</h3>
@@ -113,21 +113,21 @@
         </div>
       </div>
       <div class="col-md-8 mb-sm-16">
-        <div class="discovery-card" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
-          <a ng-href = "/studios/{{id}}">
+        <div class="discovery-card" ng-style="{'background-image':'url('+ backgroundImages[studios[2].studioId] +')'}">
+          <a ng-href = "/studios/{{studios[2].studioId}}">
             <div class="discovery-card-cover"></div>
             <div class="discovery-card-container pt64">
               <div class="discovery-card-info">
-                <img class="round-photo" ng-src="{{logos[id]}}" width="60" height="60">
-                <h4 class="mt16 white bold" style="font-size:24px;">{{studio.studioName}}</h4>
-                <h5 class="white mb16">by Alexis Olson</h5>
+                <img class="round-photo" ng-src="{{logos[studios[2].studioId]}}" width="60" height="60">
+                <h4 class="mt16 white bold" style="font-size:24px;">{{studios[2].studioName}}</h4>
+                <h5 class="white mb16">by {{studios[2].ownerName}}</h5>
                 <div class="discovery-card-love">
                   <i class="fa fa-heart"></i> Studio We Love
                 </div>
               </div>
             </div>
-            <div class="discovery-card-price">
-              <span class="bold">$7 / class</span>
+            <div class="discovery-card-price" ng-if = "studios[2].dropinPricing">
+              <span class="bold">${{studios[2].dropinPricing/100}} / class</span>
             </div>
           </a>
         </div>

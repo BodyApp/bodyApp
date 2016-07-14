@@ -19,13 +19,21 @@ angular.module('bodyAppApp')
       app_id: "daof2xrs"
     };
 
+    $scope.goToDiscover = function(tag) {
+       // $location.path('/discover/' + tag) 
+       $state.go('discover', {tag: tag})
+    }
+
     function getStudios() {
-      ref.child('studioIds').orderByValue().limitToFirst(1).on('value', function(snapshot) {
-        $scope.studios = {};
+      ref.child('studioIds').orderByValue().limitToFirst(3).on('value', function(snapshot) {
+        $scope.studios = [];
         snapshot.forEach(function(studio) {
           // if (!studio.exists()) delete $scope.studios[studio.key]
           ref.child('studios').child(studio.key).child('storefrontInfo').once('value', function(storefrontInfo) {
-            $scope.studios[studio.key] = storefrontInfo.val()
+            $scope.studios.push(storefrontInfo.val())
+            getBackgroundImage(studio.key);
+            getLogo(studio.key);
+            console.log($scope.studios)
             if(!$scope.$$phase) $scope.$apply();
             // console.log($scope.studios)
           })
@@ -33,7 +41,7 @@ angular.module('bodyAppApp')
       })
     }
 
-    $scope.getBackgroundImage = function(studioId) {
+    function getBackgroundImage(studioId) {
       storageRef.child('studios').child(studioId).child('images/header.jpg').getDownloadURL().then(function(url) {
           // $scope.headerUrl = url;
           $scope.backgroundImages[studioId] = url
@@ -43,7 +51,7 @@ angular.module('bodyAppApp')
         });
     }
 
-    $scope.getLogo = function(studioId) {
+    function getLogo(studioId) {
       var storageRef = firebase.storage().ref().child('studios').child(studioId);
       storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
           // $scope.headerUrl = url;
