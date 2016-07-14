@@ -793,19 +793,43 @@ function sendSubscriberEmail(user) {
   });   
 }
 
-function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime, level) {
+function sendClassBookedEmailToStudio(studioId, userFirstName, userLastName, classDateTime, classType) {
+  var toSendTo = [];
   var dateTime = formattedDateTime(classDateTime)
-  var data = {
-    from: from_who,
-    to: 'classbooked@getbodyapp.com',
-    subject: dateTime.date + " " + dateTime.classTime + " " + level + " Class Booked",
-    text: userFirstName + ' ' + userLastName + " booked a " + level + " class for " + dateTime.date + " at " + dateTime.classTime 
-  };
 
-  mailgun.messages().send(data, function (error, body) {
-    console.log("Sent email to admins that " + userFirstName + " " + userLastName + " booked a " + level + " class.");
-  });
+  ref.child('studios').child(studioId).child('admins').once('value', function(snapshot) {
+    snapshot.forEach(function(admin) {
+      ref.child('fbUsers').child(admin.val().facebookId).once('value', function(info) {
+        console.log(admin.val())
+        var data = {
+          from: from_who,
+          to: info.val().email,
+          bcc: "concierge@getbodyapp.com",
+          subject: "Booked: " + dateTime.date + " " + dateTime.classTime + " " + classType,
+          text: "Hey " + info.val().firstName + ", " + userFirstName + ' ' + userLastName + " just booked " + classType + " for " + dateTime.date + " at " + dateTime.classTime + ". \n\nHave a great class!\n\n--BODY Team" 
+        };
+
+        mailgun.messages().send(data, function (error, body) {
+          console.log("Sent email to " + info.val().email + " that " + userFirstName + " " + userLastName + " booked a " + classType + " class.");
+        });
+      })
+    })
+  })
 }
+
+// function sendClassBookedEmailToAdmins(userFirstName, userLastName, classDateTime, level) {
+//   var dateTime = formattedDateTime(classDateTime)
+//   var data = {
+//     from: from_who,
+//     to: 'classbooked@getbodyapp.com',
+//     subject: dateTime.date + " " + dateTime.classTime + " " + level + " Class Booked",
+//     text: userFirstName + ' ' + userLastName + " booked a " + level + " class for " + dateTime.date + " at " + dateTime.classTime 
+//   };
+
+//   mailgun.messages().send(data, function (error, body) {
+//     console.log("Sent email to admins that " + userFirstName + " " + userLastName + " booked a " + level + " class.");
+//   });
+// }
 
 function sendClassCancelledEmailToAdmins(userFirstName, userLastName, classDateTime, studioId) {
   console.log(classDateTime)
@@ -1005,6 +1029,7 @@ exports.addBookedClass = function(req, res, next) {
   var classToAdd = req.body.classToAdd;
   var className = req.body.className;
   var studioName = req.body.studioName;
+  var studioId = req.body.studioId;
   var instructorFullName = req.body.instructorFullName;
   var classStartingUrl = req.body.classStartingUrl;
   var equipmentUnformatted = req.body.equipmentRequired;
@@ -1029,6 +1054,7 @@ exports.addBookedClass = function(req, res, next) {
       // user.save(function(err) {
       //   if (err) return validationError(res, err);
       sendEmail(user)
+      sendClassBookedEmailToStudio(studioId, user.firstName, user.lastName, classToAdd, className);
       // ref.child("bookings").child(classToAdd).once('value', function(snapshot) {
       //   if (snapshot.numChildren() < 2) sendClassBookedEmailToAdmins(user.firstName, user.lastName, classToAdd, "Level 1")
       // })
@@ -1036,6 +1062,7 @@ exports.addBookedClass = function(req, res, next) {
       // });
     // } 
   });
+  
   function sendEmail(user) {
     if (!user.email) return;
     var dateTime = formattedDateTime(classToAdd, user)
@@ -1051,7 +1078,6 @@ exports.addBookedClass = function(req, res, next) {
         var data = {
           from: from_who,
           to: emailAddress,
-          bcc: "concierge@getbodyapp.com",
           subject: 'Your '+ studioName + ' Class Is Booked!',
           html: classReservedHeader.toString() + '<table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"<tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="left"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; padding: 10px 0;" align="center" valign="left"><h2 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 400; font-size: 24px; color: #565a5c; margin-top: 4px;">'+studioName+' Class Reservation</h2><img src="'+studioIconUrl+'" style="border-radius: 50%; margin: 10px 0;" width="100" height="100"><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #565a5c; margin-top: 4px;">You are attending '+className+' with '+instructorFullName+'</h3><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #3E7EDF; margin-top: 4px;">'+dateTime.classTime+' - '+dateTime.date+'</h3><a href="'+classStartingUrl+'" style="color: white; background: #3E7EDF; font-size: 14px; padding: 7px 0; width:200px; display: inline-block; margin-top: 15px; margin-bottom: 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #3E7EDF; text-align: center; vertical-align: middle; font-weight: bold; line-height: 1.43; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; white-space: nowrap; cursor: pointer; text-decoration: none;">Join class</a></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 10px 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><hr style="clear:both; max-width:600px; border-right:0; border-bottom:1px solid #cacaca; border-left:0; border-top:0; background-color:#dbdbdb; min-height:2px; width:600px; border:none; margin:auto"></td></tr></tbody></table></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 0 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 4px;">Equipment Required:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+equipmentRequired+'</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 15px;">Class Details:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+classDescription+'</h4></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>' + classReservedTemplate.toString()
         }

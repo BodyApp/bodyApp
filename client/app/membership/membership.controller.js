@@ -511,6 +511,7 @@ angular.module('bodyAppApp')
         classToAdd: slot.dateTime,
         className: $scope.classInfo.name,
         studioName: $scope.studioName,
+        studioId: $scope.studioId,
         instructorFullName: $scope.instructorInfo.firstName + " " + $scope.instructorInfo.lastName,
         classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
         equipmentRequired: $scope.classInfo.equipment,
