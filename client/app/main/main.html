@@ -4,9 +4,9 @@
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
       <div class="col-md-8 col-md-push-2">
-        <h1 class="white mb16 bold">Live Virtual Fitness Classes from Anywhere</h1>
-        <h3 class="white mb40">Take interactive classes with real coaches to help you achieve results</h3>
-        <a href="/discover" class="btn-blue big-btn mb-xs-8" style = "font-size: 20px;">Take Classes</a>
+        <h1 class="white mb16 bold">Live Fitness Classes from Anywhere</h1>
+        <h3 class="white mb40">Achieve results through interactive classes with real coaches.</h3>
+        <a href="/discover" class="btn-blue big-btn mb-xs-8" style = "font-size: 16px;">Take Classes</a>
         <!-- <span class="white separator hidden-xs">- or -</span>
         <a href="/createstudio" class="btn-blue big-btn mb-xs-8">Open a Studio</a> -->
       </div>
@@ -18,9 +18,130 @@
 
 <div class="panel-dark pt48 pb40">
   <div class="page-container-responsive">
+    
+    <div class="row mb32 text-center">
+      <h3 class="bold">Choose how you move</h3>
+      <h5 class="mb16">Find classes and instructors you'll love.</h5>
+      <a href="/discover" class="btn big-btn mb-xs-8">See all classes</a>
+    </div>
+
+    <div class="row"> <!-- .........TOP ROW......... -->
+      <div class="col-md-8 mb-sm-16">
+        <div class="discovery-card" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
+          <a ng-href = "/studios/{{id}}">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container pt64">
+              <div class="discovery-card-info">
+                <img class="round-photo" ng-src="{{logos[id]}}" width="60" height="60">
+                <h4 class="mt16 white bold" style="font-size:24px;">{{studio.studioName}}</h4>
+                <h5 class="white mb16">by Alexis Olson</h5>
+                <div class="discovery-card-love trending">
+                  <i class="fa fa-flash"></i> Trending Studio
+                </div>
+              </div>
+            </div>
+            <div class="discovery-card-price">
+              <span class="bold">$7 / class</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-sm-16">
+        <div class="discovery-card" style="background-image:url('/assets/images/studios/category-pilates.jpg');">
+          <a ng-href = "/discover">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container studio-type">
+              <h3 class="white bold">Pilates</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt24 mt-sm-0">   <!-- .........MIDDLE ROW......... -->
+      <div class="col-md-4 mb-sm-16">
+        <div class="discovery-card" style="background-image:url('/assets/images/studios/category-hiit.jpg');">
+          <a ng-href = "/discover">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container studio-type">
+              <h3 class="white bold">HIIT</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-sm-16">
+        <div class="discovery-card" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
+          <a ng-href = "/studios/{{id}}">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container pt72">
+              <div class="discovery-card-info">
+                <img class="round-photo" ng-src="{{logos[id]}}" width="60" height="60">
+                <h4 class="mt16 white bold" style="font-size:24px;">{{studio.studioName}}</h4>
+                <h5 class="white mb16">by Alexis Olson</h5>
+                <div class="discovery-card-love">
+                  <i class="fa fa-heart"></i> Studio We Love
+                </div>
+              </div>
+            </div>
+            <div class="discovery-card-price">
+              <span class="bold">$7 / class</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-sm-16">
+        <div class="discovery-card" style="background-image:url('/assets/images/studios/category-nutrition.jpg');">
+          <a ng-href = "/discover">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container studio-type">
+              <h3 class="white bold">Nutrition</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt24 mt-sm-0"> <!-- .........BOTTOM ROW......... -->
+      <div class="col-md-4 mb-sm-16">
+        <div class="discovery-card" style="background-image:url('/assets/images/studios/category-strength.jpg');">
+          <a ng-href = "/discover">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container studio-type">
+              <h3 class="white bold">Strength</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-8 mb-sm-16">
+        <div class="discovery-card" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
+          <a ng-href = "/studios/{{id}}">
+            <div class="discovery-card-cover"></div>
+            <div class="discovery-card-container pt64">
+              <div class="discovery-card-info">
+                <img class="round-photo" ng-src="{{logos[id]}}" width="60" height="60">
+                <h4 class="mt16 white bold" style="font-size:24px;">{{studio.studioName}}</h4>
+                <h5 class="white mb16">by Alexis Olson</h5>
+                <div class="discovery-card-love">
+                  <i class="fa fa-heart"></i> Studio We Love
+                </div>
+              </div>
+            </div>
+            <div class="discovery-card-price">
+              <span class="bold">$7 / class</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="panel-dark pt24 pb64">
+  <div class="page-container-responsive">
     <div class="panel panel-no-border">
       <div class="row">
-        <div class="col-sm-8 hidden-xs">
+        <div class="col-md-8 hidden-xs hidden-sm">
           <div class="earn-banner">
             <a href="/createstudio">
               <!-- <img ng-src="{{mainPageImageUrl}}"> -->
@@ -28,68 +149,26 @@
             </a>
           </div>
         </div>
-        <div class="col-sm-4 earn-panel-body">
-          <!-- <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}"> -->
-          <div class="earn-banner-hero visible-xs" style="background-image: url('/assets/images/studios/body/teaching-view.jpg')">
-          </div>
-          <div class="cover-gradient visible-xs"></div>
-          <div class="va-container va-container-v va-container-h earn-panel-content">
-            <div class="va-middle">
-              <strong class="hidden-xs">Open a Virtual Studio</strong>
-              <br>
-              <br>
-              <div class="hidden-xs">Virtual instruction opens up a world of opportunity</div>
-              <div class="text-center visible-xs">
-                <h2 class="white mb16 bold">Open a Virtual Studio</h2>
-                <h3 class="white mb16 bold">Virtual instruction opens up a world of opportunity</h3>
-              </div>
-              <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">See What You Can Earn</a>
+        <div class="col-md-4">
+          <div class="earn-panel-body">
+            <!-- <div class="earn-banner-hero visible-xs" ng-style="{'background-image':'url('+ mainPageImageUrl +')'}"> -->
+            <div class="earn-banner-hero visible-xs visible-sm" style="background-image: url('/assets/images/studios/body/teaching-view.jpg')">
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="panel-dark pb40">
-  <div class="page-container-responsive">
-    <div class="row">
-      <div class="col-xs-12 mb32 text-center">
-        <h3 class="bold mb8">Choose how you move</h3>
-        <a href="/discover" class="btn-blue big-btn mb-xs-8">Find a Fitness Studio</a>
-      </div>
-      <!-- <div class="col-md-4">
-        <div class="discovery-card" style="background-image:url('assets/images/studios/ralabala/discovery.jpg');">
-          <a href="#">
-            <div class="va-container va-container-v va-container-h">
-              <div class="va-middle text-center">
-                <img class="round-photo" src="/assets/images/studios/ralabala/logo.jpg" width="60" height="60">
-                <div class="mt16 discovery-content">
-                  <h2 class="white">RALABALA</h2>
-                  <h5 class="white">Bootcamp</h5>
+            <div class="cover-gradient visible-xs visible-sm"></div>
+            <div class="va-container va-container-v va-container-h earn-panel-content">
+              <div class="va-middle">
+                <h3 class="hidden-xs hidden-sm mb8" style="font-size:25px; font-weight:700;">Open a Virtual Studio</h3>
+                <h4 class="hidden-xs hidden-sm">Virtual instruction opens up a world of opportunity</h4>
+                <div class="text-center visible-xs visible-sm">
+                  <h2 class="white mb16 bold">Open a Virtual Studio</h2>
+                  <h3 class="white mb16 bold">Virtual instruction opens up a world of opportunity</h3>
                 </div>
+                <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">See What You Can Earn</a>
               </div>
             </div>
-          </a>
+          </div>
         </div>
-      </div> -->
-      <div class="col-md-12">
-        <div class="discovery-card discovery-card-tall" ng-init = "getBackgroundImage(id); getLogo(id);" ng-style="{'background-image':'url('+ backgroundImages[id] +')'}" ng-repeat = "(id, studio) in studios">
-          <!-- <a href="/studios/{{id}}"> -->
-          <a ng-href = "/studios/{{id}}">
-            <div class="va-container va-container-v va-container-h">
-              <div class="va-middle text-center">
-                <div class="discovery-content">
-                  <h5 class="white featured-studio" ng-show = "$index === 0">Featured Studio</h5>
-                  <h2 class="white">{{studio.studioName}}</h2>
-                  <!-- <h5 class="white">Bootcamp</h5> -->
-                </div>
-                <img class="mt16 round-photo hidden-xs" ng-src="{{logos[id]}}" width="100" height="100">
-              </div>
-            </div>
-          </a>
-        </div>
+        
       </div>
     </div>
   </div>
