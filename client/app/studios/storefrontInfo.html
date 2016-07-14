@@ -103,11 +103,11 @@
           </div>
           <div class="row mb16">
             <label class="col-sm-3" for="coupon-code">
-              Add Profile Image
+              Add 400x400 Profile Image
             </label>
             <div class="col-sm-6">
-            	<lf-ng-md-file-input ng-show = "!iconUrl" lf-placeholder = "Pick Icon" lf-files="iconImage" lf-caption="" accept="image/*"></lf-ng-md-file-input>
-              <lf-ng-md-file-input ng-show = "iconUrl" lf-placeholder = "Replace" lf-files="iconImage" lf-caption="Replace" accept="image/*"></lf-ng-md-file-input>
+            	<lf-ng-md-file-input ng-show = "!iconUrl" lf-placeholder = "Pick Icon" lf-files="iconImage" lf-caption="" accept="image/*" progress></lf-ng-md-file-input>
+              <lf-ng-md-file-input ng-show = "iconUrl" lf-placeholder = "Replace" lf-files="iconImage" lf-caption="Replace" accept="image/*" progress></lf-ng-md-file-input> Best if ~400x400
             </div>
             <!-- <img ng-src = "{{iconUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img> -->
           </div>
@@ -122,8 +122,8 @@
               Add Header Image
             </label>
             <div class="col-sm-6">
-              <lf-ng-md-file-input ng-show = "!headerUrl" lf-placeholder = "Pick Header Image" lf-files="headerImage" lf-caption="" accept="image/*"></lf-ng-md-file-input>
-              <lf-ng-md-file-input ng-show = "headerUrl" lf-placeholder = "Replace" lf-files="headerImage" lf-caption="Replace" accept="image/*"></lf-ng-md-file-input>
+              <lf-ng-md-file-input ng-show = "!headerUrl" lf-placeholder = "Pick Header Image" lf-files="headerImage" lf-caption="" accept="image/*" progress></lf-ng-md-file-input>
+              <lf-ng-md-file-input ng-show = "headerUrl" lf-placeholder = "Replace" lf-files="headerImage" lf-caption="Replace" accept="image/*" progress></lf-ng-md-file-input> Best if ~1280x540 
             </div>
             <!-- <img ng-src = "{{headerUrl}}" height="100px" class = "studio-profile-img mb-sm-16"></img> -->
           </div>
