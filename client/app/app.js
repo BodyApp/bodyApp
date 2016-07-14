@@ -83,16 +83,31 @@ angular.module('bodyAppApp', [
           $state.go('main');
         } else if (loggedIn) {
           console.log("Booting Intercom")
-          Intercom("boot", {
-            app_id: "daof2xrs",
-            email: Auth.getCurrentUser().email,
-            name: Auth.getCurrentUser().firstName + " " + Auth.getCurrentUser().lastName,
-            user_id: Auth.getCurrentUser()._id,
-            user_hash: Auth.getCurrentUser().intercomHash,
-            widget: {
-              activator: "#IntercomDefaultWidget"
-            }
-         });
+          if (Auth.getCurrentUser().intercomHash) {
+            Intercom("boot", {
+              app_id: "daof2xrs",
+              email: Auth.getCurrentUser().email,
+              name: Auth.getCurrentUser().firstName + " " + Auth.getCurrentUser().lastName,
+              user_id: Auth.getCurrentUser()._id,
+              user_hash: Auth.getCurrentUser().intercomHash,
+              widget: {
+                activator: "#IntercomDefaultWidget"
+              }
+            });
+          } else {
+            User.createIntercomHash({id: user._id}, {}, function(user) {
+              Intercom("boot", {
+                app_id: "daof2xrs",
+                email: user.email,
+                name: user.firstName + " " + user.lastName,
+                user_id: user._id,
+                user_hash: user.intercomHash,
+                widget: {
+                  activator: "#IntercomDefaultWidget"
+                }
+              });
+            })
+          }
           Intercom('update');
         }
       });
