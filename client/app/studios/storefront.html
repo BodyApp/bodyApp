@@ -266,7 +266,7 @@
             <div class="no-classes" ng-if = "!classSchedule">No classes this week</div>
             <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
-            <div class="cal-column" ng-class = "'sched-day-'+($index+1)" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
+            <div class="cal-column" ng-show = "$index < numDaysToShow" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
               <div class="cal-daytime">
                 <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
                 <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
