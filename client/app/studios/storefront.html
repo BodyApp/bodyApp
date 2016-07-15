@@ -271,6 +271,8 @@
           <div class = "col-xs-8"></div>
         </div>
         
+        <div style = "text-align:center; font-weight: 400">Class times in {{timezone}}</div>
+
         <div class="row mb24"> <!-- CALENDAR WEEK VIEW -->
           <div class="cal-container text-center">         
             <div class="header-cover"></div>
@@ -284,7 +286,7 @@
               </div>
               <div class="cal-allClasses" >
                 <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} {{timezone}} ({{class.duration}}m)</div>
+                  <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} ({{class.duration}}m)</div>
                   <!-- <div class="cal-duration">{{class.duration}}m</div> -->
                   <div class="cal-class">{{classTypes[class.classType].name}} <span ng-if = "classTypes[class.classType].freeClass">(Free)</span></div>
                   <div class="cal-instructor">{{instructors[class.instructor].firstName}}</div>

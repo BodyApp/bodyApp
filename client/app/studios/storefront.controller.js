@@ -32,6 +32,7 @@ angular.module('bodyAppApp')
       $scope.numDaysToShow = 3;
     }
     
+    setTimezone()
 
     ref.once('value', function(snapshot) {
       if (!snapshot.exists()) {
@@ -251,6 +252,11 @@ angular.module('bodyAppApp')
     //     }, function(err) {console.log("Error creating Intercom hash: "+err)}).$promise;
     //   }
     // }
+
+    function setTimezone() {
+      var tzName = jstz().timezone_name;
+      $scope.timezone = moment().tz(tzName).format('z');
+    }
 
     function getImages() {
       storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
