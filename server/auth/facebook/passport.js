@@ -9,6 +9,8 @@ var stripe = require("stripe")(config.stripeOptions.apiKey);
 var firebase = require('firebase');
 var ref = firebase.database().ref()
 
+const crypto = require("crypto"); //For intercom hash
+
 exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
       clientID: config.facebook.clientID,
@@ -65,8 +67,14 @@ exports.setup = function (User, config) {
           user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName.charAt(0), "gender": user.gender, "picture": user.picture, "email": user.email });
           user.lastLoginDate = user.signUpDate;
 
+          //Used for intercom secure mode
+          var hmac = crypto.createHmac('sha256', config.intercomSecret);
+          hmac.update(user._id.toString());
+          user.intercomHash = hmac.digest('hex');
+
           user.save(function(err) {
             if (err) return done(err);
+            console.log("Created new user with facebookId " + user.facebookId)
             //Firebase authentication
             // var ref = new Firebase("https://bodyapp.firebaseio.com/");
             var usersRef = ref.child("fbUsers");  
@@ -108,6 +116,16 @@ exports.setup = function (User, config) {
             // console.log(user.friendListObject)
             // console.log("hello")
             // user.friendListObject[user.friendList[i].id].picture = user.friendList[i].picture
+          }
+
+          if (!user.intercomHash) {
+            //Used for intercom secure mode
+            var hmac = crypto.createHmac('sha256', config.intercomSecret);
+            hmac.update(user._id.toString());
+            user.intercomHash = hmac.digest('hex');
+            console.log("Created intercom hash for " + user.firstName + " " + user.lastName)
+          } else {
+            console.log(user.firstName + " " + user.lastName + " already has an intercom hash.")
           }
                     
           user.save(function(err) {

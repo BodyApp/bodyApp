@@ -743,6 +743,7 @@ exports.createIntercomHash = function(req, res, next) {
       }
       user.save(function(err) {
         if (err) return validationError(res, err);
+        console.log("Created intercom has for " + user.firstName + " " + user.lastName)
         res.status(200).json(user);
       });
     } 
