@@ -260,13 +260,24 @@
           </div>
         </div> -->
 
+        <div class="row mb16" ng-show = "numDaysToShow < 7 && nextWeek != 3">
+          <div class = "col-xs-8"></div>
+          <a class = "col-xs-3 btn" ng-click = "nextWeek = 3">Next</a>
+        </div>
+
+        <div class="row mb16" ng-show = "numDaysToShow < 7 && nextWeek === 3">
+          <div class = "col-xs-1"></div>
+          <a class = "col-xs-3 btn" ng-click = "nextWeek = 0">Previous</a>
+          <div class = "col-xs-8"></div>
+        </div>
+        
         <div class="row mb24"> <!-- CALENDAR WEEK VIEW -->
           <div class="cal-container text-center">         
             <div class="header-cover"></div>
             <div class="no-classes" ng-if = "!classSchedule">No classes this week</div>
             <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
-            <div class="cal-column" ng-show = "$index < numDaysToShow" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
+            <div class="cal-column" ng-show = "$index < numDaysToShow + nextWeek && (nextWeek !=3 || $index >= numDaysToShow )" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
               <div class="cal-daytime">
                 <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
                 <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>

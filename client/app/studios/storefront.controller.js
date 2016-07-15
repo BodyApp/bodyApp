@@ -31,7 +31,6 @@ angular.module('bodyAppApp')
     } else {
       $scope.numDaysToShow = 3;
     }
-
     
 
     ref.once('value', function(snapshot) {
