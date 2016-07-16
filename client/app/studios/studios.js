@@ -145,6 +145,19 @@ angular.module('bodyAppApp')
           }
         }
       })
+      .state('classinfo', {
+        url: '/studios/:studioId/classinfo/:classId',
+        templateUrl: 'app/studios/classInfo.html',
+        controller: 'ClassInfoCtrl',
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          },
+          classId: function($stateParams) {
+            return $stateParams.classId
+          },
+        }
+      })
       .state('dashboard', {
         url: '/studios/:studioId/user/dashboard',
         templateUrl: 'app/studios/user/dashboard.html',

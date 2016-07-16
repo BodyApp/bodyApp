@@ -161,7 +161,7 @@ angular.module('bodyAppApp')
           // $scope.creatingStudio = false;
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
           Intercom('update', {
-            "createdStudio_at": Math.floor(new Date() / 1000),
+            "createdStudio_at": Math.floor(new Date().getTime() / 1000),
             "studioOwnedId": studioId,
             "studioOwnedName": studioToCreate.studioName
           });
