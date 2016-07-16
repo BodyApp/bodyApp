@@ -30,6 +30,7 @@ angular.module('bodyAppApp')
     };
 
     $scope.updateEmail = function() {
+      if (!$scope.userEmail || $scope.userEmail.length < 4) return $scope.invalidEmail = true;
     	User.saveEmailAddress({id: Auth.getCurrentUser()._id}, {email: $scope.userEmail}, function(user){
         console.log("Email successfully updated in mongo.")
         ref.child('fbUsers').child(Auth.getCurrentUser().facebookId).update({'email': $scope.userEmail}, function(err) {
@@ -43,6 +44,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.saveEmergencyContactInfo = function() {
+      if (!$scope.emergencyPhone) alert("Need to enter an emergency contact.")
     	var emergencyContact = {fullName: $scope.emergencyName, emergencyPhone: $scope.emergencyPhone, emergencyRelationship: $scope.emergencyRelationship}
     	console.log(emergencyContact)
     	User.saveEmergency({id: Auth.getCurrentUser()._id}, {emergencyContact: emergencyContact}).$promise.then(function(user) {

@@ -89,7 +89,8 @@
               <i class="fa fa-check-circle"></i>
             </div>
           </div>
-          <input class="signUp-email mt40" name="" type="text" ng-model = "userEmail">
+          <div class = "mt24" style = "color: red;" ng-show = "invalidEmail">We need your email address to verify that you're a real person! Don't worry, we'll never send you spam or give it to anyone else.</div>
+          <input class="signUp-email" name="" type="text" ng-model = "userEmail">
           <a href="#" ng-click = "updateEmail()" class="btn-blue btn-block big-btn mt24">Continue</a>
         </div>
       </div>

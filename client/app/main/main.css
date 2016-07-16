@@ -51,7 +51,8 @@
   display: block;
   width: 140px;
   height: 140px;
-  margin: auto auto;
+  margin: auto;
+  margin-bottom: 40px;
 }
 .signUp-checked {
   color: green;

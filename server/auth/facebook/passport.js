@@ -11,6 +11,13 @@ var ref = firebase.database().ref()
 
 const crypto = require("crypto"); //For intercom hash
 
+// var fs = require('fs')
+// var Mailgun = require('mailgun-js');
+// var api_key = config.mailgunApiKey;
+// var from_who = config.mailgunFromWho;
+// var domain = 'getbodyapp.com';  
+// var mailgun = new Mailgun({apiKey: api_key, domain: domain});
+
 exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
       clientID: config.facebook.clientID,
@@ -78,6 +85,7 @@ exports.setup = function (User, config) {
             //Firebase authentication
             // var ref = new Firebase("https://bodyapp.firebaseio.com/");
             var usersRef = ref.child("fbUsers");  
+            // sendWelcomeEmail(user)
             // var userId = user._id.toString()
             
             // console.log(token)
@@ -155,3 +163,40 @@ exports.setup = function (User, config) {
     }
   ));
 };
+
+// function sendWelcomeEmail(user) {
+//   var emailAddress = user.email
+//     fs.readFile(__dirname + '../user/emails/welcomeEmail.html', function (err, html) {
+//       if (err) throw err; 
+//       var welcomeEmail = html
+//       // fs.readFile(__dirname + '/emails/welcomeEmailHeader.html', function (err, html) {
+//       //   if (err) throw err; 
+//       //   var welcomeEmailHeader = html
+//       var data = {
+//         from: from_who,
+//         to: emailAddress,
+//         subject: 'Welcome To The Club',
+//         html: welcomeEmail.toString()
+//       }
+//       // if (!user.welcomeEmailSent) {
+//       mailgun.messages().send(data, function (err, body) {
+//         //If there is an error, render the error page
+//         if (err) {
+//           console.log("Error sending welcome email to " + emailAddress)
+//           console.log(err)
+//           res.status(400).send("Error sending welcome email to " + emailAddress);
+//         }
+//         else {
+//           user.welcomeEmailSent = new Date();
+//           user.save(function(err) {
+//             if (err) return validationError(res, err);
+//             res.status(200).json(user);
+//           });    
+//         }
+//       });
+//       // } else {
+//       //   res.status(500).send("User welcome email has previously been sent.")
+//       // }
+//       // }); 
+//     });  
+// }
