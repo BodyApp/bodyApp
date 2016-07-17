@@ -215,6 +215,7 @@ angular.module('bodyAppApp')
 
     //Add billing controller
     $scope.beginStripeConnect = function() {
+      Intercom('trackEvent', "beganStripeConnect")
       $window.location.href = '/auth/stripe?studioid=' + studioId;
       // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
       // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
@@ -232,6 +233,7 @@ angular.module('bodyAppApp')
       		if (err) return console.log(err);
       		listSubscriptionPlans()
       		console.log("Deleted subscription plan with id: " + planId);
+          Intercom('trackEvent', "deletedSubscriptionPlan");
           ref.child('storefrontInfo').child('subscriptionPricing').remove(function(err) {
             if (err) return console.log(err)
             console.log("Removed subscription pricing from storefront.")
@@ -299,6 +301,7 @@ angular.module('bodyAppApp')
         ref.child('storefrontInfo').child('dropinPricing').remove(function(err) {
           if (err) return console.log(err)
           console.log("Dropin plan removed");
+          Intercom('trackEvent', "deletedDropinPlan");
         })
     	})
     }
@@ -315,6 +318,7 @@ angular.module('bodyAppApp')
     	ref.child("stripeConnected").child('dropinPlan').update(planToEdit, function(err) {
   			if (err) return console.log(err)
         console.log("Dropin plan updated")
+        Intercom('trackEvent', "dropinPlanUpdated", {amount: planToEdit.amountInDollars*100});
         ref.child('storefrontInfo').child('dropinPricing').set(planToEdit.amount)
         ref.child('toSetup').child('pricing').remove(function(err) {
           if (err) console.log(err)
@@ -335,6 +339,7 @@ angular.module('bodyAppApp')
         accessCode: accessCode
       }).$promise.then(function(deletedCouponId) {
         console.log("Deleted coupon with id: " + couponToDelete.id);
+        Intercom('trackEvent', "deletedCoupon", {couponDeleted: couponToDelete.id});
         listCoupons()
       })
     }
@@ -361,6 +366,7 @@ angular.module('bodyAppApp')
         couponToCreate: couponToCreate
       }).$promise.then(function(coupon) {
       	console.log("Saved new coupon");
+        Intercom('trackEvent', "createdNewCoupon", {coupon: coupon.id});
       	listCoupons()
       	$scope.showAddCoupon = false;
     		if(!$scope.$$phase) $scope.$apply();
