@@ -287,7 +287,7 @@ angular.module('bodyAppApp')
         } else if (slot && slot.typeOfClass === 'Specialty') {
           console.log("Booking specialty class")
           return bookSpecialtyClass(slot)
-        } else if (slot && $scope.classTypes && $scope.classTypes[slot.classType] && $scope.classTypes[slot.classType].freeClass) { //Book class if studio hasn't set pricing.
+        } else if (slot && $scope.classType && $scope.classType.freeClass) { //Book class if studio hasn't set pricing.
           console.log("Booking for free because this is a free class.")
           return bookClass(slot)
         } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
