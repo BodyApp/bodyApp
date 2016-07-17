@@ -55,6 +55,7 @@ angular.module('bodyAppApp')
 
     var daysInFuture = 0;
     var numDaysToShow = 7;
+    $scope.daysInFuture = 0;
 
     $scope.showingNextWeek = false;
     $scope.showWeekView = true;
@@ -380,16 +381,22 @@ angular.module('bodyAppApp')
       })
     }
 
-    $scope.changeWeek = function() {
-      if ($scope.showingNextWeek) {
-        getClasses(0);
-        createSchedule(7, 0);
-        $scope.showingNextWeek = false;
-      } else {
-        getClasses(7);
-        createSchedule(7, 7);
-        $scope.showingNextWeek = true;
-      }
+    $scope.previousWeek = function() {
+      $scope.daysInFuture = Math.max($scope.daysInFuture - 7, 0);
+      getClasses($scope.daysInFuture);
+      createSchedule(7, $scope.daysInFuture);
+    }
+
+    $scope.nextWeek = function() {
+      $scope.daysInFuture = $scope.daysInFuture + 7;
+      getClasses($scope.daysInFuture);
+      createSchedule(7, $scope.daysInFuture);
+    }
+
+    $scope.goToToday = function() {
+      $scope.daysInFuture = 0;
+      getClasses($scope.daysInFuture);
+      createSchedule(7, $scope.daysInFuture);
     }
 
     $scope.changeView = function() {

@@ -22,6 +22,8 @@ angular.module('bodyAppApp')
       $interval.cancel(calculateTime)
     });
 
+    setupVidAud()
+
     auth.onAuthStateChanged(function(user) {
       if (user) {     
         getClassDetails()
@@ -133,8 +135,17 @@ angular.module('bodyAppApp')
       if ($scope.minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = "Class starting in " + Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) + (Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
     }
 
+    function setupVidAud() {
+      var element = document.querySelector('#audioVideoSetup');
+      var component = Video.hardwareSetup(element);
+    }
+
+    $scope.endVideoSession = function() { //Turns off the green light if navigate away without joining class.
+      Video.destroyHardwareSetup()
+    }
+
     $scope.openNewMessage = function() {
-      Intercom('showNewMessage', "I have questions about this class.");
+      Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
     }
 
     $scope.cancelClass = function(ev) {

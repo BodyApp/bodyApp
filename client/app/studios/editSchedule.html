@@ -246,11 +246,16 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <span style = "font-weight: bold;" ng-show = "showWeekView">List</span> 
               <span style = "font-weight: bold;">View</span>
             </a>
-            <a href="#" class="btn" ng-click = "changeWeek()">
-              <span style = "font-weight: bold;" ng-show = "!showingNextWeek">Next</span> 
-              <span style = "font-weight: bold;" ng-show = "showingNextWeek">Previous</span> 
-              <span style = "font-weight: bold;">Week</span>
+            <a href="#" class="btn" ng-click = "goToToday()" style = "font-weight: bold;">
+              Today
             </a>
+            <a href="#" class="btn" ng-click = "previousWeek()" style = "font-weight: bold;" ng-show = "daysInFuture > 0">
+              Previous Week
+            </a>
+            <a href="#" class="btn" ng-click = "nextWeek()" style = "font-weight: bold;">
+              Next Week
+            </a>
+            
             <!-- <a href="#" class="btn" ng-click = "showingNextWeek = false; showPreviousWeek()" ng-show = "showingNextWeek">Previous Week</a> -->
             <!-- <div class="select hidden-xs">
               <select>
