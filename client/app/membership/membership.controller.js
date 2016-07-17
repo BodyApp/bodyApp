@@ -165,6 +165,7 @@ angular.module('bodyAppApp')
     // }
 
     $scope.applyCoupon = function() {
+
       Studio.checkCoupon({ id: currentUser._id }, {
           couponString: $scope.couponEntered,
           studioId: studioId
@@ -172,12 +173,13 @@ angular.module('bodyAppApp')
           if (coupon.valid) {
             console.log("Coupon valid") 
             $scope.validCoupon = coupon;
-            console.log(coupon)
             if(!$scope.$$phase) $scope.$apply();
+            Intercom('trackEvent', 'appliedCoupon', coupon);
           } else {
             $scope.invalidCouponEntered = true;
             $scope.enterCoupon = false;
             if(!$scope.$$phase) $scope.$apply();
+            Intercom('trackEvent', 'triedInvalidCoupon', coupon);
           }
         }, function(err) {
             $scope.couponEntered = undefined;
@@ -185,6 +187,7 @@ angular.module('bodyAppApp')
             $scope.invalidCouponEntered = true;
             if(!$scope.$$phase) $scope.$apply();
             console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
+            Intercom('trackEvent', 'triedInvalidCoupon', {couponTried: couponString, studioId: studioId, error: err});
         }).$promise
     }
 

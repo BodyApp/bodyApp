@@ -116,6 +116,7 @@ angular.module('bodyAppApp')
 
     $scope.setCategoryFilter = function(tag) {
       $scope.categoryFilter = tag
+      Intercom('trackEvent', 'setDiscoverCategoryFilter', {filter: tag});
     }
 
     String.prototype.trunc = function( n, useWordBoundary ){

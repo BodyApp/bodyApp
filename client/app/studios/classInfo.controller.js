@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, $uibModal, $cookies, $http, studioId, classId, Auth, Video, User) {
+  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, $uibModal, $cookies, $http, $state, studioId, classId, Auth, Video, User) {
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -23,13 +23,13 @@ angular.module('bodyAppApp')
       $interval.cancel(calculateTime)
     });
 
-    auth.onAuthStateChanged(function(user) {
-      if (user) {     
-        getClassDetails()
-        getStorefrontInfo()
-        getAccountId()
-      }
-    })
+    // auth.onAuthStateChanged(function(user) {
+      // if (user) {     
+    getClassDetails()
+    getStorefrontInfo()
+    getAccountId()
+      // }
+    // })
 
     function getClassDetails() {
       ref.child('classes').child(classId).on('value', function(snapshot) {
@@ -171,7 +171,7 @@ angular.module('bodyAppApp')
             Intercom('trackEvent', 'cancelledClass', {
               studioId: studioId,
               classToCancel: classId ? classId : "None",
-              dateOfClass_at: Math.floor(classId/1000)
+              dateOfClass_at: Math.floor(classId*1/1000)
             });
             $rootScope.$apply(function() {
               $location.path('/studios/' + studioId)
@@ -330,6 +330,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.reserveClicked = function(slot) {
+      Intercom('trackEvent', "reserveClicked")
       if ($rootScope.subscribing) return 
       if (!$scope.currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")

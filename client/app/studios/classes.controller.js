@@ -160,6 +160,7 @@ angular.module('bodyAppApp')
       if (classToEdit.classDescription.length > $scope.maxDescriptionLength) return $scope.descriptionTooLong = classToEdit.classDescription.length;
       ref.child('classTypes').child(classKey).update(classToEdit, function(err) {
         console.log("Class successfully updated")
+        Intercom('trackEvent', "classTypeUpdated", {classType: classKey})
         $scope.showEditClass = false;
         $scope.missingName = false;
         $scope.missingDescription = false;
@@ -204,6 +205,7 @@ angular.module('bodyAppApp')
           ref.child('classTypes').child(classTypeId).remove(function(err) {
             if (err) return console.log(err)
             console.log("Successfully removed class type since there were no workouts or future classes based on it.")
+            Intercom('trackEvent', "classTypeDeleted", {classType: classTypeId})
           })
         }
         var futureClasses = [];
@@ -223,6 +225,7 @@ angular.module('bodyAppApp')
         ref.child('classTypes').child(classTypeId).remove(function(err) {
           if (err) return console.log(err)
           console.log("Successfully removed class type since there were no workouts or future classes based on it.")
+          Intercom('trackEvent', "classTypeDeleted", {classType: classTypeId})
         })
       })
     }

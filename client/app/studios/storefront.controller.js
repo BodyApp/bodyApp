@@ -524,6 +524,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.joinStudioClicked = function(slot) {
+      Intercom('trackEvent', "joinStudioClicked")
       if ($rootScope.subscribing) return
       checkMembership(slot)
     }
@@ -543,6 +544,7 @@ angular.module('bodyAppApp')
         })
         .success(function(data) {
           console.log("Successfully cancelled subscription to " + studioId);
+          Intercom('trackEvent', "cancelledMembership", {studioId: studioId})
           // Auth.updateUser(data);
           // $rootScope.subscriptions = $rootScope.subscriptions || {};
           // delete $rootScope.subscriptions[studioId];
@@ -573,6 +575,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.playYoutubeVideo = function() {
+      Intercom('trackEvent', "playedYoutubeVideo")
       $("#youtubeVideo")[0].src += "&autoplay=1";
       $scope.showVideoPlayer = true;
       $scope.hidePlayer = false;
@@ -772,6 +775,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.playVideo = function(videoToPlay) {
+      Intercom('trackEvent', "playedVideoFromLibrary", {videoToken: videoToPlay.token})
       ZiggeoApi.Embed.popup({
         video: videoToPlay.token,
         autoplay: true,

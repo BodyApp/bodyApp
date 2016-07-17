@@ -276,6 +276,7 @@ angular.module('bodyAppApp')
     	ref.child('classes').child(classId).remove(function(err) {
     		if (err) return console.log(err)
   			console.log("Class successfully deleted.")
+        Intercom('trackEvent', "deletedClass", {classId: classId})
         if ($scope.classTypes[$scope.classDetails.classType].classType === 'Specialty') {
           ref.child('specialtyClasses').child(classId).remove(function(err) {
             if (err) return console.log(err)
@@ -309,6 +310,7 @@ angular.module('bodyAppApp')
     	ref.child('classes').child(classId).update(classToUpdate, function(err) {
     		if (err) return console.log(err)
     		console.log("Successfully updated class.")
+        Intercom('trackEvent', "updatedClassDetails", {classId: classId})
     	})
     }
 

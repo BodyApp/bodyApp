@@ -65,6 +65,7 @@ angular.module('bodyAppApp')
   });
 
   $scope.recordVideoClicked = function() {
+  	Intercom('trackEvent', "recordVideoClicked")
   	if (!$scope.recording) {
 	  	$scope.recording = true;
 	  	if (!ziggeoEmbedding) {
@@ -124,6 +125,7 @@ angular.module('bodyAppApp')
 		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
 			if (err) return console.log(err)
 			console.log("Added video to library.")
+		Intercom('trackEvent', "addedVideoToLibrary", {videoToken: data.video.token})
 		})
 	});
 
@@ -143,16 +145,19 @@ angular.module('bodyAppApp')
 		ref.child('realTimeControls').child(classId).update({'musicVolume': $scope.musicVolume + 25}, function(err) {
 			if (err) return console.log(err)
 		})
+		Intercom('trackEvent', "increaseVolumeClicked")
 	}
 
 	$scope.decreaseVolume = function() {
 		if ($scope.musicVolume <= 0) return
 		ref.child('realTimeControls').child(classId).update({'musicVolume': $scope.musicVolume - 25}, function(err) {
 			if (err) return console.log(err)
-		})	
+		})
+		Intercom('trackEvent', "decreaseVolumeClicked")
 	}
 
 	$scope.switchView = function(incrementBy) {
+		Intercom('trackEvent', "switchViewClicked")
 		viewCounter += incrementBy;
 		var optionChosen = viewCounter % 3;
 		$scope.videoView = viewOptions[optionChosen];
@@ -317,6 +322,7 @@ angular.module('bodyAppApp')
 	}
 
 	$scope.saveTimer = function() {
+		Intercom('trackEvent', "timerSaved")
 		if (!$scope.timer.work) return
 		ref.child('realTimeControls').child(classId).child('timer').update({"type": $scope.timer.type, "work": $scope.timer.work, "rest": $scope.timer.rest, "rounds": $scope.timer.rounds, "saved": new Date().getTime()}, function(err) {
 			if (err) return console.log(err)
@@ -354,6 +360,7 @@ angular.module('bodyAppApp')
   });
 
   $scope.playButtonPushed = function() {
+  	Intercom('trackEvent', "timerPlayButtonPushed")
   	if (!$scope.realTimeTimer.work) return
   	ref.child('realTimeControls').child(classId).child('timer').update({"start": new Date().getTime()}, function(err) {
   		if (err) return console.log(err)
@@ -475,6 +482,7 @@ angular.module('bodyAppApp')
 	}
 
 	$scope.clickOnConsumer = function(consumerId) { //Trainer only
+		Intercom('trackEvent', "clickedOnConsumerVideo", {consumerId: consumerId})
 		if (audioPlayer) audioPlayer.setVolume(0);
 		if (previouslyClickedConsumerId && $scope.consumerObjects[previouslyClickedConsumerId]) {
 			$scope.consumerObjects[previouslyClickedConsumerId].subscriber.subscribeToAudio(false)	
@@ -498,6 +506,7 @@ angular.module('bodyAppApp')
 	} 
 
 	$scope.trainerClicksOnSelf = function() {
+		Intercom('trackEvent', "trainerClickedOnSelf")
 		$scope.hearAll = false;
 		$scope.trainerClickedHimself = true;
 		// if (audioPlayer) audioPlayer.setVolume($scope.musicVolume/200);
@@ -507,6 +516,7 @@ angular.module('bodyAppApp')
 	}
 
 	$scope.trainerClicksHearAll = function() {
+		Intercom('trackEvent', "clickedHearAll")
 		if (audioPlayer) audioPlayer.setVolume(0);
 		if ($scope.hearAll) {
 			$scope.hearAll = false;

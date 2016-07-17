@@ -53,6 +53,7 @@ angular.module('bodyAppApp')
     			console.log("Emergency info saved in firebase.")
 					if (err) return console.log(err)
 	      	Intercom('update', { "emergencyContactPhone": emergencyContact.emergencyPhone, "emergencyName": emergencyContact.fullName });
+          Intercom('trackEvent', 'setEmergencyContact');
 	      	$scope.step = 4;   
 	        if(!$scope.$$phase) $scope.$apply();
 	      })
@@ -77,6 +78,8 @@ angular.module('bodyAppApp')
         } else {
           User.sendWelcomeEmail({ id: Auth.getCurrentUser()._id }, {
             }, function(user) {
+              Intercom('update', {sentWelcomeEmail: true})
+              Intercom('trackEvent', 'sentWelcomeEmail');
               console.log("Sent welcome email since first time logging in.")
             }, function(err) {
               console.log("Error: " + err)

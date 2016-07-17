@@ -158,6 +158,7 @@ angular.module('bodyAppApp')
     		ref.child('workouts').child(pushedWorkout.key).update({id: pushedWorkout.key}, function(err) {
     			if (err) return console.log(err);
     			console.log("workout successfully created")
+                Intercom('trackEvent', "workoutCreated", {workout: pushedWorkout.key})
 				$scope.showAddWorkout = false;
                 ref.child('toSetup').child('workouts').remove(function(err) {
                   if (err) console.log(err)
@@ -192,7 +193,7 @@ angular.module('bodyAppApp')
         ref.child('workouts').child($scope.showAddWorkout.id).update($scope.showAddWorkout, function(err) {})
     }
 
-    $scope.updateSet = function(setIdToUpdate) {
+    $scope.updateSet = function(setToUpdate) {
         $scope.editingSet = false;
         $scope.showAddSet = false;
         ref.child('workouts').child($scope.showAddWorkout.id).update($scope.showAddWorkout, function(err) {

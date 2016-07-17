@@ -74,6 +74,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.searchForUser = function(userToSearchFor) {
+      Intercom('trackEvent', "searchedForUserToBeInstructor", {searchedFor: userToSearchFor})
       console.log(userToSearchFor)
       User.getInstructorByEmail({
         id: currentUser._id
@@ -108,6 +109,7 @@ angular.module('bodyAppApp')
       // ref.child('instructors').child(userInfo._id).update(instructorToSave)
       ref.child('instructors').child(instructorToSave._id).update(instructorToSave, function(err) {
         if (err) return console.log(err)
+        Intercom('trackEvent', "savedInstructor", {instructorToSave: instructorToSave._id})
         console.log("Saved / Updated instructor")
         ref.child('toSetup').child('instructors').remove(function(err) {
           if (err) console.log(err)
@@ -146,9 +148,10 @@ angular.module('bodyAppApp')
       var rightNow = new Date().getTime();
       ref.child('classes').orderByChild('instructor').equalTo(idToDelete).once('value', function(snapshot) {
         if (!snapshot.exists()) {
-            console.log("No classes found for specified class. Safe to delete.")
+            console.log("No classes found for specified instructor. Safe to delete.")
             return ref.child('instructors').child(idToDelete).remove(function(err) {
               if (err) return console.log(err)
+              Intercom('trackEvent', "removedInstructor", {instructor: idToDelete})
               ref.child('admins').child(idToDelete).remove(function(err) {
                 if (err) return console.log(err)
                 console.log("Removed admin")

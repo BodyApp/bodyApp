@@ -1327,6 +1327,7 @@ exports.sendWelcomeEmail = function(req,res) {
   function sendEmail(user) {
     if (!user.email || user.welcomeEmailSent) return res.status(500).send("User welcome email has previously been sent or no email address.");
     var emailAddress = user.email
+    if (!emailAddress) return res.status(400).send("Couldn't send welcome email to " + user._id + " because user doesn't have a valid email.");
     fs.readFile(__dirname + '/emails/welcomeEmail.html', function (err, html) {
       if (err) throw err; 
       var welcomeEmail = html
@@ -1349,6 +1350,7 @@ exports.sendWelcomeEmail = function(req,res) {
         }
         else {
           user.welcomeEmailSent = new Date();
+          console.log("Sent welcome email to " + emailAddress)
           user.save(function(err) {
             if (err) return validationError(res, err);
             res.status(200).json(user);

@@ -112,7 +112,7 @@
                   </div>
               </div>
             </div>
-            <div id="browser-alert" ng-show = "wrongBrowser && !closedAlert">  <!-- BROWSER ALERT -->
+            <div id="browser-alert" ng-show = "wrongBrowser && !closedAlert && isLoggedIn()">  <!-- BROWSER ALERT -->
               <div class="cancel-modal-membership" ng-click = "closeAlertPushed()">
                 <a href="#">
                   <i class="ti-close" style="font-size:15px;"></i>

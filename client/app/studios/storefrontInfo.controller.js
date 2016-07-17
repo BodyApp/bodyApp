@@ -136,6 +136,7 @@ angular.module('bodyAppApp')
           // Upload completed successfully, now we can get the download URL
           $scope.headerUrl = uploadTask.snapshot.downloadURL;
           if(!$scope.$$phase) $scope.$apply();
+          Intercom('trackEvent', "uploadedHeaderImage")
 
         });
         // formData.append('files[]', obj.lfFile);
@@ -196,7 +197,7 @@ angular.module('bodyAppApp')
           // Upload completed successfully, now we can get the download URL
           $scope.iconUrl = uploadTask.snapshot.downloadURL;
           if(!$scope.$$phase) $scope.$apply();
-
+          Intercom('trackEvent', "uploadedProfileImage")
         });
         // formData.append('files[]', obj.lfFile);
           // console.log(formData)
@@ -242,7 +243,7 @@ angular.module('bodyAppApp')
           if (!$scope.showingToast) {
             $scope.showingToast = true;
             $timeout(function() {
-              $timeout(function(){$scope.showingToast = false}, 10000)  
+              $timeout(function(){$scope.showingToast = false; Intercom('trackEvent', "updatedStorefrontInfo");}, 10000)  
               $mdToast.show(
                 $mdToast.simple()
                   .textContent('Storefront information saved!')
@@ -264,6 +265,7 @@ angular.module('bodyAppApp')
       ref.child('storefrontInfo').update($scope.storefrontInfo, function(err) {
         if (err) return console.log(err)
         console.log("Saved storefront info.")
+        Intercom('trackEvent', "updatedCategories")
       })
     }
 

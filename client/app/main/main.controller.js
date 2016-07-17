@@ -63,6 +63,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.login = function() {
+      Intercom('trackEvent', 'wentToLoginFromMain');
       $state.go('signup', {step: 0, mode: 'login'})
       // $window.location.href = '/auth/' + provider;
     };
@@ -72,6 +73,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.signUp = function() {
+      Intercom('trackEvent', 'wentToSignupFromMain');
       $state.go('signup', {step: 0, mode: 'signup'})
       // var modalInstance = $uibModal.open({
       //   animation: true,
