@@ -410,7 +410,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.navigateToClassDetails = function(classId) {
-      $location.path('/studios/'+studioId+'/classinfo/'+classId)
+      $location.path('/studios/'+studioId+'/classdetails/'+classId)
     }
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {

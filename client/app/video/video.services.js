@@ -10,6 +10,7 @@ angular.module('bodyAppApp')
     service.studioId;
 
     service.hardwareSetup = function(element) {
+      if (devices) return
       devices = createOpentokHardwareSetupComponent(element, {
         insertMode: 'append'
       }, function(error, hardwareSetup) {
@@ -30,7 +31,7 @@ angular.module('bodyAppApp')
     }
 
     service.destroyHardwareSetup = function() {
-      if (devices) devices.destroy(); console.log("Clearing hardware setup");
+      if (devices) devices.destroy(); console.log("Clearing hardware setup"); devices = null;
     }
 
   	// service.setVideoInput = function(videoInput) {

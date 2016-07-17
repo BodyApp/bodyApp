@@ -326,7 +326,7 @@ angular.module('bodyAppApp')
 
     $scope.joinClass = function(classToJoin) {
       Schedule.setClassUserJustJoined(studioId, classToJoin);
-      $location.path('/studios/' + studioId + '/classsinfo/'+classToJoin.dateTime)
+      $location.path('/studios/' + studioId + '/classinfo/'+classToJoin.dateTime)
     }
 
     $scope.getNumOf = function(objectToCheck) {

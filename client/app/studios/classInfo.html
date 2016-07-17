@@ -47,7 +47,7 @@
 				                start-date= "{{startDateTime}}"
 				                end-date="{{endDateTime}}"
 				                title="{{classType.name}} with {{storefrontInfo.studioName}}"
-				                location="https://www.getbodyapp.com/studios/{{studioId}}/classsinfo/{{classId}}"
+				                location="https://www.getbodyapp.com/studios/{{studioId}}/classinfo/{{classId}}"
 				                
 				                class-name="panel-action-item btn-blue"
 				                description="Instructor: {{instructorDetails.firstName}} {{instructorDetails.lastName}}. {{instructorDetails.bio}}\n\nClass Description: {{classType.classDescription}}\n\n{{storefrontInfo.studioName}} Description: {{storefrontInfo.shortDescription}}"
@@ -178,7 +178,9 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
-							<div class="previewVideo" id="audioVideoSetup"></div>
+							<div class="previewVideo">
+								<div id="audioVideoSetup"></div>
+							</div>
 								<!-- <div class="pt8 previewVideo" id = "audioVideoSetup"></div> -->
 								<!-- <img ng-show="overlay1" class="cameraOverlay" src="/assets/images/fit-mom-overlay.png">
 								<img ng-show="overlay2" class="cameraOverlay" src="/assets/images/big-guy-overlay.png">

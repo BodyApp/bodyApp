@@ -141,7 +141,7 @@ angular.module('bodyAppApp')
     function setupVidAud() {
       if (!$scope.bookings || (!$scope.bookings[$scope.currentUser._id] && !$scope.userIsInstructor)) return;
       var element = document.querySelector('#audioVideoSetup');
-      var component = Video.hardwareSetup(element);
+      Video.hardwareSetup(element);
     }
 
     $scope.endVideoSession = function() { //Turns off the green light if navigate away without joining class.
@@ -387,7 +387,7 @@ angular.module('bodyAppApp')
         studioName: $scope.storefrontInfo.studioName,
         studioId: $scope.storefrontInfo.studioId,
         instructorFullName: $scope.instructorDetails.firstName + " " + $scope.instructorDetails.lastName,
-        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classsinfo/"+slot.dateTime,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classinfo/"+slot.dateTime,
         equipmentRequired: $scope.classType.equipment,
         classDescription: $scope.classType.classDescription,
         studioIconUrl: $scope.iconUrl
