@@ -398,7 +398,7 @@ angular.module('bodyAppApp')
 	}
 
 	function goBackToClassStarting() {
-		$location.path('/studios/'+studioId+'/classstarting/'+classId)
+		$location.path('/studios/'+studioId+'/classinfo/'+classId)
 	}
 
 	function setMusicPlayer(classToJoin) {

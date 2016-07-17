@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, $uibModal, studioId, classId, Auth, Video, User) {
+  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, $uibModal, $cookies, $http, studioId, classId, Auth, Video, User) {
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -7,6 +7,7 @@ angular.module('bodyAppApp')
     $scope.currentUser = Auth.getCurrentUser()
     $scope.classId = classId;
     $scope.studioId = studioId;
+    var accountId;
 
     formatDateTime()
     calculateTimeUntilClassStarts()
@@ -26,6 +27,7 @@ angular.module('bodyAppApp')
       if (user) {     
         getClassDetails()
         getStorefrontInfo()
+        getAccountId()
       }
     })
 
@@ -244,6 +246,35 @@ angular.module('bodyAppApp')
       }
     }
 
+    function getAccountId() {
+      ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("Can't get access code for studio.")
+        accountId = snapshot.val()
+        checkSubscriptionStatus()
+      })
+
+      ref.child("stripeConnected").child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
+        snapshot.forEach(function(plan) {
+          $scope.subscriptionPlan = plan.val()
+          if(!$scope.$$phase) $scope.$apply();
+        })      
+      })
+    }
+
+    function checkSubscriptionStatus() {
+      $http.post('/api/payments/updatecustomersubscriptionstatus', {
+        studioId: studioId,
+        accountId: accountId
+      })
+      .success(function(data) {
+        console.log("Successfully updated customer subscription status.");
+        console.log(data)
+      })
+      .error(function(err) {
+        console.log(err)
+      }.bind(this));
+    }
+
     function checkMembership(slot) {
       $rootScope.subscriptions = $rootScope.subscriptions || {};
       if (!slot) slot = null
@@ -356,7 +387,7 @@ angular.module('bodyAppApp')
         studioName: $scope.storefrontInfo.studioName,
         studioId: $scope.storefrontInfo.studioId,
         instructorFullName: $scope.instructorDetails.firstName + " " + $scope.instructorDetails.lastName,
-        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classsinfo/"+slot.dateTime,
         equipmentRequired: $scope.classType.equipment,
         classDescription: $scope.classType.classDescription,
         studioIconUrl: $scope.iconUrl

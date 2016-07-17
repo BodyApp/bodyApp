@@ -513,7 +513,7 @@ angular.module('bodyAppApp')
         studioName: $scope.studioName,
         studioId: $scope.studioId,
         instructorFullName: $scope.instructorInfo.firstName + " " + $scope.instructorInfo.lastName,
-        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classsinfo/"+slot.dateTime,
         equipmentRequired: $scope.classInfo.equipment,
         classDescription: $scope.classInfo.classDescription,
         studioIconUrl: $scope.iconUrl

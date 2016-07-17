@@ -656,7 +656,7 @@ angular.module('bodyAppApp')
         studioName: $scope.storefrontInfo.studioName,
         studioId: $scope.storefrontInfo.studioId,
         instructorFullName: $scope.instructors[slot.instructor].firstName + " " + $scope.instructors[slot.instructor].lastName,
-        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classsinfo/"+slot.dateTime,
         equipmentRequired: $scope.classTypes[slot.classType].equipment,
         classDescription: $scope.classTypes[slot.classType].classDescription,
         studioIconUrl: $scope.iconUrl
@@ -739,7 +739,7 @@ angular.module('bodyAppApp')
 
     $scope.joinClass = function(classToJoin) {
       Schedule.setClassUserJustJoined(studioId, classToJoin);
-      $location.path('/studios/' + studioId + '/classstarting/' + classToJoin.dateTime)
+      $location.path('/studios/' + studioId + '/classinfo/' + classToJoin.dateTime)
     }
 
     $scope.goToDiscover = function(tag) {

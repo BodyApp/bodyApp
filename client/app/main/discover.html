@@ -92,8 +92,8 @@
                           <h3>{{getTime(instance.dateTime)}} ({{instance.duration}} min)</h3>
                         </div>
                         <div class="col-xs-5 text-right">
-                          <a href="/studios/{{instance.studioId}}" class="btn-blue hidden-xs">Go To Studio</a>
-                          <a href="/studios/{{instance.studioId}}" class="btn-blue btn-collapse visible-xs">Go To Studio</a>
+                          <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="btn-blue hidden-xs">View Class</a>
+                          <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="btn-blue btn-collapse visible-xs">View Class</a>
                         </div>
                       </div>
                       <div class="row">
