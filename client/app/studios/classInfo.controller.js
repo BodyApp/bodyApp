@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, studioId, classId, Auth, Video) {
+  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, $uibModal, studioId, classId, Auth, Video, User) {
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -21,8 +21,6 @@ angular.module('bodyAppApp')
     $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
       $interval.cancel(calculateTime)
     });
-
-    setupVidAud()
 
     auth.onAuthStateChanged(function(user) {
       if (user) {     
@@ -49,7 +47,9 @@ angular.module('bodyAppApp')
 
     function getBookedUsersInformation() {
       ref.child('bookings').child(classId).on('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         $scope.bookings = snapshot.val();
+        setupVidAud()
         $scope.numBookings = Object.keys($scope.bookings).length;
         if(!$scope.$$phase) $scope.$apply();
         snapshot.forEach(function(booking) {
@@ -90,7 +90,8 @@ angular.module('bodyAppApp')
 
     function getStorefrontInfo() {
       ref.child('storefrontInfo').once('value', function(snapshot) {
-        $scope.storefrontInfo = snapshot.val()
+        $scope.storefrontInfo = snapshot.val();
+        $scope.emailAddress = $scope.storefrontInfo.ownerEmail;
         if(!$scope.$$phase) $scope.$apply();
       })
     }
@@ -136,6 +137,7 @@ angular.module('bodyAppApp')
     }
 
     function setupVidAud() {
+      if (!$scope.bookings || (!$scope.bookings[$scope.currentUser._id] && !$scope.userIsInstructor)) return;
       var element = document.querySelector('#audioVideoSetup');
       var component = Video.hardwareSetup(element);
     }
@@ -240,5 +242,145 @@ angular.module('bodyAppApp')
         });
         $location.path('/uservideo')  
       }
+    }
+
+    function checkMembership(slot) {
+      $rootScope.subscriptions = $rootScope.subscriptions || {};
+      if (!slot) slot = null
+      Auth.isLoggedInAsync(function(loggedIn) {
+        if (!loggedIn) {
+          $cookies.put('loggedInPath', $location.path())
+          
+          $state.go('signup', {step: 0, mode: 'signup'})
+
+        } else if (slot && slot.typeOfClass === 'Specialty') {
+          console.log("Booking specialty class")
+          return bookSpecialtyClass(slot)
+        } else if (slot && $scope.classTypes && $scope.classTypes[slot.classType] && $scope.classTypes[slot.classType].freeClass) { //Book class if studio hasn't set pricing.
+          console.log("Booking for free because this is a free class.")
+          return bookClass(slot)
+        } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
+          console.log("Booking for free because no pricing is set")
+          return bookClass(slot)
+        } else if ($scope.currentUser && $scope.currentUser.role === 'admin') {
+          console.log("Booking for free because user is admin.")
+          return bookClass(slot)
+        } else if (studioId === 'body') {
+          console.log("Booking for free because this is the BODY studio.")
+          return bookClass(slot)
+        } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'app/membership/membership.html',
+            controller: 'MembershipCtrl',
+            windowClass: "modal-wide",
+            resolve: {
+              slot: function() {
+                return slot
+              },
+              studioId: function() {
+                return studioId
+              },
+              accountId: function() {
+                return accountId
+              }
+            }
+          });
+
+          modalInstance.result.then(function () {
+            currentUser = Auth.getCurrentUser()
+          }, function () {
+            currentUser = Auth.getCurrentUser()
+          });
+        } else {
+          return true;
+        }
+      });
+    }
+
+    $scope.reserveClicked = function(slot) {
+      if ($rootScope.subscribing) return 
+      if (!$scope.currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
+        console.log("No subscription found.")
+        checkMembership(slot)
+      } else {
+        bookClass(slot)
+      }
+    }
+
+    function bookSpecialtyClass(slot) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/membership/membership.html',
+        controller: 'MembershipCtrl',
+        windowClass: "modal-wide",
+        resolve: {
+          slot: function() {
+            return slot
+          },
+          studioId: function() {
+            return studioId
+          },
+          accountId: function() {
+            return accountId
+          }
+        }
+      });
+    }
+
+    function bookClass(slot) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/schedule/bookingConfirmation.html',
+        controller: 'BookingConfirmationCtrl',
+        resolve: {
+          slot: function () {
+            return slot;
+          },
+          studioId: function () {
+            return studioId;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $location.path('/studios/'+studioId+"/classinfo/"+classId)
+        if(!$scope.$$phase) $scope.$apply();
+      }, function () {
+        // $log.info('Modal dismissed at: ' + new Date());
+      });
+
+      User.addBookedClass({ id: $scope.currentUser._id }, {
+        classToAdd: slot.dateTime,
+        className: $scope.classType.name,
+        studioName: $scope.storefrontInfo.studioName,
+        studioId: $scope.storefrontInfo.studioId,
+        instructorFullName: $scope.instructorDetails.firstName + " " + $scope.instructorDetails.lastName,
+        classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classstarting/"+slot.dateTime,
+        equipmentRequired: $scope.classType.equipment,
+        classDescription: $scope.classType.classDescription,
+        studioIconUrl: $scope.iconUrl
+      }, function(user) {
+        ref.child("bookings").child(slot.dateTime).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""}, function(err) {
+          if (err) return console.log(err)
+          console.log("Added booking")
+        });
+        ref.child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout}, function(err) {
+          if (err) return console.log(err)
+          console.log("Added user booking")
+        });
+        $scope.currentUser = user;
+        Intercom('update', {
+            "latestClassBooked_at": Math.floor(new Date(slot.dateTime*1) / 1000)
+        });
+
+        Intercom('trackEvent', 'bookedClass', {
+          studioId: studioId,
+          classToBook: slot ? slot.dateTime : "None",
+          dateOfClass_at: Math.floor(slot.dateTime/1000)
+        });
+      }, function(err) {
+          console.log("Error adding class: " + err)
+      }).$promise;
     }
   })

@@ -3,13 +3,14 @@
 <div class="page-container-responsive pb72">
 	<div class="row pt48 pb32">
 		<div class="col-md-12 text-center-sm text-center-xs">
-			<h3 class="mb8" ng-show = "classType && storefrontInfo">You're 
-				<span style = "font-weight: 300;" ng-show = "!userIsInstructor">attending</span> 
-				<span style = "font-weight: 300;" ng-show = "userIsInstructor">teaching</span>
-				{{classType.name}} with {{storefrontInfo.studioName}}</h3>
+			<h3 class="mb8" ng-show = "classType && storefrontInfo">
+				<span style = "font-weight: 300;" ng-show = "!userIsInstructor && bookings[currentUser._id]">You're attending</span> 
+				<span style = "font-weight: 300;" ng-show = "userIsInstructor">You're teaching</span>
+				{{classType.name}} with {{storefrontInfo.studioName}}
+			</h3>
 		</div>
 		<div class="col-md-6 text-center-sm text-center-xs mb-sm-16">
-			<h5 ng-show = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass($event)">cancel</a> your reservation?</h5>
+			<h5 ng-if = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass($event)">cancel</a> your reservation?</h5>
 		</div>
 		<div class="col-md-6 text-right text-center-sm text-center-xs">
 			<ul class="starting-action-btns">
@@ -17,7 +18,10 @@
 					<a ng-click = "endVideoSession()" ng-href="/studios/{{storefrontInfo.studioId}}">Back to storefront</a>
 				</li>
 				<li>
-					<button href="#" class="btn-blue" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
+					<button href="#" class="btn-blue" ng-if = "bookings[currentUser._id] || userIsInstructor" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
+				</li>
+				<li>
+					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor" ng-click = "reserveClicked(classDetails)">Reserve Class</buttons>
 				</li>
 			</ul>
 		</div>
@@ -35,10 +39,9 @@
 									<h5 class="lightgray">{{formattedDateTime.date}}</h5>
 									<h5 class="lightgray">{{formattedDateTime.time}} for {{classDetails.duration}} min</h5>
 								</div>
-								<div class="col-xs-6">
+								<div class="col-xs-6" ng-if="bookings[currentUser._id] || userIsInstructor">
 									<ul class="panel-action-list">
 								    <li>
-								      <!-- <a href="#" class="panel-action-item btn-blue">Download for cal</a> -->
 								      <addtocalendarplain
 								      	ng-show = "startDateTime && endDateTime"
 				                start-date= "{{startDateTime}}"
@@ -70,7 +73,6 @@
 									<div class="row">
 										<div class="col-xs-12">
 											<h4>{{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
-											<!-- <h5 class="lightgray">Pepper Pike, USA</h5> -->
 											<h5 class="lightgray"><span class="bold">{{instructorDetails.title}}</span> 
 											<h5 class="lightgray"><span class="bold">Certifications: {{instructorDetails.certifications}}</span> 
 												<!-- with a <span class="bold royalblue">{{instructorDetails.trainerRating}} / 5</span> rating -->
@@ -87,8 +89,8 @@
 							</div>							
 						</div>
 					</div>
-					<hr class="content-divider mt16 mb16">
-					<div class="row">
+					<hr class="content-divider mt16 mb16" ng-if = "bookings[currentUser._id] || userIsInstructor">
+					<div class="row" ng-if = "bookings[currentUser._id] || userIsInstructor">
 						<div class="col-sm-3 mb-xs-16">
 							<h5>Classmates</h5>
 						</div>
@@ -128,8 +130,8 @@
 						</div>
 					</div>
 
-					<hr class="content-divider mt16 mb16" ng-show = "workout">
-					<div class="row" ng-show = "workout">
+					<hr class="content-divider mt16 mb16" ng-if = "workout && (bookings[currentUser._id] || userIsInstructor)">
+					<div class="row" ng-if = "workout && (bookings[currentUser._id] || userIsInstructor)">
 						<div class="col-sm-3 mb-xs-16">
 							<h5>Workout</h5>
 						</div>
@@ -172,7 +174,7 @@
 			</div>
 		</div>
 		<div class="col-lg-5">
-			<div class="panel">
+			<div class="panel" ng-show = "bookings[currentUser._id] || userIsInstructor">
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
@@ -196,9 +198,9 @@
 			<div class="row">
 				<div class="col-sm-12 text-center pb16">
 					<img class="round-photo lightBorder mb8" ng-src="{{iconUrl}}" width="150" height="150">
-					<h4 class="mb8">Your studio, {{storefrontInfo.studioName}}</h4>
+					<h4 class="mb8">{{storefrontInfo.studioName}}</h4>
 					<h5 class="mb16">Have a question about your class? The best way to get information is to ask your instructor directly.</h5>
-					<a href = "mailto:concierge@getbodyapp.com?Subject=Question%20About%20Class" target="_top" class="btn-blue btn-large">Contact Studio</a>
+					<a ng-href = "mailto:{{emailAddress}}?cc=concierge@getbodyapp.com&Subject=Question%20About%20{{storefrontInfo.studioName}}" target="_top" class="btn-blue btn-large">Contact Studio</a>
 				</div>
 				<div class="col-sm-12">
 					<hr class="content-divider mt16 mb16">
