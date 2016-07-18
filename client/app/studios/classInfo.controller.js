@@ -132,10 +132,10 @@ angular.module('bodyAppApp')
       var timeNow = new Date().getTime();
       $scope.minutesUntilClassStarts = Math.round((classId*1 - timeNow) / (1000*60),0);
     
-      if ($scope.minutesUntilClassStarts <= 0) return $scope.timeUntilClassStarts = "Click to join class!"  
-      $scope.timeUntilClassStarts = "Class starting in " + $scope.minutesUntilClassStarts + " minutes";
-      if ($scope.minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = "Class starting in " + Math.round($scope.minutesUntilClassStarts / 60, 0) + (Math.round($scope.minutesUntilClassStarts / 60, 0) < 2 ? " hour" : " hours");
-      if ($scope.minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = "Class starting in " + Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) + (Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day" : " days");
+      if ($scope.minutesUntilClassStarts <= 0) return $scope.timeUntilClassStarts = "Click here to join class!"  
+      $scope.timeUntilClassStarts = "Click here in " + $scope.minutesUntilClassStarts + " minutes to start class";
+      if ($scope.minutesUntilClassStarts > 60) $scope.timeUntilClassStarts = "Click here in " + Math.round($scope.minutesUntilClassStarts / 60, 0) + (Math.round($scope.minutesUntilClassStarts / 60, 0) < 2 ? " hour to start class" : " hours to start class");
+      if ($scope.minutesUntilClassStarts > 60*24) $scope.timeUntilClassStarts = "Click here in " + Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) + (Math.round($scope.minutesUntilClassStarts / 60 / 24, 0) < 2 ? " day to start class" : " days to start class");
     }
 
     function setupVidAud() {

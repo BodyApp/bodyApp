@@ -698,7 +698,10 @@ angular.module('bodyAppApp')
 			streamCreated: function (event) {
 				console.log('The publisher started streaming with id ' + event.stream.id);
 		   
-		   	if (event.stream && event.stream.id) Intercom('update', { "latestTokboxStreamId": event.stream.id });
+		   	if (event.stream && event.stream.id) {
+		   		Intercom('update', { "latestTokboxStreamId": event.stream.id });
+		   		Intercom('trackEvent', "successfullyPublishedVideo", {tokboxStreamId: event.stream.id})
+		   	}
 				if (event.connection && event.connection.connectionId) Intercom('update', { "latestTokboxConnectionId": event.connection.connectionId });
 			},
 			streamDestroyed: function (event) {
@@ -763,7 +766,7 @@ angular.module('bodyAppApp')
 		  		subscriber.subscribeToAudio(true);
 		  	}
 
-				if (!$scope.firstStream && !instructorStream && userIsInstructor) {
+				if (!$scope.firstStream && !instructorStream && userIsInstructor) {					
 					$scope.firstStream = true;
 					$('#' + subscriberBox).addClass('user-videos-large')
 					subscriber.subscribeToAudio(true);
@@ -843,10 +846,12 @@ angular.module('bodyAppApp')
 
 				if (streamId === classToJoin.instructor.toString()) {
 					console.log("Received trainer stream " + streamId)
+					Intercom('trackEvent', "subscribedToInstructor", {instructorStreamId: streamId})
 					instructorStream = true;
 					// vidWidth = "100%";
 				} else {
 					console.log("Received consumer stream " + streamId)
+					Intercom('trackEvent', "subscribedToUser", {userStreamId: streamId})
 				// if ($scope.consumerObjects[streamId]) {
 					// streamBoxNumber = $scope.consumerObjects[streamId].boxNumber;
 					// subscriberBox = instructorStream ? "trainerVideo" : "consumer" + streamBoxNumber)
