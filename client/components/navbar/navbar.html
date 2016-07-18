@@ -27,9 +27,13 @@
                           <a href="/createstudio">Open Studio</a>
                         </p>
                       </li>
-                      <li>
+                      <li ng-mouseenter = "classesMenuOpen = true;" ng-mouseleave = "classesMenuOpen = false;">
                         <p ng-class="{active: isActive('/discover')}">
-                          <a href="/discover">Find Classes</a>
+                          <a href="/discover">Upcoming Classes</a>
+                          <md-menu-content ng-show = "classesMenuOpen">
+                            <md-menu-item ng-show = "isLoggedIn()"><md-button ng-class = "{textRight: isMobile}" ng-click="goToUpcomingClasses()">My Classes</md-button></md-menu-item>
+                            <md-menu-item><md-button ng-class = "{textRight: isMobile}" ng-click="goToDiscover()">Find Classes</md-button></md-menu-item>
+                          </md-menu-content>
                         </p>
                       </li>
                       <!-- <li ng-show="studioId && isLoggedIn() && !adminOf[studioId]">
@@ -37,11 +41,11 @@
                           <a href="/studios/{{studioId}}">Storefront</a>
                         </p>
                       </li> -->
-                      <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && subscriptions[studioId] !== 'active'">
+                      <!-- <li ng-show="!adminOf[studioId] && isLoggedIn() && subscriptionPlan && subscriptions[studioId] !== 'active'">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="#" ng-click = "showMembershipModal()">Add Membership</a>
                         </p>
-                      </li>   
+                      </li>    -->
                     </ul>
                   </div>
                 </div>

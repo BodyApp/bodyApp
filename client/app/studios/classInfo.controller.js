@@ -401,6 +401,18 @@ angular.module('bodyAppApp')
           if (err) return console.log(err)
           console.log("Added user booking")
         });
+        firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(slot.dateTime).update({
+          className: $scope.classType.name,
+          studioName: $scope.storefrontInfo.studioName,
+          studioId: $scope.storefrontInfo.studioId,
+          instructorFullName: $scope.instructorDetails.firstName + " " + $scope.instructorDetails.lastName,
+          classInfoUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classinfo/"+slot.dateTime,
+          classDescription: $scope.classType.classDescription,
+          studioIconUrl: $scope.iconUrl,
+          classId: slot.dateTime,
+          duration: slot.duration
+        })
+
         $scope.currentUser = user;
         Intercom('update', {
             "latestClassBooked_at": Math.floor(new Date(slot.dateTime*1) / 1000)

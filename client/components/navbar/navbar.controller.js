@@ -235,6 +235,14 @@ angular.module('bodyAppApp')
       $location.path('/studios/'+$rootScope.adminSelected + '/recordvideo')
     }    
 
+    $scope.goToDiscover = function() {
+      $location.path('/discover')
+    }
+
+    $scope.goToUpcomingClasses = function() {
+      $location.path('/user/schedule')
+    }
+
     // $scope.openMenu = function(ev) {
     //   $mdOpenMenu(ev)
     // }

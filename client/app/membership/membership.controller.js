@@ -530,6 +530,17 @@ angular.module('bodyAppApp')
         // getInfo(slot.dateTime);
         ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
         ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
+        firebase.database().ref().child('userBookings').child(currentUser._id).child(slot.dateTime).update({
+          className: $scope.classInfo.name,
+          studioName: $scope.studioName,
+          studioId: studioId,
+          instructorFullName: $scope.instructorInfo.firstName + " " + $scope.instructorInfo.lastName,
+          classInfoUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classinfo/"+slot.dateTime,
+          classDescription: $scope.classInfo.classDescription,
+          studioIconUrl: $scope.iconUrl,
+          classId: slot.dateTime,
+          duration: slot.duration
+        })
         // ref.child("userBookings").child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName, facebookId: currentUser.facebookId})           
         // slot.bookedUsers = slot.bookedUsers || {};
         // slot.bookedFbUserIds = slot.bookedFbUserIds || {};
