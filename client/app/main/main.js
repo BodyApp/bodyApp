@@ -48,4 +48,12 @@ angular.module('bodyAppApp')
         controller: 'MainCtrl'
       });
   })
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('testimonials', {
+        url: '/testimonials',
+        templateUrl: 'app/main/testimonials.html',
+        controller: 'MainCtrl'
+      });
+  })
   ;
