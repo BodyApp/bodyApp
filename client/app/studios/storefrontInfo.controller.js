@@ -243,7 +243,15 @@ angular.module('bodyAppApp')
           if (!$scope.showingToast) {
             $scope.showingToast = true;
             $timeout(function() {
-              $timeout(function(){$scope.showingToast = false; Intercom('trackEvent', "updatedStorefrontInfo");}, 10000)  
+              $timeout(function(){
+                $scope.showingToast = false; 
+                Intercom('trackEvent', "updatedStorefrontInfo", {
+                  studioName: storefrontInfo.studioName,
+                  ownerName: storefrontInfo.ownerName,
+                  shortDescription: storefrontInfo.shortDescription,
+                  longDescription: storefrontInfo.longDescription
+                });
+              }, 10000)  
               $mdToast.show(
                 $mdToast.simple()
                   .textContent('Storefront information saved!')
