@@ -66,6 +66,7 @@ angular.module('bodyAppApp')
 
     function delayedStartup() {
       Intercom('trackEvent', 'navigatedToEditSchedule', { studio: studioId });
+      Intercom('update', { studioOwnedId: studioId });
       auth.onAuthStateChanged(function(user) {
         if (user) {
           getClassTypes();

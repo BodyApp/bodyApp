@@ -298,8 +298,8 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
                     <td class="hidden-xs">{{workouts[class.workout].title}}</td>
                     <td>{{instructors[class.instructor].firstName}} {{instructors[class.instructor].lastName}}</td>
                     <td class="hidden-xs">{{playlistObjects[class.playlist].title}}</td>
-                    <td ng-if = "numBookingsByClass[class.dateTime]">{{numBookingsByClass[class.dateTime]}} of {{class.spots}}</td>
-                    <td ng-if = "!numBookingsByClass[class.dateTime]">None</td>
+                    <td ng-show = "numBookingsByClass[class.dateTime]">{{numBookingsByClass[class.dateTime]}} of {{class.spots}}</td>
+                    <td ng-show = "!numBookingsByClass[class.dateTime]">None</td>
                   </tr>
                 </tbody>
               </table>
