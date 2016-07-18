@@ -11,6 +11,12 @@ angular.module('bodyAppApp')
 
     formatDateTime()
     calculateTimeUntilClassStarts()
+
+    //Check and handle if mobile
+    if(window.innerWidth <= 990) {
+      $scope.isMobile = true;
+      if(!$scope.$$phase) $scope.$apply();
+   } 
     
     Intercom('trackEvent', 'wentToClassInfo', {
       classId: classId,
