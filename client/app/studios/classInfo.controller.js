@@ -18,6 +18,10 @@ angular.module('bodyAppApp')
       if(!$scope.$$phase) $scope.$apply();
    } 
     
+    if (OT.checkSystemRequirements() != 1 || typeof InstallTrigger !== 'undefined') {
+      $scope.wrongBrowser = true;
+    }
+
     Intercom('trackEvent', 'wentToClassInfo', {
       classId: classId,
       studioId: studioId
@@ -192,6 +196,30 @@ angular.module('bodyAppApp')
     }
 
     $scope.joinClass = function(ev) {
+      if ($scope.isMobile) {
+        var alert = $mdDialog.alert({
+          title: "Can't use mobile device for class",
+          textContent: "You'll need a computer and the Google Chrome browser to take class. We don't support mobile yet!",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'OK!'
+        });
+
+        return $mdDialog
+        .show( alert )
+      }
+      if ($scope.wrongBrowser) {
+        var alert = $mdDialog.alert({
+          title: "Need to use Google Chrome Browser",
+          textContent: "You'll need to use Google Chrome to take class.  You can download it here: https://www.google.com/chrome/browser/desktop/",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'OK!'
+        });
+
+        return $mdDialog
+        .show( alert )
+      }
       if ($scope.minutesUntilClassStarts > 5 && $scope.classDetails.instructor != $scope.currentUser._id) {
         var alert = $mdDialog.alert({
           title: "Class Not Started Yet",
