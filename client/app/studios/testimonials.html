@@ -41,7 +41,8 @@
     	  <div class="panel-body">
     	    <div class="row">
     	      <div class="col-sm-5 mb8">
-    	        <a href="#" class="btn big-btn btn-full-width relative"><i class="fa fa-cloud-upload icon-left"></i>Upload Photo</a>
+    	        <!-- <a href="#" class="btn big-btn btn-full-width relative"><i class="fa fa-cloud-upload icon-left"></i>Upload Photo</a> -->
+                <lf-ng-md-file-input lf-placeholder = "Story image" lf-files="storyImage" lf-caption="" accept="image/*" progress preview>Upload Photo</lf-ng-md-file-input>
     	        <h5 class="lightgray mt8">Image should be 600 x 400 pixels</h5>
     	      </div>
     	      <div class="col-sm-7 mb8">
@@ -61,7 +62,7 @@
     	            <a href="#" class="panel-action-item" ng-click = "addEditObject = false; editing = false;">Cancel</a>
     	          </li>
     	          <li ng-if = "!editing">
-    	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveTestimonial(addEditObject)">Save</a>
+    	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveTestimonial(addEditObject, storyImage)">Save</a>
     	          </li>
     	          <li ng-if = "editing">
     	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateTestimonial(addEditObject)">Update</a>
@@ -87,7 +88,7 @@
     	  <div class="panel-body">
     	    <div class="row">
     	      <div class="col-sm-5 mb8">
-    	        <img src="/assets/images/ralabala/story4.jpg">
+    	        <img ng-src="{{testimonialImages[id]}}">
     	      </div>
     	      <div class="col-sm-7 mb8">
     	        <h5>Name: <span class="lightgray">{{testimonial.clientName}}</span></h5>

@@ -23,6 +23,7 @@ angular.module('bodyAppApp')
     })
 
     var ref = firebase.database().ref().child('studios').child(studioId);
+    var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
 
     function delayedStartup() {
@@ -51,15 +52,19 @@ angular.module('bodyAppApp')
         if (!snapshot.exists()) return;
         $scope.testimonials = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();
+        snapshot.forEach(function(testimonial) {
+        	getTestimonialPhoto(testimonial.val().id)
+        })
       })
     }
 
-    $scope.saveTestimonial = function(testimonial) {
+    $scope.saveTestimonial = function(testimonial, imageToSave) {
       var testimonialRef = ref.child('testimonials').push(testimonial, function(err) {
       	if (err) return console.log(err)
       	ref.child('testimonials').child(testimonialRef.key).update({id: testimonialRef.key}, function(err) {
       		if (err) return console.log(err)
     			$scope.addEditObject = false;
+    			uploadImage(testimonialRef.key, imageToSave)
 	    		if(!$scope.$$phase) $scope.$apply();
       	})
     		Intercom('trackEvent', 'addedNewTestimonial', testimonial);
@@ -85,6 +90,71 @@ angular.module('bodyAppApp')
     $scope.deleteTestimonial = function(testimonial) {
     	ref.child('testimonials').child(testimonial.id).remove(function(err) {
     		if (err) return console.log(err)
+  			storageRef.child('images').child('testimonials').child(testimonial.id+".jpg").delete().then(function() {
+  				console.log("Testimonial image deleted")
+  			}).catch(function(err) {
+  				console.log(err)
+  			})
     	})
     }
-  });
+
+
+    function getTestimonialPhoto(testimonialId) {
+    	storageRef.child('images').child('testimonials').child(testimonialId+".jpg").getDownloadURL().then(function(url) {
+        $scope.testimonialImages = $scope.testimonialImages || {};
+        $scope.testimonialImages[testimonialId] = url;
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+  	function uploadImage(testimonialId, imageToSave) {
+  // $scope.$watch('headerImage.length',function(newVal,oldVal){
+
+    angular.forEach(imageToSave,function(obj){
+  //     // console.log(obj.lfFile)
+      var uploadTask = storageRef.child('images').child('testimonials').child(testimonialId+".jpg").put(obj.lfFile);
+
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, function(snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function(error) {
+        switch (error.code) {
+          case 'storage/unauthorized':
+          console.log("User doesn't have permission to access the object");
+            // User doesn't have permission to access the object
+            break;
+
+          case 'storage/canceled':
+          console.log("User canceled the upload");
+            // User canceled the upload
+            break;
+
+          case 'storage/unknown':
+          console.log("Unkown error occured");
+          console.log(error.serverResponse);
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      }, function() {
+        // Upload completed successfully, now we can get the download URL
+        $scope.testimonialImages[testimonialId] = uploadTask.snapshot.downloadURL;
+        if(!$scope.$$phase) $scope.$apply();
+        Intercom('trackEvent', "uploadedTestimonialImage", {testimonialId: testimonialId})
+
+      });
+      // });
+	  });
+
+		}
+	});
