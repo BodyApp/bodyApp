@@ -80,12 +80,17 @@ angular.module('bodyAppApp')
           }
         }
       })
-      // .state('createstudio', {
-      //   url: '/createstudio',
-      //   templateUrl: 'app/studios/createStudio.html',
-      //   controller: 'CreateStudioCtrl',
-      // })
-      
+      .state('testimonials', {
+        url: '/studios/:studioId/testimonials',
+        templateUrl: 'app/studios/testimonials.html',
+        controller: 'TestimonialsCtrl',
+        authenticate: true,
+        resolve: {
+          studioId: function($stateParams) {
+            return $stateParams.studioId
+          }
+        }
+      })
       .state('editprofile', {
         url: '/studios/:studioId/editprofile',
         templateUrl: 'app/studios/editprofile.html',

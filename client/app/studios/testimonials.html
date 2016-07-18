@@ -6,7 +6,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block">Add a story</a>
+        <a href="#" class="btn btn-block" ng-click = "addEditObject = {};">Add a story</a>
       </div>
 
       <div class="panel ss-help-panel help-panel-small mt40"> <!-- HELPER TIP -->
@@ -23,19 +23,20 @@
       </div>
     </div>
 
-    <div class="col-md-9">
-    	<div class="panel space-4">   <!-- No stories added yet -->
+    <div class="col-md-9" ng-show = "loaded">
+    	<div class="panel space-4" ng-show = "!testimonials">   <!-- No stories added yet -->
     	  <div class="panel-body">
     	    <div class="row col-sm-12">
     	      <h5 class="mb8">Looks like you don't have any stories created yet! Share stories of success, failure, or anything in between. We recommend adding 5 or more stories to your page.</h5>
-    	      <a href="#">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
+    	      <a href="#" ng-click = "addEditObject = {};">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
     	    </div>
     	  </div>
     	</div>
 
-    	<div class="panel space-4">
+    	<div class="panel space-4" ng-show = "addEditObject">
     	  <div class="panel-header">
-    	    New story
+    	    <span ng-show = "!editing">New story</span>
+            <span ng-show = "editing">Edit story</span>
     	  </div>
     	  <div class="panel-body">
     	    <div class="row">
@@ -44,11 +45,11 @@
     	        <h5 class="lightgray mt8">Image should be 600 x 400 pixels</h5>
     	      </div>
     	      <div class="col-sm-7 mb8">
-    	      	<input id="story-name" name="" size="30" type="text" placeholder="Jane Smith">
+    	      	<input id="story-name" ng-model = "addEditObject.clientName" name="" size="30" type="text" placeholder="Jane Smith">
     	      	<h5 class="lightgray mb8">The name of your client</h5>
-    	      	<input class="mt16" id="story-ig" name="" size="30" type="text" placeholder="@jane_smith">
+    	      	<input class="mt16" id="story-ig" ng-model = "addEditObject.instagramUsername" name="" size="30" type="text" placeholder="@jane_smith">
     	      	<h5 class="lightgray mb8">Link to their Instagram username</h5>
-    	      	<textarea class="mt16" id="story-content" name="" cols="40" rows="5" type="text" placeholder="Every one of your clients has a story to share - from success to failure, stories are what inspire us. Use this space to tell the story of your unique clients. These stories will promote the efficacy and value of your service."></textarea>
+    	      	<textarea class="mt16" ng-model = "addEditObject.storyContent" id="story-content" name="" cols="40" rows="5" type="text" placeholder="Every one of your clients has a story to share - from success to failure, stories are what inspire us. Use this space to tell the story of your unique clients. These stories will promote the efficacy and value of your service."></textarea>
     	      	<h5 class="lightgray mb8">Share details of success, failure, or anything in between.</h5>
     	      </div>
     	    </div>
@@ -57,13 +58,13 @@
     	      <div class="col-sm-12">
     	        <ul class="panel-action-list">
     	          <li>
-    	            <a href="#" class="panel-action-item">Cancel</a>
+    	            <a href="#" class="panel-action-item" ng-click = "addEditObject = false; editing = false;">Cancel</a>
     	          </li>
     	          <li ng-if = "!editing">
-    	            <a href="#" class="panel-action-item btn-primary btn">Save</a>
+    	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveTestimonial(addEditObject)">Save</a>
     	          </li>
     	          <li ng-if = "editing">
-    	            <a href="#" class="panel-action-item btn-primary btn">Update</a>
+    	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateTestimonial(addEditObject)">Update</a>
     	          </li>
     	        </ul>              
     	      </div>
@@ -71,15 +72,15 @@
     	  </div>
     	</div>
 
-    	<div class="panel space-4">
-    	  <div class="panel-header">
-    	    Story: Alice Wonderland
+    	<div class="panel space-4" ng-repeat = "(id, testimonial) in testimonials" ng-show = "addEditObject.id != id">
+    	  <div class="panel-header" >
+    	    Story: {{testimonial.clientName}}
     	    <ul class="panel-action-list">
     	      <li>
-    	        <a href="#" class="panel-action-item">Edit</a>
+    	        <a href="#" class="panel-action-item" ng-click = "editTestimonial(testimonial)">Edit</a>
     	      </li>
     	      <li>
-    	        <a href="#" class="panel-action-item">Delete</a>
+    	        <a href="#" class="panel-action-item" ng-click = "deleteTestimonial(testimonial)">Delete</a>
     	      </li>            
     	    </ul>
     	  </div>
@@ -89,16 +90,16 @@
     	        <img src="/assets/images/ralabala/story4.jpg">
     	      </div>
     	      <div class="col-sm-7 mb8">
-    	        <h5>Name: <span class="lightgray">Alice Wonderland</span></h5>
-    	        <h5>Instagram: <span class="lightgray">@aliceinwonderland</span></h5>
-    	        <h5>Story: <span class="lightgray">Our culture tells us to "follow our feelings" and seek pleasure/happiness wherever we can. But, if you spend time reflecting on what matters most to you and anchor to those in making decisions you will focus on things that bring lifelong relevance and greater meaning - these anchors will tend to be more long-lived and can guide us as circumstances, people and motives change around us. Our minds and body require stimulation to function at full potential.</span></h5>
+    	        <h5>Name: <span class="lightgray">{{testimonial.clientName}}</span></h5>
+    	        <h5>Instagram: <span class="lightgray">{{testimonial.instagramUsername}}</span></h5>
+    	        <h5>Story: <span class="lightgray">{{testimonial.storyContent}}</span></h5>
     	      </div>
     	    </div>
     	  </div>
     	</div>
 
     	<div class="subpanel-btn">
-    	  <a href="#">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
+    	  <a href="#" ng-click = "addEditObject = {};">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
     	</div>
 
     </div>
