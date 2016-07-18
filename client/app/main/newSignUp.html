@@ -21,7 +21,93 @@
         </div>
       </div>
     </div>
+
+    <!-- NEW SIGN UP MODAL -->
     <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">
+      <div class="signUp-wallpaper">
+        <div class="signUp-wallpaper-dimmer"></div>
+        <img src="/assets/images/studios/body/SignUp.jpg">
+      </div>
+      <div class="signUp-panel"> 
+        <div class="signUp-content text-center">
+          <div class="signUp-logo mt80">
+            <img src="assets/images/BodyLogo_white_small.png">
+          </div>
+          <h4 class="white mt16">Live & On-Demand Classes with Real Coaches</h4>
+          <a href="#" ng-click = "loginOauth('facebook')" class="btn-blue big-btn btn-full-width mt16 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Sign up with Facebook</a>
+          <a href="#" class="btn big-btn btn-full-width mt8 relative"><i class="fa fa-google red icon-left"></i>Sign up with Google</a>
+          <span class="white display-block text-center mt8 mb8">or</span>
+          <a href="#" class="btn-clear big-btn btn-full-width relative"><i class="fa fa-envelope icon-left"></i>Sign up with Email</a>
+          <h5 class="whitegray thin500 mt24">Have an account? <a ng-click = "mode = 'login'" href="#">Log in</a></h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGN UP ENTER INFORMATION MODAL -->
+    <!-- <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">
+      <div class="signUp-wallpaper">
+        <div class="signUp-wallpaper-dimmer"></div>
+        <img src="/assets/images/studios/body/SignUp.jpg">
+      </div>
+      <div class="signUp-panel"> 
+        <div class="signUp-content text-center">
+          <h5 class="white mt16">Sign up with <a href="#">Facebook</a> or <a href="#">Google</a></h5>
+          <span class="white display-block text-center mb8">or</span>
+          <hr class="content-divider">
+          <div class="email-login">
+            <input class="mt8 email-login" name="" type="text" placeholder="First Name">
+            <i class="fa fa-user" style="font-size:18px;"></i>
+          </div>
+          <div class="email-login">
+            <input class="mt8 email-login" name="" type="text" placeholder="Last Name">
+            <i class="fa fa-user" style="font-size: 18px"></i>
+          </div>
+          <div class="email-login">
+            <input class="mt8 email-login" name="" type="text" placeholder="Email Address">
+            <i class="fa fa-envelope-o" style="font-size: 15px"></i>
+          </div>
+          <div class="email-login">
+            <input class="mt8 email-login" name="" type="text" placeholder="Password">
+            <i class="fa fa-lock" style="font-size: 18px"></i>
+          </div>
+          <div class="text-left display-block mt8 mb8">
+            <h5 class="bold white">Birthday 
+              <i class="fa fa-question-circle">
+                <md-tooltip id="icon-tooltip" md-direction="top">
+                  To sign up you must be 18 years or older.
+                </md-tooltip>
+              </i>
+            </h5>
+          </div>
+          <div class="select" style="width: 45%;">
+            <select id="user-birthdate-mo">
+              <option>January</option>
+              <option>February</option>
+              <option>March</option>
+            </select>
+          </div>
+          <div class="select" style="width: 20%;">
+            <select id="user-birthdate-day">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+          <div class="select" style="width: 32%;">
+            <select id="user-birthdate-yr">
+              <option>1998</option>
+              <option>1997</option>
+              <option>1996</option>
+            </select>
+          </div>
+          <a href="#" class="mt16 btn-clear big-btn btn-full-width relative">Sign Up</a>
+          <h5 class="whitegray thin500 mt24">Have an account? <a ng-click = "mode = 'login'" href="#">Log in</a></h5>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- OLD SIGN UP MODAL -->
+    <!-- <div class="modalSignup" ng-show = "mode === 'signup' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/SignUp.jpg">
@@ -37,9 +123,49 @@
           <h5 class="whitegray thin500 mt24">Have an account? <a ng-click = "mode = 'login'" href="#">Log in</a></h5>
         </div>
       </div>
-    </div>
+    </div> -->
 
+    <!-- NEW LOG IN MODAL -->
     <div class="modalLogin" ng-show = "mode === 'login' && step === 0">
+      <div class="signUp-wallpaper">
+        <div class="signUp-wallpaper-dimmer"></div>
+        <img src="/assets/images/studios/body/SignUp.jpg">
+      </div>
+      <div class="signUp-panel login-panel"> 
+        <div class="signUp-content text-center">
+          <div class="signUp-logo mt24">
+            <img src="assets/images/BodyLogo_white_small.png">
+          </div>
+          <a href="#" ng-click = "loginOauth('facebook')" class="btn-blue big-btn btn-full-width mt16 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Log in with Facebook</a>
+          <a href="#" class="btn big-btn btn-full-width mt8 relative"><i class="fa fa-google red icon-left"></i>Log in with Google</a>
+          <span class="white display-block text-center mt8 mb8">or</span>
+          <div class="email-login">
+            <input class="mt8 email-login" name="" type="text" placeholder="Email Address">
+            <i class="fa fa-envelope-o" style="font-size:15px;"></i>
+          </div>
+          <div class="email-login">
+            <input class="mt8 email-login" name="" type="text" placeholder="Password">
+            <i class="fa fa-lock" style="font-size: 18px"></i>
+          </div>
+          <div class="email-remember-me">
+            <div class="check-remember-me text-left">
+              <input name="remember-me" size="15" type="checkbox">
+              <label for="remember-me" class="inline-block white">
+                Remember me
+              </label>    
+            </div>
+            <div class="forgot-pass text-right">
+              <a href="#">Forgot password?</a>
+            </div>
+          </div>
+          <a href="#" class="mt8 btn-clear big-btn btn-full-width relative">Log In</a>
+          <h5 class="whitegray thin500 mt24">Don't have an account? <a ng-click = "mode = 'signup'" href="#">Sign Up</a></h5>
+        </div>
+      </div>
+    </div> 
+
+    <!-- OLD LOG IN MODAL -->
+    <!-- <div class="modalLogin" ng-show = "mode === 'login' && step === 0">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/SignUp.jpg">
@@ -55,7 +181,7 @@
           <h5 class="whitegray thin500 mt24">Don't have an account? <a ng-click = "mode = 'signup'" href="#">Sign Up</a></h5>
         </div>
       </div>
-    </div>    
+    </div>  -->   
 
     <div class="modalWelcome" ng-show = "step === 1">
       <div class="signUp-wallpaper">
@@ -64,7 +190,7 @@
       </div>
       <div class="signUp-panel"> 
         <div class="signUp-content text-center">
-          <div class="signUp-logo">
+          <div class="signUp-logo mt72">
             <img src="assets/images/BodyLogo_white_small.png">
           </div>
           <h4 class="white mt16">Welcome to BODY</h4>
@@ -79,8 +205,29 @@
         <div class="signUp-steps">
           <i class="fa fa-circle"></i>
           <i class="fa fa-circle-o"></i>
+          <i class="fa fa-circle-o"></i>
         </div>
-        <div class="signUp-content text-center">
+        <div class="mt48 signUp-content text-center">
+          <h4 class="mb8">Add your profile photo</h4>
+          <h5>Put a face to your name so your instructors and friends know it's you.</h5>
+          <div class="signUp-image" style="margin-bottom: 24px!important;">
+            <img class="round-photo mt24" src="/assets/images/profile-blank.jpg" width="140" height="140">
+          </div>
+          <a href="#" ng-click = "loginOauth('facebook')" class="btn-blue big-btn btn-full-width mt16 btn-facebook relative"><i class="fa fa-facebook icon-left"></i>Use Facebook Photo</a>
+          <a href="#" class="btn big-btn btn-full-width mt8 mb40 relative"><i class="fa fa-cloud-upload icon-left"></i>Upload Photo</a>
+          <a href="#" ng-click = "updateEmail()" class="mt24 lightgray">Skip for now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modalEmail" ng-show = "step === 3">
+      <div class="signUp-panel"> 
+        <div class="signUp-steps">
+          <i class="fa fa-circle"></i>
+          <i class="fa fa-circle-o"></i>
+          <i class="fa fa-circle-o"></i>
+        </div>
+        <div class="mt48 signUp-content text-center">
           <h4 class="mb8">Confirm your email</h4>
           <h5>Thanks for putting a face to your name. Confirming your email address helps us send you important class reservations and updates.</h5>
           <div class="signUp-image">
@@ -96,40 +243,52 @@
       </div>
     </div>
 
-    <div class="modalEmergency" ng-show = "step === 3">
+    <div class="modalEmail" ng-show = "step === 4">
       <div class="signUp-panel"> 
         <div class="signUp-steps">
           <i class="fa fa-circle-o"></i>
           <i class="fa fa-circle"></i>
+          <i class="fa fa-circle-o"></i>
         </div>
-        <div class="signUp-content text-center">
+        <div class="mt48 signUp-content text-center">
+          <h4 class="mb8">Confirm your phone number</h4>
+          <h5>This is for class and scheduling notifications.</h5>
+          <div class="signUp-emergency">
+            <i class="fa fa-mobile"></i>
+          </div>
+          <input type="text" inputmode="numeric" id="phone-number" class="emergency-inputs" placeholder="123-456-7890">
+          <a href="#" class="btn-blue big-btn btn-full-width mt8 mb40 relative">Confirm Phone Number</a>
+          <a href="#" ng-click = "updateEmail()" class="mt24 lightgray">Skip for now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modalEmergency" ng-show = "step === 5">
+      <div class="signUp-panel"> 
+        <div class="signUp-steps">
+          <i class="fa fa-circle-o"></i>
+          <i class="fa fa-circle-o"></i>
+          <i class="fa fa-circle"></i>
+        </div>
+        <div class="mt48 signUp-content text-center">
           <h4 class="mb8">Confirm an emergency contact</h4>
           <h5>Give our team a trusted contact we can alert in an urgent situation.</h5>
           <div class="signUp-emergency">
             <i class="fa fa-medkit"></i>
           </div>
           <div class="row text-left">
-            <label class="col-sm-4" for="emergency-fullname">
-              Full Name
-            </label>
-            <div class="col-sm-8">
-              <input id="emergency-fullname" ng-model = "emergencyName" name="" size="30" type="text" placeholder="">
+            <div class="col-sm-12">
+              <input class="emergency-inputs" id="emergency-fullname" ng-model = "emergencyName" name="" size="30" type="text" placeholder="Full Name">
             </div>
           </div>
-          <div class="row text-left">
-            <label class="col-sm-4" for="emergency-phone">
-              Phone
-            </label>
-            <div class="col-sm-8">
-              <input id="emergency-phone" ng-model = "emergencyPhone" name="" size="30" type="text" placeholder="">
+          <div class="row text-left mt8">
+            <div class="col-sm-12">
+              <input class="emergency-inputs" id="emergency-phone" ng-model = "emergencyPhone" name="" size="30" type="text" placeholder="Phone">
             </div>
           </div>
-          <div class="row text-left">
-            <label class="col-sm-4" for="emergency-relationship">
-              Relationship
-            </label>
-            <div class="col-sm-8">
-              <input id="emergency-relationship" ng-model = "emergencyRelationship" name="" size="30" type="text" placeholder="">
+          <div class="row text-left mt8">
+            <div class="col-sm-12">
+              <input class="emergency-inputs" id="emergency-relationship" ng-model = "emergencyRelationship" name="" size="30" type="text" placeholder="Relationship">
             </div>
           </div>
           <h5 class="mt8 lightgray">By signing up, I agree to BODY's <a href="#">medical disclaimer</a>, <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</h5>
@@ -138,7 +297,7 @@
       </div>
     </div>
 
-    <div class="modalComplete" ng-show = "step === 4">
+    <div class="modalComplete" ng-show = "step === 12">
       <div class="signUp-wallpaper">
         <div class="signUp-wallpaper-dimmer"></div>
         <img src="/assets/images/studios/body/SignUp2.jpg">
