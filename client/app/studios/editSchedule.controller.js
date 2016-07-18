@@ -175,6 +175,9 @@ angular.module('bodyAppApp')
         if (!snapshot.exists()) return;
         $scope.classSchedule = snapshot.val();
         console.log("Pulled " + Object.keys($scope.classSchedule).length + " classes for schedule.")
+        snapshot.forEach(function(classToGet) {
+          getNumberOfBookings(classToGet.val().dateTime)
+        })
         if(!$scope.$$phase) $scope.$apply();
       })
     }
@@ -373,11 +376,12 @@ angular.module('bodyAppApp')
       })
     }
 
-    $scope.getNumberOfBookings = function(dateTime) {
-      if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
+    function getNumberOfBookings(dateTime) {
+      // if ($scope.numBookingsByClass[dateTime]) return $scope.numBookingsByClass[dateTime];
       ref.child('bookings').child(dateTime).once('value', function(snapshot) {
         $scope.numBookingsByClass[dateTime] = snapshot.numChildren();
-        return $scope.numBookingsByClass[dateTime];
+        if(!$scope.$$phase) $scope.$apply();
+        // return $scope.numBookingsByClass[dateTime];
       })
     }
 
