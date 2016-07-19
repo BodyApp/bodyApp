@@ -118,12 +118,12 @@
                         </div>
                       </div>
                       <div class="row mt8">
-                        <div class="col-xs-8 col-sm-4">
+                        <div class="col-xs-7 col-sm-4">
                           <div class="row">
-                            <div class="col-xs-4 col-sm-4 col-md-3">
-                              <img class="round-photo" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=45&height=45">
+                            <div class="col-xs-6 col-sm-5 col-md-5">
+                              <img class="round-photo" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=85&height=85">
                             </div>
-                            <div class="col-xs-8 col-sm-8 col-md-9">
+                            <div class="col-xs-6 col-sm-7 col-md-7">
                               <h5>Instructor</h5>
                               <h5 class="lightgray">{{instructors[instance.instructor].firstName}} {{instructors[instance.instructor].lastName}}</h5>
                             </div>
@@ -137,11 +137,11 @@
                           <h5>Open To</h5>
                           <h5 class="lightgray">All</h5>
                         </div> -->
-                        <div class="col-xs-4 col-sm-2">
+                        <div class="col-xs-5 col-sm-2">
                           <h5>Equipment</h5>
                           <h5 class="lightgray" ng-if = "!classTypes[instance.classType].equipment">None</h5>
                           <div ng-repeat = "equipment in classTypes[instance.classType].equipment">
-                            <h5 class="lightgray" ng-if = "$index < 2">{{equipment.name.trunc(15, true)}}</h5>
+                            <h5 class="lightgray" ng-if = "$index < 3">{{equipment.name.trunc(15, true)}}</h5>
                           </div>
                         </div>
                       </div>

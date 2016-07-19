@@ -4,11 +4,14 @@ angular.module('bodyAppApp')
     var auth = firebase.auth();
     var timezone = jstz().timezone_name;
 
+    Intercom('trackEvent', 'navigatedToUserSchedule');
+
     var startAt = (new Date().getTime() - 60*60*1000) //Can see classes that started an hour in the past.
 
     ref.child('userBookings').child(Auth.getCurrentUser()._id).orderByKey().startAt(startAt.toString()).once('value', function(snapshot) {
-    	$scope.userBookings = snapshot.val();
+        $scope.userBookings = snapshot.val();
     	console.log(snapshot.val())
+        Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren });
     })
 
     $scope.formatDate = function(dateTime) {
