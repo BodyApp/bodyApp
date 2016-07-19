@@ -19,9 +19,8 @@
 				</li>
 				<li>
 					<button href="#" class="btn-blue" ng-if = "bookings[currentUser._id] || userIsInstructor" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
-				</li>
-				<li>
-					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor" ng-click = "reserveClicked(classDetails)">Reserve Class</buttons>
+					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && (!classDetails.maxParticipants || numBookings < classDetails.maxParticipants)" ng-click = "reserveClicked(classDetails)">Reserve Class</buttons>
+					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && numBookings >= classDetails.maxParticipants" ng-click="clickedWhenClassFull($event)">Class Is Full</buttons>
 				</li>
 			</ul>
 		</div>

@@ -10,10 +10,16 @@
         </div>
         <div class="panel-body">
           <h5 class="mb0">Date</h5>
-          <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).dayOfWeek}}, {{getFormattedDateTime(classDetails.dateTime).month}} {{getFormattedDateTime(classDetails.dateTime).day}}</h5>
+          <h5 class="mb0 lightgray">{{getFormattedDateTime(classDetails.dateTime).dayOfWeek}}, {{getFormattedDateTime(classDetails.dateTime).month}} {{getFormattedDateTime(classDetails.dateTime).day}}</h5>
 
           <h5 class="mt8">Time</h5>
-          <h5 class="mb0">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
+          <h5 class="mb0 lightgray">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
+
+          <h5 class="mt8">Duration</h5>
+          <h5 class="mb0 lightgray">{{classDetails.duration}}m</h5>
+
+          <h5 class="mt8">Max Participants</h5>
+          <h5 class="mb0 lightgray">{{classDetails.maxParticipants}}</h5>
 
           <h5 class="mt8 mb0">Instructor</h5>
           <h5 class="lightgray mb0" ng-hide = "editing">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>

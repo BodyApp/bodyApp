@@ -130,8 +130,12 @@
                           </div>
                         </div>
                         <div class="col-sm-2 hidden-xs">
-                          <h5>Duration</h5>
-                          <h5 class="lightgray">{{instance.duration}} min</h5>
+                          <h5>Price</h5>
+                          <h5 class="lightgray" ng-show = "instance.typeOfClass === 'Regular' && studios[instance.studioId].dropinPricing && !classTypes[instance.classType].freeClass">${{studios[instance.studioId].dropinPricing/100}}</h5>
+                          <h5 class="lightgray" ng-show = "(instance.typeOfClass === 'Regular' && !studios[instance.studioId].dropinPricing && !studios[instance.studioId].subscriptionPricing) || classTypes[instance.classType].freeClass">Free</h5>
+                          <h5 class="lightgray" ng-show = "instance.typeOfClass === 'Specialty'">${{classTypes[instance.classType].specialtyClassRate}}</h5>
+                          <!-- <h5 class="lightgray">{{instance.duration}} min</h5> -->
+                          <!-- <h5 class="lightgray">{{instance.duration}} min</h5> -->
                         </div>
                         <!-- <div class="col-sm-2">
                           <h5>Open To</h5>

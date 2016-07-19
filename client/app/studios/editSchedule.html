@@ -164,6 +164,20 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
 
           <div class="row mb8">
             <div class="col-sm-12">
+              <label for="class-choice" class="pb0">
+                Max Participants
+              </label>
+              <div style = "color: red" ng-show = "maxParticipantsNotEntered">*Required</div>
+              <div class="select display-block">
+                <select ng-change = "maxParticipantsNotEntered = false;" id="class-choice" ng-model = "workoutToCreate.maxParticipants" ng-options = "value for value in maxParticipantsOptions">
+                  <!-- <option>Level One</option> -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb8">
+            <div class="col-sm-12">
               <label for="instructor-choice" class="pb0">
                 Instructor
               </label>

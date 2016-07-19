@@ -36,6 +36,7 @@ angular.module('bodyAppApp')
     // if (!studioId) studioId = 'body'
     $scope.workoutToCreate = $scope.workoutToCreate || {}
     $scope.workoutToCreate.duration = 30;
+    $scope.workoutToCreate.maxParticipants = 12;
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
 
@@ -61,6 +62,7 @@ angular.module('bodyAppApp')
     $scope.showWeekView = true;
 
     $scope.durationOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+    $scope.maxParticipantsOptions = [1,2,3,4,5,6,7,8,9,10,11,12]
 
     var nextSessionToSave;
 
@@ -307,6 +309,8 @@ angular.module('bodyAppApp')
 
     $scope.saveWorkout = function(workoutToCreate) {
 
+      console.log(workoutToCreate.maxParticipants)
+
       $scope.dateTimeNotEntered = false;
 
       $scope.workoutToCreate.dateTime = $('#datetimepicker').data().date;
@@ -315,6 +319,7 @@ angular.module('bodyAppApp')
 
       if (!workoutToCreate.dateTime) return $scope.dateTimeNotEntered = true;
       if (!workoutToCreate.duration) return $scope.durationNotEntered = true;
+      if (!workoutToCreate.maxParticipants) return $scope.maxParticipantsNotEntered = true;
       if (!workoutToCreate.classType) return $scope.classTypeNotEntered = true;
       if (!workoutToCreate.workout) return $scope.workoutNotEntered = true;
       if (!workoutToCreate.instructor) return $scope.instructorNotEntered = true;
@@ -329,6 +334,7 @@ angular.module('bodyAppApp')
       console.log(workoutToCreate.workout)
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
+      workoutToSave.maxParticipants = workoutToCreate.maxParticipants;
       workoutToSave.spots = 12;
       workoutToSave.sessionId = nextSessionToSave.sessionId
       console.log(workoutToSave)

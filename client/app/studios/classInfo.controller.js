@@ -59,10 +59,16 @@ angular.module('bodyAppApp')
 
     function getBookedUsersInformation() {
       ref.child('bookings').child(classId).on('value', function(snapshot) {
-        if (!snapshot.exists()) return;
+        if (!snapshot.exists()) {
+          $scope.numBookings = 0;
+          console.log($scope.numBookings)
+          if(!$scope.$$phase) $scope.$apply();
+          return;
+        }
         $scope.bookings = snapshot.val();
         setupVidAud()
         $scope.numBookings = Object.keys($scope.bookings).length;
+        console.log($scope.numBookings)
         if(!$scope.$$phase) $scope.$apply();
         snapshot.forEach(function(booking) {
           firebase.database().ref().child('fbUsers').child(booking.val().facebookId).child('location').on('value', function(snapshot) {
@@ -194,6 +200,39 @@ angular.module('bodyAppApp')
           
       //   }  
       }
+    }
+
+    $scope.clickedWhenClassFull = function(ev) {
+      Intercom('trackEvent', 'triedToReserveFullClass')
+      var alert = $mdDialog.alert({
+        title: "Added To Waitlist",
+        textContent: "Great! We've added you to the waitlist and will let you know if a spot opens up.",
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        ok: 'OK!',
+      });
+      var confirm = $mdDialog.confirm({
+          title: "Class Full",
+          textContent: "Would you like to be added to the waitlist?",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'Yes',
+          cancel: 'No'
+        });
+
+        return $mdDialog
+        .show( confirm ).then(function() {
+          Intercom('trackEvent', 'addToWaitlist', {
+            studioId: studioId,
+            classToAdd: classId ? classId : "None",
+            dateOfClass_at: Math.floor(classId*1/1000)
+          });
+            
+          ref.child("waitlist").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""}, function(err) {
+            if (err) return err;
+            return $mdDialog.show( alert )
+          })
+        });
     }
 
     $scope.joinClass = function(ev) {
