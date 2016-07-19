@@ -20,21 +20,23 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var decodedIcon;
 
+    var currentUser = Auth.getCurrentUser();
+
     Intercom('trackEvent', 'openedPaymentModal', {
       studioId: studioId,
       classToBook: slot ? slot.dateTime : "None"
     });
 
-    if (slot && slot.typeOfClass === 'Specialty') {
+    if (slot) {
       ref.child('classTypes').child(slot.classType).once('value', function(snapshot) {
         specialtyRate = snapshot.val().specialtyClassRate*100
         $scope.specialtyRate = specialtyRate;
         $scope.classInfo = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
       })
-    } else {
-      getRates()
     }
+
+    getRates()
 
     function getRates() {
       ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
@@ -79,6 +81,7 @@ angular.module('bodyAppApp')
       ref.child('instructors').child(slot.instructor).once('value', function(snapshot) {
         $scope.instructorInfo = snapshot.val();
         $scope.instructorPicture = snapshot.val().picture;
+        if(!$scope.$$phase) $scope.$apply();
       })
     }
     
@@ -136,8 +139,6 @@ angular.module('bodyAppApp')
     //     scrollTop: $(".scroll-to").offset().top},
     //     600);
     // });
-
-	  var currentUser = Auth.getCurrentUser();
     // $scope.couponEntered = currentUser.referredBy;
 
     // if ($scope.couponEntered) {
@@ -323,7 +324,7 @@ angular.module('bodyAppApp')
             Intercom('trackEvent', 'paidDropin', {
               studioId: studioId,
               classToBook: slot ? slot.dateTime : "None",
-              amount: amount
+              amount: amountToPay
             });
             // modalInstance.close()
             // Auth.updateUser(data);
@@ -502,6 +503,9 @@ angular.module('bodyAppApp')
         resolve: {
           slot: function () {
             return slot;
+          },
+          studioId: function () {
+            return studioId;
           }
         }
       });
@@ -514,7 +518,7 @@ angular.module('bodyAppApp')
         classToAdd: slot.dateTime,
         className: $scope.classInfo.name,
         studioName: $scope.studioName,
-        studioId: $scope.studioId,
+        studioId: studioId,
         instructorFullName: $scope.instructorInfo.firstName + " " + $scope.instructorInfo.lastName,
         classStartingUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classinfo/"+slot.dateTime,
         equipmentRequired: $scope.classInfo.equipment,
@@ -556,6 +560,7 @@ angular.module('bodyAppApp')
           // slot.bookedUsers = slot.bookedUsers || {};
           // delete slot.bookedUsers[currentUser._id];
           // delete slot.bookedFbUserIds[currentUser.facebook.id];
+          intercom('trackEvent', "issueBookingClass", err)
           alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
       }).$promise;
     }

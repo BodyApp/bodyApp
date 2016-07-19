@@ -588,7 +588,7 @@
             Watch Latest Videos <div ng-if="numSubscriberVideos"><span>({{numSubscriberVideos}} Available to Subscribers)</span></div>
           </div>
           <div class="panel-body">
-            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary" ng-if="subscriptions[studioId] === 'active' || (videosFirebase[video.token] && !videosFirebase[video.token].subscribersOnly)">
+            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary" ng-if="subscriptions[studioId] === 'active' || (videosFirebase[video.token] && !videosFirebase[video.token].subscribersOnly)" ng-show = "$index < 5">
               <a href="#" ng-click = "playVideo(video)">
                 <div>
                   <img ng-src="https://{{video.embed_image_url}}" >
@@ -604,22 +604,45 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-4">
-        <div class="panel space-4 hidden-sm hidden-xs">
+
+      <div class="col-md-4">
+        <div class="panel"> 
+          <!-- <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> Follow RALABALA</a>
+              </div>
+            </div>
+            <div class="row mt8">
+              <div class="col-sm-12 text-center">
+                <h5 class="lightgray">148 people follow this studio</h5>
+              </div>
+            </div>
+          </div> -->
+          <div class="boxed-icons show-lg">
+            <div class="social-share-btns">
+              <div class="share-triggers btn-group">
+                <a ng-href="mailto:?subject=Check%20this%20out!&body=Hi%20there,%0D%0A%0D%0AI%20wanted%20to%20drop%20you%20a%20note%20and%20tell%20you%20about%20this%20awesome%20new%20virtual%20fitness%20studio%20called%20{{storefrontInfo.studioName}}.%20I'm%20going%20to%20be%20taking%20classes%20and%20we%20would%20be%20able%20to%20work%20out%20together%20and%20have%20the%20instructor%20actually%20see%20us%20while%20they%20are%20teaching.%20It's like%20taking%20an%20in-person%20class%20at%20an%20in-person%20studio,%20but%20it's%20virtual%20and%20we%20can%20each%20be%20at%20our%20own%20house!%0D%0A%0D%0AGo%20to%20https://www.getbodyapp.com/studios/{{studioId}}%20to%20find%20out%20more%20info.%0D%0A%0D%0AHope%20to%20workout%20with%20you%20soon!%0D%0A{{currentUser.firstName}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-envelope-o"></i>Email</a>
+                <a target="none" ng-href="https://www.facebook.com/sharer/sharer.php?u=getbodyapp.com/studios/{{studioId}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="panel space-4 hidden-sm hidden-xs" ng-show = "testimonials">
           <div class="panel-header text-center">
             Studio Stories
           </div>
           <div class="panel-body">
-            <div class="stories-panel text-center">
+            <div class="stories-panel text-center" ng-repeat = "story in testimonials">
               <a href="#">
-                <img src="assets/images/ralabala/story1.png">
+                <img ng-src="{{storyImages[story.id]}}">
                 <div class="stories-overlay text-left">
-                  <h4 class="white bold">Ally M</h4>
-                  <h5 class="white">Ally needed a new way to fit in her workout. She’s down 15 pounds.</h5>
+                  <h4 class="white bold">{{story.clientName}}</h4>
+                  <h5 class="white">{{story.storyContent}}</h5>
                 </div>
               </a>
             </div>
-            <div class="next-story text-center mt8 mb0">
+            <!-- <div class="next-story text-center mt8 mb0">
               <span>
                 <span><i class="fa fa-circle"></i></span>
                 <span><i class="fa fa-circle-o"></i></span>
@@ -627,10 +650,10 @@
                 <span><i class="fa fa-circle-o"></i></span>
                 <span><i class="fa fa-circle-o"></i></span>
               </span>
-            </div>
+            </div> -->
           </div>
         </div>  
-        <div class="panel">
+        <!-- <div class="panel">
           <div class="panel-body">
             <div class="row studio-friends text-center">
               <span>
@@ -656,31 +679,10 @@
               </div>
             </div>
           </div>
-        </div> 
+        </div>  -->
 
-        <div class="panel"> 
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> Follow RALABALA</a>
-              </div>
-            </div>
-            <div class="row mt8">
-              <div class="col-sm-12 text-center">
-                <h5 class="lightgray">148 people follow this studio</h5>
-              </div>
-            </div>
-          </div>
-          <div class="boxed-icons show-lg">
-            <div class="social-share-btns">
-              <div class="share-triggers btn-group">
-                <a href="#" class="share-btn text-center btn btn-width-control"><i class="fa fa-envelope-o"></i>Email</a>
-                <a href="#" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a>
-              </div>
-            </div>
-          </div>
-        </div> 
-      </div> -->
+        
+      </div>
 
     </div>
   

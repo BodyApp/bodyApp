@@ -62,6 +62,7 @@ angular.module('bodyAppApp')
     getImages()
     getVideoLibrary()
     getVideoStatus()
+    getTestimonials()
 
     Video.destroyHardwareSetup()
     // ref.unauth()
@@ -365,6 +366,28 @@ angular.module('bodyAppApp')
         $scope.numOfInstructors = Object.keys(snapshot.val()).length
         if(!$scope.$$phase) $scope.$apply();
       })
+    }
+
+    function getTestimonials() {
+      ref.child('testimonials').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
+        $scope.testimonials = snapshot.val();
+        $scope.numOfTestimonials = Object.keys(snapshot.val()).length
+        if(!$scope.$$phase) $scope.$apply();
+        snapshot.forEach(function(story) {
+          getStoryImage(story.val().id)
+        })
+      })
+    }
+
+    function getStoryImage(storyId) {
+      $scope.storyImages = $scope.storyImages || {};
+      storageRef.child('images').child('testimonials').child(storyId+'.jpg').getDownloadURL().then(function(url) {
+        $scope.storyImages[storyId] = url;
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
 
     function getClasses(daysInFuture, numDaysToShow) {
