@@ -58,13 +58,19 @@ angular.module('bodyAppApp')
       })
     }
 
+    $scope.addStory = function() {
+      window.scrollTo(0, 0);
+      $scope.addEditObject = {};
+    }
+
     $scope.saveTestimonial = function(testimonial, imageToSave) {
       var testimonialRef = ref.child('testimonials').push(testimonial, function(err) {
       	if (err) return console.log(err)
       	ref.child('testimonials').child(testimonialRef.key).update({id: testimonialRef.key}, function(err) {
       		if (err) return console.log(err)
     			$scope.addEditObject = false;
-    			uploadImage(testimonialRef.key, imageToSave)
+          uploadImage(testimonialRef.key, imageToSave)
+          $scope.imageApi.removeAll()
 	    		if(!$scope.$$phase) $scope.$apply();
       	})
     		Intercom('trackEvent', 'addedNewTestimonial', testimonial);
@@ -75,14 +81,17 @@ angular.module('bodyAppApp')
     	$scope.addEditObject = testimonial; 
     	$scope.editing = true;
     	if(!$scope.$$phase) $scope.$apply();
+      window.scrollTo(0, 0);
     }
 
-    $scope.updateTestimonial = function(testimonial) {
-      var testimonialKey = ref.child('testimonials').child(testimonial.id).update(testimonial, function(err) {
+    $scope.updateTestimonial = function(testimonial, imageToSave) {
+      ref.child('testimonials').child(testimonial.id).update(testimonial, function(err) {
       	if (err) return console.log(err)
     		Intercom('trackEvent', 'updatedTestimonial', testimonial);
     		$scope.addEditObject = false;
     		$scope.editing = false;
+        uploadImage(testimonial.id, imageToSave)
+        $scope.imageApi.removeAll()
     		if(!$scope.$$phase) $scope.$apply();
       })
     }
@@ -111,6 +120,9 @@ angular.module('bodyAppApp')
 
   	function uploadImage(testimonialId, imageToSave) {
   // $scope.$watch('headerImage.length',function(newVal,oldVal){
+
+    $scope.testimonialImages[testimonialId] = "https://d13yacurqjgara.cloudfront.net/users/82092/screenshots/1073359/spinner.gif";
+    if(!$scope.$$phase) $scope.$apply();
 
     angular.forEach(imageToSave,function(obj){
   //     // console.log(obj.lfFile)

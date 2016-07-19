@@ -494,7 +494,7 @@ angular.module('bodyAppApp')
       return modalInstance;
     } 
 
-    function bookClass() {
+    function bookClass(slot) {
     	var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/schedule/bookingConfirmation.html',

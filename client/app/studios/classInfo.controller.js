@@ -176,6 +176,7 @@ angular.module('bodyAppApp')
         return $mdDialog
         .show( confirm ).then(function() {
           ref.child("bookings").child(classId).child($scope.currentUser._id).remove()
+          firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(classId).remove()
           ref.child("userBookings").child($scope.currentUser._id).child(classId).remove(function(err) {
             if (err) return console.log(err)
             Intercom('trackEvent', 'cancelledClass', {

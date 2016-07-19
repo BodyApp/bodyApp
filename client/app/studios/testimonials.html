@@ -6,7 +6,7 @@
     <div class="col-md-3">
       <div ng-include="'components/navbar/sideNav.html'"></div>
       <div class="space-top-4 space-4">
-        <a href="#" class="btn btn-block" ng-click = "addEditObject = {};">Add a story</a>
+        <a href="#" class="btn btn-block" ng-click = "addStory()">Add a story</a>
       </div>
 
       <div class="panel ss-help-panel help-panel-small mt40"> <!-- HELPER TIP -->
@@ -28,7 +28,7 @@
     	  <div class="panel-body">
     	    <div class="row col-sm-12">
     	      <h5 class="mb8">Looks like you don't have any stories created yet! Share stories of success, failure, or anything in between. We recommend adding 5 or more stories to your page.</h5>
-    	      <a href="#" ng-click = "addEditObject = {};">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
+    	      <a href="#" ng-click = "addStory();">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
     	    </div>
     	  </div>
     	</div>
@@ -42,8 +42,10 @@
     	    <div class="row">
     	      <div class="col-sm-5 mb8">
     	        <!-- <a href="#" class="btn big-btn btn-full-width relative"><i class="fa fa-cloud-upload icon-left"></i>Upload Photo</a> -->
-                <lf-ng-md-file-input lf-placeholder = "Story image" lf-files="storyImage" lf-caption="" accept="image/*" progress preview>Upload Photo</lf-ng-md-file-input>
+                <lf-ng-md-file-input lf-placeholder = "Story image" lf-api = "imageApi" lf-files="storyImage" lf-caption="" accept="image/*" progress preview>Upload Photo</lf-ng-md-file-input>
+                <!-- <lf-ng-md-file-input ng-show = "testimonialImages[addEditObject.id]" lf-placeholder = "Replace image" lf-files="testimonialImages[addEditObject.id]" lf-caption="" accept="image/*" progress preview>Replace Photo</lf-ng-md-file-input> -->
     	        <h5 class="lightgray mt8">Image should be 600 x 400 pixels</h5>
+                <img ng-show = "storyImage.length < 1" ng-src = "{{testimonialImages[addEditObject.id]}}"></img>
     	      </div>
     	      <div class="col-sm-7 mb8">
     	      	<input id="story-name" ng-model = "addEditObject.clientName" name="" size="30" type="text" placeholder="Jane Smith">
@@ -59,13 +61,13 @@
     	      <div class="col-sm-12">
     	        <ul class="panel-action-list">
     	          <li>
-    	            <a href="#" class="panel-action-item" ng-click = "addEditObject = false; editing = false;">Cancel</a>
+    	            <a href="#" class="panel-action-item" ng-click = "addEditObject = false; editing = false; imageApi.removeAll()">Cancel</a>
     	          </li>
     	          <li ng-if = "!editing">
     	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "saveTestimonial(addEditObject, storyImage)">Save</a>
     	          </li>
     	          <li ng-if = "editing">
-    	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateTestimonial(addEditObject)">Update</a>
+    	            <a href="#" class="panel-action-item btn-primary btn" ng-click = "updateTestimonial(addEditObject, storyImage)">Update</a>
     	          </li>
     	        </ul>              
     	      </div>
@@ -88,7 +90,7 @@
     	  <div class="panel-body">
     	    <div class="row">
     	      <div class="col-sm-5 mb8">
-    	        <img ng-src="{{testimonialImages[id]}}">
+    	        <img ng-show = "testimonialImages[id]" ng-src="{{testimonialImages[id]}}">
     	      </div>
     	      <div class="col-sm-7 mb8">
     	        <h5>Name: <span class="lightgray">{{testimonial.clientName}}</span></h5>
@@ -100,7 +102,7 @@
     	</div>
 
     	<div class="subpanel-btn">
-    	  <a href="#" ng-click = "addEditObject = {};">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
+    	  <a href="#" ng-click = "addStory()">Add Story<i class="ti-arrow-circle-right icon-spacing"></i></a>
     	</div>
 
     </div>
