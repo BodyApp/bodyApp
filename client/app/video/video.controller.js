@@ -66,6 +66,7 @@ angular.module('bodyAppApp')
 
   $scope.recordVideoClicked = function() {
   	Intercom('trackEvent', "recordVideoClicked")
+  	analytics.track("recordVideoClickedDuringClass")
   	if (!$scope.recording) {
 	  	$scope.recording = true;
 	  	if (!ziggeoEmbedding) {
@@ -126,6 +127,7 @@ angular.module('bodyAppApp')
 			if (err) return console.log(err)
 			console.log("Added video to library.")
 		Intercom('trackEvent', "addedVideoToLibrary", {videoToken: data.video.token})
+		analytics.track("addedVideoToLibrary", {videoToken: data.video.token})
 		})
 	});
 
@@ -398,6 +400,11 @@ angular.module('bodyAppApp')
 
 	function sendIntercomTokboxError(error, message) {
 		Intercom('trackEvent', 'tokboxError', {
+			errorDate_at: new Date(),
+			errorCode: error,
+			message: message ? message : ""
+		});
+		analytics.track('tokboxError', {
 			errorDate_at: new Date(),
 			errorCode: error,
 			message: message ? message : ""
@@ -701,6 +708,7 @@ angular.module('bodyAppApp')
 		   	if (event.stream && event.stream.id) {
 		   		Intercom('update', { "latestTokboxStreamId": event.stream.id });
 		   		Intercom('trackEvent', "successfullyPublishedVideo", {tokboxStreamId: event.stream.id})
+		   		analytics.track("successfullyPublishedVideo", {tokboxStreamId: event.stream.id})
 		   	}
 				if (event.connection && event.connection.connectionId) Intercom('update', { "latestTokboxConnectionId": event.connection.connectionId });
 			},

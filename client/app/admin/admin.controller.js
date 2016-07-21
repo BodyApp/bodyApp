@@ -1,711 +1,153 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('AdminCtrl', function ($scope, $http, $location, $window, $uibModal, SoundCloudLogin, SoundCloudAPI, Auth, User, DayOfWeekSetter, $firebaseObject, $firebaseArray, $stateParams, Studio) {
-    // if (!(Auth.isInstructor() || Auth.isAdmin())) {
-    //   $location.path('/')
-    // }
+  .controller('AdminCtrl', function ($scope, $mdDialog, $location) {
 
-    Auth.getCurrentUser().$promise.then(function(data){
-      if (data.role != "admin") {
-        console.log("You aren't an admin, so you can't access this page")
-        console.log(data);
+    Intercom('trackEvent', 'navigatedToStatsPage')
+
+    var ref = firebase.database().ref();
+    var auth = firebase.auth();
+    
+    var startAt = new Date().getTime() - 7*24*60*60*1000;
+    var endAt = startAt + 7*24*60*60*1000;
+    $scope.rightNow = new Date().getTime();
+    $scope.dataInvalidDate = new Date(2016, 6, 18, 0, 1); //Data prior to 7/18/16 is inaccurate
+
+    var prompt = $mdDialog.prompt({
+      title: "Welcome To the BODY Stats Page!",
+      textContent: "Please enter the stats password. You can email daniel@getbodyapp.com if you don't have one yet.",
+      ok: "OK!",
+      cancel: 'Nevermind'
+    });
+
+    ref.child('statsPassword').once('value', function(snapshot) {
+      if (!snapshot.val()) return alert("Sorry, no stats available right now.")
+      return $mdDialog.show( prompt ).then(function(result) {
+        if (result === snapshot.val().password) {
+          Intercom('trackEvent', 'enteredCorrectPassword')
+          setDateTimePicker()
+          // getStats()
+        }
+      }, function() {
+        console.log("Didn't enter password.")
         $location.path('/')
-      }
-      $scope.currentUser = data;
-
-      thisWeek()
-      listSubscriptionPlans()
-      listCustomers()
-      listCoupons()
-      // $scope.createSubscriptionPlan(100, "testplan2")
-      // openStripePayment("ralabala1v1462750165317")
-
-      User.getMembersOfStudio({
-        id: data._id
-      }, {
-        studioId: $stateParams.studioId
-      }).$promise.then(function(memberList) {
-        // console.log(memberList)
-        $scope.memberList = memberList
       })
     })
-
-    var todayDate = new Date();
-    $scope.todayDayOfWeek = todayDate.getDay();
     
-    // Use the User $resource to fetch all users
-    // $scope.users = User.query();
 
-    $scope.wod = {};
-    var classDate;
-    var classKey;
-    var ref;
-    var studioId = $stateParams.studioId;
-    if (studioId) {
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child(studioId);
-    } else {
-      // $location.path('/ralabala/admin')
-      ref = new Firebase("https://bodyapp.firebaseio.com/studios").child("ralabala");
+    // setDateTimePicker()
+    // getStats()
+
+    $scope.calculate = function() {
+      getStats()
     }
 
-    var wodRef = ref.child("WODs");
-    var trainerClassesRef = ref.child("trainerClasses");
+    function getStats() {
+      $scope.numberOfClassesScheduled = 0;
+      $scope.numberOfStudiosThatScheduledClass = 0;
+      $scope.numberOfBookings = 0;
+      $scope.numberOfUsersThatScheduledAClass = 0;
+      $scope.numberOfUsersThatTookAClass = 0;
+      $scope.classesTaken = 0;
+      $scope.numberOfCancellations = 0;
+      $scope.numberOfUsersThatCancelledAClass = 0;
+      $scope.classesByStudio = [];
 
-    $scope.scoreTypes = []
-    $scope.scoreTypes.push({label: "Time To Complete", id: 0})
-    $scope.scoreTypes.push({label: "Rounds Completed", id: 1})
-
-    $scope.instructors = [];
-    $scope.levels = ["Test", "Intro", "Open"]  
-    ref.child("classTypes").once('value', function(snapshot) {
-      snapshot.forEach(function(child) {
-        $scope.levels.push(child.val())  
-        $scope.workoutToCreate.level = $scope.levels[0];
-      })
-    })
-
-    var http = location.protocol;
-    var slashes = http.concat("//");
-    var host = slashes.concat(window.location.hostname);
-    if (host === "http://localhost") {
-      $scope.levels = ["Test"]      
-    }
-
-    $scope.workoutToCreate = {};
-    getAdminsAndInstructors()
-    
-    $scope.playlists = [];
-    var defaultPlaylist;
-
-    ref.child('playlists').orderByChild("lastModified").once('value', function(snapshot) {
-      snapshot.forEach(function(playlist) {
-        $scope.playlists.unshift(playlist.val())
-        $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
-      })
-      // loadDefaultPlaylist();
-    })
-
-    $scope.createdClass = {};
-    var nextSessionToSave;
-
-    Auth.getCurrentUser().$promise.then(function(data) {
-      createInitialTokBoxSession()
-    })
-
-    ref.child('trainers').once('value', function(snapshot) {
-      $scope.trainers = snapshot.val();
-    })
-
-    // createInitialTokBoxSession()
-
-    function createInitialTokBoxSession() {
-      User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-        nextSessionToSave = session;
-      })
-    }
-
-    $scope.changeDate = function(date) {
-      classDate = date;
-      classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-
-      wodRef.child(classKey).once('value', function(snapshot) {
-        var val = snapshot.val();
-        $scope.wod = val;
-        if(!$scope.$$phase) $scope.$apply();
-        if (!$scope.wod) {
-          $scope.wod = {};
-          $scope.wod.date = classKey;
-          $scope.wod.scoreType = $scope.scoreTypes[0];
-        }
-      }) 
-    }
-
-    $scope.saveWod = function(wod, date) {
-      classDate = date;
-      classKey = ""+classDate.getFullYear()+""+((classDate.getMonth()+1 < 10)?"0"+(classDate.getMonth()+1):classDate.getMonth()+1)+""+((classDate.getDate() < 10)?"0"+classDate.getDate():classDate.getDate())
-      wod.dateTime = new Date(date).setHours(10) //Makes sure it's set in the middle of the day to avoid timezone issues
-      // wod.dateTime = tempDate.getTime();
-      wod.date = classKey;
-      for (var bullet in wod.challenge.bullets) {
-        console.log(wod.challenge.bullets[bullet]);
-        if (!wod.challenge.bullets[bullet]) {
-          delete wod.challenge.bullets[bullet]
-        }
-      }
-      wodRef.child(classKey).set(wod);
-    }
-    
-    $scope.soundcloudAuth = function() {
-      SoundCloudLogin.connect().then(function(token) {
-        SoundCloudAPI.me().then(function(myInfo) {
-          SoundCloudAPI.myPlaylists().then(function(playlists) {
-            for (var i = 0; i < playlists.length; i++) {
-              console.log(playlists[i])
-              ref.child("playlists").child(playlists[i].id).update({
-                soundcloudUrl: playlists[i].uri,
-                duration: playlists[i].duration,
-                id: playlists[i].id,
-                lastModified: new Date(playlists[i].last_modified),
-                title: playlists[i].title,
-                trackCount: playlists[i].track_count,
-                tracks: playlists[i].tracks,
-                // secretUri: playlists[i].secret_uri,
-                sharing: playlists[i].sharing,
-                user_id: playlists[i].user_id
-              }, function(err){if (err) console.log(err)})
-            }
-            $scope.playlists = playlists;
-            $scope.playlists.push(defaultPlaylist);
-            $scope.workoutToCreate.playlistUrl = $scope.playlists[0];
+      startAt = new Date($('#datetimepickerStart').data().date).getTime();
+      $scope.startAt = startAt;
+      endAt = new Date($('#datetimepickerEnd').data().date).getTime();
+      Intercom('trackEvent', 'lookedAtStats', {startAt: startAt, endAt: endAt})
+      ref.child('userBookings').once('value', function(user) {
+        user.forEach(function(bookings) {
+          bookings.ref.orderByKey().startAt(startAt.toString()).endAt(endAt.toString()).once('value', function(snapshot) {
+            console.log(snapshot.val())
+            if (!snapshot.exists()) return;
+            $scope.numberOfBookings += snapshot.numChildren();
+            $scope.numberOfUsersThatScheduledAClass += 1;  
+            if(!$scope.$$phase) $scope.$apply(); 
           })
         })
-      })
-    }  
-
-    function loadDefaultPlaylist() {
-      SoundCloudAPI.defaultPlaylist().then(function(playlist) {
-        defaultPlaylist = playlist
-        $scope.playlists.push(playlist);
-        $scope.workoutToCreate.playlistUrl = $scope.playlists[0]
-      })
-    }
-
-    $scope.roundMins = function(mins) {
-      return Math.round(mins);
-    }
-
-    function getAdminsAndInstructors() {
-      var instructors = Auth.getInstructors().$promise.then(function(data) {
-        $scope.instructors = data;
-        
-        Auth.getAdmins().$promise.then(function(data) {
-          for (var i = 0; i < data.length; i++) {
-            $scope.instructors.push(data[i]);
-          }
-          // $scope.instructors.push(Auth.getCurrentUser());  
-          $scope.workoutToCreate.trainer = $scope.instructors[0];  
-        }).catch(function(err) { console.log(err)})
-
-      }).catch(function(err) {
-        console.log(err);
       });
-    }
 
-    function openCreatingModal() {
-        var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'app/admin/creating.html',
-          controller: 'AdminCtrl',
-          backdrop: "static",
-          keyboard: false
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
-        }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
-        });
-
-        return modalInstance;
-    }
-
-    $scope.createWorkout = function(workoutToCreate) {
-      var modalInstance = openCreatingModal();
-      var date = workoutToCreate.date;
-      var workoutDate = new Date(date);
-      // $scope.workoutDate = workoutDate
-      var todayDayOfWeek = workoutDate.getDay();
-
-      console.log(workoutDate.getDate())
-
-      // var monthToSet = workoutDate.getDate - workoutDate.getDay() <= 0 ? workoutDate.getMonth() - 1 : workoutDate.getMonth;
-
-      var sunDate = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate() - workoutDate.getDay(), 11, 0, 0);
-      // sunDate.setDate(workoutDate.getDate() - workoutDate.getDay());
-      console.log(sunDate)
-      var sunGetDate = sunDate.getDate();
-      var sunGetMonth = sunDate.getMonth()+1;
-      var sunGetYear = sunDate.getFullYear();
-      var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-
-      var weekOfRef = ref.child("classes").child(weekOf);  
-      //This is a good way to do this, but functionality is slightly broken and it's dangerous.
-      // weekOfRef.once('value', function(snapshot) {
-      //   if (!snapshot.exists()) {
-      //     //Sets up week for first time if doesn't exist
-      //     console.log("Setting up week for first time.")
-      //     for (var i = 0; i < 7; i++) {
-      //       var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + i, 11, 0, 0);
-      //       weekOfRef.child(DayOfWeekSetter.setDay(i)).update({    
-      //         dayOfWeek: i,
-      //         formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
-      //         name: getDayOfWeek(i)
-      //       })
-      //     }
-      //   }
-      // })
-      // var syncObject = $firebaseObject(weekOfRef);
-      
-      var trainerInfoToSave = {firstName: workoutToCreate.trainer.firstName, lastName: workoutToCreate.trainer.lastName, _id: workoutToCreate.trainer._id, facebookId: workoutToCreate.trainer.facebookId, gender: workoutToCreate.trainer.gender, picture: workoutToCreate.trainer.picture};
-      if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
-      if (workoutToCreate.trainer.trainerCredential2) trainerInfoToSave.trainerCredential2 = workoutToCreate.trainer.trainerCredential2;
-      if (workoutToCreate.trainer.trainerCredential3) trainerInfoToSave.trainerCredential3 = workoutToCreate.trainer.trainerCredential3;
-      if (workoutToCreate.trainer.trainerCredential4) trainerInfoToSave.trainerCredential4 = workoutToCreate.trainer.trainerCredential4;
-      if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
-      if (workoutToCreate.trainer.trainerCredential1) trainerInfoToSave.trainerCredential1 = workoutToCreate.trainer.trainerCredential1;
-      if (workoutToCreate.trainer.trainerRating) trainerInfoToSave.trainerRating = workoutToCreate.trainer.trainerRating;
-      if (workoutToCreate.trainer.funFact) trainerInfoToSave.funFact = workoutToCreate.trainer.funFact;
-      if (workoutToCreate.trainer.bio) trainerInfoToSave.bio = workoutToCreate.trainer.bio;
-
-      workoutToCreate.playlistUrl = workoutToCreate.playlistUrl || playlists[0];
-
-      ref.child("trainers").child(trainerInfoToSave._id).update(trainerInfoToSave)
-
-      // ref.child("playlists").child(workoutToCreate.playlistUrl.id).update({
-      //   soundcloudUrl: workoutToCreate.playlistUrl.uri,
-      //   duration: workoutToCreate.playlistUrl.duration,
-      //   id: workoutToCreate.playlistUrl.id,
-      //   lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
-      //   title: workoutToCreate.playlistUrl.title,
-      //   trackCount: workoutToCreate.playlistUrl.track_count,
-      //   tracks: workoutToCreate.playlistUrl.tracks,
-      //   // secretUri: workoutToCreate.playlistUrl.secret_uri,
-      //   sharing: workoutToCreate.playlistUrl.sharing,
-      //   user_id: workoutToCreate.playlistUrl.user_id
-      // }, function(err){if (err) console.log(err)})
-
-      // syncObject.$loaded().then(function() {
-        //Set up the week if this is first class of week
-        // if (!syncObject[DayOfWeekSetter.setDay(date.getDay())]) {
-          
-        // }
-
-        //Set up the class
-        var dayToSet = DayOfWeekSetter.setDay(date.getDay())
-
-        //Sets up day metadata
-        var thisDate = new Date(sunDate.getFullYear(), sunDate.getMonth(), sunDate.getDate() + date.getDay(), 11, 0, 0);
-        weekOfRef.child(dayToSet).update({    
-          dayOfWeek: date.getDay(),
-          formattedDate: ""+(thisDate.getMonth()+1)+"/"+thisDate.getDate()+"",
-          name: getDayOfWeek(date.getDay())
-        })
-        
-        var classToSetRef = weekOfRef.child(dayToSet).child("slots").child(date.getTime())
-        // syncObject[dayToSet].slots = syncObject[dayToSet].slots || {}; 
-        classToSetRef.set({
-          time: timeFormatter(date),
-          date: date.getTime(),
-          playlistSource: 'SoundCloud',
-          level: workoutToCreate.level,
-          playlist: workoutToCreate.playlistUrl.id,
-          // playlist: {
-          //   soundcloudUrl: workoutToCreate.playlistUrl.uri,
-          //   duration: workoutToCreate.playlistUrl.duration,
-          //   id: workoutToCreate.playlistUrl.id,
-          //   lastModified: new Date(workoutToCreate.playlistUrl.last_modified),
-          //   title: workoutToCreate.playlistUrl.title,
-          //   trackCount: workoutToCreate.playlistUrl.track_count,
-          //   tracks: workoutToCreate.playlistUrl.tracks,
-          //   // secretUri: workoutToCreate.playlistUrl.secret_uri,
-          //   sharing: workoutToCreate.playlistUrl.sharing,
-          //   user_id: workoutToCreate.playlistUrl.user_id
-          // },
-          // stopwatch: {
-          //   start: date.getTime(),
-          //   stop: date.getTime(),
-          //   currentState: "stop"
-          // },
-          trainer: trainerInfoToSave._id,
-          classFull: false,
-          // consumersCanHearEachOther: false,
-          // musicVolume: 50,
-          sessionId: nextSessionToSave.sessionId, 
-          spots: 12
-        }, function(err) {
-          if (err) return console.log(err)
-          console.log("New workout saved to classes object.")
-          // if (workoutToCreate.level === "Intro") {
-          //   console.log("Setting to upcomingIntros.")
-          //   var introToSet = {};
-          //   introToSet[date.getTime()] = true
-            // var fbRef = new Firebase("https://bodyapp.firebaseio.com"); 
-            // var upcomingIntroRef = fbRef.child('upcomingIntros').child(date.getTime())
-            // var dateKey = ""+date.getFullYear()+""+((date.getMonth()+1 < 10)?"0"+(date.getMonth()+1):date.getMonth()+1)+""+((date.getDate() < 10)?"0"+date.getDate():date.getDate())
-            // upcomingIntroRef.set(dateKey, function(){console.log("Saved Intro class to intro list")})
-          // }
-
-          trainerClassesRef.child(trainerInfoToSave._id).child("classesTeaching").child(date.getTime()).set({date: date.getTime(), level: workoutToCreate.level}, function(err) {
-            modalInstance.close();
-            if (err) console.log(err)
+      ref.child('bookingCancellations').once('value', function(user) {
+        user.forEach(function(bookings) {
+          bookings.ref.orderByKey().startAt(startAt.toString()).endAt(endAt.toString()).once('value', function(snapshot) {
+            console.log(snapshot.val())
+            if (!snapshot.exists()) return;
+            $scope.numberOfCancellations += snapshot.numChildren();
+            $scope.numberOfUsersThatCancelledAClass += 1;
+            if(!$scope.$$phase) $scope.$apply(); 
           })
-
-          User.createTokBoxSession({id: Auth.getCurrentUser()._id}).$promise.then(function(session) {
-            nextSessionToSave = session;
-              //Need to add class to trainer object somehow
-            
-          //   var dayToSet = DayOfWeekSetter.setDay(date.getDay())
-          //   syncObject[dayToSet].slots[date.getTime()] = syncObject[dayToSet].slots[date.getTime()] || {}
-          //   syncObject[dayToSet].slots[date.getTime()].sessionId = session.sessionId;
-          //   syncObject.$save().then(function() {
-          //     console.log("Tokbox session added to class object.")
-          //     User.saveClassTaught({
-          //       id: Auth.getCurrentUser()
-          //     }, {
-          //       classToAdd: date.getTime(), userToAddClassTo: trainerInfoToSave
-          //     }).$promise.then(function(confirmation) {
-          //       console.log("Successfully saved class +" + date.getTime() + " to " + workoutToCreate.trainer.firstName + "'s user object.")
-          //       // $location.path('/');
-          //       console.log("new workout saved");
-                
-          //     })
-          //   })  
-          // }).catch(function(err) {
-          //   console.log("error saving new workout: " + err)
-          // })
         })
-      })   
-    }
+      });
 
-    function timeFormatter(date) {
-      var formatted;
-      if (date.getHours() == 12) {
-          formatted = date.getHours() +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "pm"
-      } else if (date.getHours() == 24) {
-          formatted = date.getHours()-12 +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + "am"
-      } else {
-          formatted = ((date.getHours() < 13)? date.getHours() : date.getHours()-12) +":"+ ((date.getMinutes() < 10)?"0":"") + date.getMinutes() + ((date.getHours() < 13)? "am" : "pm")
-      } 
-      return formatted
-    }
+      ref.child('tookClass').once('value', function(user) {
+        user.forEach(function(bookings) {
+          bookings.ref.orderByKey().startAt(startAt.toString()).endAt(endAt.toString()).once('value', function(snapshot) {
+            if (!snapshot.exists()) return;
+            $scope.classesTaken += snapshot.numChildren();
+            $scope.numberOfUsersThatTookAClass += 1;
+            console.log($scope.numberOfUsersThatTookAClass);
+            if(!$scope.$$phase) $scope.$apply(); 
+          })
+        })
+      });
 
-    function newDate(date) {
-      var newDate = new Date(date);
-      newDate.month = newDate.getMonth() + 1;
-      newDate.day = newDate.getDate();
-      return newDate;
-    }
-
-    function getDayOfWeek(day) {
-      switch (day) {
-        case 0: return "Sun"; break;
-        case 1: return "Mon"; break;
-        case 2: return "Tue"; break;
-        case 3: return "Wed"; break;
-        case 4: return "Thu"; break;
-        case 5: return "Fri"; break;
-        case 6: return "Sat"; break;
-        default: break;
-      }
-    }
-
-      $scope.changeWeek = function() {
-        if ($scope.thisWeek) {
-          $scope.setCalendarToNextWeek()
-        } else {
-          $scope.setCalendarToThisWeek()
-        }
-      }
-
-      $scope.setCalendarToThisWeek = function() { thisWeek() }
-      function thisWeek() {
-        $scope.thisWeek = true; 
-        
-        $scope.dateToday = "" + todayDate.getMonth() + todayDate.getDate();
-
-        var sunDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() - todayDate.getDay(), 11, 0, 0);
-        // var sunDate = new Date();
-        // sunDate.setDate(todayDate.getDate() - todayDate.getDay());
-        var sunGetDate = sunDate.getDate();
-        var sunGetMonth = sunDate.getMonth()+1;
-        var sunGetYear = sunDate.getFullYear();
-        var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-        
-        $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
-      }
-
-      $scope.setCalendarToNextWeek = function() { nextWeek() }
-      function nextWeek() {
-        $scope.thisWeek = false;
-        var todayDate = new Date();
-        var nextWeekTime = todayDate.getTime() + 1000*60*60*24*7;
-        var nextWeekDate = new Date(nextWeekTime);
-        $scope.dateToday = "" + nextWeekDate.getMonth() + nextWeekDate.getDate();
-
-        var sunDate = new Date(nextWeekDate.getFullYear(), nextWeekDate.getMonth(), nextWeekDate.getDate() - nextWeekDate.getDay(), 11, 0, 0);
-        // var sunDate = new Date();
-        // sunDate.setDate(nextWeekDate.getDate() - nextWeekDate.getDay());
-        var sunGetDate = sunDate.getDate();
-        var sunGetMonth = sunDate.getMonth()+1;
-        var sunGetYear = sunDate.getFullYear();
-        var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-
-        // unbindMethod()
-        $scope.days = $firebaseObject(ref.child("classes").child(weekOf))
-        // Schedule.setFirebaseObject(weekOf).$bindTo($scope, 'days').then(function(unbind) {
-          // unbindMethod = unbind
-        // });
-      }
-
-      $scope.getFormattedDateTime = function(slot, noToday) {
-          slot = slot || {};
-          slot.date = slot.date || new Date();
-          var newDate = new Date(slot.date);
-          var formatted = {};
-
-          if (newDate.getHours() == 12) {
-              formatted.classTime = newDate.getHours() +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "pm"
-          } else if (newDate.getHours() == 0) {
-              formatted.classTime = 12 +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + "am"
-          } else {
-              formatted.classTime = ((newDate.getHours() < 13)? newDate.getHours() : newDate.getHours()-12) +":"+ ((newDate.getMinutes() < 10)?"0":"") + newDate.getMinutes() + ((newDate.getHours() < 13)? "am" : "pm")
-          } 
-          
-          formatted.day = newDate.getDate();
-          formatted.year = newDate.getFullYear();
-          
-          // $scope.dayOfWeek;
-          
-          switch (newDate.getDay()) {
-              case 0: formatted.dayOfWeek = "Sun"; break;
-              case 1: formatted.dayOfWeek = "Mon"; break;
-              case 2: formatted.dayOfWeek = "Tue"; break;
-              case 3: formatted.dayOfWeek = "Wed"; break;
-              case 4: formatted.dayOfWeek = "Thu"; break;
-              case 5: formatted.dayOfWeek = "Fri"; break;
-              case 6: formatted.dayOfWeek = "Sat"; break;
-              default: break;
-          }
-
-          if (newDate.getDay() == new Date().getDay() && newDate.getDate() === new Date().getDate() && !noToday) {
-              formatted.dayOfWeek = "Today"
-          }
-
-          var month = new Array();
-          month[0] = "Jan";
-          month[1] = "Feb";
-          month[2] = "Mar";
-          month[3] = "Apr";
-          month[4] = "May";
-          month[5] = "Jun";
-          month[6] = "Jul";
-          month[7] = "Aug";
-          month[8] = "Sept";
-          month[9] = "Oct";
-          month[10] = "Nov";
-          month[11] = "Dec";
-
-          formatted.month = month[newDate.getMonth()]    
-          // console.log(formatted);       
-          return formatted;
-      }
-
-      $scope.checkIfFriends = function(slot) {
-        var rightNow = new Date().getTime();
-        ref.child("bookings").child(slot.date).once('value', function(snapshot) {
-          $scope.bookingsBySlot = $scope.bookingsBySlot || {};
-          $scope.bookingsBySlot[slot.date] = [];
-          if (!snapshot.exists()) return
-          for (var prop in snapshot.val()) {
-            var user = snapshot.val()[prop];
-            $scope.bookingsBySlot[slot.date].push(user);
+      ref.child('studios').once('value', function(studios) {
+        $scope.numberOfStudios = studios.numChildren()
+        console.log(studios.numChildren())
+        studios.forEach(function(studio) {
+          // studio.ref.child('userBookings').orderByChild('dateTime').startAt(startAt.toString()).endAt(endAt.toString()).once('value', function(snapshot) {
+          //   console.log(studio.val().storefrontInfo.studioName + " had " + snapshot.numChildren() + " bookings.")
+          //   if (!snapshot.exists()) return;
+          //   $scope.numberOfBookings += snapshot.numChildren();
+          //   $scope.numberOfUsersThatScheduledAClass += 1;
+          //   console.log($scope.numberOfBookings)
+          // });
+          studio.ref.child('classes').orderByKey().startAt(startAt.toString()).endAt(endAt.toString()).once('value', function(snapshot) {
+            console.log(studio.val().storefrontInfo.studioName + " scheduled " + snapshot.numChildren() + " classes.")
+            if (!snapshot.exists()) return;
+            $scope.classesByStudio.push({studioId: studio.val().storefrontInfo.studioId, studioName: studio.val().storefrontInfo.studioName, numClasses: snapshot.numChildren()})
+            $scope.numberOfClassesScheduled += snapshot.numChildren();
+            $scope.numberOfStudiosThatScheduledClass += 1;
             if(!$scope.$$phase) $scope.$apply();
-          }
-        })
-      }
-
-      $scope.deleteClass = function(slot) {
-        if (confirm("Are you sure you want to delete class?") === true) {
-          var slotDate = new Date(slot.date)
-          
-          var sunDate = new Date(slotDate.getFullYear(), slotDate.getMonth(), slotDate.getDate() - slotDate.getDay(), 11, 0, 0);
-          var sunGetDate = sunDate.getDate();
-          var sunGetMonth = sunDate.getMonth()+1;
-          var sunGetYear = sunDate.getFullYear();
-          var weekOf = "weekof"+ sunGetYear + (sunGetMonth<10?"0"+sunGetMonth:sunGetMonth) + (sunGetDate<10?"0"+sunGetDate:sunGetDate);
-
-          var dayOfSlot = DayOfWeekSetter.setDay(slotDate.getDay())
-          ref.child("classes").child(weekOf).child(dayOfSlot).child("slots").child(slot.date).remove(function() {
-            ref.child("trainerClasses").child(slot.trainer).child("classesTeaching").child(slot.date).remove(function() {
-              console.log("Class successfully removed.")
-            })
           })
-        }
-      }
-
-      //Add billing controller
-      $scope.beginStripeConnect = function() {
-        $window.location.href = '/auth/stripe?studioid=' + studioId;
-        // var retrievedInfo = $http.get('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
-        // $location.path('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_8NvwFunaEsSeZJ56Ez9yb1XhXaDR00bE&scope=read_write')
-      }
-
-      $scope.createSubscriptionPlan = function(amount, name) {
-        Studio.createSubscriptionPlan({
-          id: $scope.currentUser._id
-        }, {
-          studioId: studioId,
-          amount: amount,
-          name: name,
-          currency: "usd",
-          interval: "month",
-          statement_descriptor: studioId + " Subscription",
-          userThatCreatedPlan: $scope.currentUser._id
-        }).$promise.then(function(subscription) {
-          // $scope.pricingOptions.push(subscription); 
-          $scope.returnedSubscription = subscription;
         })
-      }
+      })
+    }
 
-      $scope.deleteSubscriptionPlan = function(planId) {
-        Studio.deleteSubscriptionPlan({
-          id: $scope.currentUser._id
-        }, {
-          studioId: studioId,
-          planId: planId
-        }).$promise.then(function(deletedPlanId) {
-          console.log("Deleted subscription plan with id: " + planId);
-        })
-      }
+    $scope.getStats = function() {
+      getStats()
+    }
 
-      var listSubscriptionPlans = function() {
-        Studio.listSubscriptionPlans({
-          id: $scope.currentUser._id
-        }, {
-          studioId: studioId
-        }).$promise.then(function(plans) {
-          console.log("Retrieved " + plans.length + " subscription plans");
-          $scope.subscriptionPlans = plans;
-          for (var plan = 0; plan < plans.length; plan++) {
-            ref.child('stripeConnected').child('subscriptionPlans').child(plans[plan].id).update(plans[plan]) //Make sure subscription plans are all added to firebase and info is current.
-          }
-        })
-      }
+    function setDateTimePicker() {
+      $scope.loaded = true;
+      if(!$scope.$$phase) $scope.$apply();
+      $('#datetimepickerStart').datetimepicker({
+        sideBySide: true,
+        minDate: $scope.dataInvalidDate,
+        defaultDate: new Date().getTime() - 7*24*60*60*1000 > $scope.dataInvalidDate ? new Date().getTime() - 7*24*60*60*1000 : $scope.dataInvalidDate
+      });
+      $('#datetimepickerEnd').datetimepicker({
+        sideBySide: true,
+        defaultDate: new Date().getTime()
+      });
+      // $('#datetimepickerStart').data("DateTimePicker").minDate(new Date());
+    }
+  })
 
-      var listCustomers = function() { //Can also pass in a particular planId to only get subscriptions for that plan.
-        Studio.listCustomers({
-          id: $scope.currentUser._id
-        }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
-          studioId: studioId,
-          limit: 100
-        }).$promise.then(function(customers) {
-          console.log("Retrieved " + customers.length + " customers");
-          $scope.customers = customers;
-        })
-      }
+  .filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field] ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+});
 
-      var listCoupons = function() {
-        Studio.listCoupons({
-          id: $scope.currentUser._id
-        }, { //Can also pass a limit in later to prevent thousands of subscriptions being pulled
-          studioId: studioId,
-          limit: 100
-        }).$promise.then(function(existingCoupons) {
-          console.log("Retrieved " + existingCoupons.length + " coupons");
-          $scope.existingCoupons = existingCoupons;
-        })
-      }
 
-      function openStripePayment(subscriptionId, coupon) {
-        ref.child('stripeConnected').child('subscriptionPlans').child(subscriptionId).once('value', function(snapshot) {
-          if (!snapshot.exists()) return console.log("No subscription plans set for this studio.")
-          var planInfo = snapshot.val()
-          var amountToPay = planInfo.amount;
-          // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
-          // $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
-          
-          if (coupon && coupon.valid) {
-            amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
-          }
-
-          var handler = StripeCheckout.configure({
-            // key: 'pk_live_mpdcnmXNQpt0zTgZPjD4Tfdi',
-            key: 'pk_test_dSsuXJ4SmEgOlv0Sz4uHCdiT',
-            image: '../../assets/images/body-stripe.jpg',
-            locale: 'auto',
-            token: function(token, args) {
-              // var modalInstance = openPaymentConfirmedModal()
-              
-              $http.post('/api/payments/addcustomersubscription', {
-                user: $scope.currentUser,
-                stripeToken: token,
-                shippingAddress: args,
-                coupon: coupon,
-                studioId: studioId,
-                planInfo: planInfo
-              })
-              .success(function(data) {
-                console.log("Successfully create new customer subscription.");
-                // Auth.updateUser(data);
-                // currentUser = data;
-                // $scope.currentUser = currentUser;
-                // $rootScope.subscriptionActive = true; //Need to change this
-                if (slot) bookClass(slot);               
-              })
-              .error(function(err) {
-                console.log(err)
-                return alert("We had trouble processing your payment. Please try again or contact daniel@getbodyapp.com for assistance.")
-              }.bind(this));
-            }
-          });
-
-          if (!$scope.currentUser.email || ($scope.currentUser.email && $scope.currentUser.email.length < 4)) {
-            handler.open({
-              name: planInfo.statement_descriptor,
-              description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-              panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-              shippingAddress: true,
-              zipCode: true
-            });    
-          } else {
-            handler.open({
-              name: planInfo.statement_descriptor,
-              email: $scope.currentUser.email,
-              description: (coupon && coupon.metadata.text && coupon.valid) ? coupon.metadata.text : "$" + amountToPay / 100 + "/mo Price!",
-              panelLabel: "Pay $" + amountToPay / 100 + " / Month",
-              shippingAddress: true,
-              zipCode: true
-            });
-          }
-        })
-      } 
-
-      //Add class Type controller
-      $scope.addClassType = function(className, dropinPrice, openTo, requirements, classDescription) {
-        ref.child("classTypes").push({'className': className, 'dropinPrice': dropinPrice, 'openTo': openTo, 'requirements': requirements, 'classDescription': classDescription})
-      }
-
-      //Add workout modal
-      $scope.addSet = function(setToAdd) {
-        $scope.sets.push(setToAdd);
-      }
-
-      $scope.createWorkout = function(title, classType, sets) {
-        var pushedWorkout = ref.child("workouts").push({'title': title, 'classType': classType, sets: 'sets'}, function() {
-          ref.child("workoutsByClassType").child(classType).child(pushedWorkout.name).update({'title': title, 'classType': classType, sets: 'sets'});
-        })
-      }
-
-      //Add instructor controller
-      $scope.findInstructorByEmail = function(emailToSearch) {
-        User.getInstructorByEmail({
-          id: $scope.currentUser._id
-        }, {
-          email: emailToSearch
-        }).$promise.then(function(instructor) {
-          $scope.returnedInstructor = instructor;
-        })
-      }
-
-      $scope.addInstructor = function(instructorId, positionTitle, certifications, instructorBio, permission) {
-        if (permission === 'instructor') {
-          ref.child("instructors").update({'instructorId': instructorId, 'positionTitle': positionTitle, 'certifications': certifications, 'instructorBio': instructorBio, 'permission': permission});
-        }
-
-        if (permission === 'admin') {
-          ref.child("studioAdmins").child(instructorId).update({}) 
-        }
-      }
-
-  });

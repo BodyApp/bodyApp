@@ -45,13 +45,17 @@ angular.module('bodyAppApp')
     $scope.studioId = studioId;
 
     var daysInFuture = 0;
-    var numDaysToShow = 7;
+    var numDaysToShow = 8;
 
     Intercom('trackEvent', 'visitedStudioStorefront', {
       studio: studioId
     });
 
-    getClasses(0, 7);
+    analytics.track('visitedStudioStorefront', {
+      studio: studioId
+    });
+
+    getClasses(0, 8);
     getSpecialtyClasses();
     getStorefrontInfo();
     getInstructors();
@@ -281,7 +285,7 @@ angular.module('bodyAppApp')
       ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("Can't get access code for studio.")
         accountId = snapshot.val()
-        checkSubscriptionStatus()
+        if ($scope.currentUser._id) checkSubscriptionStatus()
       })
 
       ref.child("stripeConnected").child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
@@ -392,7 +396,7 @@ angular.module('bodyAppApp')
 
     function getClasses(daysInFuture, numDaysToShow) {
       var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
-      startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
+      startAt = new Date(startAt*1 + daysInFuture*24*60*60*1000).setHours(0,0,0,0).toString()
       var numberOfDaysToDisplay = numDaysToShow;
       var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
       var endAt = (startAt*1 + toAdd + 1*60*60*1000).toString()
@@ -505,13 +509,13 @@ angular.module('bodyAppApp')
         } else if (slot && $scope.classTypes && $scope.classTypes[slot.classType] && $scope.classTypes[slot.classType].freeClass) { //Book class if studio hasn't set pricing.
           console.log("Booking for free because this is a free class.")
           return bookClass(slot)
-        } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
+        } else if (slot && !$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
           console.log("Booking for free because no pricing is set")
           return bookClass(slot)
-        } else if (currentUser && currentUser.role === 'admin') {
+        } else if (slot && currentUser && currentUser.role === 'admin') {
           console.log("Booking for free because user is admin.")
           return bookClass(slot)
-        } else if (studioId === 'body') {
+        } else if (slot && studioId === 'body') {
           console.log("Booking for free because this is the BODY studio.")
           return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
@@ -546,10 +550,13 @@ angular.module('bodyAppApp')
       });
     }
 
-    $scope.joinStudioClicked = function(slot) {
+    $scope.joinStudioClicked = function() {
       Intercom('trackEvent', "joinStudioClicked")
+      analytics.track('joinStudioClicked', {
+      studio: studioId
+    });
       if ($rootScope.subscribing) return
-      checkMembership(slot)
+      checkMembership()
     }
 
     $scope.cancelSubscription = function() {
@@ -568,6 +575,9 @@ angular.module('bodyAppApp')
         .success(function(data) {
           console.log("Successfully cancelled subscription to " + studioId);
           Intercom('trackEvent', "cancelledMembership", {studioId: studioId})
+          analytics.track('cancelledMembership', {
+            studio: studioId
+          });
           // Auth.updateUser(data);
           // $rootScope.subscriptions = $rootScope.subscriptions || {};
           // delete $rootScope.subscriptions[studioId];
@@ -599,6 +609,9 @@ angular.module('bodyAppApp')
 
     $scope.playYoutubeVideo = function() {
       Intercom('trackEvent', "playedYoutubeVideo")
+      analytics.track('playedYoutubeVideo', {
+        studio: studioId
+      });
       $("#youtubeVideo")[0].src += "&autoplay=1";
       $scope.showVideoPlayer = true;
       $scope.hidePlayer = false;
@@ -713,6 +726,10 @@ angular.module('bodyAppApp')
           classToBook: slot ? slot.dateTime : "None",
           dateOfClass_at: Math.floor(slot.dateTime/1000)
         });
+        analytics.track('bookedClass', {
+          studioId: studioId,
+          classToBook: slot ? slot.dateTime : "None",
+        });
       }, function(err) {
           console.log("Error adding class: " + err)
           // slot.bookedUsers = slot.bookedUsers || {};
@@ -735,6 +752,10 @@ angular.module('bodyAppApp')
           studioId: studioId,
           classToCancel: slot ? slot.dateTime : "None",
           dateOfClass_at: Math.floor(slot.dateTime/1000)
+        });
+        analytics.track('cancelledClass', {
+          studioId: studioId,
+          classId: slot ? slot.dateTime : "None",
         });
         // Auth.updateUser(user);
         // currentUser = user;
@@ -799,6 +820,10 @@ angular.module('bodyAppApp')
 
     $scope.playVideo = function(videoToPlay) {
       Intercom('trackEvent', "playedVideoFromLibrary", {videoToken: videoToPlay.token})
+      analytics.track('playedVideoFromLibrary', {
+        studioId: studioId,
+        videoToken: videoToPlay.token
+      });
       ZiggeoApi.Embed.popup({
         video: videoToPlay.token,
         autoplay: true,

@@ -260,12 +260,12 @@
           </div>
         </div> -->
 
-        <div class="row mb16" ng-show = "numDaysToShow < 7 && nextWeek != 3">
+        <div class="row mb16" ng-show = "numDaysToShow < 8 && nextWeek != 4">
           <div class = "col-xs-8"></div>
-          <a class = "col-xs-3 btn" ng-click = "nextWeek = 3">Next</a>
+          <a class = "col-xs-3 btn" ng-click = "nextWeek = 4">Next</a>
         </div>
 
-        <div class="row mb16" ng-show = "numDaysToShow < 7 && nextWeek === 3">
+        <div class="row mb16" ng-show = "numDaysToShow < 8 && nextWeek === 4">
           <div class = "col-xs-1"></div>
           <a class = "col-xs-3 btn" ng-click = "nextWeek = 0">Previous</a>
           <div class = "col-xs-8"></div>
@@ -279,13 +279,13 @@
             <div class="no-classes" ng-if = "!classSchedule">No classes this week</div>
             <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
 
-            <div class="cal-column" ng-show = "$index < numDaysToShow + nextWeek && (nextWeek !=3 || $index >= numDaysToShow )" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
+            <div class="cal-column" ng-show = "$index < numDaysToShow + nextWeek && (nextWeek !=4 || $index >= numDaysToShow )" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
               <div class="cal-daytime">
                 <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
                 <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
               </div>
               <div class="cal-allClasses" >
-                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty' && class.dateTime > rightNow - 60*60*1000" ng-hide = "class.dateTime < rightNow" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} ({{class.duration}}m)</div>
                   <!-- <div class="cal-duration">{{class.duration}}m</div> -->
                   <div class="cal-class">{{classTypes[class.classType].name}} <span ng-if = "classTypes[class.classType].freeClass">(Free)</span></div>
@@ -633,7 +633,7 @@
             Studio Stories
           </div>
           <div class="panel-body">
-            <div class="stories-panel text-center" ng-repeat = "story in testimonials">
+            <div class="stories-panel text-center" ng-repeat = "story in testimonials" ng-show="storyImages[story.id]">
               <a href="#">
                 <img ng-src="{{storyImages[story.id]}}">
                 <div class="stories-overlay text-left">
@@ -867,7 +867,8 @@
             <div class="row mt24 mb-xs-16 studio-instructors" ng-repeat = "instructor in instructors">
               <div class="col-sm-3">
                 <div class="studio-instructor-photo text-center">
-                  <img ng-src="https://graph.facebook.com/{{instructor.facebookId}}/picture?width=125&height=125">
+                  <img ng-if = "!instructor.addedPicture" ng-src="https://graph.facebook.com/{{instructor.facebookId}}/picture?width=125&height=125">
+                  <img ng-if = "instructor.addedPicture" ng-src="{{instructor.addedPicture}}">
                 </div>
               </div>
               <div class="col-sm-9 studio-instructors-content">

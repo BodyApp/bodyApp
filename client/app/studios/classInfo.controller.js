@@ -27,6 +27,11 @@ angular.module('bodyAppApp')
       studioId: studioId
     });
 
+    analytics.track('wentToClassInfo', {
+      classId: classId,
+      studioId: studioId
+    });
+
     var calculateTime = $interval(calculateTimeUntilClassStarts, 30000)
 
     $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
@@ -182,18 +187,25 @@ angular.module('bodyAppApp')
         return $mdDialog
         .show( confirm ).then(function() {
           ref.child("bookings").child(classId).child($scope.currentUser._id).remove()
-          firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(classId).remove()
-          ref.child("userBookings").child($scope.currentUser._id).child(classId).remove(function(err) {
+          firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(classId).remove(function(err) {
             if (err) return console.log(err)
             Intercom('trackEvent', 'cancelledClass', {
               studioId: studioId,
               classToCancel: classId ? classId : "None",
               dateOfClass_at: Math.floor(classId*1/1000)
             });
+            analytics.track('cancelledClass', {
+              studioId: studioId,
+              classToCancel: classId ? classId : "None",
+              dateOfClass_at: Math.floor(classId*1/1000)
+            });
+
             $rootScope.$apply(function() {
               $location.path('/studios/' + studioId)
             });
           })
+          firebase.database().ref().child('bookingCancellations').child($scope.currentUser._id).child(classId).update({classId: classId, studioId: studioId})
+          ref.child("userBookings").child($scope.currentUser._id).child(classId).remove()
           ref.child("cancellations").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""})
         });
         // if (confirm("Are you sure you want to cancel class?")) {
@@ -204,6 +216,7 @@ angular.module('bodyAppApp')
 
     $scope.clickedWhenClassFull = function(ev) {
       Intercom('trackEvent', 'triedToReserveFullClass')
+      analytics.track('triedToReserveFullClass', {studioId: studioId, classId: classId});
       var alert = $mdDialog.alert({
         title: "Added To Waitlist",
         textContent: "Great! We've added you to the waitlist and will let you know if a spot opens up.",
@@ -227,6 +240,8 @@ angular.module('bodyAppApp')
             classToAdd: classId ? classId : "None",
             dateOfClass_at: Math.floor(classId*1/1000)
           });
+
+          analytics.track('addToWaitlist', {studioId: studioId, classId: classId});
             
           ref.child("waitlist").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""}, function(err) {
             if (err) return err;
@@ -306,6 +321,17 @@ angular.module('bodyAppApp')
           studioId: studioId,
           classType: $scope.classDetails.classType
         });
+        analytics.track('taughtClass', {
+          dateOfClass_at: new Date($scope.classDetails.dateTime),
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType
+        });
+        firebase.database().ref().child('taughtClass').child($scope.currentUser._id).child(classId).update({
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType
+        })
         $location.path('/trainervideo') 
       } else {
         Intercom('trackEvent', 'tookClass', {
@@ -316,7 +342,21 @@ angular.module('bodyAppApp')
           classType: $scope.classDetails.classType,
           instructor: $scope.classDetails.instructor
         });
+        //segment.io
+        analytics.track('tookClass', {
+          dateOfClass_at: new Date($scope.classDetails.dateTime),
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType,
+          instructor: $scope.classDetails.instructor
+        });
         $location.path('/uservideo')  
+        firebase.database().ref().child('tookClass').child($scope.currentUser._id).child(classId).update({
+          classId: classId,
+          studioId: studioId,
+          classType: $scope.classDetails.classType,
+          instructor: $scope.classDetails.instructor
+        })
       }
     }
 
@@ -324,7 +364,7 @@ angular.module('bodyAppApp')
       ref.child("stripeConnected").child('stripe_user_id').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("Can't get access code for studio.")
         accountId = snapshot.val()
-        checkSubscriptionStatus()
+        if ($scope.currentUser._id) checkSubscriptionStatus()
       })
 
       ref.child("stripeConnected").child('subscriptionPlans').limitToLast(1).once('value', function(snapshot) {
@@ -370,9 +410,9 @@ angular.module('bodyAppApp')
         } else if ($scope.currentUser && $scope.currentUser.role === 'admin') {
           console.log("Booking for free because user is admin.")
           return bookClass(slot)
-        // } else if (studioId === 'body') {
-        //   console.log("Booking for free because this is the BODY studio.")
-        //   return bookClass(slot)
+        } else if (studioId === 'body') {
+          console.log("Booking for free because this is the BODY studio.")
+          return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
@@ -403,7 +443,19 @@ angular.module('bodyAppApp')
       });
     }
 
-    $scope.reserveClicked = function(slot) {
+    $scope.reserveClicked = function(slot, ev) {
+      if (slot.dateTime < new Date().getTime() - slot.duration*60*1000) {
+        var alert = $mdDialog.alert({
+          title: "Class is Over",
+          textContent: "You can't book a class that's in the past!",
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          ok: 'OK!'
+        });
+
+        return $mdDialog
+        .show( alert )
+      }
       Intercom('trackEvent', "reserveClicked")
       if ($rootScope.subscribing) return 
       if (!$scope.currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
@@ -493,6 +545,11 @@ angular.module('bodyAppApp')
         });
 
         Intercom('trackEvent', 'bookedClass', {
+          studioId: studioId,
+          classToBook: slot ? slot.dateTime : "None",
+          dateOfClass_at: Math.floor(slot.dateTime/1000)
+        });
+        analytics.track('bookedClass', {
           studioId: studioId,
           classToBook: slot ? slot.dateTime : "None",
           dateOfClass_at: Math.floor(slot.dateTime/1000)

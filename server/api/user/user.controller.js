@@ -799,9 +799,10 @@ function sendClassBookedEmailToStudio(studioId, userFirstName, userLastName, cla
   var dateTime = formattedDateTime(classDateTime)
 
   ref.child('studios').child(studioId).child('admins').once('value', function(snapshot) {
+    if (!snapshot.exists()) return;
     snapshot.forEach(function(admin) {
       ref.child('fbUsers').child(admin.val().facebookId).once('value', function(info) {
-        console.log(admin.val())
+        if (!info.exists()) return
         var data = {
           from: from_who,
           to: info.val().email,

@@ -169,10 +169,21 @@ angular.module('bodyAppApp')
 
     function getClasses(daysInFuture) {
       var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
-      startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
+      if (daysInFuture > 1) {
+        startAt = new Date(startAt*1 + daysInFuture*24*60*60*1000).setHours(0,0,0,0).toString()  
+      } else {
+        startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
+      }
+      
       var numberOfDaysToDisplay = numDaysToShow;
       var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
-      var endAt = (startAt*1 + toAdd + 1*60*60*1000).toString()
+      var endAt = new Date(startAt*1 + toAdd + 1*60*60*1000).setHours(23,59,59,999).toString()
+      // if (daysInFuture > 1) {
+      //   endAt = (startAt*1 + toAdd + 1*60*60*1000).setHours(23,59,59,999).toString()
+      // } else {
+
+      // }
+       
 
       ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
         if (!snapshot.exists()) return;
@@ -280,14 +291,34 @@ angular.module('bodyAppApp')
           checkIfExists(workoutToSave);  //Recursive
         } else {
           ref.child('classes').child(workoutToSave.dateTime).update(workoutToSave, function(err) {
-            if (err) return console.log(err);
+            if (err) {
+              analytics.track("errorSchedulingClass", {
+                classId: workoutToSave.dateTime,
+                studio: studioId,
+                classType: workoutToSave.classType,
+                instructor: workoutToSave.instructor
+              })
+              Intercom('trackEvent', "errorSchedulingClass", {
+                classId: workoutToSave.dateTime,
+                studio: studioId,
+                classType: workoutToSave.classType,
+                instructor: workoutToSave.instructor
+              })
+              return console.log(err);
+            }
             console.log("Saved Class")
-            Intercom('update', {
-              "studioClassCreated_at": Math.floor(new Date() / 1000),
-              "studioClassScheduledFor": Math.floor(workoutToSave.dateTime/1000),
-              "studioLatestClassScheduledAt": studioId
-            });
+            // Intercom('update', {
+            //   "studioClassCreated_at": Math.floor(new Date() / 1000),
+            //   "studioClassScheduledFor": Math.floor(workoutToSave.dateTime/1000),
+            //   "studioLatestClassScheduledAt": studioId
+            // });
             Intercom('trackEvent', 'scheduledAClass', {
+              dateOfClass_at: Math.floor(workoutToSave.dateTime/1000),
+              studio: studioId,
+              classType: workoutToSave.classType,
+              instructor: workoutToSave.instructor,
+            });
+            analytics.track('scheduledAClass', {
               dateOfClass_at: Math.floor(workoutToSave.dateTime/1000),
               studio: studioId,
               classType: workoutToSave.classType,
@@ -335,7 +366,7 @@ angular.module('bodyAppApp')
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.maxParticipants = workoutToCreate.maxParticipants;
-      workoutToSave.spots = 12;
+      // workoutToSave.spots = 12;
       workoutToSave.sessionId = nextSessionToSave.sessionId
       console.log(workoutToSave)
 

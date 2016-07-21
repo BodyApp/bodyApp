@@ -19,7 +19,7 @@
 				</li>
 				<li>
 					<button href="#" class="btn-blue" ng-if = "bookings[currentUser._id] || userIsInstructor" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
-					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && (!classDetails.maxParticipants || numBookings < classDetails.maxParticipants)" ng-click = "reserveClicked(classDetails)">Reserve Class for
+					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && (!classDetails.maxParticipants || numBookings < classDetails.maxParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !classType.freeClass">${{storefrontInfo.dropinPricing/100}}</span>
             <span style = "font-weight: bold;" ng-show = "(classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !storefrontInfo.subscriptionPricing) || classType.freeClass">Free</span>
             <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Specialty'">${{classType.specialtyClassRate}}</span>
@@ -71,7 +71,8 @@
 						<div class="col-sm-9">
 							<div class="row">
 								<div class="col-xs-3">
-									<img ng-src="https://graph.facebook.com/{{instructorDetails.facebookId}}/picture?height=100&width=100" class="round-photo">
+									<img ng-if = "!instructorDetails.addedPicture" ng-src="https://graph.facebook.com/{{instructorDetails.facebookId}}/picture?height=100&width=100" class="round-photo">
+									<img class="round-photo" ng-if = "instructorDetails.addedPicture" ng-src="{{instructorDetails.addedPicture}}" width="100">
 								</div>
 								<div class="col-xs-9">
 									<div class="row">

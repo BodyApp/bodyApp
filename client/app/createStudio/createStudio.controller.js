@@ -49,6 +49,12 @@ angular.module('bodyAppApp')
         durationModifier: durationModifier
       });
 
+      analytics.track('playedWithIncomeCalculatorOnStudioCreationPage', {
+        subscriptionPrice: $scope.subscriptionPrice, 
+        numSubscribers: $scope.numSubscribers, 
+        durationModifier: durationModifier
+      });
+
       if ($scope.subscriptionPrice > 0 && $scope.numSubscribers > 0) {
         var durationModifier;
         if ($scope.calcDuration === 'Monthly') durationModifier = 1
@@ -100,6 +106,7 @@ angular.module('bodyAppApp')
       $scope.changingStudioName = true;
       $timeout(function() {
         Intercom('trackEvent', 'changingStudioName', {studioName: $scope.studioToCreate.studioName});  
+        analytics.track('changingStudioName', {studioName: $scope.studioToCreate.studioName});  
         $scope.changingStudioName = false;
       }, 1000)
     }
@@ -118,6 +125,7 @@ angular.module('bodyAppApp')
 
     $scope.beginStudioCreation = function() {
       Intercom('trackEvent', 'clickedBeginStudioCreation');
+      analytics.track('clickedBeginStudioCreation');
       if (currentUser._id) {
         $scope.creationStarted = true
       } else {
@@ -180,6 +188,11 @@ angular.module('bodyAppApp')
           });
 
           Intercom('trackEvent', 'createdStudio', {
+            studioId: studioId,
+            studioName: studioToCreate.studioName
+          });
+
+          analytis.track('createdStudio', {
             studioId: studioId,
             studioName: studioToCreate.studioName
           });
@@ -355,7 +368,7 @@ angular.module('bodyAppApp')
         $location.path('/studios/' + studioToCreate.studioId + "/editschedule")
         $scope.descriptionComplete = true;
         if(!$scope.$$phase) $scope.$apply();
-        Intercom('trackEvent', 'setStudioDescription', {
+        analytics.track('setStudioDescriptionInCreateStudio', {
           shortDescription: studioToCreate.shortDescription,
           longDescription: studioToCreate.longDescription
         });

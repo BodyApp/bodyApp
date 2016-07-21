@@ -47,6 +47,7 @@ angular.module('bodyAppApp')
 	ZiggeoApi.Events.on("submitted", function (data) {
 		getVideoLibrary()
     Intercom('trackEvent', 'recordedVideo', { studioId: studioId, token: data.video.token });
+    analytics.track('recordedVideo', { studioId: studioId, token: data.video.token });
 		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
 			if (err) return console.log(err)
 			console.log("Added video to library.")

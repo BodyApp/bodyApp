@@ -71,9 +71,28 @@ angular.module('bodyAppApp', [
     };
   })
 
-  .run(function ($rootScope, $state, $window, Auth) {
-    $rootScope.$on('$routeChangeSuccess', function(evt, absNewUrl, absOldUrl){
+  .run(function ($rootScope, $state, $window, $location, Auth) {
+    $rootScope.$on('$routeChangeSuccess', function(evt, absNewUrl, absOldUrl, fromState, fromParams){
       $window.scrollTo(0,0);    //scroll to top of page after each route change
+
+      var path = $location.path();
+      var querystring = '';
+      var referrer = '';
+
+      if (path.indexOf('?') !== 1) {
+        querystring = path.substring(path.indexOf('?'), path.length);
+      }
+
+      if (fromState.name) {
+        referrer = $location.protocol() + '://' + $location.host() + '/#' + fromState.url;
+      }
+
+      analytics.page({
+        path: path,
+        referrer: referrer,
+        search: querystring,
+        url: $location.absUrl()
+      })
     })
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -82,6 +101,12 @@ angular.module('bodyAppApp', [
           event.preventDefault();
           $state.go('main');
         } else if (loggedIn) {
+          analytics.identify(Auth.getCurrentUser()._id, {
+            firstName: Auth.getCurrentUser().firstName,
+            lastName: Auth.getCurrentUser().lastName,
+            email: Auth.getCurrentUser().email,
+            facebookId: Auth.getCurrentUser().facebookId,
+          })
           console.log("Booting Intercom")
           if (Auth.getCurrentUser().intercomHash) {
             Intercom("boot", {

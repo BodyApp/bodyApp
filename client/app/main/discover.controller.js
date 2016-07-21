@@ -13,6 +13,7 @@ angular.module('bodyAppApp')
 
     $scope.categoryFilter = $state.params.tag;
     Intercom('trackEvent', 'navigatedToDiscover');
+    analytics.track('navigatedToDiscover');
 
     $scope.classesVsStudios = "classes";
 
@@ -94,6 +95,10 @@ angular.module('bodyAppApp')
       })
     }
 
+    $scope.trackEvent = function(name, data) {
+      analytics.track(name, data)
+    }
+
     $scope.getDayOfWeek = function(day) {
       var dayToFormat = new Date(day*1)
       return moment(dayToFormat).format('ddd')
@@ -117,6 +122,7 @@ angular.module('bodyAppApp')
     $scope.setCategoryFilter = function(tag) {
       $scope.categoryFilter = tag
       Intercom('trackEvent', 'setDiscoverCategoryFilter', {filter: tag});
+      analytics.track('setDiscoverCategoryFilter', {filter: tag})
     }
 
     String.prototype.trunc = function( n, useWordBoundary ){

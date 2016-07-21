@@ -16,10 +16,16 @@
           <h5 class="mb0 lightgray">{{getFormattedDateTime(classDetails.dateTime).classTime}} {{timezone}}</h5>
 
           <h5 class="mt8">Duration</h5>
-          <h5 class="mb0 lightgray">{{classDetails.duration}}m</h5>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{classDetails.duration}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="instructor-choice" ng-model = "classDetails.duration" ng-options = "value for value in durationOptions"></select>
+          </div>
 
           <h5 class="mt8">Max Participants</h5>
-          <h5 class="mb0 lightgray">{{classDetails.maxParticipants}}</h5>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{classDetails.maxParticipants}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="instructor-choice" ng-model = "classDetails.maxParticipants" ng-options = "value for value in maxParticipantsOptions"></select>
+          </div>
 
           <h5 class="mt8 mb0">Instructor</h5>
           <h5 class="lightgray mb0" ng-hide = "editing">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
@@ -85,7 +91,8 @@
       <div class="panel"> <!-- SIGN UPS PANEL -->
         <div class="panel-header">
           <span ng-show = "getNumOf(bookings) < 1">Nobody signed up</span>
-          <span ng-show = "getNumOf(bookings) >= 1"> Sign Ups ({{getNumOf(bookings)}} of {{classDetails.spots}})</span>
+          <span ng-show = "getNumOf(bookings) >= 1 && classDetails.maxParticipants"> Sign Ups ({{getNumOf(bookings)}} of {{classDetails.maxParticipants}})</span>
+          <span ng-show = "getNumOf(bookings) >= 1 && !classDetails.maxParticipants"> Sign Ups ({{getNumOf(bookings)}} of {{classDetails.spots}})</span>
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "returnToSchedule()">Return to Schedule</a>

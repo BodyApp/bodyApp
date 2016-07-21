@@ -1,140 +1,35 @@
 <div ng-include="'components/navbar/navbar.html'" class = "mb72"></div>
 
-<div class="container full-screen-height">
-  <!-- <ul class="list-group">
-    <li class="list-group-item" ng-repeat="user in users">
-        <strong>{{user.name}}</strong><br>
-        <span class="text-muted">{{user.email}}</span>
-        <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-    </li>
-  </ul> -->
-  <!-- <div class = "col-sm-2"></div> -->
-  <div class = "col-sm-12 mb64">
-    <form novalidate class="simple-form row mb32">
-      <!-- <input style="color: black" type="text" ng-model="workoutToCreate.trainer" placeholder="Instructor Name" required/><br /> -->
-      <select ng-model="workoutToCreate.trainer" ng-options = "(option.firstName + ' ' + option.lastName) for option in instructors" required>
-        <!-- <option ng-options="option in instructors" value="{{option}}">{{option.firstName}} {{option.lastName}}</option> -->
-      </select>
-      <select ng-model="workoutToCreate.level" ng-options = "value for value in levels" required>
-      </select>
-      <input style="color: black" type="datetime-local" ng-model="workoutToCreate.date" required/><br />
-      <!-- <input style="color: black" type="text" ng-model="workoutToCreate.soundcloudUrl" placeholder = "Soundcloud Url"/><br /> -->
-       <select ng-if = "playlists" placeholder = "Soundcloud Playlist" ng-model="workoutToCreate.playlistUrl" ng-options = "(option.title + ': ' + option.track_count + ' trcks (' + roundMins(option.duration/1000/60) + ' mins)') for option in playlists | filter: {sharing: 'public'}">
-        <option value="" required>- Login To SoundCloud Below -</option>
-      </select>
-      <!-- <input style="color: black" type="time" ng-model="workoutToCreate.date" placeholder="H:m" required/> -->
-      <input type="submit" ng-click="createWorkout(workoutToCreate)" value="Create New Workout" />
-      <button style="background-image: url(../../assets/images/soundcloudButton.png); width: 245px; height: 32px" ng-click = "soundcloudAuth()"> </button>
-    </form>
-
-    <button class = "mb32" style="background-image: url(../../assets/images/icons/stripeConnectSmall.png); width: 190px; height: 33px" ng-click = "beginStripeConnect()"> </button>
-    <div>
-      <div>Current Active Subscription: <span>{{subscriptionAmount}}</span></div>
-      <!-- <input ng-model = "subscriptionAmount"></input> -->
-      <!-- <input ng-model = "dropInAmount"></input> -->
+<div class="container full-screen-height" ng-show = "loaded">
+  <div class = "col-sm-12 mb64 mt64">
+    <div>Current number of studios: {{numberOfStudios}}</div>
+    <div class = "mt32">
+      Start<input type='text' class="form-control" id='datetimepickerStart'/>
+      End<input type='text' class="form-control" id='datetimepickerEnd'/>
+      <a ng-click = "getStats()" class = "btn btn-primary mt16 mb16">Calculate</a>
+      <div ng-show = "startAt < dataInvalidDate" style = "color: red; font-weight: bold;">*Unfortunately, data prior to 7/18/16 is not accurate</div>
+      <h2>All data is for classes taking place during the time frame</h2>
+      <h3>Studios</h3>
+      <div>Studios that scheduled at least 1 class: <span>{{numberOfStudiosThatScheduledClass}}<span></div>
+      <div>Classes scheduled: <span>{{numberOfClassesScheduled}}</span></div>
+      <br>
+      <h3>Users</h3>
+      <div>Users that took at least 1 class: <span>{{numberOfUsersThatTookAClass}}</span></div>
+      <div>Users that booked at least 1 class: <span>{{numberOfUsersThatScheduledAClass}}</span></div>
+      <div>User bookings: <span>{{numberOfBookings}}</span></div>
+      <div>User instances in class: <span>{{classesTaken}}</span></div>
+      <br>
+      <h3>User Cancellations</h3>
+      <div>Users that cancelled at least 1 class: <span>{{numberOfUsersThatCancelledAClass}}</span></div>
+      <div>Number of cancellations: <span>{{numberOfCancellations}}</span></div>
+      <br>
+      <h3>Scheduled Classes By Studio</h3>
+        <div ng-repeat = "studio in classesByStudio | orderBy: '-numClasses'">
+          <a style="color:inherit; text-decoration:none;" ng-href = "/studios/{{studio.studioId}}">
+          <div>{{studio.studioName}}: {{studio.numClasses}}</div>
+          <a>
+        </div>
     </div>
-
-    <!-- <section class="week-schedule scroll-to mb72"> -->
-        <div class="row">
-          <!-- <div class="col-sm-9">
-            <h1 class="darkblue mb0">{{studioId.toUpperCase()}} Class Schedule</h1>
-          </div> -->
-          <div class="col-sm-9 mb64">
-            <h4 class="week-selector darkblue bold" ng-show = "days">
-              <a href=""><i class="ti-arrow-circle-left" ng-hide = "thisWeek" ng-click = "setCalendarToThisWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="right" uib-popover="This Week"></i></a>
-              &nbsp;{{days["0Sun"].formattedDate}} - {{days["6Sat"].formattedDate}}&nbsp;
-              <a href=""><i class="ti-arrow-circle-right" ng-show = "thisWeek" ng-click = "setCalendarToNextWeek()" popover-animation="true" popover-trigger="mouseenter" popover-placement="left" uib-popover="Next Week"></i></a>
-            </h4>
-          </div>
-        </div>
-        <div class="col-day" ng-repeat="day in days">
-          <div class = "fixedAtTop">
-            <div class="day-and-date text-center">
-              <span class="day bold">{{ day.name }}</span>
-              <span class="date bold">{{ day.formattedDate }}</span>
-            </div>
-            <!-- <div class="workout-and-module text-center">
-              <span class="wod-title bold">The Flip Side</span>
-              <span class="wod-module">Hip Openers</span>
-            </div> -->
-          </div>
-          <div ng-repeat="slot in day.slots" ng-init = "checkIfFriends(slot)">
-            <div class="sched-class" ng-class = "{unavailable: isPast(slot)}" ng-if = "slot.level != 'Test' || currentUser.role === 'admin' || currentUser.role === 'instructor'" ng-hide = "slot.level === 'Intro' && currentUser.introClassTaken && subscriptionActive && currentUser.role != 'admin'">
-              <span class="class-time">{{ getFormattedDateTime(slot).classTime }} {{timezone}}</span>
-              <div class="class-type" ng-class = "{intro: slot.level === 'Intro', lvl1: slot.level === 'Level One', open: slot.level === 'Open'}">
-                <span ng-if = "slot.level === 'Intro'">Free </span>
-                <span>{{slot.level}}</span>
-              </div>
-              <div class="class-reserve"><a class="reserve btn" href="#" ng-if = "currentUser.role === 'admin' && bookingsBySlot[slot.date].length < 1" ng-click = "deleteClass(slot)">Delete</a></div>
-              <span class="class-instr bold">{{trainers[slot.trainer].firstName}} {{trainers[slot.trainer].lastName.charAt(0)}}.</span>
-              <div class="my-friends mt16 mb0" >
-                <div class="qty mb4">
-                  <div ng-if = "currentUser.role === 'admin'">
-                    <span ng-show = "bookingsBySlot[slot.date].length < 1">Nobody signed up</span>
-                    <span ng-show = "bookingsBySlot[slot.date].length > 1">{{bookingsBySlot[slot.date].length}} users signed up</span>
-                    <span ng-show = "bookingsBySlot[slot.date].length === 1">1 user signed up</span>
-                  </div>
-                </div>
-                <!-- <div class="empty"></div>
-                <div class="empty"></div> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      <!-- </section> -->
-    </div>
-  <!-- </div> -->
-
-  
-
-  <!-- Members -->
-    <!-- <div class = "col-sm-12"> -->
-      <div class="mb8">
-        <div class="col-sm-12">
-          <h3 class="royalblue">Members ({{memberList.length}})</h3>
-        </div>
-        <div class="col-sm-3">
-        </div>        
-      </div>
-      <div class="col-sm-12">
-        <div class="friends-User-col"><span class="lightgray">User</span></div>
-        <div class="friends-Action-col"><span class="lightgray">Email</span></div>
-      </div>
-      <div class="col-sm-12">
-        <ul class="friendList">
-          <li ng-repeat = "member in memberList" ng-show = "memberList.length > 0">
-            <div class="friend-User-col">
-              <div class="friendPhoto"><img src="{{member.picture}}"></div>
-              <div class="friendName"><span>{{member.firstName}} {{member.lastName}}</span></div>
-            </div>
-            <div class="friend-Action-col">
-              <div class="invitefriend"><span class="lightgray">{{member.email}}<span></div>
-              <!-- <div class="inviteFriend"><a href=""><span>Invite to class<span></a></div> -->
-            </div>
-          </li>
-        </ul>             
-      </div>
-    <!-- </div> -->
-    <!-- Memebers END -->
-
-  <!-- <form novalidate class="simple-form col-sm-3">
-    <input type="date" name="input" ng-model="date" ng-change = "changeDate(date)" required />
-    <input style="color: black" type="text" ng-model="wod.title" placeholder="WOD Title" required/><br />
-    <input style="color: black" type="text" ng-model="wod.description" placeholder="Description" required/><br />
-    <select style="color: black" type="text" ng-model="wod.scoreType" placeholder="Score Type" ng-options="option.label for option in scoreTypes track by option.id" required/><br />
-    <input style="color: black" type="text" ng-disabled = "true" placeholder = "Challenge" required/>
-      <input style="color: gray" type="text" ng-model="wod.challenge.bullets[0]" placeholder = "Challenge: First Bullet" required/>
-      <input style="color: gray" type="text" ng-model="wod.challenge.bullets[1]" placeholder = "Challenge: Second Bullet" required/>
-      <input style="color: gray" type="text" ng-model="wod.challenge.bullets[2]" placeholder = "Challenge: Third Bullet" required/>
-      <input style="color: gray" type="text" ng-model="wod.challenge.bullets[3]" placeholder = "Challenge: Fourth Bullet" required/>
-      <input style="color: gray" type="text" ng-model="wod.challenge.bullets[4]" placeholder = "Challenge: Fifth Bullet" required/>
-      <input style="color: gray" type="text" ng-model="wod.challenge.bullets[5]" placeholder = "Challenge: Sixth Bullet" required/>
-    <br />
-    <input type="submit" ng-click="saveWod(wod, date)" value="Change WOD" />
-  </form>  --> 
-
-<!--   <button ng-click="seedCalendar()" class="btn btn-lg btn-primary" style="visibility: visible;">
-    Seed Sample Calendar
-  </button> -->
+  </div>
 </div>
 <div ng-include="'components/footer/footer.html'"></div>

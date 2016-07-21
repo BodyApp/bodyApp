@@ -100,7 +100,7 @@
                         <div class="col-sm-12">
                           <div class="row text-center-xs">
                             <div class="col-sm-12">
-                              <a href="#" ng-click = "showClassInfo[instance.classType] = !showClassInfo[instance.classType];"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
+                              <a href="#" ng-click = "showClassInfo[instance.classType] = !showClassInfo[instance.classType]; trackEvent('showClassInfoClicked', {studioId: instance.studioId, classId: instance.dateTime})"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
                               <div class="display-block mb8">
                                 <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
                                 <!-- <a href="" class="btn-tag inline-block">Barre</a> -->
@@ -121,7 +121,8 @@
                         <div class="col-xs-7 col-sm-4">
                           <div class="row">
                             <div class="col-xs-6 col-sm-5 col-md-5">
-                              <img class="round-photo" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=85&height=85">
+                              <img class="round-photo" ng-if = "!instructors[instance.instructor].addedPicture" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=85&height=85">
+                              <img class="round-photo" ng-if = "instructors[instance.instructor].addedPicture" ng-src="{{instructors[instance.instructor].addedPicture}}" height="85" width="85">
                             </div>
                             <div class="col-xs-6 col-sm-7 col-md-7">
                               <h5>Instructor</h5>

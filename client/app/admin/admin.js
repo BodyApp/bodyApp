@@ -4,14 +4,9 @@ angular.module('bodyAppApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('admin', {
-        url: '/:studioId/admin',
+        url: '/admin',
         templateUrl: 'app/admin/admin.html',
         controller: 'AdminCtrl',
-        authenticate: true,
-        resolve: {
-          studioId: function($stateParams) {
-            return $stateParams.studioId
-          }
-        }
+        // authenticate: true,
       });
   });

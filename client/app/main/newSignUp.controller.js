@@ -54,6 +54,7 @@ angular.module('bodyAppApp')
 					if (err) return console.log(err)
 	      	Intercom('update', { "emergencyContactPhone": emergencyContact.emergencyPhone, "emergencyName": emergencyContact.fullName });
           Intercom('trackEvent', 'setEmergencyContact');
+          analytics.track('setEmergencyContact');
 	      	$scope.step = 4;   
 	        if(!$scope.$$phase) $scope.$apply();
 	      })
@@ -72,24 +73,34 @@ angular.module('bodyAppApp')
     	loggedInPath = $cookies.get('loggedInPath')
       if (loggedIn) {
         if (Auth.getCurrentUser().emergencyContact && Auth.getCurrentUser().email) {
-          $location.path(loggedInPath)
-          $location.replace()
-          if(!$scope.$$phase) $scope.$apply();
-        } else {
-          User.sendWelcomeEmail({ id: Auth.getCurrentUser()._id }, {
-            }, function(user) {
-              Intercom('update', {sentWelcomeEmail: true})
-              Intercom('trackEvent', 'sentWelcomeEmail');
-              console.log("Sent welcome email since first time logging in.")
-            }, function(err) {
-              console.log("Error: " + err)
-          })  
+            $location.path(loggedInPath)
+            $location.replace()
+            if(!$scope.$$phase) $scope.$apply();
+          } else {
+            User.sendWelcomeEmail({ id: Auth.getCurrentUser()._id }, {
+              }, function(user) {
+                Intercom('update', {sentWelcomeEmail: true})
+                Intercom('trackEvent', 'sentWelcomeEmail');
+                analytics.track('sentWelcomeEmail')
+                console.log("Sent welcome email since first time logging in.")
+              }, function(err) {
+                console.log("Error: " + err)
+            })  
 
-        	$scope.userEmail = Auth.getCurrentUser().email
-        	$scope.userPicture = Auth.getCurrentUser().picture
-	        $scope.step = 1;
-          if(!$scope.$$phase) $scope.$apply();
-        }
+            $scope.userEmail = Auth.getCurrentUser().email
+            $scope.userPicture = Auth.getCurrentUser().picture
+            $scope.step = 1;
+            if(!$scope.$$phase) $scope.$apply();
+          }
+        //Segment.io
+        analytics.identify(Auth.getCurrentUser()._id, {
+          firstName: Auth.getCurrentUser().firstName,
+          lastName: Auth.getCurrentUser().lastName,
+          email: Auth.getCurrentUser().email,
+          facebookId: Auth.getCurrentUser().facebookId,
+        }, function() {
+
+        })
       }
     });
   });

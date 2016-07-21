@@ -38,6 +38,9 @@ angular.module('bodyAppApp')
     var daysInFuture = 0;
     var numDaysToShow = 7;
 
+    $scope.maxParticipantsOptions = [1,2,3,4,5,6,7,8,9,10,11,12];
+    $scope.durationOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
+
     $scope.showingNextWeek = false;
 
     var auth = firebase.auth();
@@ -277,6 +280,7 @@ angular.module('bodyAppApp')
     		if (err) return console.log(err)
   			console.log("Class successfully deleted.")
         Intercom('trackEvent', "deletedClass", {classId: classId})
+        analytics.track("deletedClass", {studioId: studioId, classId: classId})
         if ($scope.classTypes[$scope.classDetails.classType].classType === 'Specialty') {
           ref.child('specialtyClasses').child(classId).remove(function(err) {
             if (err) return console.log(err)
