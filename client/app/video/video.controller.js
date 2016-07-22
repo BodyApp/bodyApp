@@ -409,6 +409,18 @@ angular.module('bodyAppApp')
 			errorCode: error,
 			message: message ? message : ""
 		});
+
+		var errorAlert = $mdDialog.alert({
+  		title: "Issue connecting",
+      textContent: "Your computer had trouble connecting to the session.  Please try restarting your computer and coming back into class.",
+      clickOutsideToClose: false,
+      ok: 'OK!'
+    });
+
+    $mdDialog.show(errorAlert).then(function(err) {
+    	$location.path('/')
+    })
+
 	}
 
 	function goBackToClassStarting() {

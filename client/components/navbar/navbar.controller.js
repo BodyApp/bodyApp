@@ -48,6 +48,8 @@ angular.module('bodyAppApp')
     var accountId;
     var currentUser;
 
+    $scope.stateName = $state.current.name
+
     // if (!studioId) {
     //   studioId = 'body'
     // }
