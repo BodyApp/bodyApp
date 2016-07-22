@@ -105,6 +105,7 @@ angular.module('bodyAppApp')
     }
 
     function getWorkout(workoutId) {
+      if (!workoutId) return;
       ref.child('workouts').child(workoutId).once('value', function(snapshot) {
         $scope.workout = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();

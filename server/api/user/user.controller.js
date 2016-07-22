@@ -801,6 +801,7 @@ function sendClassBookedEmailToStudio(studioId, userFirstName, userLastName, cla
   ref.child('studios').child(studioId).child('admins').once('value', function(snapshot) {
     if (!snapshot.exists()) return;
     snapshot.forEach(function(admin) {
+      if (!admin.val().facebookId) return;
       ref.child('fbUsers').child(admin.val().facebookId).once('value', function(info) {
         if (!info.exists()) return
         var data = {

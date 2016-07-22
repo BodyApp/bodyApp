@@ -14,6 +14,7 @@ angular.module('bodyAppApp')
     }
 
     Intercom('trackEvent', 'navigatedToCreateStudio');
+    analytics.track('navigatedToCreateStudio');
 
     $scope.calcDuration = 'Yearly';
     $scope.subscriptionPrice = 30;
@@ -36,24 +37,12 @@ angular.module('bodyAppApp')
     $scope.drop12 = false;
 
     $scope.openNewMessage = function() {
-      Intercom('showNewMessage', "I'm waiting for my class to start and have a question.");
+      Intercom('showNewMessage', "I'm thinking about creating a studio and have some questions.");
     }
 
     function calcTakeHome() {
       $scope.subscriptionPrice
       $scope.numSubscribers
-
-      Intercom('trackEvent', 'playedWithIncomeCalculatorOnStudioCreationPage', {
-        subscriptionPrice: $scope.subscriptionPrice, 
-        numSubscribers: $scope.numSubscribers, 
-        durationModifier: durationModifier
-      });
-
-      analytics.track('playedWithIncomeCalculatorOnStudioCreationPage', {
-        subscriptionPrice: $scope.subscriptionPrice, 
-        numSubscribers: $scope.numSubscribers, 
-        durationModifier: durationModifier
-      });
 
       if ($scope.subscriptionPrice > 0 && $scope.numSubscribers > 0) {
         var durationModifier;
@@ -71,6 +60,16 @@ angular.module('bodyAppApp')
     }
 
     $scope.calcTakeHome = function() {
+      Intercom('trackEvent', 'playedWithIncomeCalculatorOnStudioCreationPage', {
+        subscriptionPrice: $scope.subscriptionPrice, 
+        numSubscribers: $scope.numSubscribers
+      });
+
+      analytics.track('playedWithIncomeCalculatorOnStudioCreationPage', {
+        subscriptionPrice: $scope.subscriptionPrice, 
+        numSubscribers: $scope.numSubscribers
+      });
+
       calcTakeHome()
     }
 
@@ -165,6 +164,7 @@ angular.module('bodyAppApp')
   		ref.child('studios').child(studioId).child('storefrontInfo').once('value', function(snapshot) {
         if (snapshot.exists()) {
           console.log('ID taken')
+          analytics.track('triedToCreateStudioButIdWasTaken', {takenId: studioId})
           return $scope.takenId = true;
         } else {
           $scope.idSaved = true;
@@ -181,8 +181,11 @@ angular.module('bodyAppApp')
 					if (err) return console.log(err);
           // $scope.creatingStudio = false;
 					console.log("Successfully created studio with ID " + studioId + " and set owner as " + ownerName)
+          $scope.basicsComplete = true;
+          $scope.step++;
+          if(!$scope.$$phase) $scope.$apply();
+
           Intercom('update', {
-            "createdStudio_at": Math.floor(new Date().getTime() / 1000),
             "studioOwnedId": studioId,
             "studioOwnedName": studioToCreate.studioName
           });
@@ -192,7 +195,7 @@ angular.module('bodyAppApp')
             studioName: studioToCreate.studioName
           });
 
-          analytis.track('createdStudio', {
+          analytics.track('createdStudio', {
             studioId: studioId,
             studioName: studioToCreate.studioName
           });
@@ -223,8 +226,6 @@ angular.module('bodyAppApp')
           //   var uploadTask = storageRef.child('images/header.jpg').put(obj.lfFile);
           // })
           
-          $scope.basicsComplete = true;
-          $scope.step++;
           
           if(!$scope.$$phase) $scope.$apply();
 

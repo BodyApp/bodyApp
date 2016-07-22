@@ -12,12 +12,17 @@
       <h3>Studios</h3>
       <div>Studios that scheduled at least 1 class: <span>{{numberOfStudiosThatScheduledClass}}<span></div>
       <div>Classes scheduled: <span>{{numberOfClassesScheduled}}</span></div>
+      <div>Average # of classes per active studio <span>{{round(numberOfClassesScheduled/numberOfStudiosThatScheduledClass,1)}}</span></div>
       <br>
-      <h3>Users</h3>
+      <h3>Active Users</h3>
       <div>Users that took at least 1 class: <span>{{numberOfUsersThatTookAClass}}</span></div>
+      <div>User instances in class: <span>{{classesTaken}}</span></div>
+      <div>Average classes per active user: <span>{{round(classesTaken/numberOfUsersThatTookAClass,1)}}</span></div>
+      <br>
+      <h3>User Bookings</h3>
       <div>Users that booked at least 1 class: <span>{{numberOfUsersThatScheduledAClass}}</span></div>
       <div>User bookings: <span>{{numberOfBookings}}</span></div>
-      <div>User instances in class: <span>{{classesTaken}}</span></div>
+      <div>Average bookings per active booker: <span>{{round(numberOfBookings/numberOfUsersThatScheduledAClass,1)}}</span></div>
       <br>
       <h3>User Cancellations</h3>
       <div>Users that cancelled at least 1 class: <span>{{numberOfUsersThatCancelledAClass}}</span></div>

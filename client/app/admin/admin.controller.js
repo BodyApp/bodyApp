@@ -120,6 +120,10 @@ angular.module('bodyAppApp')
       getStats()
     }
 
+    $scope.round = function(numberToRound) {
+      return numberToRound.toFixed(1)
+    }
+
     function setDateTimePicker() {
       $scope.loaded = true;
       if(!$scope.$$phase) $scope.$apply();
