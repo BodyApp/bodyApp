@@ -50,7 +50,20 @@ angular.module('bodyAppApp')
         $scope.studioPictures[studioId] = url
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
-        console.log(error)
+        switch (error.code) {
+          case 'storage/object_not_found':
+            // File doesn't exist
+            break;
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
       });
 	  }
   
@@ -139,7 +152,19 @@ angular.module('bodyAppApp')
       if (field.length < 1) return items
       var result = {};
       angular.forEach(items, function(value, key) {
-        if (value.categories[field]) result[key] = value;
+        if (value.categories && value.categories[field]) result[key] = value;
+      });
+      return result;
+    };
+  })
+
+  .filter('filterStudiosObject', function() {
+    return function(items, field) {
+      if (field.length < 1) return items
+      var result = {};
+      angular.forEach(items, function(value, key) {
+        
+        if (value.categories && value.categories[field]) result[key] = value;
       });
       return result;
     };

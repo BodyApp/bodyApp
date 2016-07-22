@@ -8,11 +8,29 @@ angular.module('bodyAppApp')
 
     var startAt = (new Date().getTime() - 60*60*1000) //Can see classes that started an hour in the past.
 
-    ref.child('userBookings').child(Auth.getCurrentUser()._id).orderByKey().startAt(startAt.toString()).once('value', function(snapshot) {
-        $scope.userBookings = snapshot.val();
-    	console.log(snapshot.val())
-        Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren });
+    auth.onAuthStateChanged(function(user) {
+        if (user) {
+          delayStart()
+        } else {
+          // console.log("User is logged out");
+          if (currentUser.firebaseToken) {
+            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+              if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+            }); 
+          } else {
+            console.log("User doesn't have a firebase token saved, should retrieve one.")
+          }
+        }
     })
+
+    function delayStart() {
+        ref.child('userBookings').child(Auth.getCurrentUser()._id).orderByKey().startAt(startAt.toString()).once('value', function(snapshot) {
+            $scope.userBookings = snapshot.val();
+            console.log(snapshot.val())
+            Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren });
+        })
+    }
+    
 
     $scope.formatDate = function(dateTime) {
     	console.log(dateTime)

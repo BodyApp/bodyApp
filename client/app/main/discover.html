@@ -167,7 +167,7 @@
   <div class="page-container-responsive">
     <div class="row">
 
-      <div class="col-sm-6 col-md-4 studio-listings-card" ng-repeat = "studio in studios | filterByCategory: categoryFilter"> <!-- Studio Listing -->
+      <div class="col-sm-6 col-md-4 studio-listings-card" ng-repeat = "studio in studios | filterStudiosObject: categoryFilter"> <!-- Studio Listing -->
          <a href="/studios/{{studio.studioId}}">
           <div class="panel">
             <div class="studio-listing-container">
