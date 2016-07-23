@@ -26,7 +26,7 @@ angular.module('bodyAppApp')
 
 	var ziggeoEmbedding;
 	var progressAlert;
-	$scope.progressAlertText = "Uploading is 0% complete.  Please don't leave this page. ";
+	$scope.progressAlertText = "Uploading is 0% complete";
 	$scope.shouldShowProgressAlert = true;
 
   $scope.showWorkout = true;
@@ -60,7 +60,7 @@ angular.module('bodyAppApp')
 
   $timeout(function() {
   	$scope.showRecordButton = true;
-  }, 2000)
+  }, 10000)
 
 	auth.onAuthStateChanged(function(user) {
     if (user) {     
@@ -137,7 +137,7 @@ angular.module('bodyAppApp')
   ZiggeoApi.Events.on("upload_progress", function (uploaded, total, data) {
   	// if (uploaded / total >= 1) $scope.closeDialog()
 		//uploaded: Bytes uploaded, total: Bytes total, data: The object data
-		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/(total*2))*100,0) + "% complete."
+		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/(total*2))*100,0) + "% complete"
   	if(!$scope.$$phase) $scope.$apply();
   	if (uploaded === total) {
   		$interval(function() {
@@ -166,7 +166,8 @@ angular.module('bodyAppApp')
     publisherInitialized = false;
     $scope.consumerObjects = {};
     connectionCount = 0;
-		$timeout(function() {connect($scope.classDetails)}, 500)
+
+		$timeout(function() {connect($scope.classDetails)}, 1000)
 		
 		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
 			if (err) return console.log(err)
