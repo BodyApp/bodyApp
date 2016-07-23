@@ -142,6 +142,9 @@
 .trainer-blue-btn {
   background-color: rgba(0,0,255,0.5) !important;
 }
+.trainer-red-btn {
+  background-color: rgba(255,0,0,0.5) !important;
+}
 .control-menu-open {
   position: absolute;
   height: 100vh;

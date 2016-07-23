@@ -188,7 +188,7 @@
 		<div class="inline-block">
 		  <md-button ng-click = "switchView(1)" class="md-fab trainer-remote-btn" aria-label="Switch View">
 		    <i class="fa fa-th"></i>
-		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
+		    <md-tooltip md-direction="bottom">
 		      Switch View
 		    </md-tooltip>
 		  </md-button>
@@ -212,7 +212,7 @@
 		<div class="inline-block">
 		  <md-button ng-click = "decreaseVolume()" class="md-fab trainer-remote-btn" aria-label="Volume Down">
 		    <i class="fa fa-volume-down"></i>
-		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
+		    <md-tooltip md-direction="bottom">
 		      Volume Down
 		    </md-tooltip>
 		  </md-button>
@@ -220,7 +220,7 @@
 		<div class="inline-block">
 		  <md-button ng-click = "increaseVolume()" class="md-fab trainer-remote-btn" aria-label="Volume Up">
 		    <i class="fa fa-volume-up"></i>
-		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
+		    <md-tooltip md-direction="bottom">
 		      Volume Up
 		    </md-tooltip>
 		  </md-button>
@@ -228,22 +228,25 @@
 		<div class="inline-block">
 		  <md-button ng-click = "trainerClicksHearAll()" class="md-fab" ng-class = "{'trainer-remote-btn': !hearAll, 'trainer-blue-btn': hearAll}" aria-label="Hear All">
 		    <i class="fa fa-headphones"></i>
-		    <md-tooltip md-visible="demo.showTooltip" md-direction="bottom">
+		    <md-tooltip md-direction="bottom">
 		      Hear All
 		    </md-tooltip>
 		  </md-button>
 		</div>
-<!-- 		<div class="inline-block">
-		  <md-button ng-click = "recordVideoClicked()" class="md-fab" ng-class = "{'trainer-remote-btn': !recording, 'trainer-blue-btn': recording}" aria-label="Record Video">
+		<div class="inline-block">
+		  <md-button ng-click = "recordVideoClicked()" class="md-fab trainer-remote-btn" ng-show = "!recording && showRecordButton" aria-label="Record Video">
 		    <i class="fa fa-video-camera"></i>
-		    <md-tooltip md-visible="demo.showTooltip" ng-show = "!recording" md-direction="bottom">
+		    <md-tooltip md-direction="bottom">
 		      Record Video
 		    </md-tooltip>
-		    <md-tooltip md-visible="demo.showTooltip" ng-show = "recording" md-direction="bottom">
-		      Stop Record Video
+		  </md-button>
+		  <md-button ng-click = "stopRecordClicked()" class="md-fab trainer-red-btn" ng-show = "recording" aria-label="Stop Recording">
+		    <i class="fa fa-stop"></i>
+		    <md-tooltip md-direction="bottom">
+		      Stop Recording
 		    </md-tooltip>
 		  </md-button>
-		</div> -->
+		</div>
 	</div>
 
 

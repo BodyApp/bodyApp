@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-.controller('VideoCtrl', function ($scope, $location, $timeout, $mdDialog, Video, User, Auth) {
+.controller('VideoCtrl', function ($scope, $location, $timeout, $interval, $mdDialog, Video, User, Auth) {
 
 	var studioId = Video.getStudio();
 	$scope.studioId = studioId;
@@ -40,6 +40,9 @@ angular.module('bodyAppApp')
   var previouslyClickedConsumerId;
   var connectionCount = 0;
 
+  var justSubmittedVideo = false;
+  var submittedCounter = 50;
+
   var errorContent = "Your computer had trouble connecting to the session.  Please try restarting your computer and coming back into class.";
   var errorAlert = $mdDialog.alert({
 		title: "Issue connecting",
@@ -55,6 +58,10 @@ angular.module('bodyAppApp')
   generateTimerOptions()
   $scope.timerWorking = true;
 
+  $timeout(function() {
+  	$scope.showRecordButton = true;
+  }, 2000)
+
 	auth.onAuthStateChanged(function(user) {
     if (user) {     
       getClassDetails()
@@ -66,58 +73,79 @@ angular.module('bodyAppApp')
 
   $scope.$on("$destroy", function() { // destroys the session and turns off green light when navigate away
   	console.log("Disconnecting session because navigated away.")
-    session.disconnect()
-    Video.destroyHardwareSetup()
-    publisher.destroy();
+    // if (session) session.disconnect()
+    // if (publisher) publisher.destroy();
+    // session = null;
+    // publisher = null;
+    // connected = false;
+    // Video.destroyHardwareSetup()
+    if ($scope.recording) ziggeoEmbedding.stopRecord();
     // session.destroy();
   });
 
   $scope.recordVideoClicked = function() {
   	Intercom('trackEvent', "recordVideoClicked")
   	analytics.track("recordVideoClickedDuringClass")
-  	if (!$scope.recording) {
-	  	$scope.recording = true;
-	  	if (!ziggeoEmbedding) {
-				ziggeoEmbedding = ZiggeoApi.Embed.embed("#ziggeoVideo", {
-					tags: [studioId],
-					disable_first_screen: true,
-					height: 0,
-					width: 0,
-					disable_snapshots: true,
-					countdown: 0,
-				});
-			} else {
-				ziggeoEmbedding.rerecord()
-			}
-			$timeout(function(){ziggeoEmbedding.record()}, 1000)
+  	if ($scope.recording) return
+	  $scope.recording = true;
+		if(!$scope.$$phase) $scope.$apply();
+  	
+  	if (!ziggeoEmbedding) {
+			ziggeoEmbedding = ZiggeoApi.Embed.embed("#ziggeoVideo", {
+				tags: [studioId],
+				disable_first_screen: true,
+				height: 0,
+				width: 0,
+				disable_snapshots: true,
+				countdown: 0,
+			});
 		} else {
-			$scope.recording = false;
-	  	$timeout(function(){ziggeoEmbedding.stopRecord()}, 1000)
-	  	progressAlert = $mdDialog.alert({
-	      // title: "Uploading Your Video, please don't close the browser!",
-	      // textContent: $scope.progressAlertText,
-	      template:
-            '<md-dialog ng-show = "shouldShowProgressAlert">' +
-            // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
-            '  <md-dialog-content>{{progressAlertText}}</md-dialog-content>' +
-            '  <md-dialog-actions>' +
-            '  </md-dialog-actions>' +
-            '</md-dialog>',
-	      // clickOutsideToClose: false,
-	      locals: { progressAlertText: $scope.progressAlertText },
-	      controller: "VideoCtrl"
-	      // ok: 'OK!'
-	    });
-	    return $mdDialog
-	    .show( progressAlert )
+			ziggeoEmbedding.rerecord()
 		}
+
+		$timeout(function(){ziggeoEmbedding.record()}, 1000)
+  }
+
+  $scope.stopRecordClicked = function() {
+  	if (!$scope.recording) return
+  	$timeout(function(){
+  		ziggeoEmbedding.stopRecord(); 
+  		$scope.recording = false;
+  		if(!$scope.$$phase) $scope.$apply();
+  	}, 500)
+  	
+  	progressAlert = $mdDialog.alert({
+      // title: "Uploading Your Video, please don't close the browser!",
+      // textContent: $scope.progressAlertText,
+      template:
+          '<md-dialog aria-label="Uploading Video" ng-show = "shouldShowProgressAlert">' +
+          // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
+          '  <md-dialog-content style="margin:16px; text-align:center;">{{progressAlertText}}</md-dialog-content>' +
+          '  <md-dialog-content style="margin:16px;">This will close and you will rejoin the session automatically when complete.' +
+          '  <md-dialog-actions>' +
+          '  </md-dialog-actions>' +
+          '</md-dialog>',
+      // clickOutsideToClose: false,
+      locals: { progressAlertText: $scope.progressAlertText },
+      controller: "VideoCtrl"
+      // ok: 'OK!'
+    });
+    return $mdDialog
+    .show( progressAlert )
   }
 
   ZiggeoApi.Events.on("upload_progress", function (uploaded, total, data) {
   	// if (uploaded / total >= 1) $scope.closeDialog()
 		//uploaded: Bytes uploaded, total: Bytes total, data: The object data
-		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete.  Please don't leave this page. This will close automatically when complete. "
+		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/(total*2))*100,0) + "% complete."
   	if(!$scope.$$phase) $scope.$apply();
+  	if (uploaded === total) {
+  		$interval(function() {
+  			submittedCounter++;
+  			$scope.progressAlertText = "Uploading is " + submittedCounter + "% complete."	
+  		}, 400, 50)
+  		
+  	}
 		// progressAlert = $mdDialog.alert({
   //     title: "Uploading Your Video, please don't close the browser!",
   //     textContent: "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete",
@@ -128,11 +156,23 @@ angular.module('bodyAppApp')
 
 	ZiggeoApi.Events.on("submitted", function (data) {
 		$scope.closeDialog()
+		submittedCounter = 50;
+		justSubmittedVideo = true;
+		if (session) session.disconnect()
+    if (publisher) publisher.destroy();
+    session = null;
+    publisher = null;
+    connected = false;
+    publisherInitialized = false;
+    $scope.consumerObjects = {};
+    connectionCount = 0;
+		$timeout(function() {connect($scope.classDetails)}, 500)
+		
 		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
 			if (err) return console.log(err)
 			console.log("Added video to library.")
-		Intercom('trackEvent', "addedVideoToLibrary", {videoToken: data.video.token})
-		analytics.track("addedVideoToLibrary", {videoToken: data.video.token})
+			Intercom('trackEvent', "addedVideoToLibrary", {videoToken: data.video.token})
+			analytics.track("addedVideoToLibrary", {videoToken: data.video.token})
 		})
 	});
 
@@ -567,8 +607,9 @@ angular.module('bodyAppApp')
 		// OT.setLogLevel(OT.DEBUG); //Lots of additional debugging for dev purposes.
 		var apiKey = 45425152;
 		var sessionId = classToJoin.sessionId;
-		if (session) return
-
+		console.log("Session ID: " + sessionId)
+		if (session && !justSubmittedVideo) return
+		justSubmittedVideo = false;
 		setPublisher();
 
 		if (OT.checkSystemRequirements() == 1) {
@@ -612,6 +653,7 @@ angular.module('bodyAppApp')
 			  		// alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
 			  	// }
 			  } else {
+			  	console.log("Connected to session")
 				  connected = true;
 			    publish();
 			    if (session.capabilities.publish != 1) {
@@ -619,7 +661,7 @@ angular.module('bodyAppApp')
 			    	// session.destroy();
 			    	errorContent = "It looks like you don't have a working webcam or microphone. If you do, please restart your computer and rejoin."
 			    	sendIntercomTokboxError("session.capabilities.publish != 1")	  				
-	  				return goBackToClassStarting()
+	  				// return goBackToClassStarting()
 	  			}
 			  }
 			});	
@@ -713,6 +755,7 @@ angular.module('bodyAppApp')
 
 	var publish = function() {
 	  if (connected && publisherInitialized) {
+	  	console.log("Going to publish")
 	    session.publish(publisher, function(err) {
 			  if(err) {			  	
 			  	console.log(err);
@@ -776,6 +819,7 @@ angular.module('bodyAppApp')
 
 	function subscribeToStream(streamEvent, subscriberBox, instructorStream, vidWidth, vidHeight) {
 		var streamId = streamEvent.connection.data.toString()
+		$scope.consumerObjects[streamId].alreadySubscribed = true;
 	  var subscriber = session.subscribe(streamEvent, subscriberBox, {
 	    insertMode: 'append',
 	    width: vidWidth,
@@ -906,13 +950,24 @@ angular.module('bodyAppApp')
 				}	
 				subscriberBox = instructorStream ? "trainerVideo" : "consumer" + (Object.keys($scope.consumerObjects).length-1).toString()
 				if (!instructorStream) $scope.consumerObjects[streamId].subscriberBox = subscriberBox;
+				
 				console.log(subscriberBox)
-				subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)		
+				if (!$scope.consumerObjects[streamId].alreadySubscribed) {
+					subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)			
+				}
 			},
 			streamDestroyed: function (event) {
 				var streamId = event.stream.connection.data.toString();
 				console.log("Stream " + streamId + " disconnected")
-				if ($scope.consumerObjects[streamId]) delete $scope.consumerObjects[streamId]
+				
+				if ($scope.consumerObjects[streamId]) {
+					console.log("Deleting consumer object with stream ID " + streamId)
+					$scope.consumerObjects[streamId].alreadySubscribed = false;
+					delete $scope.consumerObjects[streamId]
+				}
+
+				console.log($scope.consumerObjects[streamId])
+
 				if (streamId === $scope.classDetails.instructor) $scope.instructorDisplayed = false;
 				if(!$scope.$$phase) $scope.$apply();
 				if (userIsInstructor) {
@@ -937,7 +992,13 @@ angular.module('bodyAppApp')
 	      console.log(event.reason);
 	      if (event.reason == 'networkDisconnected') {
 	      	errorContent = 'You lost your internet connection. Please check your connection and try connecting again.'
-	      	sendIntercomTokboxError("Lost internet connection - session disconnected")
+	      	sendIntercomTokboxError("Lost internet connection - network disconnected")
+	        // alert('You lost your internet connection. Please check your connection and try connecting again.')
+	      }
+	      if (event.reason == 'clientDisconnected') {
+	      	console.log("Client disconnected")
+	      	// errorContent = 'You lost your connection. Please try reloading the browser and connecting again.'
+	      	// sendIntercomTokboxError("Lost internet connection - client disconnected")
 	        // alert('You lost your internet connection. Please check your connection and try connecting again.')
 	      }
 	    }
