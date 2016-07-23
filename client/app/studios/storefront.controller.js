@@ -397,11 +397,13 @@ angular.module('bodyAppApp')
     }
 
     function getClasses(daysInFuture, numDaysToShow) {
-      var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
-      startAt = new Date(startAt*1 + daysInFuture*24*60*60*1000).setHours(0,0,0,0).toString()
+      var startAt = new Date().getTime() - 60*60*1000; //Can see classes that started an hour ago
+
+      // startAt = new Date(startAt*1 + daysInFuture*24*60*60*1000).setHours(0,0,0,0).toString()
       var numberOfDaysToDisplay = numDaysToShow;
       var toAdd = numberOfDaysToDisplay * 24 * 60 * 60 * 1000
-      var endAt = (startAt*1 + toAdd + 1*60*60*1000).toString()
+      var endAt = new Date(startAt*1 + toAdd + 1*60*60*1000).setHours(23,59,59,59).toString()
+      startAt = startAt.toString()
 
       ref.child('classes').orderByKey().startAt(startAt).endAt(endAt).on('value', function(snapshot) {
         if (!snapshot.exists()) return;
@@ -412,7 +414,7 @@ angular.module('bodyAppApp')
     }
 
     function getSpecialtyClasses() {
-      var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
+      var startAt = new Date().setHours(0,0,0,0) //Can see classes that started an hour ago
       startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
 
       ref.child('specialtyClasses').orderByKey().startAt(startAt).on('value', function(snapshot) {
@@ -430,12 +432,14 @@ angular.module('bodyAppApp')
 
     function createSchedule(days, daysInFuture) {
       $scope.daysToShow = [];
-      var dateTimeNow = new Date();
-      var beginningDateToday = new Date(dateTimeNow.getFullYear(), dateTimeNow.getMonth(), dateTimeNow.getDate(), 0, 0, 0, 1).getTime();
-      beginningDateToday = beginningDateToday + daysInFuture*24*60*60*1000;
+      // var dateTimeNow = new Date();
+      // var beginningDateToday = new Date(dateTimeNow.getFullYear(), dateTimeNow.getMonth(), dateTimeNow.getDate(), 0, 0, 0, 1).getTime();
+      var beginningOfDay = new Date().setHours(0,0,0,0)
+      // console.log(beginningOfDay)
+      beginningOfDay = beginningOfDay + daysInFuture*24*60*60*1000;
       for (var i=0; i<days; i++) {
         var day = {}
-        day.beginDateTime = beginningDateToday + i*24*60*60*1000
+        day.beginDateTime = beginningOfDay + i*24*60*60*1000
         day.endDateTime = day.beginDateTime + 24*60*60*1000-1000
         day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
         day.formattedDayOfWeek = getFormattedDateTime(day.beginDateTime).dayOfWeek;

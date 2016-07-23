@@ -285,7 +285,7 @@
                 <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
               </div>
               <div class="cal-allClasses" >
-                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty' && class.dateTime > rightNow - 60*60*1000" ng-hide = "class.dateTime < rightNow" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
+                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime - 60*60*1000 && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} ({{class.duration}}m)</div>
                   <!-- <div class="cal-duration">{{class.duration}}m</div> -->
                   <div class="cal-class">{{classTypes[class.classType].name}} <span ng-if = "classTypes[class.classType].freeClass">(Free)</span></div>
