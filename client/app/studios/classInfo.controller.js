@@ -29,7 +29,8 @@ angular.module('bodyAppApp')
 
     analytics.track('wentToClassInfo', {
       classId: classId,
-      studioId: studioId
+      studioId: studioId,
+      dateOfClass: new Date(classId*1)
     });
 
     var calculateTime = $interval(calculateTimeUntilClassStarts, 30000)
@@ -198,8 +199,8 @@ angular.module('bodyAppApp')
             });
             analytics.track('cancelledClass', {
               studioId: studioId,
-              classToCancel: classId ? classId : "None",
-              dateOfClass_at: Math.floor(classId*1/1000)
+              classId: classId ? classId : "None",
+              dateOfClass: classId ? new Date(classId*1) : "None"
             });
 
             $rootScope.$apply(function() {
@@ -554,8 +555,8 @@ angular.module('bodyAppApp')
         });
         analytics.track('bookedClass', {
           studioId: studioId,
-          classToBook: slot ? slot.dateTime : "None",
-          dateOfClass_at: Math.floor(slot.dateTime/1000)
+          classId: slot ? slot.dateTime : "None",
+          dateOfClass: new Date(slot.dateTime*1)
         });
       }, function(err) {
           console.log("Error adding class: " + err)

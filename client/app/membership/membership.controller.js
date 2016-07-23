@@ -27,6 +27,12 @@ angular.module('bodyAppApp')
       classToBook: slot ? slot.dateTime : "None"
     });
 
+    analytics.track('openedPaymentModal', {
+      studioId: studioId,
+      classId: slot ? slot.dateTime : "None",
+      classTime: slot ? new Date(slot.dateTime*1) : "None"
+    })
+
     if (slot) {
       ref.child('classTypes').child(slot.classType).once('value', function(snapshot) {
         specialtyRate = snapshot.val().specialtyClassRate*100
@@ -175,12 +181,14 @@ angular.module('bodyAppApp')
             console.log("Coupon valid") 
             $scope.validCoupon = coupon;
             if(!$scope.$$phase) $scope.$apply();
-            Intercom('trackEvent', 'appliedCoupon', coupon);
+            Intercom('trackEvent', 'appliedCoupon', coupon.id);
+            analytics.track('appliedCoupon', coupon.id);
           } else {
             $scope.invalidCouponEntered = true;
             $scope.enterCoupon = false;
             if(!$scope.$$phase) $scope.$apply();
             Intercom('trackEvent', 'triedInvalidCoupon', coupon);
+            analytics.track('triedInvalidCoupon', coupon);
           }
         }, function(err) {
             $scope.couponEntered = undefined;
@@ -189,6 +197,7 @@ angular.module('bodyAppApp')
             if(!$scope.$$phase) $scope.$apply();
             console.log("sorry, there was an issue retrieving your coupon discount.  Please try reloading the site and trying again.  If that doesn't work, contact the BODY help team at concierge@getbodyapp.com to get this squared away.")    
             Intercom('trackEvent', 'triedInvalidCoupon', {couponTried: couponString, studioId: studioId, error: err});
+            analytics.track('triedInvalidCoupon', {couponTried: couponString, studioId: studioId, error: err});
         }).$promise
     }
 
@@ -218,12 +227,21 @@ angular.module('bodyAppApp')
       // var planInfo = snapshot.val()
       if (!planInfo) return
       var amountToPay = planInfo.amount;
+      analytics.track('openedStudioSubscription', {
+        studioId: studioId,
+        planInfo: planInfo,
+        price: amountToPay*.17*4 //Assumes average of 4 month subscription
+      });
       // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
       $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
       
       if (coupon && coupon.valid) {
         amountToPay = coupon.amount_off ? amountToPay - coupon.amount_off : amountToPay * (100-coupon.percent_off)/100;
         Intercom('trackEvent', 'usedCoupon', {
+          studioId: studioId,
+          coupon: coupon.id
+        });
+        analytics.track('usedCoupon', {
           studioId: studioId,
           coupon: coupon.id
         });
@@ -251,6 +269,11 @@ angular.module('bodyAppApp')
               studioId: studioId,
               planInfo: planInfo
             });
+            analytics.track('addedStudioSubscription', {
+              studioId: studioId,
+              planInfo: planInfo,
+              revenue: amountToPay*.17*4 //Assumes average of 4 month subscription
+            });
 
             // modalInstance.close();
             // Auth.updateUser(data);
@@ -264,6 +287,10 @@ angular.module('bodyAppApp')
           })
           .error(function(err) {
             console.log(err)
+            analytics.track('errorAddingStudioSubscription', {
+              studioId: studioId,
+              planInfo: planInfo
+            });
             $rootScope.subscribing = false;
             $rootScope.errorProcessingPayment = true;
             if(!$scope.$$phase) $scope.$apply();
@@ -292,6 +319,13 @@ angular.module('bodyAppApp')
       $rootScope.errorProcessingPayment = false;
 
       var amountToPay = dropinRate;
+      analytics.track('openedStripeDropin', {
+        studioId: studioId,
+        classId: slot ? slot.dateTime : "None",
+        classTime: slot ? new Date(slot.dateTime*1) : "None",
+        price: amountToPay*.17
+      });
+
       // $scope.invalidCouponEntered = false;
       $uibModalInstance.dismiss('join');
       
@@ -326,6 +360,13 @@ angular.module('bodyAppApp')
               classToBook: slot ? slot.dateTime : "None",
               amount: amountToPay
             });
+            analytics.track('paidDropin', {
+              studioId: studioId,
+              classId: slot ? slot.dateTime : "None",
+              classTime: slot ? new Date(slot.dateTime*1) : "None",
+              price: amountToPay*.17,
+              revenue: amountToPay*.17
+            });
             // modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
@@ -334,6 +375,12 @@ angular.module('bodyAppApp')
             if (slot) bookClass(slot);
           })
           .error(function(err) {
+            analytics.track('errorPayingDropin', {
+              studioId: studioId,
+              classId: slot ? slot.dateTime : "None",
+              classTime: slot ? new Date(slot.dateTime*1) : "None",
+              amount: amountToPay
+            });
             $rootScope.subscribing = false;
             $rootScope.errorProcessingPayment = true;
             if(!$scope.$$phase) $scope.$apply();
@@ -376,8 +423,15 @@ angular.module('bodyAppApp')
       if (!slot) return
       if ($rootScope.subscribing) return
       $rootScope.errorProcessingPayment = false;
-      
+
       var amountToPay = specialtyRate;
+      analytics.track('openStripeSpecialty', {
+        studioId: studioId,
+        classId: slot ? slot.dateTime : "None",
+        classTime: slot ? new Date(slot.dateTime*1) : "None",
+        price: amountToPay*.17,
+        specialtyType: slot ? slot.classType : "None"
+      });
       // $scope.invalidCouponEntered = false;
       $uibModalInstance.dismiss('join');
       
@@ -412,6 +466,14 @@ angular.module('bodyAppApp')
               amount: amountToPay,
               specialtyType: slot ? slot.classType : "None"
             });
+            analytics.track('paidSpecialty', {
+              studioId: studioId,
+              classId: slot ? slot.dateTime : "None",
+              classTime: slot ? new Date(slot.dateTime*1) : "None",
+              price: amountToPay*.17,
+              revenue: amountToPay*.17,
+              specialtyType: slot ? slot.classType : "None"
+            });
             // modalInstance.close()
             // Auth.updateUser(data);
             // currentUser = data;
@@ -420,6 +482,13 @@ angular.module('bodyAppApp')
             if (slot) bookClass(slot);
           })
           .error(function(err) {
+            analytics.track('errorPayingSpecialty', {
+              studioId: studioId,
+              classId: slot ? slot.dateTime : "None",
+              classTime: slot ? new Date(slot.dateTime*1) : "None",
+              amount: amountToPay,
+              specialtyType: slot ? slot.classType : "None"
+            });
             $rootScope.subscribing = false;
             $rootScope.errorProcessingPayment = true;
             if(!$scope.$$phase) $scope.$apply();
@@ -448,6 +517,9 @@ angular.module('bodyAppApp')
     } 
 
     function openPaymentConfirmedModal() {
+      analytics.track('openSubscriptionConfirmedModal', {
+        studioId: studioId
+      });
       var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/account/payment/paymentThanks.html',
@@ -472,6 +544,9 @@ angular.module('bodyAppApp')
     }	
 
     function openDropInPaymentConfirmedModal() {
+      analytics.track('openDropinConfirmedModal', {
+        studioId: studioId
+      });
       var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/account/payment/dropInThanks.html',
@@ -496,6 +571,12 @@ angular.module('bodyAppApp')
     } 
 
     function bookClass(slot) {
+      analytics.track('openedBookClass', {
+        studioId: studioId,
+        classType: $scope.classInfo.id,
+        classId: slot ? slot.dateTime : "None",
+        dateOfClass: slot ? new Date(slot.dateTime*1) : "None",
+      });
     	var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/schedule/bookingConfirmation.html',
@@ -531,6 +612,12 @@ angular.module('bodyAppApp')
           classToBook: slot ? slot.dateTime : "None",
           dateOfClass: Math.floor(slot.dateTime/1000)
         });
+        analytics.track('bookedClass', {
+          studioId: studioId,
+          classType: $scope.classInfo.id,
+          classId: slot ? slot.dateTime : "None",
+          dateOfClass: slot ? new Date(slot.dateTime*1) : "None",
+        });
         // getInfo(slot.dateTime);
         ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
         ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
@@ -561,6 +648,7 @@ angular.module('bodyAppApp')
           // delete slot.bookedUsers[currentUser._id];
           // delete slot.bookedFbUserIds[currentUser.facebook.id];
           intercom('trackEvent', "issueBookingClass", err)
+          analytics.track("issueBookingClassFromMembershipModal", err)
           alert("sorry, there was an issue booking your class.  Please try reloading the site and booking again.  If that doesn't work, contact the BODY help team at (216) 408-2902 to get this squared away.")    
       }).$promise;
     }
