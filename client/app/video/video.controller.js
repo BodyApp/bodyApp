@@ -121,7 +121,7 @@ angular.module('bodyAppApp')
           '<md-dialog aria-label="Uploading Video" ng-show = "shouldShowProgressAlert">' +
           // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
           '  <md-dialog-content style="margin:16px; text-align:center;">{{progressAlertText}}</md-dialog-content>' +
-          '  <md-dialog-content style="margin:16px;">This will close and you will rejoin the session automatically when complete.' +
+          '  <md-dialog-content style="margin:16px;">This will close automatically when complete.' +
           '  <md-dialog-actions>' +
           '  </md-dialog-actions>' +
           '</md-dialog>',
@@ -141,9 +141,9 @@ angular.module('bodyAppApp')
   	if(!$scope.$$phase) $scope.$apply();
   	if (uploaded === total) {
   		$interval(function() {
-  			submittedCounter++;
+  			if (submittedCounter < 100) submittedCounter++;
   			$scope.progressAlertText = "Uploading is " + submittedCounter + "% complete."	
-  		}, 400, 50)
+  		}, 300, 50)
   		
   	}
 		// progressAlert = $mdDialog.alert({
