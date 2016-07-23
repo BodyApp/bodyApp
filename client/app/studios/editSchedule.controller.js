@@ -54,9 +54,9 @@ angular.module('bodyAppApp')
     // $scope.playlistsObject = {};
     $scope.numBookingsByClass = {};
 
-    var daysInFuture = 0;
+    // var daysInFuture = 0;
     var numDaysToShow = 7;
-    $scope.daysInFuture = 0;
+    $rootScope.daysInFuture = $rootScope.daysInFuture || 0;
 
     $scope.showingNextWeek = false;
     $scope.showWeekView = true;
@@ -74,10 +74,10 @@ angular.module('bodyAppApp')
           getClassTypes();
           getInstructors();
           getPlaylists();
-          getClasses(daysInFuture);
+          getClasses($rootScope.daysInFuture);
           getWorkouts();
           getPlaylistObjects();
-          createSchedule(numDaysToShow, daysInFuture);
+          createSchedule(numDaysToShow, $rootScope.daysInFuture);
           createInitialTokBoxSession();
           getSpecialtyClasses();
           setDateTimePicker();
@@ -90,10 +90,10 @@ angular.module('bodyAppApp')
               getClassTypes();
               getInstructors();
               getPlaylists();
-              getClasses(daysInFuture);
+              getClasses($rootScope.daysInFuture);
               getWorkouts();
               getPlaylistObjects();
-              createSchedule(numDaysToShow, daysInFuture);
+              createSchedule(numDaysToShow, $rootScope.daysInFuture);
               createInitialTokBoxSession();
               getSpecialtyClasses();
               setDateTimePicker();
@@ -263,7 +263,7 @@ angular.module('bodyAppApp')
 
     function getSpecialtyClasses() {
       var startAt = new Date().getTime() - 1*60*60*1000 //Can see classes that started an hour ago
-      startAt = (startAt*1 + daysInFuture*24*60*60*1000).toString()
+      startAt = (startAt*1 + $rootScope.daysInFuture*24*60*60*1000).toString()
       
       ref.child('specialtyClasses').orderByKey().startAt(startAt).on('value', function(snapshot) {
         $scope.specialtyClasses = $scope.specialtyClasses || {};
@@ -424,21 +424,21 @@ angular.module('bodyAppApp')
     }
 
     $scope.previousWeek = function() {
-      $scope.daysInFuture = Math.max($scope.daysInFuture - 7, 0);
-      getClasses($scope.daysInFuture);
-      createSchedule(7, $scope.daysInFuture);
+      $rootScope.daysInFuture = Math.max($rootScope.daysInFuture - 7, 0);
+      getClasses($rootScope.daysInFuture);
+      createSchedule(7, $rootScope.daysInFuture);
     }
 
     $scope.nextWeek = function() {
-      $scope.daysInFuture = $scope.daysInFuture + 7;
-      getClasses($scope.daysInFuture);
-      createSchedule(7, $scope.daysInFuture);
+      $rootScope.daysInFuture = $rootScope.daysInFuture + 7;
+      getClasses($rootScope.daysInFuture);
+      createSchedule(7, $rootScope.daysInFuture);
     }
 
     $scope.goToToday = function() {
-      $scope.daysInFuture = 0;
-      getClasses($scope.daysInFuture);
-      createSchedule(7, $scope.daysInFuture);
+      $rootScope.daysInFuture = 0;
+      getClasses($rootScope.daysInFuture);
+      createSchedule(7, $rootScope.daysInFuture);
     }
 
     $scope.changeView = function() {
