@@ -29,6 +29,7 @@ angular.module('bodyAppApp')
       $scope.numDaysToShow = 4;
       if(!$scope.$$phase) $scope.$apply();
     } else {
+      // $scope.isMobile = true;
       $scope.numDaysToShow = 3;
     }
     
@@ -45,7 +46,8 @@ angular.module('bodyAppApp')
     $scope.studioId = studioId;
 
     var daysInFuture = 0;
-    var numDaysToShow = 8;
+    var numDaysToShow = 14;
+    $scope.nextWeek = 0;
 
     Intercom('trackEvent', 'visitedStudioStorefront', {
       studio: studioId
@@ -55,7 +57,7 @@ angular.module('bodyAppApp')
       studio: studioId
     });
 
-    getClasses(0, 8);
+    getClasses(0, 14);
     getSpecialtyClasses();
     getStorefrontInfo();
     getInstructors();
@@ -792,6 +794,16 @@ angular.module('bodyAppApp')
     $scope.goToDiscover = function(tag) {
        // $location.path('/discover/' + tag) 
        $state.go('discover', {tag: tag})
+    }
+
+    $scope.incrementNextWeek = function() {
+      // if ($scope.isMobile) return $scope.nextWeek += 3
+      $scope.nextWeek += $scope.numDaysToShow;
+    }
+
+    $scope.decrementNextWeek = function() {
+      // if ($scope.isMobile) return $scope.nextWeek += 3
+      $scope.nextWeek -= $scope.numDaysToShow;
     }
 
     function getVideoLibrary() {

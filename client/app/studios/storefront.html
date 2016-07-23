@@ -260,16 +260,16 @@
           </div>
         </div> -->
 
-        <div class="row mb16" ng-show = "numDaysToShow < 8 && nextWeek != 4">
+        <!-- <div class="row mb16" ng-show = "numDaysToShow < 14 && nextWeek === 0">
           <div class = "col-xs-8"></div>
-          <a class = "col-xs-3 btn" ng-click = "nextWeek = 4">Next</a>
-        </div>
+          <a class = "col-xs-3 btn" ng-click = "incrementNextWeek()">Next Week</a>
+        </div> -->
 
-        <div class="row mb16" ng-show = "numDaysToShow < 8 && nextWeek === 4">
-          <div class = "col-xs-1"></div>
-          <a class = "col-xs-3 btn" ng-click = "nextWeek = 0">Previous</a>
-          <div class = "col-xs-8"></div>
-        </div>
+        <!-- <div class="row mb16" ng-show = "numDaysToShow < 14 && nextWeek > 0"> -->
+          <!-- <div class = "col-xs-1"></div> -->
+          <!-- <a class = "col-xs-3 btn" ng-click = "nextWeek = 0">This Week</a> -->
+          <!-- <div class = "col-xs-8"></div> -->
+        <!-- </div> -->
         
         <div style = "text-align:center; font-weight: 400">Class times in {{timezone}}</div>
 
@@ -277,9 +277,9 @@
           <div class="cal-container text-center">         
             <div class="header-cover"></div>
             <div class="no-classes" ng-if = "!classSchedule">No classes this week</div>
-            <!-- <div class="week-bck"><a href="#"><i class="bold ti-control-backward"></i></a></div> -->
+            <div class="week-bck" ng-show = "nextWeek > 0"><a href="#" ng-click = "decrementNextWeek()"><i class="bold ti-control-backward"></i></a></div>
 
-            <div class="cal-column" ng-show = "$index < numDaysToShow + nextWeek && (nextWeek !=4 || $index >= numDaysToShow )" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
+            <div class="cal-column" ng-show = "$index < numDaysToShow + nextWeek && $index >= nextWeek" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
               <div class="cal-daytime">
                 <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
                 <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
@@ -307,7 +307,7 @@
                     </a> -->
                   </div>
                 </div>
-                <!-- <div class="week-fwd"><a href="#"><i class="bold ti-control-forward"></i></a></div> -->
+                <div class="week-fwd" ng-show = "nextWeek < numDaysToShow + (7-numDaysToShow)*2"><a href="#" ng-click = "incrementNextWeek()"><i class="bold ti-control-forward"></i></a></div>
               </div>
             </div>
           </div>

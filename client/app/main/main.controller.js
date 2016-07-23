@@ -33,7 +33,7 @@ angular.module('bodyAppApp')
             $scope.studios.push(storefrontInfo.val())
             getBackgroundImage(studio.key);
             getLogo(studio.key);
-            console.log($scope.studios)
+            // console.log($scope.studios)
             if(!$scope.$$phase) $scope.$apply();
             // console.log($scope.studios)
           })

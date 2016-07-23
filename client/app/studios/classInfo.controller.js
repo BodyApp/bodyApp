@@ -68,7 +68,7 @@ angular.module('bodyAppApp')
           $scope.numBookings = 0;
           console.log($scope.numBookings)
           if(!$scope.$$phase) $scope.$apply();
-          return;
+          return setupVidAud(); //There's a check in this function for whether user is instructor
         }
         $scope.bookings = snapshot.val();
         setupVidAud()
@@ -161,9 +161,10 @@ angular.module('bodyAppApp')
     }
 
     function setupVidAud() {
-      if (!$scope.bookings || (!$scope.bookings[$scope.currentUser._id] && !$scope.userIsInstructor)) return;
-      var element = document.querySelector('#audioVideoSetup');
-      Video.hardwareSetup(element);
+      if ($scope.userIsInstructor || ($scope.bookings && $scope.bookings[$scope.currentUser._id])) {
+        var element = document.querySelector('#audioVideoSetup');
+        Video.hardwareSetup(element);
+      }
     }
 
     $scope.endVideoSession = function() { //Turns off the green light if navigate away without joining class.
@@ -458,6 +459,7 @@ angular.module('bodyAppApp')
         .show( alert )
       }
       Intercom('trackEvent', "reserveClicked")
+      analytics.track('reserveClicked')
       if ($rootScope.subscribing) return 
       if (!$scope.currentUser || !$rootScope.subscriptions || !$rootScope.subscriptions[studioId]) {
         console.log("No subscription found.")

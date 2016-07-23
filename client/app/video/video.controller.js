@@ -26,7 +26,7 @@ angular.module('bodyAppApp')
 
 	var ziggeoEmbedding;
 	var progressAlert;
-	$scope.progressAlertText = "Uploading is 0% complete";
+	$scope.progressAlertText = "Uploading is 0% complete.  Please don't leave this page. ";
 	$scope.shouldShowProgressAlert = true;
 
   $scope.showWorkout = true;
@@ -39,6 +39,14 @@ angular.module('bodyAppApp')
   $scope.consumerObjects = {};
   var previouslyClickedConsumerId;
   var connectionCount = 0;
+
+  var errorContent = "Your computer had trouble connecting to the session.  Please try restarting your computer and coming back into class.";
+  var errorAlert = $mdDialog.alert({
+		title: "Issue connecting",
+    textContent: errorContent,
+    clickOutsideToClose: true,
+    ok: 'OK!'
+  });
 
   var viewCounter = 3;
   var viewOptions = ["user-videos-stack", "user-videos-boxed", "user-videos-grid"]
@@ -93,9 +101,6 @@ angular.module('bodyAppApp')
             // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
             '  <md-dialog-content>{{progressAlertText}}</md-dialog-content>' +
             '  <md-dialog-actions>' +
-            '    <md-button ng-click="closeDialog()" class="md-primary">' +
-            '      OK!' +
-            '    </md-button>' +
             '  </md-dialog-actions>' +
             '</md-dialog>',
 	      // clickOutsideToClose: false,
@@ -111,7 +116,7 @@ angular.module('bodyAppApp')
   ZiggeoApi.Events.on("upload_progress", function (uploaded, total, data) {
   	// if (uploaded / total >= 1) $scope.closeDialog()
 		//uploaded: Bytes uploaded, total: Bytes total, data: The object data
-		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete"
+		$scope.progressAlertText = "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete.  Please don't leave this page. This will close automatically when complete. "
   	if(!$scope.$$phase) $scope.$apply();
 		// progressAlert = $mdDialog.alert({
   //     title: "Uploading Your Video, please don't close the browser!",
@@ -410,15 +415,20 @@ angular.module('bodyAppApp')
 			message: message ? message : ""
 		});
 
-		var errorAlert = $mdDialog.alert({
+		$mdDialog.hide(errorAlert);
+
+		errorAlert = $mdDialog.alert({
   		title: "Issue connecting",
-      textContent: "Your computer had trouble connecting to the session.  Please try restarting your computer and coming back into class.",
-      clickOutsideToClose: false,
+      textContent: errorContent,
+      clickOutsideToClose: true,
       ok: 'OK!'
     });
 
+		message = message || ""
+
     $mdDialog.show(errorAlert).then(function(err) {
-    	$location.path('/')
+    	Intercom('showNewMessage', "Hey tech support, I'm having an issue connecting to the session.  I got the error: " + error + " " + message);
+    	$location.path('/studios/' + studioId + "/classinfo/" + classId)
     })
 
 	}
@@ -495,7 +505,9 @@ angular.module('bodyAppApp')
 					} 
 				});
 			} else {
-				alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
+				errorContent = "Please disable your ad / popup blocker and rejoin the class."
+				sendIntercomTokboxError("Ad blocker is preventing music from playing.");
+				// alert("Your ad blocker is preventing music from playing.  Please disable it and reload this page.")
 			}
 		})
 	}
@@ -573,8 +585,9 @@ angular.module('bodyAppApp')
 		} else {
 		  // The client does not support WebRTC.
 		  console.log("Not using Chrome or Firefox")
-		  alert('BODY is not available in your browser. Please switch to Chrome or Firefox.');
-	  	return goBackToClassStarting()
+		  // alert('BODY is not available in your browser. Please switch to Chrome or Firefox.');
+		  errorContent = 'BODY is not available in your browser. Please switch to the Google Chrome browser.'
+	  	return sendIntercomTokboxError("Tried to connect with wrong browser")
 		}
 
 		User.createTokBoxToken({ id: currentUser._id }, {
@@ -589,20 +602,23 @@ angular.module('bodyAppApp')
 			session.connect(token, function(error) {
 			  if (error) {
 			  	console.log(error);
+			  	errorContent = "Failed to connect. Please restart your computer and try connecting again."
 			  	sendIntercomTokboxError(error.code)
-			  	if (error.code === 1006) {
-			  		alert('Failed to connect. Please check your connection and try connecting again.');
-			  	} else {
-			  		alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
-			  	}
+			  	// if (error.code === 1006) {
+			  		
+			  		// alert('Failed to connect. Please check your connection and try connecting again.');
+			  	// } else {
+			  		// errorContent = 
+			  		// alert("Unknown error occured while connecting. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
+			  	// }
 			  } else {
 				  connected = true;
 			    publish();
 			    if (session.capabilities.publish != 1) {
 			    	session.disconnect()
 			    	// session.destroy();
-			    	sendIntercomTokboxError("session.capabilities.publish != 1")
-	  				alert("There was an issue. It might might be that you don't have a working webcam or microphone, so nobody else will see you. Please try reloading or contact BODY Support at (216) 408-2902 to get this worked out.")
+			    	errorContent = "It looks like you don't have a working webcam or microphone. If you do, please restart your computer and rejoin."
+			    	sendIntercomTokboxError("session.capabilities.publish != 1")	  				
 	  				return goBackToClassStarting()
 	  			}
 			  }
@@ -672,14 +688,15 @@ angular.module('bodyAppApp')
 		      }
 		    }, function(err) {
 		    	if (err) {
+		    		errorContent = "Please allow BODY access to your camera and microphone.  You might have to click the camera icon in the address bar above, then reload your browser.  You can also try restarting your computer."
 		    		sendIntercomTokboxError(err.code, "Publisher Access Denied");
-				    if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
-				      // Access denied can also be handled by the accessDenied event
-				      alert('Please allow access to the Camera and Microphone and try publishing again.');
-				    } else {
-				      alert('Failed to get access to your camera or microphone. Please check that your webcam'
-				        + ' is connected and not being used by another application and try again.');
-				    }
+				    // if (err.code === 1500 && err.message.indexOf('Publisher Access Denied:') >= 0) {
+				    //   // Access denied can also be handled by the accessDenied event
+				    //   alert('Please allow access to the Camera and Microphone and try publishing again.');
+				    // } else {
+				    //   alert('Failed to get access to your camera or microphone. Please check that your webcam'
+				    //     + ' is connected and not being used by another application and try again.');
+				    // }
 				    publisher.destroy();
 				    publisher = null;
 				    console.log(err)
@@ -697,13 +714,16 @@ angular.module('bodyAppApp')
 	var publish = function() {
 	  if (connected && publisherInitialized) {
 	    session.publish(publisher, function(err) {
-			  if(err) {
-			  	sendIntercomTokboxError(err.code);
+			  if(err) {			  	
 			  	console.log(err);
 			    if (err.code === 1553 || (err.code === 1500 && err.message.indexOf("Publisher PeerConnection Error:") >= 0)) {
-			      alert("Streaming connection failed. This could be due to a restrictive firewall.");
+			    	errorContent = "Streaming connection failed. This could be due to a restrictive firewall. Please restart your computer and reconnect."
+			    	sendIntercomTokboxError(err.code);
+			      // alert("Streaming connection failed. This could be due to a restrictive firewall.");
 			    } else {
-			      alert("An unknown error occurred while trying to publish your video. Please try again later.");
+			    	errorContent = "An unknown error occurred while trying to publish your video. Please restart your computer and reconnect."
+			      // alert("An unknown error occurred while trying to publish your video. Please try again later.");
+			      sendIntercomTokboxError(err.code);
 			    }
 			    publisher.destroy();
 			    publisher = null;
@@ -728,17 +748,20 @@ angular.module('bodyAppApp')
 				event.preventDefault();
 			  console.log("The publisher stopped streaming. Reason: " + event.reason);
 			  if (event.reason === 'networkDisconnected') {
-		      alert('You lost internet connection, so we sent you to the dashboard. Please try joining the class again.');
-		      goBackToClassStarting()
+			  	errorContent = "You lost internet connection, so we're going to send you back to the class information screen.  Please try joining the class again."
+			  	sendIntercomTokboxError("Network disconnected");
+		      // alert('You lost internet connection, so we sent you to the dashboard. Please try joining the class again.');
+		      // goBackToClassStarting()
 		    }
 			},
 		  accessAllowed: function (event) {
 		    // The user has granted access to the camera and mic.
 		  },
-		  accessDenied: function accessDeniedHandler(event) {
+		  accessDenied: function (event) {
+		  	errorContent = "Please allow BODY access to your camera and microphone.  You might have to click the camera icon in the address bar above, then reload your browser.  You can also try restarting your computer."
 		  	sendIntercomTokboxError("User denied access to video and/or microphone");
-		  	console.log("User denied access to video and/or microphone")
-		    alert("Oh no!  If you don't allow us access to your video and microphone, we can't stream your video to others!  Please reload this page and accept the camera / microphone access request.")
+		  	// console.log("User denied access to video and/or microphone")
+		   //  alert("Oh no!  If you don't allow us access to your video and microphone, we can't stream your video to others!  Please reload this page and accept the camera / microphone access request.")
 		  },
 		  accessDialogOpened: function (event) {
 		    // Show allow camera message to give some background on why camera access is being requested
@@ -866,6 +889,7 @@ angular.module('bodyAppApp')
 
 				if (streamId === classToJoin.instructor.toString()) {
 					console.log("Received trainer stream " + streamId)
+					analytics.track("subscribedToInstructor", {instructorStreamId: streamId})
 					Intercom('trackEvent', "subscribedToInstructor", {instructorStreamId: streamId})
 					instructorStream = true;
 					// vidWidth = "100%";
@@ -912,7 +936,9 @@ angular.module('bodyAppApp')
 	      console.log('Disconnected from the session.');
 	      console.log(event.reason);
 	      if (event.reason == 'networkDisconnected') {
-	        alert('You lost your internet connection. Please check your connection and try connecting again.')
+	      	errorContent = 'You lost your internet connection. Please check your connection and try connecting again.'
+	      	sendIntercomTokboxError("Lost internet connection - session disconnected")
+	        // alert('You lost your internet connection. Please check your connection and try connecting again.')
 	      }
 	    }
 		});

@@ -290,8 +290,8 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
           </div>          
         </div>
         <div class="panel-body">
-
-          <div class="row" ng-if = "showListView"> <!-- CALENDAR LIST VIEW -->
+          <!-- CALENDAR LIST VIEW -->
+          <div class="row hidden" ng-if = "showListView"> 
             <div class="col-sm-12">
               <table class="table table-condensed table-hover cal-list-table" ng-repeat = "dayShown in daysToShow">
                 <thead>
