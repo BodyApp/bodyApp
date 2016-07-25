@@ -5,9 +5,10 @@ angular.module('bodyAppApp')
     $stateProvider
       .state('referral', {
         url: '/referral/:referralCode',
-        controller: function($stateParams, Referral, $location, $cookieStore) {
+        controller: function($stateParams, Referral, $location, $cookies) {
           // Referral.setReferralCode($stateParams.referralCode)
-          $cookieStore.put('referredBy',$stateParams.referralCode);
+          analytics.track("wasReferredByUser", {referredBy: $stateParams.referralCode})
+          $cookies.put('referredBy', $stateParams.referralCode);
           $location.path('/')
         }
       })

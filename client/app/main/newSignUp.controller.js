@@ -76,31 +76,59 @@ angular.module('bodyAppApp')
     	loggedInPath = $cookies.get('loggedInPath')
       if (loggedIn) {
         if (Auth.getCurrentUser().emergencyContact && Auth.getCurrentUser().email) {
-            $location.path(loggedInPath)
-            $location.replace()
-            if(!$scope.$$phase) $scope.$apply();
-          } else {
-            User.sendWelcomeEmail({ id: Auth.getCurrentUser()._id }, {
-              }, function(user) {
-                Intercom('update', {sentWelcomeEmail: true})
-                Intercom('trackEvent', 'sentWelcomeEmail');
-                analytics.track('sentWelcomeEmail')
-                console.log("Sent welcome email since first time logging in.")
-              }, function(err) {
-                console.log("Error: " + err)
-            })  
+          $location.path(loggedInPath)
+          $location.replace()
+          if(!$scope.$$phase) $scope.$apply();
+        } else {
+          User.sendWelcomeEmail({ id: Auth.getCurrentUser()._id }, {
+            }, function(user) {
+              Intercom('update', {sentWelcomeEmail: true})
+              Intercom('trackEvent', 'sentWelcomeEmail');
+              analytics.track('sentWelcomeEmail')
+              console.log("Sent welcome email since first time logging in.")
+            }, function(err) {
+              console.log("Error: " + err)
+          })  
 
-            $scope.userEmail = Auth.getCurrentUser().email
-            $scope.userPicture = Auth.getCurrentUser().picture
-            $scope.step = 1;
-            if(!$scope.$$phase) $scope.$apply();
+          $scope.userEmail = Auth.getCurrentUser().email
+          $scope.userPicture = Auth.getCurrentUser().picture
+          $scope.step = 1;
+          if(!$scope.$$phase) $scope.$apply();
+          var referredBy = $cookies.get('referredBy');
+          console.log(referredBy)
+          $cookies.remove('referredBy');
+          if (referredBy) {
+            ref.child('referrals').child(referredBy).child(Auth.getCurrentUser()._id).update({
+              dateReferred: new Date().getTime(),
+              firstName: Auth.getCurrentUser().firstName,
+              facebookId: Auth.getCurrentUser().facebookId,
+              lastName: Auth.getCurrentUser().lastName,
+              mongoId: Auth.getCurrentUser()._id
+            }, function(err) {
+              if (err) return console.log(err)
+              console.log('referral code saved')
+              User.referredBy({ id: Auth.getCurrentUser._id }, {
+                referredBy: referredBy
+              }, function(user) {
+                Intercom('update', {
+                  "referredBy": referredBy
+                });
+                analytics.track("wasReferredByUser", {referredBy: referredBy})
+              }, function(err) {
+                  console.log(err)
+              }).$promise
+            })
+            
           }
+        }
+        
         //Segment.io
         analytics.identify(Auth.getCurrentUser()._id, {
           firstName: Auth.getCurrentUser().firstName,
           lastName: Auth.getCurrentUser().lastName,
           email: Auth.getCurrentUser().email,
           facebookId: Auth.getCurrentUser().facebookId,
+          referredBy: Auth.getCurrentUser().referredBy
         }, function() {
 
         })

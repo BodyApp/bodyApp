@@ -100,9 +100,18 @@ exports.setup = function (User, config) {
             // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             // }); 
 
+            var newReferralCode = createReferralCode();
+
             usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
             var rightNow = new Date().getTime()
-            ref.child('usersById').child(user._id).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7})
+            ref.child('usersById').child(user._id).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7, referralCode: newReferralCode}, function(err) {
+              if (err) return console.log(err)
+              ref.child('referralCodes').child(newReferralCode).update({facebookId: user.facebookId, mongoId: user._id, firstName: user.firstName, lastName: user.lastName}, function(err) {
+                if (err) return console.log(err)
+                console.log("Saved new referral code " + newReferralCode + " for user " + user._id)
+              })              
+            })
+
             done(err, user);  
             
           });
@@ -174,6 +183,15 @@ exports.setup = function (User, config) {
                   console.log("Added trial start for user " + user._id)
                 })
               })
+              ref.child('usersById').child(user._id.toString()).child('referralCode').once('value', function(snapshot) {
+                if (!snapshot.exists()) {
+                  var newReferralCode = createReferralCode();
+                  ref.child('usersById').child(user._id.toString()).update({referralCode: newReferralCode}, function(err) {
+                    console.log("Saved new referral code " + newReferralCode + " for user " +user._id)
+                    ref.child('referralCodes').child(newReferralCode).update({facebookId: user.facebookId, mongoId: user._id, firstName: user.firstName, lastName: user.lastName})
+                  })
+                }
+              })
             })
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
             return done(err, user);
@@ -183,6 +201,16 @@ exports.setup = function (User, config) {
     }
   ));
 };
+
+function createReferralCode() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for( var i=0; i < 8; i++ )
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
 
 // function sendWelcomeEmail(user) {
 //   var emailAddress = user.email

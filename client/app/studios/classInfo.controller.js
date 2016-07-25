@@ -9,6 +9,8 @@ angular.module('bodyAppApp')
     $scope.studioId = studioId;
     var accountId;
 
+    $window.scrollTo(0,0);
+
     formatDateTime()
     calculateTimeUntilClassStarts()
 

@@ -106,7 +106,8 @@ angular.module('bodyAppApp', [
             lastName: Auth.getCurrentUser().lastName,
             email: Auth.getCurrentUser().email,
             facebookId: Auth.getCurrentUser().facebookId,
-            gender: Auth.getCurrentUser().gender
+            gender: Auth.getCurrentUser().gender,
+            referredBy: Auth.getCurrentUser().referredBy
           })
           console.log("Booting Intercom")
           if (Auth.getCurrentUser().intercomHash) {
