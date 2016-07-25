@@ -36,7 +36,7 @@ angular.module('bodyAppApp')
     // if (!studioId) studioId = 'body'
     $scope.workoutToCreate = $scope.workoutToCreate || {}
     $scope.workoutToCreate.duration = 30;
-    $scope.workoutToCreate.maxParticipants = 12;
+    // $scope.workoutToCreate.maxParticipants = 12;
     var ref = firebase.database().ref().child('studios').child(studioId);
     var auth = firebase.auth();
 
@@ -70,7 +70,7 @@ angular.module('bodyAppApp')
       Intercom('trackEvent', 'navigatedToEditSchedule', { studio: studioId });
       Intercom('update', { studioOwnedId: studioId });
       auth.onAuthStateChanged(function(user) {
-        if (user) {
+        if (user && !$scope.workoutToCreate.instructor) {
           getClassTypes();
           getInstructors();
           getPlaylists();
@@ -241,7 +241,10 @@ angular.module('bodyAppApp')
 
     function selectClassType(classType) {
       $scope.workoutOptions = {None: {title: "None", id: "None"}};
-      if (!classType.workoutsUsingClass) {
+      $scope.workoutToCreate.maxParticipants = classType.maxParticipants;
+      $scope.workoutToCreate.maxFreeParticipants = classType.maxFreeParticipants;
+      if(!$scope.$$phase) $scope.$apply();
+      if (classType && !classType.workoutsUsingClass) {
         $scope.workoutToCreate.workout = $scope.workoutOptions['None']
         if(!$scope.$$phase) $scope.$apply();
         return;
@@ -340,8 +343,6 @@ angular.module('bodyAppApp')
 
     $scope.saveWorkout = function(workoutToCreate) {
 
-      console.log(workoutToCreate.maxParticipants)
-
       $scope.dateTimeNotEntered = false;
 
       $scope.workoutToCreate.dateTime = $('#datetimepicker').data().date;
@@ -350,7 +351,7 @@ angular.module('bodyAppApp')
 
       if (!workoutToCreate.dateTime) return $scope.dateTimeNotEntered = true;
       if (!workoutToCreate.duration) return $scope.durationNotEntered = true;
-      if (!workoutToCreate.maxParticipants) return $scope.maxParticipantsNotEntered = true;
+      // if (!workoutToCreate.maxParticipants) return $scope.maxParticipantsNotEntered = true;
       if (!workoutToCreate.classType) return $scope.classTypeNotEntered = true;
       if (!workoutToCreate.workout) return $scope.workoutNotEntered = true;
       if (!workoutToCreate.instructor) return $scope.instructorNotEntered = true;
@@ -366,9 +367,10 @@ angular.module('bodyAppApp')
       workoutToSave.workout = workoutToCreate.workout.id;
       workoutToSave.duration = workoutToCreate.duration;
       workoutToSave.maxParticipants = workoutToCreate.maxParticipants;
+      workoutToSave.maxFreeParticipants = workoutToCreate.maxFreeParticipants;
       // workoutToSave.spots = 12;
       workoutToSave.sessionId = nextSessionToSave.sessionId
-      console.log(workoutToSave)
+      // console.log(workoutToSave)
 
       checkIfExists(workoutToSave); 
     }

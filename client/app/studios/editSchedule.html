@@ -15,8 +15,8 @@
           <img ng-src = "{{headerUrl}}" class = "cover-img"></img>
         </div> -->
         <div class="col-md-11">
-          <h5 class="mb8 bold">Congrats, {{studioName}} is live!</h5>
-          <h5 class="lightgray">Go ahead and schedule a class, then invite friends / clients to try out your classes for free! You can <a href="/studios/{{studioId}}/pricing">click here to go to your Settings</a> and set pricing to start charging for classes.</h5>
+          <h5 class="mb8 bold">Congratulations on taking the first step with {{studioName}}!</h5>
+          <h5 class="lightgray">Go ahead and schedule a class, then invite friends / clients to try out your classes for free! You can <a href="/studios/{{studioId}}/pricing">click here to go to your Settings</a> and setup your account & pricing to start making money.</h5>
         </div>
       </div>
     </div>
@@ -162,7 +162,8 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
             </div>
           </div>
 
-          <div class="row mb8">
+          <!--Moved to class type backend -->
+          <!-- <div class="row mb8">
             <div class="col-sm-12">
               <label for="class-choice" class="pb0">
                 Max Participants
@@ -170,11 +171,10 @@ placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" m
               <div style = "color: red" ng-show = "maxParticipantsNotEntered">*Required</div>
               <div class="select display-block">
                 <select ng-change = "maxParticipantsNotEntered = false;" id="class-choice" ng-model = "workoutToCreate.maxParticipants" ng-options = "value for value in maxParticipantsOptions">
-                  <!-- <option>Level One</option> -->
                 </select>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="row mb8">
             <div class="col-sm-12">

@@ -27,6 +27,12 @@
             <select id="instructor-choice" ng-model = "classDetails.maxParticipants" ng-options = "value for value in maxParticipantsOptions"></select>
           </div>
 
+          <h5 class="mt8">Max Free Participants</h5>
+          <h5 class="lightgray mb0" ng-hide = "editing">{{classDetails.maxFreeParticipants}}</h5>
+          <div class="select display-block" ng-show = "editing">
+            <select id="instructor-choice" ng-model = "classDetails.maxFreeParticipants" ng-options = "value for value in maxParticipantsOptions"></select>
+          </div>
+
           <h5 class="mt8 mb0">Instructor</h5>
           <h5 class="lightgray mb0" ng-hide = "editing">{{instructors[classDetails.instructor].firstName}} {{instructors[classDetails.instructor].lastName}}</h5>
           <div class="select display-block" ng-show = "editing">
@@ -55,10 +61,10 @@
           </div>
 
           <a href="#" class="mt16 btn btn-blue btn-block" ng-click = "joinOrUpdateClass(classDetails)">
-            <span style = "font-weight: 600" ng-show = "!editing">Start Class</span>
-            <span style = "font-weight: 600" ng-show = "editing">Update</span>
+            <span style = "font-weight: 600; color:white;" ng-show = "!editing">Start Class</span>
+            <span style = "font-weight: 600; color:white;" ng-show = "editing">Update</span>
           </a>
-          <a href="#" class="mt16 btn btn-blue btn-block" ng-show = "editing" ng-click = "cancelEditing()">Cancel</a>
+          <a href="#" class="mt16 btn btn-blue btn-block" style = "color:white;" ng-show = "editing" ng-click = "cancelEditing()">Cancel</a>
         </div>
       </div>
 
