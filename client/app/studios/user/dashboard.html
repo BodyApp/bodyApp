@@ -4,7 +4,7 @@
   <div class="row">
     
     <div class="col-md-3">    <!--  LEFT COLUMN BEGIN -->
-      <img src="/assets/images/bern-prince.jpg" class="mb0">
+      <img src="/assets/images/justin-photo.jpg" class="mb0" width="100%">
       <div class="panel panel-member text-center">
         <h4>Justin</h4>
         <a href="#">Edit Profile</a>
@@ -31,8 +31,126 @@
     </div>     <!--  LEFT COLUMN END -->
 
     <div class="col-md-9">
+
+      <div class="row mb32">
+        <div class="col-md-4">
+          <div class="dashboard-cards">
+            <h5 class="mb8">Minutes this Week</h5>
+            <div class="dashboard-cards-content text-center">
+              <div id="semicircle_progress_bar"></div>
+              <!-- NEEDS THIS JAVASCRIPT
+              var bar = new ProgressBar.SemiCircle(semicircle_progress_bar, {
+                strokeWidth: 6,
+                easing: 'easeInOut',
+                duration: 1400,
+                color: '#FFEA82',
+                trailColor: '#eee',
+                trailWidth: 1,
+                svgStyle: null
+              });
+
+              bar.animate(0.8); -->
+              <div class="dashboard-cards-icon">
+                <i class="ti-timer" style="font-size:50px;"></i>
+              </div>
+              <h3>80</h3>
+              <h5 class="lightgray">of 100</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="dashboard-cards">
+            <h5 class="mb24">Your Classes</h5>
+            <div class="dashboard-cards-content">
+              <h4 class="royalblue mb48"><span style="font-size: 90px;">4</span> upcoming</h4>
+              <h4 class="lightgray"><span style="font-size: 90px;">45</span> all time</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <!-- 
+          MY PROGRESS BEFORE ANYTHING IS UPLOADED
+          <div class="dashboard-cards">
+            <h5 class="mb16">My Progress</h5>
+            <div class="dashboard-cards-content text-center">
+              <div class="dashboard-cards-icon-rel pt16 mb16">
+                <i class="ti-camera" style="font-size:50px;"></i>
+              </div>
+              <h5>It's time to take your first progress photo.</h5>
+              <a href="#" class="btn btn-collapse mt16"><i class="ti-cloud-up"></i> Upload Photo</a>
+            </div>
+          </div> -->
+
+          <!--           
+          UPLOAD YOUR TRANSFORMATION MODAL
+          <div class="modal-body">
+            <div class="cancel-modal" href="#" ng-click = "closeModal()">
+              <span><i class="ti-close"></i></span>
+            </div>
+
+            <div class="class-booked">
+              <span class="white"><i class="fa fa-check-circle-o"></i> Looking good!</span>
+            </div>
+
+            <div class="class-booked-content text-center">
+              <a href="#" class="mb16">upload a different photo?</a>
+              <div class="transformation-photo-upload mb16" style="background-image:url('assets/images/justin-transformation.jpg');"></div>
+
+              <div class="row mb8">
+                <label class="col-sm-3" for="trans-week">
+                  Week
+                </label>
+                <div class="col-sm-9">
+                  <input id="last-name" size="30" type="text" value="e.g. 1">
+                </div>            
+              </div>
+              <div class="row mb8">
+                <label class="col-sm-3" for="trans-weight">
+                  Weight (lbs)
+                </label>
+                <div class="col-sm-9">
+                  <input id="trans-weight" size="30" type="text" value="e.g. 150">
+                </div>            
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <ul class="panel-action-list">
+                    <li>
+                      <a href="#" class="panel-action-item">Cancel</a>
+                    </li>
+                    <li>
+                      <a href="#" class="panel-action-item btn-primary btn">Save</a>
+                    </li>
+                  </ul>              
+                </div>
+              </div>  
+            </div>
+          </div> -->
+
+          <div class="dashboard-cards">
+            <h5 class="mb16">My Progress</h5>
+            <div class="dashboard-cards-content text-center">
+              <div class="transformation-photo">
+                <img src="assets/images/justin-transformation.jpg">
+                <div class="transformation-overlay text-left">
+                  <h5 class="white">Week 1</h5>
+                  <h5 class="white">185 lbs</h5>
+                </div>
+              </div>
+              <div class="transformation-photo">
+                <img src="assets/images/justin-transformation.jpg">
+                <div class="transformation-overlay text-left">
+                  <h5 class="white">Week 2</h5>
+                  <h5 class="white">180 lbs</h5>
+                </div>
+              </div>
+              <a href="#" class="btn btn-collapse mt16"><i class="ti-cloud-up"></i> Upload Latest</a>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <div class="panel space-4">      <!-- NOTIFICATIONS PANEL -->
+      <!-- <div class="panel space-4">      
         <div class="panel-header">
           Notifications
         </div>
@@ -80,9 +198,10 @@
             </li>
           </ul>
         </div>
-      </div>     <!--  NOTIFICATIONS PANEL END -->
+      </div> -->     <!--  NOTIFICATIONS PANEL END -->
 
-      <div class="panel space-4">   <!-- REFERRAL PANEL --> 
+      <!--  REFERRAL PANEL
+      <div class="panel space-4">  
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-8">
@@ -94,22 +213,22 @@
             </div>
           </div>
         </div>
-      </div>   <!-- REFERRAL PANEL END--> 
+      </div>-->
 
-      <div class="panel">    <!-- YOUR RESERVATIONS PANEL --> 
+      <div class="panel mb24">    <!-- YOUR RESERVATIONS PANEL --> 
         <div class="panel-header">
           Your Reservations
-          <div class="cal-controls text-left">
+          <!-- <div class="cal-controls text-left">
             <div class="select">
               <select>
                 <option>All Studios</option>
               </select>
             </div>
-          </div>          
+          </div>           -->
         </div>
         <div class="panel-body">
 
-          <div class="row"> <!-- CALENDAR LIST VIEW -->
+          <div class="row">
             <div class="col-sm-12">
               <table class="table table-condensed table-hover cal-list-table">
                 <thead>
@@ -122,33 +241,37 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Mon 05/09</td>
-                    <td>10:30a PDT</td>
-                    <td>45 min</td>
-                    <td>Level One</td>
-                    <td>Beth Anne L</td>
-                  </tr>
-                  <tr>
-                    <td>Tue 05/09</td>
-                    <td>10:30a PDT</td>
-                    <td>45 min</td>
-                    <td>Level One</td>
-                    <td>Beth Anne L</td>
-                  </tr>
-                  <tr>
-                    <td>Wed 05/09</td>
-                    <td>10:30a PDT</td>
-                    <td>45 min</td>
-                    <td>Level One</td>
-                    <td>Beth Anne L</td>
+                  <tr ng-repeat = "class in userBookings" ng-click="goToClassInfo(class)">
+                    <td>{{formatDate(class.classId)}}</td>
+                    <!-- <td>Mon 05/09</td> -->
+                    <td>{{formatTime(class.classId)}}</td>
+                    <!-- <td>10:30a PDT</td> -->
+                    <td>{{class.duration}} min</td>
+                    <td>{{class.className}}</td>
+                    <td>{{class.instructorFullName}}</td>
                   </tr>
                 </tbody>
               </table>
-
+              <div class = "mt16" ng-show = "!userBookings">You have no upcoming classes booked - click <a href="/discover">here</a> to find some!</div>
             </div>
           </div>
 
+        </div>
+      </div>   <!-- YOUR RESERVATIONS END --> 
+
+      <div class="panel">
+        <div class="panel-header">
+          My Studios: Upcoming Classes
+          <div class="cal-controls text-left">
+            <div class="select">
+              <select>
+                <option>AbsoluteBody Pilates</option>
+              </select>
+            </div>
+          </div>          
+        </div>
+        <div class="panel-body">
+          Add week calendar view here
         </div>
       </div>
 
