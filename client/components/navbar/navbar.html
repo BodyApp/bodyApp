@@ -129,6 +129,19 @@
                 </div>
               </div>
             </div> <!-- BROWSER ALERT END -->
+            <div id="trial-alert" ng-show = "(!wrongBrowser || stateName != 'classinfo') && !adminOf && showTrialPeriodBanner && isLoggedIn() ">  <!-- Trial Perdiod Banner -->
+              <div class="cancel-modal-membership" ng-click = "showTrialPeriodBanner = false;">
+                <a href="#">
+                  <i class="ti-close" style="font-size:15px;"></i>
+                </a>
+              </div>
+              <div class="row text-center text-left-xs">
+                <div class="col-sm-12">
+                  <h5 class="lightgray">
+                    Great news!  You've got {{trialPeriodTime}} left in your free trial period, during which you can take unlimited classes for free!  <a href="/discover">Click here</a> to find classes to take.</h5>
+                </div>
+              </div>
+            </div> <!-- BROWSER ALERT END -->
         </nav>
 
     </div>       

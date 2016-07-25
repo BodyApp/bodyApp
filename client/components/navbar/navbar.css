@@ -31,6 +31,32 @@
   }
 }
 
+#trial-alert {
+  padding: 10px 5px;
+  background: #D1FFFC;
+  position: relative;
+  color: black !important;
+}
+#trial-alert a {
+  /*color: white;*/
+  color: black !important;
+}
+
+#trial-alert .chrome {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  #trial-alert {
+    padding-right: 40px;
+    padding-left: 20px;
+  }
+  #trial-alert h5 {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+
 .cancel-modal-membership {
     position: absolute;
     float: right;

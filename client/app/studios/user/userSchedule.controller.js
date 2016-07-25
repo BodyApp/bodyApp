@@ -26,8 +26,9 @@ angular.module('bodyAppApp')
     function delayStart() {
         ref.child('userBookings').child(Auth.getCurrentUser()._id).orderByKey().startAt(startAt.toString()).once('value', function(snapshot) {
             $scope.userBookings = snapshot.val();
+            if(!$scope.$$phase) $scope.$apply();
             console.log(snapshot.val())
-            Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren });
+            Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren() });
         })
     }
     

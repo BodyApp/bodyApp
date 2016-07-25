@@ -70,11 +70,12 @@ angular.module('bodyAppApp')
             console.log("User is authenticated with fb ");
             if (ref) {
               getAccountId()
-              getSubscriptionStatus()  
+              getSubscriptionStatus() 
             }
             updateIntercom(currentUser)
             geolocate()
             getStudiosAdmin()
+            getTrialStatus()
             // checkIfStudioAdmin()
           } else {
             console.log("User is logged out");
@@ -88,6 +89,7 @@ angular.module('bodyAppApp')
                 updateIntercom(currentUser)
                 geolocate()
                 getStudiosAdmin()
+                getTrialStatus()
                   // checkIfStudioAdmin()
               }); 
             } else {
@@ -101,6 +103,7 @@ angular.module('bodyAppApp')
                   updateIntercom(currentUser)
                   geolocate()
                   getStudiosAdmin()
+                  getTrialStatus()
                     // checkIfStudioAdmin()
                 }); 
               })
@@ -188,6 +191,22 @@ angular.module('bodyAppApp')
           getStudioNames(studio.key);
         })        
         // if(!$scope.$$phase) $scope.$apply();
+      })
+    }
+
+    function getTrialStatus() {
+      firebase.database().ref().child('usersById').child(currentUser._id).on('value', function(snapshot) {
+        console.log(snapshot.val())
+        if (!snapshot.exists()) return;
+        var timeLeft = snapshot.val().trialStart*1 + snapshot.val().trialDurationDays*24*60*60*1000 - new Date().getTime();
+        if (timeLeft > 0) {
+          var minutesLeftInTrial = Math.round(timeLeft / (1000*60),0);
+          $scope.trialPeriodTime = minutesLeftInTrial + " minutes to start class";
+          if (minutesLeftInTrial > 60) $scope.trialPeriodTime = Math.round(minutesLeftInTrial / 60, 0) + (Math.round(minutesLeftInTrial / 60, 0) < 2 ? " hour" : " hours");
+          if (minutesLeftInTrial > 60*24) $scope.trialPeriodTime = Math.round(minutesLeftInTrial / 60 / 24, 0) + (Math.round(minutesLeftInTrial / 60 / 24, 0) < 2 ? " day" : " days");
+          $rootScope.showTrialPeriodBanner = true;  
+          if(!$scope.$$phase) $scope.$apply();
+        }
       })
     }
 

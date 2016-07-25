@@ -54,6 +54,8 @@ var UserSchema = new Schema({
   signUpDate: Date,
   lastLoginDate: Date,
   welcomeEmailSent: Date,
+  trialStart: Date,
+  trialDurationDays: Number,
   timezone: String,
   results: Schema.Types.Mixed,
   ratingsSubmitted: Array,

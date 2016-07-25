@@ -14,6 +14,8 @@ angular.module('bodyAppApp')
   	var loggedInPath = '/'
 
     Intercom('trackEvent', 'navigatedToSignup');
+    analytics.track('navigatedToSignup');
+
 
     $scope.getBackgroundImages = function() {
       storageRef.child('signupImages').getDownloadURL().then(function(urls) {
@@ -33,6 +35,7 @@ angular.module('bodyAppApp')
       if (!$scope.userEmail || $scope.userEmail.length < 4) return $scope.invalidEmail = true;
     	User.saveEmailAddress({id: Auth.getCurrentUser()._id}, {email: $scope.userEmail}, function(user){
         console.log("Email successfully updated in mongo.")
+        analytics.track('updatedEmail', {email: $scope.userEmail});
         ref.child('fbUsers').child(Auth.getCurrentUser().facebookId).update({'email': $scope.userEmail}, function(err) {
         	if (err) return console.log(err)
         	console.log("Email successfully updated in firebase.")

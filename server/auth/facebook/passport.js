@@ -71,13 +71,15 @@ exports.setup = function (User, config) {
 
           user.level = user.level || 0;
           // var firebaseToken = tokenGenerator.createToken({ uid: profile.id, mdbId: user._id, role: user.role, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture })
-          user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName.charAt(0), "gender": user.gender, "picture": user.picture, "email": user.email });
+          user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName, "gender": user.gender, "picture": user.picture, "email": user.email });
           user.lastLoginDate = user.signUpDate;
 
           //Used for intercom secure mode
           var hmac = crypto.createHmac('sha256', config.intercomSecret);
           hmac.update(user._id.toString());
           user.intercomHash = hmac.digest('hex');
+          user.trialStart = new Date();
+          user.trialDurationDays = 7;
 
           user.save(function(err) {
             if (err) return done(err);
@@ -99,6 +101,8 @@ exports.setup = function (User, config) {
             // }); 
 
             usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
+            var rightNow = new Date().getTime()
+            ref.child('usersById').child(user._id).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7})
             done(err, user);  
             
           });
@@ -107,7 +111,7 @@ exports.setup = function (User, config) {
           // var firebaseToken = tokenGenerator.createToken({ uid: profile.id, role: user.role, mdbId: user._id, firstName: user.firstName, lastName: user.lastName.charAt(0), gender: user.gender, picture: user.picture }) 
             // {admin: user.role === "admin"});
 
-          user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName.charAt(0), "gender": user.gender, "picture": user.picture, "email": user.email });
+          user.firebaseToken = firebase.auth().createCustomToken(profile.id, {"facebookId": profile.id, "role": user.role, "mdbId": user._id, "firstName": user.firstName, "lastName": user.lastName, "gender": user.gender, "picture": user.picture, "email": user.email});
           // user.firebaseToken = firebaseToken;
           
           if (profile._json) {
@@ -135,7 +139,12 @@ exports.setup = function (User, config) {
           } else {
             console.log(user.firstName + " " + user.lastName + " already has an intercom hash.")
           }
-                    
+                  
+          if (!user.trialStart) {
+            user.trialStart = new Date();
+            user.trialDurationDays = 7;
+          }
+
           user.save(function(err) {
             if (err) return done(err);
             //Firebase authentication
@@ -154,7 +163,18 @@ exports.setup = function (User, config) {
             //   }
             // // }, { remember: "sessionOnly" }); //Session expires upon browser shutdown
             // }); 
+            var rightNow = new Date().getTime();
+            console.log(user._id)
             usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
+            ref.child('usersById').child(user._id.toString()).update({firstName: user.firstName, lastName: user.lastName, email: user.email, updated: rightNow}, function(err) {
+              if (err) return console.log(err);
+              ref.child('usersById').child(user._id.toString()).child('trialStart').once('value', function(snapshot) {
+                if (!snapshot.exists()) ref.child('usersById').child(user._id.toString()).update({trialStart: rightNow, trialDurationDays: 7}, function(err) {
+                  if (err) return console.log(err)
+                  console.log("Added trial start for user " + user._id)
+                })
+              })
+            })
             // passport.authenticate('facebook', { authType: 'rerequest', scope: ['user_friends'] });
             return done(err, user);
           })
