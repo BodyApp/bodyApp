@@ -123,6 +123,9 @@
   top: 0px;
   left: 0px;
 }
+.cover-gradient-mobile {
+  height: 343px !important;
+}
 .cover-img {
 	vertical-align: middle;
 }

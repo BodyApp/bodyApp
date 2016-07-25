@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('ClassInfoCtrl', function ($scope, $location, $rootScope, $mdDialog, $interval, $uibModal, $cookies, $http, $state, studioId, classId, Auth, Video, User) {
+  .controller('ClassInfoCtrl', function ($scope, $location, $window, $rootScope, $mdDialog, $interval, $uibModal, $cookies, $http, $state, studioId, classId, Auth, Video, User) {
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
@@ -15,7 +15,7 @@ angular.module('bodyAppApp')
     calculateTimeUntilClassStarts()
 
     //Check and handle if mobile
-    if(window.innerWidth <= 990) {
+    if(window.innerWidth <= 700) {
       $scope.isMobile = true;
       if(!$scope.$$phase) $scope.$apply();
    } 
@@ -409,7 +409,7 @@ angular.module('bodyAppApp')
         } else if (slot && slot.typeOfClass === 'Specialty') {
           console.log("Booking specialty class")
           return bookSpecialtyClass(slot)
-        } else if ($rootScope.trialPeriodTime && (!slot.maxFreeParticipants || $scope.numFreeBookings < slot.maxFreeParticipants)) {
+        } else if ($rootScope.trialPeriodTime && slot && (!slot.maxFreeParticipants || !$scope.numFreeBookings || $scope.numFreeBookings < slot.maxFreeParticipants)) {
           console.log("Booking for free because user is in free trial period.")
           return bookClass(slot)
         // } else if (slot && $scope.classType && $scope.classType.freeClass) { //Book class if studio hasn't set pricing.
@@ -418,7 +418,7 @@ angular.module('bodyAppApp')
         // } else if (!$scope.storefrontInfo.subscriptionPricing && !$scope.storefrontInfo.dropinPricing) { //Book class if studio hasn't set pricing.
         //   console.log("Booking for free because no pricing is set")
         //   return bookClass(slot)
-        } else if ($scope.currentUser && $scope.currentUser.role === 'admin') {
+        } else if ($scope.currentUser && $scope.currentUser.role === 'admin' && slot) {
           console.log("Booking for free because user is admin.")
           return bookClass(slot)
         // } else if (studioId === 'body') {
@@ -531,14 +531,21 @@ angular.module('bodyAppApp')
         classDescription: $scope.classType.classDescription,
         studioIconUrl: $scope.iconUrl
       }, function(user) {
-        var bookingObj = {firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : "", freeBooking: $rootScope.trialPeriodTime}
+        var bookingObj = {
+          firstName: $scope.currentUser.firstName, 
+          lastName: $scope.currentUser.lastName.charAt(0), 
+          timeBooked: new Date().getTime(), 
+          picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", 
+          facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : "", 
+          freeBooking: $rootScope.trialPeriodTime
+        }
         ref.child("bookings").child(slot.dateTime).child($scope.currentUser._id).update(bookingObj, function(err) {
           if (err) return console.log(err)
           console.log("Added booking")
         });
-        ref.child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout, freeBooking: $rootScope.trialPeriodTime}, function(err) {
+        ref.child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, freeBooking: $rootScope.trialPeriodTime}, function(err) {
           if (err) return console.log(err)
-          console.log("Added user booking")
+          console.log("Added user booking to studio")
         });
         firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(slot.dateTime).update({
           className: $scope.classType.name,
@@ -547,10 +554,13 @@ angular.module('bodyAppApp')
           instructorFullName: $scope.instructorDetails.firstName + " " + $scope.instructorDetails.lastName,
           classInfoUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classinfo/"+slot.dateTime,
           classDescription: $scope.classType.classDescription,
-          studioIconUrl: $scope.iconUrl,
+          studioIconUrl: $scope.iconUrl ? $scope.iconUrl : "None",
           classId: slot.dateTime,
-          duration: slot.duration,
+          duration: slot.duration ? slot.duration : 30,
           freeBooking: $rootScope.trialPeriodTime
+        }, function(err) {
+          if (err) return console.log(err)
+          console.log("Added user bookings to userBookings")
         })
 
         $scope.currentUser = user;
@@ -566,7 +576,8 @@ angular.module('bodyAppApp')
         analytics.track('bookedClass', {
           studioId: studioId,
           classId: slot ? slot.dateTime : "None",
-          dateOfClass: new Date(slot.dateTime*1)
+          dateOfClass: new Date(slot.dateTime*1),
+          freeBooking: $rootScope.trialPeriodTime
         });
       }, function(err) {
           console.log("Error adding class: " + err)

@@ -19,7 +19,8 @@
 				</li>
 				<li>
 					<button href="#" class="btn-blue" ng-show = "bookings[currentUser._id] || userIsInstructor" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
-					<button href="#" class="btn-blue" ng-show = "(!bookings || !bookings[currentUser._id]) && !userIsInstructor && (numBookings < classDetails.maxParticipants || (!classDetails.maxParticipants && numBookings < 12)) && (!trialPeriodTime || !classDetails.maxFreeParticipants || numFreeBookings < classDetails.maxFreeParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
+					<button href="#" class="btn-blue" ng-show = "!currentUser._id" ng-click = "reserveClicked(classDetails, $event)">Reserve Class</buttons>
+					<button href="#" class="btn-blue" ng-show = "currentUser._id && (!bookings || !bookings[currentUser._id]) && !userIsInstructor && (numBookings < classDetails.maxParticipants || !numBookings || (!classDetails.maxParticipants || numBookings < 12)) && (!trialPeriodTime || !classDetails.maxFreeParticipants || !numFreeBookings || numFreeBookings < classDetails.maxFreeParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !trialPeriodTime">${{storefrontInfo.dropinPricing/100}}</span>
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !trialPeriodTime">$3</span>
             <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && trialPeriodTime">Free During Trial</span>
@@ -183,7 +184,7 @@
 		<div class="col-lg-5">
 			<div class="panel" ng-show = "bookings[currentUser._id] || userIsInstructor">
 				<div class="panel-body">
-					<div class="row" ng-show = "!isMobile">
+					<div class="row" ng-if = "!isMobile">
 						<div class="col-sm-12">
 							<div class="previewVideo">
 								<div id="audioVideoSetup"></div>

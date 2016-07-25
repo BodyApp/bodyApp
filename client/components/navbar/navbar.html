@@ -129,8 +129,8 @@
                 </div>
               </div>
             </div> <!-- BROWSER ALERT END -->
-            <div id="trial-alert" ng-show = "(!wrongBrowser || stateName != 'classinfo') && !adminOf && showTrialPeriodBanner && isLoggedIn() ">  <!-- Trial Perdiod Banner -->
-              <div class="cancel-modal-membership" ng-click = "showTrialPeriodBanner = false;">
+            <div id="trial-alert" ng-show = "(!wrongBrowser || stateName != 'classinfo') && !adminOf && trialBannerShown && !hideTrialBanner && isLoggedIn() ">  <!-- Trial Perdiod Banner -->
+              <div class="cancel-modal-membership" ng-click = "clickedHideTrialBanner()">
                 <a href="#">
                   <i class="ti-close" style="font-size:15px;"></i>
                 </a>

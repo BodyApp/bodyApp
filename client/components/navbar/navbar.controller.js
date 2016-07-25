@@ -196,7 +196,6 @@ angular.module('bodyAppApp')
 
     function getTrialStatus() {
       firebase.database().ref().child('usersById').child(currentUser._id).on('value', function(snapshot) {
-        console.log(snapshot.val())
         if (!snapshot.exists()) return;
         var timeLeft = snapshot.val().trialStart*1 + snapshot.val().trialDurationDays*24*60*60*1000 - new Date().getTime();
         if (timeLeft > 0) {
@@ -205,10 +204,14 @@ angular.module('bodyAppApp')
           if (minutesLeftInTrial > 0) $rootScope.trialPeriodTime = minutesLeftInTrial + " minutes"
           if (minutesLeftInTrial > 60) $rootScope.trialPeriodTime = Math.round(minutesLeftInTrial / 60, 0) + (Math.round(minutesLeftInTrial / 60, 0) < 2 ? " hour" : " hours");
           if (minutesLeftInTrial > 60*24) $rootScope.trialPeriodTime = Math.round(minutesLeftInTrial / 60 / 24, 0) + (Math.round(minutesLeftInTrial / 60 / 24, 0) < 2 ? " day" : " days");
-          $rootScope.showTrialPeriodBanner = true;  
+          if (!$rootScope.hideTrialBanner) $rootScope.trialBannerShown = true;
           if(!$scope.$$phase) $scope.$apply();
         }
       })
+    }
+
+    $scope.clickedHideTrialBanner = function() {
+      $rootScope.hideTrialBanner = true;
     }
 
     function getStudioLogos(studio) {

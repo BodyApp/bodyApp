@@ -289,7 +289,7 @@ exports.generateReferralCode = function(req, res, next){
         "referrerLastName": user.lastName,
         "referrerEmail": user.email,
         "referrerFacebookId": user.facebookId,
-        "text": "50% off first month!"
+        // "text": "50% off first month!"
       }
       // id: randomString
     }, function(err, coupon) {
@@ -1058,6 +1058,30 @@ exports.addBookedClass = function(req, res, next) {
       //   if (err) return validationError(res, err);
       sendEmail(user)
       sendClassBookedEmailToStudio(studioId, user.firstName, user.lastName, classToAdd, className);
+
+        // firebase.database().ref().child('studios').child(studioId).child("bookings").child(slot.dateTime).child($scope.currentUser._id).update(bookingObj, function(err) {
+        //   if (err) return console.log(err)
+        //   console.log("Added booking")
+        // });
+        // firebase.database().ref().child('studios').child(studioId).child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout, freeBooking: $rootScope.trialPeriodTime}, function(err) {
+        //   if (err) return console.log(err)
+        //   console.log("Added user booking to studio")
+        // });
+        // firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(slot.dateTime).update({
+        //   className: $scope.classType.name,
+        //   studioName: $scope.storefrontInfo.studioName,
+        //   studioId: $scope.storefrontInfo.studioId,
+        //   instructorFullName: $scope.instructorDetails.firstName + " " + $scope.instructorDetails.lastName,
+        //   classInfoUrl: "https://www.getbodyapp.com/studios/"+studioId+"/classinfo/"+slot.dateTime,
+        //   classDescription: $scope.classType.classDescription,
+        //   studioIconUrl: $scope.iconUrl,
+        //   classId: slot.dateTime,
+        //   duration: slot.duration,
+        //   freeBooking: $rootScope.trialPeriodTime
+        // }, function(err) {
+        //   if (err) return console.log(err)
+        //   console.log("Added user bookings to userBookings")
+        // })
       // ref.child("bookings").child(classToAdd).once('value', function(snapshot) {
       //   if (snapshot.numChildren() < 2) sendClassBookedEmailToAdmins(user.firstName, user.lastName, classToAdd, "Level 1")
       // })

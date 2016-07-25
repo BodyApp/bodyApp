@@ -1,6 +1,80 @@
-/*  body {
-    padding-top: 70px !important;
-  }*/
+/*------User Dashboard-------*/
+.dashboard-cards {
+  padding: 15px;
+  border: 1px solid #ccc;
+  position: relative;
+  background-color: white;
+  height: 260px;
+}
+.dashboard-cards-content {
+  position: relative;
+}
+#semicircle_progress_bar {
+  margin: 20px;
+  height: 100px;
+}
+.dashboard-cards-icon {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  left: auto;
+  right: auto;
+}
+.dashboard-cards-icon-rel {
+  position: relative;
+  width: 100%;
+  left: auto;
+  right: auto;
+}
+.transformation-photo {
+  margin: 1px;
+  width: 47%;
+  display: inline-block;
+  position: relative;
+}
+.transformation-photo img {
+  border-radius: 3px;
+}
+.transformation-photo .transformation-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 3px 5px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background: black;
+  background: -webkit-linear-gradient(rgba(0, 0, 0, 0), black); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgba(0, 0, 0, 0), black); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgba(0, 0, 0, 0), black); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to top, black, rgba(0, 0, 0, 0));
+  opacity: 0.9;
+  z-index: 2;
+}
+.transformation-photo-upload {
+  width: 300px;
+  height: 450px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+
+/*------Fonts-------*/
+.tagline {
+  font-size: 70px;
+  font-weight: 600;
+}
+.h1cursive {
+  font-family: 'Caveat';
+  font-weight: 700 !important;
+  color: #db0afa;
+  font-size: 90px;
+}
+
+.fill-in-blank {
+  border-top: 4px solid white;
+}
+>>>>>>> fcfb8d8fbf638edb02719fb36198d0daa6b6081d
 
 /*------$mdDialog-------*/
 .mdDialogWidth button {

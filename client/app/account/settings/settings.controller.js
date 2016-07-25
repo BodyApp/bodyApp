@@ -7,11 +7,13 @@ angular.module('bodyAppApp')
     auth.onAuthStateChanged(function(user) {
       if (user) {
         pullFriendPictures()
+        getReferralCode()
       } else {
         if (currentUser.firebaseToken) {
           auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
             if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
             pullFriendPictures()
+            getReferralCode()
           }); 
         } else {
           console.log("User doesn't have a firebase token saved, should retrieve one.")
@@ -120,6 +122,14 @@ angular.module('bodyAppApp')
           if(!$scope.$$phase) $scope.$apply();
         })
       }
+    }
+
+    function getReferralCode() {
+      ref.child('usersById').child(currentUser._id).child('referralCode').once('value', function(snapshot) {
+        if (!snapshot.exists()) return console.log("No referral code found");
+        $scope.userReferralCode = snapshot.val()
+        if(!$scope.$$phase) $scope.$apply();
+      })
     }
 
 

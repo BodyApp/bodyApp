@@ -51,20 +51,21 @@
 
 
 		<!-- REFERRALS -->
-		<div class="col-sm-9 mb32" ng-show="false">
+		<div class="col-sm-9 mb32" ng-show = "userReferralCode">
 			<div >
 				<div class="col-sm-9">
-					<h3 class="royalblue shorterMargin">Referrals ({{numReferrals}})</h3>
+					<h3 class="royalblue shorterMargin">Referrals <span class="hidden">({{numReferrals}})</span></h3>
 				</div>
 				<div class="col-sm-12">
-					<div class="mb16">
-						<span>Give your friends 50% off their first month with referral code: 
-							<span class = "bold">{{currentUser.referralCode}}</span>
+					<!-- <div class="mb16">
+						<span>Share your referral code and give your friends a free week of unlimited classes: 
+							<span class = "bold">{{userReferralCode}}</span>
 						</span>
-					</div>
+					</div> -->
 					<div class="mb8">
 						<div class="input-group">
-              Or by sharing <span style = "border-style: solid; border-color: gray; border-width: 3px; padding: 5px;" ngclipboard data-clipboard-text="https://www.getbodyapp.com/referral/{{currentUser.referralCode}}" id="foo"><a href="#" popover-animation="true" popover-trigger="click" popover-placement="bottom-right" uib-popover="Copied">https://www.getbodyapp.com/referral/{{currentUser.referralCode}}</a></span>
+							<div>Share your referral code and give your friends a free week of unlimited classes</div>
+              <div style = "border-style: solid; border-color: gray; border-width: 3px; padding: 5px;" ngclipboard data-clipboard-text="https://www.getbodyapp.com/referral/{{userReferralCode}}" id="foo"><a href="#" popover-animation="true" popover-trigger="click" popover-placement="bottom-right" uib-popover="Copied">https://www.getbodyapp.com/referral/{{userReferralCode}}</a></div>
               <!-- <span class="input-group-button">
                   <button class="btn" type="button" ngclipboard="" ngclipboard-success="onSuccess(e);" ngclipboard-error="onError(e);" data-clipboard-target="#foo">
                       <img class="clippy" src="assets/images/images/icons/clippy.svg" width="13" alt="Copy to clipboard">
@@ -76,7 +77,7 @@
 						</span> -->
 					</div>
 				</div>
-				<div class = "col-sm-12 mb16">
+				<div class = "col-sm-12 mb16 hidden">
 					<a href="https://www.facebook.com/sharer/sharer.php?u=https://www.getbodyapp.com/referral/{{currentUser.referralCode}}" target="_blank">
 						<img class = "facebookButton" src="http://bitcoin-catcher.com/wp-content/uploads/2015/09/facebook-share-button.png"></img>
 					</a>
@@ -88,12 +89,12 @@
 					</a>
 					<div>Receive $15 towards future subscriptions for each referral that subscribes</div>
 				</div>
-				<div class="col-sm-12" ng-if = "numReferrals > 0">
+				<div class="col-sm-12 hidden" ng-if = "numReferrals > 0">
 					
 					<div class="friends-User-col"><span class="lightgray">User</span></div>
 					<div class="friends-Action-col"><span class="lightgray">Action</span></div>
 				</div>
-				<div class="col-sm-12" ng-if = "numReferrals > 0">
+				<div class="col-sm-12 hidden" ng-if = "numReferrals > 0">
 					<ul class="friendList">
 						<li ng-repeat = "friend in referrals" ng-show = "referrals.length > 0">
 							<div class="friends-User-col">
@@ -112,7 +113,7 @@
 		<!-- REFERRALS END -->
 
 		<!-- FRIENDS -->
-		<div class="col-sm-9" ng-show="teammates">
+		<div class="col-sm-9" ng-show="teammates && friendListLength > 0">
 			<div class="mb8">
 				<div class="col-sm-9">
 					<h3 class="royalblue">Teammates ({{friendListLength}})</h3>
