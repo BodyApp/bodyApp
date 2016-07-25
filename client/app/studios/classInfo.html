@@ -19,11 +19,13 @@
 				</li>
 				<li>
 					<button href="#" class="btn-blue" ng-show = "bookings[currentUser._id] || userIsInstructor" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
-					<button href="#" class="btn-blue" ng-show = "(!bookings || !bookings[currentUser._id]) && !userIsInstructor && (!classDetails.maxParticipants || numBookings < classDetails.maxParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
-						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !classType.freeClass">${{storefrontInfo.dropinPricing/100}}</span>
-            <span style = "font-weight: bold;" ng-show = "(classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !storefrontInfo.subscriptionPricing) || classType.freeClass">Free</span>
+					<button href="#" class="btn-blue" ng-show = "(!bookings || !bookings[currentUser._id]) && !userIsInstructor && (numBookings < classDetails.maxParticipants || (!classDetails.maxParticipants && numBookings < 12)) && (!trialPeriodTime || !classDetails.maxFreeParticipants || numFreeBookings < classDetails.maxFreeParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
+						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !trialPeriodTime">${{storefrontInfo.dropinPricing/100}}</span>
+						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !trialPeriodTime">$3</span>
+            <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && trialPeriodTime">Free During Trial</span>
             <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Specialty'">${{classType.specialtyClassRate}}</span>
 					</buttons>
+					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && trialPeriodTime && numFreeBookings >= classDetails.maxFreeParticipants" ng-click="reserveClicked(classDetails, $event)">Free Spots Are Full</buttons>
 					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && numBookings >= classDetails.maxParticipants" ng-click="clickedWhenClassFull($event)">Class Is Full</buttons>
 				</li>
 			</ul>

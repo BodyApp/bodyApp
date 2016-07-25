@@ -290,12 +290,14 @@ angular.module('bodyAppApp')
 
     function createDefaultClassType(studioId) {
       var classToSave = {};
-      classToSave.name = "Free Class"
+      classToSave.name = "Great Workout"
       classToSave.classDescription = "Come try out a class at my studio!"
       classToSave.freeClass = true;
       classToSave.created = new Date().getTime();
       classToSave.updated = new Date().getTime();
       classToSave.createdBy = Auth.getCurrentUser()._id
+      classToSave.maxParticipants = 12;
+      classToSave.maxFreeParticipants = 6;
       classToSave.classType = "Regular"
 
       var toPush = ref.child('studios').child(studioId).child("classTypes").push(classToSave, function(err) {

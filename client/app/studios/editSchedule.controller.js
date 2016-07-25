@@ -241,8 +241,8 @@ angular.module('bodyAppApp')
 
     function selectClassType(classType) {
       $scope.workoutOptions = {None: {title: "None", id: "None"}};
-      $scope.workoutToCreate.maxParticipants = classType.maxParticipants;
-      $scope.workoutToCreate.maxFreeParticipants = classType.maxFreeParticipants;
+      $scope.workoutToCreate.maxParticipants = classType.maxParticipants || 12;
+      $scope.workoutToCreate.maxFreeParticipants = classType.maxFreeParticipants || 6;
       if(!$scope.$$phase) $scope.$apply();
       if (classType && !classType.workoutsUsingClass) {
         $scope.workoutToCreate.workout = $scope.workoutOptions['None']

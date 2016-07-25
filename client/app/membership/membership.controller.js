@@ -43,6 +43,9 @@ angular.module('bodyAppApp')
     }
 
     getRates()
+    getInstructorPicture()
+    getStudioName()
+    getStudioPicture();
 
     function getRates() {
       ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
@@ -50,18 +53,23 @@ angular.module('bodyAppApp')
         planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
         $scope.planInfo = planInfo;
         if(!$scope.$$phase) $scope.$apply();
-        getInstructorPicture()
-        getStudioName()
-        getStudioPicture();
+        // getInstructorPicture()
+        // getStudioName()
+        // getStudioPicture();
       })
 
       ref.child('stripeConnected').child('dropinPlan').once('value', function(snapshot) {
-        if (!snapshot.exists()) return console.log("No dropin plan set for this studio.")
-        dropinRate = snapshot.val().amount
+        if (snapshot.exists()) {
+          dropinRate = snapshot.val().amount;
+        } else {
+          dropinRate = 300; //Set default dropin rate to $3
+          console.log("Dropin rate being set at $3.")
+        }
         $scope.dropinRate = dropinRate;
         if(!$scope.$$phase) $scope.$apply();
-        getInstructorPicture()
-        getStudioName()
+        // getInstructorPicture()
+        // getStudioName()
+        // getStudioPicture();
       })  
     }
 

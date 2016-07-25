@@ -150,9 +150,9 @@ exports.addCustomerSubscription = function(req, res, next){
 
     var createPlatformCustomerHandler = function(err, customer) {
       if (err) return cb(err);
-      if (userEmail) {
-        user.email = userEmail;
-      }
+      // if (userEmail) {
+      //   user.email = userEmail;
+      // }
 
       if (shippingAddress) {
         user.shippingAddress = shippingAddress;
@@ -283,7 +283,7 @@ exports.addCustomerSubscription = function(req, res, next){
 
     var createCustomerId = function() {
       stripe.customers.create({
-        email: userEmail,
+        // email: userEmail,
         source: stripeToken,
         description: "BODY Consumer",
         metadata: {
@@ -353,7 +353,7 @@ exports.addCustomerSubscription = function(req, res, next){
             } else { //Create new customer
               if (coupon) {
                 stripe.customers.create({
-                  email: userEmail,
+                  // email: userEmail,
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
@@ -372,7 +372,7 @@ exports.addCustomerSubscription = function(req, res, next){
                 })  
               } else {
                 stripe.customers.create({
-                  email: userEmail,
+                  // email: userEmail,
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
@@ -472,9 +472,9 @@ exports.chargeDropin = function(req, res, next){
 
     var createPlatformCustomerHandler = function(err, customer) {
       if (err) return cb(err);
-      if (userEmail) {
-        user.email = userEmail;
-      }
+      // if (userEmail) {
+      //   user.email = userEmail;
+      // }
 
       if (shippingAddress) {
         user.shippingAddress = shippingAddress;
@@ -494,9 +494,11 @@ exports.chargeDropin = function(req, res, next){
               // return cb(null)
             // }
             // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-              createCustomerCharge(accountId)    
+          createCustomerCharge(accountId)    
             // })
-          // })  
+          // })
+        } else if (studioId) { //If no accountId because stripe hasn't been set up by the studio
+          createPlatformCharge(stripeToken, slot, amount, studioId)  
         } else {
           res.status(201).send("Customer and billing created, but no Charge added.")
           return cb(null)
@@ -516,6 +518,8 @@ exports.chargeDropin = function(req, res, next){
             createCustomerCharge(accountId)    
           // })
         // })  
+      } else if (studioId) { //If no accountId because stripe hasn't been set up by the studio
+        createPlatformCharge(stripeToken, slot, amount, studioId)
       } else {
         res.status(201).send("Customer and billing updated, but no subscription added.")
         return cb(null)
@@ -560,7 +564,7 @@ exports.chargeDropin = function(req, res, next){
 
     var createCustomerId = function() {
       stripe.customers.create({
-        email: userEmail,
+        // email: userEmail,
         source: stripeToken,
         description: "BODY Consumer",
         metadata: {
@@ -621,7 +625,7 @@ exports.chargeDropin = function(req, res, next){
               })  
             } else { //Create new customer first
               stripe.customers.create({
-                email: userEmail,
+                // email: userEmail,
                 source: newToken.id,
                 description: "BODY Consumer",
                 // application_fee_percent: 30-3,
@@ -657,6 +661,77 @@ exports.chargeDropin = function(req, res, next){
       );
     }
 
+    function createPlatformCharge(){ // If studio hasn't yet set up their stripe account
+      if(!stripeToken){
+        return cb("No Stripe token. Couldn't charge customer.")
+      }
+
+      User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
+        if (err) return next(err);
+        
+        var cb = function(err) {
+          if (err && err.statusCode) {
+            res.status(err.statusCode).send(err)
+            if(err.code){
+              console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + ' - Error: ' + err.code);
+            } else {
+              console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + '. Unknown error');
+            }
+          } else if (err) {
+            res.status(400).send(err)
+            console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Unknown error');
+          } else {
+            console.log('Billing has been updated.');
+          }
+        };
+
+          var cardHandler = function(err, customer) {
+            if (err) return cb(err);
+
+            user.dropInClasses = user.dropInClasses || {};
+            user.dropInClasses[studioId] = user.dropInClasses[studioId] || {};
+            user.dropInClasses[studioId][slot.dateTime] = true;
+
+            user.save(function(err){
+              res.json(user)
+              if (err) return cb(err);
+              return cb(null);
+              return
+            });
+          };
+
+          if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
+            stripe.charges.create({
+              amount: amount, // amount in cents, again
+              currency: "usd",
+              customer: user.stripe.customer.customerId, // Previously stored, then retrieved
+              metadata: {
+                "classBooked": slot.dateTime,
+                "timeBooked": new Date().getTime()
+              }
+            }, cardHandler);
+          } else {
+            console.log("Creating new stripe customer for drop in class.")
+            stripe.customers.create({
+              email: user.email,
+              source: stripeToken,
+              description: "Created customer for drop in class."
+            }).then(function(customer){
+              stripe.charges.create({
+                amount: amount, // amount in cents, again
+                currency: "usd",
+                // source: stripeToken
+                customer: customer.id, //From function callback
+                metadata: {
+                  "classBooked": slot.dateTime,
+                  "timeBooked": new Date().getTime()
+                }
+              }, cardHandler)
+            })
+          }
+      });
+    };
+
     if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
       updateCustomer(user.stripe.customer.customerId)
     } else {
@@ -665,104 +740,3 @@ exports.chargeDropin = function(req, res, next){
 
   })
 };
-
-// exports.chargeDropin = function(req, res, next){
-//   var stripeToken = req.body.stripeToken.id;
-//   var shippingAddress = req.body.shippingAddress;
-//   var slot = req.body.slot;
-//   var accessCode = req.body.accessCode;
-//   var amount = req.body.amount;
-//   var studioId = req.body.studioId;
-
-//   if(!stripeToken){
-//     return console.log("error retrieving stripe token.")
-//     // req.flash('errors', { msg: 'Please provide a valid card.' });
-//     // res.redirect(req.redirect.failure);
-//   }
-
-//   User.findById(req.user._id, '-salt -hashedPassword', function(err, user) {
-//     if (err) return next(err);
-    
-//     var cb = function(err) {
-//       if (err && err.statusCode) {
-//         res.status(err.statusCode).send(err)
-//         if(err.code){
-//           console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + ' - Error: ' + err.code);
-//         } else {
-//           console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Status code ' + err.statusCode + '. Unknown error');
-//         }
-//       } else if (err) {
-//         res.status(400).send(err)
-//         console.log('User ' + user._id + ' with email address ' + user.email + ' card declined. Unknown error');
-//       } else {
-//         console.log('Billing has been updated.');
-//       }
-//       // req.flash('success', { msg: 'Billing has been updated.' });
-//       // res.redirect(req.redirect.success);
-//     };
-
-//       var cardHandler = function(err, customer) {
-
-//         // console.log(third);
-//         if (err) return cb(err);
-        
-//         // user.level = 1;
-//         // if (!user.stripe) {
-//         //   console.log("stripe object created on user")
-//         //   user.stripe = {};
-//         // }
-
-//         if (shippingAddress) {
-//           user.shippingAddress = shippingAddress;
-//           // sendShippingInfo(user)
-//         }
-
-//         // if(!user.stripe.customer.customerId){
-//         //   // user.stripe.customer = {};
-//         //   console.log("Didn't have customer ID yet.  Saving now.")
-//           // user.stripe.customer.customerId = customer.id;
-//         // }
-
-//         user.dropInClasses = user.dropInClasses || {};
-//         user.dropInClasses[studioId] = user.dropInClasses[studioId] || {};
-//         user.dropInClasses[studioId][slot.date] = true;
-
-//         user.save(function(err){
-//           res.json(user)
-//           if (err) return cb(err);
-//           return cb(null);
-//           return
-//         });
-//       };
-
-//       if (user.stripe && user.stripe.customer && user.stripe.customer.customerId) {
-//         stripe.charges.create({
-//           amount: amount, // amount in cents, again
-//           currency: "usd",
-//           customer: user.stripe.customer.customerId, // Previously stored, then retrieved
-//           metadata: {
-//             "classBooked": slot.date,
-//             "timeBooked": new Date().getTime()
-//           }
-//         }, cardHandler);
-//       } else {
-//         console.log("Creating new stripe customer for drop in class.")
-//         stripe.customers.create({
-//           email: user.email,
-//           source: stripeToken,
-//           description: "Created customer for drop in class."
-//         }).then(function(customer){
-//           stripe.charges.create({
-//             amount: amount, // amount in cents, again
-//             currency: "usd",
-//             source: stripeToken
-//             // customer: customer.id, // Previously stored, then retrieved
-//             metadata: {
-//               "classBooked": slot.date,
-//               "timeBooked": new Date().getTime()
-//             }
-//           }, cardHandler)
-//         })
-//       }
-//   });
-// };

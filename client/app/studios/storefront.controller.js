@@ -521,9 +521,9 @@ angular.module('bodyAppApp')
         } else if (slot && currentUser && currentUser.role === 'admin') {
           console.log("Booking for free because user is admin.")
           return bookClass(slot)
-        } else if (slot && studioId === 'body') {
-          console.log("Booking for free because this is the BODY studio.")
-          return bookClass(slot)
+        // } else if (slot && studioId === 'body') {
+        //   console.log("Booking for free because this is the BODY studio.")
+        //   return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
