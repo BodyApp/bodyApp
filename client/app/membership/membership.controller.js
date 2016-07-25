@@ -238,7 +238,7 @@ angular.module('bodyAppApp')
       analytics.track('openedStudioSubscription', {
         studioId: studioId,
         planInfo: planInfo,
-        price: amountToPay*.17*4 //Assumes average of 4 month subscription
+        price: amountToPay/100*.17*4 //Assumes average of 4 month subscription
       });
       // $scope.invalidCouponEntered = false; //Reset the invalid coupon warning
       $uibModalInstance.dismiss('join'); //Gets rid of membership modal.
@@ -280,7 +280,7 @@ angular.module('bodyAppApp')
             analytics.track('addedStudioSubscription', {
               studioId: studioId,
               planInfo: planInfo,
-              revenue: amountToPay*.17*4 //Assumes average of 4 month subscription
+              revenue: amountToPay/100*.17*4 //Assumes average of 4 month subscription
             });
 
             // modalInstance.close();
@@ -331,7 +331,7 @@ angular.module('bodyAppApp')
         studioId: studioId,
         classId: slot ? slot.dateTime : "None",
         classTime: slot ? new Date(slot.dateTime*1) : "None",
-        price: amountToPay*.17
+        price: amountToPay/100*.17
       });
 
       // $scope.invalidCouponEntered = false;
@@ -372,8 +372,8 @@ angular.module('bodyAppApp')
               studioId: studioId,
               classId: slot ? slot.dateTime : "None",
               classTime: slot ? new Date(slot.dateTime*1) : "None",
-              price: amountToPay*.17,
-              revenue: amountToPay*.17
+              price: amountToPay/100*.17,
+              revenue: amountToPay/100*.17
             });
             // modalInstance.close()
             // Auth.updateUser(data);
@@ -437,7 +437,7 @@ angular.module('bodyAppApp')
         studioId: studioId,
         classId: slot ? slot.dateTime : "None",
         classTime: slot ? new Date(slot.dateTime*1) : "None",
-        price: amountToPay*.17,
+        price: amountToPay/100*.17,
         specialtyType: slot ? slot.classType : "None"
       });
       // $scope.invalidCouponEntered = false;
@@ -478,8 +478,8 @@ angular.module('bodyAppApp')
               studioId: studioId,
               classId: slot ? slot.dateTime : "None",
               classTime: slot ? new Date(slot.dateTime*1) : "None",
-              price: amountToPay*.17,
-              revenue: amountToPay*.17,
+              price: amountToPay/100*.17,
+              revenue: amountToPay/100*.17,
               specialtyType: slot ? slot.classType : "None"
             });
             // modalInstance.close()
