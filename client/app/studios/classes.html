@@ -122,29 +122,35 @@
                 <input ng-if = "showEditClass" id="class-name" ng-model = "showEditClass.classToEdit.name" name="" size="30" type="text" placeholder="e.g. Level One">
               </div>
               <h5 class="lightgray mt8 mb8">Give your class a name for clients to remember. This is what will be shown on your public schedule.</h5>
-              <div class="row col-sm-12" ng-mouseenter = "freeClassHover = true;" ng-mouseleave = "freeClassHover = false;">
+              <!-- <div class="row col-sm-12" ng-mouseenter = "freeClassHover = true;" ng-mouseleave = "freeClassHover = false;">
                 <input ng-if = "showAddClass" id="free-class-check" ng-model = "classToCreate.freeClass" name="free-class" size="15" type="checkbox">
                 <input ng-if = "showEditClass" id="free-class-check" ng-model = "showEditClass.classToEdit.freeClass" name="free-class" size="15" type="checkbox">
                 <label for="free-class-check" class="check-selector">
                   Free Class?
                 </label>              
+              </div> -->
+            </div>
+          </div>
+          <div class="row space-4">
+            <label class="col-sm-3" for="check-selector">
+              Specialty Class
+            </label>  
+            <div class = "col-sm-9">
+              <div class="select" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;">
+                <input ng-if = "showAddClass" id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" type="checkbox">
+                <input ng-if = "showEditClass" id="specialty-class-check" ng-model = "showEditClass.classToEdit.specialtyClass" name="specialty-class" type="checkbox">         
               </div>
-              <div class="row col-sm-12" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;" ng-hide = "classToCreate.freeClass || showEditClass.classToEdit.freeClass">
-                <input ng-if = "showAddClass" id="specialty-class-check" ng-model = "classToCreate.specialtyClass" name="specialty-class" size="15" type="checkbox">
-                <input ng-if = "showEditClass" id="specialty-class-check" ng-model = "showEditClass.classToEdit.specialtyClass" name="specialty-class" size="15" type="checkbox">
-                <label for="specialty-class-check" class="check-selector">
-                  Specialty Class
-                </label>              
-              </div>
+              <!-- <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Specialty Classes have their own pricing. Anyone, including subsribers, that takes a specialty class has to pay the specialty rate.</h5>
+              </div> -->
               <!-- <div class="row col-sm-12">
                 <input id="first-timers" ng-model = "classToCreate.firstTimers" name="first-timers" size="15" type="checkbox">
                 <label for="first-timers" class="check-selector">
                   Can be taken by first timers
                 </label>               
               </div>       -->
-            </div>            
+            </div>        
           </div>
-
           <div class="row space-4" ng-show = "classToCreate.specialtyClass || showEditClass.classToEdit.specialtyClass" ng-mouseenter = "specialtyClassHover = true;" ng-mouseleave = "specialtyClassHover = false;">
             <label class="col-sm-3" for="specialty-class-price">
               Specialty Rate
@@ -165,6 +171,38 @@
               <h5 class="lightgray row col-sm-12 mt8 mb8">Unique pricing for workshops or specialty workouts.</h5>
             </div>
           </div>
+          <div class="row space-4">
+            <label class="col-sm-3" for="max-participants">
+              Max Participants
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select ng-if = "showAddClass" ng-change = "maxParticipantsNotEntered = false;" ng-model = "classToCreate.maxParticipants" ng-options = "value for value in maxParticipantsOptions">
+                </select>
+                <select ng-if = "showEditClass"  ng-change = "maxParticipantsNotEntered = false;" ng-model = "showEditClass.classToEdit.maxParticipants" ng-options = "value for value in maxParticipantsOptions">
+                </select>
+              </div>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">This will affect any future classes scheduled with this class type, but not any existing ones.</h5>
+              </div>
+            </div>
+          </div>          
+          <div class="row space-4" ng-hide = "classToCreate.specialtyClass || showEditClass.classToEdit.specialtyClass">
+            <label class="col-sm-3" for="max-participants">
+              Max Free Participants
+            </label>
+            <div class="col-sm-9">
+              <div class="select">
+                <select ng-if = "showAddClass" ng-change = "maxFreeParticipantsNotEntered = false;" ng-model = "classToCreate.maxFreeParticipants" ng-options = "value for value in maxParticipantsOptions">
+                </select>
+                <select ng-if = "showEditClass"  ng-change = "maxFreeParticipantsNotEntered = false;" ng-model = "showEditClass.classToEdit.maxFreeParticipants" ng-options = "value for value in maxParticipantsOptions">
+                </select>
+              </div>
+              <div class="row col-sm-12">
+                <h5 class="lightgray mt8">Maximum number of people that can take this class for free during their free trial week. This can be a great way to advertise your studio's services and get subscribers. Paid members can still book these slots, so it's likely that you'll have fewer trial students than this number.</h5>
+              </div>
+            </div>
+          </div>  
 
 <!--           <div class="row space-4">
             <label class="col-sm-3" for="class-reg-types">
@@ -271,7 +309,7 @@
         <div class="panel-header" >
           {{classType.name}} 
           <span ng-if = "classType.specialtyClassRate">(Specialty Class - ${{classType.specialtyClassRate}})</span>
-          <span ng-if = "classType.freeClass">(Free)</span>
+          <!-- <span ng-if = "classType.freeClass">(Free)</span> -->
           <ul class="panel-action-list">
             <li>
               <a href="#" class="panel-action-item" ng-click = "editClass(key, classType)">Edit</a>
@@ -282,6 +320,24 @@
           </ul>
         </div>
         <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-3 mb16">
+              <h5 class="mb0">Max Participants</h5>
+              <!-- <ul> -->
+                <!-- <li ng-repeat = "item in classType.maxParticipants"> -->
+                  <h5 class="lightgray">{{classType.maxParticipants}}</h5>
+                <!-- </li>              -->
+              <!-- </ul> -->
+            </div>
+            <div class="col-sm-3 mb16">
+              <h5 class="mb0">Max Free</h5>
+              <!-- <ul>
+                <li ng-repeat = "item in classType.maxFreeParticipants"> -->
+                  <h5 class="lightgray">{{classType.maxFreeParticipants}}</h5>
+                <!-- </li>             
+              </ul> -->
+            </div>
+          </div>
           <div class="row">
             <!-- <div class="col-sm-4 mb16">
               <h5 class="mb0">Open To</h5>
