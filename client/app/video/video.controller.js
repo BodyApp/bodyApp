@@ -298,6 +298,7 @@ angular.module('bodyAppApp')
   }
 
   function getWorkout(workoutId) {
+    if (!workoutId) return;
   	ref.child('workouts').child(workoutId).once('value', function(snapshot) {
   		$scope.workout = snapshot.val()
   		if(!$scope.$$phase) $scope.$apply();
@@ -491,7 +492,7 @@ angular.module('bodyAppApp')
 			if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
 				// var element = document.getElementById('audioPlayer')
 				// audioPlayer = SC.Widget(element);
-				audioPlayer.load(snapshot.val().soundcloudUrl);
+        if (snapshot.val().soundcloudUrl) audioPlayer.load(snapshot.val().soundcloudUrl);
 				// if (!userIsInstructor && audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume/100);
 
 				audioPlayer.bind(SC.Widget.Events.READY, function() {
@@ -820,7 +821,7 @@ angular.module('bodyAppApp')
 
 	function subscribeToStream(streamEvent, subscriberBox, instructorStream, vidWidth, vidHeight) {
 		var streamId = streamEvent.connection.data.toString()
-		$scope.consumerObjects[streamId].alreadySubscribed = true;
+		if ($scope.consumerObjects && $scope.consumerObjects[streamId]) $scope.consumerObjects[streamId].alreadySubscribed = true;
 	  var subscriber = session.subscribe(streamEvent, subscriberBox, {
 	    insertMode: 'append',
 	    width: vidWidth,
@@ -952,10 +953,10 @@ angular.module('bodyAppApp')
 				subscriberBox = instructorStream ? "trainerVideo" : "consumer" + (Object.keys($scope.consumerObjects).length-1).toString()
 				if (!instructorStream) $scope.consumerObjects[streamId].subscriberBox = subscriberBox;
 				
-				console.log(subscriberBox)
-				if (!$scope.consumerObjects[streamId].alreadySubscribed) {
+				// console.log(subscriberBox)
+				// if (($scope.consumerObjects && $scope.consumerObjects[streamId] && !$scope.consumerObjects[streamId].alreadySubscribed) || instructorStream) {
 					subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)			
-				}
+				// }
 			},
 			streamDestroyed: function (event) {
 				var streamId = event.stream.connection.data.toString();

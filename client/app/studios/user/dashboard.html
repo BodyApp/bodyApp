@@ -35,9 +35,22 @@
       <div class="row mb32">
         <div class="col-md-4">
           <div class="dashboard-cards">
-            <h5 class="mb8">Minutes this Week</h5>
+            <h5 class="mb8">Minutes in Past Week</h5>
             <div class="dashboard-cards-content text-center">
-              <div id="semicircle_progress_bar"></div>
+              <round-progress
+                max="100"
+                current="minutesTaken"
+                color="#45ccce"
+                bgcolor="#eaeaea"
+                radius="100"
+                stroke="20"
+                semi="false"
+                rounded="true"
+                clockwise="false"
+                responsive="false"
+                duration="800"
+                animation="easeInOutQuart"
+                animation-delay="0"></round-progress>
               <!-- NEEDS THIS JAVASCRIPT
               var bar = new ProgressBar.SemiCircle(semicircle_progress_bar, {
                 strokeWidth: 6,
@@ -52,9 +65,10 @@
               bar.animate(0.8); -->
               <div class="dashboard-cards-icon">
                 <i class="ti-timer" style="font-size:50px;"></i>
+                <h3>{{minutesTaken}}</h3>
+                <h5 class="lightgray">of 100</h5>
               </div>
-              <h3>80</h3>
-              <h5 class="lightgray">of 100</h5>
+              
             </div>
           </div>
         </div>
@@ -62,8 +76,8 @@
           <div class="dashboard-cards">
             <h5 class="mb24">Your Classes</h5>
             <div class="dashboard-cards-content">
-              <h4 class="royalblue mb48"><span style="font-size: 90px;">4</span> upcoming</h4>
-              <h4 class="lightgray"><span style="font-size: 90px;">45</span> all time</h4>
+              <h4 class="royalblue mb48"><span style="font-size: 90px;">{{numUserBookings}}</span> upcoming</h4>
+              <h4 class="lightgray"><span style="font-size: 90px;">{{classesAllTime}}</span> all time</h4>
             </div>
           </div>
         </div>
@@ -127,7 +141,7 @@
             </div>
           </div> -->
 
-          <div class="dashboard-cards">
+<!--           <div class="dashboard-cards">
             <h5 class="mb16">My Progress</h5>
             <div class="dashboard-cards-content text-center">
               <div class="transformation-photo">
@@ -146,7 +160,7 @@
               </div>
               <a href="#" class="btn btn-collapse mt16"><i class="ti-cloud-up"></i> Upload Latest</a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       

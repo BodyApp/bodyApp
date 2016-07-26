@@ -32,10 +32,10 @@ angular.module('bodyAppApp')
     
     if (Auth.getCurrentUser() && Auth.getCurrentUser().$promise) {
       Auth.getCurrentUser().$promise.then(function(user) {
-        setUser(user)
+        // setUser(user)
       })            
     } else {
-      setUser(Auth.getCurrentUser())
+      // setUser(Auth.getCurrentUser())
     }
 
     function setUser(user) {
@@ -125,7 +125,7 @@ angular.module('bodyAppApp')
     }
 
     function getReferralCode() {
-      ref.child('usersById').child(currentUser._id).child('referralCode').once('value', function(snapshot) {
+      ref.child('usersById').child(currentUser._id.toString()).child('referralCode').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("No referral code found");
         $scope.userReferralCode = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();

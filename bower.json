@@ -37,7 +37,8 @@
     "eonasdan-bootstrap-datetimepicker": "*",
     "angular-eonasdan-datetimepicker": "*",
     "ngMeta": "*",
-    "angular-update-meta": "*"
+    "angular-update-meta": "*",
+    "angular-svg-round-progressbar": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

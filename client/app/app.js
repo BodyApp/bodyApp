@@ -22,7 +22,8 @@ angular.module('bodyAppApp', [
   'lfNgMdFileInput',
   'ngMessages',
   'ae-datetimepicker',
-  'updateMeta'
+  'updateMeta',
+  'angular-svg-round-progressbar'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

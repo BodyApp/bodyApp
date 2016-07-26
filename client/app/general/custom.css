@@ -62,19 +62,35 @@
 /*------Fonts-------*/
 .tagline {
   font-size: 70px;
+  height: 70px;
+  vertical-align: bottom;
+}
+.tagline span {
   font-weight: 600;
 }
 .h1cursive {
-  font-family: 'Caveat';
+  font-family: 'Raleway',"Helvetica Neue", Helvetica, Arial, sans-serif
   font-weight: 700 !important;
   color: #db0afa;
-  font-size: 90px;
+  font-size: 70px;
+  /*line-height: 70px;*/
+  vertical-align: bottom;
+  height: 70px;
 }
 
 .fill-in-blank {
   border-top: 4px solid white;
 }
->>>>>>> fcfb8d8fbf638edb02719fb36198d0daa6b6081d
+
+@media (max-width: 767px) {
+  .tagline {
+    font-size: 60px;
+    font-weight: 700;
+  }
+  .h1cursive {
+    font-size: 70px;
+  }
+}
 
 /*------$mdDialog-------*/
 .mdDialogWidth button {

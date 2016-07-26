@@ -166,7 +166,7 @@ angular.module('bodyAppApp')
       .state('dashboard', {
         url: '/user/dashboard',
         templateUrl: 'app/studios/user/dashboard.html',
-        controller: 'StudiosCtrl',
+        controller: 'UserScheduleCtrl',
         authenticate: true
       })
       .state('user-schedule', {

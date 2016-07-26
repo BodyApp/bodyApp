@@ -104,7 +104,7 @@ exports.setup = function (User, config) {
 
             usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
             var rightNow = new Date().getTime()
-            ref.child('usersById').child(user._id).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7, referralCode: newReferralCode}, function(err) {
+            ref.child('usersById').child(user._id.toString()).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7, referralCode: newReferralCode}, function(err) {
               if (err) return console.log(err)
               ref.child('referralCodes').child(newReferralCode).update({facebookId: user.facebookId, mongoId: user._id, firstName: user.firstName, lastName: user.lastName}, function(err) {
                 if (err) return console.log(err)
