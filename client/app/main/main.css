@@ -245,7 +245,18 @@
 
 .class-list-date li {
   border-top: 1px solid #dce0e0;
-  padding-top: 20px;
+  padding: 25px 0;
+}
+
+.hover-highlight:hover {
+  color: #A2B2E3 !important;
+}
+
+.class-list-date li h4 {
+  font-size: 26px;
+}
+.class-list-date li h5 {
+  font-size: 18px;
 }
 .class-list-info li {
   border-top: 1px solid #dce0e0;
@@ -255,8 +266,306 @@
   border-top: none;
   padding-top: 0;
 }
+.calendar-selector {
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  width: 100%;
+  vertical-align: middle;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.calendar-selector-days {
+  width: 90%;
+  display: inline-block;
+  vertical-align: middle;
+}
+.week-changer {
+  width: 5%;
+  display: inline-block;
+  vertical-align: middle;
+}
+.week-changer i {
+  font-size: 28px;
+  font-weight: 600;
+}
+.week-changer i.cal-select-active:hover {
+  cursor: pointer;
+}
+.calendar-selector ul li {
+  width: 12.5%;
+  display: inline-block;
+  font-size: 18px;
+}
+.calendar-selector ul li:hover {
+  color: #3E7EDF;
+  cursor: pointer;
+}
+.cal-select-active {
+  color: #3E7EDF !important;
+  font-weight: 800;
+}
+.category-group {
+  height: 30px;
+  vertical-align: top;
+  margin-left: 15px;
+}
+.discovery-tag-group {
+  display: block;
+  position: relative;
+}
+.discovery-tag-price {
+  background-color: #4848f0;
+  color: white;
+  font-size: 1.3rem;
+  line-height: 3.4rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: 10rem;
+  display: inline-block;
+  outline: none;
+  height: auto;
+  -webkit-appearance: none;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  margin-right: 10px;
+}
+.discovery-tag-love {
+  background-color: #586BE9;
+  color: white;
+  font-size: 1.3rem;
+  line-height: 3.4rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: 10rem;
+  display: inline-block;
+  outline: none;
+  height: auto;
+  -webkit-appearance: none;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  margin-right: 10px;
+}
+.social-bookings ul li {
+  display: inline-block;
+  padding: 0 2px 0 0;
+  border-top: none;
+}
+.expand-class-descr:hover h4 {
+  color: #A2B2E3 !important;
+}
+.disc-instr-photo {
+  display: inline-block;
+  vertical-align: top;
+  width: 90px;
+}
+.disc-class-details {
+  display: inline-block;
+  vertical-align: top;
+}
+.shrink-col-width {
+  width: calc(25% - 3%);
+}
+.expand-col-width {
+  width: calc(58.33333333% + 3%);
+}
+.disc-class-details-title {
+  max-width: 270px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.disc-class-details-tags {
+  max-width: 200px;
+  overflow: hidden;
+}
+.empty-booking-user {
+  border: 1px solid rgba(72, 72, 240, 0.5);
+  vertical-align: middle;
+  color: #4848f0;
+  fill: #4848f0;
+  height: 24px;
+  width: 24px;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  align-items: center;
+  -ms-flex-align: center;
+  border-radius: 50%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background-color: transparent;
+  display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display: inline-box;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-shrink: 0;
+  -moz-flex-shrink: 0;
+  flex-shrink: 0;
+  -ms-flex-negative: 0;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  box-pack: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  -webkit-transition: border 200ms,box-shadow 200ms,color 200ms;
+  -moz-transition: border 200ms,box-shadow 200ms,color 200ms;
+  transition: border 200ms,box-shadow 200ms,color 200ms;
+}
+.empty-booking-user:hover {
+  border-color: #4848f0;
+  box-shadow: 0 0 0 3px #4848f0;
+  -moz-box-shadow: 0 0 0 3px #4848f0;
+  -webkit-box-shadow: 0 0 0 3px #4848f0;
+  cursor: pointer;
+  color: #4848f0;
+}
+.circular-button-label {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  flex-item-align: center;
+  align-self: center;
+  display: block;
+}
+.svgIcon {
+  display: block;
+  height: 14px;
+  width: 14px;
+}
+.disc-equipment-list {
+  display: inline-block;
+}
+.disc-equipment-list li {
+  border: none;
+  padding: 0;
+  display: inline-block;
+}
+.disc-equipment-list li::after {
+  content: ",\00a0";
+}
+.disc-equipment-list li:last-child::after {
+  content: "";
+}
+.disc-class-title:focus {
+  outline: none;
+}
 
-
+@media (max-width: 991px) {
+  .disc-btn {
+    font-size: 11px;
+    padding: 7px 0px;
+  }
+  .category-group {
+    margin-left: 0;
+  }
+  .disc-class-details-tags {
+    max-width: 280px;
+    overflow: hidden;
+  }
+}
+@media (max-width: 767px) {
+  .sorter-text {
+    font-size: 12px;
+    vertical-align: middle;
+  }
+  .sorter-text .select {
+    vertical-align: middle;
+    margin: 0 0 0 10px;
+  }
+  .calendar-selector ul li {
+    font-size: 11px;
+  }
+  .week-changer i {
+    font-size: 15px;
+  }
+  .class-list-date li h4, .class-details h4 {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 700;
+  }
+  .class-list-date li h5, .class-details h5 {
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 600;
+  }
+  .disc-class-details-title {
+    margin-bottom: 3px !important;
+  }
+  .btn-tag {
+    line-height: 1.2 !important;
+    font-size: 9px !important;
+    margin-bottom: 50px;
+  }
+  .disc-class-details-title {
+    max-width: 170px;
+  }
+  .discovery-tag-price {
+    font-size: 0.9rem;
+    line-height: 2rem;
+    min-height: 2rem;
+    padding: 0 0.8rem;
+    margin-right: 2px;
+  }
+  .discovery-tag-love {
+    font-size: 0.9rem;
+    line-height: 2rem;
+    min-height: 2rem;
+    padding: 0 0.8rem;
+    margin-right: 2px;
+    margin-top: 5px;
+  }
+  .disc-col {
+    padding-left: 5px!important;
+    padding-right: 5px!important;
+  }
+  .expand-col-width {
+    width: calc(58.33333333% - 2%);
+  }
+  .shrink-col-width {
+    width: calc(25% - 5.5%);
+  }
+  .category-group {
+    height: 20px;
+  }
+  .cta-col {
+    width: calc(16.66666667% + 7.5%);
+  }
+  .disc-btn {
+    font-size: 8px;
+    padding: 5px 0;
+  }
+  .class-list-date li {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .class-details .btn-blue, .class-details .btn {
+    font-size: 11px;
+    padding: 5px 0;
+  }
+  .reservation-popup {
+    background-color: #4DC56B;
+    padding: 20px;
+  }
+  .reservation-popup h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+}
 
 /*------NEW MAIN-------*/
 .earn-banner {

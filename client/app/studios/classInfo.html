@@ -1,6 +1,123 @@
-<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-96" ng-click = "endVideoSession()"></div>
+<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-xs-80" ng-click = "endVideoSession()"></div>
 
-<div class="page-container-responsive pb72">
+<div class="page-container-responsive visible-xs class-details mb48">
+	<div class="reservation-popup text-center mb16" ng-show = "bookings[currentUser._id] || userIsInstructor">
+		<h4 class="white" ng-show = "!userIsInstructor && bookings[currentUser._id]">You’re registered for this class!</h4>
+		<h4 class="white" ng-show = "userIsInstructor">You’re teaching this class!</h4>
+		<h5 class="white" ng-if = 'bookings[currentUser._id]'>Need to <a href="#" ng-click = "cancelClass($event)">cancel?</a></h5>
+	</div>
+	<div class="row">
+		<div class="col-xs-7 text-left">
+			<h5 class="bold mb8">Time</h5>
+			<h4 class="royalblue">{{formattedDateTime.date}}</h4>
+			<h4 class="royalblue">{{formattedDateTime.time}}</h4>
+			<h5 class="lightgray">{{classDetails.duration}} min</h5>
+		</div>
+		<div class="col-xs-5 text-right">
+			<a href="#" class="mb8 btn-blue btn-full-width" ng-show = "!currentUser._id" ng-click = "reserveClicked(classDetails, $event)">
+				Drop in for
+				<span class="bold" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !trialPeriodTime">${{storefrontInfo.dropinPricing/100}}</span>
+				<span class="bold" ng-show = "classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !trialPeriodTime">$3</span>
+			    <span class="bold" ng-show = "classDetails.typeOfClass === 'Regular' && trialPeriodTime">FREE</span>
+			    <span class="bold" ng-show = "classDetails.typeOfClass === 'Specialty'">${{classType.specialtyClassRate}}</span>
+			</a>
+			<a href="#" class="mb8 btn-blue btn-full-width" ng-show = "currentUser._id && (!bookings || !bookings[currentUser._id]) && !userIsInstructor && (numBookings < classDetails.maxParticipants || !numBookings || (!classDetails.maxParticipants || numBookings < 12)) && (!trialPeriodTime || !classDetails.maxFreeParticipants || !numFreeBookings || numFreeBookings < classDetails.maxFreeParticipants)" ng-click = "reserveClicked(classDetails, $event)">
+				Drop in for
+				<span class="bold" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !trialPeriodTime">${{storefrontInfo.dropinPricing/100}}</span>
+				<span class="bold" ng-show = "classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !trialPeriodTime">$3</span>
+			    <span class="bold" ng-show = "classDetails.typeOfClass === 'Regular' && trialPeriodTime">FREE</span>
+			    <span class="bold" ng-show = "classDetails.typeOfClass === 'Specialty'">${{classType.specialtyClassRate}}</span>
+			</a>
+			<a href="#" class="mb8 btn-blue btn-full-width btn-class-full" ng-if = "!bookings[currentUser._id] && !userIsInstructor && trialPeriodTime && numFreeBookings >= classDetails.maxFreeParticipants" ng-click="reserveClicked(classDetails, $event)">Waitlist</a>
+			<a href="#" class="mb8 btn-blue btn-full-width btn-class-full" ng-if = "!bookings[currentUser._id] && !userIsInstructor && numBookings >= classDetails.maxParticipants" ng-click="clickedWhenClassFull($event)">Waitlist</a>
+			<a href="#" class="btn btn-full-width" ng-href="/studios/{{storefrontInfo.studioId}}">Go to Studio</a>
+			<h5 class="lightgray text-center mt8" style="font-size: 10px;" ng-show = "bookings[currentUser._id] || userIsInstructor">Switch device to join this class.</h5>
+		</div>
+	</div>
+	<div class="row mt24">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">Class</h5>
+			<h4 class="royalblue">{{classType.name}}</h4>
+			<div class="inline-block">
+				<h5 class="lightgray">With {{storefrontInfo.studioName}}</h5>
+			</div>
+			<div class="inline-block" style="margin-left: 10px;">
+				<div class="discovery-tag-love">
+                  <i class="fa fa-heart"></i> Studio We Love
+                </div>
+			</div>
+			<img class="mt8" src="/assets/images/studios/body/studio-hero.jpg" width="100%">
+		</div>
+	</div>
+	<div class="row mt24">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">You'll Need</h5>
+			<h5 class="lightgray" ng-repeat = "requirement in classType.equipment">
+				{{requirement.name}}<span ng-show="classType.equipment.length > 1 && $index != classType.equipment.length-1">, </span>
+			</h5>
+		</div>
+	</div>
+	<div class="row mt24">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">Class Description</h5>
+			<h5 class="lightgray">{{classType.classDescription}}</h5>
+		</div>
+	</div>
+	<div class="row mt24">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">Instructor</h5>
+		</div>
+		<div class="col-xs-3">
+			<img class="round-photo" ng-if = "!instructorDetails.addedPicture" ng-src="https://graph.facebook.com/{{instructorDetails.facebookId}}/picture?height=55&width=55">
+			<img class="round-photo" ng-if = "instructorDetails.addedPicture" ng-src="{{instructorDetails.addedPicture}}" width="55" height="55">
+		</div>
+		<div class="col-xs-9">
+			<h4 class="royalblue mb8">{{instructorDetails.firstName}} {{instructorDetails.lastName}}</h4>
+			<h5 class="lightgray">from {{instructorDetails.geolocation.city}} ({{instructorDetails.geolocation.countryCode}})</h5>
+		</div>
+	</div>
+	<div class="row mt16">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">Position</h5>
+			<h5 class="lightgray">{{instructorDetails.title}}</h5>
+		</div>
+	</div>
+	<div class="row mt16">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">Certifications</h5>
+			<h5 class="lightgray">{{instructorDetails.certifications}}</h5>
+		</div>
+	</div>
+	<div class="row mt16">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">About {{instructorDetails.firstName}}</h5>
+			<h5 class="lightgray">{{instructorDetails.bio}}</h5>
+		</div>
+	</div>
+	<hr class="content-divider mt24">
+	<div class="row">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">About this Studio</h5>
+			<img class="round-photo mb8" width="100px" height="100px" ng-src="{{iconUrl}}" >
+			<h4 class="royalblue mb8">{{storefrontInfo.studioName}}</h4>
+			<h5 class="lightgray">{{storefrontInfo.longDescription}}</h5>
+		</div>
+	</div>
+	<div class="row mt24">
+		<div class="col-xs-12">
+			<h5 class="bold mb8">Questions about this class?</h5>
+			<h5 class="lightgray">The best way to get information is to ask your instructor directly.</h5>
+			<a class="btn mt16" style="padding: 7px 20px;" ng-href = "mailto:{{emailAddress}}?cc=concierge@getbodyapp.com&Subject=Question%20About%20{{storefrontInfo.studioName}}" target="_top">Contact Studio</a>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<div class="page-container-responsive hidden-xs pb72">
 	<div class="row pt48 pb32">
 		<div class="col-md-12 text-center-sm text-center-xs">
 			<h3 class="mb8" ng-show = "classType && storefrontInfo">
@@ -23,8 +140,8 @@
 					<button href="#" class="btn-blue" ng-show = "currentUser._id && (!bookings || !bookings[currentUser._id]) && !userIsInstructor && (numBookings < classDetails.maxParticipants || !numBookings || (!classDetails.maxParticipants || numBookings < 12)) && (!trialPeriodTime || !classDetails.maxFreeParticipants || !numFreeBookings || numFreeBookings < classDetails.maxFreeParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !trialPeriodTime">${{storefrontInfo.dropinPricing/100}}</span>
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !trialPeriodTime">$3</span>
-            <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && trialPeriodTime">Free During Trial</span>
-            <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Specialty'">${{classType.specialtyClassRate}}</span>
+					    <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && trialPeriodTime">Free During Trial</span>
+					    <span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Specialty'">${{classType.specialtyClassRate}}</span>
 					</buttons>
 					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && trialPeriodTime && numFreeBookings >= classDetails.maxFreeParticipants" ng-click="reserveClicked(classDetails, $event)">Free Spots Are Full</buttons>
 					<button href="#" class="btn-blue" ng-if = "!bookings[currentUser._id] && !userIsInstructor && numBookings >= classDetails.maxParticipants" ng-click="clickedWhenClassFull($event)">Class Is Full</buttons>
