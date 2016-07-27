@@ -11,6 +11,7 @@ angular.module('bodyAppApp')
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
+    Video.destroyHardwareSetup()
 
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
