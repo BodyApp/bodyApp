@@ -872,6 +872,10 @@ angular.module('bodyAppApp')
       return getFormattedDateTime(dateTime, noToday);
     }
 
+    $scope.facebookCallback = function(info) {
+      console.log(info)
+    }
+
     function getFormattedDateTime(dateTime, noToday) {
       var newDate = new Date(dateTime);
       var formatted = {};

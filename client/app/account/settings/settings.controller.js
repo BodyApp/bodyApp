@@ -22,8 +22,8 @@ angular.module('bodyAppApp')
     })
 
     $scope.errors = {};
-    $scope.teammates = $state.params.teammates;
-    $scope.profilePage = $state.params.profilePage;
+    $scope.teammates = $state.params.teammates || true;
+    $scope.profilePage = $state.params.profilePage || false;
     $scope.billing = false;
     $scope.support = false;
 

@@ -623,7 +623,32 @@
             <div class="social-share-btns">
               <div class="share-triggers btn-group">
                 <a ng-href="mailto:?subject=Check%20this%20out!&body=Hi%20there,%0D%0A%0D%0AI%20wanted%20to%20drop%20you%20a%20note%20and%20tell%20you%20about%20this%20awesome%20new%20virtual%20fitness%20studio%20called%20{{storefrontInfo.studioName}}.%20I'm%20going%20to%20be%20taking%20classes%20and%20we%20would%20be%20able%20to%20work%20out%20together%20and%20have%20the%20instructor%20actually%20see%20us%20while%20they%20are%20teaching.%20It's like%20taking%20an%20in-person%20class%20at%20an%20in-person%20studio,%20but%20it's%20virtual%20and%20we%20can%20each%20be%20at%20our%20own%20house!%0D%0A%0D%0AGo%20to%20https://www.getbodyapp.com/studios/{{studioId}}%20to%20find%20out%20more%20info.%0D%0A%0D%0AHope%20to%20workout%20with%20you%20soon!%0D%0A{{currentUser.firstName}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-envelope-o"></i>Email</a>
-                <a target="none" ng-href="https://www.facebook.com/sharer/sharer.php?u=getbodyapp.com/studios/{{studioId}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a>
+                <!-- <a target="none" ng-href="https://www.facebook.com/sharer/sharer.php?u=getbodyapp.com/studios/{{studioId}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a> -->
+                <!-- <a facebook-feed-share class="facebookShare" style = "margin-left: 32px; margin-top: 8px;" data-url='https://www.getbodyapp.com/studios/{{studioId}}' data-shares='shares', data-name="{{storefrontInfo.studioName}}" date-picture="{{backgroundImageUrl}}" data-callback = "facebookCallback;." data-actions="{name: 'Check it out', link: 'https://www.getbodyapp.com/studios/{{studioId}}'}" data-description="{{storefrontInfo.longDescription}}">{{ shares }}</a> -->
+
+                <a href="#"
+                  class="share-btn text-center btn btn-width-control" 
+                  socialshare
+                  socialshare-text="{{storefrontInfo.studioName}}"
+                  socialshare-description="{{storefrontInfo.longDescription}}"
+                  socialshare-media="{{backgroundImageUrl}}"
+                  socialshare-provider="facebook"
+                  socialshare-url="https://www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-ref="https://www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-source="https://www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-redirect-uri="https://www.getbodyapp.com/studios/{{studioId}}"
+                  >
+                  <i class="fa fa-facebook-official"></i>Share
+                </a>
+
+                <!-- <a href="#"
+                  socialshare
+                  socialshare-provider="facebook"
+                  socialshare-text="720kb AngularJS Socialshare"
+                  socialshare-hashtags="angularjs, angular-socialshare"
+                  socialshare-url="http://720kb.net">
+                  Share me
+                </a> -->
               </div>
             </div>
           </div>
