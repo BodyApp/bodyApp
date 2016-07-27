@@ -241,6 +241,9 @@ hr.short-thick {
     text-align: center !important;
   }
 }
+.semibold {
+  font-weight: 500 !important;
+}
 .bold {
   font-weight: 600 !important;
 }

@@ -120,7 +120,7 @@ angular.module('bodyAppApp')
 
     $scope.getDate = function(day) {
       var dayToFormat = new Date(day*1)
-      return moment(dayToFormat).format("MMM Do")
+      return moment(dayToFormat).format("M/D")
     }
 
     $scope.getFullDate = function(day) {
