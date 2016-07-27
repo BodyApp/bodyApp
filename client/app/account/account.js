@@ -17,6 +17,10 @@ angular.module('bodyAppApp')
         url: '/settings',
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsCtrl',
-        authenticate: true
+        authenticate: true,
+        params: {
+          teammates: true,
+          profilePage: false
+        },
       });
   });

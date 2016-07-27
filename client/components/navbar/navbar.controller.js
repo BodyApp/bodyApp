@@ -265,7 +265,7 @@ angular.module('bodyAppApp')
     }
 
     $scope.goToUpcomingClasses = function() {
-      $location.path('/user/schedule')
+      $location.path('/user/dashboard')
     }
 
     // $scope.openMenu = function(ev) {

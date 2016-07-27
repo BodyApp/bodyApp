@@ -62,6 +62,13 @@
                           <a ng-href="/studios/{{adminSelected}}/storefrontinfo">{{adminSelected}} Settings</a>
                         </p>
                       </li> -->
+                      <li ng-show="!adminOf && isLoggedIn()">
+                        <p ng-class="{active: isActive('/schedule')}">
+                          <a href="/user/dashboard" >
+                            User Dashboard
+                          </a>
+                        </p>
+                      </li>
                       <li style = "min-width: 226px;" ng-show="adminOf && isLoggedIn()" ng-mouseenter = "storefrontsMenuOpened = true" ng-mouseleave = "storefrontsMenuOpened = false">
                         <p ng-class="{active: isActive('/schedule')}">
                           <a href="/studios/{{adminSelected}}" >
@@ -100,6 +107,7 @@
                           <img class="nav-profile-pic" src="{{getCurrentUser().picture}}"> Hi, {{getCurrentUser().firstName}}
                         </a>
                         <md-menu-content ng-show = "displayLogout && isLoggedIn()">
+                          <md-menu-item><md-button ng-click="goToUpcomingClasses()">Settings</md-button></md-menu-item>
                           <md-menu-item><md-button ng-click="logout()">Logout</md-button></md-menu-item>
                         </md-menu-content>
                       </li>

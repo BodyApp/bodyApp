@@ -4,10 +4,10 @@
   <div class="row">
     
     <div class="col-md-3">    <!--  LEFT COLUMN BEGIN -->
-      <img src="/assets/images/justin-photo.jpg" class="mb0" width="100%">
+      <img ng-src="https://graph.facebook.com/{{currentUser.facebookId}}/picture?width=500&height=500" class="mb0" width="100%">
       <div class="panel panel-member text-center">
-        <h4>Justin</h4>
-        <a href="#">Edit Profile</a>
+        <h4>{{currentUser.firstName}}</h4>
+        <a href="#" ng-click="editProfileClicked()">Edit Profile</a>
       </div>
 
       <div class="panel">
@@ -16,15 +16,15 @@
         </div>
         <div class="panel-body">
           <ul>
-            <li class="mb8">
+            <!-- <li class="mb8">
               <a href="#">Class Schedule</a>
-            </li>
+            </li> -->
             <li class="mb8">
-              <a href="#">Friends</a>
+              <a href="#" ng-click="friendsClicked()">Friends</a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#">Workouts</a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -39,7 +39,7 @@
             <div class="dashboard-cards-content text-center">
               <round-progress
                 max="100"
-                current="minutesTaken"
+                current="maxMinutesTaken"
                 color="#45ccce"
                 bgcolor="#eaeaea"
                 radius="100"
@@ -47,22 +47,10 @@
                 semi="false"
                 rounded="true"
                 clockwise="false"
-                responsive="false"
-                duration="800"
-                animation="easeInOutQuart"
+                responsive="true"
+                duration="0"
+                animation="linearEase"
                 animation-delay="0"></round-progress>
-              <!-- NEEDS THIS JAVASCRIPT
-              var bar = new ProgressBar.SemiCircle(semicircle_progress_bar, {
-                strokeWidth: 6,
-                easing: 'easeInOut',
-                duration: 1400,
-                color: '#FFEA82',
-                trailColor: '#eee',
-                trailWidth: 1,
-                svgStyle: null
-              });
-
-              bar.animate(0.8); -->
               <div class="dashboard-cards-icon">
                 <i class="ti-timer" style="font-size:50px;"></i>
                 <h3>{{minutesTaken}}</h3>
@@ -273,7 +261,7 @@
         </div>
       </div>   <!-- YOUR RESERVATIONS END --> 
 
-      <div class="panel">
+      <!-- <div class="panel">
         <div class="panel-header">
           My Studios: Upcoming Classes
           <div class="cal-controls text-left">
@@ -287,7 +275,7 @@
         <div class="panel-body">
           Add week calendar view here
         </div>
-      </div>
+      </div> -->
 
     </div>
 

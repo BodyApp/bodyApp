@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('UserScheduleCtrl', function ($scope, $location, Auth) {
+  .controller('UserScheduleCtrl', function ($scope, $location, $state, Auth) {
   	var ref = firebase.database().ref();
     var auth = firebase.auth();
     var timezone = jstz().timezone_name;
@@ -52,12 +52,10 @@ angular.module('bodyAppApp')
     function getTimeOfLastWeek() {
       ref.child('tookClass').child(Auth.getCurrentUser()._id.toString()).orderByValue().startAt(startAt.toString()).once('value', function(snapshot) {
         $scope.minutesTaken = 0;
-        console.log(snapshot.val())
         snapshot.forEach(function(classTaken) {
-          console.log(classTaken.val())
           ref.child('studios').child(classTaken.val().studioId).child('classes').child(classTaken.val().classId).child('duration').once('value', function(classDuration) {
-            console.log(classDuration.val())
             $scope.minutesTaken += classDuration.val()
+            $scope.maxMinutesTaken = Math.min(100, $scope.minutesTaken)
             if(!$scope.$$phase) $scope.$apply();
           })
         })
@@ -76,6 +74,13 @@ angular.module('bodyAppApp')
     //     });
     // }
     
+    $scope.editProfileClicked = function() {
+      $state.go('settings', {teammates: false, profilePage: true})
+    }
+
+    $scope.friendsClicked = function() {
+      $state.go('settings', {teammates: true, profilePage: false})
+    }
 
     $scope.formatDate = function(dateTime) {
     	return moment(dateTime).format('ddd MMM Do')
