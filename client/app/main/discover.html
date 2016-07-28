@@ -101,27 +101,45 @@
                     <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block mb16 mb-xs-0" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
                   </div>
                   <div class="discovery-tag-group mt16 mt-sm-8 mt-xs-8">
-                    <div class="discovery-tag-price">
-                      <span class="bold">${{studios[instance.studioId].dropinPricing/100}} / class</span>
+                    <div class="discovery-tag-price" ng-show = "!trialPeriodTime && instance.typeOfClass === 'Regular'">
+                      <span class="bold">${{studios[instance.studioId].dropinPricing/100}} class</span>
                     </div>
-                    <div class="discovery-tag-price">
+                    <div class="discovery-tag-price" ng-show = "trialPeriodTime && instance.typeOfClass === 'Regular'">
+                      <span class="bold">Free class</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "instance.typeOfClass === 'Specialty'">
+                      <span class="bold">${{classTypes[instance.classType].specialtyRate}}</span>
+                    </div>
+                    <!-- <div class="discovery-tag-price">
                       <span class="bold">$20 unlimited</span>
-                    </div>
-                    <div class="discovery-tag-love">
+                    </div> -->
+                    <div class="discovery-tag-love trending" ng-show = "flair[instance.studioId] === 1">
                       <i class="fa fa-heart"></i> Studio We Love
+                    </div>
+                    <div class="discovery-tag-love" ng-show = "flair[instance.studioId] === 2 || flair[instance.studioId] === 3">
+                      <i class="fa fa-flash"></i> Trending Studio
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-xs-2 cta-col disc-col">
                 <a href="#" class="btn-blue disc-btn btn-full-width" ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}">View Class</a>
-                <a href="#" class="btn disc-btn btn-full-width mt8">Go to Studio</a>
+                <a ng-href="/studios/{{instance.studioId}}" class="btn disc-btn btn-full-width mt8">Go to Studio</a>
                 <div class="social-bookings text-center mt8 mb8 hidden-xs">
                   <ul class="mb8">
                     <li>
-                      <img class="round-photo" src="/assets/images/justin-photo.jpg" width="25" height="25">
+                      <img class="round-photo" ng-show = "bookings[instance.studioId][instance.dateTime][0].facebookId" ng-src="https://graph.facebook.com/{{bookings[instance.studioId][instance.dateTime][0].facebookId}}/picture?width=25&height=25">
+                      <img class="round-photo" ng-show = "!bookings[instance.studioId][instance.dateTime][0].facebookId" ng-src="http://pre10.deviantart.net/b323/th/pre/i/2012/235/0/2/facebook_profile_image_by_edgarsvensson-d5c7rhk.jpg" height="32" width="32">
                     </li>
-                    <li>
+                    <li >
+                      <img class="round-photo" ng-show = "bookings[instance.studioId][instance.dateTime][1].facebookId" ng-src="https://graph.facebook.com/{{bookings[instance.studioId][instance.dateTime][1].facebookId}}/picture?width=25&height=25">
+                      <img class="round-photo" ng-show = "!bookings[instance.studioId][instance.dateTime][1].facebookId" ng-src="https://1.bp.blogspot.com/-jHrJ3VITQf8/UDILF_ctbOI/AAAAAAAACn4/UwOvDmW4EJw/s1600/CUTE+GIRL+HAIR+FB+DP.jpg" height="32" width="32">
+                    </li>
+                    <li >
+                      <img class="round-photo" ng-show = "bookings[instance.studioId][instance.dateTime][2].facebookId" ng-src="https://graph.facebook.com/{{bookings[instance.studioId][instance.dateTime][2].facebookId}}/picture?width=25&height=25">
+                      <img class="round-photo" ng-show = "!bookings[instance.studioId][instance.dateTime][2].facebookId" ng-src="http://parkour.ph/v2/wp-content/uploads/2013/02/facebook-blank-face-blank.800w_600h-210x210.jpg" height="32" width="32">
+                    </li>
+                    <!-- <li>
                       <div class="empty-booking-user">
                         <span class="circular-button-label">
                           <svg class="svgIcon " viewBox="0 0 32 32" title="invite people">
@@ -138,10 +156,10 @@
                           </svg>
                         </span>
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                   <p class="lightgray text-center hidden">8 bookings</p>
-                  <a href="#" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
+                  <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
                 </div>
               </div>
             </div>
@@ -161,7 +179,7 @@
                         <li class="lightgray" ng-repeat = "equipment in classTypes[instance.classType].equipment">{{equipment.name.trunc(20, true)}}</li>
                       </ul>
                     </div>
-                    <a href="#" class="btn mt16"><i class="fa fa-heart"></i> Follow {{studios[instance.studioId].studioName}}</a>
+                    <!-- <a href="#" class="btn mt16"><i class="fa fa-heart"></i> Follow {{studios[instance.studioId].studioName}}</a> -->
                   </div>
                 </div>
               </div>

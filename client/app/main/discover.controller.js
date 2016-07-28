@@ -9,6 +9,9 @@ angular.module('bodyAppApp')
     $scope.classTypes = {};
     $scope.instructors = {};
 
+    $scope.bookings = {};
+    $scope.numBookings = {};
+
     getStudios();
     getDates();
 
@@ -38,6 +41,7 @@ angular.module('bodyAppApp')
 	    	snapshot.forEach(function(studioId) {
 	    		getPicture(studioId.key);
           getUpcomingClasses(studioId.key);
+          getFlair(studioId.key)
 	    		ref.child('studios').child(studioId.key).child('storefrontInfo').once('value', function(snapshot) {
 	    			$scope.studios[studioId.key] = snapshot.val()
 				    if(!$scope.$$phase) $scope.$apply();
@@ -45,6 +49,13 @@ angular.module('bodyAppApp')
 	    	})
 	    })
 	  }
+
+    function getFlair(studioId) {
+      ref.child('studioIds').child(studioId).once('value', function(snapshot) {
+        $scope.flair = $scope.flair || {};
+        $scope.flair[studioId] = snapshot.val();
+      })
+    }
 
 	  function getPicture(studioId) {
 	  	storageRef.child('studios').child(studioId).child('images/header.jpg').getDownloadURL().then(function(url) {
@@ -74,6 +85,7 @@ angular.module('bodyAppApp')
 
       ref.child('studios').child(studioId).child('classes').startAt(rightNow).endAt(sevenDaysFromNow).orderByKey().once('value', function(snapshot) {
         snapshot.forEach(function(classToAdd) {
+          getBookings(studioId, classToAdd.val());
           getClassTypes(studioId, classToAdd.val().classType);
           getInstructors(studioId, classToAdd.val().instructor);
           var dateToUse = new Date(classToAdd.val().dateTime);
@@ -88,6 +100,24 @@ angular.module('bodyAppApp')
           // $scope.upcomingClasses[dateOfClass][timeOfClass].push(toPush);
           if(!$scope.$$phase) $scope.$apply();
         })  
+      })
+    }
+
+    function getBookings(studioId, classToAdd) {
+      var classRef = ref.child('studios').child(studioId).child('bookings').child(classToAdd.dateTime).once('value', function(snapshot) {
+        $scope.numBookings[studioId] = $scope.numBookings[studioId] || {};
+        $scope.numBookings[studioId][classRef.key] = snapshot.numChildren();
+        if(!$scope.$$phase) $scope.$apply();
+
+        snapshot.forEach(function(booking) {
+          $scope.bookings[studioId] = $scope.bookings[studioId] || {};
+          $scope.bookings[studioId][classToAdd.dateTime] = $scope.bookings[studioId][classToAdd.dateTime] || [];
+          $scope.bookings[studioId][classToAdd.dateTime].push(booking.val());
+          console.log($scope.bookings)
+        })
+
+
+        
       })
     }
 
