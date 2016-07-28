@@ -35,22 +35,22 @@
 
 <div class="calendar-selector pt24 pb24">
   <div class="week-changer text-center">
-    <i class="ti-angle-left"></i>
-  </div><!--
---><div class="calendar-selector-days text-center">
+    <!-- <i class="ti-angle-left"></i> -->
+  </div>
+  <div class="calendar-selector-days text-center">
     <ul>
-      <li href="#" class="cal-select-active">Show All</li><!-- 
-   --><li href="#">Tue 7/26</li><!-- 
-   --><li href="#">Wed 7/27</li><!-- 
-   --><li href="#">Thu 7/28</li><!-- 
-   --><li href="#">Fri 7/29</li><!-- 
-   --><li href="#">Sat 7/60</li><!-- 
-   --><li href="#">Sun 7/31</li><!-- 
-   --><li href="#">Mon 8/01</li>
+      <li href="#" ng-click = "showAllClasses()" class="cal-select-active">Show All</li><!-- 
+   --><li href="#" ng-click = "showDay(0)">Today</li><!-- 
+   --><li href="#" ng-click = "showDay(1)">{{getDayOfWeek(days[1])}} {{getDate(days[1])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(2)">{{getDayOfWeek(days[2])}} {{getDate(days[2])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(3)">{{getDayOfWeek(days[3])}} {{getDate(days[3])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(4)">{{getDayOfWeek(days[4])}} {{getDate(days[4])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(5)">{{getDayOfWeek(days[5])}} {{getDate(days[5])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(6)">{{getDayOfWeek(days[6])}} {{getDate(days[6])}}</li>
     </ul>
-  </div><!--
---><div class="week-changer text-center">
-    <i class="ti-angle-right cal-select-active"></i>
+  </div>
+  <div class="week-changer text-center">
+    <!-- <i class="ti-angle-right cal-select-active"></i> -->
   </div>
 </div>
 
@@ -65,7 +65,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <ul class="class-list-date" ng-repeat = "day in days" ng-hide = "!upcomingClasses[day]">
+        <ul class="class-list-date" ng-repeat = "day in days" ng-show = "showAll || $index === showDate">
           <li ng-repeat = "instance in classes=(upcomingClasses[day] | filter:filterByCategory()) | orderBy:'dateTime'" ng-show = "!categoryFilter || studios[instance.studioId].categories[categoryFilter]">
             <div class="row">
               <div class="col-xs-3 shrink-col-width disc-col">
