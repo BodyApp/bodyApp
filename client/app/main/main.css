@@ -276,6 +276,7 @@
 }
 .calendar-selector-days {
   width: 90%;
+  height: 0px;
   display: inline-block;
   vertical-align: middle;
 }

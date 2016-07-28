@@ -123,6 +123,7 @@ angular.module('bodyAppApp')
 
     function getBookings(studioId, classToAdd) {
       var classRef = ref.child('studios').child(studioId).child('bookings').child(classToAdd.dateTime).once('value', function(snapshot) {
+        if (!snapshot.exists()) return
         $scope.numBookings[studioId] = $scope.numBookings[studioId] || {};
         $scope.numBookings[studioId][classRef.key] = snapshot.numChildren();
         if(!$scope.$$phase) $scope.$apply();
@@ -131,11 +132,7 @@ angular.module('bodyAppApp')
           $scope.bookings[studioId] = $scope.bookings[studioId] || {};
           $scope.bookings[studioId][classToAdd.dateTime] = $scope.bookings[studioId][classToAdd.dateTime] || [];
           $scope.bookings[studioId][classToAdd.dateTime].push(booking.val());
-          console.log($scope.bookings)
         })
-
-
-        
       })
     }
 
