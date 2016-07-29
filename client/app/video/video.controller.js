@@ -515,7 +515,7 @@ angular.module('bodyAppApp')
   $scope.clickOnConsumer = function(consumerId) { //Trainer only
     Intercom('trackEvent', "clickedOnConsumerVideo", {consumerId: consumerId})
     if (audioPlayer) audioPlayer.setVolume(0);
-    if (previouslyClickedConsumerId && $scope.consumerObjects[previouslyClickedConsumerId]) {
+    if (previouslyClickedConsumerId && $scope.consumerObjects && $scope.consumerObjects[previouslyClickedConsumerId]) {
       $scope.consumerObjects[previouslyClickedConsumerId].subscriber.subscribeToAudio(false)  
       var previousSubscriberBox = $scope.consumerObjects[previouslyClickedConsumerId].subscriberBox;
       $('#' + previousSubscriberBox).removeClass('user-videos-large');
@@ -524,11 +524,11 @@ angular.module('bodyAppApp')
     if ($scope.hearAll) {
       $scope.hearAll = false;
       for (var prop in $scope.consumerObjects) {
-        $scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+        if ($scope.consumerObjects && $scope.consumerObjects[prop] && $scope.consumerObjects[prop].subscriber) $scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
       }
     }
     
-    if (consumerId) {
+    if (consumerId && $scope.consumerObjects && $scope.consumerObjects[consumerId] && $scope.consumerObjects[consumerId].subscriber) {
       $scope.consumerObjects[consumerId].subscriber.subscribeToAudio(true)
       var subscriberBox = $scope.consumerObjects[consumerId].subscriberBox;
       $('#' + subscriberBox).addClass('user-videos-large');
@@ -542,7 +542,7 @@ angular.module('bodyAppApp')
     $scope.trainerClickedHimself = true;
     // if (audioPlayer) audioPlayer.setVolume($scope.musicVolume/200);
     for (var prop in $scope.consumerObjects) {
-      $scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+      if ($scope.consumerObjects && $scope.consumerObjects[prop] && $scope.consumerObjects[prop].subscriber) $scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
     }
   }
 
@@ -552,12 +552,12 @@ angular.module('bodyAppApp')
     if ($scope.hearAll) {
       $scope.hearAll = false;
       for (var prop in $scope.consumerObjects) {
-        $scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
+        if ($scope.consumerObjects && $scope.consumerObjects[prop] && $scope.consumerObjects[prop].subscriber) $scope.consumerObjects[prop].subscriber.subscribeToAudio(false);
       } 
     } else {
       $scope.hearAll = true;
       for (var prop in $scope.consumerObjects) {
-        $scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
+        if ($scope.consumerObjects && $scope.consumerObjects[prop] && $scope.consumerObjects[prop].subscriber) $scope.consumerObjects[prop].subscriber.subscribeToAudio(true);
       } 
     }
   }

@@ -61,9 +61,10 @@
 
 /*------Fonts-------*/
 .tagline {
-  font-size: 70px;
-  height: 70px;
-  vertical-align: bottom;
+  font-size: 55px;
+  /*height: 55px;
+  vertical-align: bottom;*/
+  line-height: 55px;
 }
 .tagline span {
   font-weight: 600;
