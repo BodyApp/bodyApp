@@ -135,7 +135,7 @@
                       <i class="fa fa-flash"></i> Trending Studio
                     </div>
                     <div class="discovery-tag-love">
-                      <a href="#"
+                      <!-- <a href="#"
                         class="text-center white" 
                         socialshare
                         socialshare-text="{{studios[instance.studioId].studioName}}"
@@ -151,6 +151,24 @@
                         socialshare-popupWidth=900
                         >
                         <i class="fa fa-facebook-official"></i> Share
+                      </a> -->
+                      <a href="#"
+                        class="text-center white" 
+                        socialshare
+                        socialshare-text="{{studios[instance.studioId].studioName}}"
+                        socialshare-type="send"
+                        socialshare-caption="{{studios[instance.studioId].shortDescription}}"
+                        socialshare-description="{{studios[instance.studioId].longDescription}}"
+                        socialshare-media="{{studioPictures[instance.studioId]}}"
+                        socialshare-provider="facebook"
+                        socialshare-url="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-redirect-uri="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-via='501927126632986'
+                        socialshare-trigger='click'
+                        socialshare-popup-height=900
+                        socialshare-popup-width=900
+                        >
+                        <i class="fa fa-facebook-official"></i> Send
                       </a>
                     </div>
                     

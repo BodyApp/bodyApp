@@ -20,9 +20,48 @@
       <h5 class="lightgray">
           Requires: <span style = "font-weight: 500;" ng-repeat = "equipment in classType.equipment">{{equipment.name}}<span ng-show = "$index < classType.equipment.length-1">, </span></span>
       </h5>
-      <h5 class="lightgray">{{classType.classDescription}}</h5>
+      <h5 class="lightgray">{{classType.classDescription.substr(0, 150)}}
+        <span class="lightgray" ng-if = "classType.classDescription.length > 150">...</span>
+      </h5>
       <div class="text-center mt16 mb16">
         <!-- <a class="btn-blue" href="#"><i class="fa fa-calendar"></i> Add to your calendar</a> -->
+
+       <a href="#"
+        class="share-btn text-center btn btn-width-control mb16" 
+        socialshare
+        socialshare-text="{{storefrontInfo.studioName}}"
+        socialshare-type="send"
+        socialshare-caption="{{storefrontInfo.shortDescription}}"
+        socialshare-description="{{storefrontInfo.longDescription}}"
+        socialshare-media="{{backgroundImageUrl}}"
+        socialshare-provider="facebook"
+        socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+        socialshare-redirect-uri="www.getbodyapp.com/studios/{{studioId}}"
+        socialshare-via='501927126632986'
+        socialshare-trigger='click'
+        socialshare-popup-height=900
+        socialshare-popup-width=900
+        >
+        <i class="fa fa-facebook-official"></i> Send
+      </a>
+
+      <a href="#"
+        class="share-btn text-center btn btn-width-control mb16" 
+        socialshare
+        socialshare-type="feed"
+        socialshare-text="{{storefrontInfo.studioName}}"
+        socialshare-caption="{{storefrontInfo.shortDescription}}"
+        socialshare-description="{{storefrontInfo.longDescription}}"
+        socialshare-media="{{backgroundImageUrl}}"
+        socialshare-provider="facebook"
+        socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+        socialshare-via='501927126632986'
+        socialshare-trigger='click'
+        socialshare-popup-height=600
+        socialshare-popup-width=600
+        >
+        <i class="fa fa-facebook-official"></i> Share
+      </a>
         <addtocalendarplain
           ng-show = "startDateTime && endDateTime"
           start-date= "{{startDateTime}}"

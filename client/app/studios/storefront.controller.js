@@ -6,6 +6,7 @@ angular.module('bodyAppApp')
     $scope.currentUser = currentUser;
 
     var studioId = $stateParams.studioId;
+    $scope.studioId = studioId;
     $scope.classToCreate = {};
     $scope.studioName = studioId;
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
@@ -45,7 +46,7 @@ angular.module('bodyAppApp')
 
     window.prerenderReady = false;
 
-    $scope.studioId = studioId;
+    
 
     var daysInFuture = 0;
     var numDaysToShow = 14;
@@ -76,15 +77,6 @@ angular.module('bodyAppApp')
     // ref.unauth()
 
     var accountId;
-
-    $http.post('https://api.prerender.io/recache', {
-      "prerenderToken": "0xk2UugZ3MhosEzMYKrg",
-      "url": "https://www.getbodyapp.com" + $location.path()
-    }).then(function(){
-      console.log("Successfully posted to prerender")
-    }, function(err){
-      console.log(err)
-    });
 
     Auth.isLoggedInAsync(function(loggedIn) {
       if (!loggedIn) {        
@@ -339,6 +331,15 @@ angular.module('bodyAppApp')
         $scope.storefrontInfo = snapshot.val();
         $scope.studioName = $scope.storefrontInfo.studioName
         $scope.studioLongDescription = $scope.storefrontInfo.longDescription
+
+        $http.post('https://api.prerender.io/recache', {
+          "prerenderToken": "0xk2UugZ3MhosEzMYKrg",
+          "url": "https://www.getbodyapp.com" + $location.path()
+        }).then(function(){
+          console.log("Successfully posted to prerender")
+        }, function(err){
+          console.log(err)
+        });
 
         $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
         if(!$scope.$$phase) $scope.$apply();
