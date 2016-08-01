@@ -82,6 +82,7 @@ angular.module('bodyAppApp')
         if(!$scope.$$phase) $scope.$apply();
         $scope.numFreeBookings = 0;
         snapshot.forEach(function(booking) {
+          if (!booking.exists()) return
           if (booking.val().freeBooking) $scope.numFreeBookings++;
           if(!$scope.$$phase) $scope.$apply();
           firebase.database().ref().child('fbUsers').child(booking.val().facebookId).child('location').on('value', function(snapshot) {
@@ -423,9 +424,9 @@ angular.module('bodyAppApp')
         } else if ($scope.currentUser && $scope.currentUser.role === 'admin' && slot) {
           console.log("Booking for free because user is admin.")
           return bookClass(slot)
-        // } else if (studioId === 'body') {
-        //   console.log("Booking for free because this is the BODY studio.")
-        //   return bookClass(slot)
+        } else if (studioId === 'body') {
+          console.log("Booking for free because this is the BODY studio.")
+          return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
@@ -539,17 +540,21 @@ angular.module('bodyAppApp')
           timeBooked: new Date().getTime(), 
           picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", 
           facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : "", 
-          freeBooking: $rootScope.trialPeriodTime
         }
+        if ($rootScope.trialPeriodTime) bookingObj.freeBooking = $rootScope.trialPeriodTime;
         ref.child("bookings").child(slot.dateTime).child($scope.currentUser._id).update(bookingObj, function(err) {
           if (err) return console.log(err)
           console.log("Added booking")
         });
-        ref.child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, freeBooking: $rootScope.trialPeriodTime}, function(err) {
+        var userBookingObj = {
+          dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType
+        }
+        if ($rootScope.trialPeriodTime) userBookingObj.freeBooking = $rootScope.trialPeriodTime;
+        ref.child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update(userBookingObj, function(err) {
           if (err) return console.log(err)
           console.log("Added user booking to studio")
         });
-        firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(slot.dateTime).update({
+        var userBookingsObj = {
           className: $scope.classType.name,
           studioName: $scope.storefrontInfo.studioName,
           studioId: $scope.storefrontInfo.studioId,
@@ -559,8 +564,11 @@ angular.module('bodyAppApp')
           studioIconUrl: $scope.iconUrl ? $scope.iconUrl : "None",
           classId: slot.dateTime,
           duration: slot.duration ? slot.duration : 30,
-          freeBooking: $rootScope.trialPeriodTime
-        }, function(err) {
+        }
+
+        if ($rootScope.trialPeriodTime) userBookingsObj.freeBooking = $rootScope.trialPeriodTime;
+
+        firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(slot.dateTime).update(userBookingsObj, function(err) {
           if (err) return console.log(err)
           console.log("Added user bookings to userBookings")
         })
