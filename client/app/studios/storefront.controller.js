@@ -271,6 +271,7 @@ angular.module('bodyAppApp')
         // $scope.headerUrl = url;
         window.prerenderReady = true;
         $scope.backgroundImageUrl = url
+        $scope.jsonId.image = url;
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
         console.log(error)
@@ -340,6 +341,23 @@ angular.module('bodyAppApp')
         }, function(err){
           console.log(err)
         });
+
+        $scope.jsonId = {
+          "@context": "http://schema.org/",
+          "@type": "ExerciseGym",
+          "exerciseType": "",
+          "name": $scope.studioName,
+          "description": $scope.studioLongDescription,
+          "instructor": $scope.storefrontInfo.ownerName,
+          "url": "https://www.getbodyapp.com/studios/" + studioId
+        };
+
+        for (var i = 0; i < $scope.storefrontInfo.categories.length; i++) {
+          $scope.jsonId.exerciseType += $scope.storefrontInfo.categories[i]
+          if (i < $scope.storefrontInfo.categories.length - 1) {
+            $scope.jsonId.exerciseType += ", "
+          }
+        }    
 
         $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
         if(!$scope.$$phase) $scope.$apply();
@@ -929,4 +947,22 @@ angular.module('bodyAppApp')
       return formatted;
     }
 
-  });
+  })
+
+  .directive('jsonld', ['$filter', '$sce', function($filter, $sce) {
+  return {
+    restrict: 'E',
+    template: function() {
+      return '<script type="application/ld+json" ng-bind-html="onGetJson()"></script>';
+    },
+    scope: {
+      json: '=json'
+    },
+    link: function(scope, element, attrs) {
+      scope.onGetJson = function() {
+        return $sce.trustAsHtml($filter('json')(scope.json));
+      }
+    },
+    replace: true
+  };
+}])

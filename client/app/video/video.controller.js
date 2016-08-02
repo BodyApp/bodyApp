@@ -283,7 +283,7 @@ angular.module('bodyAppApp')
       if (!userIsInstructor && audioPlayer && $scope.musicVolume > 0) {
         audioPlayer.setVolume($scope.musicVolume / 100);
         console.log("Music volume set to " + snapshot.val())
-      } else {
+      } else if (audioPlayer) {
         audioPlayer.setVolume(0);
       }
     })
@@ -430,7 +430,6 @@ angular.module('bodyAppApp')
       Intercom('showNewMessage', "Hey tech support, I'm having an issue connecting to the session.  I got the error: " + error + " " + message);
       $location.path('/studios/' + studioId + "/classinfo/" + classId)
     })
-
   }
 
   function goBackToClassStarting() {
@@ -450,7 +449,7 @@ angular.module('bodyAppApp')
       if (typeof SC !== 'undefined' && SC.Widget != 'undefined') {
         // var element = document.getElementById('audioPlayer')
         // audioPlayer = SC.Widget(element);
-        audioPlayer.load(snapshot.val().soundcloudUrl);
+        if (snapshot.val().soundcloudUrl) audioPlayer.load(snapshot.val().soundcloudUrl);
         // if (!userIsInstructor && audioPlayer && $scope.musicVolume) audioPlayer.setVolume($scope.musicVolume/100);
 
         audioPlayer.bind(SC.Widget.Events.READY, function() {
@@ -531,6 +530,7 @@ angular.module('bodyAppApp')
     if (consumerId && $scope.consumerObjects && $scope.consumerObjects[consumerId] && $scope.consumerObjects[consumerId].subscriber) {
       $scope.consumerObjects[consumerId].subscriber.subscribeToAudio(true)
       var subscriberBox = $scope.consumerObjects[consumerId].subscriberBox;
+      console.log("Clicked on subscriber box " + subscriberBox)
       $('#' + subscriberBox).addClass('user-videos-large');
       previouslyClickedConsumerId = consumerId;
     }
@@ -619,7 +619,7 @@ angular.module('bodyAppApp')
             // session.destroy();
             errorContent = "It looks like you don't have a working webcam or microphone. If you do, please restart your computer and rejoin."
             sendIntercomTokboxError("session.capabilities.publish != 1")            
-            return goBackToClassStarting()
+            // return goBackToClassStarting()
           }
         }
       }); 
@@ -634,12 +634,12 @@ angular.module('bodyAppApp')
       if (userIsInstructor) {
         // vidWidth = "100%";
         // vidHeight = "16.67%";
-        suggestedResolution = "640x480";
+        suggestedResolution = "1280x720";
         suggestedFPS = 30;
       } else {
         // vidWidth = "100%"
         suggestedResolution = "320x240";
-        suggestedFPS = 7;
+        suggestedFPS = 15;
       }
 
       var audioInputDevice = Video.getAudioInput() ? Video.getAudioInput().deviceId : undefined;
@@ -671,11 +671,11 @@ angular.module('bodyAppApp')
 
       function initPublisher(audioInputDevice, videoInputDevice, suggestedResolution, suggestedFPS, vidWidth) {
         publisher = OT.initPublisher('myfeed', {
-          insertMode: 'append',
+          insertMode: 'replace',
           audioSource: audioInputDevice, 
           videoSource: videoInputDevice,
-          // resolution: suggestedResolution,
-          // frameRate: suggestedFPS,
+          resolution: suggestedResolution,
+          frameRate: suggestedFPS,
           publishAudio:true, 
           publishVideo:true,
           mirror: true,
@@ -777,7 +777,7 @@ angular.module('bodyAppApp')
   function subscribeToStream(streamEvent, subscriberBox, instructorStream, vidWidth, vidHeight) {
     var streamId = streamEvent.connection.data.toString()
     var subscriber = session.subscribe(streamEvent, subscriberBox, {
-      insertMode: 'append',
+      insertMode: instructorStream ? 'append' : 'replace',
       width: vidWidth,
       height: vidHeight,
       mirror: true,
@@ -906,7 +906,6 @@ angular.module('bodyAppApp')
         } 
         subscriberBox = instructorStream ? "trainerVideo" : "consumer" + (Object.keys($scope.consumerObjects).length-1).toString()
         if (!instructorStream) $scope.consumerObjects[streamId].subscriberBox = subscriberBox;
-        console.log(subscriberBox)
         subscribeToStream(event.stream, subscriberBox, instructorStream, vidWidth)    
       },
       streamDestroyed: function (event) {

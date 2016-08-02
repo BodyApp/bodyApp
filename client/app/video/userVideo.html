@@ -27,15 +27,17 @@
 		</div>
 	</div>
 	<ul class="consumer-video">
-		<li id="myfeed">
+		<li>
 			<span class="classmates-video-name text-center">You</span>
+			<div id="myfeed"></div>
 		</li>
 		<li class="trainer-video-large" id="trainerVideo">
 			<img ng-src = "{{headerImageUrl}}" ng-show = "headerImageUrl && !instructorDisplayed"></img>
 			<span class="classmates-video-name text-center">{{instructor.firstName}}</span>
 		</li>
-		<li class="classmate-vid" ng-repeat = "consumer in consumerObjects" ng-attr-id="{{'consumer'+$index}}">
+		<li class="classmate-vid" ng-repeat = "consumer in consumerObjects">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
+			<div ng-attr-id="{{'consumer'+$index}}"></div>
 		</li>
 	</ul>
 	<div ng-class="{'control-menu-open': menuOpen, 'control-menu-closed': !menuOpen}">

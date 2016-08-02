@@ -68,6 +68,40 @@
 						<div class="input-group">
 							<div>BODY is more fun with friends! Invite them by sharing your link or via Facebook!</div>
               <div style = "border-style: solid; border-color: gray; border-width: 3px; padding: 5px;" ngclipboard data-clipboard-text="https://www.getbodyapp.com/referral/{{userReferralCode}}" id="foo"><a href="#" popover-animation="true" popover-trigger="click" popover-placement="bottom-right" uib-popover="Copied">https://www.getbodyapp.com/referral/{{userReferralCode}}</a></div>
+              <a href="#"
+				        class="share-btn text-center btn btn-width-control mt16" 
+				        socialshare
+				        socialshare-text="Your Social Fitness Experience"
+				        socialshare-type="send"
+				        socialshare-description="BODY is the first online fitness experience where instructors and participants can all see each other and interact in real-time. Check it out for a free week of unlimited classes!"
+				        socialshare-media="www.getbodyapp.com/assets/images/studios/body/home-hero.jpg"
+				        socialshare-provider="facebook"
+				        socialshare-url="www.getbodyapp.com/referral/{{userReferralCode}}"
+				        socialshare-redirect-uri="www.getbodyapp.com/referral/{{userReferralCode}}"
+				        socialshare-via='501927126632986'
+				        socialshare-trigger='click'
+				        socialshare-popup-height=900
+				        socialshare-popup-width=900
+				        >
+				        <i class="fa fa-facebook-official"></i> Send
+				      </a>
+
+				      <a href="#"
+				        class="share-btn text-center btn btn-width-control mt16" 
+				        socialshare
+				        socialshare-type="feed"
+				        socialshare-text="Your Social Fitness Experience"
+				        socialshare-description="BODY is the first online fitness experience where instructors and participants can all see each other and interact in real-time. Check it out for a free week of unlimited classes!"
+				        socialshare-media="www.getbodyapp.com/assets/images/studios/body/home-hero.jpg"
+				        socialshare-provider="facebook"
+				        socialshare-url="www.getbodyapp.com/referral/{{userReferralCode}}"
+				        socialshare-via='501927126632986'
+				        socialshare-trigger='click'
+				        socialshare-popup-height=600
+				        socialshare-popup-width=600
+				        >
+				        <i class="fa fa-facebook-official"></i> Share
+				      </a>
               <!-- <span class="input-group-button">
                   <button class="btn" type="button" ngclipboard="" ngclipboard-success="onSuccess(e);" ngclipboard-error="onError(e);" data-clipboard-target="#foo">
                       <img class="clippy" src="assets/images/images/icons/clippy.svg" width="13" alt="Copy to clipboard">
