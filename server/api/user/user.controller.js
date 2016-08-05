@@ -1417,7 +1417,9 @@ function sendReminderEmail(userId, classInfo) {
 
     var dateTime = formattedDateTime(classInfo.classId, user)
 
-    var emailAddress = user.email;
+    var emailAddress = "";
+
+    if (user.email) emailAddress = user.email;
 
     fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
       if (err) throw err; 

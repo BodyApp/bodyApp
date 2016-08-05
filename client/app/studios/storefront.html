@@ -194,7 +194,7 @@
           <div class="panel-body">
             <div class="callToAction-pricing">
 
-              <div class="col-xs-6 col-md-12 mb8" ng-if = "storefrontInfo.subscriptionPricing || storefrontInfo.dropinPricing">
+              <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
                   <div class="col-md-6">
                     <h4>Unlimited</h4>
@@ -205,25 +205,17 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6 col-md-12 mb8" ng-if = "storefrontInfo.subscriptionPricing || storefrontInfo.dropinPricing">
+              <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
                   <div class="col-md-6">
                     <h4>Drop In</h4>
                   </div>
                   <div class="col-md-6">
                     <h4 class="lightgray" ng-show = "storefrontInfo && storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}}</h4>
-                    <h4 class="lightgray" ng-show = "storefrontInfo && !storefrontInfo.dropinPricing">None</h4>
+                    <h4 class="lightgray" ng-show = "storefrontInfo && !storefrontInfo.dropinPricing">$3</h4>
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6 col-md-12 mb8" ng-if = "!storefrontInfo.subscriptionPricing && !storefrontInfo.dropinPricing">
-                <!-- <div class="row"> -->
-                  <!-- <div class="col-md-12"> -->
-                    <h4 class = "mt32" style = "text-align: center;">Free Classes!</h4>
-                  <!-- </div> -->
-                <!-- </div> -->
-              </div>
-
               <div class="col-xs-12 mt16">
                 <a href="#" class="btn-blue btn-block" ng-show = "(storefrontInfo && storefrontInfo.subscriptionPricing && subscriptions && subscriptions[studioId] != 'active') || showLoginButton" ng-click = "joinStudioClicked()">Get Monthly Pass</a>
                 <div class="" ng-show = "subscriptions[studioId] === 'active'">You are a member of this studio!</div>
@@ -292,7 +284,7 @@
                 <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime - 60*60*1000 && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} ({{class.duration}}m)</div>
                   <!-- <div class="cal-duration">{{class.duration}}m</div> -->
-                  <div class="cal-class">{{classTypes[class.classType].name}} <span ng-if = "classTypes[class.classType].freeClass">(Free)</span></div>
+                  <div class="cal-class">{{classTypes[class.classType].name}}</div>
                   <div class="cal-instructor">{{instructors[class.instructor].firstName}}</div>
                   <!-- <div class="cal-friends">2 friends</div>
                   <div class="cal-bubbles">
@@ -403,7 +395,7 @@
                   <div class="col-md-12" ng-show = "classType.classType != 'Specialty'">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb0">{{classType.name}} <span ng-if = "classType.freeClass">(Free)</span></h5>
+                        <h5 class="mb0">{{classType.name}}</span></h5>
                         <h5 class="lightgray" style = "white-space: pre-line;">{{classType.classDescription}}</h5>
                       </div>
                     </div>
@@ -447,7 +439,7 @@
                         <h5 class="mb8" ng-show = 'subscriptionPlan'>Monthly Unlimited Classes: ${{subscriptionPlan.amount/100}}/mo</h5>
                         <h5 class="mb8" ng-show = '!subscriptionPlan'>Monthly Unlimited Classes: None</h5>
                         <h5 ng-show = 'storefrontInfo.dropinPricing'>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
-                        <h5 ng-show = '!storefrontInfo.dropinPricing'>Drop In Class: None</h5>
+                        <h5 ng-show = '!storefrontInfo.dropinPricing'>Drop In Class: $3</h5>
                       </div>
                     </div>
                   </div>

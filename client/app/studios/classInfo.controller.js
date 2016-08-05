@@ -358,8 +358,10 @@ angular.module('bodyAppApp')
           dateOfClass_at: new Date($scope.classDetails.dateTime),
           classId: classId,
           studioId: studioId,
+          studioName: $scope.storefrontInfo.studioName,
           classType: $scope.classDetails.classType,
-          instructor: $scope.classDetails.instructor
+          instructor: $scope.classDetails.instructor,
+          instructorFirstName: $scope.instructorDetails.firstName
         });
         $location.path('/uservideo')  
         firebase.database().ref().child('tookClass').child($scope.currentUser._id).child(classId).update({
