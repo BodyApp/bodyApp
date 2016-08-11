@@ -78,7 +78,6 @@ angular.module('bodyAppApp')
         $scope.bookings = snapshot.val();
         setupVidAud()
         $scope.numBookings = Object.keys($scope.bookings).length;
-        console.log($scope.numBookings)
         if(!$scope.$$phase) $scope.$apply();
         $scope.numFreeBookings = 0;
         snapshot.forEach(function(booking) {
