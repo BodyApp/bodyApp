@@ -4,10 +4,10 @@
   <div class="row">
     
     <div class="col-md-3">    <!--  LEFT COLUMN BEGIN -->
-      <img src="/assets/images/justin-photo.jpg" class="mb0" width="100%">
+      <img ng-src="https://graph.facebook.com/{{currentUser.facebookId}}/picture?width=500&height=500" class="mb0" width="100%">
       <div class="panel panel-member text-center">
-        <h4>Justin</h4>
-        <a href="#">Edit Profile</a>
+        <h4>{{currentUser.firstName}}</h4>
+        <a href="#" ng-click="editProfileClicked()">Edit Profile</a>
       </div>
 
       <div class="panel">
@@ -16,15 +16,15 @@
         </div>
         <div class="panel-body">
           <ul>
-            <li class="mb8">
+            <!-- <li class="mb8">
               <a href="#">Class Schedule</a>
-            </li>
+            </li> -->
             <li class="mb8">
-              <a href="#">Friends</a>
+              <a href="#" ng-click="friendsClicked()">Friends</a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#">Workouts</a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -35,26 +35,28 @@
       <div class="row mb32">
         <div class="col-md-4">
           <div class="dashboard-cards">
-            <h5 class="mb8">Minutes this Week</h5>
+            <h5 class="mb8">Minutes in Past Week</h5>
             <div class="dashboard-cards-content text-center">
-              <div id="semicircle_progress_bar"></div>
-              <!-- NEEDS THIS JAVASCRIPT
-              var bar = new ProgressBar.SemiCircle(semicircle_progress_bar, {
-                strokeWidth: 6,
-                easing: 'easeInOut',
-                duration: 1400,
-                color: '#FFEA82',
-                trailColor: '#eee',
-                trailWidth: 1,
-                svgStyle: null
-              });
-
-              bar.animate(0.8); -->
+              <round-progress
+                max="100"
+                current="maxMinutesTaken"
+                color="#45ccce"
+                bgcolor="#eaeaea"
+                radius="100"
+                stroke="20"
+                semi="false"
+                rounded="true"
+                clockwise="false"
+                responsive="true"
+                duration="0"
+                animation="linearEase"
+                animation-delay="0"></round-progress>
               <div class="dashboard-cards-icon">
                 <i class="ti-timer" style="font-size:50px;"></i>
+                <h3>{{minutesTaken}}</h3>
+                <h5 class="lightgray">of 100</h5>
               </div>
-              <h3>80</h3>
-              <h5 class="lightgray">of 100</h5>
+              
             </div>
           </div>
         </div>
@@ -62,8 +64,8 @@
           <div class="dashboard-cards">
             <h5 class="mb24">Your Classes</h5>
             <div class="dashboard-cards-content">
-              <h4 class="royalblue mb48"><span style="font-size: 90px;">4</span> upcoming</h4>
-              <h4 class="lightgray"><span style="font-size: 90px;">45</span> all time</h4>
+              <h4 class="royalblue mb48"><span style="font-size: 90px;">{{numUserBookings}}</span> upcoming</h4>
+              <h4 class="lightgray"><span style="font-size: 90px;">{{classesAllTime}}</span> all time</h4>
             </div>
           </div>
         </div>
@@ -127,7 +129,7 @@
             </div>
           </div> -->
 
-          <div class="dashboard-cards">
+<!--           <div class="dashboard-cards">
             <h5 class="mb16">My Progress</h5>
             <div class="dashboard-cards-content text-center">
               <div class="transformation-photo">
@@ -146,7 +148,7 @@
               </div>
               <a href="#" class="btn btn-collapse mt16"><i class="ti-cloud-up"></i> Upload Latest</a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       
@@ -259,7 +261,7 @@
         </div>
       </div>   <!-- YOUR RESERVATIONS END --> 
 
-      <div class="panel">
+      <!-- <div class="panel">
         <div class="panel-header">
           My Studios: Upcoming Classes
           <div class="cal-controls text-left">
@@ -273,7 +275,7 @@
         <div class="panel-body">
           Add week calendar view here
         </div>
-      </div>
+      </div> -->
 
     </div>
 

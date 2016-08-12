@@ -22,8 +22,8 @@ angular.module('bodyAppApp')
     })
 
     $scope.errors = {};
-    $scope.teammates = true;
-    $scope.profilePage = false;
+    $scope.teammates = $state.params.teammates || true;
+    $scope.profilePage = $state.params.profilePage || false;
     $scope.billing = false;
     $scope.support = false;
 
@@ -42,18 +42,18 @@ angular.module('bodyAppApp')
       $scope.currentUser = user;  
       currentUser = $scope.currentUser;
       $scope.numReferrals = currentUser.referrals ? Object.keys(currentUser.referrals).length : 0;
-      if ($scope.numReferrals) pullReferrals(currentUser);
+      // if ($scope.numReferrals) pullReferrals(currentUser);
 
-      if (!$scope.currentUser.referralCode) {
-        User.generateReferralCode({id: $scope.currentUser._id}, {}, function(user){
-            console.log("Successfully generated referral code " + user.referralCode)
-            $scope.currentUser = user;
-            Auth.updateUser(user)
-            Intercom('update', {
-                "referralCode": user.referralCode
-            });
-        }, function(err){console.log(err)})
-      }
+      // if (!$scope.currentUser.referralCode) {
+      //   User.generateReferralCode({id: $scope.currentUser._id}, {}, function(user){
+      //       console.log("Successfully generated referral code " + user.referralCode)
+      //       $scope.currentUser = user;
+      //       Auth.updateUser(user)
+      //       Intercom('update', {
+      //           "referralCode": user.referralCode
+      //       });
+      //   }, function(err){console.log(err)})
+      // }
 
       //Temporary campaign.  Delete 3/21
       // if (!$scope.currentUser.singleParentCode && $scope.currentUser.stripe && $scope.currentuser.stripe.subscription && $scope.currentUser.stripe.subscription.status === "active") {
@@ -125,7 +125,7 @@ angular.module('bodyAppApp')
     }
 
     function getReferralCode() {
-      ref.child('usersById').child(currentUser._id).child('referralCode').once('value', function(snapshot) {
+      ref.child('usersById').child(currentUser._id.toString()).child('referralCode').once('value', function(snapshot) {
         if (!snapshot.exists()) return console.log("No referral code found");
         $scope.userReferralCode = snapshot.val()
         if(!$scope.$$phase) $scope.$apply();

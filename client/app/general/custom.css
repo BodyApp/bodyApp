@@ -62,13 +62,20 @@
 /*------Fonts-------*/
 .tagline {
   font-size: 70px;
+  height: 70px;
+  vertical-align: bottom;
+}
+.tagline span {
   font-weight: 600;
 }
 .h1cursive {
-  font-family: 'Caveat';
+  font-family: 'Raleway',"Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700 !important;
   color: #db0afa;
-  font-size: 90px;
+  font-size: 70px;
+  /*line-height: 70px;*/
+  vertical-align: bottom;
+  height: 70px;
 }
 
 .fill-in-blank {

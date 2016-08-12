@@ -22,9 +22,14 @@ angular.module('bodyAppApp', [
   'lfNgMdFileInput',
   'ngMessages',
   'ae-datetimepicker',
-  'updateMeta'
+  'updateMeta',
+  'angular-svg-round-progressbar',
+  // 'djds4rce.angular-socialshare',
+  // 'ezfb',
+  '720kb.socialshare'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+    $locationProvider.html5Mode(true);
     $urlRouterProvider
       
     // .rule(function ($injector, $location, Referral) {
@@ -40,10 +45,39 @@ angular.module('bodyAppApp', [
     // })
     .otherwise('/');
 
-    $locationProvider.html5Mode(true);
+    
     // $locationProvider.hashPrefix('#!');
     $httpProvider.interceptors.push('authInterceptor');
   })
+
+  .config(['socialshareConfProvider', function configApp(socialshareConfProvider) {
+
+    socialshareConfProvider.configure([
+      {
+        'provider': 'twitter',
+        'conf': {
+          'url': 'https://www.getbodyapp.com',
+          'text': '720kb is enough',
+          'via': 'npm',
+          'hashtags': 'angularjs,socialshare,angular-socialshare',
+          'trigger': 'click',
+          'popupHeight': 800,
+          'popupWidth' : 400
+        }
+      },
+      {
+        'provider': 'facebook',
+        'conf': {
+          'url': 'https://www.getbodyapp.com',
+          'via': '501927126632986',
+          'trigger': 'click',
+          'popupHeight': 600,
+          'popupWidth' : 600
+        }
+      }
+    //and so on ...
+    ]);
+  }])
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {
@@ -140,4 +174,8 @@ angular.module('bodyAppApp', [
       });
       $window.scrollTo(0,0);    //scroll to top of page after each route change
     });
+    // $FB.init('501927126632986')
+    // ezfbProvider.setInitParams({
+    //   appId: '501927126632986',
+    // });  
   });

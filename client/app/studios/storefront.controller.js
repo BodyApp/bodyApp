@@ -4,10 +4,11 @@ angular.module('bodyAppApp')
   .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, Studios, Auth, User, Schedule, Studio, Video, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
     $scope.currentUser = currentUser;
-    console.log(currentUser)
 
     var studioId = $stateParams.studioId;
     $scope.classToCreate = {};
+    $scope.studioName = studioId;
+    $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
 
@@ -335,6 +336,8 @@ angular.module('bodyAppApp')
       ref.child('storefrontInfo').once('value', function(snapshot) {
         if (!snapshot.exists()) return;
         $scope.storefrontInfo = snapshot.val();
+        $scope.studioName = $scope.storefrontInfo.studioName
+        $scope.studioLongDescription = $scope.storefrontInfo.longDescription
 
         $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
         if(!$scope.$$phase) $scope.$apply();
@@ -867,6 +870,10 @@ angular.module('bodyAppApp')
 
     $scope.getFormattedDateTime = function(dateTime, noToday) {
       return getFormattedDateTime(dateTime, noToday);
+    }
+
+    $scope.facebookCallback = function(info) {
+      console.log(info)
     }
 
     function getFormattedDateTime(dateTime, noToday) {

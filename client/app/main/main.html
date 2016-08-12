@@ -4,12 +4,13 @@
   <div class="va-container va-container-v va-container-h hero-play-btn">
     <div class="va-middle text-center">
       <div class="col-md-8 col-md-push-2">
-        <h1 class="white tagline">
-          Find your
-          <div class="inline-block mt-xs-32">
-            <span class="h1cursive">Confidence</span>
-            <hr class="fill-in-blank mt-xs-8">
-          </div>
+        <h1 class="white tagline mb-xs-64">
+          <span class="display-block-xs">Find your</span>
+          <span class="inline-block display-block-xs mt-xs-16">
+            <!-- <canvas class = "h1cursive" width=640 height=150></canvas> -->
+            <span class="h1cursive">{{selectedPowerWord}}</span>
+            <!-- <hr class="fill-in-blank mt-xs-8"> -->
+          </span>
         </h1>
         <h3 class="white bold mb40">Live & On-Demand Fitness Classes from Anywhere</h3>
         <a href="/discover" class="btn-blue big-btn mb-xs-8" style = "font-size: 16px;">Find Classes</a>
@@ -48,7 +49,7 @@
                   <h2 class="white mb16 bold">Get your FREE Week</h2>
                   <h3 class="white mb16 bold">Class free for a week with any studio. Subscriptions as low as $5/wk after that.</h3>
                 </div>
-                <a ng-href="/createstudio" class="btn-blue btn-block btn-large mt32">Join Now</a>
+                <a ng-href="#" ng-click="joinNowClicked()" class="btn-blue btn-block btn-large mt32">Join Now</a>
               </div>
             </div>
           </div>
@@ -83,8 +84,14 @@
                 </div>
               </div>
             </div>
-            <div class="discovery-card-price" ng-if = "studios[0].dropinPricing">
+            <div class="discovery-card-price" ng-show = "studios[0].dropinPricing && !trialPeriodTime">
               <span class="bold">${{studios[0].dropinPricing/100}} / class</span>
+            </div>
+            <div class="discovery-card-price" ng-show = "!studios[0].dropinPricing && !trialPeriodTime">
+              <span class="bold">$3 / class</span>
+            </div>
+            <div class="discovery-card-price" ng-show = "trialPeriodTime || !currentUser._id">
+              <span class="bold">Free During Trial Period</span>
             </div>
           </a>
         </div>
@@ -126,8 +133,14 @@
                 </div>
               </div>
             </div>
-            <div class="discovery-card-price" ng-if = "studios[1].dropinPricing">
-              <span class="bold">${{studios[1].dropinPricing/100}} / class</span>
+            <div class="discovery-card-price" ng-show = "studios[1].dropinPricing && !trialPeriodTime">
+              <span class="bold">${{studios[0].dropinPricing/100}} / class</span>
+            </div>
+            <div class="discovery-card-price" ng-show = "!studios[1].dropinPricing && !trialPeriodTime">
+              <span class="bold">$3 / class</span>
+            </div>
+            <div class="discovery-card-price" ng-show = "trialPeriodTime || !currentUser._id">
+              <span class="bold">Free During Trial Period</span>
             </div>
           </a>
         </div>
@@ -169,8 +182,14 @@
                 </div>
               </div>
             </div>
-            <div class="discovery-card-price" ng-if = "studios[2].dropinPricing">
-              <span class="bold">${{studios[2].dropinPricing/100}} / class</span>
+            <div class="discovery-card-price" ng-show = "studios[2].dropinPricing && !trialPeriodTime">
+              <span class="bold">${{studios[0].dropinPricing/100}} / class</span>
+            </div>
+            <div class="discovery-card-price" ng-show = "!studios[2].dropinPricing && !trialPeriodTime">
+              <span class="bold">$3 / class</span>
+            </div>
+            <div class="discovery-card-price" ng-show = "trialPeriodTime || !currentUser._id">
+              <span class="bold">Free During Trial Period</span>
             </div>
           </a>
         </div>
