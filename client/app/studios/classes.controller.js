@@ -107,6 +107,7 @@ angular.module('bodyAppApp')
         classToSave.classType = "Specialty"
       } else {
         classToSave.classType = "Regular"
+        if (classToSave.specialtyClassRate) delete classToSave.specialtyClassRate;
       }
 
       //Should change equipment so not array.
@@ -151,6 +152,7 @@ angular.module('bodyAppApp')
         classToEdit.classType = "Specialty"
       } else {
         classToEdit.classType = "Regular"
+        classToEdit.specialtyClassRate = null;
       }
 
       classToEdit.updated = new Date().getTime();

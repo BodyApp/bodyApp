@@ -210,28 +210,28 @@ exports.addCustomerSubscription = function(req, res, next){
       //   user.stripe[studioId].customerId = customer.id;
       // }
 
-      if (coupon) {
-        user.firstCouponUsed = user.firstCouponUsed ? user.firstCouponUsed: coupon.id; 
-        user.mostRecentCoupon = coupon.id;
+      // if (coupon) {
+      //   user.firstCouponUsed = user.firstCouponUsed ? user.firstCouponUsed: coupon.id; 
+      //   user.mostRecentCoupon = coupon.id;
 
-        ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('usedBy').child(user._id.toString()).update({"dateTimeUsed": new Date().getTime(), "customerId": customer.id})
+      //   ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('usedBy').child(user._id.toString()).update({"dateTimeUsed": new Date().getTime(), "customerId": customer.id})
 
-        User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
-          if(err) return cb(err);
-          if(pulledUser) {
-            pulledUser.referrals = pulledUser.referrals || {}
-            pulledUser.referrals[studioId] = pulledUser.referrals[studioId] || {};
-            pulledUser.referrals[studioId][user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
+      //   User.findOne({referralCode: coupon.id}, '-salt -hashedPassword', function (err, pulledUser) {
+      //     if(err) return cb(err);
+      //     if(pulledUser) {
+      //       pulledUser.referrals = pulledUser.referrals || {}
+      //       pulledUser.referrals[studioId] = pulledUser.referrals[studioId] || {};
+      //       pulledUser.referrals[studioId][user._id] = {"timeUsed":new Date().getTime(), "facebookId":user.facebookId}
 
-            pulledUser.save(function(err){
-              console.log("Successfully saved referral of user " + user._id + " to studio " + studioId + " by user " + pulledUser._id)
-              ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('couponOwner').update({'id': pulledUser._id, 'firstName': pulledUser.firstName, 'lastName': pulledUser.lastName, 'facebookId': pulledUser.facebookId, 'email': pulledUser.email})
-              if (err) return cb(err);
-              return
-            });
-          }
-        });
-      }    
+      //       pulledUser.save(function(err){
+      //         console.log("Successfully saved referral of user " + user._id + " to studio " + studioId + " by user " + pulledUser._id)
+      //         ref.child('studios').child(studioId).child("couponsUsed").child(coupon.id).child('couponOwner').update({'id': pulledUser._id, 'firstName': pulledUser.firstName, 'lastName': pulledUser.lastName, 'facebookId': pulledUser.facebookId, 'email': pulledUser.email})
+      //         if (err) return cb(err);
+      //         return
+      //       });
+      //     }
+      //   });
+      // }    
 
       // if(user.stripe[studioId].subscription.status != "active"){
         //Only part of the 'subscriptions' object when user is first created

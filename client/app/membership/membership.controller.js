@@ -189,8 +189,8 @@ angular.module('bodyAppApp')
             console.log("Coupon valid") 
             $scope.validCoupon = coupon;
             if(!$scope.$$phase) $scope.$apply();
-            Intercom('trackEvent', 'appliedCoupon', coupon.id);
-            analytics.track('appliedCoupon', coupon.id);
+            Intercom('trackEvent', 'couponApplied', coupon.id);
+            analytics.track('couponApplied', coupon.id);
           } else {
             $scope.invalidCouponEntered = true;
             $scope.enterCoupon = false;
@@ -224,8 +224,9 @@ angular.module('bodyAppApp')
       openStripeDropIn()
     }
 
-		function openStripePayment(coupon) {
-      if ($rootScope.subscribing) return
+		function openStripePayment() {
+      var coupon = $scope.validCoupon || undefined;
+      if ($rootScope.subscribing) return console.log("already subscribing")
       $rootScope.errorProcessingPayment = false;
       
       // ref.child('stripeConnected').child('subscriptionPlans').once('value', function(snapshot) {
