@@ -50,6 +50,8 @@ angular.module('bodyAppApp')
 
     $scope.stateName = $state.current.name
 
+    var tzName = jstz().timezone_name;
+
     // if (!studioId) {
     //   studioId = 'body'
     // }
@@ -118,6 +120,15 @@ angular.module('bodyAppApp')
     // }
 
     function updateIntercom(user) {
+      if (user.timezone != tzName) {
+        User.saveTimezone({ id: user._id }, {timezone: tzName}, function(currentUser) {
+          console.log("Updated user timezone preference");
+          Auth.updateUser(currentUser)
+        }, function(err) {
+            console.log("Error saving Timezone: " + err)
+        }).$promise;
+      }
+
       if (user.intercomHash) {
         window.intercomSettings = {
           app_id: "daof2xrs",
