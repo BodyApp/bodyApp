@@ -136,7 +136,7 @@
 				</li>
 				<li>
 					<button href="#" class="btn-blue" ng-show = "bookings[currentUser._id] || userIsInstructor" ng-click = "joinClass($event)">{{timeUntilClassStarts}}</buttons>
-					<button href="#" class="btn-blue" ng-show = "!currentUser._id || subscriptions[studioId]" ng-click = "reserveClicked(classDetails, $event)">Reserve Class</buttons>
+					<button href="#" class="btn-blue" ng-show = "!currentUser._id || (subscriptions[studioId] && (!bookings || !bookings[currentUser._id]))" ng-click = "reserveClicked(classDetails, $event)">Reserve Class</buttons>
 					<button href="#" class="btn-blue" ng-show = "!subscriptions[studioId] && currentUser._id && (!bookings || !bookings[currentUser._id]) && !userIsInstructor && (numBookings < classDetails.maxParticipants || !numBookings || (!classDetails.maxParticipants || numBookings < 12)) && (!trialPeriodTime || !classDetails.maxFreeParticipants || !numFreeBookings || numFreeBookings < classDetails.maxFreeParticipants)" ng-click = "reserveClicked(classDetails, $event)">Reserve Class for
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && storefrontInfo.dropinPricing && !trialPeriodTime">${{storefrontInfo.dropinPricing/100}}</span>
 						<span style = "font-weight: bold;" ng-show = "classDetails.typeOfClass === 'Regular' && !storefrontInfo.dropinPricing && !trialPeriodTime">$3</span>

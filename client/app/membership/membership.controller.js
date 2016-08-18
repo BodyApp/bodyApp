@@ -189,14 +189,14 @@ angular.module('bodyAppApp')
             console.log("Coupon valid") 
             $scope.validCoupon = coupon;
             if(!$scope.$$phase) $scope.$apply();
-            Intercom('trackEvent', 'couponApplied', coupon.id);
-            analytics.track('couponApplied', coupon.id);
+            Intercom('trackEvent', 'couponApplied', {coupon: coupon.id});
+            analytics.track('couponApplied', {coupon: coupon.id});
           } else {
             $scope.invalidCouponEntered = true;
             $scope.enterCoupon = false;
             if(!$scope.$$phase) $scope.$apply();
-            Intercom('trackEvent', 'triedInvalidCoupon', coupon);
-            analytics.track('triedInvalidCoupon', coupon);
+            Intercom('trackEvent', 'triedInvalidCoupon', {coupon: $scope.couponEntered});
+            analytics.track('triedInvalidCoupon', {coupon: $scope.couponEntered});
           }
         }, function(err) {
             $scope.couponEntered = undefined;
@@ -209,14 +209,14 @@ angular.module('bodyAppApp')
         }).$promise
     }
 
-		$scope.joinClicked = function(couponEntered) {
-      if (!$scope.validCoupon) {
-  			openStripePayment()
-      } else if (couponEntered === currentUser.referralCode){
-        $scope.userEnteredOwnCoupon = true;
+		$scope.joinClicked = function() {
+      console.log("Join clicked")
+      if ($scope.validCoupon.id === currentUser.referralCode){
+        console.log("User entered own referral coupon")
+        return $scope.userEnteredOwnCoupon = true;
         if(!$scope.$$phase) $scope.$apply();
       } else {
-        openStripePayment($scope.validCoupon)
+        openStripePayment()
       }
 		}
 
@@ -226,6 +226,7 @@ angular.module('bodyAppApp')
 
 		function openStripePayment() {
       var coupon = $scope.validCoupon || undefined;
+      if (coupon) console.log("Subscribing with coupon " + coupon.id)
       if ($rootScope.subscribing) return console.log("already subscribing")
       $rootScope.errorProcessingPayment = false;
       
@@ -234,7 +235,7 @@ angular.module('bodyAppApp')
       
       // var planInfo = snapshot.val()[Object.keys(snapshot.val())[0]]
       // var planInfo = snapshot.val()
-      if (!planInfo) return
+      if (!planInfo) return console.log("No plan info. Returning.")
       var amountToPay = planInfo.amount;
       analytics.track('openedStudioSubscription', {
         studioId: studioId,
