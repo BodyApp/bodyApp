@@ -62,6 +62,7 @@ angular.module('bodyAppApp')
         getClassType(snapshot.val().classType)
         getWorkout(snapshot.val().workout)
         getStudioLogo()
+        getStudioHeader()
         calendarDateSetter()
         calendarDateSetterEnd($scope.classDetails.duration)       
       })
@@ -140,6 +141,15 @@ angular.module('bodyAppApp')
     function getStudioLogo() {
       storageRef.child('images/icon.jpg').getDownloadURL().then(function(url) {
         $scope.iconUrl = url;
+        if(!$scope.$$phase) $scope.$apply();
+      }).catch(function(error) {
+        console.log(error)
+      });
+    }
+
+    function getStudioHeader() {
+      storageRef.child('images/header.jpg').getDownloadURL().then(function(url) {
+        $scope.headerUrl = url;
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
         console.log(error)
