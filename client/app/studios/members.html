@@ -31,11 +31,13 @@
               <h5 class="mb0">Full Name</h5>
               <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.firstName}} {{showCustomerDetail.profileInfo.lastName}}</h5>
               <h5 class="mt8 mb0">Email</h5>
-              <h5 class="lightgray mb0">{{showCustomerDetail.email}}</h5>
-              <h5 class="mt8 mb0">Location</h5>
-              <h5 class="lightgray mb0">{{showCustomerDetail.sources.data[0].address_city}}, {{showCustomerDetail.sources.data[0].address_state}} {{showCustomerDetail.sources.data[0].country}}</h5>
-              <h5 class="mt8 mb0">History</h5>
-              <h5 class="lightgray mb0">{{getTimeMember(showCustomerDetail)}}</h5>
+              <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.email}}</h5>
+              <h5 ng-if = "showCustomerDetail.sources.data[0].address_city" class="mt8 mb0">Location</h5>
+              <h5 ng-if = "showCustomerDetail.sources.data[0].address_city" class="lightgray mb0">{{showCustomerDetail.sources.data[0].address_city}}, {{showCustomerDetail.sources.data[0].address_state}} {{showCustomerDetail.sources.data[0].country}}</h5>
+              <h5 ng-if = "showCustomerDetail.numClassesBooked"  class="mt8 mb0">Number of Classes</h5>
+              <h5 ng-if = "showCustomerDetail.numClassesBooked" class="lightgray mb0">{{showCustomerDetail.numClassesBooked}}</h5>
+              <h5 ng-if = "showCustomerDetail.subscriptions.data[0]"  class="mt8 mb0">History</h5>
+              <h5 ng-if = "showCustomerDetail.subscriptions.data[0]" class="lightgray mb0">{{getTimeMember(showCustomerDetail)}}</h5>
               <h5 ng-if = "showCustomerDetail.subscriptions.data[0]" class="mt8 mb0">Rate</h5>
               <h5 ng-if = "showCustomerDetail.subscriptions.data[0]" class="lightgray mb0">${{showCustomerDetail.subscriptions.data[0].plan.amount/100}} per {{showCustomerDetail.subscriptions.data[0].plan.interval}}</h5>
             </div>
@@ -61,21 +63,21 @@
           </div> 
 
           <div class="col-md-8">
-            <div class="panel">
-              <div class="panel-header">
+            <!-- <div class="panel"> -->
+              <!-- <div class="panel-header">
                 Additional Information
               </div>
-              <div class="panel-body">
+              <div class="panel-body"> -->
                 <!-- <h5 class="mb0">Total Revenue</h5>
                 <h5 class="lightgray mb0">${{getTotalRevenue(showCustomerDetail)}}</h5> -->
                 <!-- <h5 class="mt8 mb0">Attendance</h5>
                 <h5 class="lightgray mb0">3x weekly</h5> -->
-                <h5 class="mt8 mb0">Injuries</h5>
+                <!-- <h5 class="mt8 mb0">Injuries</h5>
                 <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.injuries}}</h5>
                 <h5 class="mt8 mb0">Goals</h5>
-                <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.goals}}</h5>
-              </div>
-            </div>
+                <h5 class="lightgray mb0">{{showCustomerDetail.profileInfo.goals}}</h5> -->
+              <!-- </div> -->
+            <!-- </div> -->
 
 <!-- ACTION FORMS -->
     <!-- NOTES -->
@@ -278,7 +280,7 @@
         <div class="panel-body">
           <div class="row mb16">
             <div class="col-sm-12">
-              <h5 class="mb0">Total Studio Members: <span class="lightgray bold">{{getNumberOf(customers)}}</span></h5>
+              <h5 class="mb0">Total subscribers: <span class="lightgray bold">{{getNumberOf(customers)}}</span></h5>
             </div>
           </div>
           <div class="row mb16">
@@ -311,8 +313,8 @@
                     <th>Photo</th>
                     <th>First</th>
                     <th>Last</th>
-                    <th>Injury</th>
-                    <th>Goal</th>
+                    <th>Email</th>
+                    <!-- <th>Goal</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -321,8 +323,94 @@
                     <td><img ng-src="{{customer.profileInfo.picture}}" width="40" height="40" class="profile-photo"></td>
                     <td>{{customer.profileInfo.firstName}}</td>
                     <td>{{customer.profileInfo.lastName}}</td>
-                    <td class="overflow">{{customer.profileInfo.injuries}}</td>
-                    <td>{{customer.profileInfo.goals}}</td>
+                    <td>{{customer.profileInfo.email}}</td>
+                    <!-- <td class="overflow">{{customer.profileInfo.injuries}}</td>
+                    <td>{{customer.profileInfo.goals}}</td> -->
+                  </tr>
+                  <!-- <tr>
+                    <td>2</td>
+                    <td><img src="/assets/images/justin-photo.jpg" width="40" height="40" class="profile-photo"></td>
+                    <td>Justin</td>
+                    <td>Mendelson</td>
+                    <td class="overflow">None</td>
+                    <td>I don't set goals. I smash them.</td>
+                  </tr>                   -->
+                  <!-- <tr>
+                    <td colspan="6"><a href="#" class="text-center">View All</a></td>
+                  </tr> -->
+                </tbody>
+              </table>
+            </div>                      
+          </div>
+
+        </div>
+      </div>
+<!-- PANEL END--> 
+
+<!-- PANEL -->
+      <div class="panel mb16">
+        <div class="panel-header">
+          Your Leads
+          <ul class="panel-action-list">
+            <!-- <li>
+              <a href="#" class="panel-action-item">Message</a>
+            </li> -->
+            <!-- <li id = "exportButton" ng-init = "exportCustomers(customers)"> -->
+              <!-- <a href="#" class="panel-action-item" id = "exportButton" ng-click = "exportCustomers(customers)">Export</a>
+              <a id="downloadAnchorElem" style="display:none"></a> -->
+              <!-- <a ng-href="data:' + {{toExport}} + '" download="members.json" class="panel-action-item">Export</a> -->
+            <!-- </li>             -->
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <h5 class="mb0">Leads that have taken at least one class: <span class="lightgray bold">{{getNumberOf(leads)}}</span></h5>
+            </div>
+          </div>
+          <div class="row mb16">
+          <!--   <div class="col-sm-12">
+              <div class="select">
+                <select>
+                  <option>All Types</option>
+                  <option>Members only</option>
+                  <option>Drop Ins only</option>
+                </select>           
+              </div>
+              <div class="select">
+                <select>
+                  <option>Activity: Last 30 days</option>
+                  <option>Activity: Last 60 days</option>
+                  <option>Activity: Last 90 days</option>
+                  <option>Activity: Last 120 days</option>
+                  <option>Activity: All time</option>
+                </select>           
+              </div>                     
+            </div> -->
+          </div>
+
+          <div class="row mb16">
+            <div class="col-sm-12">
+              <table class="table mb0 table-condensed table-hover member-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Photo</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Email</th>
+                    <!-- <th>Goal</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat = "customer in leads" ng-click = "clickCustomer(customer)" ng-if = "customer.profileInfo">
+                    <td>{{$index + 1}}</td>
+                    <td><img ng-src="{{customer.profileInfo.picture}}" width="40" height="40" class="profile-photo"></td>
+                    <td>{{customer.profileInfo.firstName}}</td>
+                    <td>{{customer.profileInfo.lastName}}</td>
+                    <td>{{customer.profileInfo.email}}</td>
+                    <!-- <td class="overflow">{{customer.profileInfo.injuries}}</td>
+                    <td>{{customer.profileInfo.goals}}</td> -->
                   </tr>
                   <!-- <tr>
                     <td>2</td>

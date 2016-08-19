@@ -1,5 +1,17 @@
 <div ng-controller="SideNavbarCtrl">
   <ul class="sidenav-list">
+    <h4>Management</h4>
+    <li>
+      <a ng-href="/studios/{{studioId}}/editschedule" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'classschedule'}" ng-click="selectedTab = 'classschedule';">Class Schedule</a>
+    </li> 
+    <li>
+      <a ng-href="/studios/{{studioId}}/members" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'members'}" ng-click="selectedTab = 'members';">Your Members</a>
+    </li> 
+    <li>
+      <a ng-href="/studios/{{studioId}}/recordvideo" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'recordvideo'}" ng-click="selectedTab = 'recordvideo';">On-Demand Library</a>
+    </li>
+    <br> 
+    <h4>Setup</h4>
     <li>
       <a ng-href="/studios/{{studioId}}/storefrontinfo" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'storefrontinfo'}" ng-click="selectedTab = 'classes';">Storefront Info</a>
     </li>
@@ -21,11 +33,6 @@
     <li>
       <a ng-href="/studios/{{studioId}}/music" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'music'}" ng-click="selectedTab = 'music';">Music</a>
     </li>
-    <li>
-      <a ng-href="/studios/{{studioId}}/members" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'members'}" ng-click="selectedTab = 'members';">Your Members</a>
-    </li> 
-    <li>
-      <a ng-href="/studios/{{studioId}}/editschedule" class="sidenav-item" ng-class = "{'sidenav-item-selected': selectedTab === 'classschedule'}" ng-click="selectedTab = 'classschedule';">Class Schedule</a>
-    </li> 
+    
   </ul>
  </div>

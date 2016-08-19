@@ -63,6 +63,8 @@ angular.module('bodyAppApp')
     // })
 
     function listCustomers() { //Can also pass in a particular planId to only get subscriptions for that plan.
+      $scope.customers = {}
+      $scope.leads = {};
       ref.child('stripeConnected').child('access_token').once('value', function(snapshot) {
         if (!snapshot.exists()) return
         Studio.listCustomers({
@@ -74,21 +76,61 @@ angular.module('bodyAppApp')
         }).$promise.then(function(customers) {
           if (!customers) return console.log("No customers retrieved.")
           console.log("Retrieved " + customers.length + " customers");
-
-          $scope.customers = {}
           for (var i = 0; i < customers.length; i++) {
-          // console.log(customers[i])
-          if (customers[i].metadata && customers[i].metadata.mongoId) $scope.customers[customers[i].metadata.mongoId] = customers[i];
-            User.getUser({id: currentUser._id}, {userToGet: customers[i].metadata.mongoId}).$promise.then(function(data) {
-              $scope.customers[data._id] = $scope.customers[data._id] || {};
-              $scope.customers[data._id].profileInfo = data;
-              console.log($scope.customers)
+            if (customers[i].subscriptions && customers[i].subscriptions.data && customers[i].subscriptions.data.length && customers[i].metadata && customers[i].metadata.mongoId) {
+              $scope.customers[customers[i].metadata.mongoId] = customers[i];
+              User.getUser({id: currentUser._id}, {userToGet: customers[i].metadata.mongoId}).$promise.then(function(data) {
+                $scope.customers[data._id] = $scope.customers[data._id] || {};
+                $scope.customers[data._id].profileInfo = data;
+                getBookings(data._id)
+                if(!$scope.$$phase) $scope.$apply();
+              })  
+            }
+            if ((!customers[i].subscriptions || !customers[i].subscriptions.data || !customers[i].subscriptions.data.length) && customers[i].metadata && customers[i].metadata.mongoId) {
+              $scope.leads[customers[i].metadata.mongoId] = customers[i];
+              User.getUser({id: currentUser._id}, {userToGet: customers[i].metadata.mongoId}).$promise.then(function(data) {
+                $scope.leads[data._id] = $scope.leads[data._id] || {};
+                $scope.leads[data._id].profileInfo = data;
+                getBookings(data._id)
+                if(!$scope.$$phase) $scope.$apply();
+              })  
+            }
+          }
+          getAllLeads()
+        })
+      })
+    }
+
+    function getBookings(userId) {
+      if (!userId) return
+      ref.child('userBookings').child(userId).once('value', function(snapshot) {
+        if ($scope.customers[snapshot.key]) {
+          $scope.customers[snapshot.key].classesBooked = snapshot.val();
+          $scope.customers[snapshot.key].numClassesBooked = Object.keys(snapshot.val()).length;
+        }
+        if ($scope.leads[snapshot.key]) {
+          $scope.leads[snapshot.key].classesBooked = snapshot.val();
+          $scope.leads[snapshot.key].numClassesBooked = Object.keys(snapshot.val()).length;
+        }
+      })
+    }
+
+    function getAllLeads() {
+      ref.child('userBookings').once('value', function(snapshot) {
+        snapshot.forEach(function(snapshot2) {
+          var lead = snapshot2.key;
+          if (!$scope.customers[lead] && !$scope.leads[lead]) {
+            $scope.leads[lead] = $scope.leads[lead] || {};
+            $scope.leads[lead].classesBooked = snapshot2.val();
+            $scope.leads[lead].numClassesBooked = Object.keys(snapshot2.val()).length;
+            User.getUser({id: currentUser._id}, {userToGet: lead}).$promise.then(function(data) {
+              $scope.leads[data._id].profileInfo = data;
               if(!$scope.$$phase) $scope.$apply();
             })  
           }
         })
       })
-    }
+    } 
 
     $scope.getTimeMember = function(customer) {
       if (!customer || !customer.subscriptions) {return "Not a customer"}

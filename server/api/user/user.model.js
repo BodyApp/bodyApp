@@ -102,18 +102,11 @@ UserSchema
       "_id": this._id,
       'firstName': this.firstName,
       'lastName': this.lastName,
+      'email': this.email,
       'gender': this.gender,
       'role': this.role,
       'picture': this.picture,
       'facebookId': this.facebookId,
-      "injuries": this.injuries,
-      "goals": this.goals,
-      'trainerCredential1': this.trainerCredential1,
-      'trainerCredential2': this.trainerCredential2,
-      'trainerCredential3': this.trainerCredential3,
-      'trainerCredential4': this.trainerCredential4,
-      'trainerRating': this.trainerRating,
-      'trainerNumRatings': this.trainerNumRatings,
     };
   });
 
