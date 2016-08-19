@@ -19,9 +19,15 @@
             <!-- <li class="mb8">
               <a href="#">Class Schedule</a>
             </li> -->
+            <!-- <li class="mb8">
+              <a href="#" ng-click="dashboardClicked()">Dashboard</a>
+            </li> -->
             <li class="mb8">
               <a href="#" ng-click="friendsClicked()">Friends</a>
             </li>
+            <!-- <li class="mb8">
+              <a href="#" ng-click="nutritionClicked()">Nutrition</a>
+            </li> -->
             <!-- <li>
               <a href="#">Workouts</a>
             </li> -->
@@ -219,7 +225,8 @@
 
       <div class="panel mb24">    <!-- YOUR RESERVATIONS PANEL --> 
         <div class="panel-header">
-          Your Reservations
+          <div ng-show = "!nutritionActive">Your Reservations</div>
+          <div ng-show = "nutritionActive">Nutrition</div>
           <!-- <div class="cal-controls text-left">
             <div class="select">
               <select>
@@ -228,8 +235,7 @@
             </div>
           </div>           -->
         </div>
-        <div class="panel-body">
-
+        <div class="panel-body" ng-show = "!nutritionActive">
           <div class="row">
             <div class="col-sm-12">
               <table class="table table-condensed table-hover cal-list-table">
@@ -258,6 +264,18 @@
             </div>
           </div>
 
+        </div>
+        <div class="panel-body" ng-show = "nutritionActive">
+          <div class="row">
+            <div class="col-sm-12">
+              <md-input-container>
+              <label>Food To Search For</label>
+              <input ng-model="foodString">
+            </md-input-container>
+            <md-button ng-click = "searchForFood(foodString)" type="submit">Search</md-button>
+              <div id="nutritionLabel1"></div>
+            </div>
+          </div>
         </div>
       </div>   <!-- YOUR RESERVATIONS END --> 
 

@@ -39,7 +39,8 @@
     "ngMeta": "*",
     "angular-update-meta": "*",
     "angular-svg-round-progressbar": "*",
-    "angularjs-socialshare": "*"
+    "angularjs-socialshare": "*",
+    "nutrition-label-jquery-plugin": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

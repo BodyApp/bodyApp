@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-  .controller('UserScheduleCtrl', function ($scope, $location, $state, Auth) {
+  .controller('UserScheduleCtrl', function ($scope, $location, $state, $http, Auth) {
   	var ref = firebase.database().ref();
     var auth = firebase.auth();
     var timezone = jstz().timezone_name;
@@ -13,22 +13,28 @@ angular.module('bodyAppApp')
     var startAt = (new Date().getTime() - 7*24*60*60*1000) //7 days ago
 
     auth.onAuthStateChanged(function(user) {
-        if (user) {
-          delayStart()
-          // setMinutes()
+      if (user) {
+        delayStart();
+      } else {
+        console.log("User is logged out");
+        if (currentUser.firebaseToken) {
+          auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+            if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+            delayStart();
+          }); 
         } else {
-          // console.log("User is logged out");
-          if (currentUser.firebaseToken) {
-            auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+          User.createFirebaseToken({ id: currentUser._id }, {}, function(token) {
+            auth.signInWithCustomToken(token).then(function(user) {
+              console.log("Created firebase token and logged in")
               if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
-              delayStart()
-              // setMinutes()
+              delayStart();
             }); 
-          } else {
-            console.log("User doesn't have a firebase token saved, should retrieve one.")
-          }
+          })
         }
+      }
     })
+
+    $('#nutritionLabel1').nutritionLabel();
 
     function delayStart() {
       getUserBookings()
@@ -39,7 +45,6 @@ angular.module('bodyAppApp')
     function getUserBookings() {
       ref.child('userBookings').child($scope.currentUser._id.toString()).orderByKey().startAt(startAtCalendar.toString()).on('value', function(snapshot) {
         if (!snapshot.exists()) console.log("No user bookings found")
-        console.log(snapshot.val())
         $scope.userBookings = snapshot.val();
         $scope.numUserBookings = snapshot.numChildren();
         if(!$scope.$$phase) $scope.$apply();
@@ -56,11 +61,12 @@ angular.module('bodyAppApp')
     }
 
     function getTimeOfLastWeek() {
-      ref.child('tookClass').child($scope.currentUser._id.toString()).orderByValue().startAt(startAt.toString()).once('value', function(snapshot) {
+      ref.child('tookClass').child($scope.currentUser._id.toString()).orderByKey().startAt(startAt.toString()).once('value', function(snapshot) {
+        console.log(snapshot.val())
         $scope.minutesTaken = 0;
         snapshot.forEach(function(classTaken) {
           ref.child('studios').child(classTaken.val().studioId).child('classes').child(classTaken.val().classId).child('duration').once('value', function(classDuration) {
-            $scope.minutesTaken += classDuration.val()
+            $scope.minutesTaken += classDuration.val();
             $scope.maxMinutesTaken = Math.min(100, $scope.minutesTaken)
             if(!$scope.$$phase) $scope.$apply();
           })
@@ -88,6 +94,16 @@ angular.module('bodyAppApp')
       $state.go('settings', {teammates: true, profilePage: false})
     }
 
+    $scope.nutritionClicked = function() {
+      $scope.nutritionActive = true;
+      if(!$scope.$$phase) $scope.$apply();
+    }
+
+    $scope.dashboardClicked = function() {
+      $scope.nutritionActive = false;
+      if(!$scope.$$phase) $scope.$apply();
+    }
+
     $scope.formatDate = function(dateTime) {
     	return moment(dateTime).format('ddd MMM Do')
     }
@@ -98,5 +114,26 @@ angular.module('bodyAppApp')
 
     $scope.goToClassInfo = function(classToGoTo) {
     	$location.path('/studios/'+classToGoTo.studioId+"/classinfo/"+classToGoTo.classId)
+    }
+
+    $scope.searchForFood = function(foodString) {
+      var req = {
+        method: 'POST',
+        url: 'https://api.nutritionix.com/v1/search',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: { 
+          "appId": "2dabc129",
+        "appKey": "d4ae3234d5b02afc5fdfaed5ee019fe6", 
+        "query": foodString.toString()
+        }
+      }
+
+      $http(req).then(function(data){
+        console.log(data)
+      }, function(err) {
+        console.log(err)
+      });
     }
   })
