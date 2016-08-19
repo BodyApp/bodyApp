@@ -76,6 +76,23 @@
           </div>
         </div>
         <div class="col-md-4">
+          <div class="dashboard-cards">
+            <h5 class="mb24">Your Studios</h5>
+            <table class="table table-condensed table-hover cal-list-table">
+                <thead>
+                  <tr>
+                    <th>Studio ID</th>
+                    <th>Taken</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat = "(studioId, studioInfo) in myStudios" ng-click = "goToStudio(studioId)">
+                    <td>{{studioId}}</td>
+                    <td>{{studioInfo}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
           <!-- 
           MY PROGRESS BEFORE ANYTHING IS UPLOADED
           <div class="dashboard-cards">

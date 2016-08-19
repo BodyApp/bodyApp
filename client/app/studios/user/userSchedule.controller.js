@@ -54,8 +54,14 @@ angular.module('bodyAppApp')
     }
  
     function getClassesAllTime() {
+      $scope.myStudios = $scope.myStudios || {};
       ref.child('tookClass').child($scope.currentUser._id.toString()).once('value', function(snapshot) {
         $scope.classesAllTime = snapshot.numChildren()
+        snapshot.forEach(function(classTaken) {
+          $scope.myStudios[classTaken.val().studioId] = $scope.myStudios[classTaken.val().studioId] || 0;
+          $scope.myStudios[classTaken.val().studioId]++;
+          if(!$scope.$$phase) $scope.$apply();  
+        })
         if(!$scope.$$phase) $scope.$apply();
       })
     }
@@ -114,6 +120,10 @@ angular.module('bodyAppApp')
 
     $scope.goToClassInfo = function(classToGoTo) {
     	$location.path('/studios/'+classToGoTo.studioId+"/classinfo/"+classToGoTo.classId)
+    }
+
+    $scope.goToStudio = function(studioId) {
+      $location.path('/studios/'+studioId)
     }
 
     $scope.searchForFood = function(foodString) {
