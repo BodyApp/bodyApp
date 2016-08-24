@@ -104,7 +104,7 @@ exports.setup = function (User, config) {
 
             usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
             var rightNow = new Date().getTime()
-            ref.child('usersById').child(user._id.toString()).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7, referralCode: newReferralCode}, function(err) {
+            ref.child('usersById').child(user._id.toString()).update({firstName: user.firstName, lastName: user.lastName, email: user.email, created: rightNow, updated: rightNow, trialStart: rightNow, trialDurationDays: 7, referralCode: newReferralCode, facebookId: profile.id}, function(err) {
               if (err) return console.log(err)
               ref.child('referralCodes').child(newReferralCode).update({facebookId: user.facebookId, mongoId: user._id, firstName: user.firstName, lastName: user.lastName}, function(err) {
                 if (err) return console.log(err)
@@ -175,7 +175,7 @@ exports.setup = function (User, config) {
             var rightNow = new Date().getTime();
             console.log(user._id)
             usersRef.child(profile.id).update({picture: user.picture, gender: user.gender, firstName: user.firstName, lastName: user.lastName.charAt(0), email: user.email})
-            ref.child('usersById').child(user._id.toString()).update({firstName: user.firstName, lastName: user.lastName, email: user.email, updated: rightNow}, function(err) {
+            ref.child('usersById').child(user._id.toString()).update({firstName: user.firstName, lastName: user.lastName, email: user.email, updated: rightNow, facebookId: profile.id}, function(err) {
               if (err) return console.log(err);
               ref.child('usersById').child(user._id.toString()).child('trialStart').once('value', function(snapshot) {
                 if (!snapshot.exists()) ref.child('usersById').child(user._id.toString()).update({trialStart: rightNow, trialDurationDays: 7}, function(err) {

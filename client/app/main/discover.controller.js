@@ -125,7 +125,7 @@ angular.module('bodyAppApp')
       var classRef = ref.child('studios').child(studioId).child('bookings').child(classToAdd.dateTime).once('value', function(snapshot) {
         if (!snapshot.exists()) return
         $scope.numBookings[studioId] = $scope.numBookings[studioId] || {};
-        $scope.numBookings[studioId][classRef.key] = snapshot.numChildren();
+        $scope.numBookings[studioId][classToAdd.dateTime] = snapshot.numChildren();
         if(!$scope.$$phase) $scope.$apply();
 
         snapshot.forEach(function(booking) {

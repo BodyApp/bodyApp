@@ -120,7 +120,7 @@ angular.module('bodyAppApp')
 
   	function uploadImage(testimonialId, imageToSave) {
   // $scope.$watch('headerImage.length',function(newVal,oldVal){
-
+    $scope.testimonialImages = $scope.testimonialImages || {};
     $scope.testimonialImages[testimonialId] = "https://d13yacurqjgara.cloudfront.net/users/82092/screenshots/1073359/spinner.gif";
     if(!$scope.$$phase) $scope.$apply();
 

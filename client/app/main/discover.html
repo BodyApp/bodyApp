@@ -211,8 +211,8 @@
                       </div>
                     </li> -->
                   </ul>
-                  <p class="lightgray text-center hidden">8 bookings</p>
-                  <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
+                  <p class="lightgray text-center" ng-show = "numBookings[instance.studioId][instance.dateTime]">{{numBookings[instance.studioId][instance.dateTime]}} bookings</p>
+                  <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" ng-show = "!numBookings[instance.studioId][instance.dateTime]" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
                 </div>
               </div>
             </div>

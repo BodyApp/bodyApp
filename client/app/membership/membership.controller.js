@@ -211,7 +211,7 @@ angular.module('bodyAppApp')
 
 		$scope.joinClicked = function() {
       console.log("Join clicked")
-      if ($scope.validCoupon.id === currentUser.referralCode){
+      if ($scope.validCoupon && $scope.validCoupon.id === currentUser.referralCode){
         console.log("User entered own referral coupon")
         return $scope.userEnteredOwnCoupon = true;
         if(!$scope.$$phase) $scope.$apply();
