@@ -70,7 +70,7 @@
   font-weight: 600;
 }
 .h1cursive {
-  font-family: 'Raleway',"Helvetica Neue", Helvetica, Arial, sans-serif
+  font-family: 'Raleway',"Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700 !important;
   color: #db0afa;
   font-size: 70px;
@@ -513,6 +513,12 @@
   .display-block-xs {
     display: block;
   }
+}
+.float-right {
+  float: right;
+}
+.float-left {
+  float: left;
 }
 
 /*------DASHBOARD-------*/
@@ -1636,7 +1642,7 @@ h1 {
   color: #A2B2E3;
 }
 .gray {
-  color: #525252;
+  color: #565A5C;
 }
 .lightgray {
   color: #AAAAAA;
@@ -1655,6 +1661,9 @@ h1 {
 }
 .thin500 {
   font-weight: 500;
+}
+.bold800 {
+  font-weight: 800;
 }
 .user-list li {
   text-align: left;

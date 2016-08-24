@@ -151,8 +151,8 @@
   transition: opacity .2s;
 }
 .studio-profile-img {
-	width: 100px;
-	height: 100px;
+	width: 130px;
+	height: 130px;
 	border-radius: 50%;
 	border: 1px solid #85888D;
 }
@@ -180,11 +180,10 @@
 	margin-bottom: 5px;
 }
 .studio-short {
-	font-size: 18px;
-	line-height: 24px;
-	font-weight: 600;
-	color: #565A5C;
-	margin-left: 2px;
+	font-size: 26px;
+	line-height: 32px;
+	font-weight: 500;
+	color: #83888A;
 }
 .studio-stars {
 	display: inline-block;
@@ -200,7 +199,7 @@
   color: #FCB500;
 }
 .btn-tag {
-  color: black;
+  color: #565A5C;
   display: inline-block;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -276,7 +275,7 @@
   padding: 15px;
   position: absolute;
   bottom: 0px;
-  left: 1px;
+  left: 0px;
   display: block;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
@@ -291,15 +290,16 @@
   width: 40px;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin: 4px;
+}
+.studio-friends li {
+  display: inline-block;
 }
 .empty-friend-circle {
   display: inline-block;
   height: 40px;
   width: 40px;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin: 4px;
   border: 1px dashed #D2D2D2;
   border-radius: 50%;
   vertical-align: middle;

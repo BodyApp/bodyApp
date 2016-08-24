@@ -1,30 +1,30 @@
 <div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
 
-<div class="studio-sorter pt48 pb48 pt-xs-24 pb-xs-16">
+<div class="studio-sorter pt48 pb48 pt-xs-24 pb-xs-16 ng-scope">
   <div class="page-container-responsive">
     <div class="row">
       <div class="col-md-12">
         <div class="sorter-text">
           Show me
           <div class="select">
-            <select ng-model = "categoryFilter">
-              <option value = "">All</option>
-              <option value = "strength">Strength</option>
-              <option value = "hiit">HIIT</option>
-              <option value = "yoga">Yoga</option>
-              <option value = "dance">Dance</option>
-              <option value = "boxing">Boxing</option>
-              <option value = "pilates">Pilates</option>
-              <option value = "barre">Barre</option>
-              <option value = "martialArts">Martial Arts</option>
-              <option value = "meditation">Meditation</option>
-              <option value = "nutrition">Nutrition</option>
+            <select ng-model="categoryFilter" class="ng-pristine ng-untouched ng-valid" aria-invalid="false">
+              <option value="">All</option>
+              <option value="strength">Strength</option>
+              <option value="hiit">HIIT</option>
+              <option value="yoga">Yoga</option>
+              <option value="dance">Dance</option>
+              <option value="boxing">Boxing</option>
+              <option value="pilates">Pilates</option>
+              <option value="barre">Barre</option>
+              <option value="martialArts">Martial Arts</option>
+              <option value="meditation">Meditation</option>
+              <option value="nutrition">Nutrition</option>
             </select>
           </div>
           <div class="select">
-            <select ng-model = "classesVsStudios">
-              <option value = "classes">classes</option>
-              <option value = "studios">studios</option>
+            <select ng-model="classesVsStudios" class="ng-pristine ng-untouched ng-valid" aria-invalid="false">
+              <option value="classes">classes</option>
+              <option value="studios">studios</option>
             </select>
           </div>
         </div>
@@ -241,109 +241,8 @@
         </ul>
       </div>
     </div>
-
   </div>
 </div>
-
-<!-- <div class="class-listings pt48 pb48" ng-show = "classesVsStudios === 'classes'">
-  <div class="page-container-responsive">
-    
-    <div class="row mb24">
-      <div class="col-xs-12 text-center">
-        <h2>Upcoming Classes for {{today}} - {{sevenDaysFromNow}}</h2>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-12">
-        <ul class="class-list-date"> -->
-          <!-- <li ng-repeat = "(day, value) in upcomingClasses | orderObjectBy:day:true">
-          <li ng-repeat = "day in days" ng-hide = "!upcomingClasses[day]"> 
-            <div class="row">
-              <div class="col-sm-2 hidden-xs">
-                <h3 class="mb0">{{getDayOfWeek(day)}}</h3>
-                <h3 class="mb0">{{getDate(day)}}</h3>
-              </div>
-              <div class="mb16 col-xs-12 visible-xs text-center">
-                <h2 class="mb0 bold">{{getFullDate(day)}}</h2>
-              </div>
-              <div class="col-sm-10">
-                <ul class="class-list-info"> -->
-                  <!-- <li ng-repeat = "instance in upcomingClasses[day] | orderBy:'dateTime'" ng-show = "!categoryFilter || studios[instance.studioId].categories[categoryFilter]">
-                   <li ng-repeat = "instance in classes=(upcomingClasses[day] | filter:filterByCategory()) | orderBy:'dateTime'" ng-show = "!categoryFilter || studios[instance.studioId].categories[categoryFilter]"> --> <!-- REPEAT THIS FOR ALL TIMES DURING DAY -->
-                    <!-- <li ng-repeat = "instance in upcomingClasses[day][time] | orderBy:'dateTime'" > -->
-                     <!--  <div ng-show = "!instance">No upcoming {{categoryFilter}} classes</div>
-                      <div class="row mb-xs-8">
-                        <div class="col-xs-7">
-                          <h3>{{getTime(instance.dateTime)}} ({{instance.duration}} min)</h3>
-                        </div>
-                        <div class="col-xs-5 text-right">
-                          <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="btn-blue hidden-xs">View Class</a>
-                          <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="btn-blue btn-collapse visible-xs">View Class</a>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="row text-center-xs">
-                            <div class="col-sm-12">
-                              <a href="#" ng-click = "showClassInfo[instance.classType] = !showClassInfo[instance.classType]; trackEvent('showClassInfoClicked', {studioId: instance.studioId, classId: instance.dateTime})"><h4 class="lightgray mb8">{{classTypes[instance.classType].name}} by {{studios[instance.studioId].studioName}} <i class="fa fa-caret-down"></i></h4></a>
-                              <div class="display-block mb8">
-                                <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
-                              </div>
-                            </div>
-                          </div>
-                          <a class="row mb8" ng-show = "showClassInfo[instance.classType]" ng-href = "/studios/{{instance.studioId}}">  --><!-- SHOW THIS WHEN CARET-DOWN CLICKED -->
-                            <!-- <div class="col-sm-4">
-                              <img ng-src="{{studioPictures[instance.studioId]}}" width="100%">
-                            </div>
-                            <div class="col-sm-8">
-                              <h5 class="lightgray mt-xs-8">{{classTypes[instance.classType].classDescription}}</h5>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                      <div class="row mt8">
-                        <div class="col-xs-7 col-sm-4">
-                          <div class="row">
-                            <div class="col-xs-6 col-sm-5 col-md-5">
-                              <img class="round-photo" ng-if = "!instructors[instance.instructor].addedPicture" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=85&height=85">
-                              <img class="round-photo" ng-if = "instructors[instance.instructor].addedPicture" ng-src="{{instructors[instance.instructor].addedPicture}}" height="85" width="85">
-                            </div>
-                            <div class="col-xs-6 col-sm-7 col-md-7">
-                              <h5>Instructor</h5>
-                              <h5 class="lightgray">{{instructors[instance.instructor].firstName}} {{instructors[instance.instructor].lastName}}</h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-sm-2 hidden-xs">
-                          <h5>Price</h5>
-                          <h5 class="lightgray" ng-show = "!currentUser._id && instance.typeOfClass === 'Regular'">Free During Trial</h5>
-                          <h5 class="lightgray" ng-show = "currentUser._id && instance.typeOfClass === 'Regular' && studios[instance.studioId].dropinPricing && !trialPeriodTime">${{studios[instance.studioId].dropinPricing/100}}</h5>
-                          <h5 class="lightgray" ng-show = "currentUser._id && instance.typeOfClass === 'Regular' && !studios[instance.studioId].dropinPricing && !trialPeriodTime">$3</h5>
-                          <h5 class="lightgray" ng-show = "currentUser._id && instance.typeOfClass === 'Regular' && trialPeriodTime">Free During Trial</h5>
-                          <h5 class="lightgray" ng-show = "instance.typeOfClass === 'Specialty'">${{classTypes[instance.classType].specialtyClassRate}}</h5> -->
-                          <!-- <h5 class="lightgray">{{instance.duration}} min</h5> -->
-                          <!-- <h5 class="lightgray">{{instance.duration}} min</h5> --><!-- 
-                        </div>
-                        <div class="col-xs-5 col-sm-2">
-                          <h5>Equipment</h5>
-                          <h5 class="lightgray" ng-if = "!classTypes[instance.classType].equipment">None</h5>
-                          <div ng-repeat = "equipment in classTypes[instance.classType].equipment">
-                            <h5 class="lightgray" ng-if = "$index < 3">{{equipment.name.trunc(15, true)}}</h5>
-                          </div>
-                        </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-</div> -->
-
 
 <div class="studio-listings pt48 pb48" ng-show = "classesVsStudios === 'studios'">
   <div class="page-container-responsive">

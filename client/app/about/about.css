@@ -1,3 +1,479 @@
+/* MOVE THIS TO STUDIO CSS FILE */
+
+.storefront-header {
+  height: 420px;
+  width: 100%;
+  position: relative;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-color: #f5f5f5;
+}
+.storefront-header-vid {
+  width: 103px;
+  height: 122px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+.storefront-header-pricing {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
+  background-color: rgba(0,0,0,0.4);
+  padding: 18px 25px;
+}
+.storefront-header-pricing .discovery-tag-love,
+.storefront-header-pricing .discovery-tag-price {
+  font-size: 1.4rem;
+}
+.video-play {
+  text-shadow: 0px 0px 20px rgba(0,0,0,0.4);
+}
+.studio-tags .btn-tag {
+  padding: 6px 20px;
+}
+.storefront .calendar-selector-days {
+  height: inherit;
+  width: 96%;
+}
+.storefront .calendar-selector {
+  width: auto;
+}
+.storefront .week-changer {
+  width: 2%;
+}
+.storefront .calendar-selector ul li {
+  font-size: 13px;
+}
+.storefront .calendar-selector {
+  border-bottom: none;
+}
+.storefront .week-changer i {
+  font-size: 15px;
+}
+.class-listings-descr {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 0;
+}
+.class-listings-descr h3 {
+  font-size: 24px;
+  font-weight: 600 !important;
+}
+.class-listings-descr h5 {
+  font-size: 13px;
+}
+.class-listings .social-bookings ul {
+  margin-top: 4px;
+  margin-bottom: 2px;
+  height: 24px;
+}
+.social-bookings img {
+  height: 22px;
+  width: 22px;
+}
+.small-icon {
+  display: inline-block;
+  margin-right: 5px;
+}
+.storefront-title {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+.storefront-title h4 {
+  font-size: 24px;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 8px;
+}
+.storefront-title a {
+  vertical-align: text-bottom;
+}
+.on-demand-vids {
+  position: relative;
+  width: 100%;
+}
+.on-demand-vids span {
+  font-size: 12px;
+}
+.featured-vid-container, .regular-vid-container {
+  vertical-align: top;
+  float: left;
+}
+.featured-vid-container {
+  width: 48%;
+}
+.regular-vid-container {
+  width: 24%;
+  margin-left: 2%;
+  margin-bottom: 8px;
+}
+.featured-vid-container .video {
+  height: 200px;
+  margin-bottom: 3px;
+  position: relative;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;  
+}
+.featured-vid-container .video:hover,
+.regular-vid-container .video:hover {
+  cursor: pointer;
+}
+.featured-vid-container .video:hover .video-info,
+.regular-vid-container .video:hover .video-info {
+  z-index: 1;
+}
+.regular-vid-container .video {
+  height: 84px;
+  margin-bottom: 3px;
+  position: relative;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;  
+}
+.vid-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.vid-title-featured {
+  display: inline-block;
+  vertical-align: middle;
+}
+.video-info {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  width: 100%;
+  height: 200px;
+  background: black;
+  background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(at bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+}
+.regular-vid-container .video-info {
+  height: 84px;
+}
+.regular-vid-container .video-info-play {
+  height: 28px;
+  width: 90px;
+}
+.regular-vid-container .video-info-details {
+  padding: 5px 5px;
+}
+.regular-vid-container .btn-clear {
+  font-size: 12px;
+  padding: 3px 10px;
+}
+.video-info-play {
+  position: absolute;
+  height: 37px;
+  width: 123px;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+.video-info-details {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 10px;
+}
+.story-preview, .upload-story {
+  height: 270px;
+  width: 270px;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+.upload-story {
+  border: 1px dashed #ccc;
+  padding: 15px;
+}
+.upload-story:hover {
+  background-color: rgb(244, 249, 255);
+}
+.testimonial-text {
+  height: 66px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.testimonial-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; 
+}
+.studio-story {
+  position: relative;
+}
+.team-list li {
+  margin-bottom: 24px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
+.team-list li:first-child {
+  border-top: none;
+  padding-top: 0px;
+}
+.video-play-btn {
+  font-size: 120px !important;
+  color: white;
+  opacity: 0.8;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.video-play-btn:hover {
+  opacity: 1;
+  -webkit-transition: opacity .2s;
+  -moz-transition: opacity .2s;
+  -o-transition: opacity .2s;
+  transition: opacity .2s;
+}
+.instructor-profile-img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  border: 1px solid #85888D;
+}
+.storefront-tag-love {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+}
+.facebook-messenger-btn:hover {
+  opacity: 0.8;
+}
+@media (min-width: 990px) and (max-width: 1100px) {
+  .class-listings h4 {
+    font-size: 18px;
+  }
+  .story-preview, .upload-story {
+    width: 240px;
+    height: 240px;
+  }
+  .stories-overlay {
+    width: 240px !important;
+  }
+  .social-bookings img {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .storefront-header {
+    height: 32vh;
+  }
+  .video-play-btn {
+    font-size: 50px !important;
+  }
+  .storefront-header-vid {
+    width: 45px;
+    height: 45px;
+    bottom: 20px;
+  }
+  .storefront-header-pricing {
+    padding: 10px 10px;
+  }
+  .storefront-header-pricing .discovery-tag-love,
+  .storefront-header-pricing .discovery-tag-price {
+    font-size: 10px;
+  }
+  .subscribe-btn {
+    font-size: 10px !important;
+    padding: 3px 8px !important;
+  }
+  .studio-profile-img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .studio-name {
+    font-size: 18px !important;
+    line-height: 20px !important;
+    text-align: left;
+  }
+  .studio-short {
+    font-size: 12px !important;
+    line-height: 14px !important;
+  }
+  .col-xs-expand {
+    padding-left: 0px;
+  }
+  .studio-owner {
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .studio-tags .btn-tag {
+    margin-bottom: 8px;
+    margin-right: 5px;
+    padding: 6px 12px;
+  }
+  .storefront .calendar-selector ul li {
+    font-size: 11px;
+  }
+  .storefront .calendar-selector-days {
+    width: 90%;
+  }
+  .storefront .week-changer {
+    width: 5%;
+  }
+  .class-listings-descr h3 {
+    font-size: 16px;
+    font-weight: 700 !important;
+  }
+  .class-listings-descr h5 {
+    font-size: 11px;
+  }
+  .class-listings h4 {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .class-listings h5 {
+    font-size: 11px;
+    line-height: 16px;
+  }
+  .small-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0px;
+  }
+  .class-listings .col-xs-expand2 {
+    padding: 0 5px 0 15px;
+  }
+  .class-listings .col-xs-expand3 {
+    padding: 0 5px;
+  }
+  .class-listings .col-xs-expand4 {
+    padding: 0 15px 0 5px;
+  }
+  .class-listings .btn-blue {
+    padding: 1px 8px !important;
+    font-size: 12px;
+  }
+  .storefront-title h4 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .storefront-title a {
+    font-size: 12px;
+  }
+  .featured-vid-container {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .featured-vid-container .video {
+    height: 50vw;
+  }
+  .regular-vid-container {
+    width: 48%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 10px;
+  }
+  .regular-vid-container .video {
+    height: 25vw;
+  }
+  .vid-title {
+    width: 44vw;
+  }
+  .video-info {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    height: 50vw;
+    background: black;
+    background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(at bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  }
+  .regular-vid-container .video-info {
+    height: 25vw;
+  }
+  .regular-vid-container .video-info-play {
+    height: 28px;
+    width: 50px;
+  }
+  .regular-vid-container .video-info-details {
+    padding: 5px 5px;
+  }
+  .regular-vid-container .btn-clear {
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+  .video-info-play {
+    height: 38px;
+    width: 80px;
+  }
+  .video-info-details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 10px;
+  }
+  .studio-friends img {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 1px !important;
+  }
+  .empty-friend-circle {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 3px !important;
+  }
+  .follow-panel-xs h5 {
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .follow-panel-xs a {
+    font-size: 10px;
+    padding: 5px;
+  }
+  .storefront .content,
+  .studio-team .content {
+    font-size: 13px;
+    line-height: 20px;
+  }
+  .instructor-profile-img {
+    height: 100px;
+    width: 100px;
+  }
+}
+
+/* MOVE THIS TO STUDIO CSS FILE -END- */
+
+
 .bodystudio {
     background-image: url("../../assets/images/studio.jpg");
     background-repeat: no-repeat;
