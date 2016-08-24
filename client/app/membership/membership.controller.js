@@ -627,9 +627,9 @@ angular.module('bodyAppApp')
           dateOfClass: slot ? new Date(slot.dateTime*1) : "None",
         });
         // getInfo(slot.dateTime);
-        ref.child("bookings").child(slot.dateTime).child(currentUser._id).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
-        ref.child("userBookings").child(currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
-        firebase.database().ref().child('userBookings').child(currentUser._id).child(slot.dateTime).update({
+        ref.child("bookings").child(slot.dateTime).child(currentUser._id.toString()).update({firstName: currentUser.firstName, lastName: currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: currentUser.picture ? currentUser.picture : "", facebookId: currentUser.facebookId ? currentUser.facebookId : ""})
+        ref.child("userBookings").child(currentUser._id.toString()).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, workout: slot.workout})
+        firebase.database().ref().child('userBookings').child(currentUser._id.toString()).child(slot.dateTime).update({
           className: $scope.classInfo.name,
           studioName: $scope.studioName,
           studioId: studioId,
@@ -650,8 +650,8 @@ angular.module('bodyAppApp')
         currentUser = currentUser;
       }, function(err) {
           console.log("Error adding class: " + err)
-          ref.child("bookings").child(slot.dateTime).child(currentUser._id).remove()
-          ref.child("userBookings").child(currentUser._id).child(slot.dateTime).remove()
+          ref.child("bookings").child(slot.dateTime).child(currentUser._id.toString()).remove()
+          ref.child("userBookings").child(currentUser._id.toString()).child(slot.dateTime).remove()
           // slot.bookedUsers = slot.bookedUsers || {};
           // delete slot.bookedUsers[currentUser._id];
           // delete slot.bookedFbUserIds[currentUser.facebook.id];

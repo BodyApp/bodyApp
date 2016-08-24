@@ -165,7 +165,7 @@ angular.module('bodyAppApp')
       $scope.workoutOptions = {None: {title: "None", id: "None"}};
       ref.child('classTypes').child(classType).child('workoutsUsingClass').once('value', function(workoutList) {
         if (!workoutList.exists()) {
-          $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+          if ($scope.workoutToCreate) $scope.workoutToCreate.workout = $scope.workoutOptions['None']
           if(!$scope.$$phase) $scope.$apply();
           return;
         }
@@ -173,7 +173,7 @@ angular.module('bodyAppApp')
 	      	var prop = workout.key;
 	        ref.child('workouts').child(prop).once('value', function(snapshot) {
 	          if (!snapshot.exists()) {
-              $scope.workoutToCreate.workout = $scope.workoutOptions['None']
+              if ($scope.workoutToCreate) $scope.workoutToCreate.workout = $scope.workoutOptions['None']
               if(!$scope.$$phase) $scope.$apply();
               return;
             }

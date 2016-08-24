@@ -9,6 +9,8 @@ angular.module('bodyAppApp')
     $scope.studioId = studioId;
     var accountId;
 
+    Video.destroyHardwareSetup()
+
     $window.scrollTo(0,0);
 
     formatDateTime()
@@ -76,10 +78,10 @@ angular.module('bodyAppApp')
         $scope.bookings = snapshot.val();
         setupVidAud()
         $scope.numBookings = Object.keys($scope.bookings).length;
-        console.log($scope.numBookings)
         if(!$scope.$$phase) $scope.$apply();
         $scope.numFreeBookings = 0;
         snapshot.forEach(function(booking) {
+          if (!booking.exists()) return
           if (booking.val().freeBooking) $scope.numFreeBookings++;
           if(!$scope.$$phase) $scope.$apply();
           firebase.database().ref().child('fbUsers').child(booking.val().facebookId).child('location').on('value', function(snapshot) {
@@ -194,8 +196,8 @@ angular.module('bodyAppApp')
 
         return $mdDialog
         .show( confirm ).then(function() {
-          ref.child("bookings").child(classId).child($scope.currentUser._id).remove()
-          firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(classId).remove(function(err) {
+          ref.child("bookings").child(classId).child($scope.currentUser._id.toString()).remove()
+          firebase.database().ref().child('userBookings').child($scope.currentUser._id.toString()).child(classId).remove(function(err) {
             if (err) return console.log(err)
             Intercom('trackEvent', 'cancelledClass', {
               studioId: studioId,
@@ -212,9 +214,9 @@ angular.module('bodyAppApp')
               $location.path('/studios/' + studioId)
             });
           })
-          firebase.database().ref().child('bookingCancellations').child($scope.currentUser._id).child(classId).update({classId: classId, studioId: studioId})
-          ref.child("userBookings").child($scope.currentUser._id).child(classId).remove()
-          ref.child("cancellations").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""})
+          firebase.database().ref().child('bookingCancellations').child($scope.currentUser._id.toString()).child(classId).update({classId: classId, studioId: studioId})
+          ref.child("userBookings").child($scope.currentUser._id.toString()).child(classId).remove()
+          ref.child("cancellations").child(classId).child($scope.currentUser._id.toString()).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""})
         });
         // if (confirm("Are you sure you want to cancel class?")) {
           
@@ -251,7 +253,7 @@ angular.module('bodyAppApp')
 
           analytics.track('addToWaitlist', {studioId: studioId, classId: classId});
             
-          ref.child("waitlist").child(classId).child($scope.currentUser._id).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""}, function(err) {
+          ref.child("waitlist").child(classId).child($scope.currentUser._id.toString()).update({firstName: $scope.currentUser.firstName, lastName: $scope.currentUser.lastName.charAt(0), timeBooked: new Date().getTime(), picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : ""}, function(err) {
             if (err) return err;
             return $mdDialog.show( alert )
           })
@@ -335,7 +337,7 @@ angular.module('bodyAppApp')
           studioId: studioId,
           classType: $scope.classDetails.classType
         });
-        firebase.database().ref().child('taughtClass').child($scope.currentUser._id).child(classId).update({
+        firebase.database().ref().child('taughtClass').child($scope.currentUser._id.toString()).child(classId).update({
           classId: classId,
           studioId: studioId,
           classType: $scope.classDetails.classType
@@ -355,11 +357,13 @@ angular.module('bodyAppApp')
           dateOfClass_at: new Date($scope.classDetails.dateTime),
           classId: classId,
           studioId: studioId,
+          studioName: $scope.storefrontInfo.studioName,
           classType: $scope.classDetails.classType,
-          instructor: $scope.classDetails.instructor
+          instructor: $scope.classDetails.instructor,
+          instructorFirstName: $scope.instructorDetails.firstName
         });
         $location.path('/uservideo')  
-        firebase.database().ref().child('tookClass').child($scope.currentUser._id).child(classId).update({
+        firebase.database().ref().child('tookClass').child($scope.currentUser._id.toString()).child(classId).update({
           classId: classId,
           studioId: studioId,
           classType: $scope.classDetails.classType,
@@ -421,9 +425,9 @@ angular.module('bodyAppApp')
         } else if ($scope.currentUser && $scope.currentUser.role === 'admin' && slot) {
           console.log("Booking for free because user is admin.")
           return bookClass(slot)
-        // } else if (studioId === 'body') {
-        //   console.log("Booking for free because this is the BODY studio.")
-        //   return bookClass(slot)
+        } else if (studioId === 'body') {
+          console.log("Booking for free because this is the BODY studio.")
+          return bookClass(slot)
         } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
           var modalInstance = $uibModal.open({
             animation: true,
@@ -537,17 +541,21 @@ angular.module('bodyAppApp')
           timeBooked: new Date().getTime(), 
           picture: $scope.currentUser.picture ? $scope.currentUser.picture : "", 
           facebookId: $scope.currentUser.facebookId ? $scope.currentUser.facebookId : "", 
-          freeBooking: $rootScope.trialPeriodTime
         }
-        ref.child("bookings").child(slot.dateTime).child($scope.currentUser._id).update(bookingObj, function(err) {
+        if ($rootScope.trialPeriodTime) bookingObj.freeBooking = $rootScope.trialPeriodTime;
+        ref.child("bookings").child(slot.dateTime).child($scope.currentUser._id.toString()).update(bookingObj, function(err) {
           if (err) return console.log(err)
           console.log("Added booking")
         });
-        ref.child("userBookings").child($scope.currentUser._id).child(slot.dateTime).update({dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType, freeBooking: $rootScope.trialPeriodTime}, function(err) {
+        var userBookingObj = {
+          dateTime: slot.dateTime, instructor: slot.instructor, classType: slot.classType
+        }
+        if ($rootScope.trialPeriodTime) userBookingObj.freeBooking = $rootScope.trialPeriodTime;
+        ref.child("userBookings").child($scope.currentUser._id.toString()).child(slot.dateTime).update(userBookingObj, function(err) {
           if (err) return console.log(err)
           console.log("Added user booking to studio")
         });
-        firebase.database().ref().child('userBookings').child($scope.currentUser._id).child(slot.dateTime).update({
+        var userBookingsObj = {
           className: $scope.classType.name,
           studioName: $scope.storefrontInfo.studioName,
           studioId: $scope.storefrontInfo.studioId,
@@ -557,8 +565,11 @@ angular.module('bodyAppApp')
           studioIconUrl: $scope.iconUrl ? $scope.iconUrl : "None",
           classId: slot.dateTime,
           duration: slot.duration ? slot.duration : 30,
-          freeBooking: $rootScope.trialPeriodTime
-        }, function(err) {
+        }
+
+        if ($rootScope.trialPeriodTime) userBookingsObj.freeBooking = $rootScope.trialPeriodTime;
+
+        firebase.database().ref().child('userBookings').child($scope.currentUser._id.toString()).child(slot.dateTime).update(userBookingsObj, function(err) {
           if (err) return console.log(err)
           console.log("Added user bookings to userBookings")
         })

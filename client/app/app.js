@@ -50,34 +50,34 @@ angular.module('bodyAppApp', [
     $httpProvider.interceptors.push('authInterceptor');
   })
 
-  .config(['socialshareConfProvider', function configApp(socialshareConfProvider) {
+  // .config(['socialshareConfProvider', function configApp(socialshareConfProvider) {
 
-    socialshareConfProvider.configure([
-      {
-        'provider': 'twitter',
-        'conf': {
-          'url': 'https://www.getbodyapp.com',
-          'text': '720kb is enough',
-          'via': 'npm',
-          'hashtags': 'angularjs,socialshare,angular-socialshare',
-          'trigger': 'click',
-          'popupHeight': 800,
-          'popupWidth' : 400
-        }
-      },
-      {
-        'provider': 'facebook',
-        'conf': {
-          'url': 'https://www.getbodyapp.com',
-          'via': '501927126632986',
-          'trigger': 'click',
-          'popupHeight': 600,
-          'popupWidth' : 600
-        }
-      }
-    //and so on ...
-    ]);
-  }])
+    // socialshareConfProvider.configure([
+    //   {
+    //     'provider': 'twitter',
+    //     'conf': {
+    //       'url': 'https://www.getbodyapp.com',
+    //       'text': '720kb is enough',
+    //       'via': 'npm',
+    //       'hashtags': 'angularjs,socialshare,angular-socialshare',
+    //       'trigger': 'click',
+    //       'popupHeight': 800,
+    //       'popupWidth' : 400
+    //     }
+    //   },
+    //   {
+    //     'provider': 'facebook',
+    //     'conf': {
+    //       'url': 'https://www.getbodyapp.com',
+    //       'via': '501927126632986',
+    //       'trigger': 'click',
+    //       'popupHeight': 600,
+    //       'popupWidth' : 600
+    //     }
+    //   }
+    // //and so on ...
+    // ]);
+  // }])
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {

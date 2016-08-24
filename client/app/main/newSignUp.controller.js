@@ -5,16 +5,68 @@ angular.module('bodyAppApp')
 
     var ref = firebase.database().ref();
     var storageRef = firebase.storage().ref()
+    var auth = firebase.auth();
 
     $scope.step = $state.params.step;
     $scope.mode = $state.params.mode;
-
-    console.log($scope.step)
 
   	var loggedInPath = '/'
 
     Intercom('trackEvent', 'navigatedToSignup');
     analytics.track('navigatedToSignup');
+
+    if (Auth.getCurrentUser()) {
+      if (Auth.getCurrentUser().$promise) {
+        Auth.getCurrentUser().$promise.then(function(data) {
+          var currentUser = data;
+          auth.onAuthStateChanged(function(user) {
+            if (user) {
+              console.log("User is authenticated with fb ");
+              //Do Stuff
+            } else {
+              console.log("User is logged out");
+              if (currentUser.firebaseToken) {
+                auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+                  if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+                  //Do Stuff
+                }); 
+              } else {
+                User.createFirebaseToken({ id: currentUser._id }, {}, function(token) {
+                  auth.signInWithCustomToken(token).then(function(user) {
+                    if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+                    //Do Stuff
+                  }); 
+                })
+              }
+            }
+          })
+        })
+      } else {
+        var currentUser = Auth.getCurrentUser();
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
+            console.log("User is authenticated with fb ");
+            //Do Stuff
+          } else {
+            console.log("User is logged out");
+            if (currentUser.firebaseToken) {
+              auth.signInWithCustomToken(currentUser.firebaseToken).then(function(user) {
+                if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+                //Do Stuff
+              }); 
+            } else {
+              User.createFirebaseToken({ id: currentUser._id }, {}, function(token) {
+                auth.signInWithCustomToken(token).then(function(user) {
+                  if (currentUser.role === "admin") console.log("Firebase user authentication succeeded!", user);
+                  //Do Stuff
+                }); 
+              })
+            }
+          }
+        })
+      }
+    }
+
 
 
     $scope.getBackgroundImages = function() {

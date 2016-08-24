@@ -33,7 +33,7 @@ angular.module('bodyAppApp')
 	$scope.recordVideo = function(){
 		ziggeoEmbedding = ZiggeoApi.Embed.popup({
 			tags: [studioId], 
-      perms: ['allowupload'],
+      perms: ['allowupload', 'forbidrecord'],
 			// disable_first_screen: true,
 			popup_height: window.innerHeight*.8,
 			popup_width: window.innerWidth*.8,

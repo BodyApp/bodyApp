@@ -6,11 +6,13 @@ angular.module('bodyAppApp')
     $scope.currentUser = currentUser;
 
     var studioId = $stateParams.studioId;
+    $scope.studioId = studioId;
     $scope.classToCreate = {};
     $scope.studioName = studioId;
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
+    Video.destroyHardwareSetup()
 
     var ref = firebase.database().ref().child('studios').child(studioId);
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
@@ -44,7 +46,7 @@ angular.module('bodyAppApp')
 
     window.prerenderReady = false;
 
-    $scope.studioId = studioId;
+    
 
     var daysInFuture = 0;
     var numDaysToShow = 14;
@@ -75,15 +77,6 @@ angular.module('bodyAppApp')
     // ref.unauth()
 
     var accountId;
-
-    $http.post('https://api.prerender.io/recache', {
-      "prerenderToken": "0xk2UugZ3MhosEzMYKrg",
-      "url": "https://www.getbodyapp.com" + $location.path()
-    }).then(function(){
-      console.log("Successfully posted to prerender")
-    }, function(err){
-      console.log(err)
-    });
 
     Auth.isLoggedInAsync(function(loggedIn) {
       if (!loggedIn) {        
@@ -278,6 +271,7 @@ angular.module('bodyAppApp')
         // $scope.headerUrl = url;
         window.prerenderReady = true;
         $scope.backgroundImageUrl = url
+        $scope.jsonId.image = url;
         if(!$scope.$$phase) $scope.$apply();
       }).catch(function(error) {
         console.log(error)
@@ -338,6 +332,32 @@ angular.module('bodyAppApp')
         $scope.storefrontInfo = snapshot.val();
         $scope.studioName = $scope.storefrontInfo.studioName
         $scope.studioLongDescription = $scope.storefrontInfo.longDescription
+
+        $http.post('https://api.prerender.io/recache', {
+          "prerenderToken": "0xk2UugZ3MhosEzMYKrg",
+          "url": "https://www.getbodyapp.com" + $location.path()
+        }).then(function(){
+          console.log("Successfully posted to prerender")
+        }, function(err){
+          console.log(err)
+        });
+
+        $scope.jsonId = {
+          "@context": "http://schema.org/",
+          "@type": "ExerciseGym",
+          "exerciseType": "",
+          "name": $scope.studioName,
+          "description": $scope.studioLongDescription,
+          "instructor": $scope.storefrontInfo.ownerName,
+          "url": "https://www.getbodyapp.com/studios/" + studioId
+        };
+
+        for (var i = 0; i < $scope.storefrontInfo.categories.length; i++) {
+          $scope.jsonId.exerciseType += $scope.storefrontInfo.categories[i]
+          if (i < $scope.storefrontInfo.categories.length - 1) {
+            $scope.jsonId.exerciseType += ", "
+          }
+        }    
 
         $scope.youtubeLink = $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+$scope.storefrontInfo.youtubeId+'?rel=0&amp;showinfo=0');
         if(!$scope.$$phase) $scope.$apply();
@@ -927,4 +947,22 @@ angular.module('bodyAppApp')
       return formatted;
     }
 
-  });
+  })
+
+  .directive('jsonld', ['$filter', '$sce', function($filter, $sce) {
+  return {
+    restrict: 'E',
+    template: function() {
+      return '<script type="application/ld+json" ng-bind-html="onGetJson()"></script>';
+    },
+    scope: {
+      json: '=json'
+    },
+    link: function(scope, element, attrs) {
+      scope.onGetJson = function() {
+        return $sce.trustAsHtml($filter('json')(scope.json));
+      }
+    },
+    replace: true
+  };
+}])

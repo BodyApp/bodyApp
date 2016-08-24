@@ -31,26 +31,32 @@ angular.module('bodyAppApp')
     })
 
     function delayStart() {
-        ref.child('userBookings').child(Auth.getCurrentUser()._id.toString()).orderByKey().startAt(startAtCalendar.toString()).once('value', function(snapshot) {
-          $scope.userBookings = snapshot.val();
-          $scope.numUserBookings = snapshot.numChildren()
-          if(!$scope.$$phase) $scope.$apply();
-          Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren() });
-          analytics.track('pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren()})
-          getClassesAllTime()
-          getTimeOfLastWeek()
-        })
+      getUserBookings()
+      getClassesAllTime()
+      getTimeOfLastWeek()
     }
 
+    function getUserBookings() {
+      ref.child('userBookings').child($scope.currentUser._id.toString()).orderByKey().startAt(startAtCalendar.toString()).on('value', function(snapshot) {
+        if (!snapshot.exists()) console.log("No user bookings found")
+        console.log(snapshot.val())
+        $scope.userBookings = snapshot.val();
+        $scope.numUserBookings = snapshot.numChildren();
+        if(!$scope.$$phase) $scope.$apply();
+        Intercom('trackEvent', 'pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren() });
+        analytics.track('pulledUpcomingClasses', { numUpcomingClasses: snapshot.numChildren()})
+      })
+    }
+ 
     function getClassesAllTime() {
-      ref.child('tookClass').child(Auth.getCurrentUser()._id.toString()).once('value', function(snapshot) {
+      ref.child('tookClass').child($scope.currentUser._id.toString()).once('value', function(snapshot) {
         $scope.classesAllTime = snapshot.numChildren()
         if(!$scope.$$phase) $scope.$apply();
       })
     }
 
     function getTimeOfLastWeek() {
-      ref.child('tookClass').child(Auth.getCurrentUser()._id.toString()).orderByValue().startAt(startAt.toString()).once('value', function(snapshot) {
+      ref.child('tookClass').child($scope.currentUser._id.toString()).orderByValue().startAt(startAt.toString()).once('value', function(snapshot) {
         $scope.minutesTaken = 0;
         snapshot.forEach(function(classTaken) {
           ref.child('studios').child(classTaken.val().studioId).child('classes').child(classTaken.val().classId).child('duration').once('value', function(classDuration) {

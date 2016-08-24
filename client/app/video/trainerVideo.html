@@ -26,15 +26,17 @@
 		</div>
 	</div>
 	<ul ng-class = "videoView">
-		<li id="myfeed" ng-click = "trainerClicksOnSelf()">
+		<li ng-click = "trainerClicksOnSelf()">
 			<span class="classmates-video-name text-center">You</span>
+			<div id="myfeed"></div>
 		</li>
 		<!-- <li class="user-videos-large"> -->
 			<!-- <img src="/assets/images/video/vid-c.jpg"> -->
 			<!-- <span class="classmates-video-name text-center">Justin M</span> -->
 		<!-- </li> -->
-		<li class="classfeeds" ng-repeat = "(consumerId, consumer) in consumerObjects" ng-attr-id="{{'consumer'+$index}}" ng-click = "clickOnConsumer(consumerId)">
+		<li class="classfeeds" ng-repeat = "(consumerId, consumer) in consumerObjects" ng-click = "clickOnConsumer(consumerId)">
 			<span class="classmates-video-name text-center">{{consumer.firstName}} {{consumer.lastName}}</span>
+			<div ng-attr-id="{{'consumer'+$index}}"></div>
 		</li>
 	</ul>
 	<div ng-class="{'control-menu-open': menuOpen, 'control-menu-closed': !menuOpen}">

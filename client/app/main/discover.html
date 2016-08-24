@@ -1,49 +1,294 @@
-<div class="storefront-header" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}">
-  <div class="storefront-header-vid">
-    <a href="#" class="" ng-show = "storefrontInfo.youtubeId">
-      <i class="fa fa-play-circle video-play" ng-click = "playYoutubeVideo()"></i>
-    </a>
-  </div>
-  <div class="storefront-header-pricing">
+<div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
+
+<div class="studio-sorter pt48 pb48 pt-xs-24 pb-xs-16 ng-scope">
+  <div class="page-container-responsive">
     <div class="row">
-      <div class="col-sm-6 col-xs-7 text-left">
-        <div class="discovery-tag-price">
-          <span class="bold">$20 unlimited</span>
+      <div class="col-md-12">
+        <div class="sorter-text">
+          Show me
+          <div class="select">
+            <select ng-model="categoryFilter" class="ng-pristine ng-untouched ng-valid" aria-invalid="false">
+              <option value="">All</option>
+              <option value="strength">Strength</option>
+              <option value="hiit">HIIT</option>
+              <option value="yoga">Yoga</option>
+              <option value="dance">Dance</option>
+              <option value="boxing">Boxing</option>
+              <option value="pilates">Pilates</option>
+              <option value="barre">Barre</option>
+              <option value="martialArts">Martial Arts</option>
+              <option value="meditation">Meditation</option>
+              <option value="nutrition">Nutrition</option>
+            </select>
+          </div>
+          <div class="select">
+            <select ng-model="classesVsStudios" class="ng-pristine ng-untouched ng-valid" aria-invalid="false">
+              <option value="classes">classes</option>
+              <option value="studios">studios</option>
+            </select>
+          </div>
         </div>
-        <div class="discovery-tag-price">
-          <span class="bold">$3 / class</span>
-        </div>
-        <div class="discovery-tag-love">
-          <i class="fa fa-heart"></i> Studio We Love
-        </div>
-      </div>
-      <div class="col-sm-6 col-xs-5 text-right">
-        <a href="#" class="btn-blue">Purchase Unlimited Pass</a>
       </div>
     </div>
   </div>
 </div>
 
+<div class="calendar-selector pt24 pb24 pt-xs-16">
+  <div class="week-changer text-center">
+    <!-- <i class="ti-angle-left"></i> -->
+  </div>
+  <div class="calendar-selector-days text-center">
+    <ul>
+      <li href="#" ng-click = "showAllClasses()" class="cal-select-active">Show<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">All</li><!-- 
+   --><li href="#" ng-click = "showDay(0)">Today<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[0])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(1)">{{getDayOfWeek(days[1])}}<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[1])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(2)">{{getDayOfWeek(days[2])}}<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[2])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(3)">{{getDayOfWeek(days[3])}}<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[3])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(4)">{{getDayOfWeek(days[4])}}<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[4])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(5)">{{getDayOfWeek(days[5])}}<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[5])}}</li><!-- 
+   --><li href="#" ng-click = "showDay(6)">{{getDayOfWeek(days[6])}}<span class = "hidden-xs inline-block">&nbsp</span><br class = "visible-xs">{{getDate(days[6])}}</li>
+    </ul>
+  </div>
+  <div class="week-changer text-center">
+    <!-- <i class="ti-angle-right cal-select-active"></i> -->
+  </div>
+</div>
 
+<div class="class-listings pt16 pb24" ng-show = "classesVsStudios === 'classes'">
+  <div class="page-container-responsive">
+    <div class="row mb16">
+      <div class="col-xs-12 text-center">
+        <h3 class="semibold">Upcoming Classes</h3>
+        <h5 class="lightgray">Times in EST</h5>
+      </div>
+    </div>
 
-.storefront-header {
-  height: 420px;
-  width: 100%;
-  position: relative;
-}
-.storefront-header-vid {
-  position: relative;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  z-index: 1;
-}
-.storefront-header-pricing {
-  position: absolute;
-  width: 100%;
-  bottom: 0px;
-  left: 0px;
-  background-color: rgba(0,0,0,0.4);
-  padding: 10px 10px;
-}
+    <div class="row">
+      <div class="col-xs-12">
+        <ul class="class-list-date" ng-repeat = "day in days" ng-show = "showAll || $index === showDate">
+          <li ng-repeat = "instance in classes=(upcomingClasses[day] | filter:filterByCategory()) | orderBy:'dateTime'" ng-show = "!categoryFilter || studios[instance.studioId].categories[categoryFilter]">
+            <div class="row">
+              <div class="col-xs-3 shrink-col-width disc-col">
+                <h4 class="royalblue hidden-xs mb8">{{getDate(day)}}, {{getTime(instance.dateTime)}}</h4>
+                <h4 class="royalblue visible-xs mb8">{{getTime(instance.dateTime)}}</h4>
+                <h5 class="lightgray visible-xs mb8">{{getDate(day)}}</h5>
+                <h5 class="lightgray mb8">{{instance.duration}} min</h5>
+                <div class="disc-instr-photo visible-xs">
+                  <img class="round-photo" ng-if = "!instructors[instance.instructor].addedPicture" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=40&height=40">
+                  <img class="round-photo" ng-if = "instructors[instance.instructor].addedPicture" ng-src="{{instructors[instance.instructor].addedPicture}}" height="40" width="40">
+                </div>
+                <div class="disc-instr-photo hidden-xs visible-sm">
+                  <img class="round-photo" ng-if = "!instructors[instance.instructor].addedPicture" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=60&height=60">
+                  <img class="round-photo" ng-if = "instructors[instance.instructor].addedPicture" ng-src="{{instructors[instance.instructor].addedPicture}}" height="60" width="60">
+                </div>
+              </div>
+              <div class="col-xs-7 expand-col-width disc-col">
+                <div class="disc-instr-photo hidden-sm hidden-xs">
+                  <img class="round-photo" ng-if = "!instructors[instance.instructor].addedPicture" ng-src="https://graph.facebook.com/{{instructors[instance.instructor].facebookId}}/picture?width=60&height=60">
+                  <img class="round-photo" ng-if = "instructors[instance.instructor].addedPicture" ng-src="{{instructors[instance.instructor].addedPicture}}" height="60" width="60">
+                </div><!-- 
+             --><div class="disc-class-details">
+                  <div class="inline-block disc-class-title" ng-click = "showClassInfo[instance.classType] = !showClassInfo[instance.classType]; trackEvent('showClassInfoClicked', {studioId: instance.studioId, classId: instance.dateTime})">
+                    <h4 class="royalblue hover-highlight disc-class-details-title mb8">{{classTypes[instance.classType].name}}</h4>
+                  </div>
+                  <div class="inline-block category-group disc-class-details-tags hidden-sm hidden-xs">
+                    <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block mb16" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
+                  </div>
+                  <div class="display-block">
+                    <h5 class="lightgray">{{instructors[instance.instructor].firstName}} {{instructors[instance.instructor].lastName}} with {{studios[instance.studioId].studioName}}</h5>
+                  </div>
+                  <div class="inline-block category-group disc-class-details-tags visible-sm visible-xs mt16 mt-xs-8">
+                    <a ng-click = "setCategoryFilter(tag)" class="btn-tag inline-block mb16 mb-xs-0" ng-repeat = "(tag, trueFalse) in studios[instance.studioId].categories">{{tag}}</a>
+                  </div>
+                  <div class="discovery-tag-group mt16 mt-sm-8 mt-xs-8">
+                    <!-- <div class="discovery-tag-price" ng-show = "!trialPeriodTime && instance.typeOfClass === 'Regular'">
+                      <span class="bold">${{studios[instance.studioId].dropinPricing/100}} class</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "trialPeriodTime && instance.typeOfClass === 'Regular'">
+                      <span class="bold">Free class</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "instance.typeOfClass === 'Specialty'">
+                      <span class="bold">${{classTypes[instance.classType].specialtyRate}}</span>
+                    </div> -->
+                    <div class="discovery-tag-price" ng-show = "!currentUser._id && instance.typeOfClass === 'Regular'">
+                      <span class="bold">Free During Trial</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "currentUser._id && instance.typeOfClass === 'Regular' && studios[instance.studioId].dropinPricing && !trialPeriodTime">
+                      <span class="bold">${{studios[instance.studioId].dropinPricing/100}}</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "currentUser._id && instance.typeOfClass === 'Regular' && !studios[instance.studioId].dropinPricing && !trialPeriodTime">
+                      <span class="bold">$3</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "currentUser._id && instance.typeOfClass === 'Regular' && trialPeriodTime">
+                      <span class="bold">Free class</span>
+                    </div>
+                    <div class="discovery-tag-price" ng-show = "instance.typeOfClass === 'Specialty'">
+                      <span class="bold">${{classTypes[instance.classType].specialtyClassRate}}</span>
+                    </div>
+                    <!-- <div class="discovery-tag-price">
+                      <span class="bold">$20 unlimited</span>
+                    </div> -->
+                    <div class="discovery-tag-love trending" ng-show = "flair[instance.studioId] === 1">
+                      <i class="fa fa-heart"></i> Studio We Love
+                    </div>
+                    <div class="discovery-tag-love" ng-show = "flair[instance.studioId] === 2 || flair[instance.studioId] === 3">
+                      <i class="fa fa-flash"></i> Trending Studio
+                    </div>
+                    <div class="discovery-tag-love">
+                      <!-- <a href="#"
+                        class="text-center white" 
+                        socialshare
+                        socialshare-text="{{studios[instance.studioId].studioName}}"
+                        socialshare-type="feed"
+                        socialshare-caption="{{studios[instance.studioId].shortDescription}}"
+                        socialshare-description="{{studios[instance.studioId].longDescription}}"
+                        socialshare-media="{{studioPictures[instance.studioId]}}"
+                        socialshare-provider="facebook"
+                        socialshare-url="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-via='501927126632986'
+                        socialshare-trigger='click'
+                        socialshare-popupHeight=700
+                        socialshare-popupWidth=900
+                        >
+                        <i class="fa fa-facebook-official"></i> Share
+                      </a> -->
+                      <a href="#"
+                        class="text-center white" 
+                        socialshare
+                        socialshare-text="{{studios[instance.studioId].studioName}}"
+                        socialshare-type="send"
+                        socialshare-caption="{{studios[instance.studioId].shortDescription}}"
+                        socialshare-description="{{studios[instance.studioId].longDescription}}"
+                        socialshare-media="{{studioPictures[instance.studioId]}}"
+                        socialshare-provider="facebook"
+                        socialshare-url="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-redirect-uri="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-via='501927126632986'
+                        socialshare-trigger='click'
+                        socialshare-popup-height=900
+                        socialshare-popup-width=900
+                        >
+                        <i class="fa fa-facebook-official"></i> Send
+                      </a>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-2 cta-col disc-col">
+                <a href="#" class="btn-blue disc-btn btn-full-width" ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}">View Class</a>
+                <a ng-href="/studios/{{instance.studioId}}" class="btn disc-btn btn-full-width mt8">Go to Studio</a>
+                <div class="social-bookings text-center mt8 mb8 hidden-xs">
+                  <ul class="mb8">
+                    <li>
+                      <img class="round-photo" ng-show = "currentUser && bookings[instance.studioId][instance.dateTime][0].facebookId" ng-src="https://graph.facebook.com/{{bookings[instance.studioId][instance.dateTime][0].facebookId}}/picture?width=25&height=25">
+                      <img class="round-photo" ng-show = "!currentUser || !bookings[instance.studioId][instance.dateTime][0].facebookId" ng-src="http://pre10.deviantart.net/b323/th/pre/i/2012/235/0/2/facebook_profile_image_by_edgarsvensson-d5c7rhk.jpg" height="32" width="32">
+                    </li>
+                    <li >
+                      <img class="round-photo" ng-show = "currentUser && bookings[instance.studioId][instance.dateTime][1].facebookId" ng-src="https://graph.facebook.com/{{bookings[instance.studioId][instance.dateTime][1].facebookId}}/picture?width=25&height=25">
+                      <img class="round-photo" ng-show = "!currentUser || !bookings[instance.studioId][instance.dateTime][1].facebookId" ng-src="https://1.bp.blogspot.com/-jHrJ3VITQf8/UDILF_ctbOI/AAAAAAAACn4/UwOvDmW4EJw/s1600/CUTE+GIRL+HAIR+FB+DP.jpg" height="32" width="32">
+                    </li>
+                    <li >
+                      <img class="round-photo" ng-show = "currentUser && bookings[instance.studioId][instance.dateTime][2].facebookId" ng-src="https://graph.facebook.com/{{bookings[instance.studioId][instance.dateTime][2].facebookId}}/picture?width=25&height=25">
+                      <img class="round-photo" ng-show = "!currentUser || !bookings[instance.studioId][instance.dateTime][2].facebookId" ng-src="http://parkour.ph/v2/wp-content/uploads/2013/02/facebook-blank-face-blank.800w_600h-210x210.jpg" height="32" width="32">
+                    </li>
+                    <!-- <li>
+                      <div class="empty-booking-user">
+                        <span class="circular-button-label">
+                          <svg class="svgIcon " viewBox="0 0 32 32" title="invite people">
+                            <polygon points="28,14 18,14 18,4 14,4 14,14 4,14 4,18 14,18 14,28 18,28 18,18 28,18"></polygon>
+                          </svg>
+                        </span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="empty-booking-user">
+                        <span class="circular-button-label">
+                          <svg class="svgIcon " viewBox="0 0 32 32" title="invite people">
+                            <polygon points="28,14 18,14 18,4 14,4 14,14 4,14 4,18 14,18 14,28 18,28 18,18 28,18"></polygon>
+                          </svg>
+                        </span>
+                      </div>
+                    </li> -->
+                  </ul>
+                  <p class="lightgray text-center hidden">8 bookings</p>
+                  <a ng-href="/studios/{{instance.studioId}}/classinfo/{{instance.dateTime}}" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
+                </div>
+              </div>
+            </div>
+            <div class="row mt8" ng-show = "showClassInfo[instance.classType]" ng-href = "/studios/{{instance.studioId}}">
+              <div class="col-xs-3 shrink-col-width"></div>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <img ng-src="{{studioPictures[instance.studioId]}}" width="100%">
+                  </div>
+                  <div class="col-xs-8">
+                    <p class="lightgray">{{classTypes[instance.classType].classDescription}}</p>
+                    <div class="mt16">
+                      <span class="bold">You'll Need:</span> 
+                      <span class="lightgray" ng-if = "!classTypes[instance.classType].equipment">No equipment</span>
+                      <ul class="disc-equipment-list">
+                        <li class="lightgray" ng-repeat = "equipment in classTypes[instance.classType].equipment">{{equipment.name.trunc(20, true)}}</li>
+                      </ul>
+                    </div>
+                    <!-- <a href="#" class="btn mt16"><i class="fa fa-heart"></i> Follow {{studios[instance.studioId].studioName}}</a> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="studio-listings pt48 pb48" ng-show = "classesVsStudios === 'studios'">
+  <div class="page-container-responsive">
+    <div class="row">
+
+      <div class="col-sm-6 col-md-4 studio-listings-card" ng-repeat = "studio in studios | filterStudiosObject: categoryFilter"> <!-- Studio Listing -->
+         <a href="/studios/{{studio.studioId}}">
+          <div class="panel">
+            <div class="studio-listing-container">
+              <div class="studio-listing-image" ng-style="{'background-image':'url('+ studioPictures[studio.studioId] +')'}">
+                <div class="studio-listing-tags text-center">
+                  <span ng-repeat = "(category, active) in studio.categories" ng-show = "active">
+                    #{{category}}
+                  </span>
+                </div>
+                <!-- <img ng-src="{{studioPictures[studio.studioId]}}"> -->
+              </div>
+              <div class="panel-body studio-listing-card-body">
+                <!-- <div class="studio-listing-stars">
+                </div> -->
+                <h4>{{studio.studioName}}</h4>
+                <h5 class="lightgray">By {{studio.ownerName}}</h5>
+                <h5 class="mt8 studio-listing-description">{{studio.shortDescription}}</h5>
+                <div class="studio-listing-pricing mt16">
+                  <div class="studio-listing-subscription">
+                    <span class="royalblue">Subscription</span>
+                    <h4 ng-if = "studio.subscriptionPricing">${{studio.subscriptionPricing/100}}<span class="perMonth">/mo</span></h4>
+                    <h4 ng-if = "!studio.subscriptionPricing">None</h4>
+                  </div>
+                  <div class="studio-listing-dropIn">
+                    <span class="royalblue">Drop In</span>
+                    <h4 ng-if = "studio.dropinPricing">${{studio.dropinPricing/100}}</h4>
+                    <h4 ng-if = "!studio.dropinPricing">$3</h4>
+                  </div>
+                </div>
+                <!-- <div class="studio-listing-pricing mt16" ng-if = "!studio.subscriptionPricing && !studio.dropinPricing">
+                  <h4 class = "mt32"> Free Classes</h4>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

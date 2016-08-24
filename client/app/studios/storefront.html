@@ -10,23 +10,13 @@
 <update-meta property="og:image" content="{{backgroundImageUrl}}"></update-meta>
 <update-meta property="og:description" content="{{studioLongDescription}}"></update-meta>      
 <update-meta property="og:url" content="https://www.getbodyapp.com/studios/{{studioId}}"></update-meta>
+<update-meta property="fb:app_id" content="501927126632986"></update-meta>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<jsonld data-json="jsonId"></jsonld>
+
 <div ng-include="'components/navbar/navbar.html'" class = "mb64 mb-sm-48"></div>
-<!-- <div id="studio-hero">
-  <div class="va-container va-container-v va-container-h" ng-hide = "playingVideo">
-    <div class="va-middle text-center">
-      <a href="#" class="hero-play-btn" ng-click = "playYoutubeVideo()">
-        <i class="fa fa-play-circle video-play"></i>
-      </a>
-    </div>
-  </div>
-  <div class="video-full-width">
-    <iframe id = "youtubeVideo" width="100%" height="420" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <span class="cover-img-container" ng-hide = "playingVideo">
-    <div class="cover-img" style="background-image:url(assets/images/studios/ralabala/header.jpg);"></div>
-  </span>
-</div> -->
+
 
 <div class="fullscreen-stories hidden" tabindex="1" style="z-index:2001;">
   <div class="row row-table row-full-height stories-container">
@@ -190,7 +180,7 @@
           <div class="panel-body">
             <div class="callToAction-pricing">
 
-              <div class="col-xs-6 col-md-12 mb8" ng-if = "storefrontInfo.subscriptionPricing || storefrontInfo.dropinPricing">
+              <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
                   <div class="col-md-6">
                     <h4>Unlimited</h4>
@@ -201,25 +191,17 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6 col-md-12 mb8" ng-if = "storefrontInfo.subscriptionPricing || storefrontInfo.dropinPricing">
+              <div class="col-xs-6 col-md-12 mb8">
                 <div class="row">
                   <div class="col-md-6">
                     <h4>Drop In</h4>
                   </div>
                   <div class="col-md-6">
                     <h4 class="lightgray" ng-show = "storefrontInfo && storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}}</h4>
-                    <h4 class="lightgray" ng-show = "storefrontInfo && !storefrontInfo.dropinPricing">None</h4>
+                    <h4 class="lightgray" ng-show = "storefrontInfo && !storefrontInfo.dropinPricing">$3</h4>
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6 col-md-12 mb8" ng-if = "!storefrontInfo.subscriptionPricing && !storefrontInfo.dropinPricing">
-                <!-- <div class="row"> -->
-                  <!-- <div class="col-md-12"> -->
-                    <h4 class = "mt32" style = "text-align: center;">Free Classes!</h4>
-                  <!-- </div> -->
-                <!-- </div> -->
-              </div>
-
               <div class="col-xs-12 mt16">
                 <a href="#" class="btn-blue btn-block" ng-show = "(storefrontInfo && storefrontInfo.subscriptionPricing && subscriptions && subscriptions[studioId] != 'active') || showLoginButton" ng-click = "joinStudioClicked()">Get Monthly Pass</a>
                 <div class="" ng-show = "subscriptions[studioId] === 'active'">You are a member of this studio!</div>
@@ -288,7 +270,7 @@
                 <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime - 60*60*1000 && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
                   <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} ({{class.duration}}m)</div>
                   <!-- <div class="cal-duration">{{class.duration}}m</div> -->
-                  <div class="cal-class">{{classTypes[class.classType].name}} <span ng-if = "classTypes[class.classType].freeClass">(Free)</span></div>
+                  <div class="cal-class">{{classTypes[class.classType].name}}</div>
                   <div class="cal-instructor">{{instructors[class.instructor].firstName}}</div>
                   <!-- <div class="cal-friends">2 friends</div>
                   <div class="cal-bubbles">
@@ -399,7 +381,7 @@
                   <div class="col-md-12" ng-show = "classType.classType != 'Specialty'">
                     <div class="row mb8">
                       <div class="col-md-12">
-                        <h5 class="mb0">{{classType.name}} <span ng-if = "classType.freeClass">(Free)</span></h5>
+                        <h5 class="mb0">{{classType.name}}</span></h5>
                         <h5 class="lightgray" style = "white-space: pre-line;">{{classType.classDescription}}</h5>
                       </div>
                     </div>
@@ -443,7 +425,7 @@
                         <h5 class="mb8" ng-show = 'subscriptionPlan'>Monthly Unlimited Classes: ${{subscriptionPlan.amount/100}}/mo</h5>
                         <h5 class="mb8" ng-show = '!subscriptionPlan'>Monthly Unlimited Classes: None</h5>
                         <h5 ng-show = 'storefrontInfo.dropinPricing'>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
-                        <h5 ng-show = '!storefrontInfo.dropinPricing'>Drop In Class: None</h5>
+                        <h5 ng-show = '!storefrontInfo.dropinPricing'>Drop In Class: $3</h5>
                       </div>
                     </div>
                   </div>
@@ -622,24 +604,47 @@
           <div class="boxed-icons show-lg">
             <div class="social-share-btns">
               <div class="share-triggers btn-group">
-                <a ng-href="mailto:?subject=Check%20this%20out!&body=Hi%20there,%0D%0A%0D%0AI%20wanted%20to%20drop%20you%20a%20note%20and%20tell%20you%20about%20this%20awesome%20new%20virtual%20fitness%20studio%20called%20{{storefrontInfo.studioName}}.%20I'm%20going%20to%20be%20taking%20classes%20and%20we%20would%20be%20able%20to%20work%20out%20together%20and%20have%20the%20instructor%20actually%20see%20us%20while%20they%20are%20teaching.%20It's like%20taking%20an%20in-person%20class%20at%20an%20in-person%20studio,%20but%20it's%20virtual%20and%20we%20can%20each%20be%20at%20our%20own%20house!%0D%0A%0D%0AGo%20to%20https://www.getbodyapp.com/studios/{{studioId}}%20to%20find%20out%20more%20info.%0D%0A%0D%0AHope%20to%20workout%20with%20you%20soon!%0D%0A{{currentUser.firstName}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-envelope-o"></i>Email</a>
-                <!-- <a target="none" ng-href="https://www.facebook.com/sharer/sharer.php?u=getbodyapp.com/studios/{{studioId}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a> -->
-                <!-- <a facebook-feed-share class="facebookShare" style = "margin-left: 32px; margin-top: 8px;" data-url='https://www.getbodyapp.com/studios/{{studioId}}' data-shares='shares', data-name="{{storefrontInfo.studioName}}" date-picture="{{backgroundImageUrl}}" data-callback = "facebookCallback;." data-actions="{name: 'Check it out', link: 'https://www.getbodyapp.com/studios/{{studioId}}'}" data-description="{{storefrontInfo.longDescription}}">{{ shares }}</a> -->
-
+                <!-- <a ng-href="mailto:?subject=Check%20this%20out!&body=Hi%20there,%0D%0A%0D%0AI%20wanted%20to%20drop%20you%20a%20note%20and%20tell%20you%20about%20this%20awesome%20new%20virtual%20fitness%20studio%20called%20{{storefrontInfo.studioName}}.%20I'm%20going%20to%20be%20taking%20classes%20and%20we%20would%20be%20able%20to%20work%20out%20together%20and%20have%20the%20instructor%20actually%20see%20us%20while%20they%20are%20teaching.%20It's like%20taking%20an%20in-person%20class%20at%20an%20in-person%20studio,%20but%20it's%20virtual%20and%20we%20can%20each%20be%20at%20our%20own%20house!%0D%0A%0D%0AGo%20to%20https://www.getbodyapp.com/studios/{{studioId}}%20to%20find%20out%20more%20info.%0D%0A%0D%0AHope%20to%20workout%20with%20you%20soon!%0D%0A{{currentUser.firstName}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-envelope-o"></i>Email</a> -->
                 <a href="#"
                   class="share-btn text-center btn btn-width-control" 
                   socialshare
                   socialshare-text="{{storefrontInfo.studioName}}"
+                  socialshare-type="send"
+                  socialshare-caption="{{storefrontInfo.shortDescription}}"
                   socialshare-description="{{storefrontInfo.longDescription}}"
                   socialshare-media="{{backgroundImageUrl}}"
                   socialshare-provider="facebook"
-                  socialshare-url="https://www.getbodyapp.com/studios/{{studioId}}"
-                  socialshare-ref="https://www.getbodyapp.com/studios/{{studioId}}"
-                  socialshare-source="https://www.getbodyapp.com/studios/{{studioId}}"
-                  socialshare-redirect-uri="https://www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-redirect-uri="www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-via='501927126632986'
+                  socialshare-trigger='click'
+                  socialshare-popup-height=900
+                  socialshare-popup-width=900
                   >
-                  <i class="fa fa-facebook-official"></i>Share
+                  <i class="fa fa-facebook-official"></i> Send
                 </a>
+
+                <a href="#"
+                  class="share-btn text-center btn btn-width-control" 
+                  socialshare
+                  socialshare-type="feed"
+                  socialshare-text="{{storefrontInfo.studioName}}"
+                  socialshare-caption="{{storefrontInfo.shortDescription}}"
+                  socialshare-description="{{storefrontInfo.longDescription}}"
+                  socialshare-media="{{backgroundImageUrl}}"
+                  socialshare-provider="facebook"
+                  socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-via='501927126632986'
+                  socialshare-trigger='click'
+                  socialshare-popup-height=600
+                  socialshare-popup-width=600
+                  >
+                  <i class="fa fa-facebook-official"></i> Share
+                </a>
+                <!-- <a target="none" ng-href="https://www.facebook.com/sharer/sharer.php?u=getbodyapp.com/studios/{{studioId}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a> -->
+                <!-- <a facebook-feed-share class="facebookShare" style = "margin-left: 32px; margin-top: 8px;" data-url='https://www.getbodyapp.com/studios/{{studioId}}' data-shares='shares', data-name="{{storefrontInfo.studioName}}" date-picture="{{backgroundImageUrl}}" data-callback = "facebookCallback;." data-actions="{name: 'Check it out', link: 'https://www.getbodyapp.com/studios/{{studioId}}'}" data-description="{{storefrontInfo.longDescription}}">{{ shares }}</a> -->
+
+
 
                 <!-- <a href="#"
                   socialshare

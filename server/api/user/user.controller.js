@@ -23,6 +23,8 @@ var firebase = require('firebase');
 var ref = firebase.database().ref()
 var auth = firebase.auth();
 
+var CronJob = require('cron').CronJob;
+
 // var FirebaseTokenGenerator = require("firebase-token-generator");
 // var tokenGenerator = new FirebaseTokenGenerator(config.firebaseSecret);
 
@@ -1117,26 +1119,26 @@ exports.addBookedClass = function(req, res, next) {
           }
           else {
             console.log("Sent booking confirmation email to " + emailAddress)
-            if (classToAdd > new Date().getTime() + 6*60*60*1000) { //If it's further than 6 hours out
-              var deliveryDate = new Date(classToAdd - 2*60*60*1000)
-              var delayedData = {
-                from: from_who,
-                to: emailAddress,
-                "o:deliverytime": deliveryDate.toUTCString(), // Send 2 hours before class
-                subject: 'Reminder: Your '+ studioName + ' Class',
-                html: classReservedHeader.toString() + '<table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"<tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="left"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; padding: 10px 0;" align="center" valign="left"><h2 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 400; font-size: 24px; color: #565a5c; margin-top: 4px;">'+studioName+' Class Reservation</h2><img src="'+studioIconUrl+'" style="border-radius: 50%; margin: 10px 0;" width="100" height="100"><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #565a5c; margin-top: 4px;">You are attending '+className+' with '+instructorFullName+'</h3><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #3E7EDF; margin-top: 4px;">'+dateTime.classTime+' - '+dateTime.date+'</h3><a href="'+classStartingUrl+'" style="color: white; background: #3E7EDF; font-size: 14px; padding: 7px 0; width:200px; display: inline-block; margin-top: 15px; margin-bottom: 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #3E7EDF; text-align: center; vertical-align: middle; font-weight: bold; line-height: 1.43; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; white-space: nowrap; cursor: pointer; text-decoration: none;">Join class</a></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 10px 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><hr style="clear:both; max-width:600px; border-right:0; border-bottom:1px solid #cacaca; border-left:0; border-top:0; background-color:#dbdbdb; min-height:2px; width:600px; border:none; margin:auto"></td></tr></tbody></table></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 0 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 4px;">Equipment Required:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+equipmentRequired+'</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 15px;">Class Details:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+classDescription+'</h4></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>' + classReservedTemplate.toString()
-              }
-              mailgun.messages().send(delayedData, function (err, body) {
-                //If there is an error, render the error page
-                if (err) {
-                  console.log(err)
-                  console.log("Error scheduling reminder email for " + emailAddress)
-                }
-                else {
-                  console.log("Class reminder email will be sent to "+emailAddress+" on " +deliveryDate)
-                }
-              })
-            }
+            // if (classToAdd > new Date().getTime() + 6*60*60*1000) { //If it's further than 6 hours out
+            //   var deliveryDate = new Date(classToAdd - 2*60*60*1000)
+            //   var delayedData = {
+            //     from: from_who,
+            //     to: emailAddress,
+            //     "o:deliverytime": deliveryDate.toUTCString(), // Send 2 hours before class
+            //     subject: 'Reminder: Your '+ studioName + ' Class',
+            //     html: classReservedHeader.toString() + '<table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"<tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="left"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; padding: 10px 0;" align="center" valign="left"><h2 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 400; font-size: 24px; color: #565a5c; margin-top: 4px;">'+studioName+' Class Reservation</h2><img src="'+studioIconUrl+'" style="border-radius: 50%; margin: 10px 0;" width="100" height="100"><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #565a5c; margin-top: 4px;">You are attending '+className+' with '+instructorFullName+'</h3><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #3E7EDF; margin-top: 4px;">'+dateTime.classTime+' - '+dateTime.date+'</h3><a href="'+classStartingUrl+'" style="color: white; background: #3E7EDF; font-size: 14px; padding: 7px 0; width:200px; display: inline-block; margin-top: 15px; margin-bottom: 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #3E7EDF; text-align: center; vertical-align: middle; font-weight: bold; line-height: 1.43; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; white-space: nowrap; cursor: pointer; text-decoration: none;">Join class</a></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 10px 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><hr style="clear:both; max-width:600px; border-right:0; border-bottom:1px solid #cacaca; border-left:0; border-top:0; background-color:#dbdbdb; min-height:2px; width:600px; border:none; margin:auto"></td></tr></tbody></table></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 0 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 4px;">Equipment Required:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+equipmentRequired+'</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 15px;">Class Details:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+classDescription+'</h4></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>' + classReservedTemplate.toString()
+            //   }
+            //   mailgun.messages().send(delayedData, function (err, body) {
+            //     //If there is an error, render the error page
+            //     if (err) {
+            //       console.log(err)
+            //       console.log("Error scheduling reminder email for " + emailAddress)
+            //     }
+            //     else {
+            //       console.log("Class reminder email will be sent to "+emailAddress+" on " +deliveryDate)
+            //     }
+            //   })
+            // }
           }
         });
       }); 
@@ -1404,3 +1406,66 @@ function formattedDateTime(dateTime, user) {
   formatted.classTime = moment.tz(dateTime, timezoneName).format('h:mma z');      
   return formatted;
 }
+
+function sendReminderEmail(userId, classInfo) {
+  console.log(classInfo)
+  var classStartingUrl = "https://www.getbodyapp.com/studios/"+classInfo.studioId+"/classinfo/"+classInfo.classId;
+  var equipmentRequired = "";
+
+  User.findById(userId, '-salt -hashedPassword', function (err, user) {
+    if (err) return err;
+
+    var dateTime = formattedDateTime(classInfo.classId, user)
+
+    var emailAddress = "";
+
+    if (user.email) emailAddress = user.email;
+
+    fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
+      if (err) throw err; 
+      var classReservedTemplate = html
+      fs.readFile(__dirname + '/emails/classReservedHeader.html', function (err, html) {
+        if (err) throw err; 
+        var classReservedHeader = html
+        var data = {
+          from: from_who,
+          to: emailAddress,
+          subject: 'Reminder: Your '+ classInfo.studioName + ' Class!',
+          html: classReservedHeader.toString() + '<table style="border-collapse: collapse; border-spacing: 0; margin-left: auto; margin-right: auto; width: 600px;"<tbody><tr><td style="vertical-align: middle; background-color: #fff; padding: 0;" bgcolor="#fff" valign="left"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="vertical-align: middle; text-align: center; width: 600px; padding: 10px 0;" align="center" valign="left"><h2 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 30px; font-weight: 400; font-size: 24px; color: #565a5c; margin-top: 4px;">'+classInfo.studioName+' Class Reservation</h2><img src="'+classInfo.studioIconUrl+'" style="border-radius: 50%; margin: 10px 0;" width="100" height="100"><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #565a5c; margin-top: 4px;">You are attending '+classInfo.className+' with '+classInfo.instructorFullName+'</h3><h3 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 26px; font-weight: 400; font-size: 20px; color: #3E7EDF; margin-top: 4px;">'+dateTime.classTime+' - '+dateTime.date+'</h3><a href="'+classStartingUrl+'" style="color: white; background: #3E7EDF; font-size: 14px; padding: 7px 0; width:200px; display: inline-block; margin-top: 15px; margin-bottom: 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #3E7EDF; text-align: center; vertical-align: middle; font-weight: bold; line-height: 1.43; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; white-space: nowrap; cursor: pointer; text-decoration: none;">Join class</a></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 10px 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><hr style="clear:both; max-width:600px; border-right:0; border-bottom:1px solid #cacaca; border-left:0; border-top:0; background-color:#dbdbdb; min-height:2px; width:600px; border:none; margin:auto"></td></tr></tbody></table></td></tr><tr><td style="vertical-align: middle; background-color: #fff; padding: 0 0 10px 0;" bgcolor="#fff" valign="middle"><table style="border-collapse: collapse; border-spacing: 0;" align="middle"><tbody><tr><td style="text-align: left; width: 600px; padding: 0;" align="left"><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 600; font-size: 14px; color: #565a5c; margin-top: 15px;">Class Details:</h4><h4 style="font-family: Helvetica, sans-serif; letter-spacing: 0.01em; line-height: 20px; font-weight: 400; font-size: 14px; color: #565a5c; margin-top: 4px;">'+classInfo.classDescription+'</h4></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>' + classReservedTemplate.toString()
+        }
+        //Invokes the method to send emails given the above data with the helper library
+        mailgun.messages().send(data, function (err, body) {
+          //If there is an error, render the error page
+          if (err) {
+            console.log(err)
+            console.log("Error sending reservation reminder email to " + emailAddress)
+          }
+          else {
+            console.log("Sent reservation reminder email to " + emailAddress)
+          }
+        })
+      })
+    })
+  })
+}
+
+// Cron job that checks user bookings and sends reminder emails where appropriate
+new CronJob('0 */30 * * * *', function() {
+  var startAt = new Date().getTime() + 3*60*60*1000;
+  var endAt = startAt*1 + 30*60*1000;
+
+  console.log("Checking for reservation reminder emails to send")
+
+  firebase.database().ref().child('userBookings').once('value', function(user) {
+    user.forEach(function(bookings) {
+      bookings.ref.orderByKey().startAt(startAt.toString()).endAt(endAt.toString()).once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
+        snapshot.forEach(function(upcomingClass) {
+          sendReminderEmail(snapshot.key, upcomingClass.val())  
+        })      
+      })
+    })
+  });
+}, function() {
+  console.log("Finished pulling user bookings.")
+}, true, 'America/New_York');

@@ -33,4 +33,9 @@ angular.module('bodyAppApp')
         templateUrl: 'app/about/jointeam.html',
         controller: 'AboutCtrl'
       })
+      .state('storefronttemplate', {
+        url: '/storefronttemplate',
+        templateUrl: 'app/about/storefronttemplate.html',
+        controller: 'AboutCtrl'
+      })
   });
