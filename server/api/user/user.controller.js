@@ -1414,12 +1414,13 @@ function sendReminderEmail(userId, classInfo) {
 
   User.findById(userId, '-salt -hashedPassword', function (err, user) {
     if (err) return err;
+    if (!user || !user.email) return (console.log("No email address found"))
 
     var dateTime = formattedDateTime(classInfo.classId, user)
 
     var emailAddress = "";
 
-    if (user.email) emailAddress = user.email;
+    if (user && user.email) emailAddress = user.email;
 
     fs.readFile(__dirname + '/emails/classReserved.html', function (err, html) {
       if (err) throw err; 

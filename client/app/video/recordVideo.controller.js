@@ -24,10 +24,11 @@ angular.module('bodyAppApp')
   })
 
 	function delayedStartup() {
-		$scope.loaded = true;
+		Intercom('trackEvent', 'navigatedToRecordVideo', { studio: studioId });
+    analytics.track('navigatedToRecordVideo', { studio: studioId });
+    $scope.loaded = true;
 		getVideoLibrary();	
 		getVideoStatus();
-    Intercom('trackEvent', 'navigatedToRecordVideo', { studio: studioId });
 	}	
 
 	$scope.recordVideo = function(){
@@ -130,6 +131,8 @@ angular.module('bodyAppApp')
 	    .success(function(data) {
 	    	ref.child('videoLibrary').child('videos').child(videoToDelete.token).remove()
 	      console.log("Successfully deleted video.");
+        Intercom('trackEvent', 'deletedVideo', { studioId: studioId, token: videoToDelete.token });
+        analytics.track('deletedVideo', { studioId: studioId, token: videoToDelete.token });
 	      delete $scope.videoLibrary[videoToDelete.token]
 	      if(!$scope.$$phase) $scope.$apply();
 	      return getVideoLibrary()

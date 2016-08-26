@@ -167,14 +167,17 @@ exports.addCustomerSubscription = function(req, res, next){
       user.save(function(err){
         if (err) return cb(err);
         if (studioId && accountId) {
-          // ref.child("studios").child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(retrievedId) {
+          ref.child("studios").child(studioId).child("stripeConnected").child('applicationFeePercent').once('value', function(applicationFee) {
           //   if (!retrievedId.exists()) {
-          //     res.status(201).send("Customer and billing created, but no subscription added.")
+          //     res.status(201).send("Customer and billing updated, but no subscription added.")
           //     return cb(null)
           //   }
             // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-              createCustomerSubscription(accountId)    
-            // })
+            var applicationFeePercent = applicationFee.val()
+            if (!applicationFee.exists()) applicationFeePercent = 20
+            console.log("Application fee is " + applicationFeePercent)
+            createCustomerSubscription(accountId, applicationFeePercent)    
+          })
           // })  
         } else {
           res.status(201).send("Customer and billing created, but no subscription added.")
@@ -186,14 +189,17 @@ exports.addCustomerSubscription = function(req, res, next){
 
     var updatePlatformCustomerHandler = function(err, customer) {
       if (studioId && accountId) {
-        // ref.child("studios").child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(retrievedId) {
+        ref.child("studios").child(studioId).child("stripeConnected").child('applicationFeePercent').once('value', function(applicationFee) {
         //   if (!retrievedId.exists()) {
         //     res.status(201).send("Customer and billing updated, but no subscription added.")
         //     return cb(null)
         //   }
           // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-            createCustomerSubscription(accountId)    
-          // })
+          var applicationFeePercent = applicationFee.val()
+          if (!applicationFee.exists()) applicationFeePercent = 20
+          console.log("Application fee is " + applicationFeePercent)
+          createCustomerSubscription(accountId, applicationFeePercent)    
+        })
         // })  
       } else {
         res.status(201).send("Customer and billing updated, but no subscription added.")
@@ -300,7 +306,7 @@ exports.addCustomerSubscription = function(req, res, next){
       }, updatePlatformCustomerHandler);
     };
 
-    var createCustomerSubscription = function(connectedAccountId) {
+    var createCustomerSubscription = function(connectedAccountId, applicationFeePercent) {
       // var connectedStripe = require("stripe")(connectedAccountAccessToken)
 
       stripe.tokens.create(
@@ -319,7 +325,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 20-3,
+                  application_fee_percent: Math.max(applicationFeePercent-3,0),
                   coupon: coupon.id,
                   metadata: {
                     "facebookId": user.facebookId.toString(),
@@ -337,7 +343,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 20-3,
+                  application_fee_percent: Math.max(applicationFeePercent-3,0),
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()
@@ -357,7 +363,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 20-3,
+                  application_fee_percent: Math.max(applicationFeePercent-3,0),
                   coupon: coupon.id,
                   metadata: {
                     "facebookId": user.facebookId.toString(),
@@ -376,7 +382,7 @@ exports.addCustomerSubscription = function(req, res, next){
                   source: newToken.id,
                   description: "BODY Consumer",
                   plan: planInfo.id,
-                  application_fee_percent: 20-3,
+                  application_fee_percent: Math.max(applicationFeePercent-3,0),
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()
@@ -488,14 +494,17 @@ exports.chargeDropin = function(req, res, next){
 
       user.save(function(err){
         if (studioId && accountId) {
-          // ref.child("studios").child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(retrievedId) {
+          ref.child("studios").child(studioId).child("stripeConnected").child('applicationFeePercent').once('value', function(applicationFee) {
             // if (!retrievedId.exists()) {
               // res.status(201).send("Customer and billing created, but no subscription added.")
               // return cb(null)
             // }
             // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-          createCustomerCharge(accountId)    
-            // })
+            var applicationFeeDecimal = applicationFee.val()*1/100
+            if (!applicationFee.exists()) applicationFeeDecimal = .2
+            console.log("Application fee is " + applicationFeeDecimal)
+            createCustomerCharge(accountId, applicationFeeDecimal)    
+          })
           // })
         } else if (studioId) { //If no accountId because stripe hasn't been set up by the studio
           createPlatformCharge(stripeToken, slot, amount, studioId)  
@@ -509,15 +518,17 @@ exports.chargeDropin = function(req, res, next){
 
     var updatePlatformCustomerHandler = function(err, customer) {
       if (studioId && accountId) {
-        // ref.child("studios").child(studioId).child("stripeConnected").child('stripe_user_id').once('value', function(retrievedId) {
-        //   if (!retrievedId.exists()) {
-        //     res.status(201).send("Customer and billing updated, but no subscription added.")
-        //     return cb(null)
-        //   }
+        ref.child("studios").child(studioId).child("stripeConnected").child('applicationFeePercent').once('value', function(applicationFee) {
+          // if (!retrievedId.exists()) {
+            // res.status(201).send("Customer and billing created, but no subscription added.")
+            // return cb(null)
+          // }
           // ref.child('studios').child(studioId).child("stripeConnected").child('access_token').once('value', function(retrievedAccessToken) {
-            createCustomerCharge(accountId)    
-          // })
-        // })  
+          var applicationFeeDecimal = applicationFee.val()*1/100
+          if (!applicationFee.exists()) applicationFeeDecimal = .2
+          console.log("Application fee is " + applicationFeeDecimal)
+          createCustomerCharge(accountId, applicationFeeDecimal)    
+        })  
       } else if (studioId) { //If no accountId because stripe hasn't been set up by the studio
         createPlatformCharge(stripeToken, slot, amount, studioId)
       } else {
@@ -581,7 +592,7 @@ exports.chargeDropin = function(req, res, next){
       }, updatePlatformCustomerHandler);
     };
 
-    var createCustomerCharge = function(connectedAccountId) {
+    var createCustomerCharge = function(connectedAccountId, applicationFeeDecimal) {
       // var connectedStripe = require("stripe")(connectedAccountAccessToken)
 
       stripe.tokens.create(
@@ -611,7 +622,7 @@ exports.chargeDropin = function(req, res, next){
                   description: "BODY Consumer",
                   amount: amount,
                   currency: "usd",
-                  application_fee: Math.max(Math.round(amount*.2 - amount*0.029 - 30), 0),
+                  application_fee: Math.max(Math.round(amount*(applicationFeeDecimal*1) - amount*0.029 - 30), 0),
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()
@@ -643,7 +654,7 @@ exports.chargeDropin = function(req, res, next){
                   description: "BODY Consumer",
                   amount: amount,
                   currency: "usd",
-                  application_fee: Math.max(Math.round(amount*.2 - amount*0.029 - 30), 0),
+                  application_fee: Math.max(Math.round(amount*(applicationFeeDecimal*1) - amount*0.029 - 30), 0),
                   metadata: {
                     "facebookId": user.facebookId.toString(),
                     "mongoId": user._id.toString()

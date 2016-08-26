@@ -34,7 +34,7 @@ angular.module('bodyAppApp')
       }
     })
 
-    $('#nutritionLabel1').nutritionLabel();
+    // $('#nutritionLabel1').nutritionLabel();
 
     function delayStart() {
       getUserBookings()
