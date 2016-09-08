@@ -78,7 +78,8 @@
         </div>
         <div class="col-xs-4 text-right">
           <h5 class = "mb8">${{planInfo.amount/100}}</h5>
-          <h5 ng-show = "validCoupon">(${{planInfo.amount*validCoupon.percent_off/10000}})</h5>
+          <h5 ng-show = "validCoupon && validCoupon.percent_off">(${{planInfo.amount*validCoupon.percent_off/10000}})</h5>
+          <h5 ng-show = "validCoupon && validCoupon.amount_off">(${{validCoupon.amount_off/100}})</h5>
         </div>
       </div>
       <hr class="content-divider mt8 mb8">
@@ -90,7 +91,8 @@
           <h4 class="bold">${{planInfo.amount/100}}</h4>
         </div>
         <div class="col-xs-4 text-right" ng-show = "validCoupon">
-          <h4 class="bold">${{(planInfo.amount * (100-validCoupon.percent_off))/100}}</h4>
+          <h4 class="bold" ng-show = "validCoupon.percent_off">${{(planInfo.amount * (100-validCoupon.percent_off))/100}}</h4>
+          <h4 class="bold" ng-show = "validCoupon.amount_off">${{(planInfo.amount - validCoupon.amount_off)/100}}</h4>
         </div>
       </div>
     </div>
