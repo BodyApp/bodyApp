@@ -91,7 +91,7 @@
           <h4 class="bold">${{planInfo.amount/100}}</h4>
         </div>
         <div class="col-xs-4 text-right" ng-show = "validCoupon">
-          <h4 class="bold" ng-show = "validCoupon.percent_off">${{(planInfo.amount * (100-validCoupon.percent_off))/100}}</h4>
+          <h4 class="bold" ng-show = "validCoupon.percent_off">${{(planInfo.amount - (planInfo.amount * (validCoupon.percent_off/100)))/100}}</h4>
           <h4 class="bold" ng-show = "validCoupon.amount_off">${{(planInfo.amount - validCoupon.amount_off)/100}}</h4>
         </div>
       </div>
