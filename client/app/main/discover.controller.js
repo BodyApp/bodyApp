@@ -24,6 +24,9 @@ angular.module('bodyAppApp')
     analytics.track('navigatedToDiscover');
 
     $scope.classesVsStudios = "classes";
+
+    var tzName = jstz().timezone_name;
+    $scope.timezone = moment().tz(tzName).format('z');
     
     $scope.showAllClasses = function() {
       $scope.showAll = true;
