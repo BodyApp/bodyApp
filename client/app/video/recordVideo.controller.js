@@ -5,6 +5,8 @@ angular.module('bodyAppApp')
 	var ref = firebase.database().ref().child('studios').child(studioId);
 	var currentUser = Auth.getCurrentUser()
 
+  filepicker.setKey("Awj7gCJS4eeAD1UG5fOFgz")
+
 	Studios.setCurrentStudio(studioId)
   .then(function(){
     console.log("Succeeded")
@@ -30,6 +32,30 @@ angular.module('bodyAppApp')
 		getVideoLibrary();	
 		getVideoStatus();
 	}	
+
+  $scope.pickFile = function() {
+    var fileToBigWarning = false;
+    filepicker.pick(
+      {
+        mimetype: 'video/*',
+        services: ['COMPUTER', 'VIDEO']
+      },
+      function(Blob){
+        console.log(replaceHtmlChars(JSON.stringify(Blob)));
+      },
+      function(FPError){
+        console.log(FPError.toString());
+      },
+      function(status){
+        if (status.size > 50*1024*1024 && !fileToBigWarning) {
+          var fileSizeToDisplay = status.size/(1024*1024) < 1000 ? Math.round(status.size/(1024*1024)) + "MB" : (status.size/(1024*1024 * 1000)).toFixed(1) + "GB"
+          alert(status.filename + " is " + fileSizeToDisplay + " and could take up to an hour to upload.") 
+          fileToBigWarning = true;
+        }
+        console.log(status.filename + " is " + status.progress + " complete.")
+      }
+    )
+  }
 
 	$scope.recordVideo = function(){
 		ziggeoEmbedding = ZiggeoApi.Embed.popup({
@@ -74,7 +100,6 @@ angular.module('bodyAppApp')
   function getVideoStatus() {
   	ref.child('videoLibrary').child('videos').once('value', function(snapshot) {
   		$scope.subscribersOnly = snapshot.val()
-  		console.log($scope.subscribersOnly)
       if(!$scope.$$phase) $scope.$apply();
   	})
   }

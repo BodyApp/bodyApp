@@ -40,7 +40,8 @@
     "angular-update-meta": "*",
     "angular-svg-round-progressbar": "*",
     "angularjs-socialshare": "*",
-    "nutrition-label-jquery-plugin": "*"
+    "nutrition-label-jquery-plugin": "*",
+    "filepicker-js": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
