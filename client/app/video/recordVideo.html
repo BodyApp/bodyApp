@@ -11,13 +11,18 @@
 	<div class = "row mt64"></div>
 
     <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "video in videoLibrary">
-      <a href="#" ng-click = "playVideo(video)">
+    	<video id="example_video_1" class="video-js vjs-default-skin"
+			  controls preload="auto" width="640" height="264"
+			  data-setup='{"example_option":true}'>
+			 <source ng-src="{{getVideoUrl(video.s3Key)}}" />
+			 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+			</video>
+      <!-- <a href="#" ng-click = "playVideo(video)">
       	<div>
 	        <img ng-src="https://{{video.embed_image_url}}" >
 	        <span class = "durationFormatRecording">{{formatDuration(video.duration)}}</span>
-	        <!-- <span class = "playButtonRecording"><i class="playButtonRecording fa fa-play-circle-o fa-3x"></i></span> -->
 	      </div>
-      </a>
+      </a> -->
       <div class = "col-xs-6">
       	<!-- <span>Public</span> -->
 	      <md-switch class="md-primary" ng-model="subscribersOnly[video.token].subscribersOnly" ng-change="publicPrivateChanged(video.token, subscribersOnly[video.token])" aria-label="Available to Public?">

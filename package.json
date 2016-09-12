@@ -42,7 +42,8 @@
     "throng":"*",
     "passport-oauth": "*",
     "nunjucks": "*",
-    "ziggeo": "*"
+    "ziggeo": "*",
+    "aws-sdk": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

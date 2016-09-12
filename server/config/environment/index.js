@@ -71,6 +71,9 @@ var all = {
 
   intercomSecret: process.env.intercomSecret,
 
+  awsKey: process.env.AWS_ACCESS_KEY_ID || 'key',
+  awsSecret: process.env.AWS_SECRET_ACCESS_KEY || 'secret',
+
   ziggeo: {
     token: process.env.ziggeo_token,
     private_key: process.env.ziggeo_private_key,

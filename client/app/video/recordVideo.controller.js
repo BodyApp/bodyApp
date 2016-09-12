@@ -1,5 +1,5 @@
 angular.module('bodyAppApp')
-.controller('RecordVideoCtrl', function ($scope, $location, $http, $mdDialog, $state, Video, User, Auth, studioId, Studios) {
+.controller('RecordVideoCtrl', function ($scope, $location, $http, $mdDialog, $state, $sce, Video, User, Auth, studioId, Studios) {
 	$scope.studioId = studioId
 	var ziggeoEmbedding;
 	var ref = firebase.database().ref().child('studios').child(studioId);
@@ -34,67 +34,90 @@ angular.module('bodyAppApp')
 	}	
 
   $scope.pickFile = function() {
-    var fileToBigWarning = false;
-    filepicker.pick(
+    var fileTooBigWarning = false;
+    filepicker.pickAndStore(
       {
         mimetype: 'video/*',
-        services: ['COMPUTER', 'VIDEO']
+        services: ['COMPUTER', 'VIDEO', 'GOOGLE_DRIVE']
+      },
+      {
+        location:"S3",
+        path: studioId + "/",
+        access: 'public'
       },
       function(Blob){
-        console.log(replaceHtmlChars(JSON.stringify(Blob)));
+        var savedVideo = Blob[0];
+        console.log(savedVideo);
+        Intercom('trackEvent', 'recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
+        analytics.track('recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
+        firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':false}, function(err) {
+          if (err) return console.log(err)
+          console.log("Added video to library.")
+        })
+        // console.log(replaceHtmlChars(JSON.stringify(Blob)));
       },
-      function(FPError){
-        console.log(FPError.toString());
+      function(error){
+        console.log(error);
       },
       function(status){
-        if (status.size > 50*1024*1024 && !fileToBigWarning) {
+        if (status.size > 50*1024*1024 && !fileTooBigWarning) {
           var fileSizeToDisplay = status.size/(1024*1024) < 1000 ? Math.round(status.size/(1024*1024)) + "MB" : (status.size/(1024*1024 * 1000)).toFixed(1) + "GB"
           alert(status.filename + " is " + fileSizeToDisplay + " and could take up to an hour to upload.") 
-          fileToBigWarning = true;
+          fileTooBigWarning = true;
         }
         console.log(status.filename + " is " + status.progress + " complete.")
       }
     )
   }
 
-	$scope.recordVideo = function(){
-		ziggeoEmbedding = ZiggeoApi.Embed.popup({
-			tags: [studioId], 
-      perms: ['allowupload', 'forbidrecord'],
-			// disable_first_screen: true,
-			popup_height: window.innerHeight*.8,
-			popup_width: window.innerWidth*.8,
-			hide_rerecord_on_snapshots: true,
+	// $scope.recordVideo = function(){
+	// 	ziggeoEmbedding = ZiggeoApi.Embed.popup({
+	// 		tags: [studioId], 
+ //      perms: ['allowupload', 'forbidrecord'],
+	// 		// disable_first_screen: true,
+	// 		popup_height: window.innerHeight*.8,
+	// 		popup_width: window.innerWidth*.8,
+	// 		hide_rerecord_on_snapshots: true,
 
-			// responsive: true
-			// video: "d7d249cb2d74359a9eaaed113f738a4b"
-		});
-	}
+	// 		// responsive: true
+	// 		// video: "d7d249cb2d74359a9eaaed113f738a4b"
+	// 	});
+	// }
 
-	ZiggeoApi.Events.on("submitted", function (data) {
-		getVideoLibrary()
-    Intercom('trackEvent', 'recordedVideo', { studioId: studioId, token: data.video.token });
-    analytics.track('recordedVideo', { studioId: studioId, token: data.video.token });
-		ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
-			if (err) return console.log(err)
-			console.log("Added video to library.")
-		})
-	});
+	// ZiggeoApi.Events.on("submitted", function (data) {
+	// 	getVideoLibrary()
+ //    Intercom('trackEvent', 'recordedVideo', { studioId: studioId, token: data.video.token });
+ //    analytics.track('recordedVideo', { studioId: studioId, token: data.video.token });
+	// 	ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
+	// 		if (err) return console.log(err)
+	// 		console.log("Added video to library.")
+	// 	})
+	// });
 
 	function getVideoLibrary() {
-    $http.post('/api/videolibrary/getstudiovideos', {
-      studioId: studioId,
-    })
-    .success(function(data) {
-      console.log("Successfully retrieved videos.");
-      console.log(data)
-      $scope.videoLibrary = data;
+    firebase.database().ref().child('videoLibraries').child(studioId).child('videos').on('value', function(snapshot) {
+      $scope.videoLibrary = snapshot.val();
       if(!$scope.$$phase) $scope.$apply();
+      console.log($scope.videoLibrary)
     })
-    .error(function(err) {
-      console.log(err)
-      console.log("Error retrieving videos")
-    }.bind(this));
+
+    // $http.post('/api/videolibrary/getstudiovideos', {
+    //   studioId: studioId,
+    // })
+    // .success(function(data) {
+    //   console.log("Successfully retrieved videos.");
+    //   console.log(data)
+    //   $scope.videoLibrary = data;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // })
+    // .error(function(err) {
+    //   console.log(err)
+    //   console.log("Error retrieving videos")
+    // }.bind(this));
+  }
+
+  $scope.getVideoUrl = function(s3Url) {
+    return $sce.trustAsResourceUrl('https://s3.amazonaws.com/videolibraries/'+s3Url)
   }
 
   function getVideoStatus() {
@@ -121,7 +144,7 @@ angular.module('bodyAppApp')
   }
 
   $scope.formatDuration = function(duration) {
-  	return duration.toString().toHHMMSS();
+  	// return duration.toString().toHHMMSS();
   }
 
   String.prototype.toHHMMSS = function () {

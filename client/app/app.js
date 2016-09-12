@@ -26,7 +26,8 @@ angular.module('bodyAppApp', [
   'angular-svg-round-progressbar',
   // 'djds4rce.angular-socialshare',
   // 'ezfb',
-  '720kb.socialshare'
+  '720kb.socialshare',
+  'vjs.video'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
