@@ -38,7 +38,7 @@ angular.module('bodyAppApp')
     filepicker.pickAndStore(
       {
         mimetype: 'video/*',
-        services: ['COMPUTER', 'VIDEO', 'GOOGLE_DRIVE']
+        services: ['COMPUTER', 'GOOGLE_DRIVE', 'DROPBOX']
       },
       {
         location:"S3",

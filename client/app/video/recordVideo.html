@@ -2,17 +2,17 @@
 <div class="video-container" ng-if="loaded">
 	<!-- <div class="recording-screen"> -->	
 	<div class = "row">
-		<!-- <div class = "col-xs-4"></div> -->
+		<div class = "col-md-5 col-xs-3"></div>
 		<!-- <a href="" ng-click="recordVideo()" class=" col-xs-4 btn btn-primary mt64">Upload Video</a> -->
 		<!-- <input type="filepicker" name="file"> -->
-		<button type="button" class="fp__btn" ng-click="pickFile()">Pick File</button>
+		<button type="button" class="fp__btn mt32" ng-click="pickFile()">Upload a Video To Your Library</button>
 		<!-- <div class = "col-xs-4"></div> -->
 	</div>
 	<div class = "row mt64"></div>
 
     <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "video in videoLibrary">
-    	<video id="example_video_1" class="video-js vjs-default-skin"
-			  controls preload="auto" width="640" height="264"
+    	<video id="videoPlayer" class="video-js vjs-default-skin"
+			  controls preload="auto"
 			  data-setup='{"example_option":true}'>
 			 <source ng-src="{{getVideoUrl(video.s3Key)}}" />
 			 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
