@@ -26,12 +26,12 @@
       </a> -->
       <div class = "col-xs-6">
       	<!-- <span>Public</span> -->
-	      <md-switch class="md-primary" ng-model="subscribersOnly[video.token].subscribersOnly" ng-change="publicPrivateChanged(video.token, subscribersOnly[video.token])" aria-label="Available to Public?">
-	      <span ng-show = "!subscribersOnly[video.token].subscribersOnly" style = "color:white;">Available To Public</span>
-	      <span ng-show = "subscribersOnly[video.token].subscribersOnly" style = "color:white;">Subscribers Only</span>
+	      <md-switch class="md-primary" ng-model="video.subscribersOnly" ng-change="publicPrivateChanged(key, video.subscribersOnly)" aria-label="Available to Public?">
+	      <span ng-show = "!video.subscribersOnly" style = "color:white;">Available To Public</span>
+	      <span ng-show = "video.subscribersOnly" style = "color:white;">Subscribers Only</span>
 	    	</md-switch>
 	    </div>
-      <a class="btn btn-danger active col-xs-6 mt16" ng-click="deleteVideo(video, $event)">Delete</a>
+      <a class="btn btn-danger active col-xs-6 mt16" ng-click="deleteVideo(key, $event)">Delete</a>
     </div>
           
 	</div>

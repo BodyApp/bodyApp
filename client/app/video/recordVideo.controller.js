@@ -30,7 +30,7 @@ angular.module('bodyAppApp')
     analytics.track('navigatedToRecordVideo', { studio: studioId });
     $scope.loaded = true;
 		getVideoLibrary();	
-		getVideoStatus();
+		// getVideoStatus();
 	}	
 
   $scope.pickFile = function() {
@@ -50,7 +50,7 @@ angular.module('bodyAppApp')
         console.log(savedVideo);
         Intercom('trackEvent', 'recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
         analytics.track('recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
-        firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':false}, function(err) {
+        firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':true}, function(err) {
           if (err) return console.log(err)
           console.log("Added video to library.")
         })
@@ -99,7 +99,8 @@ angular.module('bodyAppApp')
       $scope.videoLibrary = snapshot.val();
       if(!$scope.$$phase) $scope.$apply();
       snapshot.forEach(function(video) {
-        $('#video'+video.key).bind('contextmenu',function() { return false; });
+        var videoKey = $('#video'+video.key)
+        videoKey.bind('contextmenu',function() { return false; });
       })
     })
 
@@ -123,10 +124,10 @@ angular.module('bodyAppApp')
   }
 
   function getVideoStatus() {
-  	ref.child('videoLibrary').child('videos').once('value', function(snapshot) {
-  		$scope.subscribersOnly = snapshot.val()
-      if(!$scope.$$phase) $scope.$apply();
-  	})
+  	// firebase.database().ref().child('videoLibraries').child(studioId).child('videos').once('value', function(snapshot) {
+  	// 	$scope.subscribersOnly = snapshot.val()
+   //    if(!$scope.$$phase) $scope.$apply();
+  	// })
   }
 
   $scope.playVideo = function(videoToPlay) {
@@ -138,8 +139,8 @@ angular.module('bodyAppApp')
     });
   }
 
-  $scope.publicPrivateChanged = function(videoToken, publicVsPrivate) {
-  	ref.child('videoLibrary').child('videos').child(videoToken).update(publicVsPrivate, function(err) {
+  $scope.publicPrivateChanged = function(videoKey, publicVsPrivate) {
+  	firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoKey).update({'subscribersOnly':publicVsPrivate}, function(err) {
   		if (err) return console.log(err)
   		console.log("Updated video settings.");
   	})
@@ -174,23 +175,27 @@ angular.module('bodyAppApp')
 
     return $mdDialog
     .show( confirm ).then(function() {
-    	$http.post('/api/videolibrary/'+currentUser._id+'/deletestudiovideo', {
-	      studioId: studioId,
-	      videoToken: videoToDelete.token
-	    })
-	    .success(function(data) {
-	    	ref.child('videoLibrary').child('videos').child(videoToDelete.token).remove()
-	      console.log("Successfully deleted video.");
-        Intercom('trackEvent', 'deletedVideo', { studioId: studioId, token: videoToDelete.token });
-        analytics.track('deletedVideo', { studioId: studioId, token: videoToDelete.token });
-	      delete $scope.videoLibrary[videoToDelete.token]
-	      if(!$scope.$$phase) $scope.$apply();
-	      return getVideoLibrary()
-	    })
-	    .error(function(err) {
-	      console.log(err)
-	      console.log("Error deleting video")
-	    }.bind(this));	
+      firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoToDelete).remove(function(err) {
+        if (err) return console.log(err)
+        console.log("Removed video from playlist.");
+      })
+    	// $http.post('/api/videolibrary/'+currentUser._id+'/deletestudiovideo', {
+	    //   studioId: studioId,
+	    //   videoToken: videoToDelete.token
+	    // })
+	    // .success(function(data) {
+	    // 	ref.child('videoLibrary').child('videos').child(videoToDelete.token).remove()
+	    //   console.log("Successfully deleted video.");
+     //    Intercom('trackEvent', 'deletedVideo', { studioId: studioId, token: videoToDelete.token });
+     //    analytics.track('deletedVideo', { studioId: studioId, token: videoToDelete.token });
+	    //   delete $scope.videoLibrary[videoToDelete.token]
+	    //   if(!$scope.$$phase) $scope.$apply();
+	    //   return getVideoLibrary()
+	    // })
+	    // .error(function(err) {
+	    //   console.log(err)
+	    //   console.log("Error deleting video")
+	    // }.bind(this));	
     })
   	
 
