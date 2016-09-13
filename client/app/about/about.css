@@ -35,6 +35,18 @@
 .storefront-header-pricing .discovery-tag-price {
   font-size: 1.4rem;
 }
+.storefront-header-pricing .discovery-tag-price {
+  color: white !important;
+  border: 3px solid white;
+  background: none !important;
+}
+.storefront-header-pricing .discovery-tag-love {
+  margin-top: 7px !important;
+}
+.subscribe-btn {
+  padding: 10px 30px !important;
+  font-size: 16px !important;
+}
 .video-play {
   text-shadow: 0px 0px 20px rgba(0,0,0,0.4);
 }
@@ -132,9 +144,9 @@
 .regular-vid-container .video:hover {
   cursor: pointer;
 }
-.featured-vid-container .video:hover .video-info,
-.regular-vid-container .video:hover .video-info {
-  z-index: 1;
+.featured-vid-container .video:hover .video-info-play,
+.regular-vid-container .video:hover .video-info-play {
+  display: block;
 }
 .regular-vid-container .video {
   height: 84px;
@@ -161,7 +173,7 @@
 }
 .video-info {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   top: 0;
   width: 100%;
   height: 200px;
@@ -194,7 +206,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  display: none;
 }
 .video-info-details {
   position: absolute;
@@ -267,7 +279,7 @@
 .storefront-tag-love {
   position: absolute;
   top: 20px;
-  left: 10px;
+  right: 10px;
 }
 .facebook-messenger-btn:hover {
   opacity: 0.8;
@@ -307,6 +319,9 @@
   .storefront-header-pricing .discovery-tag-love,
   .storefront-header-pricing .discovery-tag-price {
     font-size: 10px;
+  }
+  .storefront-header-pricing .discovery-tag-price {
+    border: 2px solid white;
   }
   .subscribe-btn {
     font-size: 10px !important;
@@ -434,6 +449,7 @@
   .video-info-play {
     height: 38px;
     width: 80px;
+    display: block;
   }
   .video-info-details {
     position: absolute;
