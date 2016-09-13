@@ -98,7 +98,9 @@ angular.module('bodyAppApp')
     firebase.database().ref().child('videoLibraries').child(studioId).child('videos').on('value', function(snapshot) {
       $scope.videoLibrary = snapshot.val();
       if(!$scope.$$phase) $scope.$apply();
-      console.log($scope.videoLibrary)
+      snapshot.forEach(function(video) {
+        $('#video'+video.key).bind('contextmenu',function() { return false; });
+      })
     })
 
     // $http.post('/api/videolibrary/getstudiovideos', {

@@ -10,10 +10,11 @@
 	</div>
 	<div class = "row mt64"></div>
 
-    <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "video in videoLibrary">
-    	<video id="videoPlayer" class="video-js vjs-default-skin"
+    <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "(key, video) in videoLibrary">
+    	<video ng-attr-id="{{ 'video' + key }}" class="video-js vjs-default-skin vjs-big-play-centered"
 			  controls preload="auto"
-			  data-setup='{"example_option":true}'>
+			  data-setup='{"example_option":true}'
+			  >
 			 <source ng-src="{{getVideoUrl(video.s3Key)}}" />
 			 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 			</video>
