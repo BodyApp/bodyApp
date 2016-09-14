@@ -119,6 +119,12 @@ angular.module('bodyAppApp')
     // }.bind(this));
   }
 
+  $scope.titleChanged = function(videoKey, title) {
+    firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoKey).update({title:title}, function(err) {
+      console.log("Title of " + videoKey + " changed to '" + title + "'")
+    })
+  }  
+
   $scope.getVideoUrl = function(s3Url) {
     return $sce.trustAsResourceUrl('https://s3.amazonaws.com/videolibraries/'+s3Url)
   }
