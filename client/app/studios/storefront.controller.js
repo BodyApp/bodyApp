@@ -466,7 +466,8 @@ angular.module('bodyAppApp')
         day.endDateTime = day.beginDateTime + 24*60*60*1000-1000
         day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
         day.formattedDayOfWeek = getFormattedDateTime(day.beginDateTime).dayOfWeek;
-        day.formattedMonthAndDay = getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
+        // day.formattedMonthAndDay = getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
+        day.formattedMonthAndDay = new Date(day.beginDateTime).getMonth()+1 + "/" + new Date(day.beginDateTime).getDate();
 
         $scope.daysToShow.push(day)
         if(!$scope.$$phase) $scope.$apply();

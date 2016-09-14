@@ -1,22 +1,10 @@
-<!-- <meta property="og:title" content="{{ngMeta.ogTitle}}" />
-<meta property="og:type" content="website" />       
-<meta property="og:image" content="{{ngMeta.ogImage}}" />
-<meta property="og:description" content="{{ngMeta.ogDescription}}" />      
-<meta property="og:url" content="{{ngMeta.ogUrl}}" />
-<meta property="fb:app_id" content="501927126632986"/> -->
-
 <update-meta property="og:title" content="{{studioName}}"></update-meta>
 <update-meta property="og:type" content="website"></update-meta>       
 <update-meta property="og:image" content="{{backgroundImageUrl}}"></update-meta>
 <update-meta property="og:description" content="{{studioLongDescription}}"></update-meta>      
 <update-meta property="og:url" content="https://www.getbodyapp.com/studios/{{studioId}}"></update-meta>
 <update-meta property="fb:app_id" content="501927126632986"></update-meta>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-<jsonld data-json="jsonId"></jsonld>
-
 <div ng-include="'components/navbar/navbar.html'" class = "mb64 mb-sm-48"></div>
-
 
 <div class="fullscreen-stories hidden" tabindex="1" style="z-index:2001;">
   <div class="row row-table row-full-height stories-container">
@@ -85,11 +73,12 @@
               <div class="story-container">
                 <img src="/assets/images/studios/ralabala/story2.jpg" width="100%">
                 <div class="text-center story-name">
-                  <h4 class="mt16 mb8 white">Beth Anne Lazaro, Cleveland OH USA</h4>
+                  <h4 class="mt8 white">Beth Anne Lazaro</h4>
+                  <h4 class="mb8 white">@ralabala</h4>
                 </div>
               </div>
               <div class="story-content text-left">
-                <h5 class="white">Our culture tells us to "follow our feelings" and seek pleasure/happiness wherever we can.  But, if you spend time reflecting on what matters most to you and anchor to those in making decisions you will focus on things that bring lifelong relevance and greater meaning - these anchors will tend to be more long-lived and can guide us as circumstances, people and motives change around us. Our minds and body require stimulation to function at full potential.</h5>
+                <h5 class="white">Our culture tells us to "follow our feelings" and seek pleasure/happiness wherever we can.</h5>
               </div>
             </div>
             <div class="col-xs-1 col-middle">
@@ -108,503 +97,452 @@
   </div>
 </div>
 
-<div class="storefront-hero">
-  <div class="va-container va-container-v va-container-h hero-play-btn">
-    <div class="va-middle text-center">
-      <a href="#" class="" ng-show = "storefrontInfo.youtubeId">
-        <i class="fa fa-play-circle video-play" ng-click = "playYoutubeVideo()"></i>
-      </a>
-    </div>
-  </div>
-  <div id="hero-video-player" class="fullscreen-video-player" ng-show = "showVideoPlayer" tabindex="1" style="z-index:2001;">
-    <div class="row row-table row-full-height">
-      <div class="col-sm-12 col-middle text-center" id = "youtubeContainer">
-        <iframe id="youtubeVideo" width="100%" height="100%" ng-src="{{youtubeLink}}" frameborder="0" allowfullscreen></iframe>
-        <a href="#" id="close-fullscreen-hero" ng-click = "stopPlayingVideo()" class="fullscreen-video-player-close">
-          <i class="ti-close"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="cover-img" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}"></div>
-</div>
-
-<div id="summary" class="panel studio-section">
-  <div class="page-container-responsive">
+<div class="storefront-header" ng-style="{'background-image':'url('+ backgroundImageUrl +')'}">
+  <div class="storefront-header-vid">
+    <a href="#" class="">
+      <i class="fa fa-play-circle video-play-btn"></i>
+    </a>
+  </div>
+  <div class="storefront-header-pricing">
     <div class="row">
-      <div class="col-md-8"> <!-- STUDIO LOGO, NAME, SUB DESCRIPTION -->
-        <div class="space-top-4">
-          
-          <div class="row">
-            <div class="col-md-3 text-center">
-              <img class="studio-profile-img mb-sm-16" ng-src="{{iconUrl}}">
-              <h5 class="mt8 hidden-xs hidden-sm">{{storefrontInfo.ownerName}}</h5>
-              <!-- <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& 1 Instructor</h5> -->
-              <h5 class="lightgray hidden-xs hidden-sm" ng-if = "numOfInstructors > 1">& {{numOfInstructors-1}} Instructors</h5>
-            </div>
-            <div class="col-md-9">
-              <h1 class="studio-name text-center-sm">{{storefrontInfo.studioName}}</h1>
-              <h2 class="studio-short text-center-sm">{{storefrontInfo.shortDescription}}</h2>
-
-              <div class="row mt16">
-                <!-- <div class="col-md-4 text-center-sm">
-                  <div class="studio-rating mb-sm-16">
-                    <div class="studio-stars">
-                      <span>
-                        <span><i class="fa fa-star"></i></span>
-                        <span><i class="fa fa-star"></i></span>
-                        <span><i class="fa fa-star"></i></span>
-                        <span><i class="fa fa-star"></i></span>
-                        <span><i class="fa fa-star-half-o"></i></span>
-                      </span>
-                    </div>
-                    <span class="rating-n lightgray">(60)</span>
-                  </div>
-                </div> -->
-                <div class="col-md-8 text-center-sm studio-tags">
-                  <a href = "#" ng-click = "goToDiscover(key)" class="btn-tag" ng-repeat = "(key, value) in storefrontInfo.categories" ng-if = "value === true">{{key}}</a>
-                  <!-- <div class="btn-tag">Strength</div>
-                  <div class="btn-tag">Yoga</div> -->
-                </div>
-              </div>
-
-            </div>
-          </div>
-
+      <div class="col-md-3 hidden-xs hidden-sm text-left">
+        <div class="discovery-tag-love trending">
+          <i class="fa fa-heart"></i> Studio We Love
         </div>
       </div>
+      <div class="col-md-9 text-right text-center-sm">
+        <div class="discovery-tag-price">
+          <span class="bold" ng-show = "storefrontInfo && storefrontInfo.subscriptionPricing">${{storefrontInfo.subscriptionPricing/100}}/mo unlimited</span>
+          <span class="bold" ng-show = "!storefrontInfo || !storefrontInfo.subscriptionPricing">No unlimited</span>
+        </div>
+        <div class="discovery-tag-price">
+          <span class="bold" ng-show = "storefrontInfo && storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}} / class</span>
+          <span class="bold" ng-show = "!storefrontInfo || !storefrontInfo.dropinPricing">$3 / class</span>
+        </div>
+        <a href="#" class="btn-blue subscribe-btn">Purchase Unlimited Pass</a>
+      </div>
+    </div>
+  </div>
+  <div class="discovery-tag-love trending storefront-tag-love visible-xs visible-sm">
+    <i class="fa fa-heart"></i> Studio We Love
+  </div>
+</div>
 
-      <div class="col-md-4"> <!-- STUDIO CALL TO ACTION -->
-        <div class="panel callToAction pt8 pb16"> <!-- PRICING PANEL -->
-                                                  <!-- ****DELETE pt8 and pb16 WHEN ADD BACK FIRST CLASS PROMO**** -->
-          <div class="panel-body">
-            <div class="callToAction-pricing">
-
-              <div class="col-xs-6 col-md-12 mb8">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h4>Unlimited</h4>
-                  </div>
-                  <div class="col-md-6">
-                    <h4 class="lightgray" ng-show="storefrontInfo && storefrontInfo.subscriptionPricing">${{storefrontInfo.subscriptionPricing/100}}/mo</h4>
-                    <h4 class="lightgray" ng-show="storefrontInfo && !storefrontInfo.subscriptionPricing">None</h4>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xs-6 col-md-12 mb8">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h4>Drop In</h4>
-                  </div>
-                  <div class="col-md-6">
-                    <h4 class="lightgray" ng-show = "storefrontInfo && storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}}</h4>
-                    <h4 class="lightgray" ng-show = "storefrontInfo && !storefrontInfo.dropinPricing">$3</h4>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xs-12 mt16">
-                <a href="#" class="btn-blue btn-block" ng-show = "(storefrontInfo && storefrontInfo.subscriptionPricing && subscriptions && subscriptions[studioId] != 'active') || showLoginButton" ng-click = "joinStudioClicked()">Get Monthly Pass</a>
-                <div class="" ng-show = "subscriptions[studioId] === 'active'">You are a member of this studio!</div>
-                <div class="lightgray" ng-show = "storefrontInfo && subscriptions[studioId] === 'active'">Need to <a href="#" class="" ng-click = "cancelSubscription()">unsubscribe</a>?</div>
-              </div>
-            </div>
-          </div>
-        </div>      <!-- PRICING PANEL END -->
-      </div>     <!-- STUDIO CALL TO ACTION END -->
-
+<div class="panel studio-section mb0">
+  <div class="page-container-responsive">
+    <div class="row pt32 pb32 pt-xs-16 pb-xs-16">
+      <div class="col-md-2 col-xs-3 text-center">
+        <img ng-src="{{iconUrl}}" class="studio-profile-img">
+        <h5 class="mt8 studio-owner">{{storefrontInfo.ownerName}}</h5>
+      </div>
+      <div class="col-md-10 col-xs-9 col-xs-expand">
+        <h1 class="royalblue studio-name">{{storefrontInfo.studioName}}</h1>
+        <h3 class="studio-short mt8">{{storefrontInfo.shortDescription}}</h3>
+        <div class="studio-tags mt16">
+          <a href = "#" ng-click = "goToDiscover(key)" class="btn-tag" ng-repeat = "(key, value) in storefrontInfo.categories" ng-if = "value === true">{{key}}</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="details" class="pt16 pb16">
+<div class="storefront pt24 pb24 pt-xs-8">
   <div class="page-container-responsive">
-    
     <div class="row">
       <div class="col-md-8">
+        <div class="calendar-selector row pt24 pb24 pt-xs-16 pb-xs-16">
+          <div>
+              <div class="week-changer text-left">
+                <i class="ti-angle-left"></i>
+              </div><!-- 
+             --><div class="calendar-selector-days text-center">
+                <ul>
+                  <li href="#" class="cal-select-active">Show<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm">All</li><!-- 
+               --><li href="#" ng-show = "$index < numDaysToShow + nextWeek && $index >= nextWeek" ng-repeat = "dayShown in daysToShow">{{dayShown.formattedDayOfWeek}}<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm">{{dayShown.formattedMonthAndDay}}</li><!-- 
+               
+            --></ul>
+              </div><!-- 
+             --><div class="week-changer text-right">
+                <i class="ti-angle-right cal-select-active"></i>
+              </div>
+            </div>
+          </div>
 
-        <!-- <div class="row studio-fast-links"> --> <!-- MINI NAV FOR STUDIO CONTENT -->
-          <!-- <div class="col-md-12">
-            <ul>
-              <li>
-                <a href="#">Schedule</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Stories</a>
-              </li>
-              <li>
-                <a href="#">Team</a>
+        <div class="class-listings-descr row pt8 pb8 text-center">
+          <div class="col-xs-12">
+            <h3 class="semibold">Upcoming Classes</h3>
+            <h5 class="lightgray">Times in {{timezone}}</h5>
+          </div>
+        </div>
+        <div class="row pt16 pb16 pt-xs-16 pb-xs-8"> 
+          <div class="col-xs-12">
+            <ul class="class-listings">
+              <li class="mb24">
+                <div class="row">
+                  <div class="col-xs-4 col-sm-3 col-xs-expand2">
+                    <h4 class="royalblue">7/25, 5:30pm</h4>
+                    <h5 class="lightgray">45 min</h5>
+                  </div>
+                  <div class="col-xs-4 col-sm-3 col-xs-expand3">
+                    <h4 class="royalblue">Pilates Barre</h4>
+                    <h5 class="lightgray">with Alexis Olson</h5>
+                  </div>
+                  <div class="col-sm-2 hidden-xs social-bookings">
+                    <ul>
+                      <li>
+                        <img src="/assets/images/justin-photo.jpg" class="round-photo">
+                      </li>
+                      <li>
+                        <img src="/assets/images/justin-photo.jpg" class="round-photo">
+                      </li>
+                      <li>
+                        <img src="/assets/images/empty-booking.svg">
+                      </li>
+                    </ul>
+                    <h5 class="lightgray">8 bookings</h5>
+                    <a class="hidden book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
+                  </div>
+                  <div class="col-xs-4 col-sm-4 col-xs-expand4 text-right">
+                    <a href="#" class="facebook-messenger-btn"><img src="/assets/images/fb-messenger.png" class="small-icon"></a>
+                    <a href="#" class="btn-blue">View<span class="bold hidden-xs"> Class</span></a>
+                  </div>
+                </div>
               </li>
             </ul>
-            <hr>
           </div>
-        </div> -->
-
-        <!-- <div class="row mb16" ng-show = "numDaysToShow < 14 && nextWeek === 0">
-          <div class = "col-xs-8"></div>
-          <a class = "col-xs-3 btn" ng-click = "incrementNextWeek()">Next Week</a>
-        </div> -->
-
-        <!-- <div class="row mb16" ng-show = "numDaysToShow < 14 && nextWeek > 0"> -->
-          <!-- <div class = "col-xs-1"></div> -->
-          <!-- <a class = "col-xs-3 btn" ng-click = "nextWeek = 0">This Week</a> -->
-          <!-- <div class = "col-xs-8"></div> -->
-        <!-- </div> -->
-        
-        <div style = "text-align:center; font-weight: 400">Class times in {{timezone}}</div>
-
-        <div class="row mb24"> <!-- CALENDAR WEEK VIEW -->
-          <div class="cal-container text-center">         
-            <div class="header-cover"></div>
-            <div class="no-classes" ng-if = "!classSchedule">No classes this week</div>
-            <div class="week-bck" ng-show = "nextWeek > 0"><a href="#" ng-click = "decrementNextWeek()"><i class="bold ti-control-backward"></i></a></div>
-
-            <div class="cal-column" ng-show = "$index < numDaysToShow + nextWeek && $index >= nextWeek" ng-repeat = "dayShown in daysToShow"> <!-- REPEATED FOR NEXT DAY -->
-              <div class="cal-daytime">
-                <div class="cal-day">{{dayShown.formattedDayOfWeek}}</div>
-                <div class="cal-date">{{dayShown.formattedMonthAndDay}}</div>
-              </div>
-              <div class="cal-allClasses" >
-                <div class="cal-scheduled text-left" ng-if = "class.dateTime > dayShown.beginDateTime - 60*60*1000 && class.dateTime < dayShown.endDateTime && class.typeOfClass != 'Specialty'" ng-repeat = "class in classSchedule"> <!-- REPEATED FOR SCHEDULED CLASSES -->
-                  <div class="cal-time bold">{{getFormattedDateTime(class.dateTime).classTime}} ({{class.duration}}m)</div>
-                  <!-- <div class="cal-duration">{{class.duration}}m</div> -->
-                  <div class="cal-class">{{classTypes[class.classType].name}}</div>
-                  <div class="cal-instructor">{{instructors[class.instructor].firstName}}</div>
-                  <!-- <div class="cal-friends">2 friends</div>
-                  <div class="cal-bubbles">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                    <img src="/assets/images/bern-prince.jpg" width="20" height="20">
-                  </div> -->
-                  <div class="cal-action mt8">
-                    <a class = "btn-blue" ng-href = "/studios/{{studioId}}/classinfo/{{class.dateTime}}">View</a>
-                    <!-- <a href="#" class="btn-blue" ng-click = "reserveClicked(class)">
-                      <span style = "font-weight: 600;" ng-show = "!userBookings[class.dateTime] && class.instructor != currentUser._id">Reserve
-                      </span>
-                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]">Booked</span>
-                      <span style = "font-weight: 600;" ng-show = "userBookings[class.dateTime] && rightNow > classesJoinTime[class.dateTime] " >Join</span>
-                      <span style = "font-weight: 600;" ng-show = "class.instructor === currentUser._id">Teaching</span>
-                    </a> -->
-                  </div>
-                </div>
-                <div class="week-fwd" ng-show = "nextWeek < numDaysToShow + (7-numDaysToShow)*2"><a href="#" ng-click = "incrementNextWeek()"><i class="bold ti-control-forward"></i></a></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="specialty-class-container panel-dark mt16" ng-show = "specialtyClasses"> <!-- HIDE THIS IF NO SPECIALTY CLASSES -->
-            <div class="panel-body">
-              <h4 class="mb16">Upcoming Specialty Classes</h4>
-              <ul class="specialty-class">
-                <li ng-repeat = "specialtyClass in specialtyClasses"> <!-- REPEAT THIS FOR EACH SPECIALTY CLASS -->
-                  <div class="row pt16">
-                    <div class="col-sm-2">
-                      <h5>{{getFormattedDateTime(specialtyClass.dateTime).month}} {{getFormattedDateTime(specialtyClass.dateTime).day}}</h5>
-                      <h5>{{getFormattedDateTime(specialtyClass.dateTime).classTime}} {{timezone}}</h5>
-                    </div>
-                    <div class="col-sm-10">
-                      <div class="row">
-                        <div class="col-xs-12">
-                          <div class="specialty-class-name">
-                            <h4>{{classTypes[specialtyClass.classType].name}} (${{classTypes[specialtyClass.classType].specialtyClassRate}})</h4>
-                            <a href="#" ng-click = "joinClass(specialtyClass)" ng-if = "instructors[specialtyClass.instructor]._id === currentUser._id" class="btn-blue">Teach Class</a>
-                            <a href="#" class="btn-blue" ng-show = "!userBookings[specialtyClass.dateTime] && specialtyClass.instructor != currentUser._id" ng-click = "reserveClicked(specialtyClass)">Register</a>
-                            <!-- <a class="btn-blue" ng-show = "userBookings[class.dateTime] && rightNow < classesJoinTime[class.dateTime]" ng-disabled ng-click = "cancelClass(class)">Booked</a> -->
-                            <a class="btn-blue" ng-show = "userBookings[specialtyClass.dateTime] && rightNow < classesJoinTime[specialtyClass.dateTime]" ng-click = "joinClass(class)">Class Booked</a>
-                            <a ng-href="#" class="btn-blue" ng-show = "userBookings[specialtyClass.dateTime] && rightNow > classesJoinTime[specialtyClass.dateTime] " ng-click = "joinClass(specialtyClass)">Join Class</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row mt8">
-                        <div class="col-xs-12">
-                          <h5>{{classTypes[specialtyClass.classType].classDescription}}</h5>
-                        </div>
-                      </div>
-                      <div class="row mt8">
-                        <div class="col-xs-5">
-                          <div class="row">
-                            <div class="col-xs-4">
-                              <img class="round-photo" ng-src="https://graph.facebook.com/{{instructors[specialtyClass.instructor].facebookId}}/picture?width=100&height=100">
-                            </div>
-                            <div class="col-xs-8">
-                              <h5>Instructor</h5>
-                              <h5 class="lightgray">{{instructors[specialtyClass.instructor].firstName}} {{instructors[specialtyClass.instructor].lastName}}</h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-xs-2">
-                          <h5>Duration</h5>
-                          <h5 class="lightgray">{{specialtyClass.duration}} min</h5>
-                        </div>
-                        <!-- <div class="col-xs-2">
-                          <h5>Open To</h5>
-                          <h5 class="lightgray">All</h5>
-                        </div> -->
-                        <div class="col-xs-2">
-                          <h5>Requires</h5>
-                          <div ng-repeat = "equipment in classTypes[specialtyClass.classType].equipment">
-                            <h5 class="lightgray">{{equipment.name}}</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div> <!-- ENDS SPECIALTY CLASS SECTION -->
-
         </div>
 
-        <div class="row mb16">
-          <div class="col-md-12">
+        <div class="row pt16 pb16 pt-xs-8 pb-xs-8">
+          <div class="col-xs-12">
+            <div class="storefront-title">
+              <h4>On-Demand Videos</h4>
+              <a href="#">+ See all</a>
+            </div>
+            <ul class="on-demand-vids pt16">
+              <li class="featured-vid-container">
+                <div href="#" class="video" style="background-image: url('assets/images/stretch.jpg')">
+                  <div class="video-info">
+                    <div class="video-info-play">
+                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
+                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
+                    </div>
+                    <div class="video-info-details">
+                      <div class="row">
+                        <div class="col-xs-6 text-left">
+                          <span class="white">1 day ago</span>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                          <span class="white">10:08</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vid-title-featured">
+                  <span class="royalblue bold">Thursday Class Replay</span>
+                </div>
+                <span class="lightgray"> 100 <i class="fa fa-play-circle-o"></i></span>
+              </li>
+              <li class="regular-vid-container">
+                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
+                  <div class="video-info">
+                    <div class="video-info-play">
+                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
+                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
+                    </div>
+                    <div class="video-info-details">
+                      <div class="float-left inline-block">
+                        <span class="white">1 day ago</span>
+                      </div>
+                      <div class="float-right inline-block">
+                        <span class="white">10:08</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vid-title">
+                  <span class="royalblue bold">Thursday Class Replay</span>
+                </div>
+                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
+              </li>
+              <li class="regular-vid-container">
+                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
+                  <div class="video-info">
+                    <div class="video-info-play">
+                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
+                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
+                    </div>
+                    <div class="video-info-details">
+                      <div class="float-left inline-block">
+                        <span class="white">1 day ago</span>
+                      </div>
+                      <div class="float-right inline-block">
+                        <span class="white">10:08</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vid-title">
+                  <span class="royalblue bold">Thursday Class Replay</span>
+                </div>
+                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
+              </li>
+              <li class="regular-vid-container">
+                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
+                  <div class="video-info">
+                    <div class="video-info-play">
+                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
+                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
+                    </div>
+                    <div class="video-info-details">
+                      <div class="float-left inline-block">
+                        <span class="white">20 days ago</span>
+                      </div>
+                      <div class="float-right inline-block">
+                        <span class="white">10:08</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vid-title">
+                  <span class="royalblue bold">Thursday Class Replay</span>
+                </div>
+                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
+              </li>
+              <li class="regular-vid-container">
+                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
+                  <div class="video-info">
+                    <div class="video-info-play">
+                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
+                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
+                    </div>
+                    <div class="video-info-details">
+                      <div class="float-left inline-block">
+                        <span class="white">1 day ago</span>
+                      </div>
+                      <div class="float-right inline-block">
+                        <span class="white">10:08</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vid-title">
+                  <span class="royalblue bold">Thursday Class Replay</span>
+                </div>
+                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-            <div class="row">  <!-- ABOUT THIS STUDIO -->
-              <div class="col-md-12">
-                <h4 class="bold mb8">About this studio</h4>
-                <h5 class="mb8" style = "white-space: pre-line;">{{storefrontInfo.longDescription}}</h5>
-                <!-- <a href="#">Contact Studio</a> -->
+        <div class="row pt16 visible-xs visible-sm">
+          <div class="col-xs-12">
+            <div class="panel"> 
+              <div class="panel-body">
+                <div class="row text-center follow-panel-xs">
+                  <div class="col-xs-5">
+                    <ul class="row studio-friends text-center">
+                      <li>
+                        <img src="assets/images/justin-photo.jpg">
+                      </li>
+                      <li>
+                        <img src="assets/images/justin-photo.jpg">
+                      </li>
+                      <li>
+                        <div class="empty-friend-circle"></div>
+                      </li>
+                      <li>
+                        <div class="empty-friend-circle"></div>
+                      </li>
+                    </ul>
+                    <h5 class="lightgray mt8">4 friends</h5>
+                  </div>
+                  <div class="col-xs-7">
+                    <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> AbsoluteBody Pilates</a>
+                    <h5 class="lightgray mt8">148 followers</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="boxed-icons">
+                <div class="social-share-btns">
+                  <div class="share-triggers btn-group">
+                    <a href="#"
+                      class="share-btn text-center btn btn-width-control" 
+                      socialshare
+                      socialshare-text="{{storefrontInfo.studioName}}"
+                      socialshare-type="send"
+                      socialshare-caption="{{storefrontInfo.shortDescription}}"
+                      socialshare-description="{{storefrontInfo.longDescription}}"
+                      socialshare-media="{{backgroundImageUrl}}"
+                      socialshare-provider="facebook"
+                      socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+                      socialshare-redirect-uri="www.getbodyapp.com/studios/{{studioId}}"
+                      socialshare-via='501927126632986'
+                      socialshare-trigger='click'
+                      socialshare-popup-height=900
+                      socialshare-popup-width=900
+                      >
+                      <i class="fa fa-facebook-official"></i> Send
+                    </a>
+                    <a href="#"
+                      class="share-btn text-center btn btn-width-control" 
+                      socialshare
+                      socialshare-type="feed"
+                      socialshare-text="{{storefrontInfo.studioName}}"
+                      socialshare-caption="{{storefrontInfo.shortDescription}}"
+                      socialshare-description="{{storefrontInfo.longDescription}}"
+                      socialshare-media="{{backgroundImageUrl}}"
+                      socialshare-provider="facebook"
+                      socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+                      socialshare-via='501927126632986'
+                      socialshare-trigger='click'
+                      socialshare-popup-height=600
+                      socialshare-popup-width=600
+                      >
+                      <i class="fa fa-facebook-official"></i> Share
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <hr class="content-divider mt16 mb16">
-
-            <div class="row">  <!-- CLASSES SECTION -->
-              <div class="col-md-2">
-                <h5 class="lightgray">Classes</h5>
-              </div>
-              <div class="col-md-10" >
-
-                <div class="row studio-classes" ng-repeat = "classType in classTypes" > <!-- FIRST CLASS -->
-                  <div class="col-md-12" ng-show = "classType.classType != 'Specialty'">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="mb0">{{classType.name}}</span></h5>
-                        <h5 class="lightgray" style = "white-space: pre-line;">{{classType.classDescription}}</h5>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <!-- <div class="col-md-5">
-                        <h5 class="mb0">Open to</h5>
-                        <h5 class="lightgray">{{classType.openTo}}</h5>
-                      </div> -->
-                      <div class="col-md-4">
-                        <h5 class="mb0">Equipment Required</h5>
-                        <div ng-repeat = "equipment in classType.equipment">
-                          <h5 class="lightgray">{{equipment.name}}</h5>
-                        </div>
-                        
-                      </div>
-                      <!-- <div class="col-md-4">
-                        <h5 class="mb0">Scheduled</h5>
-                        <h5 class="lightgray">24 times</h5>
-                      </div> -->
-                    </div>
-                    <hr class="content-divider mt16 mb16">
-                  </div>
-                </div>
-
-                
-              </div>
+        <div class="row pt16 pb16 pt-xs-8">
+          <div class="col-xs-12">
+            <div class="storefront-title">
+              <h4>About this Studio</h4>
             </div>
-
-            <hr class="content-divider mt16 mb16">
-
-            <div class="row">  <!-- PRICING SECTION -->
-              <div class="col-md-2">
-                <h5 class="lightgray">Pricing</h5>
-              </div>
-              <div class="col-md-10">
-
-                <div class="row mb16">
-                  <div class="col-md-8">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="mb8" ng-show = 'subscriptionPlan'>Monthly Unlimited Classes: ${{subscriptionPlan.amount/100}}/mo</h5>
-                        <h5 class="mb8" ng-show = '!subscriptionPlan'>Monthly Unlimited Classes: None</h5>
-                        <h5 ng-show = 'storefrontInfo.dropinPricing'>Drop In Class: ${{storefrontInfo.dropinPricing/100}}</h5>
-                        <h5 ng-show = '!storefrontInfo.dropinPricing'>Drop In Class: $3</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <!-- <h5 class="mb8">Promos: <span class="royalblue bold">First class free</span></h5> -->
-                        <h5 ng-show = "storefrontInfo.cancellationPolicy">Cancellation penalty: <span class="royalblue bold">$0</span></h5>
-                      </div>
-                    </div>
-                  </div>                  
-                </div>
-
-              </div>
+            <div class="pt16 pt-xs-8">
+              <h5 class="gray thin500 content">
+                Owned and instructed by a NYC Rockette, ABSOLUTE BODY is the PILATES studio of precise movements integrated with mental awareness creating the most effective 45 minute workout possible. Wether it's BARRE class or PURE PILATES you seek, this is the place where inches challenge and change you.
+              </h5>
             </div>
+          </div>
+        </div>
 
-            <hr class="content-divider mt16 mb16" ng-show = "storefrontInfo.perks">
-
-            <div class="row" ng-show = "storefrontInfo.perks">  <!-- PERK SECTION -->
-              <div class="col-md-2">
-                <h5 class="lightgray">Perks</h5>
-              </div>
-              <div class="col-md-10">
-
-                <div class="row mb16">
-                  <div class="col-md-8">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="mb8">Nutrition Coaching</h5>
-                        <h5 class="">Email Support</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="">SMS Support</h5>                        
-                      </div>
-                    </div>
-                  </div>                  
-                </div>
-
-              </div>
+        <div class="row pt24 pb16 pt-xs-8">
+          <div class="col-xs-12">
+            <div class="storefront-title">
+              <h4>Class Types</h4>
             </div>
-
-
-            <!-- STATS SECTION -->
-            <!-- <div class="row">
-              <div class="col-md-2">
-                <h5 class="lightgray">Stats</h5>
-              </div>
-              <div class="col-md-10">
-
-                <div class="row mb16">
-                  <div class="col-md-8">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="mb8">Ideal for: <span class="royalblue bold">Early risers</span></h5>
-                        <h5 class="mb8">Schedule consistency: <span class="royalblue bold">High</span></h5>
-                        <h5>Avg class size: 12 clients</h5>
-                      </div>
-                    </div>
+            <ul class="list-class-types">
+              <li>
+                <div class="pt16 pt-xs-8">
+                  <div class="inline-block col-middle">
+                    <img src="/assets/images/class-icon.svg" class="small-icon" width="24" height="24">
                   </div>
-                  <div class="col-md-4">
-                    <div class="row mb8">
-                      <div class="col-md-12">
-                        <h5 class="">Music preference: Trance</h5>                        
-                      </div>
-                    </div>
-                  </div>                  
+                  <div class="inline-block col-middle">
+                    <h4 class="royalblue">Pure Pilates</h4>
+                  </div>
+                  <h5 class="gray thin500 mt8 content">
+                    This 45 minute class explores the pilates method focusing on its core concepts with the goal of improving posture, relieving back pain and tightening all your pesky areas. Come try out a class at my studio!
+                  </h5>
+                  <h5 class="gray thin500 content mt8"><span class="bold800">You'll Need: </span>Light Weights / Bands, Pilates Mat, Pillow / Ball</h5>
                 </div>
-              </div>
-            </div> -->    <!-- STATS SECTION END -->
-
-            <!-- <hr class="content-divider mt16 mb16"> -->
-
-            
-            <!-- <div class="row pb16">  
-              <div class="col-md-12">
-                <h4 class="bold mb8">Studio Stories</h4>
-
-                <div class="photo-grid">     
-                  <div class="row featured-height">
-                    <div class="row-full-height col-6">
-                      <a href="#" class="photo-grid-photo" style="background-image:url('/assets/images/ralabala/story2.jpg')">
-                        <img src="/assets/images/ralabala/story2.jpg" class="hide">
-                        <div class="story-cover-lg text-left">
-                          <h4 class="white bold">Beth Anne Lazaro</h4>
-                          <h5 class="white">Beth Anne needed a new way to fit in her workout. She's now a leader in fitness.</h5>
-                        </div>
-                      </a>
-                      
-                    </div>
-                    <div class="row-full-height col-6">
-                      <a href="#" class="photo-grid-photo" style="background-image:url('/assets/images/ralabala/story3.jpg')">
-                        <img src="/assets/images/ralabala/story3.jpg" class="hide">
-                        <div class="story-cover-lg text-left">
-                          <h4 class="white bold">Jane McGee</h4>
-                          <h5 class="white">From overweight to all natural vegan bikini competitor.</h5>
-                        </div>
-                      </a>
-                    </div>
+              </li>
+              <li>
+                <div class="pt16">
+                  <div class="inline-block col-middle">
+                    <img src="/assets/images/class-icon.svg" class="small-icon" width="24" height="24">
                   </div>
-                  <div class="row supporting-height">
-                    <div class="row-full-height col-4">
-                      <a href="#" class="photo-grid-photo" style="background-image:url('/assets/images/ralabala/story4.jpg')">
-                        <img src="/assets/images/ralabala/story4.jpg" class="hide">
-                        <div class="story-cover-sm text-left">
-                          <h4 class="white bold">Becca Liebeskind</h4>
-                        </div>
-                      </a>
-                    </div>
-                    <div class="row-full-height col-4">
-                      <a href="#" class="photo-grid-photo" style="background-image:url('/assets/images/ralabala/story5.jpg')">
-                        <img src="/assets/images/ralabala/story5.jpg" class="hide">
-                        <div class="story-cover-sm text-left">
-                          <h4 class="white bold">Geordie Kates</h4>
-                        </div>
-                      </a>
-                    </div>
-                    <div class="row-full-height col-4">
-                      <a href="#" class="photo-grid-photo" style="background-image:url('/assets/images/ralabala/story6.jpg')">
-                        <img src="/assets/images/ralabala/story6.jpg" class="hide">
-                        <div class="story-cover-sm text-left">
-                          <h4 class="white bold">Ralph Lazaro</h4>
-                        </div>
-                      </a>
-                    </div>
+                  <div class="inline-block col-middle">
+                    <h4 class="royalblue">Pure Pilates</h4>
                   </div>
+                  <h5 class="gray thin500 mt8 content">
+                    This 45 minute class explores the pilates method focusing on its core concepts with the goal of improving posture, relieving back pain and tightening all your pesky areas. Come try out a class at my studio!
+                  </h5>
+                  <h5 class="gray thin500 content mt8"><span class="bold800">You'll Need: </span>Light Weights / Bands, Pilates Mat, Pillow / Ball</h5>
                 </div>
-
-              </div>
-            </div> -->
-
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <div class = "col-md-4" ng-if = "videoLibrary.length > 0">
+      <div class="col-md-4 hidden-xs hidden-sm">
         <div class="panel space-4">
-          <div class="panel-header text-center"> 
-            Watch Latest Videos <div ng-if="numSubscriberVideos"><span>({{numSubscriberVideos}} Available to Subscribers)</span></div>
+          <div class="panel-header text-center">
+            Studio Stories
           </div>
           <div class="panel-body">
-            <div class="videoLibrary-panel text-center" ng-repeat = "video in videoLibrary" ng-if="subscriptions[studioId] === 'active' || (videosFirebase[video.token] && !videosFirebase[video.token].subscribersOnly)" ng-show = "$index < 5">
-              <a href="#" ng-click = "playVideo(video)">
-                <div>
-                  <img ng-src="https://{{video.embed_image_url}}" >
-                  <span class = "durationFormat">{{formatDuration(video.duration)}}</span>
-                  <span class = "playButton"><i class="fa fa-play-circle-o fa-4x"></i></span>
-                </div>
-                <!-- <div class="stories-overlay text-left">
-                  <h4 class="white bold">Ally M</h4>
-                  <h5 class="white">Ally needed a new way to fit in her workout. She’s down 15 pounds.</h5>
-                </div> -->
-              </a>
+            <div class="stories-panel text-center">
+              <div class="no-stories-added hidden">
+                <a href="">
+                  <div class="upload-story">
+                    <span style="font-size:8rem;"><i class="fa fa-plus-circle"></i></span>
+                    <h4 class="mb8 bold">Upload your first story</h4>
+                    <h5>User stories show new customers the value of your service! Upload one now.</h5>
+                  </div>
+                </a>
+              </div>
+              <div class="stories-added">
+                <a href="#">
+                  <div class="studio-story">
+                    <div class="story-preview" style="background-image: url('/assets/images/studios/ralabala/story2.jpg')"></div>
+                    <div class="stories-overlay text-left">
+                        <h4 class="textimonial-name white bold">@christinefit</h4>
+                        <h4 class="textimonial-name hidden white bold">C. Buchard</h4>
+                        <h5 class="testimonial-text white">I came to NC Kettlebells with the intent of building upper body strength for an obstacle race.</h5>
+                      </div>
+                    </div>
+                  </a>
+                  <div class="next-story text-center mt8 mb0">
+                    <span>
+                      <a href="#"><span><i class="fa fa-circle"></i></span></a>
+                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
+                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
+                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
+                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
+                    </span>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-4">
         <div class="panel"> 
-          <!-- <div class="panel-body">
+          <div class="panel-body">
             <div class="row">
+              <div class="col-xs-12">
+                <ul class="row studio-friends text-center">
+                  <li>
+                    <img src="assets/images/justin-photo.jpg">
+                  </li>
+                  <li>
+                    <img src="assets/images/justin-photo.jpg">
+                  </li>
+                  <li>
+                    <img src="assets/images/justin-photo.jpg">
+                  </li>
+                  <li>
+                    <img src="assets/images/justin-photo.jpg">
+                  </li>
+                  <li>
+                    <div class="empty-friend-circle"></div>
+                  </li>
+                </ul>
+                <div class="row mt8">
+                  <div class="col-sm-12 text-center">
+                    <h5 class="lightgray">4 friends taken class here</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt16">
               <div class="col-sm-12">
-                <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> Follow RALABALA</a>
+                <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> Follow AbsoluteBody Pilates</a>
               </div>
             </div>
             <div class="row mt8">
               <div class="col-sm-12 text-center">
-                <h5 class="lightgray">148 people follow this studio</h5>
+                <h5 class="lightgray">148 followers</h5>
               </div>
             </div>
-          </div> -->
+          </div>
           <div class="boxed-icons show-lg">
             <div class="social-share-btns">
               <div class="share-triggers btn-group">
-                <!-- <a ng-href="mailto:?subject=Check%20this%20out!&body=Hi%20there,%0D%0A%0D%0AI%20wanted%20to%20drop%20you%20a%20note%20and%20tell%20you%20about%20this%20awesome%20new%20virtual%20fitness%20studio%20called%20{{storefrontInfo.studioName}}.%20I'm%20going%20to%20be%20taking%20classes%20and%20we%20would%20be%20able%20to%20work%20out%20together%20and%20have%20the%20instructor%20actually%20see%20us%20while%20they%20are%20teaching.%20It's like%20taking%20an%20in-person%20class%20at%20an%20in-person%20studio,%20but%20it's%20virtual%20and%20we%20can%20each%20be%20at%20our%20own%20house!%0D%0A%0D%0AGo%20to%20https://www.getbodyapp.com/studios/{{studioId}}%20to%20find%20out%20more%20info.%0D%0A%0D%0AHope%20to%20workout%20with%20you%20soon!%0D%0A{{currentUser.firstName}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-envelope-o"></i>Email</a> -->
                 <a href="#"
                   class="share-btn text-center btn btn-width-control" 
                   socialshare
@@ -623,7 +561,6 @@
                   >
                   <i class="fa fa-facebook-official"></i> Send
                 </a>
-
                 <a href="#"
                   class="share-btn text-center btn btn-width-control" 
                   socialshare
@@ -641,314 +578,84 @@
                   >
                   <i class="fa fa-facebook-official"></i> Share
                 </a>
-                <!-- <a target="none" ng-href="https://www.facebook.com/sharer/sharer.php?u=getbodyapp.com/studios/{{studioId}}" class="share-btn text-center btn btn-width-control"><i class="fa fa-facebook-official"></i>Share</a> -->
-                <!-- <a facebook-feed-share class="facebookShare" style = "margin-left: 32px; margin-top: 8px;" data-url='https://www.getbodyapp.com/studios/{{studioId}}' data-shares='shares', data-name="{{storefrontInfo.studioName}}" date-picture="{{backgroundImageUrl}}" data-callback = "facebookCallback;." data-actions="{name: 'Check it out', link: 'https://www.getbodyapp.com/studios/{{studioId}}'}" data-description="{{storefrontInfo.longDescription}}">{{ shares }}</a> -->
-
-
-
-                <!-- <a href="#"
-                  socialshare
-                  socialshare-provider="facebook"
-                  socialshare-text="720kb AngularJS Socialshare"
-                  socialshare-hashtags="angularjs, angular-socialshare"
-                  socialshare-url="http://720kb.net">
-                  Share me
-                </a> -->
               </div>
             </div>
           </div>
-        </div> 
-        <div class="panel space-4 hidden-sm hidden-xs" ng-show = "testimonials">
-          <div class="panel-header text-center">
-            Studio Stories
-          </div>
-          <div class="panel-body">
-            <div class="stories-panel text-center" ng-repeat = "story in testimonials" ng-show="storyImages[story.id]">
-              <a href="#">
-                <img ng-src="{{storyImages[story.id]}}">
-                <div class="stories-overlay text-left">
-                  <h4 class="white bold">{{story.clientName}}</h4>
-                  <h5 class="white">{{story.storyContent}}</h5>
-                </div>
-              </a>
-            </div>
-            <!-- <div class="next-story text-center mt8 mb0">
-              <span>
-                <span><i class="fa fa-circle"></i></span>
-                <span><i class="fa fa-circle-o"></i></span>
-                <span><i class="fa fa-circle-o"></i></span>
-                <span><i class="fa fa-circle-o"></i></span>
-                <span><i class="fa fa-circle-o"></i></span>
-              </span>
-            </div> -->
-          </div>
-        </div>  
-        <!-- <div class="panel">
-          <div class="panel-body">
-            <div class="row studio-friends text-center">
-              <span>
-                <img src="assets/images/justin-photo.jpg">
-                <img src="assets/images/bern-prince.jpg">
-                <img src="assets/images/justin-photo.jpg">
-                <img src="assets/images/bern-prince.jpg">
-                <img src="assets/images/justin-photo.jpg">
-              </span>
-            </div>
-            <div class="row mt8 studio-friends text-center">
-              <span>
-                <img src="assets/images/bern-prince.jpg">
-                <div class="empty-friend-circle"></div>
-                <div class="empty-friend-circle"></div>
-                <div class="empty-friend-circle"></div>
-                <div class="empty-friend-circle"></div>
-              </span>
-            </div>
-            <div class="row mt8">
-              <div class="col-sm-12 text-center">
-                <h5 class="lightgray">6 friends are members</h5>
-              </div>
-            </div>
-          </div>
-        </div>  -->
+        </div>
 
-        
       </div>
-
     </div>
-  
   </div>
 </div>
 
-<!-- <div id="studio-reviews">      REVIEWS SECTION OF STOREFRONT
+<div class="studio-team panel-dark pt24 pb24">
   <div class="page-container-responsive">
     <div class="row">
-      <div class="col-md-8">
-
-        <div class="row mt24">
-          <div class="col-sm-12">            
-            <div class="studio-stars">
-              <span class="rating-n gray">60 Reviews</span>
-              <span>
-                <span><i class="fa fa-star"></i></span>
-                <span><i class="fa fa-star"></i></span>
-                <span><i class="fa fa-star"></i></span>
-                <span><i class="fa fa-star"></i></span>
-                <span><i class="fa fa-star-half-o"></i></span>
-              </span>
+      <div class="col-xs-12">
+        <div class="row mb24">
+          <div class="col-xs-12">
+            <div class="storefront-title">
+              <h4>Studio Team</h4>
             </div>
           </div>
         </div>
-
-        <hr class="content-divider mt16 mb16">
-
-        <div class="row">  
-          <div class="col-md-2">
-            <h5 class="lightgray">Highlights</h5>
-          </div>
-          <div class="col-md-10">
-            <div class="col-sm-8 review-tags">
-              <div class="btn-tag">Addicting</div>
-              <div class="btn-tag">Instruction</div>
-              <div class="btn-tag">Music</div>
-              <div class="btn-tag">Classes</div>
-              <div class="btn-tag">Results</div>
-              <div class="btn-tag">Intensity</div>
-              <div class="btn-tag">Difficulty</div>
-            </div>
-          </div>
-        </div>
-
-        <hr class="content-divider mt16 mb16">
-
-        <div class="row"> 
-          <div class="col-md-2">
-            <h5 class="lightgray">Summary</h5>
-          </div>
-          <div class="col-md-10">
+        <ul class="team-list">
+          <li>
             <div class="row">
-              <div class="col-md-6">
-                <div class="col-md-12">
-                  <div class="pull-right mini-stars">
-                    <span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star-half-o"></i></span>
-                    </span>
-                  </div>
-                  <h5 class="bold">Instruction</h5>
-                </div>
-                <div class="col-md-12">
-                  <div class="pull-right mini-stars">
-                    <span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star-half-o"></i></span>
-                    </span>
-                  </div>
-                  <h5 class="bold">Results</h5>
-                </div>
-                <div class="col-md-12">
-                  <div class="pull-right mini-stars">
-                    <span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star-half-o"></i></span>
-                    </span>
-                  </div>
-                  <h5 class="bold">Engagement</h5>
-                </div>
+              <div class="col-sm-2">
+                <img src="/assets/images/studios/test-profile.png" class="instructor-profile-img mb-xs-16">
               </div>
-              <div class="col-md-6">
-                <div class="col-md-12">
-                  <div class="pull-right mini-stars">
-                    <span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star-half-o"></i></span>
-                    </span>
-                  </div>
-                  <h5 class="bold">Music</h5>
-                </div>
-                <div class="col-md-12">
-                  <div class="pull-right mini-stars">
-                    <span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star-half-o"></i></span>
-                    </span>
-                  </div>
-                  <h5 class="bold">Workouts</h5>
-                </div>
-                <div class="col-md-12">
-                  <div class="pull-right mini-stars">
-                    <span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star"></i></span>
-                      <span><i class="fa fa-star-half-o"></i></span>
-                    </span>
-                  </div>
-                  <h5 class="bold">Addicting</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="review-content mt16"> 
-
-          <div class="row"> 
-            <div class="col-md-3 text-center mb16">
-              <div class="review-photo-badge">
-                <img src="assets/images/justin-photo.jpg">
-              </div>
-              <span class="lightgray">Justin</span>
-            </div>
-            <div class="col-md-9 review">
-              <h5 class="mb8">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
-              <h5 class="lightgray">April 2016</h5>
-            </div>
-          </div>
-
-          <div class="row"> 
-            <div class="col-md-3 text-center mb16">
-              <div class="review-photo-badge">
-                <img src="assets/images/bern-prince.jpg">
-              </div>
-              <span class="lightgray">Bern</span>
-            </div>
-            <div class="col-md-9 review">
-              <h5 class="mb8">Level One classes focuses on technique, comfortability with weighted movement, and the establishment of a strong baseline fitness level. These classes are great for the 2x/week trainee or newcomers looking to ramp up their fitness level and fitness education.</h5>
-              <h5 class="lightgray">April 2016</h5>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="panel-dark">
-  <div class="page-container-responsive">
-    <div class="row pt32 pb32">
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-md-12">
-                <h4 class="bold">Studio Team</h4>
-              </div>
-            </div>
-            <hr class="content-divider mt16 mb16">
-
-            <div class="row mt24 mb-xs-16 studio-instructors" ng-repeat = "instructor in instructors">
-              <div class="col-sm-3">
-                <div class="studio-instructor-photo text-center">
-                  <img ng-if = "!instructor.addedPicture" ng-src="https://graph.facebook.com/{{instructor.facebookId}}/picture?width=125&height=125">
-                  <img ng-if = "instructor.addedPicture" ng-src="{{instructor.addedPicture}}">
-                </div>
-              </div>
-              <div class="col-sm-9 studio-instructors-content">
-                <h3 class="mb0 text-center-xs">{{instructor.firstName}} {{instructor.lastName}}</h3>
-                <h5 class="mb0 darkgray text-center-xs">{{instructor.title}}</h5>
-                <h5 class="mb8 lightgray text-center-xs">Certifications: {{instructor.certifications}}</h5>
-                <h5 class="mb8">{{instructor.bio}}</h5>
-                <!-- <div class="row"> -->
-                  <!-- <div class="col-xs-6">
-                    <h5 class="mb0">Response Rate</h5>
-                    <h5 class="lightgray">100%</h5>
-                  </div> -->
-                  <!-- <div class="col-xs-6">
-                    <h5 class="mb0">Classes Taught</h5>
-                    <h5 class="lightgray">304</h5>
-                  </div> -->
-                <!-- </div> -->
+              <div class="col-sm-10">
                 <div class="row">
-                  <div class="col-sm-12">
-                    <hr class="divider mt16 mb16">
+                  <div class="col-xs-12">
+                    <h4 class="royalblue">Alexis Olson</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h5 class="mt8 content bold">Position</h5>
+                    <h5 class="lightgray content">Owner, Fitness Leader</h5>
+                    <h5 class="mt8 content bold">Certifications</h5>
+                    <h5 class="lightgray content">Stott Pilates, Barre Method</h5>
+                  </div>
+                  <div class="col-sm-9">
+                    <h5 class="mt8 content bold">About Alexis</h5>
+                    <h5 class="lightgray content">Over the last ten years as a professional dancer, I faced new challenges each day. PILATES/BARRE keeps me injury-free, mentally astute, and prepared for what today brings on and off the stage. I will forever be in the Tisch Dance Department's debt at NYU for the daily PILATES classes that introduced me to the benefits of this art form.</h5>
                   </div>
                 </div>
               </div>
             </div>
-
-          </div>
-        </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-sm-2">
+                <img src="/assets/images/studios/test-profile.png" class="instructor-profile-img mb-xs-16">
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h4 class="royalblue">Alexis Olson</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h5 class="mt8 content bold">Position</h5>
+                    <h5 class="lightgray content">Owner, Fitness Leader</h5>
+                    <h5 class="mt8 content bold">Certifications</h5>
+                    <h5 class="lightgray content">Stott Pilates, Barre Method</h5>
+                  </div>
+                  <div class="col-sm-9">
+                    <h5 class="mt8 content bold">About Alexis</h5>
+                    <h5 class="lightgray content">Over the last ten years as a professional dancer, I faced new challenges each day. PILATES/BARRE keeps me injury-free, mentally astute, and prepared for what today brings on and off the stage. I will forever be in the Tisch Dance Department's debt at NYU for the daily PILATES classes that introduced me to the benefits of this art form.</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
