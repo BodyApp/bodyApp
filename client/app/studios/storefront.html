@@ -158,7 +158,7 @@
              --><div class="calendar-selector-days text-center">
                 <ul>
                   <li href="#" class="cal-select-active" ng-click="showAll=!showAll;">Show<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm"><span class="bold" ng-show="!showAll">All</span><span class="bold" ng-show="showAll">Less</span></li><!-- 
-               --><li href="#" ng-show = "$index < numDaysToShow + nextWeek && $index >= nextWeek" ng-repeat = "dayShown in daysToShow">{{dayShown.formattedDayOfWeek}}<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm">{{dayShown.formattedMonthAndDay}}</li><!-- 
+               --><li ng-show = "$index < numDaysToShow + nextWeek && $index >= nextWeek" ng-repeat = "dayShown in daysToShow">{{dayShown.formattedDayOfWeek}}<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm">{{dayShown.formattedMonthAndDay}}</li><!-- 
                
             --></ul>
               </div><!-- 

@@ -12,6 +12,7 @@ angular.module('bodyAppApp')
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
     $scope.bookings = {};
     $scope.storyToShow = 0;
+    $scope.numDaysToShow = 7;
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     Video.destroyHardwareSetup()
@@ -20,23 +21,23 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
 
-    //Check and handle if mobile
-    if(window.innerWidth > 1100) {
-      $scope.numDaysToShow = 7;
-      if(!$scope.$$phase) $scope.$apply();
-    } else if (window.innerWidth > 650) {
-      $scope.numDaysToShow = 6;
-      if(!$scope.$$phase) $scope.$apply();
-    } else if (window.innerWidth > 550) {
-      $scope.numDaysToShow = 5;
-      if(!$scope.$$phase) $scope.$apply();
-    } else if (window.innerWidth > 455) {
-      $scope.numDaysToShow = 4;
-      if(!$scope.$$phase) $scope.$apply();
-    } else {
-      // $scope.isMobile = true;
-      $scope.numDaysToShow = 3;
-    }
+    // //Check and handle if mobile
+    // if(window.innerWidth > 1100) {
+    //   $scope.numDaysToShow = 7;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else if (window.innerWidth > 650) {
+    //   $scope.numDaysToShow = 6;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else if (window.innerWidth > 550) {
+    //   $scope.numDaysToShow = 5;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else if (window.innerWidth > 455) {
+    //   $scope.numDaysToShow = 4;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else {
+    //   // $scope.isMobile = true;
+    //   $scope.numDaysToShow = 3;
+    // }
     
     setTimezone()
 
