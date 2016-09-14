@@ -610,53 +610,28 @@
           </div>
         </div>
         <ul class="team-list">
-          <li>
+          <li ng-repeat = "instructor in instructors">
             <div class="row">
               <div class="col-sm-2">
-                <img src="/assets/images/studios/test-profile.png" class="instructor-profile-img mb-xs-16">
+                <img class="instructor-profile-img mb-xs-16" ng-if = "!instructor.addedPicture" ng-src="https://graph.facebook.com/{{instructor.facebookId}}/picture?width=125&height=125">
+                <img class="instructor-profile-img mb-xs-16" ng-if = "instructor.addedPicture" ng-src="{{instructor.addedPicture}}">
               </div>
               <div class="col-sm-10">
                 <div class="row">
                   <div class="col-xs-12">
-                    <h4 class="royalblue">Alexis Olson</h4>
+                    <h4 class="royalblue">{{instructor.firstName}} {{instructor.lastName}}</h4>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-3">
                     <h5 class="mt8 content bold">Position</h5>
-                    <h5 class="lightgray content">Owner, Fitness Leader</h5>
+                    <h5 class="lightgray content">{{instructor.title}}</h5>
                     <h5 class="mt8 content bold">Certifications</h5>
-                    <h5 class="lightgray content">Stott Pilates, Barre Method</h5>
+                    <h5 class="lightgray content">{{instructor.certifications}}</h5>
                   </div>
                   <div class="col-sm-9">
-                    <h5 class="mt8 content bold">About Alexis</h5>
-                    <h5 class="lightgray content">Over the last ten years as a professional dancer, I faced new challenges each day. PILATES/BARRE keeps me injury-free, mentally astute, and prepared for what today brings on and off the stage. I will forever be in the Tisch Dance Department's debt at NYU for the daily PILATES classes that introduced me to the benefits of this art form.</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="row">
-              <div class="col-sm-2">
-                <img src="/assets/images/studios/test-profile.png" class="instructor-profile-img mb-xs-16">
-              </div>
-              <div class="col-sm-10">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <h4 class="royalblue">Alexis Olson</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h5 class="mt8 content bold">Position</h5>
-                    <h5 class="lightgray content">Owner, Fitness Leader</h5>
-                    <h5 class="mt8 content bold">Certifications</h5>
-                    <h5 class="lightgray content">Stott Pilates, Barre Method</h5>
-                  </div>
-                  <div class="col-sm-9">
-                    <h5 class="mt8 content bold">About Alexis</h5>
-                    <h5 class="lightgray content">Over the last ten years as a professional dancer, I faced new challenges each day. PILATES/BARRE keeps me injury-free, mentally astute, and prepared for what today brings on and off the stage. I will forever be in the Tisch Dance Department's debt at NYU for the daily PILATES classes that introduced me to the benefits of this art form.</h5>
+                    <h5 class="mt8 content bold">About {{instructor.firstName}}</h5>
+                    <h5 class="lightgray content">{{instructor.bio}}</h5>
                   </div>
                 </div>
               </div>
