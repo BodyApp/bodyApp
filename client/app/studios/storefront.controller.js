@@ -11,6 +11,7 @@ angular.module('bodyAppApp')
     $scope.studioName = studioId;
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
     $scope.bookings = {};
+    $scope.storyToShow = 0;
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     Video.destroyHardwareSetup()
@@ -400,21 +401,27 @@ angular.module('bodyAppApp')
 
     function getTestimonials() {
       ref.child('testimonials').once('value', function(snapshot) {
-        if (!snapshot.exists()) return;
-        $scope.testimonials = snapshot.val();
+        if (!snapshot.exists()) return $scope.testimonialsLoaded = true;
+        $scope.testimonials = [];
         $scope.numOfTestimonials = Object.keys(snapshot.val()).length
         if(!$scope.$$phase) $scope.$apply();
         snapshot.forEach(function(story) {
-          getStoryImage(story.val().id)
+          getStoryImage(story.val()) 
         })
       })
     }
 
-    function getStoryImage(storyId) {
+    function getStoryImage(story) {
+      var storyId = story.id;
       $scope.storyImages = $scope.storyImages || {};
       storageRef.child('images').child('testimonials').child(storyId+'.jpg').getDownloadURL().then(function(url) {
-        $scope.storyImages[storyId] = url;
-        if(!$scope.$$phase) $scope.$apply();
+        $scope.testimonialsLoaded = true;
+        if (!url) return
+        else {
+          $scope.storyImages[storyId] = url;
+          $scope.testimonials.push(story)
+          if(!$scope.$$phase) $scope.$apply();
+        }
       }).catch(function(error) {
         console.log(error)
       });

@@ -210,14 +210,14 @@
                     <a href="#"
                         class="facebook-messenger-btn" 
                         socialshare
-                        socialshare-text="{{studios[instance.studioId].studioName}}"
+                        socialshare-text="{{storefrontInfo.studioName}}"
                         socialshare-type="send"
-                        socialshare-caption="{{studios[instance.studioId].shortDescription}}"
-                        socialshare-description="{{studios[instance.studioId].longDescription}}"
-                        socialshare-media="{{studioPictures[instance.studioId]}}"
+                        socialshare-caption="{{storefrontInfo.shortDescription}}"
+                        socialshare-description="{{storefrontInfo.longDescription}}"
+                        socialshare-media="{{backgroundImageUrl}}"
                         socialshare-provider="facebook"
-                        socialshare-url="www.getbodyapp.com/studios/{{instance.studioId}}"
-                        socialshare-redirect-uri="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+                        socialshare-redirect-uri="www.getbodyapp.com/studios/{{studioId}}"
                         socialshare-via='501927126632986'
                         socialshare-trigger='click'
                         socialshare-popup-height=900
@@ -380,7 +380,7 @@
                     <h5 class="lightgray mt8">4 friends</h5>
                   </div>
                   <div class="col-xs-7">
-                    <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> AbsoluteBody Pilates</a>
+                    <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> {{storefrontInfo.studioName}}</a>
                     <h5 class="lightgray mt8">148 followers</h5>
                   </div>
                 </div>
@@ -437,7 +437,7 @@
             </div>
             <div class="pt16 pt-xs-8">
               <h5 class="gray thin500 content">
-                Owned and instructed by a NYC Rockette, ABSOLUTE BODY is the PILATES studio of precise movements integrated with mental awareness creating the most effective 45 minute workout possible. Wether it's BARRE class or PURE PILATES you seek, this is the place where inches challenge and change you.
+                {{storefrontInfo.longDescription}}
               </h5>
             </div>
           </div>
@@ -449,32 +449,20 @@
               <h4>Class Types</h4>
             </div>
             <ul class="list-class-types">
-              <li>
+              <li ng-repeat = "classType in classTypes">
                 <div class="pt16 pt-xs-8">
                   <div class="inline-block col-middle">
                     <img src="/assets/images/class-icon.svg" class="small-icon" width="24" height="24">
                   </div>
                   <div class="inline-block col-middle">
-                    <h4 class="royalblue">Pure Pilates</h4>
+                    <h4 class="royalblue">{{classType.name}}</h4>
                   </div>
                   <h5 class="gray thin500 mt8 content">
-                    This 45 minute class explores the pilates method focusing on its core concepts with the goal of improving posture, relieving back pain and tightening all your pesky areas. Come try out a class at my studio!
+                    {{classType.classDescription}}
                   </h5>
-                  <h5 class="gray thin500 content mt8"><span class="bold800">You'll Need: </span>Light Weights / Bands, Pilates Mat, Pillow / Ball</h5>
-                </div>
-              </li>
-              <li>
-                <div class="pt16">
-                  <div class="inline-block col-middle">
-                    <img src="/assets/images/class-icon.svg" class="small-icon" width="24" height="24">
-                  </div>
-                  <div class="inline-block col-middle">
-                    <h4 class="royalblue">Pure Pilates</h4>
-                  </div>
-                  <h5 class="gray thin500 mt8 content">
-                    This 45 minute class explores the pilates method focusing on its core concepts with the goal of improving posture, relieving back pain and tightening all your pesky areas. Come try out a class at my studio!
+                  <h5 class="gray thin500 content mt8"><span class="bold800">You'll Need: </span>
+                    <span ng-repeat = "equipment in classType.equipment"><span ng-if="$index != 0">,</span>{{equipment.name}}</span>
                   </h5>
-                  <h5 class="gray thin500 content mt8"><span class="bold800">You'll Need: </span>Light Weights / Bands, Pilates Mat, Pillow / Ball</h5>
                 </div>
               </li>
             </ul>
@@ -483,13 +471,13 @@
       </div>
 
       <div class="col-md-4 hidden-xs hidden-sm">
-        <div class="panel space-4">
+        <div class="panel space-4" ng-show="testimonials">
           <div class="panel-header text-center">
             Studio Stories
           </div>
           <div class="panel-body">
             <div class="stories-panel text-center">
-              <div class="no-stories-added hidden">
+              <div class="no-stories-added" ng-show="!testimonials.length && testimonialsLoaded">
                 <a href="">
                   <div class="upload-story">
                     <span style="font-size:8rem;"><i class="fa fa-plus-circle"></i></span>
@@ -498,24 +486,24 @@
                   </div>
                 </a>
               </div>
-              <div class="stories-added">
+              <div class="stories-added" ng-show="testimonials.length > 0">
                 <a href="#">
-                  <div class="studio-story">
-                    <div class="story-preview" style="background-image: url('/assets/images/studios/ralabala/story2.jpg')"></div>
+                  <div class="studio-story" ng-show="storyImages[testimonials[storyToShow].id]">
+                    <div class="story-preview" ng-style="{'background-image':'url('+ storyImages[testimonials[storyToShow].id] +')'}"></div>
                     <div class="stories-overlay text-left">
-                        <h4 class="textimonial-name white bold">@christinefit</h4>
-                        <h4 class="textimonial-name hidden white bold">C. Buchard</h4>
-                        <h5 class="testimonial-text white">I came to NC Kettlebells with the intent of building upper body strength for an obstacle race.</h5>
+                        <h4 class="textimonial-name white bold" ng-show="testimonials[storyToShow].instagramUsername">@{{testimonials[storyToShow].instagramUsername}}</h4>
+                        <h4 class="textimonial-name hidden white bold" ng-hide="testimonials[storyToShow].instagramUsername">{{testimonials[storyToShow].clientName}}</h4>
+                        <h5 class="testimonial-text white">{{testimonials[storyToShow].storyContent}}</h5>
                       </div>
                     </div>
                   </a>
                   <div class="next-story text-center mt8 mb0">
                     <span>
-                      <a href="#"><span><i class="fa fa-circle"></i></span></a>
-                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
-                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
-                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
-                      <a href="#"><span><i class="fa fa-circle-o"></i></span></a>
+                      <a ng-show="testimonials.length" href="#"><span><i class="fa" ng-class="{'fa-circle': storyToShow===0, 'fa-circle-o': storyToShow!=0}" ng-click = "storyToShow=0;"></i></span></a>
+                      <a ng-show="testimonials.length > 1" href="#"><span><i class="fa" ng-class="{'fa-circle': storyToShow===1, 'fa-circle-o': storyToShow!=1}" ng-click = "storyToShow=1;"></i></span></a>
+                      <a ng-show="testimonials.length > 2" href="#"><span><i class="fa" ng-class="{'fa-circle': storyToShow===2, 'fa-circle-o': storyToShow!=2}" ng-click = "storyToShow=2;"></i></span></a>
+                      <a ng-show="testimonials.length > 3" href="#"><span><i class="fa" ng-class="{'fa-circle': storyToShow===3, 'fa-circle-o': storyToShow!=3}" ng-click = "storyToShow=3;"></i></span></a>
+                      <a ng-show="testimonials.length > 4" href="#"><span><i class="fa" ng-class="{'fa-circle': storyToShow===4, 'fa-circle-o': storyToShow!=4}" ng-click = "storyToShow=4;"></i></span></a>
                     </span>
                   </div>
               </div>
@@ -553,7 +541,7 @@
             </div>
             <div class="row mt16">
               <div class="col-sm-12">
-                <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> Follow AbsoluteBody Pilates</a>
+                <a href="#" class="btn btn-block"><i class="fa fa-heart-o"></i> Follow {{storefrontInfo.studioName}}</a>
               </div>
             </div>
             <div class="row mt8">
