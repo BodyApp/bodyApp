@@ -10,6 +10,7 @@ angular.module('bodyAppApp')
     $scope.classToCreate = {};
     $scope.studioName = studioId;
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
+    $scope.bookings = {};
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     Video.destroyHardwareSetup()
@@ -433,6 +434,19 @@ angular.module('bodyAppApp')
         $scope.classSchedule = snapshot.val();
         console.log("Pulled " + Object.keys($scope.classSchedule).length + " classes for schedule.")
         if(!$scope.$$phase) $scope.$apply();
+        snapshot.forEach(function(upcomingClass) {
+          ref.child('bookings').child(upcomingClass.key).once('value', function(bookingInfo) {
+            bookingInfo.forEach(function(info) {
+              $scope.bookings[bookingInfo.key] = $scope.bookings[bookingInfo.key] || [];
+              $scope.bookings[bookingInfo.key].push(info.val())  
+              if(!$scope.$$phase) $scope.$apply();
+            })
+            // $scope.bookings[bookingInfo.key] = $scope.bookings[bookingInfo.key] || [];
+            // $scope.bookings[bookingInfo.key].push(bookingInfo.val())
+            // console.log($scope.bookings)
+            
+          })
+        })
       })
     }
 
@@ -910,6 +924,7 @@ angular.module('bodyAppApp')
       } 
       
       formatted.day = newDate.getDate();
+      formatted.shortMonth = newDate.getMonth()+1;
       formatted.year = newDate.getFullYear();
       
       // $scope.dayOfWeek;

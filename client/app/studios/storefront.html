@@ -177,34 +177,38 @@
         <div class="row pt16 pb16 pt-xs-16 pb-xs-8"> 
           <div class="col-xs-12">
             <ul class="class-listings">
-              <li class="mb24">
+              <li class="mb24" ng-repeat = "class in classSchedule">
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-xs-expand2">
-                    <h4 class="royalblue">7/25, 5:30pm</h4>
-                    <h5 class="lightgray">45 min</h5>
+                    <h4 class="royalblue">{{getFormattedDateTime(class.dateTime).shortMonth}}/{{getFormattedDateTime(class.dateTime).day}}, {{getFormattedDateTime(class.dateTime).classTime}}</h4>
+                    <h5 class="lightgray">{{class.duration}} min</h5>
                   </div>
                   <div class="col-xs-4 col-sm-3 col-xs-expand3">
-                    <h4 class="royalblue">Pilates Barre</h4>
-                    <h5 class="lightgray">with Alexis Olson</h5>
+                    <h4 class="royalblue">{{classTypes[class.classType].name}}</h4>
+                    <h5 class="lightgray">with {{instructors[class.instructor].firstName}}</h5>
                   </div>
                   <div class="col-sm-2 hidden-xs social-bookings">
                     <ul>
                       <li>
-                        <img src="/assets/images/justin-photo.jpg" class="round-photo">
+                        <img class="round-photo" ng-show = "currentUser && bookings[class.dateTime][0].facebookId" ng-src="https://graph.facebook.com/{{bookings[class.dateTime][0].facebookId}}/picture?width=25&height=25">
+                        <img src="/assets/images/empty-booking.svg" ng-hide = "currentUser && bookings[class.dateTime][0].facebookId">
                       </li>
                       <li>
-                        <img src="/assets/images/justin-photo.jpg" class="round-photo">
+                        <img class="round-photo" ng-show = "currentUser && bookings[class.dateTime][1].facebookId" ng-src="https://graph.facebook.com/{{bookings[class.dateTime][1].facebookId}}/picture?width=25&height=25">
+                        <img src="/assets/images/empty-booking.svg" ng-hide = "currentUser && bookings[class.dateTime][1].facebookId">
                       </li>
                       <li>
-                        <img src="/assets/images/empty-booking.svg">
+                        <img class="round-photo" ng-show = "currentUser && bookings[class.dateTime][2].facebookId" ng-src="https://graph.facebook.com/{{bookings[class.dateTime][2].facebookId}}/picture?width=25&height=25">
+                        <img src="/assets/images/empty-booking.svg" ng-hide = "currentUser && bookings[class.dateTime][2].facebookId">
                       </li>
                     </ul>
-                    <h5 class="lightgray">8 bookings</h5>
-                    <a class="hidden book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
+                    <h5 class="lightgray" ng-show="bookings[class.dateTime].length === 1">1 booking</h5>
+                    <h5 class="lightgray" ng-show="bookings[class.dateTime].length > 1">{{bookings[class.dateTime].length}} bookings</h5>
+                    <a ng-href = "/studios/{{studioId}}/classinfo/{{class.dateTime}}" ng-show="!bookings[class.dateTime].length" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
                   </div>
                   <div class="col-xs-4 col-sm-4 col-xs-expand4 text-right">
                     <a href="#" class="facebook-messenger-btn"><img src="/assets/images/fb-messenger.png" class="small-icon"></a>
-                    <a href="#" class="btn-blue">View<span class="bold hidden-xs"> Class</span></a>
+                    <a ng-href = "/studios/{{studioId}}/classinfo/{{class.dateTime}}" class="btn-blue">View<span class="bold hidden-xs"> Class</span></a>
                   </div>
                 </div>
               </li>
