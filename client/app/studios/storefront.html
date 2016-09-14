@@ -152,18 +152,18 @@
       <div class="col-md-8">
         <div class="calendar-selector row pt24 pb24 pt-xs-16 pb-xs-16">
           <div>
-              <div class="week-changer text-left">
+              <div class="week-changer text-left" ng-class="{'cal-select-active': nextWeek > 0}" ng-click = "decrementNextWeek()">
                 <i class="ti-angle-left"></i>
               </div><!-- 
              --><div class="calendar-selector-days text-center">
                 <ul>
-                  <li href="#" class="cal-select-active">Show<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm">All</li><!-- 
+                  <li href="#" class="cal-select-active" ng-click="showAll=!showAll;">Show<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm"><span class="bold" ng-show="!showAll">All</span><span class="bold" ng-show="showAll">Less</span></li><!-- 
                --><li href="#" ng-show = "$index < numDaysToShow + nextWeek && $index >= nextWeek" ng-repeat = "dayShown in daysToShow">{{dayShown.formattedDayOfWeek}}<span class = "hidden-xs hidden-sm inline-block">&nbsp</span><br class = "visible-xs visible-sm">{{dayShown.formattedMonthAndDay}}</li><!-- 
                
             --></ul>
               </div><!-- 
-             --><div class="week-changer text-right">
-                <i class="ti-angle-right cal-select-active"></i>
+             --><div class="week-changer text-right" ng-click = "incrementNextWeek()">
+                <i class="ti-angle-right" ng-class = "{'cal-select-active': nextWeek < numDaysToShow + (7-numDaysToShow)*2}"></i>
               </div>
             </div>
           </div>
@@ -177,7 +177,7 @@
         <div class="row pt16 pb16 pt-xs-16 pb-xs-8"> 
           <div class="col-xs-12">
             <ul class="class-listings">
-              <li class="mb24" ng-repeat = "class in classSchedule">
+              <li class="mb24" ng-repeat = "class in classSchedule" ng-show = "showAll || (class.dateTime > daysToShow[nextWeek + 0].beginDateTime - 60*60*1000 && class.dateTime < daysToShow[nextWeek + 6].endDateTime)">
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-xs-expand2">
                     <h4 class="royalblue">{{getFormattedDateTime(class.dateTime).shortMonth}}/{{getFormattedDateTime(class.dateTime).day}}, {{getFormattedDateTime(class.dateTime).classTime}}</h4>
@@ -207,7 +207,25 @@
                     <a ng-href = "/studios/{{studioId}}/classinfo/{{class.dateTime}}" ng-show="!bookings[class.dateTime].length" class="book-first lightgray"><i class="fa fa-flag-checkered"></i> book first</a>
                   </div>
                   <div class="col-xs-4 col-sm-4 col-xs-expand4 text-right">
-                    <a href="#" class="facebook-messenger-btn"><img src="/assets/images/fb-messenger.png" class="small-icon"></a>
+                    <a href="#"
+                        class="facebook-messenger-btn" 
+                        socialshare
+                        socialshare-text="{{studios[instance.studioId].studioName}}"
+                        socialshare-type="send"
+                        socialshare-caption="{{studios[instance.studioId].shortDescription}}"
+                        socialshare-description="{{studios[instance.studioId].longDescription}}"
+                        socialshare-media="{{studioPictures[instance.studioId]}}"
+                        socialshare-provider="facebook"
+                        socialshare-url="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-redirect-uri="www.getbodyapp.com/studios/{{instance.studioId}}"
+                        socialshare-via='501927126632986'
+                        socialshare-trigger='click'
+                        socialshare-popup-height=900
+                        socialshare-popup-width=900
+                        >
+                        <img src="/assets/images/fb-messenger.png" class="small-icon">
+                      </a>
+                    <!-- <a href="#" class="facebook-messenger-btn"><img src="/assets/images/fb-messenger.png" class="small-icon"></a> -->
                     <a ng-href = "/studios/{{studioId}}/classinfo/{{class.dateTime}}" class="btn-blue">View<span class="bold hidden-xs"> Class</span></a>
                   </div>
                 </div>

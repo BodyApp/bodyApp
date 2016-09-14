@@ -840,12 +840,12 @@ angular.module('bodyAppApp')
 
     $scope.incrementNextWeek = function() {
       // if ($scope.isMobile) return $scope.nextWeek += 3
-      $scope.nextWeek += $scope.numDaysToShow;
+      if ($scope.nextWeek < $scope.numDaysToShow + (7-$scope.numDaysToShow)*2) $scope.nextWeek += $scope.numDaysToShow;
     }
 
     $scope.decrementNextWeek = function() {
       // if ($scope.isMobile) return $scope.nextWeek += 3
-      $scope.nextWeek -= $scope.numDaysToShow;
+      if ($scope.nextWeek > 0) $scope.nextWeek -= $scope.numDaysToShow;
     }
 
     function getVideoLibrary() {
