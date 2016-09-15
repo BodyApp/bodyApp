@@ -242,8 +242,16 @@
             </div>
             <ul class="on-demand-vids pt16">
               <li class="featured-vid-container">
-                <div href="#" class="video" style="background-image: url('assets/images/stretch.jpg')">
-                  <div class="video-info">
+                
+                <div href="#" class="video">
+                    <video ng-attr-id="{{ 'video' + videoLibrary[0].key }}" class="video-js vjs-default-skin video-info"
+                      preload="metadata"
+                      vjs-media="loadedMedia[videoLibrary[0].key]"
+                      vjs-video
+                      >
+                      <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                    </video>
+                  <div class="video-info" ng-click="watchVideoFromLibrary(videoLibrary[0].key)">
                     <div class="video-info-play">
                       <a href="#" class="btn-clear hidden-xs">Watch Now</a>
                       <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
@@ -251,105 +259,45 @@
                     <div class="video-info-details">
                       <div class="row">
                         <div class="col-xs-6 text-left">
-                          <span class="white">1 day ago</span>
+                          <span class="white" ng-if="videoLibrary[0].dateSaved">{{formatDateSaved(videoLibrary[0].dateSaved)}}</span>
                         </div>
                         <div class="col-xs-6 text-right">
-                          <span class="white">10:08</span>
+                          <span class="white">{{videoDurations[videoLibrary[0].key]}}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="vid-title-featured">
-                  <span class="royalblue bold">Thursday Class Replay</span>
+                  <span class="royalblue bold">{{videoLibrary[0].title}}</span>
                 </div>
                 <span class="lightgray"> 100 <i class="fa fa-play-circle-o"></i></span>
               </li>
-              <li class="regular-vid-container">
-                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
-                  <div class="video-info">
+              <li class="regular-vid-container" ng-repeat = "video in videoLibrary" ng-show = "$index !=0 && $index < videosToShow">
+                <div class="video">
+                  <video ng-attr-id="{{ 'video' + video.key }}" class="video-js vjs-default-skin video-info"
+                      preload="auto"
+                      vjs-media="loadedMedia[video.key]"
+                      vjs-video>
+                      <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                    </video>
+                  <div class="video-info" ng-click="watchVideoFromLibrary(video.key)">
                     <div class="video-info-play">
                       <a href="#" class="btn-clear hidden-xs">Watch Now</a>
                       <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
                     </div>
                     <div class="video-info-details">
                       <div class="float-left inline-block">
-                        <span class="white">1 day ago</span>
+                        <span class="white">{{formatDateSaved(video.dateSaved)}}</span>
                       </div>
                       <div class="float-right inline-block">
-                        <span class="white">10:08</span>
+                        <span class="white" ng-if="videoDurations[video.key]">{{videoDurations[video.key]}}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="vid-title">
-                  <span class="royalblue bold">Thursday Class Replay</span>
-                </div>
-                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
-              </li>
-              <li class="regular-vid-container">
-                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
-                  <div class="video-info">
-                    <div class="video-info-play">
-                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
-                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
-                    </div>
-                    <div class="video-info-details">
-                      <div class="float-left inline-block">
-                        <span class="white">1 day ago</span>
-                      </div>
-                      <div class="float-right inline-block">
-                        <span class="white">10:08</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="vid-title">
-                  <span class="royalblue bold">Thursday Class Replay</span>
-                </div>
-                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
-              </li>
-              <li class="regular-vid-container">
-                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
-                  <div class="video-info">
-                    <div class="video-info-play">
-                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
-                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
-                    </div>
-                    <div class="video-info-details">
-                      <div class="float-left inline-block">
-                        <span class="white">20 days ago</span>
-                      </div>
-                      <div class="float-right inline-block">
-                        <span class="white">10:08</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="vid-title">
-                  <span class="royalblue bold">Thursday Class Replay</span>
-                </div>
-                <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
-              </li>
-              <li class="regular-vid-container">
-                <div class="video" style="background-image: url('assets/images/stretch.jpg')">
-                  <div class="video-info">
-                    <div class="video-info-play">
-                      <a href="#" class="btn-clear hidden-xs">Watch Now</a>
-                      <a href="#" class="btn-clear visible-xs"><i class="fa fa-play"></i></a>
-                    </div>
-                    <div class="video-info-details">
-                      <div class="float-left inline-block">
-                        <span class="white">1 day ago</span>
-                      </div>
-                      <div class="float-right inline-block">
-                        <span class="white">10:08</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="vid-title">
-                  <span class="royalblue bold">Thursday Class Replay</span>
+                  <span class="royalblue bold">{{video.title}}</span>
                 </div>
                 <span class="lightgray hidden-xs hidden-md"> 100 <i class="fa fa-play-circle-o"></i></span>
               </li>

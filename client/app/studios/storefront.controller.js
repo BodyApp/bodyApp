@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, Studios, Auth, User, Schedule, Studio, Video, $rootScope) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, $timeout, Studios, Auth, User, Schedule, Studio, Video, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
     $scope.currentUser = currentUser;
 
@@ -13,6 +13,7 @@ angular.module('bodyAppApp')
     $scope.bookings = {};
     $scope.storyToShow = 0;
     $scope.numDaysToShow = 7;
+    $scope.videosToShow = 5;
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     Video.destroyHardwareSetup()
@@ -857,18 +858,95 @@ angular.module('bodyAppApp')
     }
 
     function getVideoLibrary() {
-      $http.post('/api/videolibrary/getstudiovideos', {
-        studioId: studioId,
+      firebase.database().ref().child('videoLibraries').child(studioId).child('videos').on('value', function(snapshot) {
+        $scope.videoLibrary = [];
+        $scope.loadedMedia = {};
+        snapshot.forEach(function(video) {
+          var toPush = video.val()
+          toPush.key = video.key
+          $scope.videoLibrary.push(toPush);
+          if(!$scope.$$phase) $scope.$apply();
+          console.log($scope.videoLibrary)
+          $scope.loadedMedia[video.key] = {
+            sources: [
+              {
+                src:'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key,
+                type: 'video/mp4'
+              }
+            ]
+          };
+          if(!$scope.$$phase) $scope.$apply();
+
+          $timeout(function(){
+            var videoKey = document.getElementById('video'+video.key);
+            // videoKey.addEventListener('loadedmetadata', function() {
+              $scope.videoDurations = $scope.videoDurations || {};
+              $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
+              if(!$scope.$$phase) $scope.$apply();
+                // console.log(videoKey.duration);
+                // videoKey.bind('contextmenu',function() { return false; });
+            // });  
+          },1000)
+          
+            // videoPlayer.src({"src":'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key})
+          // });
+          // var videoKey = $('#video'+video.key)
+          
+          // videoKey.bind('contextmenu',function() { return false; });
+        })
       })
-      .success(function(data) {
-        console.log("Successfully retrieved videos.");
-        $scope.videoLibrary = data;
-        if(!$scope.$$phase) $scope.$apply();
-      })
-      .error(function(err) {
-        console.log(err)
-        console.log("Error retrieving videos")
-      }.bind(this));
+
+      // $http.post('/api/videolibrary/getstudiovideos', {
+      //   studioId: studioId,
+      // })
+      // .success(function(data) {
+      //   console.log("Successfully retrieved videos.");
+      //   $scope.videoLibrary = data;
+      //   if(!$scope.$$phase) $scope.$apply();
+      // })
+      // .error(function(err) {
+      //   console.log(err)
+      //   console.log("Error retrieving videos")
+      // }.bind(this));
+    }
+
+    $scope.watchVideoFromLibrary = function(videoId) {
+      var videoPlayer = videojs('video'+videoId)
+      videoPlayer.requestFullscreen()
+      videoPlayer.play()
+      videoPlayer.controls(true)
+
+      // $('#video'+videoId).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+      //     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+      //     var event = state ? 'FullscreenOn' : 'FullscreenOff';
+
+      //     // Now do something interesting
+      //     alert('Event: ' + event);    
+      // });
+      $timeout(function(){
+        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
+        console.log(document.fullscreen)
+        videoPlayer.pause()
+        videoPlayer.controls(false)
+        });  
+      }, 2000)
+      // $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
+      //   console.log(document.fullscreen)
+      // //   videoPlayer.pause()
+      // //   videoPlayer.controls(false)
+      // });
+    }
+
+    $scope.getDuration = function(video) {
+      // var videoKey = document.getElementById('video'+video);
+      // videoKey.addEventListener('loadedmetadata', function() {
+      //     console.log(videoKey.duration);
+      // });
+    }
+
+    $scope.getVideoUrl = function(s3Url) {
+      console.log(s3Url)
+      return $sce.trustAsResourceUrl('https://s3.amazonaws.com/videolibraries/'+s3Url)
     }
 
     function getVideoStatus() {
@@ -917,6 +995,21 @@ angular.module('bodyAppApp')
 
     $scope.facebookCallback = function(info) {
       console.log(info)
+    }
+
+    $scope.formatDateSaved = function(dateTime) {
+      var dateNow = new Date().getTime();
+      var minutesSinceSaved = (dateNow - dateTime)/(60*1000)
+      if (minutesSinceSaved<60) return Math.round(minutesSinceSaved) + " minutes ago"
+      
+      var hoursSinceSaved = Math.round((dateNow - dateTime)/(60*60*1000))
+      if (hoursSinceSaved === 1) return hoursSinceSaved + " hour ago"
+      if (hoursSinceSaved < 24) return hoursSinceSaved + " hours ago"
+        
+      var daysSinceSaved = Math.round((dateNow - dateTime)/(24*60*60*1000))
+      if (daysSinceSaved === 1) return daysSinceSaved + " day ago"
+      return daysSinceSaved + " days ago"
+      // return 1 day ago
     }
 
     function getFormattedDateTime(dateTime, noToday) {

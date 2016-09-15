@@ -14,11 +14,12 @@
       <div class="col-xs-3 white">Title</div>
       <input class="col-xs-7 mb8 text-center" ng-model="video.title" ng-change="titleChanged(key, video.title)" maxlength="30">
       <div class="col-xs-2"></div>
-    	<video ng-attr-id="{{ 'video' + key }}" class="video-js vjs-default-skin vjs-big-play-centered"
-			  controls preload="auto"
-			  data-setup='{"example_option":true}'
+    	<video ng-attr-id="{{ 'video' + key }}" class="video-js vjs-default-skin"
+			  controls 
+			  preload="auto"
+			  vjs-video
 			>
-				<source ng-src="{{getVideoUrl(video.s3Key)}}" />
+				<source ng-src="{{getVideoUrl(video.s3Key)}}" type="video/mp4"/>
 				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 			</video>
       <!-- <a href="#" ng-click = "playVideo(video)">
