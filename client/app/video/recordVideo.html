@@ -11,12 +11,16 @@
 	<div class = "row mt64"></div>
 
     <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "(key, video) in videoLibrary">
-    	<video ng-attr-id="{{ 'video' + key }}" class="video-js vjs-default-skin vjs-big-play-centered"
-			  controls preload="auto"
-			  data-setup='{"example_option":true}'
-			  >
-			 <source ng-src="{{getVideoUrl(video.s3Key)}}" />
-			 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+      <div class="col-xs-3 white">Title</div>
+      <input class="col-xs-7 mb8 text-center" ng-model="video.title" ng-change="titleChanged(key, video.title)" maxlength="30">
+      <div class="col-xs-2"></div>
+    	<video ng-attr-id="{{ 'video' + key }}" class="video-js vjs-default-skin"
+			  controls 
+			  preload="auto"
+			  vjs-video
+			>
+				<source ng-src="{{getVideoUrl(video.s3Key)}}" type="video/mp4"/>
+				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 			</video>
       <!-- <a href="#" ng-click = "playVideo(video)">
       	<div>
@@ -26,12 +30,12 @@
       </a> -->
       <div class = "col-xs-6">
       	<!-- <span>Public</span> -->
-	      <md-switch class="md-primary" ng-model="subscribersOnly[video.token].subscribersOnly" ng-change="publicPrivateChanged(video.token, subscribersOnly[video.token])" aria-label="Available to Public?">
-	      <span ng-show = "!subscribersOnly[video.token].subscribersOnly" style = "color:white;">Available To Public</span>
-	      <span ng-show = "subscribersOnly[video.token].subscribersOnly" style = "color:white;">Subscribers Only</span>
+	      <md-switch class="md-primary" ng-model="video.subscribersOnly" ng-change="publicPrivateChanged(key, video.subscribersOnly)" aria-label="Available to Public?">
+	      <span ng-show = "!video.subscribersOnly" style = "color:white;">Available To Public</span>
+	      <span ng-show = "video.subscribersOnly" style = "color:white;">Subscribers Only</span>
 	    	</md-switch>
 	    </div>
-      <a class="btn btn-danger active col-xs-6 mt16" ng-click="deleteVideo(video, $event)">Delete</a>
+      <a class="btn btn-danger active col-xs-6 mt16" ng-click="deleteVideo(key, $event)">Delete</a>
     </div>
           
 	</div>

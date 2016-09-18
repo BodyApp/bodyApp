@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bodyAppApp')
-  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, Studios, Auth, User, Schedule, Studio, Video, $rootScope) {
+  .controller('StorefrontCtrl', function ($scope, $stateParams, $sce, $window, $http, $location, $uibModal, $cookies, $state, $timeout, Studios, Auth, User, Schedule, Studio, Video, $rootScope) {
   	var currentUser = Auth.getCurrentUser()
     $scope.currentUser = currentUser;
 
@@ -10,6 +10,11 @@ angular.module('bodyAppApp')
     $scope.classToCreate = {};
     $scope.studioName = studioId;
     $scope.studioLongDescription = $scope.studioName + " is a new virtual fitness studio on BODY where you can take live classes.  We're offering one week of unlimited free classes if you click this link!"
+    $scope.bookings = {};
+    $scope.storyToShow = 0;
+    $scope.numDaysToShow = 7;
+    $scope.videosToShow = 5;
+    var lastVideoPlayedId;
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     Video.destroyHardwareSetup()
@@ -18,23 +23,23 @@ angular.module('bodyAppApp')
     var storageRef = firebase.storage().ref().child('studios').child(studioId);
     var auth = firebase.auth();
 
-    //Check and handle if mobile
-    if(window.innerWidth > 1100) {
-      $scope.numDaysToShow = 7;
-      if(!$scope.$$phase) $scope.$apply();
-    } else if (window.innerWidth > 650) {
-      $scope.numDaysToShow = 6;
-      if(!$scope.$$phase) $scope.$apply();
-    } else if (window.innerWidth > 550) {
-      $scope.numDaysToShow = 5;
-      if(!$scope.$$phase) $scope.$apply();
-    } else if (window.innerWidth > 455) {
-      $scope.numDaysToShow = 4;
-      if(!$scope.$$phase) $scope.$apply();
-    } else {
-      // $scope.isMobile = true;
-      $scope.numDaysToShow = 3;
-    }
+    // //Check and handle if mobile
+    // if(window.innerWidth > 1100) {
+    //   $scope.numDaysToShow = 7;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else if (window.innerWidth > 650) {
+    //   $scope.numDaysToShow = 6;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else if (window.innerWidth > 550) {
+    //   $scope.numDaysToShow = 5;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else if (window.innerWidth > 455) {
+    //   $scope.numDaysToShow = 4;
+    //   if(!$scope.$$phase) $scope.$apply();
+    // } else {
+    //   // $scope.isMobile = true;
+    //   $scope.numDaysToShow = 3;
+    // }
     
     setTimezone()
 
@@ -399,21 +404,27 @@ angular.module('bodyAppApp')
 
     function getTestimonials() {
       ref.child('testimonials').once('value', function(snapshot) {
-        if (!snapshot.exists()) return;
-        $scope.testimonials = snapshot.val();
+        if (!snapshot.exists()) return $scope.testimonialsLoaded = true;
+        $scope.testimonials = [];
         $scope.numOfTestimonials = Object.keys(snapshot.val()).length
         if(!$scope.$$phase) $scope.$apply();
         snapshot.forEach(function(story) {
-          getStoryImage(story.val().id)
+          getStoryImage(story.val()) 
         })
       })
     }
 
-    function getStoryImage(storyId) {
+    function getStoryImage(story) {
+      var storyId = story.id;
       $scope.storyImages = $scope.storyImages || {};
       storageRef.child('images').child('testimonials').child(storyId+'.jpg').getDownloadURL().then(function(url) {
-        $scope.storyImages[storyId] = url;
-        if(!$scope.$$phase) $scope.$apply();
+        $scope.testimonialsLoaded = true;
+        if (!url) return
+        else {
+          $scope.storyImages[storyId] = url;
+          $scope.testimonials.push(story)
+          if(!$scope.$$phase) $scope.$apply();
+        }
       }).catch(function(error) {
         console.log(error)
       });
@@ -433,6 +444,19 @@ angular.module('bodyAppApp')
         $scope.classSchedule = snapshot.val();
         console.log("Pulled " + Object.keys($scope.classSchedule).length + " classes for schedule.")
         if(!$scope.$$phase) $scope.$apply();
+        snapshot.forEach(function(upcomingClass) {
+          ref.child('bookings').child(upcomingClass.key).once('value', function(bookingInfo) {
+            bookingInfo.forEach(function(info) {
+              $scope.bookings[bookingInfo.key] = $scope.bookings[bookingInfo.key] || [];
+              $scope.bookings[bookingInfo.key].push(info.val())  
+              if(!$scope.$$phase) $scope.$apply();
+            })
+            // $scope.bookings[bookingInfo.key] = $scope.bookings[bookingInfo.key] || [];
+            // $scope.bookings[bookingInfo.key].push(bookingInfo.val())
+            // console.log($scope.bookings)
+            
+          })
+        })
       })
     }
 
@@ -466,7 +490,8 @@ angular.module('bodyAppApp')
         day.endDateTime = day.beginDateTime + 24*60*60*1000-1000
         day.formattedDate = getFormattedDateTime(day.beginDateTime).dayOfWeek + ", " + getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
         day.formattedDayOfWeek = getFormattedDateTime(day.beginDateTime).dayOfWeek;
-        day.formattedMonthAndDay = getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
+        // day.formattedMonthAndDay = getFormattedDateTime(day.beginDateTime).month + " " + getFormattedDateTime(day.beginDateTime).day;
+        day.formattedMonthAndDay = new Date(day.beginDateTime).getMonth()+1 + "/" + new Date(day.beginDateTime).getDate();
 
         $scope.daysToShow.push(day)
         if(!$scope.$$phase) $scope.$apply();
@@ -825,27 +850,103 @@ angular.module('bodyAppApp')
 
     $scope.incrementNextWeek = function() {
       // if ($scope.isMobile) return $scope.nextWeek += 3
-      $scope.nextWeek += $scope.numDaysToShow;
+      if ($scope.nextWeek < $scope.numDaysToShow + (7-$scope.numDaysToShow)*2) $scope.nextWeek += $scope.numDaysToShow;
     }
 
     $scope.decrementNextWeek = function() {
       // if ($scope.isMobile) return $scope.nextWeek += 3
-      $scope.nextWeek -= $scope.numDaysToShow;
+      if ($scope.nextWeek > 0) $scope.nextWeek -= $scope.numDaysToShow;
     }
 
     function getVideoLibrary() {
-      $http.post('/api/videolibrary/getstudiovideos', {
-        studioId: studioId,
+      firebase.database().ref().child('videoLibraries').child(studioId).child('videos').on('value', function(snapshot) {
+        $scope.videoLibrary = [];
+        $scope.loadedMedia = {};
+        snapshot.forEach(function(video) {
+          var toPush = video.val()
+          toPush.key = video.key
+          $scope.videoLibrary.push(toPush);
+          if(!$scope.$$phase) $scope.$apply();
+          console.log($scope.videoLibrary)
+          $scope.loadedMedia[video.key] = {
+            sources: [
+              {
+                src:'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key,
+                type: 'video/mp4'
+              }
+            ]
+          };
+          if(!$scope.$$phase) $scope.$apply();
+
+          $timeout(function(){
+            var videoKey = document.getElementById('video'+video.key);
+            // videoKey.addEventListener('loadedmetadata', function() {
+              $scope.videoDurations = $scope.videoDurations || {};
+              $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
+              if(!$scope.$$phase) $scope.$apply();
+                // console.log(videoKey.duration);
+                // videoKey.bind('contextmenu',function() { return false; });
+            // });  
+          },1000)
+          
+            // videoPlayer.src({"src":'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key})
+          // });
+          // var videoKey = $('#video'+video.key)
+          
+          // videoKey.bind('contextmenu',function() { return false; });
+        })
       })
-      .success(function(data) {
-        console.log("Successfully retrieved videos.");
-        $scope.videoLibrary = data;
-        if(!$scope.$$phase) $scope.$apply();
-      })
-      .error(function(err) {
-        console.log(err)
-        console.log("Error retrieving videos")
-      }.bind(this));
+
+      // $http.post('/api/videolibrary/getstudiovideos', {
+      //   studioId: studioId,
+      // })
+      // .success(function(data) {
+      //   console.log("Successfully retrieved videos.");
+      //   $scope.videoLibrary = data;
+      //   if(!$scope.$$phase) $scope.$apply();
+      // })
+      // .error(function(err) {
+      //   console.log(err)
+      //   console.log("Error retrieving videos")
+      // }.bind(this));
+    }
+
+    $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
+      var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+      
+      if (fullscreenElement) {
+        var videoPlayer = videojs(fullscreenElement.id)
+        videoPlayer.play()
+        videoPlayer.controls(true)
+        lastVideoPlayedId = fullscreenElement.id;
+
+      } else {
+        var videoPlayer = videojs(lastVideoPlayedId)
+        videoPlayer.pause()
+        videoPlayer.controls(false)
+      }
+    }); 
+
+    $scope.watchVideoFromLibrary = function(videoId) {
+      var videoPlayer = videojs('video'+videoId)
+      videoPlayer.requestFullscreen()
+
+      ////This is breaking stuff for some reason
+      // firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoId).child('views').transaction(function(viewCount) {
+      //   return viewCount + 1;
+      // })  
+    }
+
+    $scope.getDuration = function(video) {
+      // var videoKey = document.getElementById('video'+video);
+      // videoKey.addEventListener('loadedmetadata', function() {
+      //     console.log(videoKey.duration);
+      // });
+    }
+
+    $scope.getVideoUrl = function(s3Url) {
+      console.log(s3Url)
+      return $sce.trustAsResourceUrl('https://s3.amazonaws.com/videolibraries/'+s3Url)
     }
 
     function getVideoStatus() {
@@ -896,6 +997,21 @@ angular.module('bodyAppApp')
       console.log(info)
     }
 
+    $scope.formatDateSaved = function(dateTime) {
+      var dateNow = new Date().getTime();
+      var minutesSinceSaved = (dateNow - dateTime)/(60*1000)
+      if (minutesSinceSaved<60) return Math.round(minutesSinceSaved) + " minutes ago"
+      
+      var hoursSinceSaved = Math.round((dateNow - dateTime)/(60*60*1000))
+      if (hoursSinceSaved === 1) return hoursSinceSaved + " hour ago"
+      if (hoursSinceSaved < 24) return hoursSinceSaved + " hours ago"
+        
+      var daysSinceSaved = Math.round((dateNow - dateTime)/(24*60*60*1000))
+      if (daysSinceSaved === 1) return daysSinceSaved + " day ago"
+      return daysSinceSaved + " days ago"
+      // return 1 day ago
+    }
+
     function getFormattedDateTime(dateTime, noToday) {
       var newDate = new Date(dateTime);
       var formatted = {};
@@ -909,6 +1025,7 @@ angular.module('bodyAppApp')
       } 
       
       formatted.day = newDate.getDate();
+      formatted.shortMonth = newDate.getMonth()+1;
       formatted.year = newDate.getFullYear();
       
       // $scope.dayOfWeek;
