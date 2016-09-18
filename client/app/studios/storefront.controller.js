@@ -15,6 +15,7 @@ angular.module('bodyAppApp')
     $scope.numDaysToShow = 7;
     $scope.videosToShow = 5;
     var lastVideoPlayedId;
+
     // if (!studioId) studioId = 'body'
     Studios.setCurrentStudio(studioId);
     Video.destroyHardwareSetup()
@@ -911,6 +912,7 @@ angular.module('bodyAppApp')
       // }.bind(this));
     }
 
+// <<<<<<< HEAD
     $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
       var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
       
@@ -935,6 +937,33 @@ angular.module('bodyAppApp')
       // firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoId).child('views').transaction(function(viewCount) {
       //   return viewCount + 1;
       // })  
+// =======
+//     $scope.watchVideoFromLibrary = function(videoId) {
+//       var videoPlayer = videojs('video'+videoId)
+//       videoPlayer.requestFullscreen()
+//       videoPlayer.play()
+//       videoPlayer.controls(true)
+
+//       // $('#video'+videoId).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+//       //     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+//       //     var event = state ? 'FullscreenOn' : 'FullscreenOff';
+
+//       //     // Now do something interesting
+//       //     alert('Event: ' + event);    
+//       // });
+//       $timeout(function(){
+//         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
+//         console.log(document.fullscreen)
+//         videoPlayer.pause()
+//         videoPlayer.controls(false)
+//         });  
+//       }, 2000)
+//       // $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
+//       //   console.log(document.fullscreen)
+//       // //   videoPlayer.pause()
+//       // //   videoPlayer.controls(false)
+//       // });
+// >>>>>>> 4469b9bbb58c1086f294fecc16dbb88ada247eb9
     }
 
     $scope.getDuration = function(video) {
