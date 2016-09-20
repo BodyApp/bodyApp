@@ -14,6 +14,7 @@ angular.module('bodyAppApp')
     $scope.storyToShow = 0;
     $scope.numDaysToShow = 7;
     $scope.videosToShow = 5;
+    $scope.fullscreenVideoIndex = 0;
     var lastVideoPlayedId;
 
     // if (!studioId) studioId = 'body'
@@ -1001,6 +1002,24 @@ angular.module('bodyAppApp')
       });
     }
 
+    $scope.showPreviousStory = function() {
+      $scope.fullscreenVideoIndex = Math.max(0, $scope.fullscreenVideoIndex-1);
+      $scope.showFullscreenStory = $scope.testimonials[$scope.fullscreenVideoIndex];
+      if(!$scope.$$phase) $scope.$apply();
+    }
+
+    $scope.showNextStory = function() {
+      $scope.fullscreenVideoIndex = Math.min($scope.fullscreenVideoIndex + 1, $scope.testimonials.length-1);
+      $scope.showFullscreenStory = $scope.testimonials[$scope.fullscreenVideoIndex];
+      if(!$scope.$$phase) $scope.$apply(); 
+    }    
+
+    $scope.setFullscreenStory = function(story, index) {
+      $scope.showFullscreenStory = story;
+      $scope.fullscreenVideoIndex = index;
+      if(!$scope.$$phase) $scope.$apply();
+    }
+
     $scope.formatDuration = function(duration) {
       return duration.toString().toHHMMSS();
     }
@@ -1015,6 +1034,7 @@ angular.module('bodyAppApp')
       // if (hours   < 10) {hours   = "0"+hours;}
       // if (minutes < 10) {minutes = "0"+minutes;}
       if (seconds < 10) {seconds = "0"+seconds*1;}
+      if (isNaN(minutes) || isNaN(seconds)) return
       return minutes+':'+seconds;
     }
 

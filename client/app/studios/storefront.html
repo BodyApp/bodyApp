@@ -6,9 +6,9 @@
 <update-meta property="fb:app_id" content="501927126632986"></update-meta>
 <div ng-include="'components/navbar/navbar.html'" class = "mb64 mb-sm-48"></div>
 
-<div class="fullscreen-stories hidden" tabindex="1" style="z-index:2001;">
+<div class="fullscreen-stories" tabindex="1" style="z-index:2001;" ng-show = "showFullscreenStory">
   <div class="row row-table row-full-height stories-container">
-    <a href="#" id="close-fullscreen-hero" class="fullscreen-video-player-close">
+    <a href="#" id="close-fullscreen-hero" class="fullscreen-video-player-close" ng-click="showFullscreenStory = null" style="z-index:2002;">
       <i class="ti-close"></i>
     </a>
     <div class="col-xs-12 text-center col-middle">
@@ -16,21 +16,21 @@
         <div class="hidden-xs hidden-sm col-md-3 col-md-push-9">
           <div class="row mb8">
             <div class="col-xs-12">
-              <h5 class="stories-number">2 Studio Stories</h5>
+              <h5 class="stories-number">{{testimonials.length}} Studio Stories</h5>
             </div>
           </div>
           <div class="row stories-gallery">
             <div class="row mb8">
-              <div class="col-md-6">
+              <div class="col-md-6" ng-repeat="story in testimonials">
+                <a href="#" ng-click="setFullscreenStory(story, $index);">
+                  <img ng-src="{{storyImages[story.id]}}" width="100%">
+                </a>
+              </div>
+              <!-- <div class="col-md-6">
                 <a href="#">
                   <img src="assets/images/studios/ralabala/story2.jpg" width="100%">
                 </a>
-              </div>
-              <div class="col-md-6">
-                <a href="#">
-                  <img src="assets/images/studios/ralabala/story2.jpg" width="100%">
-                </a>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@
             <div class="col-xs-1 col-middle">
               <div class="va-container va-container-v va-container-h">
                 <div class="va-middle text-right next-story-icon">
-                  <a href="" class="white">
+                  <a href="" class="white" ng-click = "showPreviousStory()">
                     <i class="fa fa-chevron-left"></i>
                   </a>
                 </div>
@@ -71,20 +71,20 @@
             </div>
             <div class="col-xs-10 col-sm-6 text-center col-middle">
               <div class="story-container">
-                <img src="/assets/images/studios/ralabala/story2.jpg" width="100%">
+                <img ng-src="{{storyImages[showFullscreenStory.id]}}" width="100%">
                 <div class="text-center story-name">
-                  <h4 class="mt8 white">Beth Anne Lazaro</h4>
-                  <h4 class="mb8 white">@ralabala</h4>
+                  <h4 class="mt8 white">{{showFullscreenStory.clientName}}</h4>
+                  <h4 class="mb8 white">@{{showFullscreenStory.instagramUsername}}</h4>
                 </div>
               </div>
               <div class="story-content text-left">
-                <h5 class="white">Our culture tells us to "follow our feelings" and seek pleasure/happiness wherever we can.</h5>
+                <h5 class="white">{{showFullscreenStory.storyContent}}</h5>
               </div>
             </div>
             <div class="col-xs-1 col-middle">
               <div class="va-container va-container-v va-container-h">
                 <div class="va-middle text-left next-story-icon">
-                  <a href="#" class="white">
+                  <a href="#" class="white" ng-click = "showNextStory()">
                     <i class="fa fa-chevron-right"></i>
                   </a>
                 </div>
@@ -436,7 +436,7 @@
                 </a>
               </div>
               <div class="stories-added" ng-show="testimonials.length > 0">
-                <a href="#">
+                <a href="#" ng-click = "setFullscreenStory(testimonials[storyToShow], storyToShow);">
                   <div class="studio-story" ng-show="storyImages[testimonials[storyToShow].id]">
                     <div class="story-preview" ng-style="{'background-image':'url('+ storyImages[testimonials[storyToShow].id] +')'}"></div>
                     <div class="stories-overlay text-left">
