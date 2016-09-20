@@ -41,21 +41,36 @@
                 <li>
                   <span>Share:</span>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="#">
                     <i class="fa fa-envelope-o"></i>
                   </a>
-                </li>
+                </li> -->
                 <li>
-                  <a href="#">
-                    <i class="fa fa-facebook-square"></i>
+                  <a href="#"
+                  socialshare
+                  socialshare-text="{{storefrontInfo.studioName}}"
+                  socialshare-type="send"
+                  socialshare-caption="{{storefrontInfo.shortDescription}}"
+                  socialshare-description="{{storefrontInfo.longDescription}}"
+                  socialshare-media="{{backgroundImageUrl}}"
+                  socialshare-provider="facebook"
+                  socialshare-url="www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-redirect-uri="www.getbodyapp.com/studios/{{studioId}}"
+                  socialshare-via='501927126632986'
+                  socialshare-trigger='click'
+                  socialshare-popup-height=900
+                  socialshare-popup-width=900
+                  >
+                  <i class="fa fa-facebook-square"></i>
+
                   </a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="#">
                     <i class="fa fa-pinterest"></i>
                   </a>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -106,8 +121,11 @@
   <div class="storefront-header-pricing">
     <div class="row">
       <div class="col-md-3 hidden-xs hidden-sm text-left">
-        <div class="discovery-tag-love trending">
+        <div class="discovery-tag-love trending" ng-show = "studioPosition === 1">
           <i class="fa fa-heart"></i> Studio We Love
+        </div>
+        <div class="discovery-tag-love" ng-show = "studioPosition === 2 || studioPosition === 3">
+          <i class="fa fa-flash"></i> Trending Studio
         </div>
       </div>
       <div class="col-md-9 text-right text-center-sm">
@@ -461,7 +479,7 @@
         </div>
 
         <div class="panel"> 
-          <div class="panel-body">
+          <!-- <div class="panel-body">
             <div class="row">
               <div class="col-xs-12">
                 <ul class="row studio-friends text-center">
@@ -498,7 +516,7 @@
                 <h5 class="lightgray">148 followers</h5>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="boxed-icons show-lg">
             <div class="social-share-btns">
               <div class="share-triggers btn-group">

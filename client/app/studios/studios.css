@@ -505,8 +505,8 @@
   color: #D8D8D8;
 }
 .stories-gallery {
-  height: 80vh;
-  overflow: scroll;
+  /*height: 80vh;*/
+  /*overflow: scroll;*/
 }
 .stories-gallery a {
   opacity: 0.7;

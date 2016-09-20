@@ -79,6 +79,7 @@ angular.module('bodyAppApp')
     getVideoLibrary()
     getVideoStatus()
     getTestimonials()
+    getStudioPosition()
 
     Video.destroyHardwareSetup()
     // ref.unauth()
@@ -332,6 +333,14 @@ angular.module('bodyAppApp')
 
     // console.log(currentUser);
     // if (currentUser.stripe && currentUser.stripe.studios) $rootScope.subscriptions[studioId] = currentUser.stripe.studios[studioId]
+
+    function getStudioPosition() {
+      firebase.database().ref().child('studioIds').child(studioId).once('value', function(snapshot) {
+        $scope.studioPosition = snapshot.val();
+        if(!$scope.$$phase) $scope.$apply();
+        console.log($scope.studioPosition)
+      })
+    }
 
     function getStorefrontInfo() {
       ref.child('storefrontInfo').once('value', function(snapshot) {
