@@ -184,6 +184,21 @@ angular.module('bodyAppApp')
     return minutes+':'+seconds;
 	}
 
+  $scope.formatDateSaved = function(dateTime) {
+    var dateNow = new Date().getTime();
+    var minutesSinceSaved = (dateNow - dateTime)/(60*1000)
+    if (minutesSinceSaved<60) return Math.round(minutesSinceSaved) + " minutes ago"
+    
+    var hoursSinceSaved = Math.round((dateNow - dateTime)/(60*60*1000))
+    if (hoursSinceSaved === 1) return hoursSinceSaved + " hour ago"
+    if (hoursSinceSaved < 24) return hoursSinceSaved + " hours ago"
+      
+    var daysSinceSaved = Math.round((dateNow - dateTime)/(24*60*60*1000))
+    if (daysSinceSaved === 1) return daysSinceSaved + " day ago"
+    return daysSinceSaved + " days ago"
+    // return 1 day ago
+  }
+
   $scope.deleteVideo = function(videoToDelete, ev) {
   	var confirm = $mdDialog.confirm({
       title: "Delete Video",

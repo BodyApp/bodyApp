@@ -11,8 +11,10 @@
 	<div class = "row mt64"></div>
 
     <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "(key, video) in videoLibrary">
-      <div class="col-xs-3 white">Title</div>
-      <input class="col-xs-7 mb8 text-center" ng-model="video.title" ng-change="titleChanged(key, video.title)" maxlength="30">
+      <div class="row">
+	      <div class="col-xs-3 white">Title</div>
+	      <input class="col-xs-7 mb8 text-center" ng-model="video.title" ng-change="titleChanged(key, video.title)" maxlength="30">
+	    </div>
       <div class="col-xs-2"></div>
     	 <video ng-attr-id="{{ 'video' + videoLibrary[$index].key }}" class="video-js vjs-default-skin video-info vjs-big-play-centered"
         preload="metadata"
@@ -22,12 +24,19 @@
         >
         <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
       </video>
-      <!-- <a href="#" ng-click = "playVideo(video)">
-      	<div>
-	        <img ng-src="https://{{video.embed_image_url}}" >
-	        <span class = "durationFormatRecording">{{formatDuration(video.duration)}}</span>
-	      </div>
-      </a> -->
+      <!-- <div class="video-info"> -->
+        <div >
+          <div class="row">
+            <div class="col-xs-6 text-left">
+              <span class="white" ng-if="video.dateSaved">{{formatDateSaved(video.dateSaved)}}</span>
+            </div>
+            <div class="col-xs-6 text-right">
+              <span class="white">{{videoDurations[video.key]}}</span>
+            </div>
+          </div>
+        </div>
+      <!-- </div> -->
+      
       <div class = "col-xs-6">
       	<!-- <span>Public</span> -->
 	      <md-switch class="md-primary" ng-model="video.subscribersOnly" ng-change="publicPrivateChanged(key, video.subscribersOnly)" aria-label="Available to Public?">
@@ -35,7 +44,7 @@
 	      <span ng-show = "video.subscribersOnly" style = "color:white;">Subscribers Only</span>
 	    	</md-switch>
 	    </div>
-      <a class="btn btn-danger active col-xs-6 mt16" ng-click="deleteVideo(key, $event)">Delete</a>
+      <a class="btn btn-danger active col-xs-6 mt8" ng-click="deleteVideo(key, $event)">Delete</a>
     </div>
           
 	</div>
