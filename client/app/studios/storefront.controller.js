@@ -583,7 +583,7 @@ angular.module('bodyAppApp')
         // } else if (slot && studioId === 'body') {
         //   console.log("Booking for free because this is the BODY studio.")
         //   return bookClass(slot)
-        } else if ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active') {
+        } else if (!$rootScope.subscriptions || ($rootScope.subscriptions && $rootScope.subscriptions[studioId] != 'active')) {
           var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'app/membership/membership.html',
@@ -876,6 +876,8 @@ angular.module('bodyAppApp')
         snapshot.forEach(function(video) {
           var toPush = video.val()
           toPush.key = video.key
+          console.log(toPush)
+          if (toPush.subscribersOnly && (!$rootScope.subscriptions || $rootScope.subscriptions[studioId] != 'active')) return;
           $scope.videoLibrary.push(toPush);
           $http.post('/api/videolibrary/getvideo', {
             videoKey: toPush.s3Key
