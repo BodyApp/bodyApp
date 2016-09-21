@@ -54,6 +54,31 @@ angular.module('bodyAppApp')
           if (err) return console.log(err)
           console.log("Added video to library.")
         })
+
+        
+        var request = {
+          input: savedVideo.url,
+          outputs: [
+            {
+              url: 's3://videolibraries/'+savedVideo.key,
+              public: true
+            }
+          ]
+        }
+
+        $.ajax({
+          url: 'https://app.zencoder.com/api/v2/jobs',
+          type: 'POST',
+          data: JSON.stringify(request),
+          headers: { "Zencoder-Api-Key": "e5b932c9cf37f6c97a39534834d42602"},
+          dataType: 'json',
+          success: function(data) {
+            console.log('Job created! ID: ' + data.id)
+          },
+          error: function(data) {
+              console.log(data);
+          }
+      });
         // console.log(replaceHtmlChars(JSON.stringify(Blob)));
       },
       function(error){
