@@ -438,14 +438,14 @@
       </div>
 
       <div class="col-md-4 hidden-xs hidden-sm">
-        <div class="panel space-4" ng-show="testimonials">
+        <div class="panel space-4" ng-show="testimonialsLoaded && adminOf[studioId]">
           <div class="panel-header text-center">
             Studio Stories
           </div>
           <div class="panel-body">
             <div class="stories-panel text-center">
-              <div class="no-stories-added" ng-show="!testimonials.length && testimonialsLoaded">
-                <a href="">
+              <div class="no-stories-added" ng-show="testimonialsLoaded && (!testimonials || !testimonials.length || testimonials.length < 1)">
+                <a href="/studios/{{studioId}}/testimonials">
                   <div class="upload-story">
                     <span style="font-size:8rem;"><i class="fa fa-plus-circle"></i></span>
                     <h4 class="mb8 bold">Upload your first story</h4>
@@ -459,7 +459,7 @@
                     <div class="story-preview" ng-style="{'background-image':'url('+ storyImages[testimonials[storyToShow].id] +')'}"></div>
                     <div class="stories-overlay text-left">
                         <h4 class="textimonial-name white bold" ng-show="testimonials[storyToShow].instagramUsername">@{{testimonials[storyToShow].instagramUsername}}</h4>
-                        <h4 class="textimonial-name hidden white bold" ng-hide="testimonials[storyToShow].instagramUsername">{{testimonials[storyToShow].clientName}}</h4>
+                        <h4 class="textimonial-name white bold" ng-hide="testimonials[storyToShow].instagramUsername">{{testimonials[storyToShow].clientName}}</h4>
                         <h5 class="testimonial-text white">{{testimonials[storyToShow].storyContent}}</h5>
                       </div>
                     </div>

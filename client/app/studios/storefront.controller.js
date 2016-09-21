@@ -415,7 +415,14 @@ angular.module('bodyAppApp')
 
     function getTestimonials() {
       ref.child('testimonials').once('value', function(snapshot) {
-        if (!snapshot.exists()) return $scope.testimonialsLoaded = true;
+        // $scope.testimonialsLoaded = true;
+        // if(!$scope.$$phase) $scope.$apply();
+        // return
+        if (!snapshot.exists()) {
+          $scope.testimonialsLoaded = true;
+          if(!$scope.$$phase) $scope.$apply();
+          return;
+        }
         $scope.testimonials = [];
         $scope.numOfTestimonials = Object.keys(snapshot.val()).length
         if(!$scope.$$phase) $scope.$apply();

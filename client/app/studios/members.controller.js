@@ -104,6 +104,7 @@ angular.module('bodyAppApp')
     function getBookings(userId) {
       if (!userId) return
       ref.child('userBookings').child(userId).once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         if ($scope.customers[snapshot.key]) {
           $scope.customers[snapshot.key].classesBooked = snapshot.val();
           $scope.customers[snapshot.key].numClassesBooked = Object.keys(snapshot.val()).length;
@@ -117,7 +118,9 @@ angular.module('bodyAppApp')
 
     function getAllLeads() {
       ref.child('userBookings').once('value', function(snapshot) {
+        if (!snapshot.exists()) return;
         snapshot.forEach(function(snapshot2) {
+          if (!snapshot2.exists()) return;
           var lead = snapshot2.key;
           if (!$scope.customers[lead] && !$scope.leads[lead]) {
             $scope.leads[lead] = $scope.leads[lead] || {};
