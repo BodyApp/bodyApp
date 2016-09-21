@@ -877,28 +877,57 @@ angular.module('bodyAppApp')
           var toPush = video.val()
           toPush.key = video.key
           $scope.videoLibrary.push(toPush);
-          if(!$scope.$$phase) $scope.$apply();
-          console.log($scope.videoLibrary)
-          $scope.loadedMedia[video.key] = {
-            sources: [
-              {
-                src:'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key,
-                type: 'video/mp4'
-              }
-            ]
-          };
-          if(!$scope.$$phase) $scope.$apply();
+          $http.post('/api/videolibrary/getvideo', {
+            videoKey: toPush.s3Key
+          })
+          .success(function(url) {
+            console.log(url)
+            $scope.loadedMedia[video.key] = {
+              sources: [
+                {
+                  src: url,
+                  type: 'video/mp4'
+                }
+              ]
+            };
+            if(!$scope.$$phase) $scope.$apply();
+            $timeout(function(){
+              var videoKey = document.getElementById('video'+video.key);
+              // videoKey.addEventListener('loadedmetadata', function() {
+                $scope.videoDurations = $scope.videoDurations || {};
+                $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
+                if(!$scope.$$phase) $scope.$apply();
+                  // console.log(videoKey.duration);
+                  // videoKey.bind('contextmenu',function() { return false; });
+              // });  
+            },1000)
+          })
+          .error(function(err) {
+            console.log(err)
+            console.log("Error getting video")
+          }.bind(this)); 
+          
+          // console.log($scope.videoLibrary)
+          // $scope.loadedMedia[video.key] = {
+          //   sources: [
+          //     {
+          //       src:'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key,
+          //       type: 'video/mp4'
+          //     }
+          //   ]
+          // };
+          // if(!$scope.$$phase) $scope.$apply();
 
-          $timeout(function(){
-            var videoKey = document.getElementById('video'+video.key);
-            // videoKey.addEventListener('loadedmetadata', function() {
-              $scope.videoDurations = $scope.videoDurations || {};
-              $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
-              if(!$scope.$$phase) $scope.$apply();
-                // console.log(videoKey.duration);
-                // videoKey.bind('contextmenu',function() { return false; });
-            // });  
-          },1000)
+          // $timeout(function(){
+          //   var videoKey = document.getElementById('video'+video.key);
+          //   // videoKey.addEventListener('loadedmetadata', function() {
+          //     $scope.videoDurations = $scope.videoDurations || {};
+          //     $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
+          //     if(!$scope.$$phase) $scope.$apply();
+          //       // console.log(videoKey.duration);
+          //       // videoKey.bind('contextmenu',function() { return false; });
+          //   // });  
+          // },1000)
           
             // videoPlayer.src({"src":'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key})
           // });
