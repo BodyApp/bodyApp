@@ -88,8 +88,8 @@
               <div class="story-container">
                 <img ng-src="{{storyImages[showFullscreenStory.id]}}" width="100%">
                 <div class="text-center story-name">
-                  <h4 class="mt8 white">{{showFullscreenStory.clientName}}</h4>
-                  <h4 class="mb8 white">@{{showFullscreenStory.instagramUsername}}</h4>
+                  <h4 class="mt8 white" ng-show="showFullscreenStory.clientName">{{showFullscreenStory.clientName}}</h4>
+                  <h4 class="mb8 white" ng-show="showFullscreenStory.instagramUsername">@{{showFullscreenStory.instagramUsername}}</h4>
                 </div>
               </div>
               <div class="story-content text-left">
