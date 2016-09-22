@@ -49,12 +49,16 @@ angular.module('bodyAppApp')
         var savedVideo = Blob[0];
         Intercom('trackEvent', 'recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
         analytics.track('recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
-        firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':true}, function(err) {
+        var videoRef = firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':true}, function(err) {
           if (err) return console.log(err)
           console.log("Added video to library.")
+          firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoRef.key).once('value', function(snapshot) {
+            var videoToAdd = snapshot.val();
+            videoToAdd.key = videoRef.key;
+            loadMedia(videoToAdd);
+          })
         })
-
-        
+ 
         var request = {
           input: savedVideo.url,
           outputs: [
@@ -118,73 +122,50 @@ angular.module('bodyAppApp')
 	// 	})
 	// });
 
-	function getVideoLibrary() {
-    firebase.database().ref().child('videoLibraries').child(studioId).child('videos').on('value', function(snapshot) {
-        $scope.videoLibrary = [];
-        $scope.loadedMedia = {};
-        snapshot.forEach(function(video) {
-          var toPush = video.val()
-          toPush.key = video.key
-          $scope.videoLibrary.push(toPush);
-          if(!$scope.$$phase) $scope.$apply();
-          // console.log($scope.videoLibrary)
-          $http.post('/api/videolibrary/getvideo', {
-            videoKey: toPush.s3Key
-          })
-          .success(function(url) {
-            $scope.loadedMedia[video.key] = {
-              sources: [
-                {
-                  src: url,
-                  type: 'video/mp4'
-                }
-              ]
-            };
-            if(!$scope.$$phase) $scope.$apply();
-            $timeout(function(){
-              var videoKey = document.getElementById('video'+video.key);
-              // videoKey.addEventListener('loadedmetadata', function() {
-                $scope.videoDurations = $scope.videoDurations || {};
-                $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
-                if(!$scope.$$phase) $scope.$apply();
-                  // console.log(videoKey.duration);
-                  // videoKey.bind('contextmenu',function() { return false; });
-              // });  
-            },1000)
-          })
-          .error(function(err) {
-            console.log(err)
-            console.log("Error getting video")
-          }.bind(this)); 
-          
-          // $scope.loadedMedia[video.key] = {
-          //   sources: [
-          //     {
-          //       src:'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key,
-          //       type: 'video/mp4'
-          //     }
-          //   ]
-          // };
-          // if(!$scope.$$phase) $scope.$apply();
-
-          // $timeout(function(){
-          //   var videoKey = document.getElementById('video'+video.key);
-          //   // videoKey.addEventListener('loadedmetadata', function() {
-          //     $scope.videoDurations = $scope.videoDurations || {};
-          //     $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
-          //     if(!$scope.$$phase) $scope.$apply();
-          //       // console.log(videoKey.duration);
-          //       // videoKey.bind('contextmenu',function() { return false; });
-          //   // });  
-          // },1000)
-          
-            // videoPlayer.src({"src":'https://s3.amazonaws.com/videolibraries/'+toPush.s3Key})
-          // });
-          // var videoKey = $('#video'+video.key)
-          
+  function loadMedia(videoObject) {
+    $scope.videoLibrary.push(videoObject);
+    if(!$scope.$$phase) $scope.$apply();
+    $http.post('/api/videolibrary/getvideo', {
+      videoKey: videoObject.s3Key
+    })
+    .success(function(url) {
+      $scope.loadedMedia[videoObject.key] = {
+        sources: [
+          {
+            src: url,
+            type: 'video/mp4'
+          }
+        ]
+      };
+      if(!$scope.$$phase) $scope.$apply();
+      $timeout(function(){
+        var videoKey = document.getElementById('video'+videoObject.key);
+        // videoKey.addEventListener('loadedmetadata', function() {
+        $scope.videoDurations = $scope.videoDurations || {};
+        $scope.videoDurations[videoObject.key] = videoKey.duration.toString().toHHMMSS()
+        if(!$scope.$$phase) $scope.$apply();
+          // console.log(videoKey.duration);
           // videoKey.bind('contextmenu',function() { return false; });
-        })
+        // });  
+      },1000)
+    })
+    .error(function(err) {
+      console.log(err)
+      console.log("Error getting video")
+    }.bind(this)); 
+  }
+
+	function getVideoLibrary() {
+    firebase.database().ref().child('videoLibraries').child(studioId).child('videos').once('value', function(snapshot) {
+      $scope.videoLibrary = [];
+      $scope.loadedMedia = {};
+      snapshot.forEach(function(video) {
+        var toPush = video.val()
+        toPush.key = video.key
+        loadMedia(toPush)
+        // console.log($scope.videoLibrary)
       })
+    })
   }
 
   $scope.titleChanged = function(videoKey, title) {
@@ -252,7 +233,7 @@ angular.module('bodyAppApp')
     // return 1 day ago
   }
 
-  $scope.deleteVideo = function(videoToDelete, ev) {
+  $scope.deleteVideo = function(videoToDelete, videoLibraryIndex, ev) {
   	var confirm = $mdDialog.confirm({
       title: "Delete Video",
       textContent: "Are you sure you want to delete this video?",
@@ -266,7 +247,9 @@ angular.module('bodyAppApp')
     .show( confirm ).then(function() {
       firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoToDelete).remove(function(err) {
         if (err) return console.log(err)
+        $scope.videoLibrary.splice(videoLibraryIndex, 1);
         console.log("Removed video from playlist.");
+        if(!$scope.$$phase) $scope.$apply();
       })
     	// $http.post('/api/videolibrary/'+currentUser._id+'/deletestudiovideo', {
 	    //   studioId: studioId,
