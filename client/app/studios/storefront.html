@@ -137,7 +137,10 @@
           <span class="bold" ng-show = "storefrontInfo && storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}} / class</span>
           <span class="bold" ng-show = "!storefrontInfo || !storefrontInfo.dropinPricing">$3 / class</span>
         </div>
-        <a href="#" class="btn-blue subscribe-btn" ng-click="joinStudioClicked()">Purchase Unlimited Pass</a>
+        <div class="discovery-tag-price" ng-show = "subscriptions[studioId] === 'active'">
+          <span class="bold">You are a member of this studio!</span>
+        </div>
+        <a href="#" ng-hide = "!subscriptionsLoaded || subscriptions[studioId] === 'active'" class="btn-blue subscribe-btn" ng-click="joinStudioClicked()">Purchase Unlimited Pass</a>
       </div>
     </div>
   </div>
@@ -327,7 +330,7 @@
         <div class="row pt16 visible-xs visible-sm">
           <div class="col-xs-12">
             <div class="panel"> 
-              <div class="panel-body">
+              <!-- <div class="panel-body">
                 <div class="row text-center follow-panel-xs">
                   <div class="col-xs-5">
                     <ul class="row studio-friends text-center">
@@ -351,7 +354,7 @@
                     <h5 class="lightgray mt8">148 followers</h5>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="boxed-icons">
                 <div class="social-share-btns">
                   <div class="share-triggers btn-group">

@@ -338,7 +338,6 @@ angular.module('bodyAppApp')
       firebase.database().ref().child('studioIds').child(studioId).once('value', function(snapshot) {
         $scope.studioPosition = snapshot.val();
         if(!$scope.$$phase) $scope.$apply();
-        console.log($scope.studioPosition)
       })
     }
 

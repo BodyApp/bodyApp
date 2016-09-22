@@ -42,7 +42,6 @@
     "throng":"*",
     "passport-oauth": "*",
     "nunjucks": "*",
-    "ziggeo": "*",
     "aws-sdk": "*"
   },
   "devDependencies": {

@@ -27,7 +27,8 @@ angular.module('bodyAppApp', [
   // 'djds4rce.angular-socialshare',
   // 'ezfb',
   '720kb.socialshare',
-  'vjs.video'
+  'vjs.video',
+  'ngRoute'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);

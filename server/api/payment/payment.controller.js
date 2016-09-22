@@ -49,32 +49,42 @@ exports.updateCustomerSubscriptionStatus = function(req, res, next){
       //   return res.status(400).send("No access token found")
       // }
       // var stripe = require('stripe')(accessCode)
-      ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').once('value', function(snapshot) {
-        if (snapshot.exists() && snapshot.val().id) {
-        if (!stripe || !stripe.subscriptions) return
-          stripe.subscriptions.retrieve(
-            snapshot.val().id,
+      ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('customerId').once('value', function(snapshot) {
+        if (snapshot.exists()) {
+          if (!stripe || !stripe.customers) return console.log("Stripe can't initialize")
+          stripe.customers.retrieve(
+            snapshot.val(),
             { stripe_account: accountId },
-            function(err, subscription) {
+            function(err, customer) {
               if (err) {
                 if (err.statusCode === 404) {
+                  console.log(err)
                   // delete user.studioSubscriptions[studioId];
                   // console.log(user)
                   // user.save(function(err){
                   //   if (err) console.log(err)
                   ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': 'inactive'}, function(err) {
                     if (err) console.log(err)
-                    return res.status(200).send("Subcription not found at " + studioId + " for user " + user._id + ". Making inactive")
+                    return res.status(200).send("Customer not found at " + studioId + " for user " + user._id + ". Making inactive")
                   })
                 } else {
                   console.log(err)
-                  return res.status(400).send("Error occured when checking subscription status in Stripe")
+                  return res.status(400).send("Error occured when retrieving customer status in Stripe")
                 }
               } else {
-                ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': subscription.status}, function(err) {
-                  if (err) return res.status(400).json(err)
-                  return res.status(200).send("Subscription status for user " + user._id + " at studio "+studioId+" updated as " + subscription.status)
-                })
+                var subscription; 
+                if (customer.subscriptions && customer.subscriptions.data && customer.subscriptions.data[0] && customer.subscriptions.data[0].status) {
+                  subscription = customer.subscriptions.data[0]
+                  ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': subscription.status}, function(err) {
+                    if (err) return res.status(400).json(err)
+                    return res.status(200).send("Subscription status for user " + user._id + " at studio "+studioId+" updated as " + subscription.status)
+                  })
+                } else {
+                  ref.child('fbUsers').child(user.facebookId).child('studioSubscriptions').child(studioId).child('subscription').update({'status': 'inactive'}, function(err) {
+                    if (err) console.log(err)
+                    return res.status(200).send("No subscription found at " + studioId + " for user " + user._id + ". Making inactive")
+                  })
+                }
                 // var subData = customer.subscriptions ? customer.subscriptions.data[0] : customer;      
                 // user.studioSubscriptions[studioId].status = subData.status;    
 
