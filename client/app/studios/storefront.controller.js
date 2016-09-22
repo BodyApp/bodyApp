@@ -883,14 +883,12 @@ angular.module('bodyAppApp')
         snapshot.forEach(function(video) {
           var toPush = video.val()
           toPush.key = video.key
-          console.log(toPush)
           if (toPush.subscribersOnly && (!$rootScope.subscriptions || $rootScope.subscriptions[studioId] != 'active')) return;
           $scope.videoLibrary.push(toPush);
           $http.post('/api/videolibrary/getvideo', {
             videoKey: toPush.s3Key
           })
           .success(function(url) {
-            console.log(url)
             $scope.loadedMedia[video.key] = {
               sources: [
                 {
@@ -1035,19 +1033,19 @@ angular.module('bodyAppApp')
       })
     }
 
-    $scope.playVideo = function(videoToPlay) {
-      Intercom('trackEvent', "playedVideoFromLibrary", {videoToken: videoToPlay.token})
-      analytics.track('playedVideoFromLibrary', {
-        studioId: studioId,
-        videoToken: videoToPlay.token
-      });
-      ZiggeoApi.Embed.popup({
-        video: videoToPlay.token,
-        autoplay: true,
-        popup_width: window.innerWidth*.7,
-        popup_height: window.innerHeight*.7
-      });
-    }
+    // $scope.playVideo = function(videoToPlay) {
+    //   Intercom('trackEvent', "playedVideoFromLibrary", {videoToken: videoToPlay.token})
+    //   analytics.track('playedVideoFromLibrary', {
+    //     studioId: studioId,
+    //     videoToken: videoToPlay.token
+    //   });
+    //   ZiggeoApi.Embed.popup({
+    //     video: videoToPlay.token,
+    //     autoplay: true,
+    //     popup_width: window.innerWidth*.7,
+    //     popup_height: window.innerHeight*.7
+    //   });
+    // }
 
     $scope.showPreviousStory = function() {
       $scope.fullscreenVideoIndex = Math.max(0, $scope.fullscreenVideoIndex-1);

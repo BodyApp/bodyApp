@@ -1,7 +1,7 @@
 angular.module('bodyAppApp')
 .controller('RecordVideoCtrl', function ($scope, $location, $http, $mdDialog, $state, $sce, $timeout, Video, User, Auth, studioId, Studios) {
 	$scope.studioId = studioId
-	var ziggeoEmbedding;
+	// var ziggeoEmbedding;
 	var ref = firebase.database().ref().child('studios').child(studioId);
 	var currentUser = Auth.getCurrentUser()
 
@@ -47,7 +47,6 @@ angular.module('bodyAppApp')
       },
       function(Blob){
         var savedVideo = Blob[0];
-        console.log(savedVideo);
         Intercom('trackEvent', 'recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
         analytics.track('recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
         firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':true}, function(err) {
@@ -133,7 +132,6 @@ angular.module('bodyAppApp')
             videoKey: toPush.s3Key
           })
           .success(function(url) {
-            console.log(url)
             $scope.loadedMedia[video.key] = {
               sources: [
                 {
@@ -206,14 +204,14 @@ angular.module('bodyAppApp')
   	// })
   }
 
-  $scope.playVideo = function(videoToPlay) {
-    ZiggeoApi.Embed.popup({
-      video: videoToPlay.token,
-      autoplay: true,
-      popup_width: window.innerWidth*.7,
-      popup_height: window.innerHeight*.7
-    });
-  }
+  // $scope.playVideo = function(videoToPlay) {
+  //   ZiggeoApi.Embed.popup({
+  //     video: videoToPlay.token,
+  //     autoplay: true,
+  //     popup_width: window.innerWidth*.7,
+  //     popup_height: window.innerHeight*.7
+  //   });
+  // }
 
   $scope.publicPrivateChanged = function(videoKey, publicVsPrivate) {
   	firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoKey).update({'subscribersOnly':publicVsPrivate}, function(err) {
