@@ -42,7 +42,8 @@
     "angularjs-socialshare": "*",
     "nutrition-label-jquery-plugin": "*",
     "filepicker-js": "*",
-    "vjs-video": "*"
+    "vjs-video": "*",
+    "jquery":"*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

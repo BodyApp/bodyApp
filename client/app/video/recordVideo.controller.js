@@ -49,22 +49,12 @@ angular.module('bodyAppApp')
         var savedVideo = Blob[0];
         Intercom('trackEvent', 'recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
         analytics.track('recordedVideo', { studioId: studioId, key: savedVideo.key, filestackUrl: savedVideo.url });
-        var videoRef = firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':true}, function(err) {
-          if (err) return console.log(err)
-          console.log("Added video to library.")
-          firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoRef.key).once('value', function(snapshot) {
-            var videoToAdd = snapshot.val();
-            videoToAdd.key = videoRef.key;
-            loadMedia(videoToAdd);
-          })
-        })
  
         var request = {
           input: savedVideo.url,
           outputs: [
             {
               url: 's3://videolibraries/'+savedVideo.key
-              // public: true
             }
           ]
         }
@@ -73,10 +63,21 @@ angular.module('bodyAppApp')
           url: 'https://app.zencoder.com/api/v2/jobs',
           type: 'POST',
           data: JSON.stringify(request),
-          headers: { "Zencoder-Api-Key": "e5b932c9cf37f6c97a39534834d42602"},
+          headers: { "Zencoder-Api-Key": "bc36bbed318699530182fc1b69f730eb"},
           dataType: 'json',
           success: function(data) {
             console.log('Job created! ID: ' + data.id)
+            var videoRef = firebase.database().ref().child('videoLibraries').child(studioId).child('videos').push({dateSaved: new Date().getTime(), s3Key: savedVideo.key, filestackUrl: savedVideo.url, 'subscribersOnly':true}, function(err) {
+              if (err) return console.log(err)
+              console.log("Added video to library.")
+              $timeout(function(){
+                firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoRef.key).once('value', function(snapshot) {
+                  var videoToAdd = snapshot.val();
+                  videoToAdd.key = videoRef.key;
+                  loadMedia(videoToAdd)
+                })  
+              },3000); //Gives Zencoder some time to do the encoding.
+            })
           },
           error: function(data) {
               console.log(data);

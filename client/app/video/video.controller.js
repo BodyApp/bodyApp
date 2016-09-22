@@ -24,7 +24,7 @@ angular.module('bodyAppApp')
     audioPlayer.setVolume(0)
   }
 
-  var ziggeoEmbedding;
+  // var ziggeoEmbedding;
   var progressAlert;
   $scope.progressAlertText = "Uploading is 0% complete.  Please don't leave this page. ";
   $scope.shouldShowProgressAlert = true;
@@ -75,66 +75,66 @@ angular.module('bodyAppApp')
   $scope.recordVideoClicked = function() {
     Intercom('trackEvent', "recordVideoClicked")
     analytics.track("recordVideoClickedDuringClass")
-    if (!$scope.recording) {
-      $scope.recording = true;
-      if (!ziggeoEmbedding) {
-        ziggeoEmbedding = ZiggeoApi.Embed.embed("#ziggeoVideo", {
-          tags: [studioId],
-          disable_first_screen: true,
-          height: 0,
-          width: 0,
-          disable_snapshots: true,
-          countdown: 0,
-        });
-      } else {
-        ziggeoEmbedding.rerecord()
-      }
-      $timeout(function(){ziggeoEmbedding.record()}, 1000)
-    } else {
-      $scope.recording = false;
-      $timeout(function(){ziggeoEmbedding.stopRecord()}, 1000)
-      progressAlert = $mdDialog.alert({
-        // title: "Uploading Your Video, please don't close the browser!",
-        // textContent: $scope.progressAlertText,
-        template:
-            '<md-dialog ng-show = "shouldShowProgressAlert">' +
-            // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
-            '  <md-dialog-content>{{progressAlertText}}</md-dialog-content>' +
-            '  <md-dialog-actions>' +
-            '  </md-dialog-actions>' +
-            '</md-dialog>',
-        // clickOutsideToClose: false,
-        locals: { progressAlertText: $scope.progressAlertText },
-        controller: "VideoCtrl"
-        // ok: 'OK!'
-      });
-      return $mdDialog
-      .show( progressAlert )
-    }
+    // if (!$scope.recording) {
+    //   $scope.recording = true;
+    //   if (!ziggeoEmbedding) {
+    //     ziggeoEmbedding = ZiggeoApi.Embed.embed("#ziggeoVideo", {
+    //       tags: [studioId],
+    //       disable_first_screen: true,
+    //       height: 0,
+    //       width: 0,
+    //       disable_snapshots: true,
+    //       countdown: 0,
+    //     });
+    //   } else {
+    //     ziggeoEmbedding.rerecord()
+    //   }
+    //   $timeout(function(){ziggeoEmbedding.record()}, 1000)
+    // } else {
+    //   $scope.recording = false;
+    //   $timeout(function(){ziggeoEmbedding.stopRecord()}, 1000)
+    //   progressAlert = $mdDialog.alert({
+    //     // title: "Uploading Your Video, please don't close the browser!",
+    //     // textContent: $scope.progressAlertText,
+    //     template:
+    //         '<md-dialog ng-show = "shouldShowProgressAlert">' +
+    //         // '  <md-dialog-content>Uploading Your {{studioId}} Video, Do Not Close The Browser!</md-dialog-content>' +
+    //         '  <md-dialog-content>{{progressAlertText}}</md-dialog-content>' +
+    //         '  <md-dialog-actions>' +
+    //         '  </md-dialog-actions>' +
+    //         '</md-dialog>',
+    //     // clickOutsideToClose: false,
+    //     locals: { progressAlertText: $scope.progressAlertText },
+    //     controller: "VideoCtrl"
+    //     // ok: 'OK!'
+    //   });
+    //   return $mdDialog
+    //   .show( progressAlert )
+    // }
   }
 
-  ZiggeoApi.Events.on("upload_progress", function (uploaded, total, data) {
-    // if (uploaded / total >= 1) $scope.closeDialog()
-    //uploaded: Bytes uploaded, total: Bytes total, data: The object data
-    $scope.progressAlertText = "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete.  Please don't leave this page. This will close automatically when complete. "
-    if(!$scope.$$phase) $scope.$apply();
-    // progressAlert = $mdDialog.alert({
-  //     title: "Uploading Your Video, please don't close the browser!",
-  //     textContent: "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete",
-  //     clickOutsideToClose: false,
-  //     ok: 'OK!'
-  //   });
-  });
+  // ZiggeoApi.Events.on("upload_progress", function (uploaded, total, data) {
+  //   // if (uploaded / total >= 1) $scope.closeDialog()
+  //   //uploaded: Bytes uploaded, total: Bytes total, data: The object data
+  //   $scope.progressAlertText = "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete.  Please don't leave this page. This will close automatically when complete. "
+  //   if(!$scope.$$phase) $scope.$apply();
+  //   // progressAlert = $mdDialog.alert({
+  // //     title: "Uploading Your Video, please don't close the browser!",
+  // //     textContent: "Uploading is " + Math.round((uploaded/total)*100,0) + "% complete",
+  // //     clickOutsideToClose: false,
+  // //     ok: 'OK!'
+  // //   });
+  // });
 
-  ZiggeoApi.Events.on("submitted", function (data) {
-    $scope.closeDialog()
-    ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
-      if (err) return console.log(err)
-      console.log("Added video to library.")
-    Intercom('trackEvent', "addedVideoToLibrary", {videoToken: data.video.token})
-    analytics.track("addedVideoToLibrary", {videoToken: data.video.token})
-    })
-  });
+  // ZiggeoApi.Events.on("submitted", function (data) {
+  //   $scope.closeDialog()
+  //   ref.child('videoLibrary').child('videos').child(data.video.token).update({'subscribersOnly':false}, function(err) {
+  //     if (err) return console.log(err)
+  //     console.log("Added video to library.")
+  //   Intercom('trackEvent', "addedVideoToLibrary", {videoToken: data.video.token})
+  //   analytics.track("addedVideoToLibrary", {videoToken: data.video.token})
+  //   })
+  // });
 
   $scope.closeDialog = function() {
     $mdDialog.hide(progressAlert)
