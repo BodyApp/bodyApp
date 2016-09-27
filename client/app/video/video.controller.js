@@ -517,7 +517,7 @@ angular.module('bodyAppApp')
     if (previouslyClickedConsumerId && $scope.consumerObjects && $scope.consumerObjects[previouslyClickedConsumerId]) {
       $scope.consumerObjects[previouslyClickedConsumerId].subscriber.subscribeToAudio(false)  
       var previousSubscriberBox = $scope.consumerObjects[previouslyClickedConsumerId].subscriberBox;
-      $('#' + previousSubscriberBox).removeClass('user-videos-large');
+      $('#' + previousSubscriberBox).parent().removeClass('user-videos-large');
     }
 
     if ($scope.hearAll) {
@@ -531,7 +531,7 @@ angular.module('bodyAppApp')
       $scope.consumerObjects[consumerId].subscriber.subscribeToAudio(true)
       var subscriberBox = $scope.consumerObjects[consumerId].subscriberBox;
       console.log("Clicked on subscriber box " + subscriberBox)
-      $('#' + subscriberBox).addClass('user-videos-large');
+      $('#' + subscriberBox).parent().addClass('user-videos-large');
       previouslyClickedConsumerId = consumerId;
     }
   } 
