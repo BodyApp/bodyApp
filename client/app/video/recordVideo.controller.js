@@ -248,6 +248,7 @@ angular.module('bodyAppApp')
     .show( confirm ).then(function() {
       firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoToDelete).remove(function(err) {
         if (err) return console.log(err)
+        delete $scope.loadedMedia[videoToDelete]
         $scope.videoLibrary.splice(videoLibraryIndex, 1);
         console.log("Removed video from playlist.");
         if(!$scope.$$phase) $scope.$apply();

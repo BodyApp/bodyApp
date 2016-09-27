@@ -106,12 +106,6 @@
       }}();
     </script>
 
-    <!--Heap.  Don't need the snipped because using segmentio-->
-    <script type="text/javascript">
-      // window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
-      //   heap.load("2098026675");
-    </script>
-
     <!-- Intercom Integration -->
     <script>
     (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/daof2xrs';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
@@ -131,23 +125,18 @@
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-      <script src="bower_components/angular-socket-io/socket.js"></script>
+      <!-- // <script src="bower_components/angular-socket-io/socket.js"></script> -->
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-      <!-- <script src="bower_components/firebase/firebase.js"></script> -->
+      <!-- // <script src="bower_components/firebase/firebase.js"></script> -->
       <script src="bower_components/angularfire/dist/angularfire.js"></script>
       <script src="bower_components/FileSaver/FileSaver.js"></script>
       <script src="bower_components/jstz/jstz.js"></script>
-      <script src="bower_components/angular-tour/dist/angular-tour-tpls.min.js"></script>
+      <!-- // <script src="bower_components/angular-tour/dist/angular-tour-tpls.js"></script> -->
       <script src="bower_components/angular-cookie/angular-cookie.js"></script>
-      <script src="bower_components/checklist-model/checklist-model.js"></script>
-      <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+      <!-- // <script src="bower_components/checklist-model/checklist-model.js"></script> -->
+      <!-- // <script src="bower_components/angular-messages/angular-messages.js"></script> -->
       
       <!-- endbower -->
-      
-      <!-- <script src="bower_components/socket.io-client/dist/socket.io.min.js"></script> -->
-       <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
-             
-      <!-- // <script src="./node_modules/easyrtc/api/easyrtc.js"></script> -->
 
       <script src="https://checkout.stripe.com/checkout.js"></script>
       <script src="https://js.stripe.com/v2/"></script>
@@ -155,52 +144,50 @@
       <script src="https://w.soundcloud.com/player/api.js"></script>
       <!-- // <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script> -->
 
-      <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
-      <script src="bower_components/ngclipboard/dist/ngclipboard.min.js"></script>
+      <!-- // <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.js"></script> -->
+      <!-- // <script src="bower_components/ngclipboard/dist/ngclipboard.js"></script> -->
       
-      <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
-      <link rel="stylesheet" href="https://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
+      <!-- // <script src="bower_components/ng-tags-input/ng-tags-input.js"></script> -->
+      <!-- <link rel="stylesheet" href="https://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" /> -->
 
-      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-      <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-      <script src="bower_components/angular-scroll/angular-scroll.min.js"></script>
-      <script src="bower_components/screenfull/dist/screenfull.js"></script>
-      <script src="bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
-      <script src="bower_components/angular-timer/dist/angular-timer.min.js"></script>
+      <!-- // <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
+      <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+      <!-- // <script src="bower_components/angular-scroll/angular-scroll.min.js"></script> -->
+      <!-- // <script src="bower_components/angular-timer/dist/angular-timer.js"></script> -->
       <script src="bower_components/momentjs/min/moment.min.js"></script>
-      <script src="bower_components/momentjs/min/locales.min.js"></script>
-      <script src="bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
-      <script src="bower_components/humanize-duration/humanize-duration.js"></script>
+      <script src="bower_components/momentjs/min/locales.js"></script>
+      <script src="bower_components/moment-timezone/builds/moment-timezone-with-data.js"></script>
+      <!-- // <script src="bower_components/humanize-duration/humanize-duration.js"></script> -->
 
       <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js"></script>
 
-      <script src="bower_components/angular-material/angular-material.min.js"></script>      
-      <script src="bower_components/angular-aria/angular-aria.min.js"></script>
-      <script src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.min.js"></script>      
+      <script src="bower_components/angular-material/angular-material.js"></script>      
+      <script src="bower_components/angular-aria/angular-aria.js"></script>
+      <script src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>      
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.4/angular-material.css">      
-      <link rel="stylesheet" href="bower_components/angular-material-datetimepicker/css/material-datetimepicker.min.css">    
+      <link rel="stylesheet" href="bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">    
 
       <link rel="stylesheet" href="bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.css">
       <script src="bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.js"></script>  
       
-      <script src="bower_components/angular-update-meta/dist/update-meta.min.js"></script>  
+      <script src="bower_components/angular-update-meta/dist/update-meta.js"></script>  
       <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-      <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
-      <script src="bower_components/angular-eonasdan-datetimepicker/dist/angular-eonasdan-datetimepicker.min.js"></script>
-      <script src="bower_components/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
+      <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+      <script src="bower_components/angular-eonasdan-datetimepicker/dist/angular-eonasdan-datetimepicker.js"></script>
+      <script src="bower_components/angular-svg-round-progressbar/build/roundProgress.js"></script> <!-- Round circle for 'minutes past week' -->
 
-      <script src="bower_components/filepicker-js/filepicker.min.js"></script>      
-      <script src="bower_components/vjs-video/dist/vjs-video.min.js"></script>
+      <script src="bower_components/filepicker-js/filepicker.js"></script>      
+      <script src="bower_components/vjs-video/dist/vjs-video.js"></script>
       <script src="https://vjs.zencdn.net/5.11.6/video.js"></script>
       <link href="https://vjs.zencdn.net/5.11.6/video-js.css" rel="stylesheet"> 
-      <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>   
+      <!-- // <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>    -->
 
-      <!-- <link rel='stylesheet' href="bower_components/angular-socialshare/angular-socialshare.min.css"> -->
-      <script src="bower_components/angularjs-socialshare/dist/angular-socialshare.min.js"></script>
+      <!-- <link rel='stylesheet' href="bower_components/angular-socialshare/angular-socialshare.css"> -->
+      <script src="bower_components/angularjs-socialshare/dist/angular-socialshare.js"></script>
 
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM8dPXzLMXd-FE7rQHD4qbhtkKBYRMqmc" async defer></script>
 
-      <script src='//static.opentok.com/v2/js/opentok.min.js'></script>
+      <script src='//static.opentok.com/v2/js/opentok.js'></script>
 
       <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
       <script>

@@ -141,6 +141,7 @@
           <span class="bold">You are a member of this studio!</span>
         </div>
         <a href="#" ng-hide = "!subscriptionsLoaded || subscriptions[studioId] === 'active'" class="btn-blue subscribe-btn" ng-click="joinStudioClicked()">Purchase Unlimited Pass</a>
+        <a href="#" ng-hide = "currentUser._id" class="btn-blue subscribe-btn" ng-click="joinStudioClicked()">Purchase Unlimited Pass</a>
       </div>
     </div>
   </div>
@@ -441,13 +442,13 @@
       </div>
 
       <div class="col-md-4 hidden-xs hidden-sm">
-        <div class="panel space-4" ng-show="testimonialsLoaded && adminOf[studioId]">
+        <div class="panel space-4" ng-show="testimonialsLoaded && (testimonials || adminOf[studioId])">
           <div class="panel-header text-center">
             Studio Stories
           </div>
           <div class="panel-body">
             <div class="stories-panel text-center">
-              <div class="no-stories-added" ng-show="testimonialsLoaded && (!testimonials || !testimonials.length || testimonials.length < 1)">
+              <div class="no-stories-added" ng-show="testimonialsLoaded && adminOf[studioId] && (!testimonials || !testimonials.length || testimonials.length < 1)">
                 <a href="/studios/{{studioId}}/testimonials">
                   <div class="upload-story">
                     <span style="font-size:8rem;"><i class="fa fa-plus-circle"></i></span>
