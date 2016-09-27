@@ -439,8 +439,8 @@
   position: absolute !important;
   top: 0 !important; 
   right: 0 !important; 
-  width: 80% !important; 
-  height: 80vh !important;
+  width: 80%;
+  height: 80vh;
   overflow: hidden !important;
   z-index: 1 !important;
 }
