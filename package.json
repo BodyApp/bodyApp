@@ -42,7 +42,8 @@
     "throng":"*",
     "passport-oauth": "*",
     "nunjucks": "*",
-    "aws-sdk": "*"
+    "aws-sdk": "*",
+    "newrelic": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

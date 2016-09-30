@@ -53,8 +53,6 @@ angular.module('bodyAppApp')
 
     window.prerenderReady = false;
 
-    
-
     var daysInFuture = 0;
     var numDaysToShow = 14;
     $scope.nextWeek = 0;

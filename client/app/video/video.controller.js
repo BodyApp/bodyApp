@@ -266,7 +266,7 @@ angular.module('bodyAppApp')
   function receiveRealTimeData() {
     getMusicVolume();
     // canConsumersHearEachOther();
-    getTimer()
+    getTimer();
   }
 
   function getMusicVolume() {
@@ -330,7 +330,7 @@ angular.module('bodyAppApp')
 
   $scope.saveTimer = function() {
     Intercom('trackEvent', "timerSaved")
-    if (!$scope.timer.work) return
+    if (!$scope.timer.work) return console.log("No timer work time set")
     ref.child('realTimeControls').child(classId).child('timer').update({"type": $scope.timer.type, "work": $scope.timer.work, "rest": $scope.timer.rest, "rounds": $scope.timer.rounds, "saved": new Date().getTime()}, function(err) {
       if (err) return console.log(err)
       console.log("Timer updated")
@@ -340,9 +340,10 @@ angular.module('bodyAppApp')
 
   function getTimer() {
     ref.child('realTimeControls').child(classId).child('timer').on('value', function(snapshot) {
-      if (!snapshot.exists()) return
+      if (!snapshot.exists()) return console.log("Timer couldn't be received.")
       $scope.realTimeTimer = snapshot.val();
       $scope.currentTimerSeconds = snapshot.val().work*60;
+      console.log("Current timer set at " + $scope.currentTimerSeconds)
       $scope.roundsLeft = snapshot.val().rounds;
       if(!$scope.$$phase) $scope.$apply();
       if (snapshot.val().reset > snapshot.val().start) document.getElementById('timer').reset();  
@@ -368,7 +369,7 @@ angular.module('bodyAppApp')
 
   $scope.playButtonPushed = function() {
     Intercom('trackEvent', "timerPlayButtonPushed")
-    if (!$scope.realTimeTimer.work) return
+    if (!$scope.realTimeTimer.work) return console.log("No real time timer work set")
     ref.child('realTimeControls').child(classId).child('timer').update({"start": new Date().getTime()}, function(err) {
       if (err) return console.log(err)
     })

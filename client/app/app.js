@@ -10,7 +10,7 @@ angular.module('bodyAppApp', [
   'firebase',
   'jshor.angular-addtocalendar',
   'SoundCloud',
-  // 'timer',
+  'timer',
   // "checklist-model",
   // "angularScreenfull",
   // 'angular-tour',

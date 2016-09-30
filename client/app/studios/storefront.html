@@ -129,14 +129,17 @@
         </div>
       </div>
       <div class="col-md-9 text-right text-center-sm">
-        <div class="discovery-tag-price">
+        <div class="discovery-tag-price" ng-hide = "!subscriptionsLoaded || subscriptions[studioId] === 'active'">
           <span class="bold" ng-show = "storefrontInfo && storefrontInfo.subscriptionPricing">${{storefrontInfo.subscriptionPricing/100}}/mo unlimited</span>
           <span class="bold" ng-show = "!storefrontInfo || !storefrontInfo.subscriptionPricing">No unlimited</span>
         </div>
-        <div class="discovery-tag-price">
+        <div class="discovery-tag-price" ng-hide = "!subscriptionsLoaded || subscriptions[studioId] === 'active'">
           <span class="bold" ng-show = "storefrontInfo && storefrontInfo.dropinPricing">${{storefrontInfo.dropinPricing/100}} / class</span>
           <span class="bold" ng-show = "!storefrontInfo || !storefrontInfo.dropinPricing">$3 / class</span>
         </div>
+        <a class="discovery-tag-price" ng-click = "cancelSubscription()" ng-show = "subscriptions[studioId] === 'active'">
+          <span class="bold">Cancel membership</span>
+        </a>
         <div class="discovery-tag-price" ng-show = "subscriptions[studioId] === 'active'">
           <span class="bold">You are a member of this studio!</span>
         </div>
