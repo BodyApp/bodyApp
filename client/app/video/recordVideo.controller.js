@@ -154,9 +154,7 @@ angular.module('bodyAppApp')
         var videoKey = document.getElementById('video'+videoObject.key);
 
         videoKey.onloadedmetadata = function() {
-          this.currentTime = 2;
-          console.log("Set time to " + this.currentTime)
-          // videoKey.addEventListener('loadedmetadata', function() {
+          this.currentTime = 20;
           $scope.videoDurations = $scope.videoDurations || {};
           $scope.videoDurations[videoObject.key] = this.duration.toString().toHHMMSS()
           if(!$scope.$$phase) $scope.$apply();
