@@ -1,56 +1,49 @@
 <div ng-include="'components/navbar/navbar.html'" class="mb70 mb-sm-48"></div>
-<div class="video-container" ng-if="loaded">
-	<!-- <div class="recording-screen"> -->	
-	<div class = "row">
-		<div class = "col-md-5 col-xs-3"></div>
-		<!-- <a href="" ng-click="recordVideo()" class=" col-xs-4 btn btn-primary mt64">Upload Video</a> -->
-		<!-- <input type="filepicker" name="file"> -->
-		<button type="button" class="fp__btn mt32" ng-click="pickFile()">Upload a Video To Your Library</button>
-		<!-- <div class = "col-xs-4"></div> -->
-	</div>
-	<div class = "row mt64"></div>
 
-    <div class="videoLibrary-panel text-center col-sm-3 col-xs-12 mb32" ng-repeat = "video in videoLibrary">
-      <div class="row">
-	      <div class="col-xs-3 white">Title</div>
-	      <input class="col-xs-7 mb8 text-center" ng-model="video.title" ng-change="titleChanged(video.key, video.title)" maxlength="30">
-	    </div>
-      <div class="col-xs-2"></div>
-    	 <video ng-attr-id="{{ 'video' + video.key }}" class="video-js vjs-default-skin video-info vjs-big-play-centered"
-        preload="metadata"
-        vjs-media="loadedMedia[video.key]"
-        controls
-        vjs-video
-        >
-        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-      </video>
-      <!-- <div class="video-info"> -->
-        <div >
+<div class="page-container-responsive pt24 pb24" ng-if="loaded">
+  <div class="row mb24 text-center">
+    <div class="col-xs-12">
+      <a href="#" class="btn-blue big-btn" ng-click="pickFile()">Upload a New Video</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 mb16">
+      <h3>Your On-Demand Library</h3>
+    </div>
+    <div class="col-xs-12">
+      <ul>
+        <li ng-repeat = "video in videoLibrary">
+          <hr class="content-divider mb24">
           <div class="row">
-            <div class="col-xs-6 text-left">
-              <span class="white" ng-if="video.dateSaved">{{formatDateSaved(video.dateSaved)}}</span>
+            <div class="col-sm-4">
+              <video ng-attr-id="{{ 'video' + video.key }}" class="video-js vjs-default-skin video-info vjs-big-play-centered"
+                  preload="metadata"
+                  vjs-media="loadedMedia[video.key]"
+                  controls
+                  vjs-video
+                  >
+                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+              </video>
             </div>
-            <div class="col-xs-6 text-right">
-              <span class="white">{{videoDurations[video.key]}}</span>
+            <div class="mt-xs-16 col-sm-6">
+              <input class="record-video-title royalblue" ng-model="video.title" ng-change="titleChanged(video.key, video.title)" maxlength="30">
+
+              <h5 class="mt8 darkgray">{{videoDurations[video.key]}}</h5>
+
+              <h5 class="mt8 lightgray" ng-if="video.dateSaved">{{formatDateSaved(video.dateSaved)}}</h5>
+
+              <md-switch class="mt8 md-primary" ng-model="video.subscribersOnly" ng-change="publicPrivateChanged(video.key, video.subscribersOnly)" aria-label="Available to Public?">
+                <h5 class="darkgray" ng-show = "!video.subscribersOnly">Available To Public</h5>
+                <h5 class="royalblue" ng-show = "video.subscribersOnly">Subscribers Only</h5>
+              </md-switch>
+            </div>
+            <div class="col-sm-2 text-right text-left-xs">
+              <a class="btn btn-danger active" ng-click="deleteVideo(video.key, $index, $event)">Delete</a>
             </div>
           </div>
-        </div>
-      <!-- </div> -->
-      
-      <div class = "col-xs-6">
-      	<!-- <span>Public</span> -->
-	      <md-switch class="md-primary" ng-model="video.subscribersOnly" ng-change="publicPrivateChanged(video.key, video.subscribersOnly)" aria-label="Available to Public?">
-	      <span ng-show = "!video.subscribersOnly" style = "color:white;">Available To Public</span>
-	      <span ng-show = "video.subscribersOnly" style = "color:white;">Subscribers Only</span>
-	    	</md-switch>
-	    </div>
-      <a class="btn btn-danger active col-xs-6 mt8" ng-click="deleteVideo(video.key, $index, $event)">Delete</a>
+        </li>
+      </ul>
     </div>
-          
-	</div>
-			<!-- <div class = "col-sm-1"></div>
-			<div id="ziggeoVideo" class = "col-sm-10 mt64"></div>
-			<div class = "col-sm-1"></div> -->
-		<!-- <ziggeo ziggeo-disable_first_screen=true ziggeo-responsive=true ziggeo-tags="[{{studioId}}]"></ziggeo> -->
-	<!-- </div> -->
+  </div>
 </div>
