@@ -36,3 +36,7 @@
 {"v":0,"level":40,"name":"newrelic","hostname":"Dans-Wifi.local","pid":1112,"time":"2016-09-30T15:02:44.590Z","msg":"Unrecognized version undefined of Express detected; not instrumenting","component":"express"}
 {"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":1112,"time":"2016-09-30T15:02:49.297Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1278769/applications/26959690","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":1112,"time":"2016-09-30T15:02:49.298Z","msg":"Connected to collector-237.newrelic.com:443 with agent run ID 115790995873063086.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:00.636Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:01.808Z","msg":"Unrecognized version undefined of Express detected; not instrumenting","component":"express"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:04.546Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1278769/applications/26959690","component":"new_relic_response"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:04.546Z","msg":"Connected to collector-237.newrelic.com:443 with agent run ID 115790995905310978.","component":"collector_api"}
