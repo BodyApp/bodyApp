@@ -342,8 +342,9 @@ angular.module('bodyAppApp')
       firebase.database().ref().child('fbUsers').child(Auth.getCurrentUser().facebookId).child('studioSubscriptions').child(studioId).child('subscription').on('value', function(snapshot) {
         $rootScope.subscriptions = $rootScope.subscriptions || {}
         $rootScope.subscriptionsLoaded = true;
-        if (!snapshot.exists()) return
+        if (!snapshot.exists()) return $rootScope.$emit('subscriptionsLoaded', null);
         $rootScope.subscriptions[studioId] = snapshot.val().status
+        $rootScope.$emit('subscriptionsLoaded', snapshot.val().status);
         if(!$rootScope.$$phase) $rootScope.$apply();
         if ($rootScope.subscriptions[studioId] === 'active') return console.log("user subscribed to studio " + studioId)
         if ($rootScope.subscriptions[studioId] === 'inactive') return console.log("user not subscribed to studio " + studioId)

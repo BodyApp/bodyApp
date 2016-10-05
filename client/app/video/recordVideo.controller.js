@@ -139,16 +139,32 @@ angular.module('bodyAppApp')
         ]
       };
       if(!$scope.$$phase) $scope.$apply();
-      $timeout(function(){
+      videojs('video'+videoObject.key).ready(function() {
+        var player = this;
         var videoKey = document.getElementById('video'+videoObject.key);
-        // videoKey.addEventListener('loadedmetadata', function() {
-        $scope.videoDurations = $scope.videoDurations || {};
-        $scope.videoDurations[videoObject.key] = videoKey.duration.toString().toHHMMSS()
-        if(!$scope.$$phase) $scope.$apply();
-          // console.log(videoKey.duration);
-          // videoKey.bind('contextmenu',function() { return false; });
-        // });  
-      },1000)
+
+        videoKey.onloadedmetadata = function() {
+          this.currentTime = 20;
+          console.log("Set time to " + this.currentTime)
+          // videoKey.addEventListener('loadedmetadata', function() {
+          $scope.videoDurations = $scope.videoDurations || {};
+          $scope.videoDurations[videoObject.key] = this.duration.toString().toHHMMSS()
+          if(!$scope.$$phase) $scope.$apply();
+        }
+      })
+      
+      // $timeout(function(){
+      //   var videoKey = document.getElementById('video'+videoObject.key);
+      //   videoKey.currentTime = 20;
+      //   console.log("Set time to " + videoKey.currentTime)
+      //   // videoKey.addEventListener('loadedmetadata', function() {
+      //   $scope.videoDurations = $scope.videoDurations || {};
+      //   $scope.videoDurations[videoObject.key] = videoKey.duration.toString().toHHMMSS()
+      //   if(!$scope.$$phase) $scope.$apply();
+      //     // console.log(videoKey.duration);
+      //     // videoKey.bind('contextmenu',function() { return false; });
+      //   // });  
+      // },1000)
     })
     .error(function(err) {
       console.log(err)
