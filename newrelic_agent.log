@@ -40,3 +40,8 @@
 {"v":0,"level":40,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:01.808Z","msg":"Unrecognized version undefined of Express detected; not instrumenting","component":"express"}
 {"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:04.546Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1278769/applications/26959690","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"Dans-Wifi.local","pid":19211,"time":"2016-10-05T00:48:04.546Z","msg":"Connected to collector-237.newrelic.com:443 with agent run ID 115790995905310978.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Justins-MacBook-Pro-2.local","pid":1692,"time":"2016-10-05T01:47:46.362Z","msg":"Using New Relic for Node.js. Agent version: 1.30.5; Node version: v4.1.2."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Justins-MacBook-Pro-2.local","pid":1692,"time":"2016-10-05T01:47:47.864Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"Justins-MacBook-Pro-2.local","pid":1692,"time":"2016-10-05T01:47:49.036Z","msg":"Unrecognized version undefined of Express detected; not instrumenting","component":"express"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Justins-MacBook-Pro-2.local","pid":1692,"time":"2016-10-05T01:47:51.684Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1278769/applications/26959690","component":"new_relic_response"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Justins-MacBook-Pro-2.local","pid":1692,"time":"2016-10-05T01:47:51.685Z","msg":"Connected to collector-237.newrelic.com:443 with agent run ID 118111493721188691.","component":"collector_api"}
