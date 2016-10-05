@@ -123,6 +123,16 @@ angular.module('bodyAppApp')
 	// 	})
 	// });
 
+  $scope.watchVideoFromLibrary = function(videoKey) {
+    var videoKey = document.getElementById('video'+videoKey);
+    if (videoKey.paused) {
+      if (videoKey.currentTime <= 20) videoKey.currentTime = 0;
+      videoKey.play()
+    } else {
+      videoKey.pause()
+    }
+  }
+
   function loadMedia(videoObject) {
     $scope.videoLibrary.push(videoObject);
     if(!$scope.$$phase) $scope.$apply();
@@ -144,7 +154,7 @@ angular.module('bodyAppApp')
         var videoKey = document.getElementById('video'+videoObject.key);
 
         videoKey.onloadedmetadata = function() {
-          this.currentTime = 20;
+          this.currentTime = 2;
           console.log("Set time to " + this.currentTime)
           // videoKey.addEventListener('loadedmetadata', function() {
           $scope.videoDurations = $scope.videoDurations || {};

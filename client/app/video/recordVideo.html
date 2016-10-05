@@ -16,22 +16,23 @@
 	      <input class="col-xs-7 mb8 text-center" ng-model="video.title" ng-change="titleChanged(video.key, video.title)" maxlength="30">
 	    </div>
       <div class="col-xs-2"></div>
-    	 <video ng-attr-id="{{ 'video' + video.key }}" class="video-js vjs-default-skin video-info vjs-big-play-centered"
+    	 <video ng-attr-id="{{ 'video' + video.key }}" class="video-js vjs-default-skin video-info" 
+        ng-click="watchVideoFromLibrary(video.key)"
         preload="metadata"
         vjs-media="loadedMedia[video.key]"
-        controls
+        
         vjs-video
         >
         <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
       </video>
       <!-- <div class="video-info"> -->
-        <div >
+        <div>
           <div class="row">
             <div class="col-xs-6 text-left">
               <span class="white" ng-if="video.dateSaved">{{formatDateSaved(video.dateSaved)}}</span>
             </div>
             <div class="col-xs-6 text-right">
-              <span class="white">{{videoDurations[video.key]}}</span>
+              <span class="white" ng-show="videoDurations[video.key]">{{videoDurations[video.key]}}</span>
             </div>
           </div>
         </div>
