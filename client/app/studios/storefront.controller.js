@@ -873,6 +873,28 @@ angular.module('bodyAppApp')
       if ($scope.nextWeek > 0) $scope.nextWeek -= $scope.numDaysToShow;
     }
 
+    //Have to load it this way to accurately get the player.
+    $scope.$on('vjsVideoReady', function (e, data) {
+      var player = data.player;
+      player.on('loadedmetadata', function() {
+        $scope.videoPlayers = $scope.videoPlayers || {};
+        $scope.videoPlayers[data.id] = data.player.id_;
+
+        player.currentTime(20);
+        console.log("Set time to " + player.currentTime())
+        $scope.videoDurations = $scope.videoDurations || {};
+        $scope.videoDurations[data.id] = player.duration().toString().toHHMMSS()
+        console.log($scope.videoDurations)
+        if(!$scope.$$phase) $scope.$apply();
+      })
+      // data.controlBar.durationDisplay(true)
+        //data contains `id`, `vid`, `player` and `controlBar`
+        //NOTE: vid is depricated, use player instead
+        // console.log('video id:' + data.id);
+        // console.log(data.player);
+        
+    });
+
     function getVideoLibrary() {
       $rootScope.$on('subscriptionsLoaded', function(event, subscriptionStatus) {
         console.log("subscriptions loaded")
@@ -898,31 +920,6 @@ angular.module('bodyAppApp')
                 ]
               };
               if(!$scope.$$phase) $scope.$apply();
-              videojs('video'+video.key).ready(function() {
-                var player = this;
-                var videoKey = document.getElementById('video'+video.key);
-
-                videoKey.onloadedmetadata = function() {
-                  this.currentTime = 20;
-                  console.log("Set time to " + this.currentTime)
-                  // videoKey.addEventListener('loadedmetadata', function() {
-                  $scope.videoDurations = $scope.videoDurations || {};
-                  $scope.videoDurations[video.key] = this.duration.toString().toHHMMSS()
-                  if(!$scope.$$phase) $scope.$apply();
-                }
-              })
-
-              // $timeout(function(){
-              //   var videoKey = document.getElementById('video'+video.key);
-              //     videoKey.currentTime = 20;
-              //   // videoKey.addEventListener('loadedmetadata', function() {
-              //     $scope.videoDurations = $scope.videoDurations || {};
-              //     $scope.videoDurations[video.key] = videoKey.duration.toString().toHHMMSS()
-              //     if(!$scope.$$phase) $scope.$apply();
-              //       // console.log(videoKey.duration);
-              //       // videoKey.bind('contextmenu',function() { return false; });
-              //   // });  
-              // },1000)
             })
             .error(function(err) {
               console.log(err)
@@ -981,8 +978,8 @@ angular.module('bodyAppApp')
       
       if (fullscreenElement) {
         var videoPlayer = videojs(fullscreenElement.id)
-        videoPlayer.currentTime(0)
-        videoPlayer.play()
+        // videoPlayer.currentTime(0)
+        // videoPlayer.play()
         videoPlayer.controls(true)
         lastVideoPlayedId = fullscreenElement.id;
 
@@ -994,40 +991,15 @@ angular.module('bodyAppApp')
     }); 
 
     $scope.watchVideoFromLibrary = function(videoId) {
-      var videoPlayer = videojs('video'+videoId)
+      var videoPlayer = document.getElementById('video' + videoId) 
+      if (videoPlayer) {
+        videoPlayer = videojs('video' + videoId) 
+      } else {
+        videoPlayer = videojs($scope.videoPlayers["video"+videoId]) 
+      }
       videoPlayer.requestFullscreen()
-
-      ////This is breaking stuff for some reason
-      // firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoId).child('views').transaction(function(viewCount) {
-      //   return viewCount + 1;
-      // })  
-// =======
-//     $scope.watchVideoFromLibrary = function(videoId) {
-//       var videoPlayer = videojs('video'+videoId)
-//       videoPlayer.requestFullscreen()
-//       videoPlayer.play()
-//       videoPlayer.controls(true)
-
-//       // $('#video'+videoId).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
-//       //     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-//       //     var event = state ? 'FullscreenOn' : 'FullscreenOff';
-
-//       //     // Now do something interesting
-//       //     alert('Event: ' + event);    
-//       // });
-//       $timeout(function(){
-//         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
-//         console.log(document.fullscreen)
-//         videoPlayer.pause()
-//         videoPlayer.controls(false)
-//         });  
-//       }, 2000)
-//       // $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {       
-//       //   console.log(document.fullscreen)
-//       // //   videoPlayer.pause()
-//       // //   videoPlayer.controls(false)
-//       // });
-// >>>>>>> 4469b9bbb58c1086f294fecc16dbb88ada247eb9
+      if (videoPlayer.currentTime() < 21) videoPlayer.currentTime(0)
+      videoPlayer.play()
     }
 
     $scope.getDuration = function(video) {

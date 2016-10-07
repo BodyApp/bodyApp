@@ -116,6 +116,8 @@ angular.module('bodyAppApp')
           }
         })
       })
+    } else {
+      $rootScope.$emit('subscriptionsLoaded', null);
     }
       
     // }

@@ -125,6 +125,7 @@ angular.module('bodyAppApp')
 
   $scope.watchVideoFromLibrary = function(videoKey) {
     var videoKey = document.getElementById('video'+videoKey);
+    videoKey.controls = true;
     if (videoKey.paused) {
       if (videoKey.currentTime <= 20) videoKey.currentTime = 0;
       videoKey.play()
@@ -259,24 +260,26 @@ angular.module('bodyAppApp')
   }
 
   $scope.deleteVideo = function(videoToDelete, videoLibraryIndex, ev) {
-  	var confirm = $mdDialog.confirm({
-      title: "Delete Video",
-      textContent: "Are you sure you want to delete this video?",
-      targetEvent: ev,
-      clickOutsideToClose: true,
-      ok: 'Yes',
-      cancel: 'No'
-    });
+  	// var confirm = $mdDialog.confirm({
+   //    title: "Delete Video",
+   //    textContent: "Are you sure you want to delete this video?",
+   //    targetEvent: ev,
+   //    clickOutsideToClose: true,
+   //    ok: 'Yes',
+   //    cancel: 'No'
+   //  });
 
-    return $mdDialog
-    .show( confirm ).then(function() {
-      firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoToDelete).remove(function(err) {
-        if (err) return console.log(err)
-        delete $scope.loadedMedia[videoToDelete]
-        $scope.videoLibrary.splice(videoLibraryIndex, 1);
-        console.log("Removed video from playlist.");
-        if(!$scope.$$phase) $scope.$apply();
-      })
+   //  return $mdDialog
+   //  .show( confirm ).then(function() {
+  if (confirm("Are you sure you want to delete this video?")) {
+    firebase.database().ref().child('videoLibraries').child(studioId).child('videos').child(videoToDelete).remove(function(err) {
+      if (err) return console.log(err)
+      delete $scope.loadedMedia[videoToDelete]
+      $scope.videoLibrary.splice(videoLibraryIndex, 1);
+      console.log("Removed video from playlist.");
+      if(!$scope.$$phase) $scope.$apply();
+    })
+  }
     	// $http.post('/api/videolibrary/'+currentUser._id+'/deletestudiovideo', {
 	    //   studioId: studioId,
 	    //   videoToken: videoToDelete.token
@@ -294,7 +297,7 @@ angular.module('bodyAppApp')
 	    //   console.log(err)
 	    //   console.log("Error deleting video")
 	    // }.bind(this));	
-    })
+    // })
   	
 
   	// ZiggeoApi.Videos.destroy(videoToDelete.token, function(data) {
